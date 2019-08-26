@@ -1,0 +1,217 @@
+<div style="background: #efecec !important;">
+  <div class="container-fluid">
+    <div class="row top_bar_action">
+      <button class="btn-defualt m-2"><i class="fa fa-step-backward" aria-hidden="true"></i>
+        First</button>
+      <button class="btn-defualt m-2"><i class="fa fa-caret-left" aria-hidden="true"></i>
+        Prev</button>
+      <button class="btn-defualt m-2">
+        Next&nbsp;<i class="fa fa-caret-right" aria-hidden="true"></i></button>
+      <button class="btn-defualt m-2">
+        Last&nbsp;<i class="fa fa-step-forward" aria-hidden="true"></i></button>
+      <button class="btn-defualt m-2"><i class="fa fa-list" aria-hidden="true"></i>
+        List</button>
+      <button class="btn-defualt m-2"><i class="fa fa-files-o" aria-hidden="true"></i>
+        Copy</button>
+      <button class="btn-defualt m-2"><i class="fa fa-clipboard" aria-hidden="true"></i>
+        Paste</button>
+      <button class="btn-defualt m-2"><i class="fa fa-print" aria-hidden="true"></i>
+        Print</button>
+      <button class="btn-defualt m-2"><i class="fa fa-eye" aria-hidden="true"></i>
+        Print Preview</button>
+      <button class="btn-defualt m-2"><i class="fa fa-times" style="color: red;" aria-hidden="true"></i>
+        Exit</button>
+    </div>
+  </div>
+
+  <form [formGroup]="journalForm" novalidate>
+    <div class="contanier-fluid">
+      <div class="row mt-5 mr-2">
+        <div class="col-md-4">
+          <div class="row clearfix">
+            <div class="col-md-5">
+              <label class="float-right">Series: </label>
+            </div>
+            <div class="col-md-7">
+              <select class="form-control" id="contry" formControlName="series">
+                <option *ngFor="let series of SeriesList" [value]="series.id">{{series.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row clearfix mt-3">
+            <div class="col-md-5">
+              <label class="float-right">Project: </label>
+            </div>
+            <div class="col-md-7">
+              <select class="form-control" id="contry" formControlName="series">
+                <option *ngFor="let series of SeriesList" [value]="series.id">{{series.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row clearfix">
+            <div class="col-md-5">
+              <label class="float-right">Voucher #: </label>
+            </div>
+            <div class="col-md-7">
+              <input class="form-control" formControlName="voucherNo" />
+            </div>
+          </div>
+          <div class="row clearfix mt-3">
+            <div class="col-md-5">
+              <label class="float-right"></label>
+            </div>
+            <div class="col-md-7">
+              <input class="form-control" formControlName="voucherNo" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row clearfix">
+            <div class="col-md-5">
+              <label class="float-right">Date :</label>
+            </div>
+            <div class="col-md-7">
+              <input formControlName="journalDate" type="date" [value]="journalDate | date: 'MM/dd/yyyy'"
+                class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <!-- <div class="row"> -->
+        <div class="tab-slider--nav">
+          <ul class="tab-slider--tabs">
+            <li class="tab-slider--trigger" [class.active]="viewMode == 'tab1'" rel="tab1" (click)="viewMode ='tab1'">
+              Details
+            </li>
+            <li class="tab-slider--trigger" [class.active]="viewMode == 'tab2'" rel="tab2" (click)="viewMode ='tab2'">
+              Account Class
+            </li>
+            <li class="tab-slider--trigger" [class.active]="viewMode == 'tab3'" rel="tab3" (click)="viewMode ='tab3'">
+              Additional Field
+            </li>
+          </ul>
+        </div>
+        <div class="tab-slider--container" [ngSwitch]="viewMode">
+          <div id="tab1" class="tab-slider--body" *ngSwitchCase="'tab1'">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Office</th>
+                  <th>Ext</th>
+                  <th>Start Date</th>
+                  <th>Salary</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="
+                let list of adminList
+                | paginate
+                : { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+                  <td>{{ list.name }}</td>
+                  <td>{{ list.position }} </td>
+                  <td>{{ list.office }}</td>
+                  <td>{{ list.ext }}</td>
+                  <td>{{list.startDate}}</td>
+                  <td>{{list.salary}}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <td colspan="6">
+                  <!-- <span *ngIf="adminListLoading"> Loading ....</span>
+                  <span *ngIf="
+                  !adminListLoading &&
+                  (
+                    adminList
+                    | adminFilter
+                      : searchByName
+                      : searchByAddress
+                      : searchByPhone
+                      : searchByEmail
+                      : searchByRetentionName
+                      : searchByRetentionTitle
+                  )?.length === 0
+                ">
+                    No Results
+                  </span> -->
+                  <data-table-pagination (pageChange)="setCurrentPage($event)" [totalItems]="adminList.length"
+                    [itemsPerPage]="itemsPerPage" [currentPage]="currentPage">
+                  </data-table-pagination>
+                </td>
+              </tfoot>
+            </table>
+          </div>
+
+          <div id="tab2" class="tab-slider--body" *ngSwitchCase="'tab2'">
+            <h2>Second Tab</h2>
+            <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras mattis
+              consectetur
+              purus sit amet fermentum. Nulla vitae elit libero, a pharetra augue. Cras mattis consectetur purus sit
+              amet
+              fermentum. Aenean eu leo
+              quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+          </div>
+
+          <div id="tab3" class="tab-slider--body" *ngSwitchCase="'tab3'">
+            <h2>Third Tab</h2>
+            <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras mattis
+              consectetur
+              purus sit amet fermentum. Nulla vitae elit libero, a pharetra augue. Cras mattis consectetur purus sit
+              amet
+              fermentum. Aenean eu leo
+              quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+          </div>
+        </div>
+        <!-- </div> -->
+      </div>
+
+      <!-- Next Form and the button-->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-2">
+            <label class="float-right">Narration:</label>
+          </div>
+          <div class="col-md-10">
+            <input formControlName="narration" type="text" class="form-control" />
+          </div>
+        </div>
+        <div class="row botton_bar_action">
+          <div class="col-md-2">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="donotClose">
+              <label class="form-check-label" for="donotClose">Do not close</label>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="donotClose">
+              <label class="form-check-label" for="donotClose">Print when save</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <button class="btn-defualt"><i class="fa fa-plus" aria-hidden="true"></i>
+              Group Voucher Posting</button>
+          </div>
+          <div class="col-md-5">
+            <button class="btn-defualt m-2"><i class="fa fa-plus" aria-hidden="true"></i>
+              Add</button>
+            <button class="btn-defualt m-2"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              Edit</button>
+            <button class="btn-defualt m-2" (click)="onSubmit()"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+              Save</button>
+            <button class="btn-defualt m-2"><i class="fa fa-trash" aria-hidden="true"></i>
+              Delete</button>
+            <button class="btn-defualt m-2"><i class="fa fa-times-circle-o" aria-hidden="true"></i>
+              Cancel</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+
+</div>
