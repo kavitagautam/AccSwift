@@ -7,8 +7,15 @@ import { ListJournalComponent } from './list-journal/list-journal.component';
 import { JournalVoucherRoutingModule } from './journal-voucher.routing';
 import { JournalFormComponent } from './journal-form/journal-form.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
+import { HttpClient } from "@angular/common/http";
 
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, "./assets/i18n/admin/", ".json");
+}
 @NgModule({
   declarations: [
     AddJournalComponent,
@@ -22,9 +29,19 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     SharedModule,
     JournalVoucherRoutingModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient]
+      },
+      isolate: true
+    })   
   ],
-  providers: []
+  providers: [
+    TranslateService
+  ]
 
 })
 export class JournalVoucherModule { }

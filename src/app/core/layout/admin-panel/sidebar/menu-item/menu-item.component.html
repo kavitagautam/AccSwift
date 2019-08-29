@@ -1,0 +1,27 @@
+<div class="nav-wrap nav-item p-0 cursor-pointer" [routerLinkActive]="['active']" (click)="onItemSelect(item)">
+
+  <!-- Do not highlight the nav item when it has children property -->
+  <span *ngIf="!item.children" [routerLink]="[item.route]"></span>
+
+  <!-- Menu Item  -->
+  <a class="nav-item nav-item-text">
+    <a class="nav-link" [ngStyle]="{'padding-left': (depth * 12) + 'px'}">
+      <i class="{{item.iconName}}"></i>
+      <span>{{item.displayName}}</span>
+
+      <!-- Icon -->
+      <span *ngIf="item.children && item.children.length">
+        <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
+          expand_more
+        </mat-icon>
+      </span>
+    </a>
+  </a>
+</div>
+
+
+<!-- Nested Menu Item -->
+<div *ngIf="expanded">
+  <simpliflysaas-menu-item *ngFor="let child of item.children" [item]="child" [depth]="depth+1">
+  </simpliflysaas-menu-item>
+</div>
