@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~ngx-toastr/toastr.css";
+$color_1: red;
+$color_2: #6c7178;
+$color_3: #007bff;
+$font_family_1: Roboto, "Helvetica Neue", sans-serif;
+$background_color_1: #007bff;
+$background_color_2: #fff;
+
+sup {
+    color: $color_1;
+}
+
+.error-msg {
+    color: $color_1;
+  }
+
+  .edit_button{
+    background: green;
+    color: #fff;
+    margin: 2px;
+  }
+  .delete_button{
+    background: red;
+    margin: 2px;
+  }

@@ -1,0 +1,23 @@
+$color_1: #fff;
+$background_color_1: #1a45c1;
+$background_color_2: #7892dc;
+
+.nav-item-text {
+	color: $color_1 !important;
+	font-size: .85rem;
+}
+.active {
+	background-color: $background_color_1;
+	font-weight: 500;
+}
+div.nav-item {
+	&:hover {
+		cursor: pointer;
+		background-color: $background_color_2;
+	}
+}
+.nav-item {
+	&:last-child {
+		margin-bottom: 0px;
+	}
+}

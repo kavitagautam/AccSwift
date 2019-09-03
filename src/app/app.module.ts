@@ -1,7 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -9,12 +13,14 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
-      ],
-  providers: [],
+    CoreModule,
+    AppRoutingModule,
+    HttpClientModule
+  ],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
-],
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
