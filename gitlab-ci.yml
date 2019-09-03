@@ -38,4 +38,4 @@ deploy_production:
     - ./node_modules/@angular/cli/bin/ng build --progress false --prod
     - cd dist/journalApplication/
     - ls
-    - scp -o StrictHostKeyChecking=no -P 1157 -r *  accswiftbent@98.142.99.67:/home/accswiftbent/public_html/
+    - scp -o StrictHostKeyChecking=no -P 1157 -r *  accswiftbent@98.142.99.67:/home/accswiftbent/public_html
