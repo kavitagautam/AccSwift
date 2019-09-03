@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { AddJournalComponent } from './add-journal/add-journal.component';
-import { EditJournalComponent } from './edit-journal/edit-journal.component';
-import { ListJournalComponent } from './list-journal/list-journal.component';
+import { RouterModule, Routes, ExtraOptions } from "@angular/router";
+import { AddJournalComponent } from './component/add-journal/add-journal.component';
+import { EditJournalComponent } from './component/edit-journal/edit-journal.component';
+import { ListJournalComponent } from './component/list-journal/list-journal.component';
 
 const routes: Routes = [
     {

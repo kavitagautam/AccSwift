@@ -19,19 +19,19 @@ export class SidebarComponent implements OnInit {
       iconName: "far fa-edit",
       route: "/journal"
     },
-    {
-      id: 3,
-      displayName: "Edit",
-      iconName: "fas fa-users",
-      route: "/journal/edit"
-    },
+    // {
+    //   id: 3,
+    //   displayName: "Edit",
+    //   iconName: "fas fa-users",
+    //   route: "/journal/edit"
+    // },
 
-    {
-      id: 3,
-      displayName: "add",
-      iconName: "fas fa-fw fa-chart-area",
-      route: "/journal/add"
-    },
+    // {
+    //   id: 3,
+    //   displayName: "add",
+    //   iconName: "fas fa-fw fa-chart-area",
+    //   route: "/journal/add"
+    // },
     {
       id: 4,
       displayName: "Company",
@@ -39,114 +39,41 @@ export class SidebarComponent implements OnInit {
       route: "/company"
     },
     {
-      id: 5,
-      displayName: "Transactions",
-      iconName: "fas fa-wrench",
-      route: ""
-    },
-    {
       id: 7,
       displayName: "Reports",
-      iconName: "fas fa-fw fa-user",
-      route: ""
-    },
-    {
-      id: 7,
-      displayName: "Prospect",
-      iconName: "fas fa-users",
-      route: ""
+      iconName: "fa fa-file-archive-o",
     },
     {
       id: 8,
-      displayName: "Message",
-      iconName: "fas fa-envelope",
-      route: "/message"
+      displayName: "Settings",
+      iconName: "fa fa-cogs",
     },
-    // {
-    //   id: 6,
-    //   displayName: "Nested Dropdown",
-    //   iconName: "fas fa-fw fa-user",
-    //   children: [
-    //     {
-    //       displayName: "Speakers2",
-    //       iconName: "group",
-    //       children: [
-    //         {
-    //           displayName: "Michael Prentice",
-    //           iconName: "person",
-    //           route: "michael-prentice",
-    //           children: [
-    //             {
-    //               displayName: "Create Enterprise UIs",
-    //               iconName: "star_rate",
-    //               route: "material-design"
-    //             }
-    //           ]
-    //         },
-    //         {
-    //           displayName: "Stephen Fluin",
-    //           iconName: "person",
-    //           route: "stephen-fluin",
-    //           children: [
-    //             {
-    //               displayName: "What's up with the Web?",
-    //               iconName: "star_rate",
-    //               route: "what-up-web"
-    //             }
-    //           ]
-    //         },
-    //         {
-    //           displayName: "Mike Brocchi",
-    //           iconName: "person",
-    //           route: "mike-brocchi",
-    //           children: [
-    //             {
-    //               displayName: "My ally, the CLI",
-    //               iconName: "star_rate",
-    //               route: "my-ally-cli"
-    //             },
-    //             {
-    //               displayName: "Become an Angular Tailor",
-    //               iconName: "star_rate",
-    //               route: "become-angular-tailer"
-    //             }
-    //           ]
-    //         }
-    //       ]
-    //     },
-    //     {
-    //       displayName: "Sessions3",
-    //       iconName: "speaker_notes",
-    //       children: [
-    //         {
-    //           displayName: "Create Enterprise UIs",
-    //           iconName: "star_rate",
-    //           route: "material-design"
-    //         },
-    //         {
-    //           displayName: "What's up with the Web?",
-    //           iconName: "star_rate",
-    //           route: "what-up-web"
-    //         },
-    //         {
-    //           displayName: "My ally, the CLI",
-    //           iconName: "star_rate",
-    //           route: "my-ally-cli"
-    //         },
-    //         {
-    //           displayName: "Become an Angular Tailor",
-    //           iconName: "star_rate",
-    //           route: "become-angular-tailer"
-    //         }
-    //       ]
-    //     },
-    //     {
-    //       displayName: "Feedback3",
-    //       iconName: "feedback",
-    //       route: "feedback"
-    //     }
-    //   ]
-    // }
+    {
+      id: 6,
+      displayName: "Transaction",
+      iconName: "fa fa-usd",
+      children: [
+        {
+          displayName: "Cash",
+          iconName: "fa fa-money",
+            },
+        {
+          displayName: "Bank",
+          iconName: "speaker_notes",
+        },
+        {
+          displayName: "Sales",
+          iconName: "feedback",
+          route: "feedback"
+        },
+        {
+          displayName: "Purchase",
+          iconName: "feedback",
+          route: "feedback"
+        }
+      ]
+    }
+    
   ];
   constructor() {}
 

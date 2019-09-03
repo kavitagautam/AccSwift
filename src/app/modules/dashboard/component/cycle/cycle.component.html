@@ -1,0 +1,60 @@
+<div id="cycle" #content class="col-md-12"
+  style="background-color:#fff; border-radius:5px; padding:20px; box-shadow:0 1px 1px rgba(0,0,0,0.1);">
+  <div class="tree" [ngStyle]="{'height': contentHeight + 'px', 'width': contentWidth + 'px'}">
+    <div class="ciclo1">
+      <a class="sc_object" [ngStyle]="{'left': x1 + 'px', 'top': y1 + 'px'}">
+        <img src="assets/images/dashboard/cms.png" style="padding:6%;" [ngStyle]="{'height': imageHeight + 'px'}">
+        <p [ngStyle]="{'font-size': fontSize + 'px', 'left': textPosition + 'px', 'top': (imageHeight + 5) + 'px'}">
+          CMS</p>
+      </a>
+
+      <a class="sc_object" [ngStyle]="{'left': x2 + 'px', 'top': y2 + 'px'}">
+        <img src="assets/images/dashboard/applicants.png" style="padding:6%;"
+          [ngStyle]="{'height': imageHeight + 'px'}">
+        <p [ngStyle]="{'font-size': fontSize + 'px', 'left': textPosition + 'px', 'top': (imageHeight + 5) + 'px'}">
+          APPLICANTS</p>
+      </a>
+
+      <a class="sc_object" [ngStyle]="{'right': x3 + 'px', 'top': y3 + 'px'}">
+        <img src="assets/images/dashboard/candidates.png" style="padding:6%;"
+          [ngStyle]="{'height': imageHeight + 'px'}">
+        <p
+          [ngStyle]="{'font-size': fontSize + 'px', 'left': (textPosition - 10 )+ 'px', 'top': (imageHeight + 5) + 'px'}">
+          CANDIDATES</p>
+      </a>
+
+      <a class="sc_object" [ngStyle]="{'left': x4 + 'px', 'top': y4 + 'px'}">
+        <img src="assets/images/dashboard/prospect.png" style="padding:6%;" [ngStyle]="{'height': imageHeight + 'px'}">
+        <p [ngStyle]="{'font-size': fontSize + 'px', 'left': textPosition + 'px', 'top': (imageHeight + 5) + 'px'}">
+          PROSPECT</p>
+      </a>
+
+      <a class="sc_object" [ngStyle]="{'left': x5 + 'px', 'top': y5 + 'px'}">
+        <img src="assets/images/dashboard/job-order.png" style="padding:6%;" [ngStyle]="{'height': imageHeight + 'px'}">
+        <p [ngStyle]="{'font-size': fontSize + 'px', 'left': textPosition + 'px', 'top': (imageHeight + 5) + 'px'}">
+          JOB ORDER</p>
+      </a>
+
+      <a class="sc_object" [ngStyle]="{'left': x6 + 'px', 'top': y6 + 'px'}">
+        <img src="assets/images/dashboard/invoice-billing.png" style="padding:6%;"
+          [ngStyle]="{'height': imageHeight + 'px'}">
+        <p
+          [ngStyle]="{'font-size': fontSize + 'px', 'left': (textPosition + 10) + 'px', 'top': (imageHeight + 5) + 'px'}">
+          INVOICE
+          BILLING
+        </p>
+      </a>
+
+      <a class="sc_object" [ngStyle]="{'left': x7 + 'px', 'top': y7 + 'px'}">
+        <img src="assets/images/dashboard/report.png" style="padding:6%;" [ngStyle]="{'height': imageHeight + 'px'}">
+        <p [ngStyle]="{'font-size': fontSize + 'px', 'left': textPosition + 'px', 'top': (imageHeight + 5) + 'px'}">
+          REPORTS</p>
+      </a>
+
+      <a class="sc_center" [ngStyle]="{'left': x0 + 'px', 'top': y0 + 'px'}"
+        style="background: center center no-repeat rgb(255, 255, 255); position: absolute; text-align: center; font-size: 20px; border-radius: 50%; line-height: 100px; display: block;">
+        <img [ngStyle]="{'height': simpliflyLogoImageHeight + 'px'}" src="assets/images/dashboard/logoo.png">
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,27 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import * as $ from 'jquery';
-import { TableData } from './table-data'
-
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { TableData } from '../journal-form/table-data';
+import { JournalService } from '../../services/journal.service';
 @Component({
-  selector: 'app-journal-form',
-  templateUrl: './journal-form.component.html',
-  styleUrls: ['./journal-form.component.scss']
+  selector: 'app-list-journal',
+  templateUrl: './list-journal.component.html',
+  styleUrls: ['./list-journal.component.css']
 })
-export class JournalFormComponent implements OnInit {
+export class ListJournalComponent implements OnInit {
   journalForm: FormGroup;
-  viewMode = 'tab1';
   adminList = TableData;
+
 
   itemsPerPage: number = 10;
   currentPage: number = 1;
 
 
-  constructor(public _fb: FormBuilder) {
+  constructor(public _fb: FormBuilder,
+    private router: Router,private _serviceJournal: JournalService) {
   }
   SeriesList = [{ 'id': 1, 'name': 'Test' }, { 'id': 2, 'name': 'UnTest' }, { 'id': 3, 'name': 'Experience' }];
 
   ngOnInit() {
+    console.log(JSON.stringify(this._serviceJournal.getMasterJournal()));
     this.journalForm = this._fb.group({
       series: [''],
       voucherNo: [''],
@@ -43,6 +45,11 @@ export class JournalFormComponent implements OnInit {
     this.currentPage = pageNumber;
   }
 
+
+  public editJournal(){
+
+    this.router.navigate(['/journal/edit']);
+  }
 
 
 }

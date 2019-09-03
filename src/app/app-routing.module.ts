@@ -8,8 +8,8 @@ const routes: Routes = [
     loadChildren: "@modules/auth/login/login.module#LoginModule"
   },
   {
-    path:"signup",
-    loadChildren:"@modules/auth/register/register.module#RegisterModule"
+    path: "signup",
+    loadChildren: "@modules/auth/register/register.module#RegisterModule"
   },
   // {
   //   path:"company", 
@@ -22,20 +22,25 @@ const routes: Routes = [
   //   ]
   // },
   {
-      path:"",
-      component: AdminPanelComponent,
-      children: [
-        {
-          path: "journal",
-          loadChildren: "@modules/journal-voucher/journal-voucher.module#JournalVoucherModule"
-        },
-        {
-          path: "company",
-          loadChildren: "@modules/company/company.module#CompanyModule"
-        }
-       
-      ] 
-  }
+    path: "",
+    component: AdminPanelComponent,
+    children: [
+      { path: "", redirectTo: "dashboard", pathMatch: "full" },
+      {
+        path: "dashboard",
+        loadChildren: "@modules/dashboard/dashboard.module#DashboardModule"
+      },
+      {
+        path: "journal",
+        loadChildren: "@modules/journal-voucher/journal-voucher.module#JournalVoucherModule"
+      },
+      {
+        path: "company",
+        loadChildren: "@modules/company/company.module#CompanyModule"
+      }
+
+    ]
+  },
 
 ];
 
@@ -43,4 +48,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

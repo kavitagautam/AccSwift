@@ -1,0 +1,38 @@
+<div class="message-card">
+  <div class="message-header" (click)="isCollapsed = !isCollapsed">
+    <div class="header-text">
+      Messages
+    </div>
+
+    <div>
+      <i *ngIf="!isCollapsed" class="fa fa-minus" aria-hidden="true"></i>
+      <i *ngIf="isCollapsed" class="fa fa-plus" aria-hidden="true"></i>
+    </div>
+  </div>
+
+  <!-- Collapsible Body -->
+  <div id="collapseBasic" [collapse]="isCollapsed">
+    <div class="message-body">
+      <div class="row">
+        <div class="col-sm-3">
+          <img class="user-img" src="assets/images/user.jpg"/>
+        </div>
+        <div class="col-sm-8 p-0">
+          Gellis Linda
+          <p class="date-time">
+            Mar 13, 2019
+          </p>
+
+          <!-- Componse & View More Buttons -->
+          <div>
+            <button class="btn btn-sm btn-primary mr-1 mb-1">Compose Message</button>
+            <button class="btn btn-sm btn-success mb-1">View More</button>
+          </div>
+          <!-- End Componse & View More Buttons -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of Collapsible Body  -->
+</div>
