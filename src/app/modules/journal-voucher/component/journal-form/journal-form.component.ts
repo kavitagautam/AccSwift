@@ -11,15 +11,15 @@ import { Router } from '@angular/router';
 })
 export class JournalFormComponent implements OnInit {
   journalForm: FormGroup;
-   submitted: boolean;
+  submitted: boolean;
   viewMode = 'tab1';
   adminList = TableData;
-  journalDate : Date = new Date();
-
-
+  journalDate: Date = new Date();
   itemsPerPage: number = 10;
   currentPage: number = 1;
-
+  debitTotal: number= 0;
+  creditTotal: number= 0;
+  differenceTotal: number=0;
 
   constructor(public _fb: FormBuilder,
     private router: Router) {
@@ -36,6 +36,25 @@ export class JournalFormComponent implements OnInit {
     });
   }
 
+  get journalListArrayData() {
+    return <FormArray>this.journalForm.get("journalListArray");
+  }
+
+  checkValueDebit(event: Event, i) {
+    const control = <FormArray>this.journalForm.get("journalListArray");
+    const updatedValue = control.controls[i].get('debit').value;
+    control.controls[i].get('credit').disable();
+    control.controls[i].get('balance').setValue(updatedValue);
+    this.debitTotal = this.debitTotal + parseInt(updatedValue);
+  }
+
+  checkValueCredit(event: Event, i) {
+    const control = <FormArray>this.journalForm.get("journalListArray");
+    const updatedValue = control.controls[i].get('credit').value;
+    control.controls[i].get('debit').disable();
+    control.controls[i].get('balance').setValue(updatedValue);
+    this.creditTotal =this.creditTotal + parseInt(updatedValue);
+  }
 
   addListFormGroup(): FormGroup {
     return this._fb.group({
@@ -77,11 +96,11 @@ export class JournalFormComponent implements OnInit {
     this.router.navigate(['/journal/edit']);
   }
 
-  public save(){
+  public save() {
     this.router.navigate(['/journal']);
   }
 
-  public cancel(){
+  public cancel() {
     this.router.navigate(['/journal']);
   }
 }

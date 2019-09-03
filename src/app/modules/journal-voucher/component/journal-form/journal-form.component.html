@@ -58,7 +58,7 @@
             </tr>
           </thead>
           <tbody formArrayName="journalListArray"
-            *ngFor="let item of journalForm.get('journalListArray').value ; let i = index;">
+            *ngFor="let item of journalListArrayData.controls ; let i = index;">
             <tr [formGroupName]="i">
               <td>
                 <input class="form-control" formControlName="particularsORaccountingHead"
@@ -67,12 +67,12 @@
                   *ngIf="item.get('particularsORaccountingHead').errors?.required && submitted">Particulars/Accounting
                   Head is required</span>
               </td>
-              <td> <input class="form-control" formControlName="debit" placeholder="Debit">
+              <td> <input class="form-control" formControlName="debit" placeholder="Debit"  (change)="checkValueDebit($event, i)">
               </td>
               <td>
-                <input class="form-control" formControlName="credit" placeholder="credit">
+                <input class="form-control" formControlName="credit"  placeholder="credit" (change)="checkValueCredit($event, i)">
               </td>
-              <td> <input class="form-control" formControlName="balance" placeholder="balance">
+              <td> <input class="form-control" formControlName="balance"  disabled="ture" placeholder="balance">
               </td>
               <td>
                 <input class="form-control" formControlName="remarks" placeholder="remarks">
@@ -80,10 +80,19 @@
               <td>
                 <i id="payAddIcon" class="fas fa-plus-circle" (click)="addNewEntry()"></i>
                 <i class="fas fa-trash-alt mr-2 cursor-pointer" style="margin-top: 45px; float: right; "
-                  *ngIf="journalForm.get('journalListArray').value.length > 1" (click)="deleteJournalRow(i)"></i>
+                  *ngIf="journalForm.get('journalListArray').controls.length > 1" (click)="deleteJournalRow(i)"></i>
               </td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2"></td>
+              <td colspan="1"> Debit Total: {{debitTotal}}</td>
+              <td colspan="1"> Credit Total: {{creditTotal}}</td>
+              <td colspan="1"> Difference : {{debitTotal - creditTotal}}</td>
+
+            </tr>
+          </tfoot>
         </table>
       </div>
       <div class="row mt-2 ml-2">

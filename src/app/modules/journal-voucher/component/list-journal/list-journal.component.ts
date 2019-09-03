@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TableData } from '../journal-form/table-data';
 import { JournalService } from '../../services/journal.service';
+import { JournalMaster } from '../../models/journal.model';
+import { CustomResponse } from '@app/shared/models/custom-response.model';
 @Component({
   selector: 'app-list-journal',
   templateUrl: './list-journal.component.html',
@@ -10,7 +12,7 @@ import { JournalService } from '../../services/journal.service';
 })
 export class ListJournalComponent implements OnInit {
   journalForm: FormGroup;
-  adminList = TableData;
+  journalList :JournalMaster;
   journalDate : Date = new Date();
 
   itemsPerPage: number = 10;
@@ -23,7 +25,9 @@ export class ListJournalComponent implements OnInit {
   SeriesList = [{ 'id': 1, 'name': 'Test' }, { 'id': 2, 'name': 'UnTest' }, { 'id': 3, 'name': 'Experience' }];
 
   ngOnInit() {
-    console.log(JSON.stringify(this._serviceJournal.getMasterJournal()));
+    // console.log(JSON.stringify(this._serviceJournal.getMasterJournal()));
+
+    this.getJournalList();
     this.journalForm = this._fb.group({
       series: [''],
       voucherNo: [''],
@@ -32,6 +36,18 @@ export class ListJournalComponent implements OnInit {
     });
   }
 
+   getJournalList(){
+    this._serviceJournal.getMasterJournal().subscribe(
+      (response  ) => {
+        console.log(response);
+          this.journalList = response;
+      },
+      error => {
+        console.log(error);
+      },
+    );
+
+   }
   onSubmit() {
     if (this.journalForm.valid) {
       console.log('form submitted');
