@@ -14,6 +14,8 @@ export class JournalFormComponent implements OnInit {
    submitted: boolean;
   viewMode = 'tab1';
   adminList = TableData;
+  journalDate : Date = new Date();
+
 
   itemsPerPage: number = 10;
   currentPage: number = 1;

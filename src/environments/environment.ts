@@ -4,8 +4,6 @@
 
 export const environment = {
   production: false,
-
-
   defaultImageUrl: "./assets/images/user.jpg"
 };
 

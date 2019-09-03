@@ -14,7 +14,6 @@ export class JournalService {
   getMasterJournal(){
     const headerDict = {
       'Content-Type': 'application/json',
-       'Access-Control-Allow-Origin': 'http://localhost:4200',
       'Accept': 'application/json'
        }
     

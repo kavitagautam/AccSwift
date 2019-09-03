@@ -58,7 +58,7 @@
             </tr>
           </thead>
           <tbody formArrayName="journalListArray"
-            *ngFor="let item of journalForm.get('journalListArray').controls; let i = index;">
+            *ngFor="let item of journalForm.get('journalListArray').value ; let i = index;">
             <tr [formGroupName]="i">
               <td>
                 <input class="form-control" formControlName="particularsORaccountingHead"
@@ -80,7 +80,7 @@
               <td>
                 <i id="payAddIcon" class="fas fa-plus-circle" (click)="addNewEntry()"></i>
                 <i class="fas fa-trash-alt mr-2 cursor-pointer" style="margin-top: 45px; float: right; "
-                  *ngIf="journalForm.controls.journalListArray.controls.length > 1" (click)="deleteJournalRow(i)"></i>
+                  *ngIf="journalForm.get('journalListArray').value.length > 1" (click)="deleteJournalRow(i)"></i>
               </td>
             </tr>
           </tbody>

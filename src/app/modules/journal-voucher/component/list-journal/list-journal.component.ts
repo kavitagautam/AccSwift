@@ -11,7 +11,7 @@ import { JournalService } from '../../services/journal.service';
 export class ListJournalComponent implements OnInit {
   journalForm: FormGroup;
   adminList = TableData;
-
+  journalDate : Date = new Date();
 
   itemsPerPage: number = 10;
   currentPage: number = 1;
