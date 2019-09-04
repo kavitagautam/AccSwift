@@ -18,7 +18,7 @@
               <label class="float-right">Project: </label>
             </div>
             <div class="col-md-7">
-              <select class="form-control" id="contry" formControlName="series">
+              <select class="form-control" id="contry" formControlName="project">
                 <option *ngFor="let series of SeriesList" [value]="series.id">{{series.name}}</option>
               </select>
             </div>
@@ -57,20 +57,21 @@
               <th>Remarks</th>
             </tr>
           </thead>
-          <tbody formArrayName="journalListArray"
-            *ngFor="let item of journalForm.get('journalListArray').value ; let i = index;">
+          <tbody formArrayName="journalEntryList" *ngFor="let item of getjournalEntryList.controls ; let i = index;">
             <tr [formGroupName]="i">
               <td>
-                <input class="form-control" formControlName="particularsORaccountingHead"
-                  placeholder="Particulars OR Accounting Head" required>
+                <input class="form-control" formControlName="particularsOraccountingHead"
+                  placeholder="Particulars Or Accounting Head" required>
                 <span class="error-msg"
-                  *ngIf="item.get('particularsORaccountingHead').errors?.required && submitted">Particulars/Accounting
+                  *ngIf="item.get('particularsOraccountingHead').errors?.required && submitted">Particulars/Accounting
                   Head is required</span>
               </td>
-              <td> <input class="form-control" formControlName="debit" placeholder="Debit">
+              <td> <input class="form-control" type="number" formControlName="debit" placeholder="Debit"
+                  (change)="checkDebitValue($event, i)">
               </td>
               <td>
-                <input class="form-control" formControlName="credit" placeholder="credit">
+                <input class="form-control" type="number" formControlName="credit" placeholder="credit"
+                  (change)="checkCreditValue($event, i)">
               </td>
               <td> <input class="form-control" formControlName="balance" placeholder="balance">
               </td>
@@ -78,17 +79,53 @@
                 <input class="form-control" formControlName="remarks" placeholder="remarks">
               </td>
               <td>
-                <i id="payAddIcon" class="fas fa-plus-circle" (click)="addNewEntry()"></i>
+                <i class="fas fa-plus-circle" (click)="addJournalEntry()"></i>
                 <i class="fas fa-trash-alt mr-2 cursor-pointer" style="margin-top: 45px; float: right; "
-                  *ngIf="journalForm.get('journalListArray').value.length > 1" (click)="deleteJournalRow(i)"></i>
+                  *ngIf="journalForm.get('journalEntryList').controls.length > 1"
+                  (click)="deleteJournalEntryRow(i)"></i>
               </td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2"></td>
+              <td colspan="1"> Debit Total: {{debitTotal}}</td>
+              <td colspan="1"> Credit Total: {{creditTotal}}</td>
+              <td colspan="1"> Difference : {{debitTotal - creditTotal}}</td>
+            </tr>
+          </tfoot>
         </table>
       </div>
-      <div class="row mt-2 ml-2">
-        <button class="btn btn-primary" (click)="save()" >Save</button>
-        <button class="btn" (click)="cancel()" >Cancel</button>
+      <div class="row mt-2 ml-2 clearfix">
+        <div class="col-md-2">
+          <label class="float-right">Narration :</label>
+        </div>
+        <div class="col-md-8">
+          <input formControlName="narration" type="text" class="form-control" />
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+      <div class="row mt-2 ml-2 clearfix">
+        <div class="col-md-2">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="donotClose">
+            <label class="form-check-label" for="donotClose">Do not close</label>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="printonSaving">
+            <label class="form-check-label" for="printonSaving">Print while saving</label>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-secondary" disabled><i class="fa fa-plus" aria-hidden="true"></i>Group Voucher
+            Posting</button>
+        </div>
+      </div>
+      <div class="row m-2">
+        <button class="btn btn-primary" disabled (click)="save()">Save</button>
+        <button class="btn btn-secondary ml-2" (click)="cancel()">Cancel</button>
       </div>
     </div>
   </form>
