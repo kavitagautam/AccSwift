@@ -24,10 +24,14 @@ export class JournalFormComponent implements OnInit {
   SeriesList = [{ 'id': 1, 'name': 'Test' }, { 'id': 2, 'name': 'UnTest' }, { 'id': 3, 'name': 'Experience' }];
 
   ngOnInit() {
+    this.buildJournalForm();
+  }
+
+  buildJournalForm() {
     this.journalForm = this._fb.group({
       series: [''],
       voucherNo: [''],
-      project:[''],
+      project: [''],
       journalDate: [''],
       narration: [''],
       journalEntryList: this._fb.array([this.addJournalEntryFormGroup()])
@@ -38,7 +42,7 @@ export class JournalFormComponent implements OnInit {
     return <FormArray>this.journalForm.get("journalEntryList");
   }
 
-  checkValueDebit(event: Event, i) {
+  checkDebitValue(event: Event, i) {
     const control = <FormArray>this.journalForm.get("journalEntryList");
     const updatedValue = control.controls[i].get('debit').value;
     if (parseInt(updatedValue)) {
@@ -50,7 +54,7 @@ export class JournalFormComponent implements OnInit {
     this.debitTotal = this.debitTotal + parseInt(updatedValue) || 0;
   }
 
-  checkValueCredit(event: Event, i) {
+  checkCreditValue(event: Event, i) {
     const control = <FormArray>this.journalForm.get("journalEntryList");
     const updatedValue = control.controls[i].get('credit').value;
     if (parseInt(updatedValue)) {
@@ -64,7 +68,7 @@ export class JournalFormComponent implements OnInit {
 
   addJournalEntryFormGroup(): FormGroup {
     return this._fb.group({
-      particularsORaccountingHead: ["", Validators.required],
+      particularsOraccountingHead: ["", Validators.required],
       debit: ["", Validators.required],
       credit: [""],
       balance: [{ value: '', disabled: true }],

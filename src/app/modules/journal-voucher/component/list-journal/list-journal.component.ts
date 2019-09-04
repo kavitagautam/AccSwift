@@ -18,8 +18,10 @@ export class ListJournalComponent implements OnInit {
   itemsPerPage: number = 10;
   currentPage: number = 1;
   constructor(public _fb: FormBuilder,
-    private router: Router, private _serviceJournal: JournalService) {
+    private router: Router,
+    private _serviceJournal: JournalService) {
   }
+
   SeriesList = [{ 'id': 1, 'name': 'Test' }, { 'id': 2, 'name': 'UnTest' }, { 'id': 3, 'name': 'Experience' }];
 
   ngOnInit() {
@@ -35,7 +37,6 @@ export class ListJournalComponent implements OnInit {
   getJournalList() {
     this._serviceJournal.getMasterJournal().subscribe(
       (response) => {
-        console.log(response);
         this.journalList = response;
       },
       error => {
@@ -46,10 +47,7 @@ export class ListJournalComponent implements OnInit {
 
   onSubmit() {
     if (this.journalSearchForm.valid) {
-      console.log('form submitted');
-      console.log("Form Values" + this.journalSearchForm.value);
     } else {
-      console.log("error Occured ");
     }
   }
 

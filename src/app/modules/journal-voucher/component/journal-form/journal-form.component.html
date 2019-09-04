@@ -60,18 +60,18 @@
           <tbody formArrayName="journalEntryList" *ngFor="let item of getjournalEntryList.controls ; let i = index;">
             <tr [formGroupName]="i">
               <td>
-                <input class="form-control" formControlName="particularsORaccountingHead"
-                  placeholder="Particulars OR Accounting Head" required>
+                <input class="form-control" formControlName="particularsOraccountingHead"
+                  placeholder="Particulars Or Accounting Head" required>
                 <span class="error-msg"
-                  *ngIf="item.get('particularsORaccountingHead').errors?.required && submitted">Particulars/Accounting
+                  *ngIf="item.get('particularsOraccountingHead').errors?.required && submitted">Particulars/Accounting
                   Head is required</span>
               </td>
               <td> <input class="form-control" type="number" formControlName="debit" placeholder="Debit"
-                  (change)="checkValueDebit($event, i)">
+                  (change)="checkDebitValue($event, i)">
               </td>
               <td>
                 <input class="form-control" type="number" formControlName="credit" placeholder="credit"
-                  (change)="checkValueCredit($event, i)">
+                  (change)="checkCreditValue($event, i)">
               </td>
               <td> <input class="form-control" formControlName="balance" placeholder="balance">
               </td>
