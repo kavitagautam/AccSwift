@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import * as $ from 'jquery';
-import { TableData } from './table-data'
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,14 +11,12 @@ import { Router } from '@angular/router';
 export class JournalFormComponent implements OnInit {
   journalForm: FormGroup;
   submitted: boolean;
+
   viewMode = 'tab1';
-  adminList = TableData;
   journalDate: Date = new Date();
-  itemsPerPage: number = 10;
-  currentPage: number = 1;
-  debitTotal: number= 0;
-  creditTotal: number= 0;
-  differenceTotal: number=0;
+  debitTotal: number = 0;
+  creditTotal: number = 0;
+  differenceTotal: number = 0;
 
   constructor(public _fb: FormBuilder,
     private router: Router) {
@@ -32,64 +29,60 @@ export class JournalFormComponent implements OnInit {
       voucherNo: [''],
       journalDate: [''],
       narration: [''],
-      journalListArray: this._fb.array([this.addListFormGroup()])
+      journalEntryList: this._fb.array([this.addJournalEntryFormGroup()])
     });
   }
 
-  get journalListArrayData() {
-    return <FormArray>this.journalForm.get("journalListArray");
+  get journalEntryListData() {
+    return <FormArray>this.journalForm.get("journalEntryList");
   }
 
   checkValueDebit(event: Event, i) {
-    const control = <FormArray>this.journalForm.get("journalListArray");
+    const control = <FormArray>this.journalForm.get("journalEntryList");
     const updatedValue = control.controls[i].get('debit').value;
-    control.controls[i].get('credit').disable();
+    if (parseInt(updatedValue)) {
+      control.controls[i].get('credit').disable();
+    } else {
+      control.controls[i].get('credit').enable();
+    }
     control.controls[i].get('balance').setValue(updatedValue);
-    this.debitTotal = this.debitTotal + parseInt(updatedValue);
+    this.debitTotal = this.debitTotal + parseInt(updatedValue) || 0;
   }
 
   checkValueCredit(event: Event, i) {
-    const control = <FormArray>this.journalForm.get("journalListArray");
+    const control = <FormArray>this.journalForm.get("journalEntryList");
     const updatedValue = control.controls[i].get('credit').value;
-    control.controls[i].get('debit').disable();
+    if (parseInt(updatedValue)) {
+      control.controls[i].get('debit').disable();
+    } else {
+      control.controls[i].get('debit').enable();
+    }
     control.controls[i].get('balance').setValue(updatedValue);
-    this.creditTotal =this.creditTotal + parseInt(updatedValue);
+    this.creditTotal = this.creditTotal + parseInt(updatedValue) || 0;
   }
 
-  addListFormGroup(): FormGroup {
+  addJournalEntryFormGroup(): FormGroup {
     return this._fb.group({
       particularsORaccountingHead: ["", Validators.required],
       debit: ["", Validators.required],
       credit: [""],
-      balance: [""],
+      balance: [{ value: '', disabled: true }],
       remarks: [""]
     });
   }
-  onSubmit() {
-    if (this.journalForm.valid) {
-      console.log('form submitted');
-      console.log("Form Values" + this.journalForm.value);
-    } else {
-      console.log("error Occured ");
-    }
-  }
 
-  setCurrentPage(pageNumber): void {
-    this.currentPage = pageNumber;
-  }
-
-  addNewEntry() {
+  addNewJournalEntry() {
     this.submitted = true;
-    if (this.journalForm.get("journalListArray").invalid) return;
+    if (this.journalForm.get("journalEntryList").invalid) return;
 
-    (<FormArray>this.journalForm.get("journalListArray")).push(
-      this.addListFormGroup()
+    (<FormArray>this.journalForm.get("journalEntryList")).push(
+      this.addJournalEntryFormGroup()
     );
     this.submitted = false;
   }
 
-  deleteJournalRow(i: number) {
-    (<FormArray>this.journalForm.get("journalListArray")).removeAt(i);
+  deleteJournalEntryRow(i: number) {
+    (<FormArray>this.journalForm.get("journalEntryList")).removeAt(i);
   }
 
   public editJournal() {
@@ -97,10 +90,18 @@ export class JournalFormComponent implements OnInit {
   }
 
   public save() {
-    this.router.navigate(['/journal']);
+    if (this.journalForm.valid) {
+      console.log('form submitted');
+      console.log("Form Values" + this.journalForm.value);
+      this.router.navigate(['/journal']);
+    } else {
+      console.log("error Occured ");
+    }
   }
 
   public cancel() {
+    this.journalForm.reset();
     this.router.navigate(['/journal']);
   }
+
 }

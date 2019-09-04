@@ -1,4 +1,3 @@
-<!-- <app-journal-form></app-journal-form> -->
 <div style="background: #efecec !important;">
     <div class="container-fluid">
         <div class="row top_bar_action">
@@ -8,7 +7,7 @@
         </div>
     </div>
 
-    <form [formGroup]="journalForm" novalidate>
+    <form [formGroup]="journalSearchForm" novalidate>
         <div class="contanier-fluid">
             <div class="row mt-5 mr-2">
                 <div class="col-md-4">
@@ -27,7 +26,7 @@
                             <label class="float-right">Project: </label>
                         </div>
                         <div class="col-md-7">
-                            <select class="form-control" id="contry" formControlName="series">
+                            <select class="form-control" id="contry" formControlName="project">
                                 <option *ngFor="let series of SeriesList" [value]="series.id">{{series.name}}</option>
                             </select>
                         </div>
@@ -58,7 +57,7 @@
                 </div>
             </div>
             <div class="row ml-2">
-                <button class="btn btn-primary">Search</button>
+                <button class="btn btn-primary" disabled>Search</button>
             </div>
         </div>
     </form>
@@ -81,10 +80,9 @@
           let list of journalList
           | paginate
           : { itemsPerPage: itemsPerPage, currentPage: currentPage }">
-                        <!-- "[routerLink]="['edit']" -->
                         <td> <button class="btn btn-success" (click)="editJournal()"><i class="far fa-edit"></i>
                                 Edit</button>
-                            <button class="btn btn-danger ml-2"><i class="far fa-trash-alt"></i>Delete</button></td>
+                            <button class="btn btn-danger ml-2" disabled><i class="far fa-trash-alt"></i>Delete</button></td>
                         <td>{{ list.SeriesName }}</td>
                         <td>{{ list.ProjectName }} </td>
                         <td>{{ list.CreatedDate | date :'yy/mm/dd' }} </td>
@@ -94,7 +92,6 @@
                 </tbody>
                 <tfoot>
                     <td colspan="6">
-
                         <data-table-pagination (pageChange)="setCurrentPage($event)" [totalItems]="20"
                             [itemsPerPage]="itemsPerPage" [currentPage]="currentPage">
                         </data-table-pagination>
@@ -103,5 +100,4 @@
             </table>
         </div>
     </div>
-
 </div>

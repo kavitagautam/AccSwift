@@ -11,47 +11,43 @@ import { CustomResponse } from '@app/shared/models/custom-response.model';
   styleUrls: ['./list-journal.component.css']
 })
 export class ListJournalComponent implements OnInit {
-  journalForm: FormGroup;
-  journalList :JournalMaster;
-  journalDate : Date = new Date();
+  journalSearchForm: FormGroup;
+  journalList: JournalMaster;
 
+  journalDate: Date = new Date();
   itemsPerPage: number = 10;
   currentPage: number = 1;
-
-
   constructor(public _fb: FormBuilder,
-    private router: Router,private _serviceJournal: JournalService) {
+    private router: Router, private _serviceJournal: JournalService) {
   }
   SeriesList = [{ 'id': 1, 'name': 'Test' }, { 'id': 2, 'name': 'UnTest' }, { 'id': 3, 'name': 'Experience' }];
 
   ngOnInit() {
-    // console.log(JSON.stringify(this._serviceJournal.getMasterJournal()));
-
     this.getJournalList();
-    this.journalForm = this._fb.group({
+    this.journalSearchForm = this._fb.group({
       series: [''],
+      project: [''],
       voucherNo: [''],
-      journalDate: [''],
-      narration: [''],
+      journalDate: ['']
     });
   }
 
-   getJournalList(){
+  getJournalList() {
     this._serviceJournal.getMasterJournal().subscribe(
-      (response  ) => {
+      (response) => {
         console.log(response);
-          this.journalList = response;
+        this.journalList = response;
       },
       error => {
         console.log(error);
       },
     );
+  }
 
-   }
   onSubmit() {
-    if (this.journalForm.valid) {
+    if (this.journalSearchForm.valid) {
       console.log('form submitted');
-      console.log("Form Values" + this.journalForm.value);
+      console.log("Form Values" + this.journalSearchForm.value);
     } else {
       console.log("error Occured ");
     }
@@ -61,11 +57,7 @@ export class ListJournalComponent implements OnInit {
     this.currentPage = pageNumber;
   }
 
-
-  public editJournal(){
-
+  public editJournal() {
     this.router.navigate(['/journal/edit']);
   }
-
-
 }
