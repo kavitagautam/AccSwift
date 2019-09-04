@@ -79,7 +79,7 @@
                 <input class="form-control" formControlName="remarks" placeholder="remarks">
               </td>
               <td>
-                <i class="fas fa-plus-circle" (click)="addNewJournalEntry()"></i>
+                <i class="fas fa-plus-circle" (click)="addJournalEntry()"></i>
                 <i class="fas fa-trash-alt mr-2 cursor-pointer" style="margin-top: 45px; float: right; "
                   *ngIf="journalForm.get('journalEntryList').controls.length > 1"
                   (click)="deleteJournalEntryRow(i)"></i>

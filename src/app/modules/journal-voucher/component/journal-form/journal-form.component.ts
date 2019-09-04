@@ -76,7 +76,7 @@ export class JournalFormComponent implements OnInit {
     });
   }
 
-  addNewJournalEntry() {
+  addJournalEntry() {
     this.submitted = true;
     if (this.journalForm.get("journalEntryList").invalid) return;
 
@@ -96,8 +96,6 @@ export class JournalFormComponent implements OnInit {
 
   public save() {
     if (this.journalForm.valid) {
-      console.log('form submitted');
-      console.log("Form Values" + this.journalForm.value);
       this.router.navigate(['/journal']);
     } else {
       console.log("error Occured ");
