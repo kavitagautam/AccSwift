@@ -80,7 +80,7 @@
           let list of journalList
           | paginate
           : { itemsPerPage: itemsPerPage, currentPage: currentPage }">
-                        <td> <button class="btn btn-success" (click)="editJournal()"><i class="far fa-edit"></i>
+                        <td> <button class="btn btn-success" (click)="editJournal(list)"><i class="far fa-edit"></i>
                                 Edit</button>
                             <button class="btn btn-danger ml-2" disabled><i class="far fa-trash-alt"></i>Delete</button></td>
                         <td>{{ list.SeriesName }}</td>

@@ -27,13 +27,14 @@ export class JournalFormComponent implements OnInit {
     this.journalForm = this._fb.group({
       series: [''],
       voucherNo: [''],
+      project:[''],
       journalDate: [''],
       narration: [''],
       journalEntryList: this._fb.array([this.addJournalEntryFormGroup()])
     });
   }
 
-  get journalEntryListData() {
+  get getjournalEntryList() {
     return <FormArray>this.journalForm.get("journalEntryList");
   }
 

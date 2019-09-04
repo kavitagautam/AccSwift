@@ -1,4 +1,4 @@
-export class JournalMaster {
+export interface JournalMaster {
     id?: number;
     seriresId: number;
     seriesName: string;
@@ -16,7 +16,13 @@ export class JournalMaster {
     field3: string;
     field4: number;
     field5: string;
-    journaldetails: string;
-
-
+    journaldetails: Journaldetails[];
 }
+
+export interface Journaldetails {
+    id: number;
+    journalId: number;
+    amount: number;
+    debitCredit: string;
+    remarks: string
+  }

@@ -57,7 +57,7 @@ export class ListJournalComponent implements OnInit {
     this.currentPage = pageNumber;
   }
 
-  public editJournal() {
-    this.router.navigate(['/journal/edit']);
+  public editJournal(item) {
+    this.router.navigate(['/journal/edit', item.ID]);
   }
 }

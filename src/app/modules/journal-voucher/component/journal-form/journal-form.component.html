@@ -18,7 +18,7 @@
               <label class="float-right">Project: </label>
             </div>
             <div class="col-md-7">
-              <select class="form-control" id="contry" formControlName="series">
+              <select class="form-control" id="contry" formControlName="project">
                 <option *ngFor="let series of SeriesList" [value]="series.id">{{series.name}}</option>
               </select>
             </div>
@@ -57,7 +57,7 @@
               <th>Remarks</th>
             </tr>
           </thead>
-          <tbody formArrayName="journalEntryList" *ngFor="let item of journalEntryListData.controls ; let i = index;">
+          <tbody formArrayName="journalEntryList" *ngFor="let item of getjournalEntryList.controls ; let i = index;">
             <tr [formGroupName]="i">
               <td>
                 <input class="form-control" formControlName="particularsORaccountingHead"

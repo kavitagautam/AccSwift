@@ -16,10 +16,10 @@ export class JournalService {
     private httpService: HttpClientService) { }
 
   getMasterJournal() {
-    // return  this.httpService.get(`${this._api_URL}journalmaster`).subscribe((res) => {
-    //     console.log(res);
-    //     return res
-    //   });
     return this.httpService.get(`${this._api_URL}journalmaster`);
+  }
+  getJournalDetails(id){
+    return this.httpService.get(`${this._api_URL}journalmaster/${id}`);
+
   }
 }
