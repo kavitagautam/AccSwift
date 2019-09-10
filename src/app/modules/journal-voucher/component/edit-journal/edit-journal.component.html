@@ -194,10 +194,7 @@
                   <td>{{list.LedgerCode}}</td>
                   <td> {{list.Balance}}</td>
                   <td>{{list.ActualBalance}}</td>
-                  <td>
-                    <span *ngIf="list.LedgerType==='DR'">Debit</span>
-                    <span *ngIf="list.LedgerType==='CR'">Credit</span>
-                  </td>
+                  <td>{{list.LedgerType}}</td>
                 </tr>
               </tbody>
               <tfoot>

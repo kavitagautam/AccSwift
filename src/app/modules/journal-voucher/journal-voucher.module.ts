@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
-
 import { JournalVoucherRoutingModule } from './journal-voucher.routing';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SharedModule } from '@shared/shared.module';
@@ -9,7 +8,6 @@ import { HttpClient } from "@angular/common/http";
 import { AddJournalComponent } from './component/add-journal/add-journal.component';
 import { EditJournalComponent } from './component/edit-journal/edit-journal.component';
 import { ListJournalComponent } from './component/list-journal/list-journal.component';
-import { JournalFormComponent } from './component/journal-form/journal-form.component';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
 import { JournalService } from './services/journal.service';
@@ -23,7 +21,6 @@ export function createTranslateLoader(http: HttpClient) {
     AddJournalComponent,
     EditJournalComponent,
     ListJournalComponent,
-    JournalFormComponent,
     LedgerFilterPipe
   ],
   imports: [

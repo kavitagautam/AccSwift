@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TableData } from '../journal-form/table-data';
 import { JournalService } from '../../services/journal.service';
 import { JournalMaster } from '../../models/journal.model';
 import { CustomResponse } from '@app/shared/models/custom-response.model';
