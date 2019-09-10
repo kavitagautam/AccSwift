@@ -16,13 +16,26 @@ export interface JournalMaster {
     field3: string;
     field4: number;
     field5: string;
-    journaldetails: Journaldetails[];
+    journaldetails: JournalDetails[];
 }
 
-export interface Journaldetails {
+export interface JournalDetails {
     id: number;
     journalId: number;
     amount: number;
     debitCredit: string;
     remarks: string
+  }
+
+  export interface ProjectList{
+    id: number,
+    projectNumber: number,
+    parentProjectID: number,
+    engName: string,
+    nepName: string,
+    description: string,
+    createdBy: string,
+    createdDate: string,
+    modifiedBy: string,
+    modifiedDate: string
   }

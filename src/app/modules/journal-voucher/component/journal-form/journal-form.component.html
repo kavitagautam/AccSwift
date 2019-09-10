@@ -8,8 +8,8 @@
               <label class="float-right">Series: </label>
             </div>
             <div class="col-md-7">
-              <select class="form-control" id="contry" formControlName="series">
-                <option *ngFor="let series of SeriesList" [value]="series.id">{{series.name}}</option>
+              <select class="form-control" id="seriesId" formControlName="seriesID">
+                <option *ngFor="let series of journalService.journalSeriesList">{{series.EngName}}</option>
               </select>
             </div>
           </div>
@@ -18,8 +18,9 @@
               <label class="float-right">Project: </label>
             </div>
             <div class="col-md-7">
-              <select class="form-control" id="contry" formControlName="project">
-                <option *ngFor="let series of SeriesList" [value]="series.id">{{series.name}}</option>
+              <select class="form-control" id="projectId" formControlName="project">
+                <option *ngFor="let project of journalService.projectLists" [value]="project.ProjectID">
+                  {{project.EngName}}</option>
               </select>
             </div>
           </div>
@@ -40,8 +41,7 @@
               <label class="float-right">Date :</label>
             </div>
             <div class="col-md-7">
-              <input formControlName="journalDate" type="date" [value]="journalDate | date: 'MM/dd/yyyy'"
-                class="form-control" />
+              <input formControlName="journalDate" type="date" class="form-control" />
             </div>
           </div>
         </div>
@@ -51,8 +51,8 @@
           <thead>
             <tr>
               <th>Particulars/Accounting Head<sup>*</sup></th>
-              <th>Debit</th>
-              <th>Credit</th>
+              <th>Debit <sup>*</sup></th>
+              <th>Credit <sup>*</sup></th>
               <th>Balance</th>
               <th>Remarks</th>
             </tr>
@@ -60,8 +60,10 @@
           <tbody formArrayName="journalEntryList" *ngFor="let item of getjournalEntryList.controls ; let i = index;">
             <tr [formGroupName]="i">
               <td>
-                <input class="form-control" formControlName="particularsOraccountingHead"
-                  placeholder="Particulars Or Accounting Head" required>
+                <!-- <input class="form-control" formControlName="particularsOraccountingHead"
+                  placeholder="Particulars Or Accounting Head" required> -->
+                  <a href="#" class="btn btn-link btn-flat" data-toggle="modal"
+                  data-target="#ledgerSelectModal">Select</a>
                 <span class="error-msg"
                   *ngIf="item.get('particularsOraccountingHead').errors?.required && submitted">Particulars/Accounting
                   Head is required</span>
@@ -79,8 +81,8 @@
                 <input class="form-control" formControlName="remarks" placeholder="remarks">
               </td>
               <td>
-                <i class="fas fa-plus-circle" (click)="addJournalEntry()"></i>
-                <i class="fas fa-trash-alt mr-2 cursor-pointer" style="margin-top: 45px; float: right; "
+                <i class="fa fa-plus-circle" style="cursor: pointer" (click)="addJournalEntry()"></i>
+                <i class="fa fa-trash ml-2" style="color: red; cursor: pointer"
                   *ngIf="journalForm.get('journalEntryList').controls.length > 1"
                   (click)="deleteJournalEntryRow(i)"></i>
               </td>
@@ -119,7 +121,8 @@
           </div>
         </div>
         <div class="col-md-3">
-          <button type="submit" class="btn btn-secondary" disabled><i class="fa fa-plus" aria-hidden="true"></i>Group Voucher
+          <button type="submit" class="btn btn-secondary" disabled><i class="fa fa-plus" aria-hidden="true"></i>Group
+            Voucher
             Posting</button>
         </div>
       </div>

@@ -12,20 +12,19 @@ import { CustomResponse } from '@app/shared/models/custom-response.model';
 })
 export class ListJournalComponent implements OnInit {
   journalSearchForm: FormGroup;
-  journalList: JournalMaster;
+  journalList : JournalMaster[]= [];
 
   journalDate: Date = new Date();
   itemsPerPage: number = 10;
   currentPage: number = 1;
   constructor(public _fb: FormBuilder,
     private router: Router,
-    private _serviceJournal: JournalService) {
+    public journalService: JournalService) {
   }
-
-  SeriesList = [{ 'id': 1, 'name': 'Test' }, { 'id': 2, 'name': 'UnTest' }, { 'id': 3, 'name': 'Experience' }];
-
   ngOnInit() {
     this.getJournalList();
+    this.journalService.init();
+
     this.journalSearchForm = this._fb.group({
       series: [''],
       project: [''],
@@ -35,8 +34,8 @@ export class ListJournalComponent implements OnInit {
   }
 
   getJournalList() {
-    this._serviceJournal.getMasterJournal().subscribe(
-      (response) => {
+    this.journalService.getMasterJournal().subscribe(
+      (response: JournalMaster[]) => {
         this.journalList = response;
       },
       error => {

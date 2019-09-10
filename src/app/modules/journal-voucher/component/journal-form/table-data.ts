@@ -701,3 +701,145 @@ export const TableData:Array<any> = [
     'salary': 223.227
   }
 ];
+
+
+export const SeriesList:Array<any> =[
+  {
+    "ID": 278,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "SALES",
+    "AutoNumber": 378,
+    "BuiltIn": false
+  },
+  {
+    "ID": 279,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "PURCH",
+    "AutoNumber": 0,
+    "BuiltIn": false
+  },
+  {
+    "ID": 280,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "CASH_PMNT",
+    "AutoNumber": 6,
+    "BuiltIn": false
+  },
+  {
+    "ID": 281,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "BANK_PMNT",
+    "AutoNumber": 2,
+    "BuiltIn": false
+  },
+  {
+    "ID": 282,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "CASH_RCPT",
+    "AutoNumber": 44,
+    "BuiltIn": false
+  },
+  {
+    "ID": 283,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "BANK_RCPT",
+    "AutoNumber": 170,
+    "BuiltIn": false
+  },
+  {
+    "ID": 284,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "JNL",
+    "AutoNumber": 89,
+    "BuiltIn": false
+  },
+  {
+    "ID": 288,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "CNTR",
+    "AutoNumber": 2,
+    "BuiltIn": false
+  },
+  {
+    "ID": 289,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "DR_NOT",
+    "AutoNumber": 1,
+    "BuiltIn": false
+  },
+  {
+    "ID": 290,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "CR_NOT",
+    "AutoNumber": 2,
+    "BuiltIn": false
+  },
+  {
+    "ID": 301,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "SLS_RTN",
+    "AutoNumber": 0,
+    "BuiltIn": false
+  },
+  {
+    "ID": 302,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "PURCH_RTN",
+    "AutoNumber": 59,
+    "BuiltIn": false
+  },
+  {
+    "ID": 308,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "BRECON",
+    "AutoNumber": 5,
+    "BuiltIn": false
+  },
+  {
+    "ID": 315,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "STOCK_TRANS",
+    "AutoNumber": 0,
+    "BuiltIn": false
+  },
+  {
+    "ID": 317,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "DAMAGE",
+    "AutoNumber": 0,
+    "BuiltIn": false
+  },
+  {
+    "ID": 321,
+    "EngName": "Main",
+    "NepName": "Main",
+    "VoucherType": "CHEQUERCPT",
+    "AutoNumber": 1,
+    "BuiltIn": false
+  },
+  {
+    "ID": 324,
+    "EngName": "LNSeries",
+    "NepName": "LNSeries",
+    "VoucherType": "PURCH",
+    "AutoNumber": 0,
+    "BuiltIn": false
+  }
+]
+
+

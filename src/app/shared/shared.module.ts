@@ -4,21 +4,22 @@ import { NgxPaginationModule } from "ngx-pagination";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { PaginationComponent } from './component/pagination/pagination.component';
 import { LanguageSwitcherComponent } from './component/language-switcher/language-switcher.component';
-
-
+import { CommonModalComponent } from './component/common-modal/common-modal.component';
 
 @NgModule({
   declarations: [
     PaginationComponent,
-    LanguageSwitcherComponent
+    LanguageSwitcherComponent,
+    CommonModalComponent
   ],
   imports: [
     CommonModule,
-    NgxPaginationModule
+    NgxPaginationModule, 
   ],
   exports: [
     PaginationComponent,
-    LanguageSwitcherComponent
+    LanguageSwitcherComponent,
+    CommonModalComponent
   ]
 })
 export class SharedModule { }

@@ -87,3 +87,11 @@ background: #608c60;
   .botton_bar_action{
     margin-top: 20px;
   }
+
+.table > thead > tr > th {
+  min-width: 180px !important;
+  word-wrap: break-word;
+}
+.table > tbody > tr > td {
+  min-width: 180px !important;
+}

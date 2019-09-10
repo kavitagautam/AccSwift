@@ -13,6 +13,7 @@ import { JournalFormComponent } from './component/journal-form/journal-form.comp
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { TranslateModule, TranslateLoader, TranslateService } from "@ngx-translate/core";
 import { JournalService } from './services/journal.service';
+import { LedgerFilterPipe } from './services/ledger-filter.pipe';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/admin/", ".json");
@@ -22,7 +23,8 @@ export function createTranslateLoader(http: HttpClient) {
     AddJournalComponent,
     EditJournalComponent,
     ListJournalComponent,
-    JournalFormComponent
+    JournalFormComponent,
+    LedgerFilterPipe
   ],
   imports: [
     FormsModule,
