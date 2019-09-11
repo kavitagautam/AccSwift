@@ -1,26 +1,26 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import * as $ from 'jquery';
-import { Router, ActivatedRoute } from '@angular/router';
-import { JournalService } from '../../services/journal.service';
+import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
+import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
+import * as $ from "jquery";
+import { Router, ActivatedRoute } from "@angular/router";
+import { JournalService } from "../../services/journal.service";
 import { DatePipe, formatDate } from "@angular/common";
-import { LedgerList, JournalMaster } from '../../models/journal.model';
+import { LedgerList, JournalMaster } from "../../models/journal.model";
 
 @Component({
-  selector: 'app-edit-journal',
-  templateUrl: './edit-journal.component.html',
-  styleUrls: ['./edit-journal.component.css'],
+  selector: "app-edit-journal",
+  templateUrl: "./edit-journal.component.html",
+  styleUrls: ["./edit-journal.component.css"],
   providers: [DatePipe]
-
 })
 export class EditJournalComponent implements OnInit {
-  @ViewChild('ledgerSelectModal') ledgerSelectModal: ElementRef;
+  @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
 
   editJournalForm: FormGroup;
   journalDetail: JournalMaster;
   ledgerList: LedgerList[] = [];
   selectedLedgerRow: number;
   submitted: boolean;
+  ledgerListLoading: boolean;
 
   journalDate: Date = new Date();
   debitTotal: number = 0;
@@ -35,28 +35,28 @@ export class EditJournalComponent implements OnInit {
   searchByLedgerCode: string;
   searchByLedgerType: string;
 
-  constructor(public _fb: FormBuilder,
+  constructor(
+    public _fb: FormBuilder,
     private router: Router,
     public journalService: JournalService,
     private route: ActivatedRoute,
-    private datePipe: DatePipe) { }
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit() {
     this.buildJournalForm();
     this.journalService.init();
     this.route.paramMap.subscribe(params => {
-      if (params.get('id')) {
-        this.journalService.getJournalDetails(params.get('id')).subscribe(res => {
-          this.journalDetail = res;
-          this.buildJournalForm();
-          this.setJournalList();
-        })
+      if (params.get("id")) {
+        this.journalService
+          .getJournalDetails(params.get("id"))
+          .subscribe(res => {
+            this.journalDetail = res;
+            this.buildJournalForm();
+            this.setJournalList();
+          });
       }
     });
-    this.journalService.getLedgerList().subscribe(res => {
-      this.ledgerList = res;
-    });
-
   }
 
   buildJournalForm(): void {
@@ -64,7 +64,11 @@ export class EditJournalComponent implements OnInit {
       seriesID: [this.journalDetail ? this.journalDetail.SeriesID : ""],
       seriesName: [this.journalDetail ? this.journalDetail.SeriesName : ""],
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
-      journalDate: [this.journalDetail ? formatDate(this.journalDetail.JournalDate, 'yyyy-MM-dd', 'en-US') : ""],
+      journalDate: [
+        this.journalDetail
+          ? formatDate(this.journalDetail.JournalDate, "yyyy-MM-dd", "en-US")
+          : ""
+      ],
       projectName: [this.journalDetail ? this.journalDetail.ProjectName : ""],
       narration: [this.journalDetail ? this.journalDetail.Remarks : ""],
       journalEntryList: [this.addJournalEntryFormGroup()]
@@ -77,7 +81,7 @@ export class EditJournalComponent implements OnInit {
       ledgerID: [""],
       debit: ["", Validators.required],
       credit: [""],
-      balance: [{ value: '', disabled: true }],
+      balance: [{ value: "", disabled: true }],
       remarks: [""]
     });
   }
@@ -85,7 +89,8 @@ export class EditJournalComponent implements OnInit {
   setJournalList(): void {
     this.editJournalForm.setControl(
       "journalEntryList",
-      this.setJournalFormArray(this.journalDetail.Journaldetails));
+      this.setJournalFormArray(this.journalDetail.Journaldetails)
+    );
   }
 
   get getjournalEntryList(): FormArray {
@@ -101,17 +106,27 @@ export class EditJournalComponent implements OnInit {
           this._fb.group({
             particularsOraccountingHead: element.LedgerName,
             ledgerID: element.JournalID,
-            debit: [{ value: element.DebitCredit === "Debit" ? element.Amount : '', disabled: element.DebitCredit === "Credit" ? true : false }],
-            credit: [{ value: element.DebitCredit === "Credit" ? element.Amount : '', disabled: element.DebitCredit === "Debit" ? true : false }],
+            debit: [
+              {
+                value: element.DebitCredit === "Debit" ? element.Amount : "",
+                disabled: element.DebitCredit === "Credit" ? true : false
+              }
+            ],
+            credit: [
+              {
+                value: element.DebitCredit === "Credit" ? element.Amount : "",
+                disabled: element.DebitCredit === "Debit" ? true : false
+              }
+            ],
             balance: [{ value: element.Amount, disabled: true }],
             remarks: element.Remarks
           })
         );
-        if (element.DebitCredit = "Debit") {
-          this.debitTotal = + parseInt(element.Amount) || 0;
+        if ((element.DebitCredit = "Debit")) {
+          this.debitTotal = +parseInt(element.Amount) || 0;
         }
-        if (element.DebitCredit = "Credit") {
-          this.creditTotal = + parseInt(element.Amount) || 0;
+        if ((element.DebitCredit = "Credit")) {
+          this.creditTotal = +parseInt(element.Amount) || 0;
         }
       });
     } else {
@@ -121,7 +136,7 @@ export class EditJournalComponent implements OnInit {
           ledgerID: [""],
           debit: ["", Validators.required],
           credit: [""],
-          balance: [{ value: '', disabled: true }],
+          balance: [{ value: "", disabled: true }],
           remarks: [""]
         })
       );
@@ -131,30 +146,41 @@ export class EditJournalComponent implements OnInit {
 
   checkDebitValue(event: Event, index: number): void {
     let debitValue = 0;
-    const journalEntryFromArray = <FormArray>this.editJournalForm.get("journalEntryList");
-    const updatedValue = journalEntryFromArray.controls[index].get('debit').value;
+    const journalEntryFromArray = <FormArray>(
+      this.editJournalForm.get("journalEntryList")
+    );
+    const updatedValue = journalEntryFromArray.controls[index].get("debit")
+      .value;
     if (parseFloat(updatedValue)) {
-      journalEntryFromArray.controls[index].get('credit').disable();
+      journalEntryFromArray.controls[index].get("credit").disable();
     } else {
-      journalEntryFromArray.controls[index].get('credit').enable();
+      journalEntryFromArray.controls[index].get("credit").enable();
     }
     for (let j = 0; j < journalEntryFromArray.controls.length; j++) {
-      debitValue = debitValue + (parseFloat(journalEntryFromArray.controls[j].get('debit').value) || 0);
+      debitValue =
+        debitValue +
+        (parseFloat(journalEntryFromArray.controls[j].get("debit").value) || 0);
     }
     this.debitTotal = debitValue;
   }
 
   checkCreditValue(event: Event, index: number): void {
     let creditValue = 0;
-    const journalEntryFromArray = <FormArray>this.editJournalForm.get("journalEntryList");
-    const updatedValue = journalEntryFromArray.controls[index].get('credit').value;
+    const journalEntryFromArray = <FormArray>(
+      this.editJournalForm.get("journalEntryList")
+    );
+    const updatedValue = journalEntryFromArray.controls[index].get("credit")
+      .value;
     if (parseFloat(updatedValue)) {
-      journalEntryFromArray.controls[index].get('debit').disable();
+      journalEntryFromArray.controls[index].get("debit").disable();
     } else {
-      journalEntryFromArray.controls[index].get('debit').enable();
+      journalEntryFromArray.controls[index].get("debit").enable();
     }
     for (let j = 0; j < journalEntryFromArray.controls.length; j++) {
-      creditValue = creditValue + (parseFloat(journalEntryFromArray.controls[j].get('credit').value) || 0);
+      creditValue =
+        creditValue +
+        (parseFloat(journalEntryFromArray.controls[j].get("credit").value) ||
+          0);
     }
     this.creditTotal = creditValue;
   }
@@ -170,46 +196,77 @@ export class EditJournalComponent implements OnInit {
   }
 
   deleteJournalEntryRow(index: number): void {
-    // Calculation on Debit Total and Credit Total on Rows Removed 
-    const journalEntryFromArray = <FormArray>this.editJournalForm.get("journalEntryList");
-    const deletedCreditValue = journalEntryFromArray.controls[index].get('credit').value || 0;
+    // Calculation on Debit Total and Credit Total on Rows Removed
+    const journalEntryFromArray = <FormArray>(
+      this.editJournalForm.get("journalEntryList")
+    );
+    const deletedCreditValue =
+      journalEntryFromArray.controls[index].get("credit").value || 0;
     if (parseFloat(deletedCreditValue) > 0) {
       this.creditTotal = this.creditTotal - parseFloat(deletedCreditValue) || 0;
     }
-    const deletedDebitValue = journalEntryFromArray.controls[index].get('debit').value || 0;
+    const deletedDebitValue =
+      journalEntryFromArray.controls[index].get("debit").value || 0;
     if (parseFloat(deletedDebitValue) > 0) {
       this.debitTotal = this.debitTotal - parseFloat(deletedDebitValue) || 0;
     }
-    // Remove the Row 
+    // Remove the Row
     (<FormArray>this.editJournalForm.get("journalEntryList")).removeAt(index);
   }
 
   public save(): void {
     if (this.editJournalForm.valid) {
-      this.router.navigate(['/journal']);
+      this.router.navigate(["/journal"]);
     } else {
     }
   }
 
   public cancel(): void {
     this.editJournalForm.reset();
-    this.router.navigate(['/journal']);
+    this.router.navigate(["/journal"]);
   }
 
-  //ledger Select modal 
+  //ledger Select modal
   setCurrentPage(pageNumber: number): void {
     this.currentPage = pageNumber;
   }
 
   openModal(index: number): void {
     this.selectedLedgerRow = index;
+    this.searchByLedgerName = "";
+    this.searchByLedgerCode = "";
+    this.searchByLedgerType = "";
+    this.getLedgerList();
+  }
+
+  getLedgerList(): void {
+    this.ledgerListLoading = true;
+    this.journalService.getLedgerList().subscribe(
+      res => {
+        this.ledgerList = res;
+      },
+      error => {
+        this.ledgerListLoading = false;
+      },
+      () => {
+        this.ledgerListLoading = false;
+      }
+    );
   }
 
   selectedLedger(item, selectedRow): void {
-    const journalEntryFromArray = <FormArray>this.editJournalForm.get("journalEntryList");
-    journalEntryFromArray.controls[selectedRow].get('balance').setValue(item.ActualBalance);
-    journalEntryFromArray.controls[selectedRow].get('particularsOraccountingHead').setValue(item.LedgerName);
-    journalEntryFromArray.controls[selectedRow].get('ledgerID').setValue(item.LedgerID);
+    const journalEntryFromArray = <FormArray>(
+      this.editJournalForm.get("journalEntryList")
+    );
+    journalEntryFromArray.controls[selectedRow]
+      .get("balance")
+      .setValue(item.ActualBalance);
+    journalEntryFromArray.controls[selectedRow]
+      .get("particularsOraccountingHead")
+      .setValue(item.LedgerName);
+    journalEntryFromArray.controls[selectedRow]
+      .get("ledgerID")
+      .setValue(item.LedgerID);
     this.ledgerSelectModal.nativeElement.click();
   }
 }
