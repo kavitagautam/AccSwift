@@ -1,107 +1,139 @@
-<!-- <app-journal-form></app-journal-form> -->
 <div style="background: #efecec !important;">
-    <div class="container-fluid">
-        <div class="row top_bar_action">
-            <button class="btn btn-primary m-2 pull-right" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
-                Add Journal</button>
-        </div>
+  <div class="container-fluid">
+    <div class="row top_bar_action">
+      <button class="btn btn-primary m-2 pull-right" [routerLink]="['add']">
+        <i class="fa fa-plus" aria-hidden="true"></i> Add Journal
+      </button>
     </div>
+  </div>
 
-    <form [formGroup]="journalForm" novalidate>
-        <div class="contanier-fluid">
-            <div class="row mt-5 mr-2">
-                <div class="col-md-4">
-                    <div class="row clearfix">
-                        <div class="col-md-5">
-                            <label class="float-right">Series: </label>
-                        </div>
-                        <div class="col-md-7">
-                            <select class="form-control" id="contry" formControlName="series">
-                                <option *ngFor="let series of SeriesList" [value]="series.id">{{series.name}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row clearfix mt-3">
-                        <div class="col-md-5">
-                            <label class="float-right">Project: </label>
-                        </div>
-                        <div class="col-md-7">
-                            <select class="form-control" id="contry" formControlName="series">
-                                <option *ngFor="let series of SeriesList" [value]="series.id">{{series.name}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="row clearfix">
-                        <div class="col-md-5">
-                            <label class="float-right">Voucher #: </label>
-                        </div>
-                        <div class="col-md-7">
-                            <input class="form-control" formControlName="voucherNo" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="row clearfix">
-                        <div class="col-md-5">
-                            <label class="float-right">Date :</label>
-                        </div>
-                        <div class="col-md-7">
-                            <input formControlName="journalDate" type="date" [value]="journalDate | date: 'MM/dd/yyyy'"
-                                class="form-control" />
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                    </div>
-                </div>
+  <form [formGroup]="journalSearchForm" novalidate>
+    <div class="contanier-fluid">
+      <div class="row mt-5 mr-2">
+        <div class="col-md-4">
+          <div class="row clearfix">
+            <div class="col-md-5">
+              <label class="float-right">Series: </label>
             </div>
-            <div class="row ml-2">
-                <button class="btn btn-primary" >Search</button>
+            <div class="col-md-7">
+              <select
+                class="form-control"
+                id="seriesId"
+                formControlName="series"
+              >
+                <option *ngFor="let series of journalService.journalSeriesList">
+                  {{ series.EngName }}</option
+                >
+              </select>
             </div>
+          </div>
+          <div class="row clearfix mt-3">
+            <div class="col-md-5">
+              <label class="float-right">Project: </label>
+            </div>
+            <div class="col-md-7">
+              <select
+                class="form-control"
+                id="projectId"
+                formControlName="project"
+              >
+                <option *ngFor="let project of journalService.projectLists">
+                  {{ project.EngName }}</option
+                >
+              </select>
+            </div>
+          </div>
         </div>
-    </form>
-
-    <div class="container-fluid" style="margin-top:20px; background:#fff;">
-        <div class="row">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Action</th>
-                        <th>Company</th>
-                        <th>Last Journal Date</th>
-                        <th>Office</th>
-                        <th>Ext</th>
-                        <th>Start Date</th>
-                        <th>Salary</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="
-          let list of adminList
-          | paginate
-          : { itemsPerPage: itemsPerPage, currentPage: currentPage }">
-                        <!-- "[routerLink]="['edit']" -->
-                        <td> <button class="edit_button" (click)="editJournal()"><i class="far fa-edit"></i> Edit</button>
-                            <button class="delete_button"><i class="far fa-trash-alt"></i>Delete</button></td>
-                        <td>{{ list.name }}</td>
-                        <td>{{ list.position }} </td>
-                        <td>{{ list.office }}</td>
-                        <td>{{ list.ext }}</td>
-                        <td>{{list.startDate}}</td>
-                        <td>{{list.salary}}</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <td colspan="6">
-
-                        <data-table-pagination (pageChange)="setCurrentPage($event)" [totalItems]="adminList.length"
-                            [itemsPerPage]="itemsPerPage" [currentPage]="currentPage">
-                        </data-table-pagination>
-                    </td>
-                </tfoot>
-            </table>
+        <div class="col-md-4">
+          <div class="row clearfix">
+            <div class="col-md-5">
+              <label class="float-right">Voucher #: </label>
+            </div>
+            <div class="col-md-7">
+              <input class="form-control" formControlName="voucherNo" />
+            </div>
+          </div>
         </div>
+        <div class="col-md-4">
+          <div class="row clearfix">
+            <div class="col-md-5">
+              <label class="float-right">Date :</label>
+            </div>
+            <div class="col-md-7">
+              <input
+                formControlName="journalDate"
+                type="date"
+                [value]="journalDate | date: 'MM/dd/yyyy'"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="row clearfix"></div>
+        </div>
+      </div>
+      <div class="row ml-2">
+        <button class="btn btn-primary" disabled>Search</button>
+      </div>
     </div>
+  </form>
 
+  <div class="container-fluid" style="margin-top:20px; background:#fff;">
+    <div class="row">
+      <table
+        class="table table-bordered"
+        id="dataTable"
+        width="100%"
+        cellspacing="0"
+      >
+        <thead>
+          <tr>
+            <th>Voucher No</th>
+            <th>Journal Date</th>
+            <th>Series Name</th>
+            <th>Project Name</th>
+            <th>Remarks</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let list of journalList
+                | paginate
+                  : { itemsPerPage: itemsPerPage, currentPage: currentPage }
+            "
+          >
+            <td>{{ list.VoucherNo }}</td>
+            <td>{{ list.JournalDate | date: "yyyy/mm/dd" }}</td>
+            <td>{{ list.SeriesName }}</td>
+            <td>{{ list.ProjectName }}</td>
+            <td>{{ list.Remarks }}</td>
+            <td>
+              <button class="btn btn-success" (click)="editJournal(list)">
+                <i class="far fa-edit"></i> Edit
+              </button>
+              <button class="btn btn-danger ml-2" disabled>
+                <i class="far fa-trash-alt"></i>Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <td colspan="6">
+            <span *ngIf="journalListLoading"> Loading ....</span>
+            <span *ngIf="!journalListLoading && journalList.length === 0">
+              No Results
+            </span>
+            <data-table-pagination
+              (pageChange)="setCurrentPage($event)"
+              [totalItems]="journalList.length"
+              [itemsPerPage]="itemsPerPage"
+              [currentPage]="currentPage"
+            >
+            </data-table-pagination>
+          </td>
+        </tfoot>
+      </table>
+    </div>
+  </div>
 </div>

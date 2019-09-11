@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { JournalFormComponent } from './journal-form.component';
+import { CommonModalComponent } from './common-modal.component';
 
-describe('JournalFormComponent', () => {
-  let component: JournalFormComponent;
-  let fixture: ComponentFixture<JournalFormComponent>;
+describe('CommonModalComponent', () => {
+  let component: CommonModalComponent;
+  let fixture: ComponentFixture<CommonModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ JournalFormComponent ]
+      declarations: [ CommonModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(JournalFormComponent);
+    fixture = TestBed.createComponent(CommonModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

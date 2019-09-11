@@ -1,30 +1,54 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, OnInit } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable, Subscriber } from "rxjs";
+import { environment } from "@env/environment";
+import { HttpClientService } from "@app/core/services/http-client/http-client.service";
+import {
+  JournalMaster,
+  ProjectList,
+  SeriesList,
+  LedgerList
+} from "../models/journal.model";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class JournalService {
-  private _url = "http://accswift.bentrayhosting.com/journalmaster";
-  
-  constructor(private http: HttpClient) { }
+  journalSeriesList: SeriesList;
+  projectLists: ProjectList;
+  _api_URL = environment.baseAPI;
+  constructor(
+    private http: HttpClient,
+    private httpService: HttpClientService
+  ) {}
 
-  
-  
-  getMasterJournal(){
-    const headerDict = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-       }
-    
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new Headers(headerDict), 
-    };
-    console.log("Service Called ");
+  init() {
+    this.getProjectLists();
+    this.getSeriesList();
+  }
 
-    this.http.get(this._url, {headers: headerDict}).subscribe((res)=>{
-      console.log(res);
-  });
- // return this.http.get(this._url, {headers: headerDict });
+  getMasterJournal(): Observable<JournalMaster[]> {
+    return this.httpService.get(`${this._api_URL}journalmaster`);
+  }
+  getJournalDetails(id): Observable<JournalMaster> {
+    return this.httpService.get(`${this._api_URL}journalmaster/${id}`);
+  }
+  getProjectLists(): void {
+    this.httpService
+      .get(`${this._api_URL}project`)
+      .subscribe((res: ProjectList) => {
+        this.projectLists = res;
+      });
+  }
+  getSeriesList(): void {
+    this.httpService
+      .get(`${this._api_URL}series/journal`)
+      .subscribe((res: SeriesList) => {
+        this.journalSeriesList = res;
+      });
+  }
+
+  getLedgerList(): Observable<LedgerList[]> {
+    return this.httpService.get(`${this._api_URL}ledger/lov`);
   }
 }
