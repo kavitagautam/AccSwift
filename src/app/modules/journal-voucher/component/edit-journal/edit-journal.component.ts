@@ -4,6 +4,7 @@ import * as $ from 'jquery';
 import { Router, ActivatedRoute } from '@angular/router';
 import { JournalService } from '../../services/journal.service';
 import { DatePipe, formatDate } from "@angular/common";
+import { LedgerList, JournalMaster } from '../../models/journal.model';
 
 @Component({
   selector: 'app-edit-journal',
@@ -16,13 +17,10 @@ export class EditJournalComponent implements OnInit {
   @ViewChild('ledgerSelectModal') ledgerSelectModal: ElementRef;
 
   editJournalForm: FormGroup;
-  submitted: boolean;
-  journalDetail;
-  projectLists;
-  seriesList;
+  journalDetail: JournalMaster;
+  ledgerList: LedgerList[] = [];
   selectedLedgerRow: number;
-  ledgerList = [];
-
+  submitted: boolean;
 
   journalDate: Date = new Date();
   debitTotal: number = 0;
@@ -48,20 +46,20 @@ export class EditJournalComponent implements OnInit {
     this.journalService.init();
     this.route.paramMap.subscribe(params => {
       if (params.get('id')) {
-        this.journalService.getJournalDetails(params.get('id')).subscribe(c => {
-          this.journalDetail = c;
+        this.journalService.getJournalDetails(params.get('id')).subscribe(res => {
+          this.journalDetail = res;
           this.buildJournalForm();
           this.setJournalList();
         })
       }
     });
-    this.journalService.getLedgerList().subscribe(c => {
-      this.ledgerList = c;
+    this.journalService.getLedgerList().subscribe(res => {
+      this.ledgerList = res;
     });
 
   }
 
-  buildJournalForm() {
+  buildJournalForm(): void {
     this.editJournalForm = this._fb.group({
       seriesID: [this.journalDetail ? this.journalDetail.SeriesID : ""],
       seriesName: [this.journalDetail ? this.journalDetail.SeriesName : ""],
@@ -84,18 +82,18 @@ export class EditJournalComponent implements OnInit {
     });
   }
 
-  setJournalList() {
+  setJournalList(): void {
     this.editJournalForm.setControl(
       "journalEntryList",
       this.setJournalFormArray(this.journalDetail.Journaldetails));
   }
 
-  get getjournalEntryList() {
+  get getjournalEntryList(): FormArray {
     return <FormArray>this.editJournalForm.get("journalEntryList");
   }
 
   // this block of code is used to show form array data in the template.....
-  setJournalFormArray(journaldetails) {
+  setJournalFormArray(journaldetails): FormArray {
     const journalFormArray = new FormArray([]);
     if (journaldetails.length > 0) {
       journaldetails.forEach(element => {
@@ -131,37 +129,37 @@ export class EditJournalComponent implements OnInit {
     return journalFormArray;
   }
 
-  checkDebitValue(event: Event, i) {
-    var debitValue = 0;
-    const control = <FormArray>this.editJournalForm.get("journalEntryList");
-    const updatedValue = control.controls[i].get('debit').value;
+  checkDebitValue(event: Event, index: number): void {
+    let debitValue = 0;
+    const journalEntryFromArray = <FormArray>this.editJournalForm.get("journalEntryList");
+    const updatedValue = journalEntryFromArray.controls[index].get('debit').value;
     if (parseFloat(updatedValue)) {
-      control.controls[i].get('credit').disable();
+      journalEntryFromArray.controls[index].get('credit').disable();
     } else {
-      control.controls[i].get('credit').enable();
+      journalEntryFromArray.controls[index].get('credit').enable();
     }
-    for (var j = 0; j < control.controls.length; j++) {
-      debitValue = debitValue + (parseFloat(control.controls[j].get('debit').value) || 0);
+    for (let j = 0; j < journalEntryFromArray.controls.length; j++) {
+      debitValue = debitValue + (parseFloat(journalEntryFromArray.controls[j].get('debit').value) || 0);
     }
     this.debitTotal = debitValue;
   }
 
-  checkCreditValue(event: Event, i) {
-    var creditValue = 0;
-    const control = <FormArray>this.editJournalForm.get("journalEntryList");
-    const updatedValue = control.controls[i].get('credit').value;
+  checkCreditValue(event: Event, index: number): void {
+    let creditValue = 0;
+    const journalEntryFromArray = <FormArray>this.editJournalForm.get("journalEntryList");
+    const updatedValue = journalEntryFromArray.controls[index].get('credit').value;
     if (parseFloat(updatedValue)) {
-      control.controls[i].get('debit').disable();
+      journalEntryFromArray.controls[index].get('debit').disable();
     } else {
-      control.controls[i].get('debit').enable();
+      journalEntryFromArray.controls[index].get('debit').enable();
     }
-    for (var j = 0; j < control.controls.length; j++) {
-      creditValue = creditValue + (parseFloat(control.controls[j].get('credit').value) || 0);
+    for (let j = 0; j < journalEntryFromArray.controls.length; j++) {
+      creditValue = creditValue + (parseFloat(journalEntryFromArray.controls[j].get('credit').value) || 0);
     }
     this.creditTotal = creditValue;
   }
 
-  addJournalEntry() {
+  addJournalEntry(): void {
     this.submitted = true;
     if (this.editJournalForm.get("journalEntryList").invalid) return;
 
@@ -171,48 +169,47 @@ export class EditJournalComponent implements OnInit {
     this.submitted = false;
   }
 
-  deleteJournalEntryRow(i: number) {
+  deleteJournalEntryRow(index: number): void {
     // Calculation on Debit Total and Credit Total on Rows Removed 
-    const control = <FormArray>this.editJournalForm.get("journalEntryList");
-    const deletedCreditValue = control.controls[i].get('credit').value || 0;
+    const journalEntryFromArray = <FormArray>this.editJournalForm.get("journalEntryList");
+    const deletedCreditValue = journalEntryFromArray.controls[index].get('credit').value || 0;
     if (parseFloat(deletedCreditValue) > 0) {
       this.creditTotal = this.creditTotal - parseFloat(deletedCreditValue) || 0;
     }
-    const deletedDebitValue = control.controls[i].get('debit').value || 0;
+    const deletedDebitValue = journalEntryFromArray.controls[index].get('debit').value || 0;
     if (parseFloat(deletedDebitValue) > 0) {
       this.debitTotal = this.debitTotal - parseFloat(deletedDebitValue) || 0;
     }
     // Remove the Row 
-    (<FormArray>this.editJournalForm.get("journalEntryList")).removeAt(i);
+    (<FormArray>this.editJournalForm.get("journalEntryList")).removeAt(index);
   }
 
-  public save() {
+  public save(): void {
     if (this.editJournalForm.valid) {
       this.router.navigate(['/journal']);
     } else {
-      console.log("error Occured ");
     }
   }
 
-  public cancel() {
+  public cancel(): void {
     this.editJournalForm.reset();
     this.router.navigate(['/journal']);
   }
 
   //ledger Select modal 
-  setCurrentPage(pageNumber): void {
+  setCurrentPage(pageNumber: number): void {
     this.currentPage = pageNumber;
   }
 
-  openModal(i) {
-    this.selectedLedgerRow = i;
+  openModal(index: number): void {
+    this.selectedLedgerRow = index;
   }
 
-  selectedLedger(item, selectedRow) {
-    const control = <FormArray>this.editJournalForm.get("journalEntryList");
-    control.controls[selectedRow].get('balance').setValue(item.ActualBalance);
-    control.controls[selectedRow].get('particularsOraccountingHead').setValue(item.LedgerName);
-    control.controls[selectedRow].get('ledgerID').setValue(item.LedgerID);
+  selectedLedger(item, selectedRow): void {
+    const journalEntryFromArray = <FormArray>this.editJournalForm.get("journalEntryList");
+    journalEntryFromArray.controls[selectedRow].get('balance').setValue(item.ActualBalance);
+    journalEntryFromArray.controls[selectedRow].get('particularsOraccountingHead').setValue(item.LedgerName);
+    journalEntryFromArray.controls[selectedRow].get('ledgerID').setValue(item.LedgerID);
     this.ledgerSelectModal.nativeElement.click();
   }
 }

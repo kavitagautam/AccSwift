@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JournalService } from '../../services/journal.service';
 import { JournalMaster } from '../../models/journal.model';
-import { CustomResponse } from '@app/shared/models/custom-response.model';
 @Component({
   selector: 'app-list-journal',
   templateUrl: './list-journal.component.html',
@@ -11,7 +10,7 @@ import { CustomResponse } from '@app/shared/models/custom-response.model';
 })
 export class ListJournalComponent implements OnInit {
   journalSearchForm: FormGroup;
-  journalList : JournalMaster[]= [];
+  journalList: JournalMaster[] = [];
 
   journalDate: Date = new Date();
   itemsPerPage: number = 10;
@@ -32,28 +31,26 @@ export class ListJournalComponent implements OnInit {
     });
   }
 
-  getJournalList() {
-    this.journalService.getMasterJournal().subscribe(
-      (response: JournalMaster[]) => {
-        this.journalList = response;
-      },
+  getJournalList(): void {
+    this.journalService.getMasterJournal().subscribe(res => {
+      this.journalList = res;
+    },
       error => {
         console.log(error);
-      },
-    );
+      });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.journalSearchForm.valid) {
     } else {
     }
   }
 
-  setCurrentPage(pageNumber): void {
+  setCurrentPage(pageNumber: number): void {
     this.currentPage = pageNumber;
   }
 
-  public editJournal(item) {
+  public editJournal(item): void {
     this.router.navigate(['/journal/edit', item.ID]);
   }
 }

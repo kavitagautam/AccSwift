@@ -4,7 +4,7 @@ import * as $ from 'jquery';
 import { Router, ActivatedRoute } from '@angular/router';
 import { JournalService } from '../../services/journal.service';
 import { DatePipe, formatDate } from "@angular/common";
-
+import { LedgerList } from "../../models/journal.model";
 @Component({
   selector: 'app-add-journal',
   templateUrl: './add-journal.component.html',
@@ -17,8 +17,7 @@ export class AddJournalComponent implements OnInit {
   name: string;
   addJournalForm: FormGroup;
   submitted: boolean;
-  journalDetail;
-  ledgerList = [];
+  ledgerList: LedgerList[] = [];
   journalDate: Date = new Date();
 
   itemsPerPage: number = 10;
@@ -46,56 +45,55 @@ export class AddJournalComponent implements OnInit {
   ngOnInit() {
     this.journalService.init();
     this.buildAddJournalForm();
+
+    this.journalService.getLedgerList().subscribe((res) => {
+      this.ledgerList = res;
+    });
   }
 
-  buildAddJournalForm() {
+  buildAddJournalForm(): void {
     this.addJournalForm = this._fb.group({
       seriesID: [""],
-      seriesName:[""],
+      seriesName: [""],
       voucherNo: [""],
       journalDate: [formatDate(new Date(), 'yyyy-MM-dd', 'en-US')],
       projectName: [""],
       narration: [""],
       journalEntryList: this._fb.array([this.addJournalEntryFormGroup()])
     });
-
-    this.journalService.getLedgerList().subscribe(c => {
-      this.ledgerList = c;
-    });
-
   }
 
-  get getjournalEntryList() {
+  get getjournalEntryList(): FormArray {
     return <FormArray>this.addJournalForm.get("journalEntryList");
   }
 
-  checkDebitValue(event: Event, i) {
-    var debitValue = 0
-    const control = <FormArray>this.addJournalForm.get("journalEntryList");
-    const updatedValue = control.controls[i].get('debit').value;
+  checkDebitValue(event: Event, index: number): void {
+    let debitValue = 0
+    const journalEntryFormArray = <FormArray>this.addJournalForm.get("journalEntryList");
+    const updatedValue = journalEntryFormArray.controls[index].get('debit').value;
     if (parseFloat(updatedValue)) {
-      control.controls[i].get('credit').disable();
+      journalEntryFormArray.controls[index].get('credit').disable();
     } else {
-      control.controls[i].get('credit').enable();
+      journalEntryFormArray.controls[index].get('credit').enable();
     }
     // calculate the total debit
-    for (var j = 0; j < control.controls.length; j++) {
-      debitValue = debitValue + (parseFloat(control.controls[j].get('debit').value) || 0);
+    for (let j = 0; j < journalEntryFormArray.controls.length; j++) {
+      debitValue = debitValue + (parseFloat(journalEntryFormArray.controls[j].get('debit').value) || 0);
     }
     this.debitTotal = debitValue;
   }
 
-  checkCreditValue(event: Event, i) {
-    var creditValue = 0
-    const control = <FormArray>this.addJournalForm.get("journalEntryList");
-    const updatedValue = control.controls[i].get('credit').value;
+  checkCreditValue(event: Event, index: number): void {
+    let creditValue = 0
+    const journalEntryFormArray = <FormArray>this.addJournalForm.get("journalEntryList");
+    const updatedValue = journalEntryFormArray.controls[index].get('credit').value;
     if (parseFloat(updatedValue)) {
-      control.controls[i].get('debit').disable();
+      journalEntryFormArray.controls[index].get('debit').disable();
     } else {
-      control.controls[i].get('debit').enable();
+      journalEntryFormArray.controls[index].get('debit').enable();
     }
-    for (var j = 0; j < control.controls.length; j++) {
-      creditValue = creditValue + (parseFloat(control.controls[j].get('credit').value) || 0);
+    for (let j = 0; j < journalEntryFormArray.controls.length; j++) {
+      creditValue = creditValue + (parseFloat(journalEntryFormArray.controls[j].get('credit').value) || 0);
     }
     this.creditTotal = creditValue;
   }
@@ -111,7 +109,7 @@ export class AddJournalComponent implements OnInit {
     });
   }
 
-  addJournalEntry() {
+  addJournalEntry(): FormArray {
     this.submitted = true;
     if (this.addJournalForm.get("journalEntryList").invalid) return;
 
@@ -121,49 +119,48 @@ export class AddJournalComponent implements OnInit {
     this.submitted = false;
   }
 
-  deleteJournalEntryRow(i: number) {
+  deleteJournalEntryRow(index: number): void {
     // Calculation on Debit Total and Credit Total on Rows Removed 
-    const control = <FormArray>this.addJournalForm.get("journalEntryList");
-    const deletedCreditValue = control.controls[i].get('credit').value || 0;
+    const journalEntryFormArray = <FormArray>this.addJournalForm.get("journalEntryList");
+    const deletedCreditValue = journalEntryFormArray.controls[index].get('credit').value || 0;
     if (parseFloat(deletedCreditValue) > 0) {
       this.creditTotal = this.creditTotal - parseFloat(deletedCreditValue) || 0;
     }
-    const deletedDebitValue = control.controls[i].get('debit').value || 0;
+    const deletedDebitValue = journalEntryFormArray.controls[index].get('debit').value || 0;
     if (parseFloat(deletedDebitValue) > 0) {
       this.debitTotal = this.debitTotal - parseFloat(deletedDebitValue) || 0;
     }
     // Remove the Row 
-    (<FormArray>this.addJournalForm.get("journalEntryList")).removeAt(i);
+    (<FormArray>this.addJournalForm.get("journalEntryList")).removeAt(index);
   }
 
-  public save() {
+  public save(): void {
     if (this.addJournalForm.valid) {
       this.router.navigate(['/journal']);
     } else {
-      console.log("error Occured ");
     }
   }
 
-  public cancel() {
+  public cancel(): void {
     this.addJournalForm.reset();
     this.router.navigate(['/journal']);
   }
 
   //ledger Select modal 
-  setCurrentPage(pageNumber): void {
+  setCurrentPage(pageNumber: number): void {
     this.currentPage = pageNumber;
   }
 
-  selectedLedger(item, selectedRow) {
-    const control = <FormArray>this.addJournalForm.get("journalEntryList");
-    control.controls[selectedRow].get('balance').setValue(item.ActualBalance);
-    control.controls[selectedRow].get('particularsOraccountingHead').setValue(item.LedgerName);
-    control.controls[selectedRow].get('ledgerID').setValue(item.LedgerID);
+  selectedLedger(item, selectedRow: number): void {
+    const journalEntryFormArray = <FormArray>this.addJournalForm.get("journalEntryList");
+    journalEntryFormArray.controls[selectedRow].get('balance').setValue(item.ActualBalance);
+    journalEntryFormArray.controls[selectedRow].get('particularsOraccountingHead').setValue(item.LedgerName);
+    journalEntryFormArray.controls[selectedRow].get('ledgerID').setValue(item.LedgerID);
     this.ledgerSelectModal.nativeElement.click();
   }
 
-  openModal(i) {
-    this.selectedLedgerRow = i;
+  openModal(index: number): void {
+    this.selectedLedgerRow = index;
   }
 
 }

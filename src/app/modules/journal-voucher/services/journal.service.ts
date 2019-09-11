@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subscriber } from "rxjs";
 import { environment } from "@env/environment";
 import { HttpClientService } from '@app/core/services/http-client/http-client.service';
-import { JournalMaster } from '../models/journal.model';
+import { JournalMaster, ProjectList, SeriesList, LedgerList } from '../models/journal.model';
 import { CustomResponse } from "@app/shared/models/custom-response.model";
 
 
@@ -22,24 +22,24 @@ export class JournalService {
     this.getSeriesList();
   }
 
-  getMasterJournal() {
+  getMasterJournal(): Observable<JournalMaster[]> {
     return this.httpService.get(`${this._api_URL}journalmaster`);
   }
-  getJournalDetails(id) {
+  getJournalDetails(id): Observable<JournalMaster> {
     return this.httpService.get(`${this._api_URL}journalmaster/${id}`);
   }
-  getProjectLists() {
-    this.httpService.get(`${this._api_URL}project`).subscribe((c => {
-      this.projectLists = c;
-    }));
+  getProjectLists(): void {
+    this.httpService.get(`${this._api_URL}project`).subscribe((res: ProjectList) => {
+      this.projectLists = res;
+    });
   }
-  getSeriesList() {
-    this.httpService.get(`${this._api_URL}series/journal`).subscribe((c => {
-      this.journalSeriesList = c;
-    }));
+  getSeriesList(): void {
+    this.httpService.get(`${this._api_URL}series/journal`).subscribe((res: SeriesList) => {
+      this.journalSeriesList = res;
+    });
   }
 
-  getLedgerList(){
+  getLedgerList() :Observable<LedgerList[]>{
     return this.httpService.get(`${this._api_URL}ledger/lov`);
   }
 
