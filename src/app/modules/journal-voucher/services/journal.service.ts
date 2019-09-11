@@ -4,15 +4,13 @@ import { Observable, Subscriber } from "rxjs";
 import { environment } from "@env/environment";
 import { HttpClientService } from '@app/core/services/http-client/http-client.service';
 import { JournalMaster, ProjectList, SeriesList, LedgerList } from '../models/journal.model';
-import { CustomResponse } from "@app/shared/models/custom-response.model";
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class JournalService {
-  journalSeriesList;
-  projectLists;
+  journalSeriesList :SeriesList;
+  projectLists:ProjectList;
   _api_URL = environment.baseAPI;
   constructor(private http: HttpClient,
     private httpService: HttpClientService) { }
