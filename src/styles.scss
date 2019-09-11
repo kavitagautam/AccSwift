@@ -9,19 +9,48 @@ $background_color_1: #007bff;
 $background_color_2: #fff;
 
 sup {
-    color: $color_1;
+  color: $color_1;
 }
 
 .error-msg {
-    color: $color_1;
-  }
+  color: $color_1;
+}
 
-  .edit_button{
-    background: green;
-    color: #fff;
-    margin: 2px;
-  }
-  .delete_button{
-    background: red;
-    margin: 2px;
-  }
+.edit_button {
+  background: green;
+  color: #fff;
+  margin: 2px;
+}
+.delete_button {
+  background: red;
+  margin: 2px;
+}
+
+.a_link {
+  color: #007bff !important;
+  cursor: pointer;
+}
+.a_link:hover {
+  text-decoration: underline !important;
+}
+.ledger_name {
+  max-width: 115px;
+  word-break: break-word;
+  display: inline-block;
+  position: absolute;
+}
+.searchBar {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 5px;
+  background-color: #b1afaf;
+  font-size: 16px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  word-spacing: 3px;
+  margin-bottom: 10px;
+  text-decoration: none;
+}

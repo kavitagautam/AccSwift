@@ -1,61 +1,63 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
-import { TableData } from '../journal-form/table-data';
-import { JournalService } from '../../services/journal.service';
-import { JournalMaster } from '../../models/journal.model';
-import { CustomResponse } from '@app/shared/models/custom-response.model';
+import { Component, OnInit } from "@angular/core";
+import { FormGroup, FormBuilder } from "@angular/forms";
+import { Router } from "@angular/router";
+import { JournalService } from "../../services/journal.service";
+import { JournalMaster } from "../../models/journal.model";
 @Component({
-  selector: 'app-list-journal',
-  templateUrl: './list-journal.component.html',
-  styleUrls: ['./list-journal.component.css']
+  selector: "app-list-journal",
+  templateUrl: "./list-journal.component.html",
+  styleUrls: ["./list-journal.component.css"]
 })
 export class ListJournalComponent implements OnInit {
   journalSearchForm: FormGroup;
-  journalList: JournalMaster;
-
+  journalList: JournalMaster[] = [];
+  journalListLoading: boolean;
   journalDate: Date = new Date();
   itemsPerPage: number = 10;
   currentPage: number = 1;
-  constructor(public _fb: FormBuilder,
+  constructor(
+    public _fb: FormBuilder,
     private router: Router,
-    private _serviceJournal: JournalService) {
-  }
-
-  SeriesList = [{ 'id': 1, 'name': 'Test' }, { 'id': 2, 'name': 'UnTest' }, { 'id': 3, 'name': 'Experience' }];
-
+    public journalService: JournalService
+  ) {}
   ngOnInit() {
     this.getJournalList();
+    this.journalService.init();
+
     this.journalSearchForm = this._fb.group({
-      series: [''],
-      project: [''],
-      voucherNo: [''],
-      journalDate: ['']
+      series: [""],
+      project: [""],
+      voucherNo: [""],
+      journalDate: [""]
     });
   }
 
-  getJournalList() {
-    this._serviceJournal.getMasterJournal().subscribe(
-      (response) => {
-        this.journalList = response;
+  getJournalList(): void {
+    this.journalListLoading = true;
+    this.journalService.getMasterJournal().subscribe(
+      res => {
+        this.journalList = res;
       },
       error => {
-        console.log(error);
+        this.journalListLoading = false;
       },
+      () => {
+        this.journalListLoading = false;
+      }
     );
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.journalSearchForm.valid) {
     } else {
     }
   }
 
-  setCurrentPage(pageNumber): void {
+  setCurrentPage(pageNumber: number): void {
     this.currentPage = pageNumber;
   }
 
-  public editJournal(item) {
-    this.router.navigate(['/journal/edit', item.ID]);
+  public editJournal(item): void {
+    this.router.navigate(["/journal/edit", item.ID]);
   }
 }

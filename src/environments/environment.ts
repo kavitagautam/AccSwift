@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseAPI:"http://accswift.bentrayhosting.com/",
+  baseAPI: "http://accswift.bentrayhosting.com/",
   defaultImageUrl: "./assets/images/user.jpg"
 };
 
