@@ -5,6 +5,7 @@ import { JournalVoucherRoutingModule } from "./journal-voucher.routing";
 import { NgxPaginationModule } from "ngx-pagination";
 import { SharedModule } from "@shared/shared.module";
 import { HttpClient } from "@angular/common/http";
+import { GridModule } from '@progress/kendo-angular-grid';
 import { AddJournalComponent } from "./component/add-journal/add-journal.component";
 import { EditJournalComponent } from "./component/edit-journal/edit-journal.component";
 import { ListJournalComponent } from "./component/list-journal/list-journal.component";
@@ -32,6 +33,7 @@ export function createTranslateLoader(http: HttpClient) {
     ReactiveFormsModule,
     CommonModule,
     SharedModule,
+    GridModule,
     JournalVoucherRoutingModule,
     NgxPaginationModule,
     TranslateModule.forChild({

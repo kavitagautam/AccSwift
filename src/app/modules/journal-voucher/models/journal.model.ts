@@ -1,7 +1,7 @@
 export interface JournalMaster {
   ID: number;
   VoucherNo: number;
-  JournalDate: string;
+  JournalDate: Date;
   SeriesID: number;
   SeriesName: string;
   ProjectID: number;
@@ -14,9 +14,9 @@ export interface JournalMaster {
   Journaldetails: JournalDetails[];
   Remarks: string;
   CreatedBy: string;
-  CreatedDate: string;
+  CreatedDate: Date;
   ModifiedBy: string;
-  ModifiedDate: string;
+  ModifiedDate: Date;
 }
 
 export interface JournalDetails {
@@ -60,4 +60,12 @@ export interface LedgerList {
   Balance: string;
   ActualBalance: number;
   LedgerType: string;
+}
+
+export interface ColumnSetting {
+  field: string;
+  title: string;
+  format?: string;
+  filter?:string,
+  type: 'text' | 'numeric' | 'boolean' | 'date';
 }
