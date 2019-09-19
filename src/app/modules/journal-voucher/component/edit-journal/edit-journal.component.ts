@@ -1,4 +1,10 @@
-import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  ViewChild,
+  AfterViewInit
+} from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import * as $ from "jquery";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -12,8 +18,10 @@ import { LedgerList, JournalMaster } from "../../models/journal.model";
   styleUrls: ["./edit-journal.component.css"],
   providers: [DatePipe]
 })
-export class EditJournalComponent implements OnInit {
+export class EditJournalComponent implements OnInit, AfterViewInit {
   @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
+
+  private editedRowIndex: number;
 
   editJournalForm: FormGroup;
   journalDetail: JournalMaster;
@@ -58,7 +66,9 @@ export class EditJournalComponent implements OnInit {
       }
     });
   }
-
+  ngAfterViewInit() {
+    this.buildJournalForm();
+  }
   buildJournalForm(): void {
     this.editJournalForm = this._fb.group({
       seriesID: [this.journalDetail ? this.journalDetail.SeriesID : ""],
@@ -77,11 +87,11 @@ export class EditJournalComponent implements OnInit {
 
   addJournalEntryFormGroup(): FormGroup {
     return this._fb.group({
-      particularsOraccountingHead: ["", Validators.required],
+      particularsOraccountingHead: [{value:"",disabled:true}, Validators.required],
       ledgerID: [""],
-      debit: ["", Validators.required],
+      debit: [""],
       credit: [""],
-      balance: [{ value: "", disabled: true }],
+      balance: [""],
       remarks: [""]
     });
   }
@@ -104,7 +114,7 @@ export class EditJournalComponent implements OnInit {
       journaldetails.forEach(element => {
         journalFormArray.push(
           this._fb.group({
-            particularsOraccountingHead: element.LedgerName,
+            particularsOraccountingHead: [{value:element.LedgerName, disabled: true}, Validators.required],
             ledgerID: element.JournalID,
             debit: [
               {
@@ -118,7 +128,9 @@ export class EditJournalComponent implements OnInit {
                 disabled: element.DebitCredit === "Debit" ? true : false
               }
             ],
-            balance: [{ value: element.Amount, disabled: true }],
+            balance: [
+              { value: element.Amount ? element.Amount : "", disabled: true }
+            ],
             remarks: element.Remarks
           })
         );
@@ -132,11 +144,11 @@ export class EditJournalComponent implements OnInit {
     } else {
       journalFormArray.push(
         this._fb.group({
-          particularsOraccountingHead: ["", Validators.required],
+          particularsOraccountingHead: [{value:"", disabled: true}, Validators.required],
           ledgerID: [""],
           debit: ["", Validators.required],
           credit: [""],
-          balance: [{ value: "", disabled: true }],
+          balance: [{ value: "", disabled: false }],
           remarks: [""]
         })
       );
@@ -261,6 +273,7 @@ export class EditJournalComponent implements OnInit {
     journalEntryFromArray.controls[selectedRow]
       .get("balance")
       .setValue(item.ActualBalance);
+    journalEntryFromArray.controls[selectedRow].get("balance").disable();
     journalEntryFromArray.controls[selectedRow]
       .get("particularsOraccountingHead")
       .setValue(item.LedgerName);
@@ -268,5 +281,78 @@ export class EditJournalComponent implements OnInit {
       .get("ledgerID")
       .setValue(item.LedgerID);
     this.ledgerSelectModal.nativeElement.click();
+  }
+
+  // knedo uI
+  public addHandler({ sender }) {
+    this.closeEditor(sender);
+    (<FormArray>this.editJournalForm.get("journalEntryList")).push(
+      this.addJournalEntryFormGroup()
+    );
+    // sender.addRow();
+  }
+
+  public editHandler({ sender, rowIndex, dataItem }) {
+    this.closeEditor(sender);
+    const journalEntryFromArray = <FormArray>(
+      this.editJournalForm.get("journalEntryList")
+    );
+    journalEntryFromArray.controls[rowIndex]
+      .get("particularsOraccountingHead")
+      .setValue(dataItem.particularsOraccountingHead);
+    journalEntryFromArray.controls[rowIndex]
+      .get("ledgerID")
+      .setValue(dataItem.ledgerID);
+    journalEntryFromArray.controls[rowIndex]
+      .get("debit")
+      .setValue(dataItem.debit);
+    journalEntryFromArray.controls[rowIndex]
+      .get("credit")
+      .setValue(dataItem.credit);
+    journalEntryFromArray.controls[rowIndex]
+      .get("balance")
+      .setValue(dataItem.balance);
+    journalEntryFromArray.controls[rowIndex]
+      .get("remarks")
+      .setValue(dataItem.remarks);
+    this.editedRowIndex = rowIndex;
+    sender.editRow(rowIndex, this.editJournalForm.get("journalEntryList"));
+  }
+
+  public cancelHandler({ sender, rowIndex }) {
+    this.closeEditor(sender, rowIndex);
+  }
+
+  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
+    const product = formGroup.value;
+    // this.service.save(product, isNew);
+    sender.closeRow(rowIndex);
+  }
+
+  public removeHandler({ dataItem, rowIndex }): void {
+    // Calculation on Debit Total and Credit Total on Rows Removed
+    const journalEntryFromArray = <FormArray>(
+      this.editJournalForm.get("journalEntryList")
+    );
+    const deletedCreditValue =
+      journalEntryFromArray.controls[rowIndex].get("credit").value || 0;
+    if (parseFloat(deletedCreditValue) > 0) {
+      this.creditTotal = this.creditTotal - parseFloat(deletedCreditValue) || 0;
+    }
+    const deletedDebitValue =
+      journalEntryFromArray.controls[rowIndex].get("debit").value || 0;
+    if (parseFloat(deletedDebitValue) > 0) {
+      this.debitTotal = this.debitTotal - parseFloat(deletedDebitValue) || 0;
+    }
+    // Remove the Row
+    (<FormArray>this.editJournalForm.get("journalEntryList")).removeAt(
+      rowIndex
+    );
+  }
+
+  private closeEditor(grid, rowIndex = 1) {
+    grid.closeRow(rowIndex);
+    this.editedRowIndex = undefined;
+    // this.formGroup = undefined;
   }
 }
