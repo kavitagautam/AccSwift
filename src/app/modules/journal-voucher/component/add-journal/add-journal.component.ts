@@ -13,6 +13,7 @@ import { LedgerList } from "../../models/journal.model";
 })
 export class AddJournalComponent implements OnInit {
   @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
+  private editedRowIndex: number;
 
   addJournalForm: FormGroup;
   submitted: boolean;
@@ -201,4 +202,77 @@ export class AddJournalComponent implements OnInit {
       }
     );
   }
+ // knedo uI
+ public addHandler({ sender }) {
+  this.closeEditor(sender);
+  (<FormArray>this.addJournalForm.get("journalEntryList")).push(
+    this.addJournalEntryFormGroup()
+  );
+  // sender.addRow();
+}
+
+public editHandler({ sender, rowIndex, dataItem }) {
+  this.closeEditor(sender);
+  const journalEntryFromArray = <FormArray>(
+    this.addJournalForm.get("journalEntryList")
+  );
+  journalEntryFromArray.controls[rowIndex]
+    .get("particularsOraccountingHead")
+    .setValue(dataItem.particularsOraccountingHead);
+  journalEntryFromArray.controls[rowIndex]
+    .get("ledgerID")
+    .setValue(dataItem.ledgerID);
+  journalEntryFromArray.controls[rowIndex]
+    .get("debit")
+    .setValue(dataItem.debit);
+  journalEntryFromArray.controls[rowIndex]
+    .get("credit")
+    .setValue(dataItem.credit);
+  journalEntryFromArray.controls[rowIndex]
+    .get("balance")
+    .setValue(dataItem.balance);
+  journalEntryFromArray.controls[rowIndex]
+    .get("remarks")
+    .setValue(dataItem.remarks);
+  this.editedRowIndex = rowIndex;
+  sender.editRow(rowIndex, this.addJournalForm.get("journalEntryList"));
+}
+
+public cancelHandler({ sender, rowIndex }) {
+  this.closeEditor(sender, rowIndex);
+}
+
+public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
+  const product = formGroup.value;
+  // this.service.save(product, isNew);
+  sender.closeRow(rowIndex);
+}
+
+public removeHandler({ dataItem, rowIndex }): void {
+  // Calculation on Debit Total and Credit Total on Rows Removed
+  const journalEntryFromArray = <FormArray>(
+    this.addJournalForm.get("journalEntryList")
+  );
+  const deletedCreditValue =
+    journalEntryFromArray.controls[rowIndex].get("credit").value || 0;
+  if (parseFloat(deletedCreditValue) > 0) {
+    this.creditTotal = this.creditTotal - parseFloat(deletedCreditValue) || 0;
+  }
+  const deletedDebitValue =
+    journalEntryFromArray.controls[rowIndex].get("debit").value || 0;
+  if (parseFloat(deletedDebitValue) > 0) {
+    this.debitTotal = this.debitTotal - parseFloat(deletedDebitValue) || 0;
+  }
+  // Remove the Row
+  (<FormArray>this.addJournalForm.get("journalEntryList")).removeAt(
+    rowIndex
+  );
+}
+
+private closeEditor(grid, rowIndex = 1) {
+  grid.closeRow(rowIndex);
+  this.editedRowIndex = undefined;
+  // this.formGroup = undefined;
+}
+
 }
