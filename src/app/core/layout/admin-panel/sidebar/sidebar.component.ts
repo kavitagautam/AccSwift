@@ -19,12 +19,12 @@ export class SidebarComponent implements OnInit {
       iconName: "far fa-edit",
       route: "/journal"
     },
-    // {
-    //   id: 3,
-    //   displayName: "Edit",
-    //   iconName: "fas fa-users",
-    //   route: "/journal/edit"
-    // },
+    {
+      id: 3,
+      displayName: "Product",
+      iconName: "fas fa-users",
+      route: "/product"
+    },
 
     // {
     //   id: 3,

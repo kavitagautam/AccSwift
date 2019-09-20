@@ -79,57 +79,61 @@
 
   <div class="container-fluid" style="margin-top:20px; background:#fff;">
     <div class="row">
-      <kendo-grid
-        [kendoGridBinding]="journalList"
-        [filterable]="true"
-        [pageSize]="pageSize"
-        [skip]="skip"
-        [pageable]="true"
-        [height]="400"
-        (pageChange)="pageChange($event)"
-        scrollable="none"
-      >
-        <kendo-grid-column field="VoucherNo" title="Voucher No.">
-        </kendo-grid-column>
-        <kendo-grid-column
-          field="JournalDate"
-          title="Journal Date"
-          filter="date"
-          format="{0: yyyy-mm-dd}"
+      <div class="grid-wrapper">
+        <kendo-grid
+          [kendoGridBinding]="journalList"
+          [filterable]="true"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [pageable]="true"
+          [height]="400"
+          (pageChange)="pageChange($event)"
+          scrollable="none"
         >
-          <!-- <ng-template
+          <kendo-grid-column field="VoucherNo" title="Voucher No.">
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="JournalDate"
+            title="Journal Date"
+            filter="date"
+            format="{0: yyyy-mm-dd}"
+          >
+            <!-- <ng-template
             kendoGridCellTemplate
             let-isNew="isNew"
             let-dataItem="dataItem"
           >
           <a  style="color: blue;">{{dataItem.JournalDate}}</a>
           </ng-template> -->
-        </kendo-grid-column>
-        <kendo-grid-column field="ProjectName" title="Project Name">
-        </kendo-grid-column>
-        <kendo-grid-column field="SeriesName" title="Series Name">
-        </kendo-grid-column>
-        <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
-        <kendo-grid-command-column title="Action" width="220">
-          <ng-template
-            kendoGridCellTemplate
-            let-isNew="isNew"
-            let-dataItem="dataItem"
-          >
-            <button
-              kendoGridEditCommand
-              (click)="editJournal(dataItem)"
-              data-toggle="modal"
-              data-target="#viewModal"
-              [primary]="true"
+          </kendo-grid-column>
+          <kendo-grid-column field="ProjectName" title="Project Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="SeriesName" title="Series Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="Remarks" title="Remarks">
+          </kendo-grid-column>
+          <kendo-grid-command-column title="Action" width="220">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
             >
-              Edit
-            </button>
-            <button kendoGridRemoveCommand>Delete</button>
-          </ng-template>
-        </kendo-grid-command-column>
-      </kendo-grid>
+              <button
+                kendoGridEditCommand
+                (click)="editJournal(dataItem)"
+                data-toggle="modal"
+                data-target="#viewModal"
+                [primary]="true"
+              >
+                Edit
+              </button>
+              <button kendoGridRemoveCommand>Delete</button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
 
+        <div *ngIf="journalListLoading" class="k-i-loading"></div>
+      </div>
       <table
         class="table table-bordered"
         id="dataTable"
