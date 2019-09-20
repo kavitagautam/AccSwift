@@ -1,0 +1,26 @@
+<kendo-treeview
+[nodes]="data1"
+textField="text"
+kendoTreeViewExpandable
+
+kendoTreeViewHierarchyBinding
+childrenField="items"
+>
+
+<ng-template kendoTreeViewNodeTemplate let-dataItem>
+    <span [ngClass]="iconClass(dataItem)"></span>
+    {{dataItem.text}}
+</ng-template>
+
+</kendo-treeview>
+
+
+<kendo-treeview
+[nodes]="data"
+textField="text"
+kendoTreeViewExpandable
+kendoTreeViewSelectable
+kendoTreeViewHierarchyBinding
+childrenField="items"
+>
+</kendo-treeview>
