@@ -1,16 +1,17 @@
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  ViewChild,
-  AfterViewInit
-} from "@angular/core";
+import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import * as $ from "jquery";
 import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe, formatDate } from "@angular/common";
 import { LedgerList, JournalMaster } from "../../models/journal.model";
+import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
+import {
+  process,
+  State,
+  SortDescriptor,
+  orderBy
+} from "@progress/kendo-data-query";
 
 @Component({
   selector: "app-edit-journal",
@@ -18,7 +19,7 @@ import { LedgerList, JournalMaster } from "../../models/journal.model";
   styleUrls: ["./edit-journal.component.css"],
   providers: [DatePipe]
 })
-export class EditJournalComponent implements OnInit, AfterViewInit {
+export class EditJournalComponent implements OnInit {
   @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
 
   private editedRowIndex: number;
@@ -29,6 +30,7 @@ export class EditJournalComponent implements OnInit, AfterViewInit {
   selectedLedgerRow: number;
   submitted: boolean;
   ledgerListLoading: boolean;
+  rowSubmitted: boolean;
 
   journalDate: Date = new Date();
   debitTotal: number = 0;
@@ -37,6 +39,19 @@ export class EditJournalComponent implements OnInit, AfterViewInit {
   itemsPerPage: number = 10;
   currentPage: number = 1;
 
+  //kendo Grid
+  public gridView: GridDataResult;
+
+  public pageSize = 10;
+  public skip = 0;
+  //sorting kendo data
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [
+    {
+      field: "LedgerName" || "LedgerCode" || "ActualBalance" || "LedgerType",
+      dir: "asc"
+    }
+  ];
   // filtering
   isCollapsed: boolean = false;
   searchByLedgerName: string;
@@ -66,9 +81,7 @@ export class EditJournalComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  ngAfterViewInit() {
-    this.buildJournalForm();
-  }
+
   buildJournalForm(): void {
     this.editJournalForm = this._fb.group({
       seriesID: [this.journalDetail ? this.journalDetail.SeriesID : ""],
@@ -87,9 +100,9 @@ export class EditJournalComponent implements OnInit, AfterViewInit {
 
   addJournalEntryFormGroup(): FormGroup {
     return this._fb.group({
-      particularsOraccountingHead: [{value:"",disabled:true}, Validators.required],
+      particularsOraccountingHead: ["", Validators.required],
       ledgerID: [""],
-      debit: [""],
+      debit: ["", Validators.required],
       credit: [""],
       balance: [""],
       remarks: [""]
@@ -110,11 +123,14 @@ export class EditJournalComponent implements OnInit, AfterViewInit {
   // this block of code is used to show form array data in the template.....
   setJournalFormArray(journaldetails): FormArray {
     const journalFormArray = new FormArray([]);
-    if (journaldetails.length > 0) {
+    if (journaldetails && journaldetails.length > 0) {
       journaldetails.forEach(element => {
         journalFormArray.push(
           this._fb.group({
-            particularsOraccountingHead: [{value:element.LedgerName, disabled: true}, Validators.required],
+            particularsOraccountingHead: [
+              element.LedgerName,
+              Validators.required
+            ],
             ledgerID: element.JournalID,
             debit: [
               {
@@ -144,7 +160,7 @@ export class EditJournalComponent implements OnInit, AfterViewInit {
     } else {
       journalFormArray.push(
         this._fb.group({
-          particularsOraccountingHead: [{value:"", disabled: true}, Validators.required],
+          particularsOraccountingHead: ["", Validators.required],
           ledgerID: [""],
           debit: ["", Validators.required],
           credit: [""],
@@ -243,6 +259,14 @@ export class EditJournalComponent implements OnInit, AfterViewInit {
     this.currentPage = pageNumber;
   }
 
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.getLedgerList();
+  }
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+  }
+
   openModal(index: number): void {
     this.selectedLedgerRow = index;
     this.searchByLedgerName = "";
@@ -286,10 +310,15 @@ export class EditJournalComponent implements OnInit, AfterViewInit {
   // knedo uI
   public addHandler({ sender }) {
     this.closeEditor(sender);
+    this.submitted = true;
+    this.rowSubmitted = true;
+    if (this.editJournalForm.get("journalEntryList").invalid) return;
     (<FormArray>this.editJournalForm.get("journalEntryList")).push(
       this.addJournalEntryFormGroup()
     );
     // sender.addRow();
+    this.rowSubmitted = false;
+    this.submitted = false;
   }
 
   public editHandler({ sender, rowIndex, dataItem }) {

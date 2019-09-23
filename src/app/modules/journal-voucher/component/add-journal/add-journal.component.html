@@ -91,34 +91,7 @@
             <input
               #input
               class="k-textbox"
-              [formControl]="
-                getjournalEntryList.controls[rowIndex].get(
-                  'particularsOraccountingHead'
-                )
-              "
-            />
-            <a
-              href="#"
-              (click)="openModal(rowIndex)"
-              data-toggle="modal"
-              data-target="#ledgerSelectModal"
-              ><i class="fa fa-eye" aria-hidden="true"></i>
-            </a>
-            <!-- <span class="ledger_name">{{
-              dataItem.particularsOraccountingHead
-            }}</span> -->
-          </ng-template>
-
-          <ng-template
-            kendoGridEditTemplate
-            let-column="column"
-            let-formGroup="formGroup"
-            let-isNew="isNew"
-            let-rowIndex="rowIndex"
-          >
-            <input
-              #input
-              class="k-textbox"
+              [readonly]="true"
               [formControl]="
                 getjournalEntryList.controls[rowIndex].get(
                   'particularsOraccountingHead'
@@ -126,30 +99,30 @@
               "
             />
             <kendo-popup
-              [anchor]="input"
-              *ngIf="
+            [anchor]="input"
+            *ngIf="
+              getjournalEntryList.controls[rowIndex].get(
+                'particularsOraccountingHead'
+              ).invalid && rowSubmitted &&
+              !(
+                isNew &&
                 getjournalEntryList.controls[rowIndex].get(
                   'particularsOraccountingHead'
-                ).invalid &&
-                !(
-                  isNew &&
-                  getjournalEntryList.controls[rowIndex].get(
-                    'particularsOraccountingHead'
-                  ).untouched
-                )
-              "
-              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-            >
-              <span class="k-icon k-i-warning"></span>
-              Ledger name is required
-            </kendo-popup>
+                ).untouched
+              )
+            "
+            popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+          >
+            <span class="k-icon k-i-warning"></span>
+            Ledger name is required
+          </kendo-popup>
             <a
-            href="#"
-            (click)="openModal(rowIndex)"
-            data-toggle="modal"
-            data-target="#ledgerSelectModal"
-            ><i class="fa fa-eye" aria-hidden="true"></i>
-          </a>
+              href="#"
+              (click)="openModal(rowIndex)"
+              data-toggle="modal"
+              data-target="#ledgerSelectModal"
+              ><i class="fa fa-eye" aria-hidden="true"></i>
+            </a>
           </ng-template>
         </kendo-grid-column>
 
@@ -170,49 +143,15 @@
               "
               (change)="checkDebitValue(dataItem, rowIndex)"
             ></kendo-numerictextbox>
-            <!-- <kendo-popup
+            <kendo-popup
               [anchor]="ntb.element"
               *ngIf="
-            getjournalEntryList.controls[rowIndex].get('debit').invalid &&
-              !getjournalEntryList.controls[rowIndex].get('debit').untouched)
+            getjournalEntryList.controls[rowIndex].get('debit').invalid && rowSubmitted 
             "
               popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
             >
               <span class="k-icon k-i-warning"></span>
-              Debit Value is required
-            </kendo-popup> -->
-          </ng-template>
-
-          <ng-template
-            kendoGridEditTemplate
-            let-column="column"
-            let-formGroup="formGroup"
-            let-isNew="isNew"
-            let-rowIndex="rowIndex"
-          >
-            <kendo-numerictextbox
-              #ntb="popupAnchor"
-              popupAnchor
-              [formControl]="
-                getjournalEntryList.controls[rowIndex].get(column.field)
-              "
-              (change)="checkDebitValue(dataItem, rowIndex)"
-            ></kendo-numerictextbox>
-            <kendo-popup
-              [anchor]="ntb.element"
-              *ngIf="
-                getjournalEntryList.controls[rowIndex].get(column.field)
-                  .invalid &&
-                !(
-                  isNew &&
-                  getjournalEntryList.controls[rowIndex].get(column.field)
-                    .untouched
-                )
-              "
-              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-            >
-              <span class="k-icon k-i-warning"></span>
-              Debit Value is required
+              Debit Amount is required
             </kendo-popup>
           </ng-template>
         </kendo-grid-column>
@@ -234,12 +173,12 @@
               "
               (change)="checkCreditValue(dataItem, rowIndex)"
             ></kendo-numerictextbox>
-            <!-- 
+            
             <kendo-popup
               [anchor]="ntb.element"
               *ngIf="
                 getjournalEntryList.controls[rowIndex].get('credit')
-                  .invalid &&
+                  .invalid && rowSubmitted &&
                 !(
                   isNew &&
                   getjournalEntryList.controls[rowIndex].get('credit')
@@ -249,38 +188,7 @@
               popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
             >
               <span class="k-icon k-i-warning"></span>
-              Credit Value is required
-            </kendo-popup> -->
-          </ng-template>
-          <ng-template
-            kendoGridEditTemplate
-            let-column="column"
-            let-formGroup="formGroup"
-            let-isNew="isNew"
-            let-rowIndex="rowIndex"
-          >
-            <kendo-numerictextbox
-              #ntb="popupAnchor"
-              popupAnchor
-              [formControl]="
-                getjournalEntryList.controls[rowIndex].get('credit')
-              "
-            ></kendo-numerictextbox>
-            <kendo-popup
-              [anchor]="ntb.element"
-              *ngIf="
-                getjournalEntryList.controls[rowIndex].get('credit')
-                  .invalid &&
-                !(
-                  isNew &&
-                  getjournalEntryList.controls[rowIndex].get('credit')
-                    .untouched
-                )
-              "
-              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-            >
-              <span class="k-icon k-i-warning"></span>
-              Credit Value is required
+              Credit Amount is required
             </kendo-popup>
           </ng-template>
         </kendo-grid-column>
@@ -301,21 +209,6 @@
                 getjournalEntryList.controls[rowIndex].get(column.field)
               "
             ></kendo-numerictextbox>
-          </ng-template>
-          <ng-template
-            kendoGridEditTemplate
-            let-column="column"
-            let-formGroup="formGroup"
-            let-isNew="isNew"
-            let-rowIndex="rowIndex"
-          >
-            <input
-              #input
-              class="k-textbox"
-              [formControl]="
-                getjournalEntryList.controls[rowIndex].get(column.field)
-              "
-            />
           </ng-template>
         </kendo-grid-column>
 
@@ -340,9 +233,10 @@
 
         <kendo-grid-command-column title="Action" width="150">
           <ng-template kendoGridCellTemplate let-isNew="isNew">
-            <button kendoGridEditCommand [primary]="true">Edit</button>
+            <button class="k-button" kendoGridAddCommand>Add</button>
+            <!-- <button kendoGridEditCommand [primary]="true">Edit</button> -->
             <button kendoGridRemoveCommand>Remove</button>
-            <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
+            <button kendoGridSaveCommand  [primary]="true">
               {{ isNew ? "Add" : "Update" }}
             </button>
             <button kendoGridCancelCommand>
@@ -351,8 +245,18 @@
           </ng-template>
         </kendo-grid-command-column>
       </kendo-grid>
+      <table class="table table-borderless">
+        <tbody>
+        <tr>
+          <td colspan="2"></td>
+          <td colspan="1">Debit Total: {{ debitTotal }}</td>
+          <td colspan="1">Credit Total: {{ creditTotal }}</td>
+          <td colspan="1">Difference : {{ debitTotal - creditTotal }}</td>
+        </tr>
+      </tbody>
+      </table>
 
-        <table class="table table-borderless">
+        <!-- <table class="table table-borderless">
           <thead>
             <tr>
               <th>Particulars/Accounting Head<sup>*</sup></th>
@@ -459,7 +363,7 @@
               <td colspan="1">Difference : {{ debitTotal - creditTotal }}</td>
             </tr>
           </tfoot>
-        </table>
+        </table> -->
       </div>
       <div class="row mt-2 ml-2 clearfix">
         <div class="col-md-2">
@@ -532,7 +436,7 @@
       </div>
       <div class="modal-body">
         <div class="container-fluid">
-          <div class="row searchBar" (click)="isCollapsed = !isCollapsed">
+          <!-- <div class="row searchBar" (click)="isCollapsed = !isCollapsed">
             <div class="col-md-10 header-text">
               Search Ledger By
             </div>
@@ -548,8 +452,8 @@
                 aria-hidden="true"
               ></i>
             </div>
-          </div>
-          <div class="row" [hidden]="isCollapsed">
+          </div> -->
+          <!-- <div class="row" [hidden]="isCollapsed">
             <div class="col-md-3">
               <label>Ledger Name </label>
               <input
@@ -574,9 +478,44 @@
                 placeholder="Search..."
               />
             </div>
-          </div>
+          </div> -->
           <div class="row mt-2">
-            <table class="table table-boardered">
+              <div class="grid-wrapper">
+                  <kendo-grid
+                    [kendoGridBinding]="ledgerList"
+                    [filterable]="true"
+                    [pageSize]="pageSize"
+                    [skip]="skip"
+                    [sortable]="{
+                      allowUnsort: allowUnsort,
+                      mode: 'single'
+                      }"
+                    [sort]="sort"
+                    (sortChange)="sortChange($event)"
+                    [pageable]="true"
+                    [height]="400"
+                    (pageChange)="pageChange($event)"
+                    scrollable="none"
+                  >
+                    <kendo-grid-column field="LedgerName" title="Ledger Name">
+                      <ng-template  kendoGridCellTemplate let-dataItem="dataItem" let-rowIndex="rowIndex">
+                          <a
+                      class="a_link"
+                      (click)="selectedLedger(dataItem, selectedLedgerRow)"
+                      >{{ dataItem.LedgerName }}</a
+                    >
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="LedgerCode" title="Ledger Code">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="ActualBalance" title="Actual Balance">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="LedgerType" title="Ledger Type"></kendo-grid-column>
+                  </kendo-grid>
+          
+                  <div *ngIf="ledgerListLoading" class="k-i-loading"></div>
+                </div>
+            <!-- <table class="table table-boardered">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -650,7 +589,7 @@
                   </td>
                 </tr>
               </tfoot>
-            </table>
+            </table> -->
           </div>
         </div>
       </div>

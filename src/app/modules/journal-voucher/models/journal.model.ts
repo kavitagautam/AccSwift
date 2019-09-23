@@ -62,10 +62,3 @@ export interface LedgerList {
   LedgerType: string;
 }
 
-export interface ColumnSetting {
-  field: string;
-  title: string;
-  format?: string;
-  filter?:string,
-  type: 'text' | 'numeric' | 'boolean' | 'date';
-}

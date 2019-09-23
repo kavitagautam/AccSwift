@@ -5,6 +5,14 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe, formatDate } from "@angular/common";
 import { LedgerList } from "../../models/journal.model";
+import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
+import {
+  process,
+  State,
+  SortDescriptor,
+  orderBy
+} from "@progress/kendo-data-query";
+
 @Component({
   selector: "app-add-journal",
   templateUrl: "./add-journal.component.html",
@@ -17,6 +25,7 @@ export class AddJournalComponent implements OnInit {
 
   addJournalForm: FormGroup;
   submitted: boolean;
+  rowSubmitted: boolean;
   ledgerList: LedgerList[] = [];
   journalDate: Date = new Date();
   ledgerListLoading: boolean;
@@ -28,6 +37,23 @@ export class AddJournalComponent implements OnInit {
   selectedLedgerRow: number;
   differenceTotal: number = 0;
 
+  //kendo Grid
+  public gridView: GridDataResult;
+
+  public pageSize = 10;
+  public skip = 0;
+  //sorting kendo data
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [
+    {
+      field:
+        "LedgerName" ||
+        "LedgerCode" ||
+        "ActualBalance" ||
+        "LedgerType", 
+      dir: "asc"
+    }
+  ];
   // filtering
   isCollapsed: boolean = false;
   searchByLedgerName: string;
@@ -109,7 +135,7 @@ export class AddJournalComponent implements OnInit {
 
   addJournalEntryFormGroup(): FormGroup {
     return this._fb.group({
-      particularsOraccountingHead: ["", Validators.required],
+      particularsOraccountingHead: [ "", Validators.required],
       ledgerID: [""],
       debit: ["", Validators.required],
       credit: [""],
@@ -164,6 +190,16 @@ export class AddJournalComponent implements OnInit {
     this.currentPage = pageNumber;
   }
 
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.getLedgerList();
+  }
+
+
   selectedLedger(item, selectedRow: number): void {
     const journalEntryFormArray = <FormArray>(
       this.addJournalForm.get("journalEntryList")
@@ -205,9 +241,14 @@ export class AddJournalComponent implements OnInit {
  // knedo uI
  public addHandler({ sender }) {
   this.closeEditor(sender);
+  this.submitted= true;
+  this.rowSubmitted= true;
+  if (this.addJournalForm.get("journalEntryList").invalid) return;
   (<FormArray>this.addJournalForm.get("journalEntryList")).push(
     this.addJournalEntryFormGroup()
   );
+  this.rowSubmitted= false;
+  this.submitted=false;
   // sender.addRow();
 }
 

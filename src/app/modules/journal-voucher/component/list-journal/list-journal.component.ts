@@ -2,10 +2,15 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
-import { process, State } from "@progress/kendo-data-query";
+import {
+  process,
+  State,
+  SortDescriptor,
+  orderBy
+} from "@progress/kendo-data-query";
 
 import { JournalService } from "../../services/journal.service";
-import { JournalMaster, ColumnSetting } from "../../models/journal.model";
+import { JournalMaster } from "../../models/journal.model";
 @Component({
   selector: "app-list-journal",
   templateUrl: "./list-journal.component.html",
@@ -24,7 +29,19 @@ export class ListJournalComponent implements OnInit {
 
   public pageSize = 10;
   public skip = 0;
-
+  //sorting kendo data
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [
+    {
+      field:
+        "VoucherNo" ||
+        "JournalDate" ||
+        "ProjectName" ||
+        "SeriesName" ||
+        "Remarks",
+      dir: "asc"
+    }
+  ];
   constructor(
     public _fb: FormBuilder,
     private router: Router,
@@ -40,16 +57,8 @@ export class ListJournalComponent implements OnInit {
       voucherNo: [""],
       journalDate: [""]
     });
-
-    this.loadItems();
   }
 
-  loadItems(): void {
-    this.gridView = {
-      data: this.journalList.slice(this.skip, this.skip + this.pageSize),
-      total: this.journalList.length
-    };
-  }
   // Date string parse
   public currentYear = new Date().getFullYear();
   public parseAdjust = (eventDate: Date): Date => {
@@ -57,6 +66,11 @@ export class ListJournalComponent implements OnInit {
     date.setFullYear(this.currentYear);
     return date;
   };
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.getJournalList();
+  }
 
   getJournalList(): void {
     this.journalListLoading = true;
@@ -109,7 +123,6 @@ export class ListJournalComponent implements OnInit {
 
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
-    this.loadItems();
   }
 
   public editJournal(item): void {
