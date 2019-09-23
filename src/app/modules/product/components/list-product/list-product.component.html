@@ -1,26 +1,124 @@
-<kendo-treeview
-[nodes]="data1"
-textField="text"
-kendoTreeViewExpandable
+<div class="row">
+  <div class="col-md-3" style="height: 76vh; overflow: scroll;">
+    <!-- <kendo-treeview
+      [nodes]="data1"
+      textField="text"
+      kendoTreeViewExpandable
+      kendoTreeViewHierarchyBinding
+      childrenField="items"
+    >
+      <ng-template kendoTreeViewNodeTemplate let-dataItem>
+         <span [ngClass]="iconClass(dataItem)"></span>
+        {{ dataItem.text }}
+      </ng-template>
+    </kendo-treeview> -->
 
-kendoTreeViewHierarchyBinding
-childrenField="items"
->
-
-<ng-template kendoTreeViewNodeTemplate let-dataItem>
-    <span [ngClass]="iconClass(dataItem)"></span>
-    {{dataItem.text}}
-</ng-template>
-
-</kendo-treeview>
-
-
-<kendo-treeview
-[nodes]="data"
-textField="text"
-kendoTreeViewExpandable
-kendoTreeViewSelectable
-kendoTreeViewHierarchyBinding
-childrenField="items"
->
-</kendo-treeview>
+    <kendo-treeview
+      [nodes]="productTreeList"
+      textField="Title"
+      kendoTreeViewExpandable
+      kendoTreeViewSelectable
+      kendoTreeViewHierarchyBinding
+      childrenField="Child"
+    >
+    </kendo-treeview>
+  </div>
+  <div class="col-md-9">
+    <form [formGroup]="productListForm" novalidate>
+      <div class="contanier-fluid">
+        <div class="row mt-5 mr-2">
+          <div class="col-md-4">
+            <div class="row clearfix">
+              <div class="col-md-5">
+                <label class="float-right">Group Name:</label>
+              </div>
+              <div class="col-md-7">
+                <input class="form-control" formControlName="groupName" />
+              </div>
+            </div>
+            <div class="row clearfix mt-3">
+              <div class="col-md-5">
+                <label class="float-right">Parent Group: </label>
+              </div>
+              <div class="col-md-7">
+                <input class="form-control" formControlName="parentGroup" />
+              </div>
+            </div>
+            <div class="row clearfix mt-3">
+              <div class="col-md-5">
+                <label class="float-right">Remarks:</label>
+              </div>
+              <div class="col-md-7">
+                <input class="form-control" formControlName="remarks" />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="row clearfix">
+              <div class="col-md-5">
+                <label class="float-right">Product Code:</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  formControlName="productCode"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="row clearfix mt-3">
+              <div class="col-md-5">
+                <label class="float-right">Product Name:</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  formControlName="productName"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="row clearfix mt-3">
+              <div class="col-md-5">
+                <label class="float-right">Product Group:</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  formControlName="productGroup"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="row clearfix">
+              <div class="col-md-5">
+                <label class="float-right">Department/Location:</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  formControlName="departmentandLocation"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="row clearfix">
+              <div class="col-md-5">
+                <label class="float-right">Base Unit:</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  formControlName="baseUnit"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
