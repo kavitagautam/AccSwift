@@ -12,7 +12,9 @@
         {{ dataItem.text }}
       </ng-template>
     </kendo-treeview> -->
-
+    <!-- <div class="example-config">
+            Expanded keys: {{expandedKeys.join(",")}}
+    </div> -->
     <kendo-treeview
       [nodes]="productTreeList"
       textField="Title"
@@ -20,6 +22,8 @@
       kendoTreeViewSelectable
       kendoTreeViewHierarchyBinding
       childrenField="Child"
+      kendoTreeViewExpandable
+      [(expandedKeys)]="expandedKeys"
     >
     </kendo-treeview>
   </div>

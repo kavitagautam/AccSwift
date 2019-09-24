@@ -5,7 +5,11 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe, formatDate } from "@angular/common";
 import { LedgerList, JournalMaster } from "../../models/journal.model";
-import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
+import {
+  GridDataResult,
+  PageChangeEvent,
+  SelectAllCheckboxState
+} from "@progress/kendo-angular-grid";
 import {
   process,
   State,
@@ -40,11 +44,8 @@ export class EditJournalComponent implements OnInit {
   currentPage: number = 1;
 
   //kendo Grid
-  public gridView: GridDataResult;
-
   public pageSize = 10;
   public skip = 0;
-  //sorting kendo data
   public allowUnsort = true;
   public sort: SortDescriptor[] = [
     {
@@ -52,6 +53,9 @@ export class EditJournalComponent implements OnInit {
       dir: "asc"
     }
   ];
+  public mySelection: number[] = []; //Kendo row Select
+  public selectAllState: SelectAllCheckboxState = "unchecked"; //Kendo row Select
+
   // filtering
   isCollapsed: boolean = false;
   searchByLedgerName: string;
@@ -268,6 +272,7 @@ export class EditJournalComponent implements OnInit {
   }
 
   openModal(index: number): void {
+    this.mySelection=[]
     this.selectedLedgerRow = index;
     this.searchByLedgerName = "";
     this.searchByLedgerCode = "";
@@ -290,6 +295,36 @@ export class EditJournalComponent implements OnInit {
     );
   }
 
+  //Selected the Ledger row
+  public onSelectedKeysChange(e, selectedRow) {
+    const len = this.mySelection.length;
+    if (len === 0) {
+      this.selectAllState = "unchecked";
+    } else if (len > 0 && len < this.ledgerList.length) {
+      this.selectAllState = "indeterminate";
+    } else {
+      this.selectAllState = "checked";
+    }
+    const selected = this.ledgerList.filter(function(obj) {
+      return obj.LedgerID == e[0];
+    });
+
+    const journalEntryFormArray = <FormArray>(
+      this.editJournalForm.get("journalEntryList")
+    );
+    journalEntryFormArray.controls[selectedRow]
+      .get("balance")
+      .setValue(selected[0].ActualBalance);
+    journalEntryFormArray.controls[selectedRow]
+      .get("particularsOraccountingHead")
+      .setValue(selected[0].LedgerName);
+    journalEntryFormArray.controls[selectedRow]
+      .get("ledgerID")
+      .setValue(selected[0].LedgerID);
+    this.ledgerSelectModal.nativeElement.click();
+  }
+  
+  // select ledger column
   selectedLedger(item, selectedRow): void {
     const journalEntryFromArray = <FormArray>(
       this.editJournalForm.get("journalEntryList")

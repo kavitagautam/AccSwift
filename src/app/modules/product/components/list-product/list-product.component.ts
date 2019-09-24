@@ -12,6 +12,9 @@ const is = (fileName: string, ext: string) =>
 export class ListProductComponent implements OnInit {
   productListForm: FormGroup;
   productTreeList: any;
+  //for Expanding the tree view
+  public expandedKeys: any[] = ['0','0_0','0_0_1'];
+
   constructor(
     public _fb: FormBuilder,
     private productService: ProductService
@@ -29,7 +32,6 @@ export class ListProductComponent implements OnInit {
       baseUnit: ["", Validators.required]
     });
     this.productService.getProductTree().subscribe(res => {
-      console.log(" Response :" + JSON.stringify(res));
       this.productTreeList = res;
     });
   }
