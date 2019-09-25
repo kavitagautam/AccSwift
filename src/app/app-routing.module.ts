@@ -32,6 +32,10 @@ const routes: Routes = [
       {
         path: "company",
         loadChildren: "@modules/company/company.module#CompanyModule"
+      },
+      {
+        path: "ledger",
+        loadChildren: "@modules/ledger/ledger.module#LedgerModule"
       }
     ]
   }

@@ -25,13 +25,12 @@ export class SidebarComponent implements OnInit {
       iconName: "fas fa-users",
       route: "/product"
     },
-
-    // {
-    //   id: 3,
-    //   displayName: "add",
-    //   iconName: "fas fa-fw fa-chart-area",
-    //   route: "/journal/add"
-    // },
+    {
+      id: 3,
+      displayName: "Ledger",
+      iconName: "fas fa-fw fa-chart-area",
+      route: "/ledger"
+    },
     {
       id: 4,
       displayName: "Company",

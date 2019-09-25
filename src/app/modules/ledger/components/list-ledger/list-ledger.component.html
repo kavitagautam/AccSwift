@@ -1,0 +1,229 @@
+<div class="row">
+  <div class="col-md-3" style="height: 76vh; overflow: scroll;">
+    <div class="tab-slider--nav">
+      <ul class="tab-slider--tabs">
+        <li
+          class="tab-slider--trigger"
+          [class.active]="viewMode == 'tab1'"
+          rel="tab1"
+          (click)="viewMode = 'tab1'"
+        >
+          Tree View
+        </li>
+        <li
+          class="tab-slider--trigger"
+          [class.active]="viewMode == 'tab2'"
+          rel="tab2"
+          (click)="viewMode = 'tab2'"
+        >
+          List View
+        </li>
+      </ul>
+    </div>
+    <div class="tab-slider--container" [ngSwitch]="viewMode">
+      <div id="tab1" class="tab-slider--body" *ngSwitchCase="'tab1'">
+        <h2>First tab</h2>
+        <div class="treeview-wrapper">
+          <kendo-treeview
+            [nodes]="ledgerTreeList"
+            textField="Title"
+            kendoTreeViewExpandable
+            kendoTreeViewSelectable
+            kendoTreeViewHierarchyBinding
+            childrenField="Child"
+            kendoTreeViewExpandable
+            [(expandedKeys)]="expandedKeys"
+          >
+          </kendo-treeview>
+          <div *ngIf="treeViewLoading" class="k-i-loading"></div>
+        </div>
+      </div>
+
+      <div id="tab2" class="tab-slider--body" *ngSwitchCase="'tab2'">
+        <h2>Second Tab</h2>
+      </div>
+    </div>
+
+    <!-- <kendo-treeview
+      [nodes]="data1"
+      textField="text"
+      kendoTreeViewExpandable
+      kendoTreeViewHierarchyBinding
+      childrenField="items"
+    >
+      <ng-template kendoTreeViewNodeTemplate let-dataItem>
+         <span [ngClass]="iconClass(dataItem)"></span>
+        {{ dataItem.text }}
+      </ng-template>
+    </kendo-treeview> -->
+    <!-- <div class="example-config">
+            Expanded keys: {{expandedKeys.join(",")}}
+    </div> -->
+  </div>
+  <div class="col-md-9">
+    <div class="row">
+      <div class="col-md-12 mr-2">
+        <kendo-tabstrip>
+          <kendo-tabstrip-tab [title]="'Account Group'" [selected]="true">
+            <ng-template kendoTabContent>
+              <div class="col-md-6 mt-3">
+                <form [formGroup]="accountGroupForm" novalidate>
+                  <div class="row clearfix">
+                    <div class="col-md-5">
+                      <label class="float-right">Group Code:</label>
+                    </div>
+                    <div class="col-md-7">
+                      <input class="form-control" formControlName="groupCode" />
+                    </div>
+                  </div>
+                  <div class="row clearfix mt-3">
+                    <div class="col-md-5">
+                      <label class="float-right">Group Name: </label>
+                    </div>
+                    <div class="col-md-7">
+                      <input class="form-control" formControlName="groupName" />
+                    </div>
+                  </div>
+                  <div class="row clearfix mt-3">
+                    <div class="col-md-5">
+                      <label class="float-right">Parent Group:</label>
+                    </div>
+                    <div class="col-md-7">
+                      <input
+                        class="form-control"
+                        formControlName="parentGroup"
+                      />
+                    </div>
+                  </div>
+                  <div class="row clearfix mt-3">
+                    <div class="col-md-5">
+                      <label class="float-right">Description:</label>
+                    </div>
+                    <div class="col-md-7">
+                      <textarea
+                        class="form-control"
+                        formControlName="description"
+                      ></textarea>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-6"></div>
+            </ng-template>
+          </kendo-tabstrip-tab>
+          <kendo-tabstrip-tab [title]="'Account Ledger'">
+            <ng-template kendoTabContent>
+              <div class="row">
+                <div class="col-md-12">
+                  <kendo-tabstrip>
+                    <kendo-tabstrip-tab
+                      [title]="'Ledger Details'"
+                      [selected]="true"
+                    >
+                      <ng-template kendoTabContent>
+                        <div class="col-md-6 mt-3">
+                          <form [formGroup]="accoutLedgerForm" novalidate>
+                            <div class="row clearfix">
+                              <div class="col-md-5">
+                                <label class="float-right">Ledger Code:</label>
+                              </div>
+                              <div class="col-md-7">
+                                <input
+                                  class="form-control"
+                                  formControlName="ledgerCode"
+                                />
+                              </div>
+                            </div>
+                            <div class="row clearfix mt-3">
+                              <div class="col-md-5">
+                                <label class="float-right">Ledger Name: </label>
+                              </div>
+                              <div class="col-md-7">
+                                <input
+                                  class="form-control"
+                                  formControlName="ledgerName"
+                                />
+                              </div>
+                            </div>
+                            <div class="row clearfix mt-3">
+                              <div class="col-md-5">
+                                <label class="float-right">Account Head:</label>
+                              </div>
+                              <div class="col-md-7">
+                                <input
+                                  class="form-control"
+                                  formControlName="accountHead"
+                                />
+                              </div>
+                            </div>
+
+                            <fieldset class="mt-3">
+                              <legend >Opening Balance:</legend>
+                              <div class="row clearfix mt-3">
+                                <div class="col-md-5">
+                                  <label class="float-right">Currency:</label>
+                                </div>
+                                <div class="col-md-7">
+                                  <input
+                                    class="form-control"
+                                    formControlName="currency"
+                                  />
+                                </div>
+                              </div>
+                              <div class="row clearfix mt-3">
+                                <div class="col-md-5">
+                                  <label class="float-right">Date:</label>
+                                </div>
+                                <div class="col-md-7">
+                                  <input
+                                    class="form-control"
+                                    formControlName="date"
+                                  />
+                                </div>
+                              </div>
+                              <div class="row clearfix mt-3">
+                                <div class="col-md-5">
+                                  <label class="float-right"
+                                    >Opt. Balance:</label
+                                  >
+                                </div>
+                                <div class="col-md-7">
+                                  <input
+                                    class="form-control"
+                                    formControlName="openingBalance"
+                                  />
+                                </div>
+                              </div>
+                              <div class="row clearfix mt-3">
+                                <div class="col-md-5">
+                                  <label class="float-right"
+                                    >Prev. Year Balance:</label
+                                  >
+                                </div>
+                                <div class="col-md-7">
+                                  <input
+                                    class="form-control"
+                                    formControlName="previousYearBalance"
+                                  />
+                                </div>
+                              </div>
+                            </fieldset>
+                          </form>
+                        </div>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                    <kendo-tabstrip-tab [title]="'More Details'">
+                      <ng-template kendoTabContent>
+                        <p>More Details</p>
+                      </ng-template>
+                    </kendo-tabstrip-tab>
+                  </kendo-tabstrip>
+                </div>
+              </div>
+            </ng-template>
+          </kendo-tabstrip-tab>
+        </kendo-tabstrip>
+      </div>
+    </div>
+  </div>
+</div>
