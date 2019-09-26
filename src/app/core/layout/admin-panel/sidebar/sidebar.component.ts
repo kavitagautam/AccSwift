@@ -21,58 +21,57 @@ export class SidebarComponent implements OnInit {
     },
     // {
     //   id: 3,
-    //   displayName: "Edit",
+    //   displayName: "Product",
     //   iconName: "fas fa-users",
-    //   route: "/journal/edit"
+    //   route: "/product"
     // },
-
-    // {
-    //   id: 3,
-    //   displayName: "add",
-    //   iconName: "fas fa-fw fa-chart-area",
-    //   route: "/journal/add"
-    // },
+    {
+      id: 3,
+      displayName: "Ledger",
+      iconName: "fas fa-fw fa-chart-area",
+      route: "/ledger"
+    },
     {
       id: 4,
       displayName: "Company",
       iconName: "fas fa-wrench",
       route: "/company"
     },
-    {
-      id: 7,
-      displayName: "Reports",
-      iconName: "fa fa-file-archive-o",
-    },
-    {
-      id: 8,
-      displayName: "Settings",
-      iconName: "fa fa-cogs",
-    },
-    {
-      id: 6,
-      displayName: "Transaction",
-      iconName: "fa fa-usd",
-      children: [
-        {
-          displayName: "Cash",
-          iconName: "fa fa-money",
-            },
-        {
-          displayName: "Bank",
-          iconName: "speaker_notes",
-        },
-        {
-          displayName: "Sales",
-          iconName: "feedback",
-          route: "feedback"
-        },
-        {
-          displayName: "Purchase",
-          iconName: "feedback",
-          route: "feedback"
-        }
-      ]
-    }
+    // {
+    //   id: 7,
+    //   displayName: "Reports",
+    //   iconName: "fa fa-file-archive-o",
+    // },
+    // {
+    //   id: 8,
+    //   displayName: "Settings",
+    //   iconName: "fa fa-cogs",
+    // },
+    // {
+    //   id: 6,
+    //   displayName: "Transaction",
+    //   iconName: "fa fa-usd",
+    //   children: [
+    //     {
+    //       displayName: "Cash",
+    //       iconName: "fa fa-money",
+    //         },
+    //     {
+    //       displayName: "Bank",
+    //       iconName: "speaker_notes",
+    //     },
+    //     {
+    //       displayName: "Sales",
+    //       iconName: "feedback",
+    //       route: "feedback"
+    //     },
+    //     {
+    //       displayName: "Purchase",
+    //       iconName: "feedback",
+    //       route: "feedback"
+    //     }
+    //   ]
+    // }
     
   ];
   constructor() {}

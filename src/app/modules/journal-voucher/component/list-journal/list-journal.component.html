@@ -79,61 +79,61 @@
 
   <div class="container-fluid" style="margin-top:20px; background:#fff;">
     <div class="row">
-      <table
-        class="table table-bordered"
-        id="dataTable"
-        width="100%"
-        cellspacing="0"
-      >
-        <thead>
-          <tr>
-            <th>Voucher No</th>
-            <th>Journal Date</th>
-            <th>Series Name</th>
-            <th>Project Name</th>
-            <th>Remarks</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="
-              let list of journalList
-                | paginate
-                  : { itemsPerPage: itemsPerPage, currentPage: currentPage }
-            "
+      <div class="grid-wrapper">
+        <kendo-grid
+          [kendoGridBinding]="journalList"
+          [filterable]="true"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          [pageable]="true"
+          [height]="400"
+          (pageChange)="pageChange($event)"
+          scrollable="none"
+        >
+          <kendo-grid-column field="VoucherNo" title="Voucher No.">
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="JournalDate"
+            title="Journal Date"
+            filter="date"
+            [filterable]="false"
+            format="{0: yyyy-mm-dd}"
           >
-            <td>{{ list.VoucherNo }}</td>
-            <td>{{ list.JournalDate | date: "yyyy/mm/dd" }}</td>
-            <td>{{ list.SeriesName }}</td>
-            <td>{{ list.ProjectName }}</td>
-            <td>{{ list.Remarks }}</td>
-            <td>
-              <button class="btn btn-success" (click)="editJournal(list)">
-                <i class="far fa-edit"></i> Edit
-              </button>
-              <button class="btn btn-danger ml-2" disabled>
-                <i class="far fa-trash-alt"></i>Delete
-              </button>
-            </td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <td colspan="6">
-            <span *ngIf="journalListLoading"> Loading ....</span>
-            <span *ngIf="!journalListLoading && journalList.length === 0">
-              No Results
-            </span>
-            <data-table-pagination
-              (pageChange)="setCurrentPage($event)"
-              [totalItems]="journalList.length"
-              [itemsPerPage]="itemsPerPage"
-              [currentPage]="currentPage"
+          </kendo-grid-column>
+          <kendo-grid-column field="ProjectName" title="Project Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="SeriesName" title="Series Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="Remarks" title="Remarks">
+          </kendo-grid-column>
+          <kendo-grid-command-column title="Action" width="220">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
             >
-            </data-table-pagination>
-          </td>
-        </tfoot>
-      </table>
+              <button
+                kendoGridEditCommand
+                (click)="editJournal(dataItem)"
+                data-toggle="modal"
+                data-target="#viewModal"
+                [primary]="true"
+              >
+                Edit
+              </button>
+              <button kendoGridRemoveCommand>Delete</button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
+
+        <div *ngIf="journalListLoading" class="k-i-loading"></div>
+      </div>
     </div>
   </div>
 </div>

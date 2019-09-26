@@ -5,6 +5,11 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe, formatDate } from "@angular/common";
 import { LedgerList, JournalMaster } from "../../models/journal.model";
+import {
+  PageChangeEvent,
+  SelectAllCheckboxState
+} from "@progress/kendo-angular-grid";
+import { SortDescriptor } from "@progress/kendo-data-query";
 
 @Component({
   selector: "app-edit-journal",
@@ -14,26 +19,32 @@ import { LedgerList, JournalMaster } from "../../models/journal.model";
 })
 export class EditJournalComponent implements OnInit {
   @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
-
+  private editedRowIndex: number;
   editJournalForm: FormGroup;
   journalDetail: JournalMaster;
   ledgerList: LedgerList[] = [];
   selectedLedgerRow: number;
   submitted: boolean;
   ledgerListLoading: boolean;
+  rowSubmitted: boolean;
 
   journalDate: Date = new Date();
   debitTotal: number = 0;
   creditTotal: number = 0;
   differenceTotal: number = 0;
-  itemsPerPage: number = 10;
-  currentPage: number = 1;
 
-  // filtering
-  isCollapsed: boolean = false;
-  searchByLedgerName: string;
-  searchByLedgerCode: string;
-  searchByLedgerType: string;
+  //kendo Grid
+  public pageSize = 10;
+  public skip = 0;
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [
+    {
+      field: "LedgerName" || "LedgerCode" || "ActualBalance" || "LedgerType",
+      dir: "asc"
+    }
+  ];
+  public mySelection: number[] = []; //Kendo row Select
+  public selectAllState: SelectAllCheckboxState = "unchecked"; //Kendo row Select
 
   constructor(
     public _fb: FormBuilder,
@@ -81,7 +92,7 @@ export class EditJournalComponent implements OnInit {
       ledgerID: [""],
       debit: ["", Validators.required],
       credit: [""],
-      balance: [{ value: "", disabled: true }],
+      balance: [""],
       remarks: [""]
     });
   }
@@ -100,11 +111,14 @@ export class EditJournalComponent implements OnInit {
   // this block of code is used to show form array data in the template.....
   setJournalFormArray(journaldetails): FormArray {
     const journalFormArray = new FormArray([]);
-    if (journaldetails.length > 0) {
+    if (journaldetails && journaldetails.length > 0) {
       journaldetails.forEach(element => {
         journalFormArray.push(
           this._fb.group({
-            particularsOraccountingHead: element.LedgerName,
+            particularsOraccountingHead: [
+              element.LedgerName,
+              Validators.required
+            ],
             ledgerID: element.JournalID,
             debit: [
               {
@@ -118,7 +132,9 @@ export class EditJournalComponent implements OnInit {
                 disabled: element.DebitCredit === "Debit" ? true : false
               }
             ],
-            balance: [{ value: element.Amount, disabled: true }],
+            balance: [
+              { value: element.Amount ? element.Amount : "", disabled: true }
+            ],
             remarks: element.Remarks
           })
         );
@@ -136,7 +152,7 @@ export class EditJournalComponent implements OnInit {
           ledgerID: [""],
           debit: ["", Validators.required],
           credit: [""],
-          balance: [{ value: "", disabled: true }],
+          balance: [{ value: "", disabled: false }],
           remarks: [""]
         })
       );
@@ -227,15 +243,18 @@ export class EditJournalComponent implements OnInit {
   }
 
   //ledger Select modal
-  setCurrentPage(pageNumber: number): void {
-    this.currentPage = pageNumber;
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    this.getLedgerList();
+  }
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
   }
 
   openModal(index: number): void {
+    this.mySelection = [];
     this.selectedLedgerRow = index;
-    this.searchByLedgerName = "";
-    this.searchByLedgerCode = "";
-    this.searchByLedgerType = "";
     this.getLedgerList();
   }
 
@@ -254,6 +273,36 @@ export class EditJournalComponent implements OnInit {
     );
   }
 
+  //Selected the Ledger row
+  public onSelectedKeysChange(e, selectedRow) {
+    const len = this.mySelection.length;
+    if (len === 0) {
+      this.selectAllState = "unchecked";
+    } else if (len > 0 && len < this.ledgerList.length) {
+      this.selectAllState = "indeterminate";
+    } else {
+      this.selectAllState = "checked";
+    }
+    const selected = this.ledgerList.filter(function(obj) {
+      return obj.LedgerID == e[0];
+    });
+
+    const journalEntryFormArray = <FormArray>(
+      this.editJournalForm.get("journalEntryList")
+    );
+    journalEntryFormArray.controls[selectedRow]
+      .get("balance")
+      .setValue(selected[0].ActualBalance);
+    journalEntryFormArray.controls[selectedRow]
+      .get("particularsOraccountingHead")
+      .setValue(selected[0].LedgerName);
+    journalEntryFormArray.controls[selectedRow]
+      .get("ledgerID")
+      .setValue(selected[0].LedgerID);
+    this.ledgerSelectModal.nativeElement.click();
+  }
+
+  // select ledger column
   selectedLedger(item, selectedRow): void {
     const journalEntryFromArray = <FormArray>(
       this.editJournalForm.get("journalEntryList")
@@ -261,6 +310,7 @@ export class EditJournalComponent implements OnInit {
     journalEntryFromArray.controls[selectedRow]
       .get("balance")
       .setValue(item.ActualBalance);
+    journalEntryFromArray.controls[selectedRow].get("balance").disable();
     journalEntryFromArray.controls[selectedRow]
       .get("particularsOraccountingHead")
       .setValue(item.LedgerName);
@@ -268,5 +318,81 @@ export class EditJournalComponent implements OnInit {
       .get("ledgerID")
       .setValue(item.LedgerID);
     this.ledgerSelectModal.nativeElement.click();
+  }
+
+  // knedo uI
+  public addHandler({ sender }) {
+    this.closeEditor(sender);
+    this.submitted = true;
+    this.rowSubmitted = true;
+    if (this.editJournalForm.get("journalEntryList").invalid) return;
+    (<FormArray>this.editJournalForm.get("journalEntryList")).push(
+      this.addJournalEntryFormGroup()
+    );
+    this.rowSubmitted = false;
+    this.submitted = false;
+  }
+
+  public editHandler({ sender, rowIndex, dataItem }) {
+    this.closeEditor(sender);
+    const journalEntryFromArray = <FormArray>(
+      this.editJournalForm.get("journalEntryList")
+    );
+    journalEntryFromArray.controls[rowIndex]
+      .get("particularsOraccountingHead")
+      .setValue(dataItem.particularsOraccountingHead);
+    journalEntryFromArray.controls[rowIndex]
+      .get("ledgerID")
+      .setValue(dataItem.ledgerID);
+    journalEntryFromArray.controls[rowIndex]
+      .get("debit")
+      .setValue(dataItem.debit);
+    journalEntryFromArray.controls[rowIndex]
+      .get("credit")
+      .setValue(dataItem.credit);
+    journalEntryFromArray.controls[rowIndex]
+      .get("balance")
+      .setValue(dataItem.balance);
+    journalEntryFromArray.controls[rowIndex]
+      .get("remarks")
+      .setValue(dataItem.remarks);
+    this.editedRowIndex = rowIndex;
+    sender.editRow(rowIndex, this.editJournalForm.get("journalEntryList"));
+  }
+
+  public cancelHandler({ sender, rowIndex }) {
+    this.closeEditor(sender, rowIndex);
+  }
+
+  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
+    //Save code
+    sender.closeRow(rowIndex);
+  }
+
+  public removeHandler({ dataItem, rowIndex }): void {
+    // Calculation on Debit Total and Credit Total on Rows Removed
+    const journalEntryFromArray = <FormArray>(
+      this.editJournalForm.get("journalEntryList")
+    );
+    const deletedCreditValue =
+      journalEntryFromArray.controls[rowIndex].get("credit").value || 0;
+    if (parseFloat(deletedCreditValue) > 0) {
+      this.creditTotal = this.creditTotal - parseFloat(deletedCreditValue) || 0;
+    }
+    const deletedDebitValue =
+      journalEntryFromArray.controls[rowIndex].get("debit").value || 0;
+    if (parseFloat(deletedDebitValue) > 0) {
+      this.debitTotal = this.debitTotal - parseFloat(deletedDebitValue) || 0;
+    }
+    // Remove the Row
+    (<FormArray>this.editJournalForm.get("journalEntryList")).removeAt(
+      rowIndex
+    );
+  }
+
+  private closeEditor(grid, rowIndex = 1) {
+    grid.closeRow(rowIndex);
+    this.editedRowIndex = undefined;
+    // this.formGroup = undefined;
   }
 }

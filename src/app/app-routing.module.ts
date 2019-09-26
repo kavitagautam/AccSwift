@@ -26,8 +26,16 @@ const routes: Routes = [
           "@modules/journal-voucher/journal-voucher.module#JournalVoucherModule"
       },
       {
+        path: "product",
+        loadChildren: "@modules/product/product.module#ProductModule"
+      },
+      {
         path: "company",
         loadChildren: "@modules/company/company.module#CompanyModule"
+      },
+      {
+        path: "ledger",
+        loadChildren: "@modules/ledger/ledger.module#LedgerModule"
       }
     ]
   }

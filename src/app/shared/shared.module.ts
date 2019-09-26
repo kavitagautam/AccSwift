@@ -5,12 +5,14 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { PaginationComponent } from './component/pagination/pagination.component';
 import { LanguageSwitcherComponent } from './component/language-switcher/language-switcher.component';
 import { CommonModalComponent } from './component/common-modal/common-modal.component';
+import { PopupAnchorDirective } from './directives/popup-anchor/popup.anchor-target.directive';
 
 @NgModule({
   declarations: [
     PaginationComponent,
     LanguageSwitcherComponent,
-    CommonModalComponent
+    CommonModalComponent,
+    PopupAnchorDirective
   ],
   imports: [
     CommonModule,
@@ -19,7 +21,8 @@ import { CommonModalComponent } from './component/common-modal/common-modal.comp
   exports: [
     PaginationComponent,
     LanguageSwitcherComponent,
-    CommonModalComponent
+    CommonModalComponent,
+    PopupAnchorDirective
   ]
 })
 export class SharedModule { }
