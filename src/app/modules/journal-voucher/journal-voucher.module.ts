@@ -34,7 +34,6 @@ export function createTranslateLoader(http: HttpClient) {
     LedgerFilterPipe
   ],
   imports: [
-    
     FormsModule,
     ReactiveFormsModule,
     CommonModule,

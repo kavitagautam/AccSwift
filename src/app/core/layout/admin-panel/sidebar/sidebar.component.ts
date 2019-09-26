@@ -19,12 +19,12 @@ export class SidebarComponent implements OnInit {
       iconName: "far fa-edit",
       route: "/journal"
     },
-    {
-      id: 3,
-      displayName: "Product",
-      iconName: "fas fa-users",
-      route: "/product"
-    },
+    // {
+    //   id: 3,
+    //   displayName: "Product",
+    //   iconName: "fas fa-users",
+    //   route: "/product"
+    // },
     {
       id: 3,
       displayName: "Ledger",
@@ -37,41 +37,41 @@ export class SidebarComponent implements OnInit {
       iconName: "fas fa-wrench",
       route: "/company"
     },
-    {
-      id: 7,
-      displayName: "Reports",
-      iconName: "fa fa-file-archive-o",
-    },
-    {
-      id: 8,
-      displayName: "Settings",
-      iconName: "fa fa-cogs",
-    },
-    {
-      id: 6,
-      displayName: "Transaction",
-      iconName: "fa fa-usd",
-      children: [
-        {
-          displayName: "Cash",
-          iconName: "fa fa-money",
-            },
-        {
-          displayName: "Bank",
-          iconName: "speaker_notes",
-        },
-        {
-          displayName: "Sales",
-          iconName: "feedback",
-          route: "feedback"
-        },
-        {
-          displayName: "Purchase",
-          iconName: "feedback",
-          route: "feedback"
-        }
-      ]
-    }
+    // {
+    //   id: 7,
+    //   displayName: "Reports",
+    //   iconName: "fa fa-file-archive-o",
+    // },
+    // {
+    //   id: 8,
+    //   displayName: "Settings",
+    //   iconName: "fa fa-cogs",
+    // },
+    // {
+    //   id: 6,
+    //   displayName: "Transaction",
+    //   iconName: "fa fa-usd",
+    //   children: [
+    //     {
+    //       displayName: "Cash",
+    //       iconName: "fa fa-money",
+    //         },
+    //     {
+    //       displayName: "Bank",
+    //       iconName: "speaker_notes",
+    //     },
+    //     {
+    //       displayName: "Sales",
+    //       iconName: "feedback",
+    //       route: "feedback"
+    //     },
+    //     {
+    //       displayName: "Purchase",
+    //       iconName: "feedback",
+    //       route: "feedback"
+    //     }
+    //   ]
+    // }
     
   ];
   constructor() {}

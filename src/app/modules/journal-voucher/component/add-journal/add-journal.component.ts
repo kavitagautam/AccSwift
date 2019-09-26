@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import * as $ from "jquery";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe, formatDate } from "@angular/common";
 import { LedgerList } from "../../models/journal.model";
@@ -12,10 +12,7 @@ import {
   SelectAllCheckboxState
 } from "@progress/kendo-angular-grid";
 import {
-  process,
-  State,
-  SortDescriptor,
-  orderBy
+  SortDescriptor
 } from "@progress/kendo-data-query";
 
 @Component({
@@ -35,14 +32,11 @@ export class AddJournalComponent implements OnInit {
   ledgerList: LedgerList[] = [];
   journalDate: Date = new Date();
   ledgerListLoading: boolean;
-
-  itemsPerPage: number = 10;
-  currentPage: number = 1;
+ 
   debitTotal: number = 0;
   creditTotal: number = 0;
   selectedLedgerRow: number;
   differenceTotal: number = 0;
-  
 
   //kendo Grid
   public gridView: GridDataResult;
@@ -58,12 +52,6 @@ export class AddJournalComponent implements OnInit {
   public mySelection: number[] = []; //Kendo row Select
   public selectAllState: SelectAllCheckboxState = "unchecked"; //Kendo row Select
   
-  // filtering Table Grid 
-  isCollapsed: boolean = false;
-  searchByLedgerName: string;
-  searchByLedgerCode: string;
-  searchByLedgerType: string;
-
   config = {
     backdrop: true,
     ignoreBackdropClick: true
@@ -189,10 +177,6 @@ export class AddJournalComponent implements OnInit {
     this.router.navigate(["/journal"]);
   }
 
-  //ledger Select modal
-  setCurrentPage(pageNumber: number): void {
-    this.currentPage = pageNumber;
-  }
 
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
@@ -252,9 +236,6 @@ export class AddJournalComponent implements OnInit {
   openModal(index: number): void {
     this.mySelection=[]
     this.selectedLedgerRow = index;
-    this.searchByLedgerName = "";
-    this.searchByLedgerCode = "";
-    this.searchByLedgerType = "";
     this.getLedgerList();
   }
 
@@ -272,6 +253,7 @@ export class AddJournalComponent implements OnInit {
       }
     );
   }
+
   // knedo uI
   public addHandler({ sender }) {
     this.closeEditor(sender);
@@ -283,7 +265,6 @@ export class AddJournalComponent implements OnInit {
     );
     this.rowSubmitted = false;
     this.submitted = false;
-    // sender.addRow();
   }
 
   public editHandler({ sender, rowIndex, dataItem }) {
@@ -317,14 +298,9 @@ export class AddJournalComponent implements OnInit {
     this.closeEditor(sender, rowIndex);
   }
 
-  public isRowSelected({ sender, rowIndex, dataItem }): void {
-    console.log("dataItem " + JSON.stringify(dataItem));
-    //return dataItem.checked;
-  }
 
   public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
-    const product = formGroup.value;
-    // this.service.save(product, isNew);
+    //Save Code
     sender.closeRow(rowIndex);
   }
 
@@ -350,6 +326,5 @@ export class AddJournalComponent implements OnInit {
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
-    // this.formGroup = undefined;
   }
 }

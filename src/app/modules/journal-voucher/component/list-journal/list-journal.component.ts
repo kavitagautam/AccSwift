@@ -21,9 +21,6 @@ export class ListJournalComponent implements OnInit {
   journalList: JournalMaster[] = [];
   journalListLoading: boolean;
   journalDate: Date = new Date();
-  itemsPerPage: number = 10;
-  currentPage: number = 1;
-
   //kendo Grid
   public gridView: GridDataResult;
 
@@ -116,11 +113,7 @@ export class ListJournalComponent implements OnInit {
     } else {
     }
   }
-
-  setCurrentPage(pageNumber: number): void {
-    this.currentPage = pageNumber;
-  }
-
+  
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
   }

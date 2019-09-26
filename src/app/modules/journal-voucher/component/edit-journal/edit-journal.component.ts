@@ -6,16 +6,10 @@ import { JournalService } from "../../services/journal.service";
 import { DatePipe, formatDate } from "@angular/common";
 import { LedgerList, JournalMaster } from "../../models/journal.model";
 import {
-  GridDataResult,
   PageChangeEvent,
   SelectAllCheckboxState
 } from "@progress/kendo-angular-grid";
-import {
-  process,
-  State,
-  SortDescriptor,
-  orderBy
-} from "@progress/kendo-data-query";
+import { SortDescriptor } from "@progress/kendo-data-query";
 
 @Component({
   selector: "app-edit-journal",
@@ -25,9 +19,7 @@ import {
 })
 export class EditJournalComponent implements OnInit {
   @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
-
   private editedRowIndex: number;
-
   editJournalForm: FormGroup;
   journalDetail: JournalMaster;
   ledgerList: LedgerList[] = [];
@@ -40,8 +32,6 @@ export class EditJournalComponent implements OnInit {
   debitTotal: number = 0;
   creditTotal: number = 0;
   differenceTotal: number = 0;
-  itemsPerPage: number = 10;
-  currentPage: number = 1;
 
   //kendo Grid
   public pageSize = 10;
@@ -55,12 +45,6 @@ export class EditJournalComponent implements OnInit {
   ];
   public mySelection: number[] = []; //Kendo row Select
   public selectAllState: SelectAllCheckboxState = "unchecked"; //Kendo row Select
-
-  // filtering
-  isCollapsed: boolean = false;
-  searchByLedgerName: string;
-  searchByLedgerCode: string;
-  searchByLedgerType: string;
 
   constructor(
     public _fb: FormBuilder,
@@ -259,9 +243,6 @@ export class EditJournalComponent implements OnInit {
   }
 
   //ledger Select modal
-  setCurrentPage(pageNumber: number): void {
-    this.currentPage = pageNumber;
-  }
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
@@ -272,11 +253,8 @@ export class EditJournalComponent implements OnInit {
   }
 
   openModal(index: number): void {
-    this.mySelection=[]
+    this.mySelection = [];
     this.selectedLedgerRow = index;
-    this.searchByLedgerName = "";
-    this.searchByLedgerCode = "";
-    this.searchByLedgerType = "";
     this.getLedgerList();
   }
 
@@ -323,7 +301,7 @@ export class EditJournalComponent implements OnInit {
       .setValue(selected[0].LedgerID);
     this.ledgerSelectModal.nativeElement.click();
   }
-  
+
   // select ledger column
   selectedLedger(item, selectedRow): void {
     const journalEntryFromArray = <FormArray>(
@@ -351,7 +329,6 @@ export class EditJournalComponent implements OnInit {
     (<FormArray>this.editJournalForm.get("journalEntryList")).push(
       this.addJournalEntryFormGroup()
     );
-    // sender.addRow();
     this.rowSubmitted = false;
     this.submitted = false;
   }
@@ -388,8 +365,7 @@ export class EditJournalComponent implements OnInit {
   }
 
   public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
-    const product = formGroup.value;
-    // this.service.save(product, isNew);
+    //Save code
     sender.closeRow(rowIndex);
   }
 

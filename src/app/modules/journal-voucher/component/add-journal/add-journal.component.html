@@ -237,7 +237,6 @@
           <kendo-grid-command-column title="Action" width="150">
             <ng-template kendoGridCellTemplate let-isNew="isNew">
               <button class="k-button" kendoGridAddCommand>Add</button>
-              <!-- <button kendoGridEditCommand [primary]="true">Edit</button> -->
               <button kendoGridRemoveCommand>Remove</button>
               <button kendoGridSaveCommand [primary]="true">
                 {{ isNew ? "Add" : "Update" }}
@@ -258,115 +257,6 @@
             </tr>
           </tbody>
         </table>
-
-        <!-- <table class="table table-borderless">
-          <thead>
-            <tr>
-              <th>Particulars/Accounting Head<sup>*</sup></th>
-              <th>Debit <sup>*</sup></th>
-              <th>Credit <sup>*</sup></th>
-              <th>Balance</th>
-              <th>Remarks</th>
-            </tr>
-          </thead>
-          <tbody
-            formArrayName="journalEntryList"
-            *ngFor="let item of getjournalEntryList.controls; let i = index"
-          >
-            <tr [formGroupName]="i">
-              <td>
-                <a
-                  href="#"
-                  class="btn btn-link btn-flat"
-                  (click)="openModal(i)"
-                  data-toggle="modal"
-                  data-target="#ledgerSelectModal"
-                  >Select</a
-                >
-                <span class="ledger_name">{{
-                  item.value.particularsOraccountingHead
-                }}</span>
-                <span
-                  class="error-msg"
-                  *ngIf="
-                    item.get('particularsOraccountingHead').errors?.required &&
-                    submitted
-                  "
-                  style="position: relative;
-                                    display: inline-block;"
-                  >Select the Ledger</span
-                >
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  type="number"
-                  formControlName="debit"
-                  placeholder="Debit"
-                  (change)="checkDebitValue($event, i)"
-                />
-                <span
-                  class="error-msg"
-                  *ngIf="item.get('debit').errors?.required && submitted"
-                >
-                  Amount is Required</span
-                >
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  type="number"
-                  formControlName="credit"
-                  placeholder="credit"
-                  (change)="checkCreditValue($event, i)"
-                />
-                <span
-                  class="error-msg"
-                  *ngIf="item.get('credit').errors?.required && submitted"
-                >
-                  Amount is Required</span
-                >
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  formControlName="balance"
-                  placeholder="balance"
-                />
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  formControlName="remarks"
-                  placeholder="remarks"
-                />
-              </td>
-              <td>
-                <i
-                  class="fa fa-plus-circle"
-                  style="cursor: pointer"
-                  (click)="addJournalEntry()"
-                ></i>
-                <i
-                  class="fa fa-trash ml-2"
-                  style="color: red; cursor: pointer"
-                  *ngIf="
-                    addJournalForm.get('journalEntryList').controls.length > 1
-                  "
-                  (click)="deleteJournalEntryRow(i)"
-                ></i>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="2"></td>
-              <td colspan="1">Debit Total: {{ debitTotal }}</td>
-              <td colspan="1">Credit Total: {{ creditTotal }}</td>
-              <td colspan="1">Difference : {{ debitTotal - creditTotal }}</td>
-            </tr>
-          </tfoot>
-        </table> -->
       </div>
       <div class="row mt-2 ml-2 clearfix">
         <div class="col-md-2">
@@ -439,49 +329,6 @@
       </div>
       <div class="modal-body">
         <div class="container-fluid">
-          <!-- <div class="row searchBar" (click)="isCollapsed = !isCollapsed">
-            <div class="col-md-10 header-text">
-              Search Ledger By
-            </div>
-            <div class="col-md-2">
-              <i
-                *ngIf="!isCollapsed"
-                class="fa fa-minus pull-right"
-                aria-hidden="true"
-              ></i>
-              <i
-                *ngIf="isCollapsed"
-                class="fa fa-plus pull-right"
-                aria-hidden="true"
-              ></i>
-            </div>
-          </div> -->
-          <!-- <div class="row" [hidden]="isCollapsed">
-            <div class="col-md-3">
-              <label>Ledger Name </label>
-              <input
-                class="form-control"
-                [(ngModel)]="searchByLedgerName"
-                placeholder="Search..."
-              />
-            </div>
-            <div class="col-md-3">
-              <label>Ledger Code</label>
-              <input
-                class="form-control"
-                [(ngModel)]="searchByLedgerCode"
-                placeholder="Search..."
-              />
-            </div>
-            <div class="col-md-3">
-              <label>Ledger Type</label>
-              <input
-                class="form-control"
-                [(ngModel)]="searchByLedgerType"
-                placeholder="Search..."
-              />
-            </div>
-          </div> -->
           <div class="row mt-2">
             <div class="grid-wrapper">
               <kendo-grid
@@ -546,81 +393,6 @@
 
               <div *ngIf="ledgerListLoading" class="k-i-loading"></div>
             </div>
-            <!-- <table class="table table-boardered">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Code</th>
-                  <th>Balance</th>
-                  <th>Actual Balance</th>
-                  <th>Ledger Type</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  *ngFor="
-                    let list of ledgerList
-                      | ledgerFilter
-                        : searchByLedgerName
-                        : searchByLedgerCode
-                        : searchByLedgerType
-                      | paginate
-                        : {
-                            itemsPerPage: itemsPerPage,
-                            currentPage: currentPage
-                          }
-                  "
-                >
-                  <td>
-                    <a
-                      class="a_link"
-                      (click)="selectedLedger(list, selectedLedgerRow)"
-                      >{{ list.LedgerName }}</a
-                    >
-                  </td>
-                  <td>{{ list.LedgerCode }}</td>
-                  <td>{{ list.Balance }}</td>
-                  <td>{{ list.ActualBalance }}</td>
-                  <td>{{ list.LedgerType }}</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="5">
-                    <span *ngIf="ledgerListLoading"> Loading ....</span>
-                    <span
-                      *ngIf="
-                        !ledgerListLoading &&
-                        (
-                          ledgerList
-                          | ledgerFilter
-                            : searchByLedgerName
-                            : searchByLedgerCode
-                            : searchByLedgerType
-                        )?.length === 0
-                      "
-                    >
-                      No Results
-                    </span>
-                    <data-table-pagination
-                      (pageChange)="setCurrentPage($event)"
-                      [totalItems]="
-                        (
-                          ledgerList
-                          | ledgerFilter
-                            : searchByLedgerName
-                            : searchByLedgerCode
-                            : searchByLedgerType
-                        )?.length
-                      "
-                      [itemsPerPage]="itemsPerPage"
-                      [currentPage]="currentPage"
-                    >
-                    </data-table-pagination>
-                  </td>
-                </tr>
-              </tfoot>
-            </table> -->
           </div>
         </div>
       </div>
