@@ -13,9 +13,11 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
 import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
 import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import { SharedModule } from '@app/shared/shared.module';
+import { AccountGroupComponent } from './components/account-group/account-group.component';
+import { AccountLedgerComponent } from './components/account-ledger/account-ledger.component';
 
 @NgModule({
-  declarations: [ListLedgerComponent, EditLedgerComponent, AddLedgerComponent],
+  declarations: [ListLedgerComponent, EditLedgerComponent, AddLedgerComponent, AccountGroupComponent, AccountLedgerComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,

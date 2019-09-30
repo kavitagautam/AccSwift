@@ -1,0 +1,404 @@
+<div class="row">
+  <div class="col-md-12">
+    <kendo-tabstrip>
+      <kendo-tabstrip-tab [title]="'Ledger Details'" [selected]="true">
+        <ng-template kendoTabContent>
+          <div class="col-md-6 mt-3">
+            <form [formGroup]="accoutLedgerForm" novalidate>
+              <div class="row clearfix">
+                <div class="col-md-5">
+                  <label class="float-right">Ledger Code:</label>
+                </div>
+                <div class="col-md-7">
+                  <input class="form-control" formControlName="ledgerCode" />
+                </div>
+              </div>
+              <div class="row clearfix mt-3">
+                <div class="col-md-5">
+                  <label class="float-right">Ledger Name:<sup>*</sup> </label>
+                </div>
+                <div class="col-md-7">
+                  <input class="form-control" formControlName="ledgerName" />
+                </div>
+              </div>
+              <div class="row clearfix mt-3">
+                <div class="col-md-5">
+                  <label class="float-right">Account Head:<sup>*</sup></label>
+                </div>
+                <div class="col-md-7">
+                  <input class="form-control" formControlName="accountHead" />
+                </div>
+              </div>
+
+              <fieldset class="mt-3">
+                <legend>Opening Balance:</legend>
+                <div class="row clearfix mt-3">
+                  <div class="col-md-5">
+                    <label class="float-right">Currency:<sup>*</sup></label>
+                  </div>
+                  <div class="col-md-7">
+                    <input class="form-control" formControlName="currency" />
+                  </div>
+                </div>
+                <div class="row clearfix mt-3">
+                  <div class="col-md-5">
+                    <label class="float-right">Date:</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input
+                      class="form-control"
+                      formControlName="date"
+                      [value]="date | date: 'MM/dd/yyyy'"
+                    />
+                  </div>
+                </div>
+                <div class="row clearfix mt-3">
+                  <div class="col-md-5">
+                    <label class="float-right">Opt. Balance:<sup>*</sup></label>
+                  </div>
+                  <div class="col-md-7">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="openModal()"
+                      data-toggle="modal"
+                      data-target="#openingBalanceModal"
+                    >
+                      Opening Balance
+                    </button>
+                  </div>
+                </div>
+                <div class="row clearfix mt-3">
+                  <div class="col-md-5">
+                    <label class="float-right">Prev. Year Balance:</label>
+                  </div>
+                  <div class="col-md-7">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="openModal()"
+                      data-toggle="modal"
+                      data-target="#previousYearBalanceModal"
+                    >
+                      Previous Year Balance
+                    </button>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+            <div class="row m-2">
+              <button
+                class="btn btn-primary"
+                disabled
+                (click)="saveAccountLedger()"
+              >
+                Save
+              </button>
+              <button
+                class="btn btn-secondary ml-2"
+                (click)="cancelAccountLedger()"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </kendo-tabstrip-tab>
+      <kendo-tabstrip-tab [title]="'More Details'">
+        <ng-template kendoTabContent>
+          <p>More Details</p>
+        </ng-template>
+      </kendo-tabstrip-tab>
+    </kendo-tabstrip>
+  </div>
+</div>
+
+<!--Modal PopUp Opening Balance Modal-->
+<div
+  class="modal fade bd-example-modal"
+  #openingBalanceModal
+  id="openingBalanceModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Opening Balance</h5>
+        <button
+          class="close"
+          type="button"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row mt-2">
+            <kendo-grid
+              [data]="getOpeningBalanceList.value"
+              (edit)="editHandler($event)"
+              (cancel)="cancelHandler($event)"
+              (save)="saveHandler($event)"
+              (remove)="removeHandler($event)"
+              (add)="addHandler($event)"
+              [height]="250"
+            >
+              <ng-template kendoGridToolbarTemplate>
+                <button kendoGridAddCommand>Add new</button>
+              </ng-template>
+
+              <kendo-grid-column field="accountClass" title="Account Class">
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
+                >
+                  <input
+                    #input
+                    class="k-textbox"
+                    [formControl]="
+                      getOpeningBalanceList.controls[rowIndex].get(
+                        'accountClass'
+                      )
+                    "
+                  />
+                  <kendo-popup
+                    [anchor]="input"
+                    *ngIf="
+                      getOpeningBalanceList.controls[rowIndex].get(
+                        'accountClass'
+                      ).invalid &&
+                      rowSubmitted &&
+                      !(
+                        isNew &&
+                        getOpeningBalanceList.controls[rowIndex].get(
+                          'accountClass'
+                        ).untouched
+                      )
+                    "
+                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                  >
+                    <span class="k-icon k-i-warning"></span>
+                    Account Class is required
+                  </kendo-popup>
+                </ng-template>
+              </kendo-grid-column>
+
+              <kendo-grid-column field="openingBalance" title="Opening Balance">
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
+                >
+                  <kendo-numerictextbox
+                    #ntb="popupAnchor"
+                    popupAnchor
+                    [formControl]="
+                      getOpeningBalanceList.controls[rowIndex].get(column.field)
+                    "
+                  ></kendo-numerictextbox>
+                </ng-template>
+              </kendo-grid-column>
+
+              <kendo-grid-column field="balanceType" title="Balance Type">
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
+                >
+                  <kendo-numerictextbox
+                    #ntb="popupAnchor"
+                    popupAnchor
+                    [formControl]="
+                      getOpeningBalanceList.controls[rowIndex].get(
+                        'balanceType'
+                      )
+                    "
+                  ></kendo-numerictextbox>
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-command-column title="Action">
+                <ng-template kendoGridCellTemplate let-isNew="isNew">
+                  <button class="k-button" kendoGridAddCommand>Add</button>
+                  <!-- <button kendoGridEditCommand [primary]="true">Edit</button> -->
+                  <button kendoGridRemoveCommand>Remove</button>
+                  <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
+                    {{ isNew ? "Add" : "Update" }}
+                  </button>
+                  <button kendoGridCancelCommand>
+                    {{ isNew ? "Discard changes" : "Cancel" }}
+                  </button>
+                </ng-template>
+              </kendo-grid-command-column>
+            </kendo-grid>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal PopUp Previous Year Balance-->
+<div
+  class="modal fade bd-example-modal"
+  #previousYearBalanceModal
+  id="previousYearBalanceModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Previous Year Balance
+        </h5>
+        <button
+          class="close"
+          type="button"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row mt-2">
+            <kendo-grid
+              [data]="getPreviousYearBalanceList.value"
+              (edit)="editHandler($event)"
+              (cancel)="cancelHandler($event)"
+              (save)="saveHandler($event)"
+              (remove)="removeHandler($event)"
+              (add)="addHandler($event)"
+              [height]="250"
+            >
+              <ng-template kendoGridToolbarTemplate>
+                <button kendoGridAddCommand>Add new</button>
+              </ng-template>
+
+              <kendo-grid-column field="accountClass" title="Account Class">
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
+                >
+                  <input
+                    #input
+                    class="k-textbox"
+                    [formControl]="
+                      getOpeningBalanceList.controls[rowIndex].get(
+                        'accountClass'
+                      )
+                    "
+                  />
+                  <kendo-popup
+                    [anchor]="input"
+                    *ngIf="
+                      getPreviousYearBalanceList.controls[rowIndex].get(
+                        'accountClass'
+                      ).invalid &&
+                      rowSubmitted &&
+                      !(
+                        isNew &&
+                        getPreviousYearBalanceList.controls[rowIndex].get(
+                          'accountClass'
+                        ).untouched
+                      )
+                    "
+                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                  >
+                    <span class="k-icon k-i-warning"></span>
+                    Account Class is required
+                  </kendo-popup>
+                </ng-template>
+              </kendo-grid-column>
+
+              <kendo-grid-column field="openingBalance" title="Opening Balance">
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
+                >
+                  <kendo-numerictextbox
+                    #ntb="popupAnchor"
+                    popupAnchor
+                    [formControl]="
+                      getOpeningBalanceList.controls[rowIndex].get(column.field)
+                    "
+                  ></kendo-numerictextbox>
+                </ng-template>
+              </kendo-grid-column>
+
+              <kendo-grid-column field="balanceType" title="Balance Type">
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
+                >
+                  <kendo-numerictextbox
+                    #ntb="popupAnchor"
+                    popupAnchor
+                    [formControl]="
+                      getOpeningBalanceList.controls[rowIndex].get(
+                        'balanceType'
+                      )
+                    "
+                  ></kendo-numerictextbox>
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-command-column title="Action">
+                <ng-template kendoGridCellTemplate let-isNew="isNew">
+                  <button class="k-button" kendoGridAddCommand>Add</button>
+                  <!-- <button kendoGridEditCommand [primary]="true">Edit</button> -->
+                  <button kendoGridRemoveCommand>Remove</button>
+                  <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
+                    {{ isNew ? "Add" : "Update" }}
+                  </button>
+                  <button kendoGridCancelCommand>
+                    {{ isNew ? "Discard changes" : "Cancel" }}
+                  </button>
+                </ng-template>
+              </kendo-grid-command-column>
+            </kendo-grid>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

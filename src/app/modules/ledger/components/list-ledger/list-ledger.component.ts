@@ -1,4 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Output,
+  EventEmitter
+} from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
@@ -9,18 +16,18 @@ import { Router } from "@angular/router";
   styleUrls: ["./list-ledger.component.scss"]
 })
 export class ListLedgerComponent implements OnInit {
-  @ViewChild("openingBalanceModal") openingBalanceModal: ElementRef;
-  @ViewChild("previousYearBalanceModal") previousYearBalanceModal: ElementRef;
-  private editedRowIndex: number;
-  accountGroupForm: FormGroup;
-  accoutLedgerForm: FormGroup;
+  @Output("selectedItem") selectedItem = new EventEmitter();
+  selectedGroupTab: boolean;
+  selectedLedgerTab: boolean;
   ledgerTreeList: any;
-  treeViewLoading: boolean;
-  rowSubmitted: boolean;
-  submitted: boolean;
+  ledgerTreeNode: any;
+  ledgerListView: any;
 
-  //for Expanding the tree view
-  public expandedKeys: any[] = ["0", "0_0"];
+  treeViewLoading: boolean;
+  listViewLoading: boolean;
+
+  //Expanding the tree view
+  public expandedKeys: any[] = ["Assets", "Current Assets", "Banks"];
   constructor(
     public _fb: FormBuilder,
     private ledgerService: LedgerService,
@@ -28,30 +35,17 @@ export class ListLedgerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.accountGroupForm = this._fb.group({
-      groupCode: [""],
-      groupName: [""],
-      parentGroup: [""],
-      description: [""]
-    });
+    this.selectedGroupTab = true;
+    this.loadLedgerTreeView();
+    this.ledgerService.init();
+  }
 
-    this.accoutLedgerForm = this._fb.group({
-      ledgerCode: [""],
-      ledgerName: ["", Validators.required],
-      accountHead: [""],
-      remarks: [""],
-      currency: ["", Validators.required],
-      date: [""],
-      openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
-      previousYearBalanceList: this._fb.array([
-        this.addPreviousYearBalanceFormGroup()
-      ])
-    });
+  loadLedgerTreeView(): void {
     this.treeViewLoading = true;
-    this.ledgerService.getLedgerTree().subscribe(
+    this.ledgerService.getLedgerTreeView().subscribe(
       res => {
-        this.ledgerTreeList = res;
-
+        this.ledgerTreeNode = res.Node;
+        this.ledgerTreeList = res.Tree;
         this.treeViewLoading = false;
       },
       error => {
@@ -61,93 +55,47 @@ export class ListLedgerComponent implements OnInit {
         this.treeViewLoading = false;
       }
     );
-    this.ledgerService.init();
   }
 
-  addOpeningBalanceFormGroup(): FormGroup {
-    return this._fb.group({
-      accountClass: [""],
-      openingBalance: [""],
-      balanceType: [""]
-    });
-  }
-
-  addPreviousYearBalanceFormGroup(): FormGroup {
-    return this._fb.group({
-      accountClass: [""],
-      openingBalance: [""],
-      balanceType: [""]
-    });
-  }
-
-  get getOpeningBalanceList(): FormArray {
-    return <FormArray>this.accoutLedgerForm.get("openingBalanceList");
-  }
-
-  get getPreviousYearBalanceList(): FormArray {
-    return <FormArray>this.accoutLedgerForm.get("previousYearBalanceList");
-  }
-
-  openModal(index: number): void {}
-
-  public addHandler({ sender }) {
-    this.closeEditor(sender);
-    this.submitted = true;
-    this.rowSubmitted = true;
-    if (this.accoutLedgerForm.get("openingBalanceList").invalid) return;
-    (<FormArray>this.accoutLedgerForm.get("openingBalanceList")).push(
-      this.addOpeningBalanceFormGroup()
-    );
-    this.rowSubmitted = false;
-    this.submitted = false;
-  }
-
-  public editHandler({ sender, rowIndex, dataItem }) {
-    this.closeEditor(sender);
-    this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.accoutLedgerForm.get("openingBalanceList"));
-  }
-
-  public cancelHandler({ sender, rowIndex }) {
-    this.closeEditor(sender, rowIndex);
-  }
-
-  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
-    const product = formGroup.value;
-    sender.closeRow(rowIndex);
-  }
-
-  public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.accoutLedgerForm.get("openingBalanceList")).removeAt(
-      rowIndex
+  loadLedgerlistView(): void {
+    this.listViewLoading = true;
+    this.ledgerService.getLedgerListView().subscribe(
+      res => {
+        this.ledgerListView = res;
+      },
+      error => {
+        this.listViewLoading = false;
+      },
+      () => {
+        this.listViewLoading = false;
+      }
     );
   }
-  private closeEditor(grid, rowIndex = 1) {
-    grid.closeRow(rowIndex);
-    this.editedRowIndex = undefined;
+
+  public colorGroupOrLedger({ Title, TypeOf }: any): any {
+    return {
+      "tree-group": TypeOf == 1,
+      "tree-ledger": TypeOf == 0
+    };
   }
 
-  public saveAccountGroup(): void {
-    if (this.accountGroupForm.valid) {
-      this.router.navigate(["/ledger"]);
+  selectedNode(dataItem): void {
+    if (dataItem.TypeOf === 0) {
+      this.selectedItem = dataItem;
+      this.selectedGroupTab = true;
+      this.selectedLedgerTab = false;
     } else {
+      this.selectedItem = dataItem;
+      this.selectedLedgerTab = true;
+      this.selectedGroupTab = false;
     }
   }
 
-  public cancelAccountGroup(): void {
-    this.accountGroupForm.reset();
-    this.router.navigate(["/ledger"]);
+  expandAllNode(): void {
+    this.expandedKeys = this.ledgerTreeNode;
   }
 
-  public saveAccountLedger(): void {
-    if (this.accoutLedgerForm.valid) {
-      this.router.navigate(["/ledger"]);
-    } else {
-    }
-  }
-
-  public cancelAccountLedger(): void {
-    this.accoutLedgerForm.reset();
-    this.router.navigate(["/ledger"]);
+  collapseAllNode(): void {
+    this.expandedKeys = [];
   }
 }
