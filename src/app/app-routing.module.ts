@@ -36,6 +36,10 @@ const routes: Routes = [
       {
         path: "ledger",
         loadChildren: "@modules/ledger/ledger.module#LedgerModule"
+      },
+      {
+        path: "report",
+        loadChildren: "@modules/reports/reports.module#ReportsModule"
       }
     ]
   }

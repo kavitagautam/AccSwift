@@ -30,7 +30,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   private editedRowIndex: number;
   constructor(
     public _fb: FormBuilder,
-    private ledgerService: LedgerService,
+    public ledgerService: LedgerService,
     private router: Router
   ) {}
 
