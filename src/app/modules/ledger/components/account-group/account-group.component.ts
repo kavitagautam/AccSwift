@@ -22,7 +22,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
   accountGroupForm: FormGroup;
   constructor(
     public _fb: FormBuilder,
-    private ledgerService: LedgerService,
+    public ledgerService: LedgerService,
     private router: Router
   ) {}
 
