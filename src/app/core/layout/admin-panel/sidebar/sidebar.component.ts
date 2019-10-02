@@ -31,18 +31,18 @@ export class SidebarComponent implements OnInit {
       iconName: "fas fa-fw fa-chart-area",
       route: "/ledger"
     },
-    // {
-    //   id: 4,
-    //   displayName: "Company",
-    //   iconName: "fas fa-wrench",
-    //   route: "/company"
-    // },
-    // {
-    //   id: 7,
-    //   displayName: "Reports",
-    //   iconName: "fa fa-file-archive-o",
-    //   route: "/report"
-    // },
+    {
+      id: 4,
+      displayName: "Company",
+      iconName: "fas fa-wrench",
+      route: "/company"
+    },
+    {
+      id: 7,
+      displayName: "Reports",
+      iconName: "fa fa-file-archive-o",
+      route: "/report"
+    },
     // {
     //   id: 8,
     //   displayName: "Settings",
