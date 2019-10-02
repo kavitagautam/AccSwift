@@ -53,3 +53,12 @@ export interface LedgerDetails {
   ModifiedBy: number;
   ModifiedDate: string;
 }
+
+export interface LedgerList {
+  GroupID: string;
+  AccGroup: string;
+  ParentGroupID: number;
+  ParentGroup: string;
+  Ledger: string;
+  Type: string;
+}
