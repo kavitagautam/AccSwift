@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
-import { GroupDetails, LedgerDetails } from "../models/ledger.models";
+import { GroupDetails, LedgerDetails, LedgerList } from "../models/ledger.models";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -19,10 +19,10 @@ export class LedgerService {
   init() {
     this.getGroup();
   }
-  getLedgerTreeView() {
+  getLedgerTreeView(): any {
     return this.httpService.get(`${this._api_URL}Group/Tree`);
   }
-  getLedgerListView() {
+  getLedgerListView(): Observable<LedgerList> {
     return this.httpService.get(`${this._api_URL}Ledger/ListView`);
   }
 

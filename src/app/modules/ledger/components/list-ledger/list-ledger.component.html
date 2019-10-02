@@ -1,6 +1,6 @@
 <div class="row">
-  <div class="col-md-5" style="height: 76vh; overflow: scroll;">
-    <kendo-tabstrip>
+  <div class="col-md-6 p-0" style="height: 76vh ; overflow:scroll">
+    <kendo-tabstrip (tabSelect)="onTabSelect($event)">
       <kendo-tabstrip-tab [title]="'Tree View'" [selected]="true">
         <ng-template kendoTabContent>
           <div class="col-md-12 mt-3">
@@ -43,25 +43,47 @@
         <ng-template kendoTabContent>
           <div class="row">
             <div class="col-md-12">
-              <h5>List View</h5>
+              <div class="grid-wrapper-listView">
+                <kendo-grid [data]="ledgerListView">
+                  <kendo-grid-column field="AccGroup" title="Account Group">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="ParentGroup" title="Parent Group">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="Ledger" title="Ledger">
+                  </kendo-grid-column>
+                  <kendo-grid-column field="Type" title="Type">
+                  </kendo-grid-column>
+                </kendo-grid>
+                <div *ngIf="listViewLoading" class="k-i-loading"></div>
+              </div>
             </div>
           </div>
         </ng-template>
       </kendo-tabstrip-tab>
     </kendo-tabstrip>
   </div>
-  <div class="col-md-7">
+  <div class="col-md-6 p-0">
     <div class="row">
       <div class="col-md-12 mr-2">
         <kendo-tabstrip>
-          <kendo-tabstrip-tab [title]="'Account Group'" [selected]="selectedGroupTab ? true : false">
+          <kendo-tabstrip-tab
+            [title]="'Account Group'"
+            [selected]="selectedGroupTab ? true : false"
+          >
             <ng-template kendoTabContent>
-              <app-account-group [selectedItem]="selectedItem"></app-account-group>
+              <app-account-group
+                [selectedItem]="selectedItem"
+              ></app-account-group>
             </ng-template>
           </kendo-tabstrip-tab>
-          <kendo-tabstrip-tab [title]="'Account Ledger'" [selected]="selectedLedgerTab? true: false">
+          <kendo-tabstrip-tab
+            [title]="'Account Ledger'"
+            [selected]="selectedLedgerTab ? true : false"
+          >
             <ng-template kendoTabContent>
-              <app-account-ledger [selectedItem]="selectedItem"></app-account-ledger>
+              <app-account-ledger
+                [selectedItem]="selectedItem"
+              ></app-account-ledger>
             </ng-template>
           </kendo-tabstrip-tab>
         </kendo-tabstrip>

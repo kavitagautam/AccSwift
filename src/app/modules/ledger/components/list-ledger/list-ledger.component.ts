@@ -91,6 +91,12 @@ export class ListLedgerComponent implements OnInit {
     }
   }
 
+  public onTabSelect(e) {
+    if (e.index == 1) {
+      this.loadLedgerlistView();
+    }
+  }
+  
   expandAllNode(): void {
     this.expandedKeys = this.ledgerTreeNode;
   }
