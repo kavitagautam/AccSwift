@@ -7,6 +7,7 @@ import {
   OnChanges,
   SimpleChange
 } from "@angular/core";
+import { formatDate } from "@angular/common";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
@@ -74,7 +75,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         this.ledgerDetails ? this.ledgerDetails.Currency : "",
         Validators.required
       ],
-      date: [this.ledgerDetails ? this.ledgerDetails.CreatedDate : ""],
+      date: [this.ledgerDetails ? formatDate(this.ledgerDetails.CreatedDate, "yyyy-MM-dd", "en-US"): ""],
       openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
       previousYearBalanceList: this._fb.array([
         this.addPreviousYearBalanceFormGroup()
