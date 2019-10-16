@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, Subscriber } from "rxjs";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
@@ -9,6 +9,7 @@ import {
   SeriesList,
   LedgerList
 } from "../models/journal.model";
+import { LedgerMatch } from '../models/ledgerCodeMatch.model';
 
 @Injectable({
   providedIn: "root"
@@ -50,5 +51,10 @@ export class JournalService {
 
   getLedgerList(): Observable<LedgerList[]> {
     return this.httpService.get(`${this._api_URL}ledger/lov`);
+  }
+
+  checkLedgerCode(code): Observable<LedgerMatch> {
+    const params = new HttpParams().set("LedgerCode", code);
+    return this.http.get<LedgerMatch>(`${this._api_URL}CheckLedger`, {params} );
   }
 }

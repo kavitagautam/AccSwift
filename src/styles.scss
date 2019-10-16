@@ -34,10 +34,11 @@ sup {
   text-decoration: underline !important;
 }
 .ledger_name {
-  max-width: 115px;
+  max-width: 150px;
   word-break: break-word;
   display: inline-block;
   position: absolute;
+  margin:5px;
 }
 .searchBar {
   display: flex;

@@ -10,6 +10,7 @@ import {
   SelectAllCheckboxState
 } from "@progress/kendo-angular-grid";
 import { SortDescriptor } from "@progress/kendo-data-query";
+import { LedgerCodeMatchService } from "../../services/ledger-code-match.service";
 
 @Component({
   selector: "app-edit-journal",
@@ -27,7 +28,6 @@ export class EditJournalComponent implements OnInit {
   submitted: boolean;
   ledgerListLoading: boolean;
   rowSubmitted: boolean;
-
   journalDate: Date = new Date();
   debitTotal: number = 0;
   creditTotal: number = 0;
@@ -51,6 +51,7 @@ export class EditJournalComponent implements OnInit {
     private router: Router,
     public journalService: JournalService,
     private route: ActivatedRoute,
+    public ledgerCodeMatchService: LedgerCodeMatchService,
     private datePipe: DatePipe
   ) {}
 
@@ -68,6 +69,7 @@ export class EditJournalComponent implements OnInit {
           });
       }
     });
+    this.getLedgerList();
   }
 
   buildJournalForm(): void {
@@ -88,6 +90,7 @@ export class EditJournalComponent implements OnInit {
 
   addJournalEntryFormGroup(): FormGroup {
     return this._fb.group({
+      ledgerCode: ["", null, this.ledgerCodeMatchService.ledgerCodeMatch()],
       particularsOraccountingHead: ["", Validators.required],
       ledgerID: [""],
       debit: ["", Validators.required],
@@ -115,6 +118,7 @@ export class EditJournalComponent implements OnInit {
       journaldetails.forEach(element => {
         journalFormArray.push(
           this._fb.group({
+            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
             particularsOraccountingHead: [
               element.LedgerName,
               Validators.required
@@ -148,6 +152,7 @@ export class EditJournalComponent implements OnInit {
     } else {
       journalFormArray.push(
         this._fb.group({
+          ledgerCode: ["", null, this.ledgerCodeMatchService.ledgerCodeMatch()],
           particularsOraccountingHead: ["", Validators.required],
           ledgerID: [""],
           debit: ["", Validators.required],
@@ -162,43 +167,77 @@ export class EditJournalComponent implements OnInit {
 
   checkDebitValue(event: Event, index: number): void {
     let debitValue = 0;
-    const journalEntryFromArray = <FormArray>(
+    const journalEntryFormArray = <FormArray>(
       this.editJournalForm.get("journalEntryList")
     );
-    const updatedValue = journalEntryFromArray.controls[index].get("debit")
+    const updatedValue = journalEntryFormArray.controls[index].get("debit")
       .value;
     if (parseFloat(updatedValue)) {
-      journalEntryFromArray.controls[index].get("credit").disable();
+      journalEntryFormArray.controls[index].get("credit").disable();
     } else {
-      journalEntryFromArray.controls[index].get("credit").enable();
+      journalEntryFormArray.controls[index].get("credit").enable();
     }
-    for (let j = 0; j < journalEntryFromArray.controls.length; j++) {
+    for (let j = 0; j < journalEntryFormArray.controls.length; j++) {
       debitValue =
         debitValue +
-        (parseFloat(journalEntryFromArray.controls[j].get("debit").value) || 0);
+        (parseFloat(journalEntryFormArray.controls[j].get("debit").value) || 0);
     }
     this.debitTotal = debitValue;
   }
 
   checkCreditValue(event: Event, index: number): void {
     let creditValue = 0;
-    const journalEntryFromArray = <FormArray>(
+    const journalEntryFormArray = <FormArray>(
       this.editJournalForm.get("journalEntryList")
     );
-    const updatedValue = journalEntryFromArray.controls[index].get("credit")
+    const updatedValue = journalEntryFormArray.controls[index].get("credit")
       .value;
     if (parseFloat(updatedValue)) {
-      journalEntryFromArray.controls[index].get("debit").disable();
+      journalEntryFormArray.controls[index].get("debit").disable();
     } else {
-      journalEntryFromArray.controls[index].get("debit").enable();
+      journalEntryFormArray.controls[index].get("debit").enable();
     }
-    for (let j = 0; j < journalEntryFromArray.controls.length; j++) {
+    for (let j = 0; j < journalEntryFormArray.controls.length; j++) {
       creditValue =
         creditValue +
-        (parseFloat(journalEntryFromArray.controls[j].get("credit").value) ||
+        (parseFloat(journalEntryFormArray.controls[j].get("credit").value) ||
           0);
     }
     this.creditTotal = creditValue;
+  }
+
+  changeLedgerValue(dataItem, selectedRow) {
+    if (this.ledgerList && this.ledgerList.length > 0) {
+      const journalEntryFormArray = <FormArray>(
+        this.editJournalForm.get("journalEntryList")
+      );
+
+      const ledgerCode = journalEntryFormArray.controls[selectedRow].get(
+        "ledgerCode"
+      ).value;
+      if (
+        journalEntryFormArray.controls[selectedRow].get("ledgerCode").status ===
+        "VALID"
+      ) {
+        this.journalService.checkLedgerCode(ledgerCode).subscribe(res => {
+          const selectedItem = res.Entity;
+          if (selectedItem && selectedItem.length > 0) {
+            journalEntryFormArray.controls[selectedRow]
+              .get("balance")
+              .setValue(selectedItem[0].ActualBalance);
+            journalEntryFormArray.controls[selectedRow]
+              .get("balance")
+              .disable();
+            journalEntryFormArray.controls[selectedRow]
+              .get("particularsOraccountingHead")
+              .setValue(selectedItem[0].LedgerName);
+            journalEntryFormArray.controls[selectedRow]
+              .get("ledgerID")
+              .setValue(selectedItem[0].LedgerID);
+          }
+        });
+      }
+    }
   }
 
   addJournalEntry(): void {
@@ -209,25 +248,6 @@ export class EditJournalComponent implements OnInit {
       this.addJournalEntryFormGroup()
     );
     this.submitted = false;
-  }
-
-  deleteJournalEntryRow(index: number): void {
-    // Calculation on Debit Total and Credit Total on Rows Removed
-    const journalEntryFromArray = <FormArray>(
-      this.editJournalForm.get("journalEntryList")
-    );
-    const deletedCreditValue =
-      journalEntryFromArray.controls[index].get("credit").value || 0;
-    if (parseFloat(deletedCreditValue) > 0) {
-      this.creditTotal = this.creditTotal - parseFloat(deletedCreditValue) || 0;
-    }
-    const deletedDebitValue =
-      journalEntryFromArray.controls[index].get("debit").value || 0;
-    if (parseFloat(deletedDebitValue) > 0) {
-      this.debitTotal = this.debitTotal - parseFloat(deletedDebitValue) || 0;
-    }
-    // Remove the Row
-    (<FormArray>this.editJournalForm.get("journalEntryList")).removeAt(index);
   }
 
   public save(): void {
@@ -304,19 +324,22 @@ export class EditJournalComponent implements OnInit {
 
   // select ledger column
   selectedLedger(item, selectedRow): void {
-    const journalEntryFromArray = <FormArray>(
+    const journalEntryFormArray = <FormArray>(
       this.editJournalForm.get("journalEntryList")
     );
-    journalEntryFromArray.controls[selectedRow]
+    journalEntryFormArray.controls[selectedRow]
       .get("balance")
       .setValue(item.ActualBalance);
-    journalEntryFromArray.controls[selectedRow].get("balance").disable();
-    journalEntryFromArray.controls[selectedRow]
+    journalEntryFormArray.controls[selectedRow].get("balance").disable();
+    journalEntryFormArray.controls[selectedRow]
       .get("particularsOraccountingHead")
       .setValue(item.LedgerName);
-    journalEntryFromArray.controls[selectedRow]
+    journalEntryFormArray.controls[selectedRow]
       .get("ledgerID")
       .setValue(item.LedgerID);
+    journalEntryFormArray.controls[selectedRow]
+      .get("ledgerCode")
+      .setValue(item.LedgerCode);
     this.ledgerSelectModal.nativeElement.click();
   }
 
@@ -335,25 +358,25 @@ export class EditJournalComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const journalEntryFromArray = <FormArray>(
+    const journalEntryFormArray = <FormArray>(
       this.editJournalForm.get("journalEntryList")
     );
-    journalEntryFromArray.controls[rowIndex]
+    journalEntryFormArray.controls[rowIndex]
       .get("particularsOraccountingHead")
       .setValue(dataItem.particularsOraccountingHead);
-    journalEntryFromArray.controls[rowIndex]
+    journalEntryFormArray.controls[rowIndex]
       .get("ledgerID")
       .setValue(dataItem.ledgerID);
-    journalEntryFromArray.controls[rowIndex]
+    journalEntryFormArray.controls[rowIndex]
       .get("debit")
       .setValue(dataItem.debit);
-    journalEntryFromArray.controls[rowIndex]
+    journalEntryFormArray.controls[rowIndex]
       .get("credit")
       .setValue(dataItem.credit);
-    journalEntryFromArray.controls[rowIndex]
+    journalEntryFormArray.controls[rowIndex]
       .get("balance")
       .setValue(dataItem.balance);
-    journalEntryFromArray.controls[rowIndex]
+    journalEntryFormArray.controls[rowIndex]
       .get("remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
@@ -371,16 +394,16 @@ export class EditJournalComponent implements OnInit {
 
   public removeHandler({ dataItem, rowIndex }): void {
     // Calculation on Debit Total and Credit Total on Rows Removed
-    const journalEntryFromArray = <FormArray>(
+    const journalEntryFormArray = <FormArray>(
       this.editJournalForm.get("journalEntryList")
     );
     const deletedCreditValue =
-      journalEntryFromArray.controls[rowIndex].get("credit").value || 0;
+      journalEntryFormArray.controls[rowIndex].get("credit").value || 0;
     if (parseFloat(deletedCreditValue) > 0) {
       this.creditTotal = this.creditTotal - parseFloat(deletedCreditValue) || 0;
     }
     const deletedDebitValue =
-      journalEntryFromArray.controls[rowIndex].get("debit").value || 0;
+      journalEntryFormArray.controls[rowIndex].get("debit").value || 0;
     if (parseFloat(deletedDebitValue) > 0) {
       this.debitTotal = this.debitTotal - parseFloat(deletedDebitValue) || 0;
     }
