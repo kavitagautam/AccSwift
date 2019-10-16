@@ -91,7 +91,7 @@
               <input
                 #input
                 class="k-textbox"
-                style="width: 5rem"
+                style="width: 100px"
                 placeholder="Ledger Code"
                 [formControl]="
                   getjournalEntryList.controls[rowIndex].get('ledgerCode')
@@ -273,7 +273,8 @@
             </ng-template>
           </kendo-grid-command-column>
         </kendo-grid>
-        <table class="table table-borderless">
+        <div class="row">
+        <table class="table table-borderless" >
           <tbody>
             <tr>
               <td colspan="2"></td>
@@ -283,115 +284,7 @@
             </tr>
           </tbody>
         </table>
-
-        <!-- <table class="table table-borderless">
-          <thead>
-            <tr>
-              <th>Particulars/Accounting Head<sup>*</sup></th>
-              <th>Debit <sup>*</sup></th>
-              <th>Credit <sup>*</sup></th>
-              <th>Balance</th>
-              <th>Remarks</th>
-            </tr>
-          </thead>
-          <tbody
-            formArrayName="journalEntryList"
-            *ngFor="let item of getjournalEntryList.controls; let i = index"
-          >
-            <tr [formGroupName]="i">
-              <td>
-                <a
-                  href="#"
-                  class="btn btn-link btn-flat"
-                  (click)="openModal(i)"
-                  data-toggle="modal"
-                  data-target="#ledgerSelectModal"
-                  >Select</a
-                >
-                <span class="ledger_name">{{
-                  item.value.particularsOraccountingHead
-                }}</span>
-                <span
-                  class="error-msg"
-                  *ngIf="
-                    item.get('particularsOraccountingHead').errors?.required &&
-                    submitted
-                  "
-                  style="position: relative;
-                  display: inline-block;"
-                  >Select the Ledger</span
-                >
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  type="number"
-                  formControlName="debit"
-                  placeholder="Debit"
-                  (change)="checkDebitValue($event, i)"
-                />
-                <span
-                  class="error-msg"
-                  *ngIf="item.get('debit').errors?.required && submitted"
-                >
-                  Amount is Required</span
-                >
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  type="number"
-                  formControlName="credit"
-                  placeholder="credit"
-                  (change)="checkCreditValue($event, i)"
-                />
-                <span
-                  class="error-msg"
-                  *ngIf="item.get('credit').errors?.required && submitted"
-                >
-                  Amount is Required</span
-                >
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  formControlName="balance"
-                  placeholder="balance"
-                />
-              </td>
-              <td>
-                <input
-                  class="form-control"
-                  formControlName="remarks"
-                  placeholder="remarks"
-                />
-              </td>
-              <td style="padding-left:0px;">
-                <i
-                  class="fa fa-plus-circle"
-                  style="cursor: pointer"
-                  (click)="addJournalEntry()"
-                ></i>
-                <i
-                  class="fa fa-trash ml-2"
-                  style="color: red; cursor: pointer"
-                  *ngIf="
-                    editJournalForm.get('journalEntryList').controls.length > 1
-                  "
-                  (click)="deleteJournalEntryRow(i)"
-                ></i>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="2"></td>
-              <td colspan="1">Debit Total: {{ debitTotal }}</td>
-              <td colspan="1">Credit Total: {{ creditTotal }}</td>
-              <td colspan="1">Difference : {{ debitTotal - creditTotal }}</td>
-            </tr>
-          </tfoot>
-        </table> -->
+      </div>
       </div>
       <div class="row mt-2 ml-2 clearfix">
         <div class="col-md-2">

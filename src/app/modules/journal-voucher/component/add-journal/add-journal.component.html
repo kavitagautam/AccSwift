@@ -88,16 +88,15 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-             <input
+              <input
                 #input
                 class="k-textbox"
-                style="width: 5rem"
+                style="width: 100px"
                 placeholder="Ledger Code"
                 [formControl]="
                   getjournalEntryList.controls[rowIndex].get('ledgerCode')
                 "
                 (change)="changeLedgerValue(dataItem, rowIndex)"
-
               />
               <span class="ledger_name">
                 {{
@@ -106,18 +105,16 @@
               >
 
               <kendo-popup
-              [anchor]="input"
-              *ngIf="
-                getjournalEntryList.controls[rowIndex].get(
-                  'ledgerCode'
-                ).invalid 
-              "
-              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-            >
-         
-              <span class="k-icon k-i-warning"></span>
-              Ledger Code is invalid
-            </kendo-popup>
+                [anchor]="input"
+                *ngIf="
+                  getjournalEntryList.controls[rowIndex].get('ledgerCode')
+                    .invalid
+                "
+                popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+              >
+                <span class="k-icon k-i-warning"></span>
+                Ledger Code is invalid
+              </kendo-popup>
               <!-- <input
                 #input
                 class="k-textbox"
@@ -157,7 +154,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="debit" title="Debit" >
+          <kendo-grid-column field="debit" title="Debit">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -228,7 +225,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="balance" title="Balance" >
+          <kendo-grid-column field="balance" title="Balance">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -280,16 +277,18 @@
             </ng-template>
           </kendo-grid-command-column>
         </kendo-grid>
-        <table class="table table-borderless">
-          <tbody>
-            <tr>
-              <td colspan="2"></td>
-              <td colspan="1">Debit Total: {{ debitTotal }}</td>
-              <td colspan="1">Credit Total: {{ creditTotal }}</td>
-              <td colspan="1">Difference : {{ debitTotal - creditTotal }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="row">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td colspan="2"></td>
+                <td colspan="1">Debit Total: {{ debitTotal }}</td>
+                <td colspan="1">Credit Total: {{ creditTotal }}</td>
+                <td colspan="1">Difference : {{ debitTotal - creditTotal }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="row mt-2 ml-2 clearfix">
         <div class="col-md-2">
@@ -414,8 +413,10 @@
                   width="180"
                 >
                   <ng-template kendoGridCellTemplate let-dataItem="dataItem">
-                  <span class="float-right">{{dataItem.ActualBalance}}</span>
-                </ng-template>
+                    <span class="float-right">{{
+                      dataItem.ActualBalance
+                    }}</span>
+                  </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-column
                   field="LedgerType"
