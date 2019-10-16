@@ -14,6 +14,7 @@ import {
 import {
   SortDescriptor
 } from "@progress/kendo-data-query";
+import { LedgerCodeMatchService } from '../../services/ledger-code-match.service';
 
 @Component({
   selector: "app-add-journal",
@@ -59,7 +60,9 @@ export class AddJournalComponent implements OnInit {
   constructor(
     public _fb: FormBuilder,
     private router: Router,
-    public journalService: JournalService
+    public journalService: JournalService,
+    public ledgerCodeMatchService: LedgerCodeMatchService,
+
   ) {}
 
   ngOnInit() {
@@ -127,6 +130,7 @@ export class AddJournalComponent implements OnInit {
 
   addJournalEntryFormGroup(): FormGroup {
     return this._fb.group({
+      ledgerCode: ["", null, this.ledgerCodeMatchService.ledgerCodeMatch()],
       particularsOraccountingHead: ["", Validators.required],
       ledgerID: [""],
       debit: ["", Validators.required],
@@ -164,6 +168,41 @@ export class AddJournalComponent implements OnInit {
     // Remove the Row
     (<FormArray>this.addJournalForm.get("journalEntryList")).removeAt(index);
   }
+
+  changeLedgerValue(dataItem, selectedRow) {
+    if (this.ledgerList && this.ledgerList.length > 0) {
+      const journalEntryFromArray = <FormArray>(
+        this.addJournalForm.get("journalEntryList")
+      );
+
+      const ledgerCode = journalEntryFromArray.controls[selectedRow].get(
+        "ledgerCode"
+      ).value;
+      if (
+        journalEntryFromArray.controls[selectedRow].get("ledgerCode").status ===
+        "VALID"
+      ) {
+        this.journalService.checkLedgerCode(ledgerCode).subscribe(res => {
+          const selectedItem = res.Entity;
+          if (selectedItem && selectedItem.length > 0) {
+            journalEntryFromArray.controls[selectedRow]
+              .get("balance")
+              .setValue(selectedItem[0].ActualBalance);
+            journalEntryFromArray.controls[selectedRow]
+              .get("balance")
+              .disable();
+            journalEntryFromArray.controls[selectedRow]
+              .get("particularsOraccountingHead")
+              .setValue(selectedItem[0].LedgerName);
+            journalEntryFromArray.controls[selectedRow]
+              .get("ledgerID")
+              .setValue(selectedItem[0].LedgerID);
+          }
+        });
+      }
+    }
+  }
+
 
   public save(): void {
     if (this.addJournalForm.valid) {
