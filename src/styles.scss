@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~ngx-toastr/toastr.css";
+@import "./assets/scss/main.scss";
 $color_1: red;
 $color_2: #6c7178;
 $color_3: #007bff;
@@ -38,7 +39,7 @@ sup {
   word-break: break-word;
   display: inline-block;
   position: absolute;
-  margin:5px;
+  margin: 5px;
 }
 .searchBar {
   display: flex;
@@ -61,7 +62,6 @@ sup {
   text-decoration: none;
 }
 
-
 legend {
   font-size: 1.2em !important;
   font-weight: bold !important;
@@ -74,4 +74,4 @@ legend {
   color: #fff;
 }
 
-//kendo Css 
+//kendo Css
