@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   baseAPI: "http://accswift.bentrayhosting.com/",
+  defaultImagePath: "./assets/dist/img",
   defaultImageUrl: "./assets/images/user.jpg"
 };
 
