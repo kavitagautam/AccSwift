@@ -11,6 +11,7 @@ import {
 } from "@progress/kendo-angular-grid";
 import { SortDescriptor } from "@progress/kendo-data-query";
 import { LedgerCodeMatchService } from "../../services/ledger-code-match.service";
+import { IntlService } from '@progress/kendo-angular-intl';
 
 @Component({
   selector: "app-edit-journal",
@@ -21,6 +22,8 @@ import { LedgerCodeMatchService } from "../../services/ledger-code-match.service
 export class EditJournalComponent implements OnInit {
   @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
   private editedRowIndex: number;
+
+  numericFormat: string = "n3";
   editJournalForm: FormGroup;
   journalDetail: JournalMaster;
   ledgerList: LedgerList[] = [];
@@ -52,6 +55,7 @@ export class EditJournalComponent implements OnInit {
     public journalService: JournalService,
     private route: ActivatedRoute,
     public ledgerCodeMatchService: LedgerCodeMatchService,
+    public intl: IntlService,
     private datePipe: DatePipe
   ) {}
 
@@ -136,9 +140,7 @@ export class EditJournalComponent implements OnInit {
                 disabled: element.DebitCredit === "Debit" ? true : false
               }
             ],
-            balance: [
-              { value: element.Amount ? element.Amount : "", disabled: true }
-            ],
+            balance: element.Amount ? element.Amount : "",
             remarks: element.Remarks
           })
         );

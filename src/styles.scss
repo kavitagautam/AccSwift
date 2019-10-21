@@ -74,4 +74,18 @@ legend {
   color: #fff;
 }
 
-//kendo Css
+//kendo input text overFlow Css
+.k-numeric-wrap .k-input {
+  text-overflow: inherit !important;
+}
+
+.k-grid th,
+.k-grid td {
+  text-overflow: inherit !important;
+}
+
+ .ledgerSelectIcon{
+  position: absolute;
+  right: 16px;
+  top: 8px;
+ }
