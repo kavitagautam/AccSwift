@@ -275,7 +275,7 @@
             <span class="pull-right">
               Difference :
               {{
-                debitTotal - creditTotal | number: "1.2-2" | currencyFormat
+               ( debitTotal - creditTotal ) | currencyFormat
               }}</span
             >
           </ng-template>
