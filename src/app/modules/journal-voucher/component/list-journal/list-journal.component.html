@@ -1,140 +1,128 @@
-<div style="background: #efecec !important;">
-    <div class="container-fluid">
-      <div class="row top_bar_action">
-        <button class="btn btn-primary m-2 pull-right" [routerLink]="['add']">
-          <i class="fa fa-plus" aria-hidden="true"></i> Add Journal
-        </button>
-      </div>
-    </div>
-  
+<div class="mb-2">
+  <button [routerLink]="['add']" class="btn btn-primary">
+    <i class="fa fa-plus" aria-hidden="true"></i>Add Journal
+  </button>
+</div>
+<div class="box box-default">
+  <div class="col-md-12 mt-5 mr-2">
     <form [formGroup]="journalSearchForm" novalidate>
-      <div class="contanier-fluid">
-        <div class="row mt-5 mr-2">
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Series: </label>
-              </div>
-              <div class="col-md-7">
-                <select
-                  class="form-control"
-                  id="seriesId"
-                  formControlName="series"
-                >
-                  <option *ngFor="let series of journalService.journalSeriesList">
-                    {{ series.EngName }}</option
-                  >
-                </select>
-              </div>
-            </div>
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Project: </label>
-              </div>
-              <div class="col-md-7">
-                <select
-                  class="form-control"
-                  id="projectId"
-                  formControlName="project"
-                >
-                  <option *ngFor="let project of journalService.projectLists">
-                    {{ project.EngName }}</option
-                  >
-                </select>
-              </div>
-            </div>
+      <div class="col-md-4">
+        <div class="row clearfix">
+          <div class="col-md-5">
+            <label class="float-right">Series: </label>
           </div>
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Voucher #: </label>
-              </div>
-              <div class="col-md-7">
-                <input class="form-control" formControlName="voucherNo" />
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Date :</label>
-              </div>
-              <div class="col-md-7">
-                <input
-                  formControlName="journalDate"
-                  type="date"
-                  [value]="journalDate | date: 'MM/dd/yyyy'"
-                  class="form-control"
-                />
-              </div>
-            </div>
-            <div class="row clearfix"></div>
+          <div class="col-md-7">
+            <select class="form-control" id="seriesId" formControlName="series">
+              <option *ngFor="let series of journalService.journalSeriesList">
+                {{ series.EngName }}</option
+              >
+            </select>
           </div>
         </div>
-        <div class="row ml-2">
-          <button class="btn btn-primary" disabled>Search</button>
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label class="float-right">Project: </label>
+          </div>
+          <div class="col-md-7">
+            <select
+              class="form-control"
+              id="projectId"
+              formControlName="project"
+            >
+              <option *ngFor="let project of journalService.projectLists">
+                {{ project.EngName }}</option
+              >
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row clearfix">
+          <div class="col-md-5">
+            <label class="float-right">Voucher #: </label>
+          </div>
+          <div class="col-md-7">
+            <input class="form-control" formControlName="voucherNo" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row clearfix">
+          <div class="col-md-5">
+            <label class="float-right">Date :</label>
+          </div>
+          <div class="col-md-7">
+            <input
+              formControlName="journalDate"
+              type="date"
+              [value]="journalDate | date: 'MM/dd/yyyy'"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row clearfix"></div>
+      </div>
+      <div class="col-md-12 ml-2">
+        <div class="mb-2">
+          <button class="btn btn-primary btn-flat" disabled>Search</button>
         </div>
       </div>
     </form>
-  
-    <div class="container-fluid" style="margin-top:20px; background:#fff;">
-      <div class="row">
-        <div class="grid-wrapper">
-          <kendo-grid
-            [kendoGridBinding]="journalList"
-            [filterable]="true"
-            [pageSize]="pageSize"
-            [skip]="skip"
-            [sortable]="{
-              allowUnsort: allowUnsort,
-              mode: 'single'
-            }"
-            [sort]="sort"
-            (sortChange)="sortChange($event)"
-            [pageable]="true"
-            [height]="400"
-            (pageChange)="pageChange($event)"
-            scrollable="none"
+  </div>
+  <div class="col-md-12 mt-5 mr-2">
+    <div class="grid-wrapper">
+      <kendo-grid
+        [kendoGridBinding]="journalList"
+        [filterable]="true"
+        [pageSize]="pageSize"
+        [skip]="skip"
+        [sortable]="{
+          allowUnsort: allowUnsort,
+          mode: 'single'
+        }"
+        [sort]="sort"
+        (sortChange)="sortChange($event)"
+        [pageable]="true"
+        [height]="400"
+        (pageChange)="pageChange($event)"
+        scrollable="none"
+      >
+        <kendo-grid-column field="VoucherNo" title="Voucher No.">
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="JournalDate"
+          title="Journal Date"
+          filter="date"
+          [filterable]="false"
+          format="{0: yyyy-mm-dd}"
+        >
+        </kendo-grid-column>
+        <kendo-grid-column field="ProjectName" title="Project Name">
+        </kendo-grid-column>
+        <kendo-grid-column field="SeriesName" title="Series Name">
+        </kendo-grid-column>
+        <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
+        <kendo-grid-command-column title="Action" width="220">
+          <ng-template
+            kendoGridCellTemplate
+            let-isNew="isNew"
+            let-dataItem="dataItem"
           >
-            <kendo-grid-column field="VoucherNo" title="Voucher No.">
-            </kendo-grid-column>
-            <kendo-grid-column
-              field="JournalDate"
-              title="Journal Date"
-              filter="date"
-              [filterable]="false"
-              format="{0: yyyy-mm-dd}"
+            <button
+              kendoGridEditCommand
+              (click)="editJournal(dataItem)"
+              data-toggle="modal"
+              data-target="#viewModal"
+              [primary]="true"
             >
-            </kendo-grid-column>
-            <kendo-grid-column field="ProjectName" title="Project Name">
-            </kendo-grid-column>
-            <kendo-grid-column field="SeriesName" title="Series Name">
-            </kendo-grid-column>
-            <kendo-grid-column field="Remarks" title="Remarks">
-            </kendo-grid-column>
-            <kendo-grid-command-column title="Action" width="220">
-              <ng-template
-                kendoGridCellTemplate
-                let-isNew="isNew"
-                let-dataItem="dataItem"
-              >
-                <button
-                  kendoGridEditCommand
-                  (click)="editJournal(dataItem)"
-                  data-toggle="modal"
-                  data-target="#viewModal"
-                  [primary]="true"
-                >
-                  Edit
-                </button>
-                <button kendoGridRemoveCommand>Delete</button>
-              </ng-template>
-            </kendo-grid-command-column>
-          </kendo-grid>
-  
-          <div *ngIf="journalListLoading" class="k-i-loading"></div>
-        </div>
-      </div>
+              Edit
+            </button>
+            <button kendoGridRemoveCommand>Delete</button>
+          </ng-template>
+        </kendo-grid-command-column>
+      </kendo-grid>
+
+      <div *ngIf="journalListLoading" class="k-i-loading"></div>
     </div>
   </div>
-  
+</div>

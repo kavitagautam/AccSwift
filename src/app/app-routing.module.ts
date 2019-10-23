@@ -23,11 +23,17 @@ const routes: Routes = [
       {
         path: "journal",
         loadChildren:
-          "@modules/journal-voucher/journal-voucher.module#JournalVoucherModule"
+          "@modules/journal-voucher/journal-voucher.module#JournalVoucherModule",
+          data: {
+            breadcrumb: "Journal"
+          }
       },
       {
         path: "product",
-        loadChildren: "@modules/product/product.module#ProductModule"
+        loadChildren: "@modules/product/product.module#ProductModule",
+        data: {
+          breadcrumb: "Product"
+        }
       },
       {
         path: "company",
@@ -35,11 +41,17 @@ const routes: Routes = [
       },
       {
         path: "ledger",
-        loadChildren: "@modules/ledger/ledger.module#LedgerModule"
+        loadChildren: "@modules/ledger/ledger.module#LedgerModule",
+        data: {
+          breadcrumb: "Ledger"
+        }
       },
       {
         path: "report",
-        loadChildren: "@modules/reports/reports.module#ReportsModule"
+        loadChildren: "@modules/reports/reports.module#ReportsModule",
+        data: {
+          breadcrumb: "Report"
+        }
       }
     ]
   }

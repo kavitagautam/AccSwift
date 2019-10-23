@@ -8,7 +8,6 @@ import { LedgerList } from "../../models/journal.model";
 import {
   GridDataResult,
   PageChangeEvent,
-  SelectableSettings,
   SelectAllCheckboxState
 } from "@progress/kendo-angular-grid";
 import { SortDescriptor } from "@progress/kendo-data-query";
@@ -23,8 +22,11 @@ import { LedgerCodeMatchService } from "../../services/ledger-code-match.service
 export class AddJournalComponent implements OnInit {
   @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
   private editedRowIndex: number;
-  public selectableSettings: SelectableSettings;
 
+  //Input Field Property 
+  public decimals: number = 2;
+  numericFormat: string = "n3";
+  
   addJournalForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -132,7 +134,7 @@ export class AddJournalComponent implements OnInit {
       ledgerID: [""],
       debit: ["", Validators.required],
       credit: [""],
-      balance: [{ value: "", disabled: true }],
+      balance: [""],
       remarks: [""]
     });
   }
