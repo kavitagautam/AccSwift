@@ -99,15 +99,16 @@
                   (change)="changeLedgerValue(dataItem, rowIndex)"
                 />
                 <kendo-popup
-                [anchor]="input"
-                *ngIf="
-                  getjournalEntryList.controls[rowIndex].get('ledgerCode').invalid
-                "
-                popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-              >
-                <span class="k-icon k-i-warning"></span>
-                Ledger Code is invalid
-              </kendo-popup>
+                  [anchor]="input"
+                  *ngIf="
+                    getjournalEntryList.controls[rowIndex].get('ledgerCode')
+                      .invalid
+                  "
+                  popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                >
+                  <span class="k-icon k-i-warning"></span>
+                  Ledger Code is invalid
+                </kendo-popup>
               </div>
               <div class="col-md-8 pr-0">
                 <input
@@ -121,34 +122,36 @@
                   "
                 />
                 <a
-                href="#"
-                (click)="openModal(rowIndex)"
-                data-toggle="modal"
-                data-target="#ledgerSelectModal"
-                ><i class="fa fa-eye pull-right ledgerSelectIcon" aria-hidden="true"></i>
-              </a>
+                  href="#"
+                  (click)="openModal(rowIndex)"
+                  data-toggle="modal"
+                  data-target="#ledgerSelectModal"
+                  ><i
+                    class="fa fa-eye pull-right ledgerSelectIcon"
+                    aria-hidden="true"
+                  ></i>
+                </a>
 
-              <kendo-popup
-              [anchor]="input"
-              *ngIf="
-                getjournalEntryList.controls[rowIndex].get(
-                  'particularsOraccountingHead'
-                ).invalid &&
-                rowSubmitted &&
-                !(
-                  isNew &&
-                  getjournalEntryList.controls[rowIndex].get(
-                    'particularsOraccountingHead'
-                  ).untouched
-                ) && !getjournalEntryList.controls[rowIndex].get(
-                  'ledgerCode'
-                )
-              "
-              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-            >
-              <span class="k-icon k-i-warning"></span>
-              Ledger name is required
-            </kendo-popup>
+                <kendo-popup
+                  [anchor]="input"
+                  *ngIf="
+                    getjournalEntryList.controls[rowIndex].get(
+                      'particularsOraccountingHead'
+                    ).invalid &&
+                    rowSubmitted &&
+                    !(
+                      isNew &&
+                      getjournalEntryList.controls[rowIndex].get(
+                        'particularsOraccountingHead'
+                      ).untouched
+                    ) &&
+                    !getjournalEntryList.controls[rowIndex].get('ledgerCode')
+                  "
+                  popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                >
+                  <span class="k-icon k-i-warning"></span>
+                  Ledger name is required
+                </kendo-popup>
               </div>
             </div>
           </ng-template>
@@ -167,7 +170,7 @@
               #ntb="popupAnchor"
               popupAnchor
               style="width:130px"
-              [format]="numericFormat"
+              [decimals]="decimals"
               [formControl]="
                 getjournalEntryList.controls[rowIndex].get(column.field)
               "
@@ -191,7 +194,9 @@
             let-column
             let-columnIndex="columnIndex"
           >
-            Debit Total: {{ debitTotal }}
+            <span class="pull-right">
+              Debit Total: {{ debitTotal | currencyFormat }}
+            </span>
           </ng-template>
         </kendo-grid-column>
 
@@ -208,7 +213,7 @@
               #ntb="popupAnchor"
               popupAnchor
               style="width:130px"
-              [format]="numericFormat"
+              [decimals]="decimals"
               [formControl]="
                 getjournalEntryList.controls[rowIndex].get('credit')
               "
@@ -236,7 +241,9 @@
             let-column
             let-columnIndex="columnIndex"
           >
-            Credit Total: {{ creditTotal }}
+            <span class="pull-right">
+              Credit Total: {{ creditTotal | currencyFormat }}
+            </span>
           </ng-template>
         </kendo-grid-column>
 
@@ -254,7 +261,7 @@
               popupAnchor
               style="width:130px"
               [readonly]="true"
-              [format]="numericFormat"
+              [decimals]="decimals"
               [formControl]="
                 getjournalEntryList.controls[rowIndex].get(column.field)
               "
@@ -265,7 +272,12 @@
             let-column
             let-columnIndex="columnIndex"
           >
-            Difference : {{ debitTotal - creditTotal }}
+            <span class="pull-right">
+              Difference :
+              {{
+                debitTotal - creditTotal | number: "1.2-2" | currencyFormat
+              }}</span
+            >
           </ng-template>
         </kendo-grid-column>
 
@@ -291,7 +303,13 @@
 
         <kendo-grid-command-column title="Action" width="100">
           <ng-template kendoGridCellTemplate let-isNew="isNew">
-            <button class="k-button" kendoGridAddCommand><i class="fa fa-plus cursor-pointer" aria-hidden="true"  tooltip="Add New"></i></button>
+            <button class="k-button" kendoGridAddCommand>
+              <i
+                class="fa fa-plus cursor-pointer"
+                aria-hidden="true"
+                tooltip="Add New"
+              ></i>
+            </button>
             <button kendoGridRemoveCommand>
               <i
                 class="fas fa-trash-alt mr-2 cursor-pointer"
@@ -308,18 +326,6 @@
           </ng-template>
         </kendo-grid-command-column>
       </kendo-grid>
-      <div class="row">
-        <table class="table table-borderless">
-          <tbody>
-            <tr>
-              <td colspan="2"></td>
-              <td colspan="1">Debit Total: {{ debitTotal }}</td>
-              <td colspan="1">Credit Total: {{ creditTotal }}</td>
-              <td colspan="1">Difference : {{ debitTotal - creditTotal }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
     <div class="col-md-12 mt-2 ml-2 clearfix">
       <div class="col-md-2">

@@ -11,7 +11,7 @@ import {
 } from "@progress/kendo-angular-grid";
 import { SortDescriptor } from "@progress/kendo-data-query";
 import { LedgerCodeMatchService } from "../../services/ledger-code-match.service";
-import { IntlService } from '@progress/kendo-angular-intl';
+import { IntlService } from "@progress/kendo-angular-intl";
 
 @Component({
   selector: "app-edit-journal",
@@ -23,7 +23,10 @@ export class EditJournalComponent implements OnInit {
   @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
   private editedRowIndex: number;
 
-  numericFormat: string = "n3";
+  //Input Field Property
+  numericFormat: string = "n2";
+  public decimals: number = 2;
+
   editJournalForm: FormGroup;
   journalDetail: JournalMaster;
   ledgerList: LedgerList[] = [];

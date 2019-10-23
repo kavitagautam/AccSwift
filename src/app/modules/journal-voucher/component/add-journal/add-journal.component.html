@@ -168,7 +168,7 @@
               #ntb="popupAnchor"
               popupAnchor
               style="width: 130px"
-              [format]="numericFormat"
+              [decimals]="decimals"
               [formControl]="
                 getjournalEntryList.controls[rowIndex].get(column.field)
               "
@@ -187,12 +187,14 @@
             </kendo-popup>
           </ng-template>
           <ng-template
-          kendoGridFooterTemplate
-          let-column
-          let-columnIndex="columnIndex"
-        >
-          Debit Total: {{ debitTotal }}
-        </ng-template>
+            kendoGridFooterTemplate
+            let-column
+            let-columnIndex="columnIndex"
+          >
+            <span class="float-right">
+              Debit Total: {{ debitTotal | currencyFormat }}
+            </span>
+          </ng-template>
         </kendo-grid-column>
 
         <kendo-grid-column field="credit" title="Credit" width="150">
@@ -208,7 +210,7 @@
               #ntb="popupAnchor"
               popupAnchor
               style="width: 130px"
-              [format]="numericFormat"
+              [decimals]="decimals"
               [formControl]="
                 getjournalEntryList.controls[rowIndex].get('credit')
               "
@@ -232,12 +234,12 @@
             </kendo-popup>
           </ng-template>
           <ng-template
-          kendoGridFooterTemplate
-          let-column
-          let-columnIndex="columnIndex"
-        >
-          Credit Total: {{ creditTotal }}
-        </ng-template>
+            kendoGridFooterTemplate
+            let-column
+            let-columnIndex="columnIndex"
+          >
+            <span class="float-right"> Credit Total: {{ creditTotal }} </span>
+          </ng-template>
         </kendo-grid-column>
 
         <kendo-grid-column field="balance" title="Balance" width="150">
@@ -254,19 +256,21 @@
               popupAnchor
               style="width:130px"
               [readonly]="true"
-              [format]="numericFormat"
+              [decimals]="decimals"
               [formControl]="
                 getjournalEntryList.controls[rowIndex].get(column.field)
               "
             ></kendo-numerictextbox>
           </ng-template>
           <ng-template
-          kendoGridFooterTemplate
-          let-column
-          let-columnIndex="columnIndex"
-        >
-          Difference : {{ debitTotal - creditTotal }}
-        </ng-template>
+            kendoGridFooterTemplate
+            let-column
+            let-columnIndex="columnIndex"
+          >
+            <span class="float-right">
+              Difference : {{ debitTotal - creditTotal }}
+            </span>
+          </ng-template>
         </kendo-grid-column>
 
         <kendo-grid-column field="remarks" title="Remarks" width="150">
@@ -291,11 +295,19 @@
 
         <kendo-grid-command-column title="Action" width="100">
           <ng-template kendoGridCellTemplate let-isNew="isNew">
-            <button class="k-button" kendoGridAddCommand><i class="fa fa-plus cursor-pointer" aria-hidden="true"  tooltip="Add New"></i></button>
-            <button kendoGridRemoveCommand>  <i
-              class="fas fa-trash-alt mr-2 cursor-pointer"
-              tooltip="Delete"
-            ></i></button>
+            <button class="k-button" kendoGridAddCommand>
+              <i
+                class="fa fa-plus cursor-pointer"
+                aria-hidden="true"
+                tooltip="Add New"
+              ></i>
+            </button>
+            <button kendoGridRemoveCommand>
+              <i
+                class="fas fa-trash-alt mr-2 cursor-pointer"
+                tooltip="Delete"
+              ></i>
+            </button>
             <button kendoGridSaveCommand [primary]="true">
               {{ isNew ? "Add" : "Update" }}
             </button>
@@ -305,18 +317,6 @@
           </ng-template>
         </kendo-grid-command-column>
       </kendo-grid>
-      <div class="col-md-12">
-        <table class="table table-borderless">
-          <tbody>
-            <tr>
-              <td colspan="2"></td>
-              <td colspan="1">Debit Total: {{ debitTotal }}</td>
-              <td colspan="1">Credit Total: {{ creditTotal }}</td>
-              <td colspan="1">Difference : {{ debitTotal - creditTotal }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
     <div class="col-md-12 mt-2 ml-2 clearfix">
       <div class="col-md-2">
