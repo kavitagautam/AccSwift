@@ -13,6 +13,8 @@ import { map } from "rxjs/operators";
 })
 export class LedgerCodeMatchService {
   constructor(public journalService: JournalService) {}
+
+  
   ledgerCodeMatch(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return this.journalService.checkLedgerCode(control.value).pipe(

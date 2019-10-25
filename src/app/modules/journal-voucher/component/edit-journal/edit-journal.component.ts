@@ -211,8 +211,7 @@ export class EditJournalComponent implements OnInit {
     this.creditTotal = creditValue;
   }
 
-  changeLedgerValue(dataItem, selectedRow) {
-    if (this.ledgerList && this.ledgerList.length > 0) {
+  changeLedgerValue(dataItem, selectedRow): void {
       const journalEntryFormArray = <FormArray>(
         this.editJournalForm.get("journalEntryList")
       );
@@ -241,7 +240,6 @@ export class EditJournalComponent implements OnInit {
               .setValue(selectedItem[0].LedgerID);
           }
         });
-      }
     }
   }
 
