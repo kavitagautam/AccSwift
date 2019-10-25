@@ -81,6 +81,18 @@ export class AddJournalComponent implements OnInit {
     });
   }
 
+
+  addJournalEntryFormGroup(): FormGroup {
+    return this._fb.group({
+      ledgerCode: ["", null, this.ledgerCodeMatchService.ledgerCodeMatch()],
+      particularsOraccountingHead: ["", Validators.required],
+      ledgerID: [""],
+      debit: ["", Validators.required],
+      credit: [""],
+      balance: [""],
+      remarks: [""]
+    });
+  }
   get getjournalEntryList(): FormArray {
     return <FormArray>this.addJournalForm.get("journalEntryList");
   }
@@ -127,17 +139,7 @@ export class AddJournalComponent implements OnInit {
     this.creditTotal = creditValue;
   }
 
-  addJournalEntryFormGroup(): FormGroup {
-    return this._fb.group({
-      ledgerCode: ["", null, this.ledgerCodeMatchService.ledgerCodeMatch()],
-      particularsOraccountingHead: ["", Validators.required],
-      ledgerID: [""],
-      debit: ["", Validators.required],
-      credit: [""],
-      balance: [""],
-      remarks: [""]
-    });
-  }
+
 
   addJournalEntry(): FormArray {
     this.submitted = true;
@@ -168,8 +170,7 @@ export class AddJournalComponent implements OnInit {
     (<FormArray>this.addJournalForm.get("journalEntryList")).removeAt(index);
   }
 
-  changeLedgerValue(dataItem, selectedRow) {
-    if (this.ledgerList && this.ledgerList.length > 0) {
+  changeLedgerValue( dataItem, selectedRow): void {
       const journalEntryFormArray = <FormArray>(
         this.addJournalForm.get("journalEntryList")
       );
@@ -198,7 +199,6 @@ export class AddJournalComponent implements OnInit {
               .setValue(selectedItem[0].LedgerID);
           }
         });
-      }
     }
   }
 
