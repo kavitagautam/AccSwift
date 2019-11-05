@@ -13,7 +13,8 @@
           </div>
           <div class="col-md-7">
             <select class="form-control" id="seriesId" formControlName="series">
-              <option *ngFor="let series of journalService.journalSeriesList">
+                <option value="null"> </option>
+              <option *ngFor="let series of journalService.journalSeriesList" [ngValue]="series.ID">
                 {{ series.EngName }}</option
               >
             </select>
@@ -29,7 +30,8 @@
               id="projectId"
               formControlName="project"
             >
-              <option *ngFor="let project of journalService.projectLists">
+            <option value="null"> </option>
+              <option *ngFor="let project of journalService.projectLists" [ngValue]="project.ID"> 
                 {{ project.EngName }}</option
               >
             </select>
@@ -64,7 +66,7 @@
       </div>
       <div class="col-md-12 ml-2">
         <div class="mb-2">
-          <button class="btn btn-primary btn-flat" disabled>Search</button>
+          <button class="btn btn-primary btn-flat" (click)="searchForm()" >Search</button>
         </div>
       </div>
     </form>
@@ -72,8 +74,9 @@
   <div class="col-md-12 mt-5 mr-2">
     <div class="grid-wrapper">
       <kendo-grid
-        [kendoGridBinding]="journalList"
+        [data]="gridView"
         [filterable]="true"
+        [filter]="filter"
         [pageSize]="pageSize"
         [skip]="skip"
         [sortable]="{
@@ -86,6 +89,7 @@
         [height]="400"
         (pageChange)="pageChange($event)"
         scrollable="none"
+        (filterChange)="filterChange($event)"
       >
         <kendo-grid-column field="VoucherNo" title="Voucher No.">
         </kendo-grid-column>
@@ -117,7 +121,7 @@
             >
               Edit
             </button>
-            <button kendoGridRemoveCommand>Delete</button>
+            <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">Delete</button>
           </ng-template>
         </kendo-grid-command-column>
       </kendo-grid>

@@ -6,6 +6,15 @@ import { LanguageSwitcherComponent } from "./component/language-switcher/languag
 import { CommonModalComponent } from "./component/common-modal/common-modal.component";
 import { PopupAnchorDirective } from "./directives/popup-anchor/popup.anchor-target.directive";
 import { CurrencyFormatPipe } from "./pipes/currency-format.pipe";
+import {
+  TooltipModule,
+  TabsModule,
+  ModalModule,
+  TimepickerModule,
+  BsDatepickerModule,
+  BsDropdownModule,
+  CollapseModule
+} from "ngx-bootstrap";
 
 @NgModule({
   declarations: [
@@ -15,8 +24,29 @@ import { CurrencyFormatPipe } from "./pipes/currency-format.pipe";
     CurrencyFormatPipe,
     PopupAnchorDirective
   ],
-  imports: [CommonModule, NgxPaginationModule],
+  imports: [
+    CommonModule,
+    CollapseModule.forRoot(),
+    TooltipModule.forRoot(),
+    TabsModule.forRoot(),
+    ModalModule.forRoot(),
+    NgxPaginationModule,
+    TimepickerModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    NgxPaginationModule
+  ],
   exports: [
+    CollapseModule,
+    TooltipModule,
+    TabsModule,
+    ModalModule,
+    PaginationComponent,
+    NgxPaginationModule,
+    LanguageSwitcherComponent,
+    TimepickerModule,
+    BsDatepickerModule,
+    BsDropdownModule,
     PaginationComponent,
     LanguageSwitcherComponent,
     CommonModalComponent,
