@@ -9,7 +9,7 @@ import {
   SeriesList,
   LedgerList
 } from "../models/journal.model";
-import { LedgerMatch } from '../models/ledgerCodeMatch.model';
+import { LedgerMatch } from "../models/ledgerCodeMatch.model";
 
 @Injectable({
   providedIn: "root"
@@ -55,6 +55,29 @@ export class JournalService {
 
   checkLedgerCode(code): Observable<LedgerMatch> {
     const params = new HttpParams().set("LedgerCode", code);
-    return this.http.get<LedgerMatch>(`${this._api_URL}CheckLedger`, {params} );
+    return this.http.get<LedgerMatch>(`${this._api_URL}CheckLedger`, {
+      params
+    });
+  }
+
+  getJournalList(paramsData) {
+    const params = new HttpParams()
+      .set("PageNo", paramsData.PageNo)
+      .set("DisplayRow", paramsData.DisplayRow)
+      .set("Direction", paramsData.Direction)
+      .set("OrderBy", paramsData.OrderBy)
+      .set("SeriesID", paramsData.SeriesId ? paramsData.SeriesId : 284)
+      .set("ProjectID", paramsData.ProjectId ? paramsData.ProjectId : 1)
+      .set("VoucherNo", paramsData.VoucherNo)
+      .set("JournalDate", paramsData.JournalDate);
+    return this.httpService.get(
+      `${this._api_URL}JournalMaster/Navigate`,
+      null,
+      params
+    );
+  }
+
+  deleteJournal(id): Observable<any> {
+    return this.http.delete(`${this._api_URL}journalmaster/${id}`);
   }
 }
