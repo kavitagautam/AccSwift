@@ -143,21 +143,23 @@ export class ListJournalComponent implements OnInit {
     );
   }
 
-  public filterChange(filter: CompositeFilterDescriptor): void {
-    console.log("filter Change" + JSON.stringify(filter));
+  public filterChange(filter): void {
     this.voucherNoSearchKey = "";
     this.projectNameSerachKey = "";
     this.seriesNameSearchKey = "";
     this.filter = filter;
-    if (filter.filters["0"]) {
-      this.voucherNoSearchKey = filter.filters["0"].value;
+    for (let i = 0; i < filter.filters.length; i++) {
+      if (filter.filters[i].field == "VoucherNo") {
+        this.voucherNoSearchKey = filter.filters[i].value;
+      }
+      if (filter.filters[i].field == "ProjectName") {
+        this.projectNameSerachKey = filter.filters[i].value;
+      }
+      if (filter.filters[i].field == "SeriesName") {
+        this.seriesNameSearchKey = filter.filters[i].value;
+      }
     }
-    if (filter.filters["1"]) {
-      this.projectNameSerachKey = filter.filters["1"].value;
-    }
-    if (filter.filters["2"]) {
-      this.seriesNameSearchKey = filter.filters["2"].value;
-    }
+
     this.getJournalList();
   }
 
