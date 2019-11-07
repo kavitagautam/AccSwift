@@ -25,9 +25,21 @@ export class SideNavComponent implements OnInit {
     {
       id: 3,
       displayName: "Ledger",
-      iconName: "fas fa-fw fa-chart-area",
+      iconName: "fas fa-file-invoice",
       route: "/ledger"
+    },
+    {
+      id: 4,
+      displayName: "Company",
+      iconName: "fas fa-building",
+      route: "/company"
     }
+    // {
+    //   id: 5,
+    //   displayName: "Product",
+    //   iconName: "fab fa-product-hunt",
+    //   route: "/product"
+    // }
   ];
 
   userName: string;

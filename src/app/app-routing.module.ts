@@ -37,7 +37,10 @@ const routes: Routes = [
       },
       {
         path: "company",
-        loadChildren: "@modules/company/company.module#CompanyModule"
+        loadChildren: "@modules/company/company.module#CompanyModule",
+        data: {
+          breadcrumb: "Company"
+        }
       },
       {
         path: "ledger",
