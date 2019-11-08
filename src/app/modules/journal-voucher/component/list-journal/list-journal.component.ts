@@ -31,6 +31,10 @@ export class ListJournalComponent implements OnInit {
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
 
   //Filter Serach Key
+  voucherNoSearch = "";
+  journalDateSearch = "";
+  projectIdSearch = "";
+  seriesIdSearch = "";
   voucherNoSearchKey = "";
   journalDateSerchKey = "";
   projectNameSerachKey = "";
@@ -97,10 +101,14 @@ export class ListJournalComponent implements OnInit {
       DisplayRow: this.pageSize,
       OrderBy: "", // string[] OrderByList = new string[] { "Voucher_No", "Journal_Date", "Remarks", "Series", "Project" };
       Direction: "asc", // "asc" or "desc"
-      SeriesId: this.seriesNameSearchKey,
-      ProjectId: this.projectNameSerachKey,
-      VoucherNo: this.voucherNoSearchKey,
-      JournalDate: this.journalDateSerchKey
+      SeriesId: this.seriesIdSearch,
+      ProjectId: this.projectIdSearch,
+      VoucherNo: this.voucherNoSearch,
+      JournalDate: this.journalDateSearch,
+      VoucherNoSearchTerm: this.voucherNoSearchKey,
+      ProjectNameSearchTerm: this.projectNameSerachKey,
+      SeriesNameSearchTerm: this.seriesNameSearchKey,
+      Remarks: this.remarkSearchKey
     };
     this.journalService.getJournalList(params).subscribe(
       res => {
@@ -159,15 +167,14 @@ export class ListJournalComponent implements OnInit {
         this.seriesNameSearchKey = filter.filters[i].value;
       }
     }
-
     this.getJournalList();
   }
 
   public searchForm() {
-    this.voucherNoSearchKey = this.journalSearchForm.controls.voucherNo.value;
-    this.journalDateSerchKey = this.journalSearchForm.controls.journalDate.value;
-    this.projectNameSerachKey = this.journalSearchForm.controls.project.value;
-    this.seriesNameSearchKey = this.journalSearchForm.controls.series.value;
+    this.voucherNoSearch = this.journalSearchForm.controls.voucherNo.value;
+    this.journalDateSearch = this.journalSearchForm.controls.journalDate.value;
+    this.projectIdSearch = this.journalSearchForm.controls.project.value;
+    this.seriesIdSearch = this.journalSearchForm.controls.series.value;
     this.getJournalList();
   }
 

@@ -6,15 +6,15 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
 import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
 import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import { CompanyRoutingModule } from "./company-routing.module";
-import { AddCompanyComponent } from "./components/add-company/add-company.component";
-import { ListCompanyComponent } from "./components/list-company/list-company.component";
-import { EditCompanyComponent } from "./components/edit-company/edit-company.component";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ListCompanyComponent } from './components/list-company/list-company.component';
+import { AddCompanyComponent } from './components/add-company/add-company.component';
+import { EditCompanyComponent } from './components/edit-company/edit-company.component';
 
 @NgModule({
   declarations: [
-    AddCompanyComponent,
     ListCompanyComponent,
+    AddCompanyComponent,
     EditCompanyComponent
   ],
   imports: [

@@ -65,11 +65,15 @@ export class JournalService {
       .set("PageNo", paramsData.PageNo)
       .set("DisplayRow", paramsData.DisplayRow)
       .set("Direction", paramsData.Direction)
-      .set("OrderBy", paramsData.OrderBy)
-      .set("SeriesID", paramsData.SeriesId ? paramsData.SeriesId : 284)
-      .set("ProjectID", paramsData.ProjectId ? paramsData.ProjectId : 1)
+      .set("OrderBy", paramsData.OrderBy ? paramsData.OrderBy : null)
+      .set("SeriesID", paramsData.SeriesId ? paramsData.SeriesId : -1)
+      .set("SeriesName", paramsData.SeriesNameSearchTerm)
+      .set("ProjectID", paramsData.ProjectId ? paramsData.ProjectId : -1)
+      .set("ProjectName", paramsData.ProjectNameSearchTerm)
       .set("VoucherNo", paramsData.VoucherNo)
-      .set("JournalDate", paramsData.JournalDate);
+      .set("VoucherNoSearchTerm", paramsData.VoucherNoSearchTerm)
+      .set("JournalDate", paramsData.JournalDate)
+      .set("Remarks", paramsData.Remarks);
     return this.httpService.get(
       `${this._api_URL}JournalMaster/Navigate`,
       null,
