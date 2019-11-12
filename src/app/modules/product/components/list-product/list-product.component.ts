@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ProductService } from "../../services/product.service";
 const is = (fileName: string, ext: string) =>
@@ -10,10 +10,17 @@ const is = (fileName: string, ext: string) =>
   styleUrls: ["./list-product.component.scss"]
 })
 export class ListProductComponent implements OnInit {
+  @Output("selectedItem") selectedItem = new EventEmitter();
+  selectedProductGroupTab: boolean;
+  selectedProductTab: boolean;
   productListForm: FormGroup;
   productTreeList: any;
+  productListView: any;
+  productTreeNode: any;
+  treeViewLoading: boolean;
+  listViewLoading: boolean;
   //for Expanding the tree view
-  public expandedKeys: any[] = ['0','0_0','0_0_1'];
+  public expandedKeys: any[] = ["Root", "Ac Stand"];
 
   constructor(
     public _fb: FormBuilder,
@@ -21,74 +28,73 @@ export class ListProductComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.productListForm = this._fb.group({
-      groupName: [""],
-      parentGroup: [""],
-      remarks: [""],
-      productCode: ["", Validators.required],
-      productName: ["", Validators.required],
-      productGroup: ["", Validators.required],
-      departmentandLocation: [""],
-      baseUnit: ["", Validators.required]
-    });
-    this.productService.getProductTree().subscribe(res => {
-      this.productTreeList = res;
-    });
+    this.selectedProductTab=true;
+    this.getProductTreeView();
   }
 
-  public data1: any[] = [
-    {
-      text: "My Documents",
-      items: [
-        {
-          text: "Kendo UI Project",
-          items: [
-            { text: "about.html", items: [{ text: "this is the next one" }] },
-            { text: "index.html", items: [{ text: "this is the next one" }] },
-            { text: "logo.png", items: [{ text: "this is the next one" }] }
-          ]
-        },
-        {
-          text: "New Web Site",
-          items: [{ text: "mockup.jpg" }, { text: "Research.pdf" }]
-        },
-        {
-          text: "Reports",
-          items: [
-            { text: "February.pdf" },
-            { text: "March.pdf" },
-            { text: "April.pdf" }
-          ]
-        }
-      ]
-    }
-  ];
 
-  public iconClass({ text, items }: any): any {
+  selectedNode(dataItem): void {
+    if (dataItem.TypeOf === 0) {
+      this.selectedItem = dataItem;
+      this.selectedProductGroupTab = true;
+      this.selectedProductTab = false;
+    } else {
+      this.selectedItem = dataItem;
+      this.selectedProductTab = true;
+      this.selectedProductGroupTab = false;
+    }
+  }
+
+  getProductTreeView(): void {
+    this.treeViewLoading = true;
+    this.productService.getProductTree().subscribe(
+      res => {
+        this.productTreeNode = res.Node;
+        this.productTreeList = res.Tree;
+        this.treeViewLoading = false;
+      },
+      error => {
+        this.treeViewLoading = false;
+      },
+      () => {
+        this.treeViewLoading = false;
+      }
+    );
+  }
+
+  loadLedgerlistView(): void {
+    this.listViewLoading = true;
+    this.productService.getProductList().subscribe(
+      res => {
+        this.productListView = res;
+      },
+      error => {
+        this.listViewLoading = false;
+      },
+      () => {
+        this.listViewLoading = false;
+      }
+    );
+  }
+
+  public onTabSelect(e) {
+    if (e.index == 1) {
+      this.loadLedgerlistView();
+    }
+  }
+
+  public colorGroupOrLedger({ Title, TypeOf }: any): any {
     return {
-      "k-i-file-pdf": is(text, "pdf"),
-      "k-i-folder": items !== undefined,
-      "k-i-html": is(text, "html"),
-      "k-i-image": is(text, "jpg|png"),
-      "k-icon": true
+      "tree-group": TypeOf == 1,
+      "tree-ledger": TypeOf == 0
     };
   }
-  public data: any[] = [
-    {
-      text: "Furniture",
-      items: [
-        { text: "Tables & Chairs" },
-        { text: "Sofas" },
-        { text: "Occasional Furniture" }
-      ]
-    },
-    {
-      text: "Decor",
-      items: [
-        { text: "Bed Linen" },
-        { text: "Curtains & Blinds" },
-        { text: "Carpets" }
-      ]
-    }
-  ];
+
+  expandAllNode(): void {
+    this.expandedKeys = this.productTreeNode;
+  }
+
+  collapseAllNode(): void {
+    this.expandedKeys = [];
+  }
 }
