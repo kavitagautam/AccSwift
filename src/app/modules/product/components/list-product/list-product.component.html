@@ -1,128 +1,99 @@
-<div class="row">
-  <div class="col-md-3" style="height: 76vh; overflow: scroll;">
-    <!-- <kendo-treeview
-      [nodes]="data1"
-      textField="text"
-      kendoTreeViewExpandable
-      kendoTreeViewHierarchyBinding
-      childrenField="items"
-    >
-      <ng-template kendoTreeViewNodeTemplate let-dataItem>
-         <span [ngClass]="iconClass(dataItem)"></span>
-        {{ dataItem.text }}
-      </ng-template>
-    </kendo-treeview> -->
-    <!-- <div class="example-config">
-            Expanded keys: {{expandedKeys.join(",")}}
-    </div> -->
-    <kendo-treeview
-      [nodes]="productTreeList"
-      textField="Title"
-      kendoTreeViewExpandable
-      kendoTreeViewSelectable
-      kendoTreeViewHierarchyBinding
-      childrenField="Child"
-      kendoTreeViewExpandable
-      [(expandedKeys)]="expandedKeys"
-    >
-    </kendo-treeview>
+<div class="box box-default">
+  <div class="col-md-6 p-0">
+    <div class="box box-solid">
+      <kendo-tabstrip (tabSelect)="onTabSelect($event)">
+        <kendo-tabstrip-tab [title]="'Tree View'" [selected]="true">
+          <ng-template kendoTabContent>
+            <div class="col-md-12 mt-3">
+              <div class="treeview-wrapper">
+                <button class="btn btn-secondary" (click)="expandAllNode()">
+                  Expand All
+                </button>
+                <button
+                  class="btn btn-secondary ml-2"
+                  (click)="collapseAllNode()"
+                >
+                  Collapse All
+                </button>
+
+                <kendo-treeview
+                [nodes]="productTreeList"
+                textField="Title"
+                kendoTreeViewExpandable
+                kendoTreeViewSelectable
+                kendoTreeViewHierarchyBinding
+                childrenField="Child"
+                [expandBy]="'Title'"
+                kendoTreeViewExpandable
+                [(expandedKeys)]="expandedKeys"
+                style="height: 76vh ; overflow:scroll"
+
+              >
+              <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                <span
+                  [ngClass]="colorGroupOrLedger(dataItem)"
+                  (click)="selectedNode(dataItem)"
+                >
+                  {{ dataItem.Title }}
+                </span>
+              </ng-template>
+              </kendo-treeview>
+                <div *ngIf="treeViewLoading" class="k-i-loading"></div>
+              </div>
+            </div>
+          </ng-template>
+        </kendo-tabstrip-tab>
+        <kendo-tabstrip-tab [title]="'List View'">
+          <ng-template kendoTabContent>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="grid-wrapper-listView">
+                  <kendo-grid [data]="productListView" [height]="495">
+                    <kendo-grid-column field="EngName" title="Name">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="GroupName" title="Group Name">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="Code" title="Code">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="TotalValue" title="Total Value">
+                    </kendo-grid-column>
+                  </kendo-grid>
+                  <div *ngIf="listViewLoading" class="k-i-loading"></div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </kendo-tabstrip-tab>
+      </kendo-tabstrip>
+    </div>
   </div>
-  <div class="col-md-9">
-    <form [formGroup]="productListForm" novalidate>
-      <div class="contanier-fluid">
-        <div class="row mt-5 mr-2">
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Group Name:</label>
-              </div>
-              <div class="col-md-7">
-                <input class="form-control" formControlName="groupName" />
-              </div>
-            </div>
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Parent Group: </label>
-              </div>
-              <div class="col-md-7">
-                <input class="form-control" formControlName="parentGroup" />
-              </div>
-            </div>
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Remarks:</label>
-              </div>
-              <div class="col-md-7">
-                <input class="form-control" formControlName="remarks" />
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Product Code:</label>
-              </div>
-              <div class="col-md-7">
-                <input
-                  formControlName="productCode"
-                  type="text"
-                  class="form-control"
-                />
-              </div>
-            </div>
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Product Name:</label>
-              </div>
-              <div class="col-md-7">
-                <input
-                  formControlName="productName"
-                  type="text"
-                  class="form-control"
-                />
-              </div>
-            </div>
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Product Group:</label>
-              </div>
-              <div class="col-md-7">
-                <input
-                  formControlName="productGroup"
-                  type="text"
-                  class="form-control"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Department/Location:</label>
-              </div>
-              <div class="col-md-7">
-                <input
-                  formControlName="departmentandLocation"
-                  type="text"
-                  class="form-control"
-                />
-              </div>
-            </div>
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Base Unit:</label>
-              </div>
-              <div class="col-md-7">
-                <input
-                  formControlName="baseUnit"
-                  type="text"
-                  class="form-control"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+  <div class="col-md-6 p-0">
+    <div class="row">
+      <div class="col-md-12 mr-2">
+        <kendo-tabstrip>
+          <kendo-tabstrip-tab
+            [title]="'Product'"
+            [selected]="selectedProductTab ? true : false"
+          >
+            <ng-template kendoTabContent>
+              <app-product
+                [selectedItem]="selectedItem"
+              ></app-product>
+            </ng-template>
+          </kendo-tabstrip-tab>
+          <kendo-tabstrip-tab
+            [title]="'Product Group'"
+            [selected]="selectedProductGroupTab ? true : false"
+          >
+            <ng-template kendoTabContent>
+              <app-product-group
+                [selectedItem]="selectedItem"
+              ></app-product-group>
+            </ng-template>
+          </kendo-tabstrip-tab>
+        </kendo-tabstrip>
       </div>
-    </form>
+    </div>
   </div>
 </div>
+

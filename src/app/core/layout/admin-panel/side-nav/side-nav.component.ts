@@ -33,13 +33,13 @@ export class SideNavComponent implements OnInit {
       displayName: "Company",
       iconName: "fas fa-building",
       route: "/company"
+    },
+    {
+      id: 5,
+      displayName: "Product",
+      iconName: "fab fa-product-hunt",
+      route: "/product"
     }
-    // {
-    //   id: 5,
-    //   displayName: "Product",
-    //   iconName: "fab fa-product-hunt",
-    //   route: "/product"
-    // }
   ];
 
   userName: string;
