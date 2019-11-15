@@ -24,9 +24,25 @@ const routes: Routes = [
         path: "journal",
         loadChildren:
           "@modules/journal-voucher/journal-voucher.module#JournalVoucherModule",
-          data: {
-            breadcrumb: "Journal"
-          }
+        data: {
+          breadcrumb: "Journal"
+        }
+      },
+      {
+        path: "cash",
+        loadChildren:
+          "@modules/cash-receipts/cash-receipts.module#CashReceiptsModule",
+        data: {
+          breadcrumb: "Cash"
+        }
+      },
+      {
+        path: "bank",
+        loadChildren:
+          "@modules/bank-receipts/bank-receipts.module#BankReceiptsModule",
+        data: {
+          breadcrumb: "Bank"
+        }
       },
       {
         path: "product",
