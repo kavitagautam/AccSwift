@@ -85,10 +85,21 @@ legend {
   text-overflow: inherit !important;
 }
 
- .ledgerSelectIcon{
+.ledgerSelectIcon {
   position: absolute;
   right: 16px;
   top: 8px;
- }
+}
 
- 
+.accordion .card-header:after {
+  font-family: "FontAwesome";
+  content: "\f068";
+  float: right;
+  bottom: 35px;
+  position: relative;
+  right: 15px;
+}
+.accordion .card-header.collapsed:after {
+  /* symbol for "collapsed" panels */
+  content: "\f067";
+}

@@ -20,7 +20,23 @@ export class SideNavComponent implements OnInit {
       id: 2,
       displayName: "Journal",
       iconName: "far fa-edit",
-      route: "/journal"
+      children: [
+        {
+          displayName: "Journal Voucher",
+          iconName: "",
+          route: "/journal"
+        },
+        {
+          displayName: "Cash Receipts",
+          iconName: "",
+          route:"/cash"
+        },
+        {
+          displayName: "Bank Receipts",
+          iconName: "group",
+          route:"/bank"
+        }
+      ]
     },
     {
       id: 3,
