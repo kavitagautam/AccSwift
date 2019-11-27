@@ -33,7 +33,7 @@ export class SideNavComponent implements OnInit {
         },
         {
           displayName: "Bank Receipts",
-          iconName: "group",
+          iconName: "",
           route: "/bank"
         }
       ]
