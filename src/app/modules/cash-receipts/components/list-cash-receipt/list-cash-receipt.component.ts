@@ -10,6 +10,7 @@ import {
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { CashReceiptMaster } from "../../models/cash-receipt.model";
 
 @Component({
   selector: "app-list-cash-receipt",
@@ -19,7 +20,7 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
 export class ListCashReceiptComponent implements OnInit {
   cashReceiptForm: FormGroup;
   listLoading: boolean;
-  cashList: any;
+  cashList: CashReceiptMaster[] = [];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
   date: Date = new Date();
@@ -83,13 +84,49 @@ export class ListCashReceiptComponent implements OnInit {
       Direction: "asc" // "asc" or "desc"
     };
 
-    this.cashReceiptService.getCashReceiptMaster().subscribe(res => {
-      this.cashList = res;
-      this.gridView = {
-        data: this.cashList,
-        total: this.cashList ? this.cashList.length : 0
-      };
-    });
+    this.cashReceiptService.getCashReceiptMaster().subscribe(
+      res => {
+        this.listLoading = true;
+
+        //mapping the data to change string date format to Date
+        const sampleData = res.map(
+          dataItem =>
+            <CashReceiptMaster>{
+              ID: dataItem.ID,
+              SeriesID: dataItem.SeriesID,
+              LedgerID: dataItem.LedgerID,
+              VoucherNo: dataItem.VoucherNo,
+              CashReceiptDate: this.parseAdjust(dataItem.CashReceiptDate),
+              ProjectID: dataItem.ProjectID,
+              Fields: {
+                Field1: dataItem.Fields.Field1,
+                Field2: dataItem.Fields.Field2,
+                Field3: dataItem.Fields.Field3,
+                Field4: dataItem.Fields.Field4,
+                Field5: dataItem.Fields.Field5
+              },
+              IsPayByInvoice: dataItem.IsPayByInvoice,
+              TotalAmount: dataItem.TotalAmount,
+              Remarks: dataItem.Remarks,
+              CreatedBy: dataItem.CreatedBy,
+              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
+              ModifiedBy: dataItem.ModifiedBy,
+              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
+            }
+        );
+        this.cashList = sampleData;
+        this.gridView = {
+          data: this.cashList,
+          total: this.cashList ? this.cashList.length : 0
+        };
+      },
+      error => {
+        this.listLoading = false;
+      },
+      () => {
+        this.listLoading = false;
+      }
+    );
   }
 
   public filterChange(filter): void {

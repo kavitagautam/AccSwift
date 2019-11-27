@@ -40,7 +40,8 @@ export class CashReceiptService {
         this.seriesLists = res;
       });
   }
-  getCashReceiptMaster(): Observable<CashReceiptMaster> {
+  // : Observable<CashReceiptMaster[]>
+  getCashReceiptMaster() {
     return this.httpService.get(`${this._api_URL}CashReceiptMaster`);
   }
 }
