@@ -15,6 +15,7 @@ import {
   BsDropdownModule,
   CollapseModule
 } from "ngx-bootstrap";
+import { CurrencyDirective } from "./directives/localCurrency/currency.directive";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {
     LanguageSwitcherComponent,
     CommonModalComponent,
     CurrencyFormatPipe,
-    PopupAnchorDirective
+    PopupAnchorDirective,
+    CurrencyDirective
   ],
   imports: [
     CommonModule,
@@ -51,7 +53,8 @@ import {
     LanguageSwitcherComponent,
     CommonModalComponent,
     PopupAnchorDirective,
-    CurrencyFormatPipe
+    CurrencyFormatPipe,
+    CurrencyDirective
   ]
 })
 export class SharedModule {}
