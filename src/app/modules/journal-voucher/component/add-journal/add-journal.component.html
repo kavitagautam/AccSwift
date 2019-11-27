@@ -168,6 +168,7 @@
               #ntb="popupAnchor"
               popupAnchor
               style="width: 130px"
+              [format]= "'c0'"
               [decimals]="decimals"
               [formControl]="
                 getjournalEntryList.controls[rowIndex].get(column.field)
@@ -212,6 +213,7 @@
               popupAnchor
               style="width: 130px"
               [decimals]="decimals"
+              [format]= "'c0'"
               [formControl]="
                 getjournalEntryList.controls[rowIndex].get('credit')
               "
@@ -258,6 +260,7 @@
               style="width:130px"
               [readonly]="true"
               [decimals]="decimals"
+              [format]="'c0'"
               [formControl]="
                 getjournalEntryList.controls[rowIndex].get(column.field)
               "
