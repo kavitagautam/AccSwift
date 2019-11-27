@@ -1,17 +1,196 @@
-<div class="box box-default collapsed-box">
-  <div class="box-header with-border">
-    <h3 class="box-title">Expandable</h3>
-
-    <div class="box-tools pull-right">
-      <button type="button" class="btn btn-box-tool" data-widget="collapse">
-        <i class="fa fa-plus"></i>
-      </button>
+<div id="accordion" class="accordion">
+  <div class="card mb-0">
+    <div
+      class="card-header collapsed"
+      data-toggle="collapse"
+      href="#collapseOne"
+    >
+      <a class="card-title">
+        <h3
+          class="box-title"
+          style="background: #fff;
+        padding: 5px;"
+        >
+          Search
+        </h3>
+        <button [routerLink]="['add']" class="btn btn-primary">
+          <i class="fa fa-plus pull-right" aria-hidden="true"></i>Add Bank Receipt
+        </button>
+      </a>
+     
     </div>
-    <!-- /.box-tools -->
+    <div id="collapseOne" class="card-body collapse" data-parent="#accordion">
+      <div
+        class="col-md-12 m-3"
+        style="background: #fff ;top:-25px; left: -10px;"
+      >
+        <form [formGroup]="bankReceiptForm" novalidate>
+          <div class="col-md-4">
+            <div class="row clearfix">
+              <div class="col-md-5">
+                <label class="float-right">Series: </label>
+              </div>
+              <div class="col-md-7">
+                <select
+                  class="form-control"
+                  id="seriesId"
+                  formControlName="series"
+                >
+                  <option value="null"> </option>
+                  <option
+                    *ngFor="let series of bankReceiptService.seriesLists"
+                    [ngValue]="series.ID"
+                  >
+                    {{ series.EngName }}</option
+                  >
+                </select>
+              </div>
+            </div>
+            <div class="row clearfix">
+              <div class="col-md-5">
+                <label class="float-right">Bank Accont: </label>
+              </div>
+              <div class="col-md-7">
+                <select
+                  class="form-control"
+                  id="bankAccountNo"
+                  formControlName="bankAccount"
+                >
+                  <option value="null"> </option>
+                  <option
+                    *ngFor="let series of bankReceiptService.seriesLists"
+                    [ngValue]="series.ID"
+                  >
+                    {{ series.EngName }}</option
+                  >
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="row clearfix">
+              <div class="col-md-5">
+                <label class="float-right">Voucher #: </label>
+              </div>
+              <div class="col-md-7">
+                <input class="form-control" formControlName="voucherNo" />
+              </div>
+            </div>
+            <div class="row clearfix mt-3">
+              <div class="col-md-5">
+                <label class="float-right">Project: </label>
+              </div>
+              <div class="col-md-7">
+                <select
+                  class="form-control"
+                  id="projectId"
+                  formControlName="project"
+                >
+                  <option value="null"> </option>
+                  <option
+                    *ngFor="let project of bankReceiptService.projectLists"
+                    [ngValue]="project.ID"
+                  >
+                    {{ project.EngName }}</option
+                  >
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="row clearfix">
+              <div class="col-md-5">
+                <label class="float-right">Date :</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  formControlName="date"
+                  type="date"
+                  [value]="date | date: 'MM/dd/yyyy'"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="row clearfix"></div>
+          </div>
+          <div class="col-md-12 ml-2">
+            <div class="mb-2">
+              <button class="btn btn-primary btn-flat" (click)="searchForm()">
+                Search
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-  <!-- /.box-header -->
-  <div class="box-body">
-    The body of the box
-  </div>
-  <!-- /.box-body -->
 </div>
+
+<div class="box box-default">
+  <div class="col-md-12 mt-5 mr-2">
+    <div class="grid-wrapper">
+      <kendo-grid
+        [data]="gridView"
+        [filterable]="true"
+        [filter]="filter"
+        [pageSize]="pageSize"
+        [skip]="skip"
+        [sortable]="{
+          allowUnsort: allowUnsort,
+          mode: 'single'
+        }"
+        [sort]="sort"
+        (sortChange)="sortChange($event)"
+        [pageable]="true"
+        (pageChange)="pageChange($event)"
+        scrollable="none"
+        (filterChange)="filterChange($event)"
+      >
+        <kendo-grid-column field="" title="Code"> </kendo-grid-column>
+        <kendo-grid-column field="" title="Particular/Accounting Head">
+        </kendo-grid-column>
+        <kendo-grid-column field="" title="Amount"> </kendo-grid-column>
+        <kendo-grid-column field="" title="Current Balance">
+        </kendo-grid-column>
+        <kendo-grid-column field="" title="Cheque Number"> </kendo-grid-column>
+        <kendo-grid-column field="" title="Cheque Bank"> </kendo-grid-column>
+        <kendo-grid-column field="" title="VoucherNo."> </kendo-grid-column>
+        <kendo-grid-column field="" title="V Type"> </kendo-grid-column>
+        <kendo-grid-column
+          field=""
+          title="Cheque Date"
+          filter="date"
+          [filterable]="false"
+          format="{0: yyyy-mm-dd}"
+        >
+        </kendo-grid-column>
+        <kendo-grid-column field="" title="Remarks"> </kendo-grid-column>
+        <kendo-grid-command-column title="Action" width="220">
+          <ng-template
+            kendoGridCellTemplate
+            let-isNew="isNew"
+            let-dataItem="dataItem"
+          >
+            <button
+              kendoGridEditCommand
+              (click)="edit(dataItem)"
+              data-toggle="modal"
+              data-target="#viewModal"
+              [primary]="true"
+            >
+              Edit
+            </button>
+            <button
+              kendoGridRemoveCommand
+              (click)="openConfirmationDialogue(dataItem)"
+            >
+              Delete
+            </button>
+          </ng-template>
+        </kendo-grid-command-column>
+      </kendo-grid>
+
+      <div *ngIf="listLoading" class="k-i-loading"></div>
+    </div>
+  </div>
+</div> 
