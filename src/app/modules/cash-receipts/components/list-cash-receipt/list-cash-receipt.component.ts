@@ -36,7 +36,7 @@ export class ListCashReceiptComponent implements OnInit {
       series: [""],
       project: [""],
       voucherNo: [""],
-      bankAccount: [""],
+      cashAccount: [""],
       date: [""]
     });
     this.getCashReceiptlList();
@@ -94,10 +94,13 @@ export class ListCashReceiptComponent implements OnInit {
             <CashReceiptMaster>{
               ID: dataItem.ID,
               SeriesID: dataItem.SeriesID,
+              SeriesName: dataItem.SeriesName,
               LedgerID: dataItem.LedgerID,
+              LedgerName: dataItem.LedgerName,
               VoucherNo: dataItem.VoucherNo,
               CashReceiptDate: this.parseAdjust(dataItem.CashReceiptDate),
               ProjectID: dataItem.ProjectID,
+              ProjectName: dataItem.ProjectName,
               Fields: {
                 Field1: dataItem.Fields.Field1,
                 Field2: dataItem.Fields.Field2,

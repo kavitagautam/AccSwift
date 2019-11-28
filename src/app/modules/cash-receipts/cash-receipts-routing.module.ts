@@ -13,12 +13,12 @@ const routes: Routes = [
   {
     path: "add",
     component: AddCashReceiptComponent,
-    data: { breadcrumb: "Add Cash Receipts" }
+    data: { breadcrumb: "Add Receipts" }
   },
   {
-    path: "edit",
+    path: "edit/:id",
     component: EditCashReceiptComponent,
-    data: { breadcrumb: "Edit Cash Receipts" }
+    data: { breadcrumb: "Edit Receipts" }
   }
 ];
 

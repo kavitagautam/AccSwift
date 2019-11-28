@@ -12,18 +12,15 @@
         padding: 5px;"
         >
           Search
+          <button [routerLink]="['add']" class="btn btn-primary">
+            <i class="fa fa-plus pull-right" aria-hidden="true"></i>Add Bank
+            Receipt
+          </button>
         </h3>
-        <button [routerLink]="['add']" class="btn btn-primary">
-          <i class="fa fa-plus pull-right" aria-hidden="true"></i>Add Bank Receipt
-        </button>
       </a>
-     
     </div>
     <div id="collapseOne" class="card-body collapse" data-parent="#accordion">
-      <div
-        class="col-md-12 m-3"
-        style="background: #fff ;top:-25px; left: -10px;"
-      >
+      <div class="col-md-12 m-3">
         <form [formGroup]="bankReceiptForm" novalidate>
           <div class="col-md-4">
             <div class="row clearfix">
@@ -46,7 +43,7 @@
                 </select>
               </div>
             </div>
-            <div class="row clearfix">
+            <div class="row clearfix mt-3">
               <div class="col-md-5">
                 <label class="float-right">Bank Accont: </label>
               </div>
@@ -193,4 +190,4 @@
       <div *ngIf="listLoading" class="k-i-loading"></div>
     </div>
   </div>
-</div> 
+</div>
