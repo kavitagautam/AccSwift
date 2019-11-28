@@ -36,6 +36,15 @@ const routes: Routes = [
           breadcrumb: "Cash"
         }
       },
+
+      {
+        path: "cashPayments",
+        loadChildren:
+          "@modules/cash-payments/cash-payments.module#CashPaymentsModule",
+        data: {
+          breadcrumb: "Cash Payment"
+        }
+      },
       {
         path: "bank",
         loadChildren:
