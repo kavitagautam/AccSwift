@@ -19,7 +19,7 @@ export class SideNavComponent implements OnInit {
     {
       id: 2,
       displayName: "AR/AP",
-      iconName: "",
+      iconName: "fas fa-file-invoice",
       children: [
         {
           displayName: "Journal Voucher",
@@ -28,20 +28,30 @@ export class SideNavComponent implements OnInit {
         },
         {
           displayName: "Cash Receipts",
-          iconName: "",
+          iconName: "fas fa-money-bill",
           route: "/cash"
         },
         {
           displayName: "Bank Receipts",
-          iconName: "",
+          iconName: "fas fa-file-invoice",
           route: "/bank"
+        },
+        {
+          displayName: "Bank Payments",
+          iconName: "fas fa-file-invoice-dollar",
+          route: "/bankPayments"
+        },
+        {
+          displayName: "Contra Voucher",
+          iconName: "fas fa-file-invoice",
+          route: "/contra"
         }
       ]
     },
     {
       id: 3,
       displayName: "Ledger",
-      iconName: "fas fa-file-invoice",
+      iconName: "fas fa-file-invoice-dollar",
       route: "/ledger"
     },
     {
@@ -55,6 +65,18 @@ export class SideNavComponent implements OnInit {
       displayName: "Product",
       iconName: "fab fa-product-hunt",
       route: "/product"
+    },
+    {
+      id: 6,
+      displayName: "Preference",
+      iconName: "fas fa-cogs",
+      route: "/preference"
+    },
+    {
+      id: 7,
+      displayName: "Setting",
+      iconName: "fas fa-tools",
+      route: "/settings"
     }
   ];
 
