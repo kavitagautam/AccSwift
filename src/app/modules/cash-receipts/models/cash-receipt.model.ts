@@ -45,3 +45,28 @@ export interface CashReceiptMaster {
   ModifiedBy: string;
   ModifiedDate: Date;
 }
+
+export interface CashReceiptDetails {
+  ID: number;
+  CashReceiptMasterID: number;
+  LedgerID: number;
+  LedgerName: string;
+  Amount: number;
+  Remarks: string;
+  VoucherType: string;
+  VoucherNumber: string;
+  DiscountAmount: number;
+  InvoiceType: string;
+  InvoiceID: number;
+}
+
+export interface LedgerList {
+  LedgerCode: string;
+  LedgerName: string;
+  LedgerID: number;
+  GroupID: number;
+  GroupName: string;
+  Balance: string;
+  ActualBalance: number;
+  LedgerType: string;
+}

@@ -12,19 +12,16 @@
         padding: 5px;"
         >
           Search
+          <button [routerLink]="['add']" class="btn btn-primary">
+            <i class="fa fa-plus pull-right" aria-hidden="true"></i>Add Cash
+            Payment
+          </button>
         </h3>
-        <button [routerLink]="['add']" class="btn btn-primary">
-          <i class="fa fa-plus pull-right" aria-hidden="true"></i>Add Cash
-          Receipt
-        </button>
       </a>
     </div>
     <div id="collapseOne" class="card-body collapse" data-parent="#accordion">
-      <div
-        class="col-md-12 m-3"
-        style="background: #fff ;top:-25px; left: -10px;"
-      >
-        <form [formGroup]="cashPaymentForm" novalidate>
+      <div class="col-md-12 m-3">
+        <form [formGroup]="cashPaymentsForm" novalidate>
           <div class="col-md-4">
             <div class="row clearfix">
               <div class="col-md-5">
@@ -38,7 +35,7 @@
                 >
                   <option value="null"> </option>
                   <option
-                    *ngFor="let series of cashPaymentService.seriesLists"
+                    *ngFor="let series of cashPaymentsService.seriesLists"
                     [ngValue]="series.ID"
                   >
                     {{ series.EngName }}</option
@@ -48,7 +45,7 @@
             </div>
             <div class="row clearfix">
               <div class="col-md-5">
-                <label class="float-right">Bank Account: </label>
+                <label class="float-right">Bank Accont: </label>
               </div>
               <div class="col-md-7">
                 <select
@@ -58,7 +55,7 @@
                 >
                   <option value="null"> </option>
                   <option
-                    *ngFor="let series of cashPaymentService.seriesLists"
+                    *ngFor="let series of cashPaymentsService.seriesLists"
                     [ngValue]="series.ID"
                   >
                     {{ series.EngName }}</option
@@ -88,7 +85,7 @@
                 >
                   <option value="null"> </option>
                   <option
-                    *ngFor="let project of cashPaymentService.projectLists"
+                    *ngFor="let project of cashPaymentsService.projectLists"
                     [ngValue]="project.ID"
                   >
                     {{ project.EngName }}</option
@@ -130,7 +127,7 @@
   <div class="col-md-12 mt-5 mr-2">
     <div class="grid-wrapper">
       <kendo-grid
-        [data]="gridView"
+        [data]="gridData"
         [filterable]="true"
         [filter]="filter"
         [pageSize]="pageSize"
@@ -157,7 +154,7 @@
         <kendo-grid-column field="ProjectName" title="Project">
         </kendo-grid-column>
         <kendo-grid-column
-          field="CashReceiptDate"
+          field="CashPaymentsDate"
           title="Cheque Date"
           filter="date"
           [filterable]="false"

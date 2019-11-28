@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: "",
     component: ListCashPaymentsComponent,
-    data: { breadcrumb: "Cash" }
+    data: { breadcrumb: "List Cash Payments" }
   },
   {
     path: "add",
