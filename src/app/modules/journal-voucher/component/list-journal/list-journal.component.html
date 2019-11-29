@@ -82,9 +82,9 @@
               </div>
               <div class="col-md-7">
                 <input
-                  formControlName="journalDate"
+                  formControlName="date"
                   type="date"
-                  [value]="journalDate | date: 'MM/dd/yyyy'"
+                  [value]="date | date: 'MM/dd/yyyy'"
                   class="form-control"
                 />
               </div>
@@ -127,7 +127,7 @@
         <kendo-grid-column field="VoucherNo" title="Voucher No.">
         </kendo-grid-column>
         <kendo-grid-column
-          field="JournalDate"
+          field="Date"
           title="Journal Date"
           filter="date"
           [filterable]="false"

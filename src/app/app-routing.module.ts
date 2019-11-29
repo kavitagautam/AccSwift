@@ -54,6 +54,22 @@ const routes: Routes = [
         }
       },
       {
+        path: "bankPayments",
+        loadChildren:
+          "@modules/bank-payments/bank-payments.module#BankPaymentsModule",
+        data: {
+          breadcrumb: "Bank Payments"
+        }
+      },
+      {
+        path: "contra",
+        loadChildren:
+          "@modules/contra-voucher/contra-voucher.module#ContraVoucherModule",
+        data: {
+          breadcrumb: "Contra Voucher"
+        }
+      },
+      {
         path: "product",
         loadChildren: "@modules/product/product.module#ProductModule",
         data: {
@@ -79,6 +95,20 @@ const routes: Routes = [
         loadChildren: "@modules/reports/reports.module#ReportsModule",
         data: {
           breadcrumb: "Report"
+        }
+      },
+      {
+        path: "settings",
+        loadChildren: "@modules/settings/settings.module#SettingsModule",
+        data: {
+          breadcrumb: "Settings"
+        }
+      },
+      {
+        path: "preference",
+        loadChildren: "@modules/preference/preference.module#PreferenceModule",
+        data: {
+          breadcrumb: "Preference"
         }
       }
     ]

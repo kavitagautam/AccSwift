@@ -161,6 +161,29 @@ export class ListCashReceiptComponent implements OnInit {
     this.router.navigate(["/cash/edit", item.ID]);
   }
 
+  onCheckChange(event) {
+    // const formArray: FormArray = this.myForm.get('myChoices') as FormArray;
+
+    /* Selected */
+    if (event.target.checked) {
+      // Add a new control in the arrayForm
+      //   formArray.push(new FormControl(event.target.value));
+    } else {
+      /* unselected */
+      // find the unselected element
+      let i: number = 0;
+
+      // formArray.controls.forEach((ctrl: FormControl) => {
+      //   if(ctrl.value == event.target.value) {
+      //     // Remove the unselected element from the arrayForm
+      //     formArray.removeAt(i);
+      //     return;
+      //   }
+
+      i++;
+    }
+  }
+  
   openConfirmationDialogue(dataItem) {
     const journalId = {
       id: dataItem.ID
