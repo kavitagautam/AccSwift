@@ -1,1 +1,132 @@
-<p>this is edit Cash Payments Templete</p>
+<div class="box box-default">
+  <form>
+    <div class="col-md-12 mt-5 mr-2">
+      <!-- Class COLUMN -->
+      <div class="col-md-4">
+        <!-- Class ROW -->
+        <div class="row clearfix">
+          <div class="col-md-5">
+            <label class="float-right">Series:</label>
+          </div>
+          <div class="col-md-7">
+            <select class="form-control" id="seriesId" formControlName="series">
+              <option value="null"></option>
+              <option
+                *ngFor="let series of CashPaymentService.seriesLists"
+                [ngValue]="series.ID"
+                >{{ series.EngName }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!-- Class ROW -->
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label class="float-right">Bank Account:</label>
+          </div>
+          <div class="col-md-7">
+            <select
+              class="form-control"
+              id="cashAccountNo"
+              formControlName="cashAccount"
+            >
+              <option value="null"></option>
+              <option
+                *ngFor="let series of CashPaymentService.seriesLists"
+                [ngValue]="series.ID"
+                >{{ series.EngName }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!-- Class ROW -->
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label>
+              <input
+                type="checkbox"
+                [value]=""
+                (change)="onCheckChange($event)"
+              />
+              Cash Party / Customer
+            </label>
+          </div>
+          <div class="col-md-7">
+            <select class="form-control" id="seriesId" formControlName="series">
+              <option value="null"> </option>
+              <option
+                *ngFor="let series of cashReceiptService.seriesLists"
+                [ngValue]="series.ID"
+              >
+                {{ series.EngName }}</option
+              >
+            </select>
+          </div>
+        </div>
+      </div>
+      <!-- End Of Column-4 -->
+
+      <!-- Class COLUMN -->
+      <div class="col-md-4">
+        <!-- Class ROW -->
+        <div class="row clearfix">
+          <div class="col-md-5">
+            <label class="float-right">Voucher #:</label>
+          </div>
+          <div class="col-md-7">
+            <input class="form-control" formControlName="voucherNo" />
+          </div>
+        </div>
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label class="float-right">Project:</label>
+          </div>
+          <div class="col-md-7">
+            <select
+              class="form-control"
+              id="prjectId"
+              formControlName="project"
+            >
+              <option value="null"></option>
+              <option
+                *ngFor="let project of CashPaymentService.projectLists"
+                [ngValue]="project.ID"
+                >{{ project.EngName }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label class="float-right">Current Balance: </label>
+          </div>
+          <div class="col-md-7">
+            <span>0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- End Of Column-4 -->
+      <!-- Class COLUMN -->
+      <div class="col-md-4">
+        <!-- Class ROW -->
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label class="float-right">Date:</label>
+          </div>
+          <div class="col-md-7">
+            <input
+              formControlName="date"
+              type="date"
+              [value]="date | date: 'MM/dd/yyyy'"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <!-- Class ROW -->
+        <div class="row clearfix"></div>
+      </div>
+      <!-- End Of Column-4 -->
+    </div>
+  </form>
+</div>
