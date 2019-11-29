@@ -4,10 +4,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import {
-  SortDescriptor,
-  CompositeFilterDescriptor
-} from "@progress/kendo-data-query";
+import { SortDescriptor, CompositeFilterDescriptor } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
@@ -134,17 +131,14 @@ export class ListCashPaymentsComponent implements OnInit {
   }
 
   public edit(item): void {
-    this.router.navigate(["/cash/edit", item.ID]);
+    this.router.navigate(["/cashPayments/edit", item.ID]);
   }
 
   openConfirmationDialogue(dataItem) {
     const journalId = {
       id: dataItem.ID
     };
-    this.modalRef = this.modalService.show(
-      ConfirmationDialogComponent,
-      this.config
-    );
+    this.modalRef = this.modalService.show(ConfirmationDialogComponent, this.config);
     this.modalRef.content.data = "Payments No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
     this.modalRef.content.onClose.subscribe(confirm => {
