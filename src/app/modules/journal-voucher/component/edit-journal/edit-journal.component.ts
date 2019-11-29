@@ -11,7 +11,6 @@ import {
 } from "@progress/kendo-angular-grid";
 import { SortDescriptor } from "@progress/kendo-data-query";
 import { LedgerCodeMatchService } from "../../services/ledger-code-match.service";
-import { IntlService } from "@progress/kendo-angular-intl";
 
 @Component({
   selector: "app-edit-journal",
@@ -34,7 +33,6 @@ export class EditJournalComponent implements OnInit {
   submitted: boolean;
   ledgerListLoading: boolean;
   rowSubmitted: boolean;
-  journalDate: Date = new Date();
   debitTotal: number = 0;
   creditTotal: number = 0;
   differenceTotal: number = 0;
@@ -57,9 +55,7 @@ export class EditJournalComponent implements OnInit {
     private router: Router,
     public journalService: JournalService,
     private route: ActivatedRoute,
-    public ledgerCodeMatchService: LedgerCodeMatchService,
-    public intl: IntlService,
-    private datePipe: DatePipe
+    public ledgerCodeMatchService: LedgerCodeMatchService
   ) {}
 
   ngOnInit() {
@@ -84,9 +80,9 @@ export class EditJournalComponent implements OnInit {
       seriesID: [this.journalDetail ? this.journalDetail.SeriesID : ""],
       seriesName: [this.journalDetail ? this.journalDetail.SeriesName : ""],
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
-      journalDate: [
+      date: [
         this.journalDetail
-          ? formatDate(this.journalDetail.JournalDate, "yyyy-MM-dd", "en-US")
+          ? formatDate(this.journalDetail.Date, "yyyy-MM-dd", "en-US")
           : ""
       ],
       projectName: [this.journalDetail ? this.journalDetail.ProjectName : ""],
@@ -130,7 +126,7 @@ export class EditJournalComponent implements OnInit {
               element.LedgerName,
               Validators.required
             ],
-            ledgerID: element.JournalID,
+            ledgerID: element.MasterID,
             debit: [
               {
                 value: element.DebitCredit === "Debit" ? element.Amount : "",
