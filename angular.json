@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "journalApp": {
+    "accswift": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/journalApp",
+            "outputPath": "dist/accswift",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -61,18 +61,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "journalApp:build"
+            "browserTarget": "accswift:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "journalApp:build:production"
+              "browserTarget": "accswift:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "journalApp:build"
+            "browserTarget": "accswift:build"
           }
         },
         "test": {
@@ -99,7 +99,7 @@
         }
       }
     },
-    "journalApp-e2e": {
+    "accswift-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -108,11 +108,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "journalApp:serve"
+            "devServerTarget": "accswift:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "journalApp:serve:production"
+              "devServerTarget": "accswift:serve:production"
             }
           }
         },
@@ -126,5 +126,5 @@
       }
     }
   },
-  "defaultProject": "journalApp"
+  "defaultProject": "accswift"
 }
