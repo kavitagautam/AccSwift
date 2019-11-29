@@ -25,7 +25,7 @@ export class ListJournalComponent implements OnInit {
   journalSearchForm: FormGroup;
   journalList: JournalMaster[] = [];
   journalListLoading: boolean;
-  journalDate: Date = new Date();
+  date: Date = new Date();
   //kendo Grid
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
@@ -68,7 +68,7 @@ export class ListJournalComponent implements OnInit {
       series: [""],
       project: [""],
       voucherNo: [""],
-      journalDate: [""]
+      date: [""]
     });
     this.getJournalList();
     this.journalService.init();

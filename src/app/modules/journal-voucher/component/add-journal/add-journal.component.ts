@@ -31,7 +31,7 @@ export class AddJournalComponent implements OnInit {
   submitted: boolean;
   rowSubmitted: boolean;
   ledgerList: LedgerList[] = [];
-  journalDate: Date = new Date();
+  date: Date = new Date();
   ledgerListLoading: boolean;
 
   debitTotal: number = 0;
