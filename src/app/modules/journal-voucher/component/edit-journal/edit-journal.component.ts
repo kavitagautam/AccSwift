@@ -84,9 +84,9 @@ export class EditJournalComponent implements OnInit {
       seriesID: [this.journalDetail ? this.journalDetail.SeriesID : ""],
       seriesName: [this.journalDetail ? this.journalDetail.SeriesName : ""],
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
-      journalDate: [
+      date: [
         this.journalDetail
-          ? formatDate(this.journalDetail.JournalDate, "yyyy-MM-dd", "en-US")
+          ? formatDate(this.journalDetail.Date, "yyyy-MM-dd", "en-US")
           : ""
       ],
       projectName: [this.journalDetail ? this.journalDetail.ProjectName : ""],
@@ -130,7 +130,7 @@ export class EditJournalComponent implements OnInit {
               element.LedgerName,
               Validators.required
             ],
-            ledgerID: element.JournalID,
+            ledgerID: element.MasterID,
             debit: [
               {
                 value: element.DebitCredit === "Debit" ? element.Amount : "",

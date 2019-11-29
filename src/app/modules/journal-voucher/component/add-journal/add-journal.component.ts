@@ -74,7 +74,7 @@ export class AddJournalComponent implements OnInit {
       seriesID: [""],
       seriesName: [""],
       voucherNo: [""],
-      journalDate: [formatDate(new Date(), "yyyy-MM-dd", "en-US")],
+      date: [formatDate(new Date(), "yyyy-MM-dd", "en-US")],
       projectName: [""],
       narration: [""],
       journalEntryList: this._fb.array([this.addJournalEntryFormGroup()])

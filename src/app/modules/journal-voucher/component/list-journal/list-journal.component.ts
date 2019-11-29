@@ -118,7 +118,7 @@ export class ListJournalComponent implements OnInit {
             <JournalMaster>{
               ID: dataItem.ID,
               VoucherNo: dataItem.VoucherNo,
-              JournalDate: this.parseAdjust(dataItem.JournalDate),
+              Date: this.parseAdjust(dataItem.JournalDate),
               SeriesID: dataItem.SeriesID,
               SeriesName: dataItem.SeriesName,
               ProjectID: dataItem.ProjectID,
