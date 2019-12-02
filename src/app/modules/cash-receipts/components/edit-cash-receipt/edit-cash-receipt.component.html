@@ -1,438 +1,439 @@
 <div class="box box-default">
-  <form [formGroup]="editCashReceipForm" novalidate>
-    <div class="col-md-12 mt-5 mr-2">
-      <div class="col-md-4">
-        <div class="row clearfix">
-          <div class="col-md-5">
-            <label class="float-right">Series: </label>
+    <form [formGroup]="editCashReceipForm" novalidate>
+      <div class="col-md-12 mt-5 mr-2">
+        <div class="col-md-4">
+          <div class="row clearfix">
+            <div class="col-md-5">
+              <label class="float-right">Series: </label>
+            </div>
+            <div class="col-md-7">
+              <select class="form-control" id="seriesId" formControlName="series">
+                <option value="null"> </option>
+                <option
+                  *ngFor="let series of cashReceiptService.seriesLists"
+                  [ngValue]="series.ID"
+                >
+                  {{ series.EngName }}</option
+                >
+              </select>
+            </div>
           </div>
-          <div class="col-md-7">
-            <select class="form-control" id="seriesId" formControlName="series">
-              <option value="null"> </option>
-              <option
-                *ngFor="let series of cashReceiptService.seriesLists"
-                [ngValue]="series.ID"
+          <div class="row clearfix mt-3">
+            <div class="col-md-5">
+              <label class="float-right">Bank Accont: </label>
+            </div>
+            <div class="col-md-7">
+              <select
+                class="form-control"
+                id="cashAccountNo"
+                formControlName="cashAccount"
               >
-                {{ series.EngName }}</option
-              >
-            </select>
+                <option value="null"> </option>
+                <option
+                  *ngFor="let series of cashReceiptService.seriesLists"
+                  [ngValue]="series.ID"
+                >
+                  {{ series.EngName }}</option
+                >
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="row clearfix mt-3">
-          <div class="col-md-5">
-            <label class="float-right">Bank Accont: </label>
-          </div>
-          <div class="col-md-7">
-            <select
-              class="form-control"
-              id="cashAccountNo"
-              formControlName="cashAccount"
-            >
-              <option value="null"> </option>
-              <option
-                *ngFor="let series of cashReceiptService.seriesLists"
-                [ngValue]="series.ID"
-              >
-                {{ series.EngName }}</option
-              >
-            </select>
-          </div>
-        </div>
-        <div class="row clearfix mt-3">
-          <div class="col-md-5">
-            <label>
-              <input
-                type="checkbox"
-                [value]=""
-                (change)="onCheckChange($event)"
-              />
-              Cash Party / Customer
-            </label>
-          </div>
-          <div class="col-md-7">
-            <select class="form-control" id="seriesId" formControlName="series">
-              <option value="null"> </option>
-              <option
-                *ngFor="let series of cashReceiptService.seriesLists"
-                [ngValue]="series.ID"
-              >
-                {{ series.EngName }}</option
-              >
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="row clearfix">
-          <div class="col-md-5">
-            <label class="float-right">Voucher #: </label>
-          </div>
-          <div class="col-md-7">
-            <input class="form-control" formControlName="voucherNo" />
-          </div>
-        </div>
-        <div class="row clearfix mt-3">
-          <div class="col-md-5">
-            <label class="float-right">Project: </label>
-          </div>
-          <div class="col-md-7">
-            <select
-              class="form-control"
-              id="projectId"
-              formControlName="project"
-            >
-              <option value="null"> </option>
-              <option
-                *ngFor="let project of cashReceiptService.projectLists"
-                [ngValue]="project.ID"
-              >
-                {{ project.EngName }}</option
-              >
-            </select>
-          </div>
-        </div>
-        <div class="row clearfix mt-3">
-          <div class="col-md-5">
-            <label class="float-right">Current Balance: </label>
-          </div>
-          <div class="col-md-7">
-            <span>0.00</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="row clearfix">
-          <div class="col-md-5">
-            <label class="float-right">Date :</label>
-          </div>
-          <div class="col-md-7">
-            <input
-              formControlName="date"
-              type="date"
-              [value]="date | date: 'MM/dd/yyyy'"
-              class="form-control"
-            />
-          </div>
-        </div>
-        <div class="row clearfix"></div>
-      </div>
-    </div>
-    <div class="col-md-12 mt-5 ml-2">
-      <kendo-grid
-        [data]="getCashReceiptEntryList.value"
-        (edit)="editHandler($event)"
-        (cancel)="cancelHandler($event)"
-        (save)="saveHandler($event)"
-        (remove)="removeHandler($event)"
-        (add)="addHandler($event)"
-      >
-        <ng-template kendoGridToolbarTemplate>
-          <button kendoGridAddCommand>Add new</button>
-        </ng-template>
-
-        <kendo-grid-column
-          field="particularsOraccountingHead"
-          title="Particulars Or Accounting Head"
-          width="300"
-        >
-          <ng-template
-            kendoGridCellTemplate
-            let-dataItem="dataItem"
-            let-column="column"
-            let-formGroup="formGroup"
-            let-isNew="isNew"
-            let-rowIndex="rowIndex"
-          >
-            <div class="col-xs-12 col-md-12 p-0">
-              <div class="col-md-8 pr-0">
+          <div class="row clearfix mt-3">
+            <div class="col-md-5">
+              <label>
                 <input
-                  #input
-                  class="k-textbox"
-                  [readonly]="true"
-                  [formControl]="
-                    getCashReceiptEntryList.controls[rowIndex].get(
-                      'particularsOraccountingHead'
-                    )
-                  "
+                  type="checkbox"
+                  [value]=""
+                  (change)="onCheckChange($event)"
                 />
-                <a
-                  href="#"
-                  (click)="openModal(rowIndex)"
-                  data-toggle="modal"
-                  data-target="#ledgerSelectModal"
-                  ><i
-                    class="fa fa-eye pull-right ledgerSelectIcon"
-                    aria-hidden="true"
-                  ></i>
-                </a>
-
-                <kendo-popup
-                  [anchor]="input"
-                  *ngIf="
-                    getCashReceiptEntryList.controls[rowIndex].get(
-                      'particularsOraccountingHead'
-                    ).invalid &&
-                    rowSubmitted &&
-                    !(
-                      isNew &&
+                Cash Party / Customer
+              </label>
+            </div>
+            <div class="col-md-7">
+              <select class="form-control" id="seriesId" formControlName="series">
+                <option value="null"> </option>
+                <option
+                  *ngFor="let series of cashReceiptService.seriesLists"
+                  [ngValue]="series.ID"
+                >
+                  {{ series.EngName }}</option
+                >
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row clearfix">
+            <div class="col-md-5">
+              <label class="float-right">Voucher #: </label>
+            </div>
+            <div class="col-md-7">
+              <input class="form-control" formControlName="voucherNo" />
+            </div>
+          </div>
+          <div class="row clearfix mt-3">
+            <div class="col-md-5">
+              <label class="float-right">Project: </label>
+            </div>
+            <div class="col-md-7">
+              <select
+                class="form-control"
+                id="projectId"
+                formControlName="project"
+              >
+                <option value="null"> </option>
+                <option
+                  *ngFor="let project of cashReceiptService.projectLists"
+                  [ngValue]="project.ID"
+                >
+                  {{ project.EngName }}</option
+                >
+              </select>
+            </div>
+          </div>
+          <div class="row clearfix mt-3">
+            <div class="col-md-5">
+              <label class="float-right">Current Balance: </label>
+            </div>
+            <div class="col-md-7">
+              <span>0.00</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row clearfix">
+            <div class="col-md-5">
+              <label class="float-right">Date :</label>
+            </div>
+            <div class="col-md-7">
+              <input
+                formControlName="date"
+                type="date"
+                [value]="date | date: 'MM/dd/yyyy'"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="row clearfix"></div>
+        </div>
+      </div>
+      <div class="col-md-12 mt-5 ml-2">
+        <kendo-grid
+          [data]="getCashReceiptEntryList.value"
+          (edit)="editHandler($event)"
+          (cancel)="cancelHandler($event)"
+          (save)="saveHandler($event)"
+          (remove)="removeHandler($event)"
+          (add)="addHandler($event)"
+        >
+          <ng-template kendoGridToolbarTemplate>
+            <button kendoGridAddCommand>Add new</button>
+          </ng-template>
+  
+          <kendo-grid-column
+            field="particularsOraccountingHead"
+            title="Particulars Or Accounting Head"
+            width="300"
+          >
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-xs-12 col-md-12 p-0">
+                <div class="col-md-8 pr-0">
+                  <input
+                    #input
+                    class="k-textbox"
+                    [readonly]="true"
+                    [formControl]="
                       getCashReceiptEntryList.controls[rowIndex].get(
                         'particularsOraccountingHead'
-                      ).untouched
-                    ) &&
-                    !getCashReceiptEntryList.controls[rowIndex].get(
-                      'ledgerCode'
-                    )
-                  "
-                  popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-                >
-                  <span class="k-icon k-i-warning"></span>
-                  Ledger name is required
-                </kendo-popup>
-              </div>
-            </div>
-          </ng-template>
-        </kendo-grid-column>
-
-        <kendo-grid-column field="voucherNo" title="Voucher No" width="150">
-          <ng-template
-            kendoGridCellTemplate
-            let-dataItem="dataItem"
-            let-column="column"
-            let-formGroup="formGroup"
-            let-isNew="isNew"
-            let-rowIndex="rowIndex"
-          >
-            <input
-              #ntb="popupAnchor"
-              popupAnchor
-              style="width:130px"
-              [formControl]="
-                getCashReceiptEntryList.controls[rowIndex].get(column.field)
-              "
-            />
-          </ng-template>
-        </kendo-grid-column>
-
-        <kendo-grid-column field="amount" title="Amount" width="150">
-          <ng-template
-            kendoGridCellTemplate
-            let-dataItem="dataItem"
-            let-column="column"
-            let-formGroup="formGroup"
-            let-isNew="isNew"
-            let-rowIndex="rowIndex"
-          >
-            <kendo-numerictextbox
-              #ntb="popupAnchor"
-              popupAnchor
-              style="width:130px"
-              [readonly]="true"
-              [decimals]="decimals"
-              [format]="'c0'"
-              [formControl]="
-                getCashReceiptEntryList.controls[rowIndex].get('currentBalance')
-              "
-            ></kendo-numerictextbox>
-          </ng-template>
-        </kendo-grid-column>
-
-        <kendo-grid-column
-          field="currentBalance"
-          title="Current Balance"
-          width="150"
-        >
-          <ng-template
-            kendoGridCellTemplate
-            let-dataItem="dataItem"
-            let-column="column"
-            let-formGroup="formGroup"
-            let-isNew="isNew"
-            let-rowIndex="rowIndex"
-          >
-            <kendo-numerictextbox
-              #ntb="popupAnchor"
-              popupAnchor
-              style="width:130px"
-              [readonly]="true"
-              [decimals]="decimals"
-              [format]="'c0'"
-              [formControl]="
-                getCashReceiptEntryList.controls[rowIndex].get('currentBalance')
-              "
-            ></kendo-numerictextbox>
-          </ng-template>
-        </kendo-grid-column>
-
-        <kendo-grid-column field="vType" title="V. Type" width="150">
-          <ng-template
-            kendoGridCellTemplate
-            let-dataItem="dataItem"
-            let-column="column"
-            let-formGroup="formGroup"
-            let-isNew="isNew"
-            let-rowIndex="rowIndex"
-          >
-            <input
-              #input
-              class="k-textbox"
-              [formControl]="
-                getCashReceiptEntryList.controls[rowIndex].get(column.field)
-              "
-            />
-          </ng-template>
-        </kendo-grid-column>
-
-        <kendo-grid-column field="remarks" title="Remarks" width="150">
-          <ng-template
-            kendoGridCellTemplate
-            let-dataItem="dataItem"
-            let-column="column"
-            let-formGroup="formGroup"
-            let-isNew="isNew"
-            let-rowIndex="rowIndex"
-          >
-            <input
-              #input
-              class="k-textbox"
-              [formControl]="
-                getCashReceiptEntryList.controls[rowIndex].get('remarks')
-              "
-            />
-          </ng-template>
-        </kendo-grid-column>
-
-        <kendo-grid-command-column title="Action" width="100">
-          <ng-template kendoGridCellTemplate let-isNew="isNew">
-            <button class="k-button" kendoGridAddCommand>
-              <i
-                class="fa fa-plus cursor-pointer"
-                aria-hidden="true"
-                tooltip="Add New"
-              ></i>
-            </button>
-            <button kendoGridRemoveCommand>
-              <i
-                class="fas fa-trash-alt mr-2 cursor-pointer"
-                tooltip="Delete"
-              ></i>
-            </button>
-
-            <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
-              {{ isNew ? "Add" : "Update" }}
-            </button>
-            <button kendoGridCancelCommand>
-              {{ isNew ? "Discard changes" : "Cancel" }}
-            </button>
-          </ng-template>
-        </kendo-grid-command-column>
-      </kendo-grid>
-    </div>
-    <div class="col-md-12 m-2">
-      <button class="btn btn-primary" disabled (click)="save()">Save</button>
-      <button class="btn btn-secondary ml-2" (click)="cancel()">
-        Cancel
-      </button>
-    </div>
-  </form>
-</div>
-
-<!--Modal PopUp-->
-<div
-  class="modal fade bd-example-modal-lg"
-  #ledgerSelectModal
-  id="ledgerSelectModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg" role="document" style="max-width: 870px;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Select Ledger</h5>
-        <button
-          class="close"
-          type="button"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid">
-          <div class="row mt-2">
-            <div class="grid-wrapper">
-              <kendo-grid
-                [kendoGridBinding]="ledgerList"
-                [filterable]="true"
-                [pageSize]="pageSize"
-                [skip]="skip"
-                [sortable]="{
-                  allowUnsort: allowUnsort,
-                  mode: 'single'
-                }"
-                [sort]="sort"
-                (sortChange)="sortChange($event)"
-                [pageable]="true"
-                (pageChange)="pageChange($event)"
-                scrollable="none"
-                (selectedKeysChange)="
-                  onSelectedKeysChange($event, selectedLedgerRow)
-                "
-                [kendoGridSelectBy]="'LedgerID'"
-                [selectedKeys]="mySelection"
-              >
-                <kendo-grid-column
-                  field="LedgerName"
-                  title="Ledger Name"
-                  width="350"
-                >
-                  <ng-template
-                    kendoGridCellTemplate
-                    let-dataItem="dataItem"
-                    let-rowIndex="rowIndex"
+                      )
+                    "
+                  />
+                  <a
+                    href="#"
+                    (click)="openModal(rowIndex)"
+                    data-toggle="modal"
+                    data-target="#ledgerSelectModal"
+                    ><i
+                      class="fa fa-eye pull-right ledgerSelectIcon"
+                      aria-hidden="true"
+                    ></i>
+                  </a>
+  
+                  <kendo-popup
+                    [anchor]="input"
+                    *ngIf="
+                      getCashReceiptEntryList.controls[rowIndex].get(
+                        'particularsOraccountingHead'
+                      ).invalid &&
+                      rowSubmitted &&
+                      !(
+                        isNew &&
+                        getCashReceiptEntryList.controls[rowIndex].get(
+                          'particularsOraccountingHead'
+                        ).untouched
+                      ) &&
+                      !getCashReceiptEntryList.controls[rowIndex].get(
+                        'ledgerCode'
+                      )
+                    "
+                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
                   >
-                    <a
-                      class="a_link"
-                      (click)="selectedLedger(dataItem, selectedLedgerRow)"
-                      >{{ dataItem.LedgerName }}</a
-                    >
-                  </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column
-                  field="LedgerCode"
-                  title="Ledger Code"
-                  width="180"
-                >
-                </kendo-grid-column>
-                <kendo-grid-column
-                  field="ActualBalance"
-                  title="Actual Balance"
-                  width="180"
-                >
-                  <ng-template kendoGridCellTemplate let-dataItem="dataItem">
-                    <span class="float-right">{{
-                      dataItem.ActualBalance
-                    }}</span>
-                  </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column
-                  field="LedgerType"
-                  title="Ledger Type"
-                  width="150"
-                ></kendo-grid-column>
-              </kendo-grid>
-              <div *ngIf="ledgerListLoading" class="k-i-loading"></div>
-            </div>
-          </div>
-        </div>
+                    <span class="k-icon k-i-warning"></span>
+                    Ledger name is required
+                  </kendo-popup>
+                </div>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+  
+          <kendo-grid-column field="voucherNo" title="Voucher No" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <input
+                #ntb="popupAnchor"
+                popupAnchor
+                style="width:130px"
+                [formControl]="
+                  getCashReceiptEntryList.controls[rowIndex].get(column.field)
+                "
+              />
+            </ng-template>
+          </kendo-grid-column>
+  
+          <kendo-grid-column field="amount" title="Amount" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <kendo-numerictextbox
+                #ntb="popupAnchor"
+                popupAnchor
+                style="width:130px"
+                [readonly]="true"
+                [decimals]="decimals"
+                [format]="'c0'"
+                [formControl]="
+                  getCashReceiptEntryList.controls[rowIndex].get('currentBalance')
+                "
+              ></kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+  
+          <kendo-grid-column
+            field="currentBalance"
+            title="Current Balance"
+            width="150"
+          >
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <kendo-numerictextbox
+                #ntb="popupAnchor"
+                popupAnchor
+                style="width:130px"
+                [readonly]="true"
+                [decimals]="decimals"
+                [format]="'c0'"
+                [formControl]="
+                  getCashReceiptEntryList.controls[rowIndex].get('currentBalance')
+                "
+              ></kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+  
+          <kendo-grid-column field="vType" title="V. Type" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <input
+                #input
+                class="k-textbox"
+                [formControl]="
+                  getCashReceiptEntryList.controls[rowIndex].get(column.field)
+                "
+              />
+            </ng-template>
+          </kendo-grid-column>
+  
+          <kendo-grid-column field="remarks" title="Remarks" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <input
+                #input
+                class="k-textbox"
+                [formControl]="
+                  getCashReceiptEntryList.controls[rowIndex].get('remarks')
+                "
+              />
+            </ng-template>
+          </kendo-grid-column>
+  
+          <kendo-grid-command-column title="Action" width="100">
+            <ng-template kendoGridCellTemplate let-isNew="isNew">
+              <button class="k-button" kendoGridAddCommand>
+                <i
+                  class="fa fa-plus cursor-pointer"
+                  aria-hidden="true"
+                  tooltip="Add New"
+                ></i>
+              </button>
+              <button kendoGridRemoveCommand>
+                <i
+                  class="fas fa-trash-alt mr-2 cursor-pointer"
+                  tooltip="Delete"
+                ></i>
+              </button>
+  
+              <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
+                {{ isNew ? "Add" : "Update" }}
+              </button>
+              <button kendoGridCancelCommand>
+                {{ isNew ? "Discard changes" : "Cancel" }}
+              </button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">
+      <div class="col-md-12 m-2">
+        <button class="btn btn-primary" disabled (click)="save()">Save</button>
+        <button class="btn btn-secondary ml-2" (click)="cancel()">
           Cancel
         </button>
       </div>
+    </form>
+  </div>
+  
+  <!--Modal PopUp-->
+  <div
+    class="modal fade bd-example-modal-lg"
+    #ledgerSelectModal
+    id="ledgerSelectModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg" role="document" style="max-width: 870px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Select Ledger</h5>
+          <button
+            class="close"
+            type="button"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row mt-2">
+              <div class="grid-wrapper">
+                <kendo-grid
+                  [kendoGridBinding]="ledgerList"
+                  [filterable]="true"
+                  [pageSize]="pageSize"
+                  [skip]="skip"
+                  [sortable]="{
+                    allowUnsort: allowUnsort,
+                    mode: 'single'
+                  }"
+                  [sort]="sort"
+                  (sortChange)="sortChange($event)"
+                  [pageable]="true"
+                  (pageChange)="pageChange($event)"
+                  scrollable="none"
+                  (selectedKeysChange)="
+                    onSelectedKeysChange($event, selectedLedgerRow)
+                  "
+                  [kendoGridSelectBy]="'LedgerID'"
+                  [selectedKeys]="mySelection"
+                >
+                  <kendo-grid-column
+                    field="LedgerName"
+                    title="Ledger Name"
+                    width="350"
+                  >
+                    <ng-template
+                      kendoGridCellTemplate
+                      let-dataItem="dataItem"
+                      let-rowIndex="rowIndex"
+                    >
+                      <a
+                        class="a_link"
+                        (click)="selectedLedger(dataItem, selectedLedgerRow)"
+                        >{{ dataItem.LedgerName }}</a
+                      >
+                    </ng-template>
+                  </kendo-grid-column>
+                  <kendo-grid-column
+                    field="LedgerCode"
+                    title="Ledger Code"
+                    width="180"
+                  >
+                  </kendo-grid-column>
+                  <kendo-grid-column
+                    field="ActualBalance"
+                    title="Actual Balance"
+                    width="180"
+                  >
+                    <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+                      <span class="float-right">{{
+                        dataItem.ActualBalance
+                      }}</span>
+                    </ng-template>
+                  </kendo-grid-column>
+                  <kendo-grid-column
+                    field="LedgerType"
+                    title="Ledger Type"
+                    width="150"
+                  ></kendo-grid-column>
+                </kendo-grid>
+                <div *ngIf="ledgerListLoading" class="k-i-loading"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">
+            Cancel
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+  
