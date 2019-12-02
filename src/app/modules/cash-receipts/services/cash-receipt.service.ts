@@ -5,8 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import {
   ProjectList,
   SeriesList,
-  CashReceiptMaster,
-  LedgerList
+  CashReceiptMaster
 } from "../models/cash-receipt.model";
 import { Observable } from "rxjs";
 @Injectable({
@@ -47,9 +46,5 @@ export class CashReceiptService {
 
   getCashRecipetDetails(id): Observable<CashReceiptMaster> {
     return this.httpService.get(`${this._api_URL}CashReceiptMaster/${id}`);
-  }
-
-  getLedgerList(): Observable<LedgerList[]> {
-    return this.httpService.get(`${this._api_URL}ledger/lov`);
   }
 }

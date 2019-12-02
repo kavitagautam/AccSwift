@@ -59,14 +59,3 @@ export interface CashReceiptDetails {
   InvoiceType: string;
   InvoiceID: number;
 }
-
-export interface LedgerList {
-  LedgerCode: string;
-  LedgerName: string;
-  LedgerID: number;
-  GroupID: number;
-  GroupName: string;
-  Balance: string;
-  ActualBalance: number;
-  LedgerType: string;
-}

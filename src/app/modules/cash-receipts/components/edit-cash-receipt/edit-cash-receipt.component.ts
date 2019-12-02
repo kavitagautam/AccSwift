@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { CashReceiptService } from "../../services/cash-receipt.service";
-import { CashReceiptMaster, LedgerList } from "../../models/cash-receipt.model";
-import { SortDescriptor } from "@progress/kendo-data-query";
-import { SelectAllCheckboxState, PageChangeEvent } from "@progress/kendo-angular-grid";
+import { CashReceiptMaster } from "../../models/cash-receipt.model";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 
 @Component({
   selector: "app-edit-cash-receipt",
@@ -13,34 +13,27 @@ import { SelectAllCheckboxState, PageChangeEvent } from "@progress/kendo-angular
 })
 export class EditCashReceiptComponent implements OnInit {
   private editedRowIndex: number;
-  @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
   cashRecieptDetail: CashReceiptMaster;
   editCashReceipForm: FormGroup;
   submitted: boolean;
-  ledgerList: LedgerList[] = [];
-  selectedLedgerRow: number;
-  ledgerListLoading: boolean;
-
   rowSubmitted: boolean;
 
-  //kendo Grid
-  public pageSize = 10;
-  public skip = 0;
-  public allowUnsort = true;
-  public sort: SortDescriptor[] = [
-    {
-      field: "LedgerName" || "LedgerCode" || "ActualBalance" || "LedgerType",
-      dir: "asc"
-    }
-  ];
-  public mySelection: number[] = []; //Kendo row Select
-  public selectAllState: SelectAllCheckboxState = "unchecked"; //Kendo row Select
+  //Open the Ledger List Modal on PopUp
+  modalRef: BsModalRef;
+  //  modal config to unhide modal when clicked outside
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+    centered: true
+  };
+
   constructor(
     public _fb: FormBuilder,
     private router: Router,
+    private modalService: BsModalService,
     public cashReceiptService: CashReceiptService,
     private route: ActivatedRoute
   ) {}
@@ -134,12 +127,9 @@ export class EditCashReceiptComponent implements OnInit {
   }
 
   onCheckChange(event) {
-    // const formArray: FormArray = this.myForm.get('myChoices') as FormArray;
-
     /* Selected */
     if (event.target.checked) {
       // Add a new control in the arrayForm
-      //   formArray.push(new FormControl(event.target.value));
     } else {
       /* unselected */
       // find the unselected element
@@ -151,7 +141,6 @@ export class EditCashReceiptComponent implements OnInit {
       //     formArray.removeAt(i);
       //     return;
       //   }
-
       i++;
     }
   }
@@ -215,78 +204,31 @@ export class EditCashReceiptComponent implements OnInit {
     );
   }
 
-  
-  public sortChange(sort: SortDescriptor[]): void {
-    this.sort = sort;
-    this.getLedgerList();
-  }
-  public pageChange(event: PageChangeEvent): void {
-    this.skip = event.skip;
-  }
-
   openModal(index: number): void {
-    this.mySelection = [];
-    this.selectedLedgerRow = index;
-    this.getLedgerList();
-  }
-
-  getLedgerList(): void {
-    this.ledgerListLoading = true;
-    this.cashReceiptService.getLedgerList().subscribe(
-      res => {
-        this.ledgerList = res;
-      },
-      error => {
-        this.ledgerListLoading = false;
-      },
-      () => {
-        this.ledgerListLoading = false;
+    this.modalRef = this.modalService.show(
+      LedgerModelPopupComponent,
+      this.config
+    );
+    this.modalRef.content.data = index;
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe(data => {
+      if (data) {
+        const cashReceiptFormArray = <FormArray>(
+          this.editCashReceipForm.get("cashReceiptEntryList")
+        );
+        cashReceiptFormArray.controls[index]
+          .get("balance")
+          .setValue(data.ActualBalance);
+        cashReceiptFormArray.controls[index]
+          .get("particularsOraccountingHead")
+          .setValue(data.LedgerName);
       }
-    );
-  }
-
-  // select ledger column
-  selectedLedger(item, selectedRow): void {
-    const cashReceiptEntry = <FormArray>(
-      this.editCashReceipForm.get("cashReceiptEntryList")
-    );
-    cashReceiptEntry.controls[selectedRow]
-      .get("currentBalance")
-      .setValue(item.currentAmount);
-    cashReceiptEntry.controls[selectedRow]
-      .get("particularsOraccountingHead")
-      .setValue(item.LedgerName);
-    cashReceiptEntry.controls[selectedRow]
-      .get("amount")
-      .setValue(item.ActualBalance);
-    this.ledgerSelectModal.nativeElement.click();
-  }
-
-  //Selected the Ledger row
-  public onSelectedKeysChange(e, selectedRow) {
-    const len = this.mySelection.length;
-    if (len === 0) {
-      this.selectAllState = "unchecked";
-    } else if (len > 0 && len < this.ledgerList.length) {
-      this.selectAllState = "indeterminate";
-    } else {
-      this.selectAllState = "checked";
-    }
-    const selected = this.ledgerList.filter(function(obj) {
-      return obj.LedgerID == e[0];
     });
-
-    const cashReceiptFormArray = <FormArray>(
-      this.editCashReceipForm.get("cashReceiptEntryList")
-    );
-    cashReceiptFormArray.controls[selectedRow]
-      .get("balance")
-      .setValue(selected[0].ActualBalance);
-    cashReceiptFormArray.controls[selectedRow]
-      .get("particularsOraccountingHead")
-      .setValue(selected[0].LedgerName);
-    this.ledgerSelectModal.nativeElement.click();
+    this.modalRef.content.onClose.subscribe(data => {
+      //Do after Close the Modal
+    });
   }
+
   public cancelHandler({ sender, rowIndex }) {
     this.closeEditor(sender, rowIndex);
   }

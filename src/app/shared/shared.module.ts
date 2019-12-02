@@ -16,6 +16,11 @@ import {
   CollapseModule
 } from "ngx-bootstrap";
 import { CurrencyDirective } from "./directives/localCurrency/currency.directive";
+import { LedgerModelPopupComponent } from './component/ledger-model-popup/ledger-model-popup.component';
+import { GridModule } from '@progress/kendo-angular-grid';
+import { PopupModule } from '@progress/kendo-angular-popup';
+import { InputsModule } from '@progress/kendo-angular-inputs';
+import { DropDownListModule, DropDownsModule } from '@progress/kendo-angular-dropdowns';
 
 @NgModule({
   declarations: [
@@ -24,7 +29,8 @@ import { CurrencyDirective } from "./directives/localCurrency/currency.directive
     CommonModalComponent,
     CurrencyFormatPipe,
     PopupAnchorDirective,
-    CurrencyDirective
+    CurrencyDirective,
+    LedgerModelPopupComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +42,12 @@ import { CurrencyDirective } from "./directives/localCurrency/currency.directive
     TimepickerModule.forRoot(),
     BsDatepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
-    NgxPaginationModule
+    NgxPaginationModule,
+    GridModule,
+    PopupModule,
+    InputsModule,
+    DropDownListModule,
+    DropDownsModule
   ],
   exports: [
     CollapseModule,
