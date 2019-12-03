@@ -91,6 +91,7 @@ export class ListJournalComponent implements OnInit {
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
+    console.log("Sorting " + this.sort);
     this.getJournalList();
   }
 

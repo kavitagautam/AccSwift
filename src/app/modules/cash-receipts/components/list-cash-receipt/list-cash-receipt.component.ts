@@ -92,13 +92,16 @@ export class ListCashReceiptComponent implements OnInit {
         const sampleData = res.map(
           dataItem =>
             <CashReceiptMaster>{
+              IsPayByInvoice: dataItem.IsPayByInvoice,
+              TotalAmount: dataItem.TotalAmount,
+              CashReceiptDetails: dataItem.CashReceiptDetails,
+              LedgerID: dataItem.LedgerID,
+              LedgerName: dataItem.LedgerName,
               ID: dataItem.ID,
               SeriesID: dataItem.SeriesID,
               SeriesName: dataItem.SeriesName,
-              LedgerID: dataItem.LedgerID,
-              LedgerName: dataItem.LedgerName,
               VoucherNo: dataItem.VoucherNo,
-              CashReceiptDate: this.parseAdjust(dataItem.CashReceiptDate),
+              Date: this.parseAdjust(dataItem.Date),
               ProjectID: dataItem.ProjectID,
               ProjectName: dataItem.ProjectName,
               Fields: {
@@ -108,8 +111,6 @@ export class ListCashReceiptComponent implements OnInit {
                 Field4: dataItem.Fields.Field4,
                 Field5: dataItem.Fields.Field5
               },
-              IsPayByInvoice: dataItem.IsPayByInvoice,
-              TotalAmount: dataItem.TotalAmount,
               Remarks: dataItem.Remarks,
               CreatedBy: dataItem.CreatedBy,
               CreatedDate: this.parseAdjust(dataItem.CreatedDate),
@@ -161,29 +162,6 @@ export class ListCashReceiptComponent implements OnInit {
     this.router.navigate(["/cash/edit", item.ID]);
   }
 
-  onCheckChange(event) {
-    // const formArray: FormArray = this.myForm.get('myChoices') as FormArray;
-
-    /* Selected */
-    if (event.target.checked) {
-      // Add a new control in the arrayForm
-      //   formArray.push(new FormControl(event.target.value));
-    } else {
-      /* unselected */
-      // find the unselected element
-      let i: number = 0;
-
-      // formArray.controls.forEach((ctrl: FormControl) => {
-      //   if(ctrl.value == event.target.value) {
-      //     // Remove the unselected element from the arrayForm
-      //     formArray.removeAt(i);
-      //     return;
-      //   }
-
-      i++;
-    }
-  }
-  
   openConfirmationDialogue(dataItem) {
     const journalId = {
       id: dataItem.ID

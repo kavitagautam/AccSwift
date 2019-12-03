@@ -51,11 +51,7 @@
             <label class="float-right">Date :</label>
           </div>
           <div class="col-md-7">
-            <input
-              formControlName="date"
-              type="date"
-              class="form-control"
-            />
+            <input formControlName="date" type="date" class="form-control" />
           </div>
         </div>
       </div>
@@ -121,11 +117,7 @@
                     )
                   "
                 />
-                <a
-                  href="#"
-                  (click)="openModal(rowIndex)"
-                  data-toggle="modal"
-                  data-target="#ledgerSelectModal"
+                <a (click)="openModal(rowIndex)"
                   ><i
                     class="fa fa-eye pull-right ledgerSelectIcon"
                     aria-hidden="true"
@@ -168,7 +160,7 @@
               #ntb="popupAnchor"
               popupAnchor
               style="width: 130px"
-              [format]= "'c0'"
+              [format]="'c0'"
               [decimals]="decimals"
               [formControl]="
                 getjournalEntryList.controls[rowIndex].get(column.field)
@@ -213,7 +205,7 @@
               popupAnchor
               style="width: 130px"
               [decimals]="decimals"
-              [format]= "'c0'"
+              [format]="'c0'"
               [formControl]="
                 getjournalEntryList.controls[rowIndex].get('credit')
               "
@@ -272,7 +264,7 @@
             let-columnIndex="columnIndex"
           >
             <span class="float-right">
-              Difference : {{  ( debitTotal - creditTotal ) | currencyFormat }}
+              Difference : {{ debitTotal - creditTotal | currencyFormat }}
             </span>
           </ng-template>
         </kendo-grid-column>
@@ -359,105 +351,4 @@
       </button>
     </div>
   </form>
-</div>
-<!--Modal Popup-->
-<div
-  class="modal fade bd-example-modal-lg"
-  #ledgerSelectModal
-  id="ledgerSelectModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg" role="document" style="max-width: 870px;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Select Ledger</h5>
-        <button
-          class="close"
-          type="button"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid">
-          <div class="row mt-2">
-            <div class="grid-wrapper">
-              <kendo-grid
-                [kendoGridBinding]="ledgerList"
-                [filterable]="true"
-                [pageSize]="pageSize"
-                [skip]="skip"
-                [sortable]="{
-                  allowUnsort: allowUnsort,
-                  mode: 'single'
-                }"
-                [sort]="sort"
-                (sortChange)="sortChange($event)"
-                [pageable]="true"
-                (pageChange)="pageChange($event)"
-                scrollable="none"
-                (selectedKeysChange)="
-                  onSelectedKeysChange($event, selectedLedgerRow)
-                "
-                [kendoGridSelectBy]="'LedgerID'"
-                [selectedKeys]="mySelection"
-              >
-                <kendo-grid-column
-                  field="LedgerName"
-                  title="Ledger Name"
-                  width="350"
-                >
-                  <ng-template
-                    kendoGridCellTemplate
-                    let-dataItem="dataItem"
-                    let-rowIndex="rowIndex"
-                  >
-                    <a
-                      class="a_link"
-                      (click)="selectedLedger(dataItem, selectedLedgerRow)"
-                      >{{ dataItem.LedgerName }}</a
-                    >
-                  </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column
-                  field="LedgerCode"
-                  title="Ledger Code"
-                  width="180"
-                >
-                </kendo-grid-column>
-                <kendo-grid-column
-                  field="ActualBalance"
-                  title="Actual Balance"
-                  width="180"
-                >
-                  <ng-template kendoGridCellTemplate let-dataItem="dataItem">
-                    <span class="float-right">{{
-                      dataItem.ActualBalance
-                    }}</span>
-                  </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column
-                  field="LedgerType"
-                  title="Ledger Type"
-                  width="150"
-                ></kendo-grid-column>
-              </kendo-grid>
-
-              <div *ngIf="ledgerListLoading" class="k-i-loading"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
 </div>

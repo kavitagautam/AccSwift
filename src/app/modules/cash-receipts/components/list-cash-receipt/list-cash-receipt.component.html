@@ -20,9 +20,7 @@
       </a>
     </div>
     <div id="collapseOne" class="card-body collapse" data-parent="#accordion">
-      <div
-        class="col-md-12 m-3"
-      >
+      <div class="col-md-12 m-3">
         <form [formGroup]="cashReceiptForm" novalidate>
           <div class="col-md-4">
             <div class="row clearfix">
@@ -47,13 +45,35 @@
             </div>
             <div class="row clearfix mt-3">
               <div class="col-md-5">
-                <label class="float-right">Cash Accont: </label>
+                <label class="float-right">Cash Account: </label>
               </div>
               <div class="col-md-7">
                 <select
                   class="form-control"
                   id="cashAccountNo"
                   formControlName="cashAccount"
+                >
+                  <option value="null"> </option>
+                  <option
+                    *ngFor="let account of cashReceiptService.cashAccountLists"
+                    [ngValue]="account.LedgerID"
+                  >
+                    {{ account.LedgerName }}</option
+                  >
+                </select>
+              </div>
+            </div>
+            <div class="row clearfix mt-3">
+              <div class="col-md-5">
+                <label>
+                  Cash Party / Customer
+                </label>
+              </div>
+              <div class="col-md-7">
+                <select
+                  class="form-control"
+                  id="seriesId"
+                  formControlName="series"
                 >
                   <option value="null"> </option>
                   <option
@@ -65,29 +85,6 @@
                 </select>
               </div>
             </div>
-            <div class="row clearfix mt-3">
-                <div class="col-md-5">
-                  <label>
-                    <input
-                      type="checkbox"
-                      [value]=""
-                      (change)="onCheckChange($event)"
-                    />
-                    Cash Party / Customer
-                  </label>
-                </div>
-                <div class="col-md-7">
-                  <select class="form-control" id="seriesId" formControlName="series">
-                    <option value="null"> </option>
-                    <option
-                      *ngFor="let series of cashReceiptService.seriesLists"
-                      [ngValue]="series.ID"
-                    >
-                      {{ series.EngName }}</option
-                    >
-                  </select>
-                </div>
-              </div>
           </div>
           <div class="col-md-4">
             <div class="row clearfix">
@@ -119,13 +116,13 @@
               </div>
             </div>
             <div class="row clearfix mt-3">
-                <div class="col-md-5">
-                  <label class="float-right">Current Balance: </label>
-                </div>
-                <div class="col-md-7">
-                  <span>0.00</span>
-                </div>
+              <div class="col-md-5">
+                <label class="float-right">Current Balance: </label>
               </div>
+              <div class="col-md-7">
+                <span>0.00</span>
+              </div>
+            </div>
           </div>
           <div class="col-md-4">
             <div class="row clearfix">
