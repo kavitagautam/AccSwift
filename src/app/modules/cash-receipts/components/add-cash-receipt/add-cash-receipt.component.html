@@ -20,7 +20,7 @@
         </div>
         <div class="row clearfix mt-3">
           <div class="col-md-5">
-            <label class="float-right">Bank Accont: </label>
+            <label class="float-right">Cash Account: </label>
           </div>
           <div class="col-md-7">
             <select
@@ -30,10 +30,10 @@
             >
               <option value="null"> </option>
               <option
-                *ngFor="let series of cashReceiptService.seriesLists"
-                [ngValue]="series.ID"
+                *ngFor="let account of cashReceiptService.cashAccountLists"
+                [ngValue]="account.LedgerID"
               >
-                {{ series.EngName }}</option
+                {{ account.LedgerName }}</option
               >
             </select>
           </div>
@@ -41,23 +41,12 @@
         <div class="row clearfix mt-3">
           <div class="col-md-5">
             <label>
-              <input
-                type="checkbox"
-                [value]=""
-                (change)="onCheckChange($event)"
-              />
               Cash Party / Customer
             </label>
           </div>
           <div class="col-md-7">
-            <select class="form-control" id="seriesId" formControlName="series">
+            <select class="form-control" id="cashPartyID" formControlName="cashParty">
               <option value="null"> </option>
-              <option
-                *ngFor="let series of cashReceiptService.seriesLists"
-                [ngValue]="series.ID"
-              >
-                {{ series.EngName }}</option
-              >
             </select>
           </div>
         </div>
@@ -144,6 +133,29 @@
             let-rowIndex="rowIndex"
           >
             <div class="col-xs-12 col-md-12 p-0">
+              <div class="col-md-4 pl-0">
+                <input
+                  #input
+                  class="k-textbox"
+                  style="width: 100px"
+                  placeholder="Ledger Code"
+                  [formControl]="
+                    getCashReceiptEntryList.controls[rowIndex].get('ledgerCode')
+                  "
+                  (change)="changeLedgerValue(dataItem, rowIndex)"
+                />
+                <kendo-popup
+                  [anchor]="input"
+                  *ngIf="
+                    getCashReceiptEntryList.controls[rowIndex].get('ledgerCode')
+                      .invalid
+                  "
+                  popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                >
+                  <span class="k-icon k-i-warning"></span>
+                  Ledger Code is invalid
+                </kendo-popup>
+              </div>
               <div class="col-md-8 pr-0">
                 <input
                   #input
@@ -161,7 +173,6 @@
                     aria-hidden="true"
                   ></i>
                 </a>
-
                 <kendo-popup
                   [anchor]="input"
                   *ngIf="

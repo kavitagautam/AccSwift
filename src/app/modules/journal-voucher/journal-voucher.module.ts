@@ -21,7 +21,6 @@ import {
   TranslateService
 } from "@ngx-translate/core";
 import { JournalService } from "./services/journal.service";
-import { LedgerFilterPipe } from "./services/ledger-filter.pipe";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 
 export function createTranslateLoader(http: HttpClient) {
@@ -32,7 +31,6 @@ export function createTranslateLoader(http: HttpClient) {
     AddJournalComponent,
     EditJournalComponent,
     ListJournalComponent,
-    LedgerFilterPipe
   ],
   imports: [
     FormsModule,

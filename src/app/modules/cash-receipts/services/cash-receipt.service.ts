@@ -5,7 +5,8 @@ import { HttpClient } from "@angular/common/http";
 import {
   ProjectList,
   SeriesList,
-  CashReceiptMaster
+  CashReceiptMaster,
+  CashAccounts,
 } from "../models/cash-receipt.model";
 import { Observable } from "rxjs";
 @Injectable({
@@ -14,6 +15,7 @@ import { Observable } from "rxjs";
 export class CashReceiptService {
   seriesLists: SeriesList;
   projectLists: ProjectList;
+  cashAccountLists;
   _api_URL = environment.baseAPI;
 
   constructor(
@@ -24,6 +26,7 @@ export class CashReceiptService {
   init() {
     this.getProjectLists();
     this.getSeriesList();
+    this.getCashReceiptAccounts();
   }
 
   getProjectLists(): void {
@@ -40,11 +43,26 @@ export class CashReceiptService {
         this.seriesLists = res;
       });
   }
-  getCashReceiptMaster() {
+
+  getCashReceiptAccounts(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/CashAccounts`)
+      .subscribe((res : CashAccounts) => {
+        this.cashAccountLists = res.Entity;
+      });
+  }
+
+  getCashReceiptMaster(): Observable<CashReceiptMaster[]> {
     return this.httpService.get(`${this._api_URL}CashReceiptMaster`);
   }
 
-  getCashRecipetDetails(id): Observable<CashReceiptMaster> {
+  getCashReceiptDetails(id): Observable<CashReceiptMaster> {
     return this.httpService.get(`${this._api_URL}CashReceiptMaster/${id}`);
   }
+
+ 
+  getCashParty(): Observable<CashAccounts[]> {
+    return this.httpService.get(`${this._api_URL} /Ledger/cashparty`);
+  }
+ 
 }

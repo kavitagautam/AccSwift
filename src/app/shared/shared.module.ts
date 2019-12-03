@@ -21,6 +21,7 @@ import { GridModule } from '@progress/kendo-angular-grid';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { DropDownListModule, DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { LedgerFilterPipe } from './pipes/ledger-filter/ledger-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { DropDownListModule, DropDownsModule } from '@progress/kendo-angular-dro
     CurrencyFormatPipe,
     PopupAnchorDirective,
     CurrencyDirective,
+    LedgerFilterPipe,
     LedgerModelPopupComponent
   ],
   imports: [

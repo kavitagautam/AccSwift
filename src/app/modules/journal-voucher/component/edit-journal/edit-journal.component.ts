@@ -5,9 +5,10 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe, formatDate } from "@angular/common";
 import { JournalMaster } from "../../models/journal.model";
-import { LedgerCodeMatchService } from "../../services/ledger-code-match.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { LedgerCodeAsyncValidators } from '@app/shared/validators/async-validators/ledger-code-validators.service';
+import { LedgerCodeMatchService } from '@app/shared/services/ledger-code-match/ledger-code-match.service';
 
 @Component({
   selector: "app-edit-journal",
@@ -43,7 +44,8 @@ export class EditJournalComponent implements OnInit {
     public journalService: JournalService,
     private modalService: BsModalService,
     private route: ActivatedRoute,
-    public ledgerCodeMatchService: LedgerCodeMatchService
+    public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
+    public ledgerCodeService: LedgerCodeMatchService
   ) {}
 
   ngOnInit() {
@@ -80,7 +82,7 @@ export class EditJournalComponent implements OnInit {
 
   addJournalEntryFormGroup(): FormGroup {
     return this._fb.group({
-      ledgerCode: ["", null, this.ledgerCodeMatchService.ledgerCodeMatch()],
+      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       particularsOraccountingHead: ["", Validators.required],
       ledgerID: [""],
       debit: ["", Validators.required],
@@ -140,7 +142,7 @@ export class EditJournalComponent implements OnInit {
     } else {
       journalFormArray.push(
         this._fb.group({
-          ledgerCode: ["", null, this.ledgerCodeMatchService.ledgerCodeMatch()],
+          ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
           particularsOraccountingHead: ["", Validators.required],
           ledgerID: [""],
           debit: ["", Validators.required],
@@ -206,7 +208,7 @@ export class EditJournalComponent implements OnInit {
       journalEntryFormArray.controls[selectedRow].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.journalService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           journalEntryFormArray.controls[selectedRow]

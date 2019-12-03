@@ -8,7 +8,7 @@ import {
   ProjectList,
   SeriesList
 } from "../models/journal.model";
-import { LedgerMatch } from "../models/ledgerCodeMatch.model";
+import { LedgerMatch } from "../../../shared/models/ledgerCodeMatch.model";
 
 @Injectable({
   providedIn: "root"
@@ -47,13 +47,6 @@ export class JournalService {
       .subscribe((res: SeriesList) => {
         this.journalSeriesList = res;
       });
-  }
-
-  checkLedgerCode(code): Observable<LedgerMatch> {
-    const params = new HttpParams().set("LedgerCode", code);
-    return this.http.get<LedgerMatch>(`${this._api_URL}CheckLedger`, {
-      params
-    });
   }
 
   getJournalList(paramsData) {

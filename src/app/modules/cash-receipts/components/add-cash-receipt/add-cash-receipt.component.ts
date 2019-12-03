@@ -5,6 +5,8 @@ import { Router } from "@angular/router";
 import { CashReceiptService } from "../../services/cash-receipt.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
+import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 
 @Component({
   selector: "app-add-cash-receipt",
@@ -36,7 +38,9 @@ export class AddCashReceiptComponent implements OnInit {
     public _fb: FormBuilder,
     private router: Router,
     private modalService: BsModalService,
-    public cashReceiptService: CashReceiptService
+    public cashReceiptService: CashReceiptService,
+    public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
+    public ledgerCodeService: LedgerCodeMatchService
   ) {}
 
   ngOnInit() {
@@ -50,6 +54,7 @@ export class AddCashReceiptComponent implements OnInit {
       project: [""],
       voucherNo: [""],
       cashAccount: [""],
+      cashParty: [""],
       date: [],
       cashReceiptEntryList: this._fb.array([
         this.addCashReceiptEntryFormGroup()
@@ -63,6 +68,7 @@ export class AddCashReceiptComponent implements OnInit {
 
   addCashReceiptEntryFormGroup(): FormGroup {
     return this._fb.group({
+      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       particularsOraccountingHead: ["", Validators.required],
       voucherNo: [""],
       amount: [""],
@@ -70,29 +76,6 @@ export class AddCashReceiptComponent implements OnInit {
       vType: [""],
       remarks: [""]
     });
-  }
-
-  onCheckChange(event) {
-    // const formArray: FormArray = this.myForm.get('myChoices') as FormArray;
-
-    /* Selected */
-    if (event.target.checked) {
-      // Add a new control in the arrayForm
-      //   formArray.push(new FormControl(event.target.value));
-    } else {
-      /* unselected */
-      // find the unselected element
-      let i: number = 0;
-
-      // formArray.controls.forEach((ctrl: FormControl) => {
-      //   if(ctrl.value == event.target.value) {
-      //     // Remove the unselected element from the arrayForm
-      //     formArray.removeAt(i);
-      //     return;
-      //   }
-
-      i++;
-    }
   }
 
   addCashReceiptEntry(): void {
@@ -105,6 +88,34 @@ export class AddCashReceiptComponent implements OnInit {
     this.submitted = false;
   }
 
+  changeLedgerValue(dataItem, selectedRow): void {
+    const cashReceiptFormArray = <FormArray>(
+      this.addCashReceiptForm.get("cashReceiptEntryList")
+    );
+
+    const ledgerCode = cashReceiptFormArray.controls[selectedRow].get(
+      "ledgerCode"
+    ).value;
+    if (
+      cashReceiptFormArray.controls[selectedRow].get("ledgerCode").status ===
+      "VALID"
+    ) {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+        const selectedItem = res.Entity;
+        if (selectedItem && selectedItem.length > 0) {
+          cashReceiptFormArray.controls[selectedRow]
+            .get("currentBalance")
+            .setValue(selectedItem[0].ActualBalance);
+          cashReceiptFormArray.controls[selectedRow]
+            .get("particularsOraccountingHead")
+            .setValue(selectedItem[0].LedgerName);
+          cashReceiptFormArray.controls[selectedRow]
+            .get("ledgerCode")
+            .setValue(selectedItem[0].LedgerCode);
+        }
+      });
+    }
+  }
   public save(): void {
     if (this.addCashReceiptForm.valid) {
       this.router.navigate(["/cash"]);
@@ -167,7 +178,7 @@ export class AddCashReceiptComponent implements OnInit {
           this.addCashReceiptForm.get("cashReceiptEntryList")
         );
         cashReceiptFormArray.controls[index]
-          .get("balance")
+          .get("currentBalance")
           .setValue(data.ActualBalance);
         cashReceiptFormArray.controls[index]
           .get("particularsOraccountingHead")
