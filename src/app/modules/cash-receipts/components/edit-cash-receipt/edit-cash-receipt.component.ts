@@ -4,7 +4,10 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { CashReceiptService } from "../../services/cash-receipt.service";
 import { CashReceiptMaster, LedgerList } from "../../models/cash-receipt.model";
 import { SortDescriptor } from "@progress/kendo-data-query";
-import { SelectAllCheckboxState, PageChangeEvent } from "@progress/kendo-angular-grid";
+import {
+  SelectAllCheckboxState,
+  PageChangeEvent
+} from "@progress/kendo-angular-grid";
 
 @Component({
   selector: "app-edit-cash-receipt",
@@ -48,6 +51,7 @@ export class EditCashReceiptComponent implements OnInit {
   ngOnInit() {
     this.buildCashReceiptForm();
     this.cashReceiptService.init();
+    
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
         this.cashReceiptService
@@ -215,7 +219,6 @@ export class EditCashReceiptComponent implements OnInit {
     );
   }
 
-  
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     this.getLedgerList();

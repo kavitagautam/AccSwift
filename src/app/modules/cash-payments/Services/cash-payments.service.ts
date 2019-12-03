@@ -3,11 +3,16 @@ import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { CashReceiptMaster } from "@app/modules/cash-receipts/models/cash-receipt.model";
 
 @Injectable({
   providedIn: "root"
 })
 export class CashPaymentsService {
+  getCashPaymentDetails(getId: any) {
+    throw new Error("Method not implemented.");
+  }
   data = [
     {
       ID: 2,
@@ -444,5 +449,9 @@ export class CashPaymentsService {
       .subscribe((res: SeriesList) => {
         this.seriesLists = res;
       });
+  }
+
+  getCashRecipetDetails(id): Observable<CashReceiptMaster> {
+    return this.httpService.get(`${this._api_URL}CashReceiptMaster/${id}`);
   }
 }

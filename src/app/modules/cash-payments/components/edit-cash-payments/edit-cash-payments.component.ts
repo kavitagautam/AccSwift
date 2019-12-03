@@ -1,3 +1,4 @@
+import { ActivatedRoute } from "@angular/router";
 import { SortDescriptor } from "@progress/kendo-data-query";
 import { CashReceiptService } from "./../../../cash-receipts/services/cash-receipt.service";
 import {
@@ -18,9 +19,10 @@ import { NumberValueAccessor } from "@angular/forms/src/directives";
   templateUrl: "./edit-cash-payments.component.html",
   styleUrls: ["./edit-cash-payments.component.scss"]
 })
+// @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
 export class EditCashPaymentsComponent implements OnInit {
   private editedRowIndex: number;
-  @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
+
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
@@ -31,6 +33,7 @@ export class EditCashPaymentsComponent implements OnInit {
   selectedLedgerRow: number;
   ledgerListLoading: boolean;
   rowSubmitted: boolean;
+  getId;
   //Kendo Grid
   public pageSize = 10;
   public skip = 0;
@@ -46,11 +49,53 @@ export class EditCashPaymentsComponent implements OnInit {
   public selectAllState: SelectAllCheckboxState = "unchecked"; //Kendo row Select
   constructor(
     public cashPaymentService: CashPaymentsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.buildCashPaymentForm();
+    this.cashPaymentService.init();
+
+    this.route.paramMap.subscribe(params => {
+      this.getId = +params.get("id");
+      if (this.getId) {
+        this.cashPaymentService
+          .getCashRecipetDetails(this.getId)
+          .subscribe(res => {
+            this.cashPaymentDetail = res;
+            this.buildCashPaymentForm();
+            // this.setCashPaymentList();
+          });
+      }
+    });
+  } // ngoninit method ends here...a
+
+  setCashPaymentList() {
+    this.editCashPaymentForm.setControl(
+      "cashPaymentEntryList",
+      this.setCashPaymentFormArray(this.cashPaymentDetail)
+    );
+  }
+
+  setCashPaymentFormArray(cashPaymentDetails): FormArray {
+    const cashPaymentFormArray = new FormArray([]);
+    if (cashPaymentDetails && cashPaymentDetails.length > 0) {
+      cashPaymentDetails.array.forEach(element => {
+        cashPaymentDetails.push(
+          this.fb.group({
+            particularsOraccoutingHead: [
+              element.ledger_name,
+              Validators.required
+            ],
+            voucherNo: [element.voucherNo],
+            currentBalance: element.TotalAmount,
+            vType: element.VoucherType,
+            remarks: element.Remarks
+          })
+        );
+      });
+    }
   }
 
   buildCashPaymentForm(): void {
@@ -92,18 +137,5 @@ export class EditCashPaymentsComponent implements OnInit {
     this.getLedgerList();
   }
 
-  getLedgerList(): void {
-    this.ledgerListLoading = true;
-    this.cashPaymentService.getLedgerList().subscribe(
-      res => {
-        this.ledgerList = res;
-      },
-      error => {
-        this.ledgerListLoading = false;
-      },
-      () => {
-        this.ledgerListLoading = false;
-      }
-    );
-  }
+  getLedgerList(): void {}
 }
