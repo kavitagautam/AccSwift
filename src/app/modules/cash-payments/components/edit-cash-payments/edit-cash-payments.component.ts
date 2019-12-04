@@ -1,19 +1,13 @@
 import { CashPaymentsService } from "./../../Services/cash-payments.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SortDescriptor } from "@progress/kendo-data-query";
-import { CashReceiptService } from "./../../../cash-receipts/services/cash-receipt.service";
 import {
   PageChangeEvent,
   SelectAllCheckboxState
 } from "@progress/kendo-angular-grid";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
-import {
-  CashReceiptMaster,
-  LedgerList
-} from "./../../../cash-receipts/models/cash-receipt.model";
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 
-import { NumberValueAccessor } from "@angular/forms/src/directives";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 
 @Component({
   selector: "app-edit-cash-payments",
@@ -27,10 +21,10 @@ export class EditCashPaymentsComponent implements OnInit {
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
-  cashPaymentDetail: CashReceiptMaster;
+  cashPaymentDetail;
   editCashPaymentForm: FormGroup;
   submitted: boolean;
-  ledgerList: LedgerList[] = [];
+  ledgerList = [];
   selectedLedgerRow: number;
   ledgerListLoading: boolean;
   rowSubmitted: boolean;
