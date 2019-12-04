@@ -6,10 +6,9 @@ import { HttpClientService } from "@app/core/services/http-client/http-client.se
 import {
   JournalMaster,
   ProjectList,
-  SeriesList,
-  LedgerList
+  SeriesList
 } from "../models/journal.model";
-import { LedgerMatch } from "../models/ledgerCodeMatch.model";
+import { LedgerMatch } from "../../../shared/models/ledgerCodeMatch.model";
 
 @Injectable({
   providedIn: "root"
@@ -41,23 +40,13 @@ export class JournalService {
         this.projectLists = res;
       });
   }
+  
   getSeriesList(): void {
     this.httpService
       .get(`${this._api_URL}series/journal`)
       .subscribe((res: SeriesList) => {
         this.journalSeriesList = res;
       });
-  }
-
-  getLedgerList(): Observable<LedgerList[]> {
-    return this.httpService.get(`${this._api_URL}ledger/lov`);
-  }
-
-  checkLedgerCode(code): Observable<LedgerMatch> {
-    const params = new HttpParams().set("LedgerCode", code);
-    return this.http.get<LedgerMatch>(`${this._api_URL}CheckLedger`, {
-      params
-    });
   }
 
   getJournalList(paramsData) {

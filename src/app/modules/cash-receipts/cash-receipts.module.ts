@@ -13,6 +13,7 @@ import {
   DropDownListModule,
   DropDownsModule
 } from "@progress/kendo-angular-dropdowns";
+import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {
     SharedModule,
     CashReceiptsRoutingModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents: [LedgerModelPopupComponent]
 })
 export class CashReceiptsModule {}

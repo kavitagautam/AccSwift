@@ -4,20 +4,19 @@ import {
   ValidationErrors,
   AsyncValidatorFn
 } from "@angular/forms";
-import { JournalService } from "./journal.service";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
+import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 
 @Injectable({
   providedIn: "root"
 })
-export class LedgerCodeMatchService {
-  constructor(public journalService: JournalService) {}
+export class LedgerCodeAsyncValidators {
+  constructor(public ledgerCodeService: LedgerCodeMatchService) {}
 
-  
   ledgerCodeMatch(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return this.journalService.checkLedgerCode(control.value).pipe(
+      return this.ledgerCodeService.checkLedgerCode(control.value).pipe(
         map(
           res => {
             if (control.value) {
