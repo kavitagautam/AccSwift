@@ -10,7 +10,7 @@
             <select class="form-control" id="seriesId" formControlName="series">
               <option value="null"> </option>
               <option
-                *ngFor="let series of cashReceiptService.seriesLists"
+                *ngFor="let series of cashPaymentsService.seriesLists"
                 [ngValue]="series.ID"
               >
                 {{ series.EngName }}</option
@@ -30,7 +30,7 @@
             >
               <option value="null"> </option>
               <option
-                *ngFor="let series of cashReceiptService.seriesLists"
+                *ngFor="let series of cashPaymentsService.seriesLists"
                 [ngValue]="series.ID"
               >
                 {{ series.EngName }}</option
@@ -53,7 +53,7 @@
             <select class="form-control" id="seriesId" formControlName="series">
               <option value="null"> </option>
               <option
-                *ngFor="let series of cashReceiptService.seriesLists"
+                *ngFor="let series of cashPaymentsService.seriesLists"
                 [ngValue]="series.ID"
               >
                 {{ series.EngName }}</option
@@ -83,7 +83,7 @@
             >
               <option value="null"> </option>
               <option
-                *ngFor="let project of cashReceiptService.projectLists"
+                *ngFor="let project of cashPaymentsService.projectLists"
                 [ngValue]="project.ID"
               >
                 {{ project.EngName }}</option

@@ -1,5 +1,5 @@
 <div class="box box-default">
-  <form>
+  <form [formGroup]="editCashPaymentForm" novalidate>
     <div class="col-md-12 mt-5 mr-2">
       <div class="col-md-4">
         <div class="row clearfix">
@@ -7,9 +7,17 @@
             <label class="float-right">Series:</label>
           </div>
           <div class="col-md-7">
-            <select class="form-control" id="seriesId">
+            <select
+              class="form-control"
+              id="seriesId"
+              formControlName="seriesId"
+            >
               <option value="null"></option>
-              <option></option>
+              <option
+                *ngFor="let series of cashPaymentService.seriesLists"
+                [ngValue]="series.ID"
+                >{{ series.EngName }}
+              </option>
             </select>
           </div>
         </div>
@@ -19,9 +27,17 @@
             <label class="float-right">Bank Account:</label>
           </div>
           <div class="col-md-7">
-            <select class="form-control" id="cashAccountNo">
+            <select
+              class="form-control"
+              id="cashAccountNo"
+              formControlName="cashAccount"
+            >
               <option value="null"></option>
-              <option></option>
+              <option
+                *ngFor="let series of cashPaymentService.seriesLists"
+                [ngValue]="series.ID"
+                >{{ series.EngName }}
+              </option>
             </select>
           </div>
         </div>
@@ -36,9 +52,13 @@
             Cash Party/Customer
           </div>
           <div class="col-md-7">
-            <select class="form-control" id="series">
+            <select class="form-control" id="series" formControlName="series">
               <option value="null"></option>
-              <option></option>
+              <option
+                *ngFor="let series of cashPaymentService.seriesLists"
+                [ngValue]="series.ID"
+                >{{ series.EngName }}</option
+              >
             </select>
           </div>
         </div>
@@ -50,7 +70,7 @@
             <label class="float-right">Voucher #:</label>
           </div>
           <div class="col-md-7">
-            <input class="form-control" />
+            <input class="form-control" formControlName="voucherNo" />
           </div>
         </div>
 
@@ -59,9 +79,16 @@
             <label class="float-right">Project:</label>
           </div>
           <div class="col-md-7">
-            <input class="form-control" id="projectId" />
+            <input
+              class="form-control"
+              id="projectId"
+              formControlName="project"
+            />
             <option value="null"></option>
-            <option></option>
+            <option
+              *ngFor="let project of cashPaymentService.projectLists"
+              [ngValue]="project.ID"
+            ></option>
           </div>
         </div>
 
@@ -289,7 +316,7 @@
 <!-- Modal popup -->
 
 <div
-  class="modal fade-bd-example-modal-lg"
+  class="modal fade bd-example-modal-lg"
   #ledgerSelectModal
   id="ledgerSelectModal"
   tabindex="-1"
@@ -297,19 +324,36 @@
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-lg" role="document" style="max-width: 870px;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Select Ledger</h5>
-        <button
-          class="close"
-          type="button"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true"></span>
-        </button>
+<div class="modal-dialog modal-lg" role="document" style="max-width: 870px;">
+<div class="modal-content">
+
+  <div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Select Ledger</h5>
+<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+<span arial-hidden="true">x</span>
+</button>
+  </div>
+
+  <div class="modal-body">
+    <div class="container-fluid">
+      <div class="row mt-2">
+        <div class="grid wrapper">
+          <kendo grid [kendoGridBinding] ="ledgerList"
+          [filterable]="true"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode:'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          >
+
+          </kendo>
       </div>
     </div>
   </div>
+</div>
+</div>
 </div>

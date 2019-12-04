@@ -43,15 +43,42 @@
                 </select>
               </div>
             </div>
-            <div class="row clearfix">
+            <div class="row clearfix mt-3">
               <div class="col-md-5">
-                <label class="float-right">Bank Accont: </label>
+                <label class="float-right">Cash Accont: </label>
               </div>
               <div class="col-md-7">
                 <select
                   class="form-control"
-                  id="bankAccountNo"
-                  formControlName="bankAccount"
+                  id="cashAccountNo"
+                  formControlName="cashAccount"
+                >
+                  <option value="null"> </option>
+                  <option
+                    *ngFor="let series of cashPaymentsService.seriesLists"
+                    [ngValue]="series.ID"
+                  >
+                    {{ series.EngName }}</option
+                  >
+                </select>
+              </div>
+            </div>
+            <div class="row clearfix mt-3">
+              <div class="col-md-5">
+                <label>
+                  <input
+                    type="checkbox"
+                    [value]=""
+                    (change)="onCheckChange($event)"
+                  />
+                  Cash Party / Customer
+                </label>
+              </div>
+              <div class="col-md-7">
+                <select
+                  class="form-control"
+                  id="seriesId"
+                  formControlName="series"
                 >
                   <option value="null"> </option>
                   <option
@@ -93,6 +120,14 @@
                 </select>
               </div>
             </div>
+            <div class="row clearfix mt-3">
+              <div class="col-md-5">
+                <label class="float-right">Current Balance: </label>
+              </div>
+              <div class="col-md-7">
+                <span>0.00</span>
+              </div>
+            </div>
           </div>
           <div class="col-md-4">
             <div class="row clearfix">
@@ -127,7 +162,7 @@
   <div class="col-md-12 mt-5 mr-2">
     <div class="grid-wrapper">
       <kendo-grid
-        [data]="gridData"
+        [data]="gridView"
         [filterable]="true"
         [filter]="filter"
         [pageSize]="pageSize"
@@ -145,13 +180,16 @@
       >
         <kendo-grid-column field="VoucherNo" title="VoucherNo.">
         </kendo-grid-column>
-
+        <kendo-grid-column field="LedgerName" title="Ledger Name">
+        </kendo-grid-column>
+        <kendo-grid-column field="TotalAmount" title="Amount">
+        </kendo-grid-column>
         <kendo-grid-column field="SeriesName" title="Series">
         </kendo-grid-column>
         <kendo-grid-column field="ProjectName" title="Project">
         </kendo-grid-column>
         <kendo-grid-column
-          field="ModifiedDate"
+          field="CashReceiptDate"
           title="Cheque Date"
           filter="date"
           [filterable]="false"
@@ -159,7 +197,7 @@
         >
         </kendo-grid-column>
         <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
-        <kendo-grid-command-column title="Action" width="220">
+        <kendo-grid-command-column title="Action" width="150">
           <ng-template
             kendoGridCellTemplate
             let-isNew="isNew"
