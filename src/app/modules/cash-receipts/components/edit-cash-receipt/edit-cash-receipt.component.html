@@ -1,5 +1,5 @@
 <div class="box box-default">
-  <form [formGroup]="editCashReceipForm" novalidate>
+  <form [formGroup]="editCashReceiptForm" novalidate>
     <div class="col-md-12 mt-5 mr-2">
       <div class="col-md-4">
         <div class="row clearfix">
@@ -20,7 +20,7 @@
         </div>
         <div class="row clearfix mt-3">
           <div class="col-md-5">
-            <label class="float-right">Bank Accont: </label>
+            <label class="float-right">Cash Account: </label>
           </div>
           <div class="col-md-7">
             <select
@@ -30,10 +30,15 @@
             >
               <option value="null"> </option>
               <option
+<<<<<<< HEAD
                 *ngFor="let series of cashPaymentsService.seriesLists"
                 [ngValue]="series.ID"
+=======
+                *ngFor="let account of cashReceiptService.cashAccountLists"
+                [ngValue]="account.LedgerID"
+>>>>>>> journal
               >
-                {{ series.EngName }}</option
+                {{ account.LedgerName }}</option
               >
             </select>
           </div>
@@ -41,23 +46,22 @@
         <div class="row clearfix mt-3">
           <div class="col-md-5">
             <label>
-              <input
-                type="checkbox"
-                [value]=""
-                (change)="onCheckChange($event)"
-              />
               Cash Party / Customer
             </label>
           </div>
           <div class="col-md-7">
-            <select class="form-control" id="seriesId" formControlName="series">
+            <select class="form-control" id="cashPartyID" formControlName="cashParty">
               <option value="null"> </option>
+<<<<<<< HEAD
               <option
                 *ngFor="let series of cashPaymentsService.seriesLists"
                 [ngValue]="series.ID"
               >
                 {{ series.EngName }}</option
               >
+=======
+            
+>>>>>>> journal
             </select>
           </div>
         </div>
@@ -144,6 +148,29 @@
             let-rowIndex="rowIndex"
           >
             <div class="col-xs-12 col-md-12 p-0">
+              <div class="col-md-4 pl-0">
+                <input
+                  #input
+                  class="k-textbox"
+                  style="width: 100px"
+                  placeholder="Ledger Code"
+                  [formControl]="
+                    getCashReceiptEntryList.controls[rowIndex].get('ledgerCode')
+                  "
+                  (change)="changeLedgerValue(dataItem, rowIndex)"
+                />
+                <kendo-popup
+                  [anchor]="input"
+                  *ngIf="
+                    getCashReceiptEntryList.controls[rowIndex].get('ledgerCode')
+                      .invalid
+                  "
+                  popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                >
+                  <span class="k-icon k-i-warning"></span>
+                  Ledger Code is invalid
+                </kendo-popup>
+              </div>
               <div class="col-md-8 pr-0">
                 {{ rowIndex }}
                 <input
@@ -156,17 +183,12 @@
                     )
                   "
                 />
-                <a
-                  href="#"
-                  (click)="openModal(rowIndex)"
-                  data-toggle="modal"
-                  data-target="#ledgerSelectModal"
+                <a (click)="openModal(rowIndex)"
                   ><i
                     class="fa fa-eye pull-right ledgerSelectIcon"
                     aria-hidden="true"
                   ></i>
                 </a>
-
                 <kendo-popup
                   [anchor]="input"
                   *ngIf="
@@ -335,105 +357,4 @@
       </button>
     </div>
   </form>
-</div>
-
-<!--Modal PopUp-->
-<div
-  class="modal fade bd-example-modal-lg"
-  #ledgerSelectModal
-  id="ledgerSelectModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg" role="document" style="max-width: 870px;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Select Ledger</h5>
-        <button
-          class="close"
-          type="button"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid">
-          <div class="row mt-2">
-            <div class="grid-wrapper">
-              <kendo-grid
-                [kendoGridBinding]="ledgerList"
-                [filterable]="true"
-                [pageSize]="pageSize"
-                [skip]="skip"
-                [sortable]="{
-                  allowUnsort: allowUnsort,
-                  mode: 'single'
-                }"
-                [sort]="sort"
-                (sortChange)="sortChange($event)"
-                [pageable]="true"
-                (pageChange)="pageChange($event)"
-                scrollable="none"
-                (selectedKeysChange)="
-                  onSelectedKeysChange($event, selectedLedgerRow)
-                "
-                [kendoGridSelectBy]="'LedgerID'"
-                [selectedKeys]="mySelection"
-              >
-                <kendo-grid-column
-                  field="LedgerName"
-                  title="Ledger Name"
-                  width="350"
-                >
-                  <ng-template
-                    kendoGridCellTemplate
-                    let-dataItem="dataItem"
-                    let-rowIndex="rowIndex"
-                  >
-                    <a
-                      class="a_link"
-                      (click)="selectedLedger(dataItem, selectedLedgerRow)"
-                      >{{ dataItem.LedgerName }}</a
-                    >
-                  </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column
-                  field="LedgerCode"
-                  title="Ledger Code"
-                  width="180"
-                >
-                </kendo-grid-column>
-                <kendo-grid-column
-                  field="ActualBalance"
-                  title="Actual Balance"
-                  width="180"
-                >
-                  <ng-template kendoGridCellTemplate let-dataItem="dataItem">
-                    <span class="float-right">{{
-                      dataItem.ActualBalance
-                    }}</span>
-                  </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column
-                  field="LedgerType"
-                  title="Ledger Type"
-                  width="150"
-                ></kendo-grid-column>
-              </kendo-grid>
-              <div *ngIf="ledgerListLoading" class="k-i-loading"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
 </div>

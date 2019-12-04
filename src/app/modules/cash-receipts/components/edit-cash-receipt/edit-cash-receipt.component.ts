@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { CashReceiptService } from "../../services/cash-receipt.service";
-import { CashReceiptMaster, LedgerList } from "../../models/cash-receipt.model";
-import { SortDescriptor } from "@progress/kendo-data-query";
-import {
-  SelectAllCheckboxState,
-  PageChangeEvent
-} from "@progress/kendo-angular-grid";
+import { CashReceiptMaster } from "../../models/cash-receipt.model";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
+import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: "app-edit-cash-receipt",
@@ -16,46 +16,40 @@ import {
 })
 export class EditCashReceiptComponent implements OnInit {
   private editedRowIndex: number;
-  @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
   cashRecieptDetail: CashReceiptMaster;
-  editCashReceipForm: FormGroup;
+  editCashReceiptForm: FormGroup;
   submitted: boolean;
-  ledgerList: LedgerList[] = [];
-  selectedLedgerRow: number;
-  ledgerListLoading: boolean;
-
   rowSubmitted: boolean;
 
-  //kendo Grid
-  public pageSize = 10;
-  public skip = 0;
-  public allowUnsort = true;
-  public sort: SortDescriptor[] = [
-    {
-      field: "LedgerName" || "LedgerCode" || "ActualBalance" || "LedgerType",
-      dir: "asc"
-    }
-  ];
-  public mySelection: number[] = []; //Kendo row Select
-  public selectAllState: SelectAllCheckboxState = "unchecked"; //Kendo row Select
+  //Open the Ledger List Modal on PopUp
+  modalRef: BsModalRef;
+  //  modal config to unhide modal when clicked outside
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+    centered: true
+  };
+
   constructor(
     public _fb: FormBuilder,
     private router: Router,
+    private modalService: BsModalService,
     public cashReceiptService: CashReceiptService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
+    public ledgerCodeService: LedgerCodeMatchService
   ) {}
 
   ngOnInit() {
     this.buildCashReceiptForm();
     this.cashReceiptService.init();
-    
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
         this.cashReceiptService
-          .getCashRecipetDetails(params.get("id"))
+          .getCashReceiptDetails(params.get("id"))
           .subscribe(res => {
             this.cashRecieptDetail = res;
             this.buildCashReceiptForm();
@@ -66,15 +60,24 @@ export class EditCashReceiptComponent implements OnInit {
   }
 
   buildCashReceiptForm(): void {
-    this.editCashReceipForm = this._fb.group({
+    this.editCashReceiptForm = this._fb.group({
       series: [this.cashRecieptDetail ? this.cashRecieptDetail.SeriesID : ""],
       project: [this.cashRecieptDetail ? this.cashRecieptDetail.ProjectID : ""],
       voucherNo: [
         this.cashRecieptDetail ? this.cashRecieptDetail.VoucherNo : ""
       ],
-      cashAccount: [""],
+      cashAccount: [
+        this.cashRecieptDetail ? this.cashRecieptDetail.LedgerID : ""
+      ],
+      cashParty: [""],
       date: [
-        this.cashRecieptDetail ? this.cashRecieptDetail.CashReceiptDate : ""
+        this.cashRecieptDetail
+          ? formatDate(
+              this.cashRecieptDetail.CreatedDate,
+              "yyyy-MM-dd",
+              "en-US"
+            )
+          : ""
       ],
       cashReceiptEntryList: this._fb.array([
         this.addCashReceiptEntryFormGroup()
@@ -83,11 +86,12 @@ export class EditCashReceiptComponent implements OnInit {
   }
 
   get getCashReceiptEntryList(): FormArray {
-    return <FormArray>this.editCashReceipForm.get("cashReceiptEntryList");
+    return <FormArray>this.editCashReceiptForm.get("cashReceiptEntryList");
   }
 
   addCashReceiptEntryFormGroup(): FormGroup {
     return this._fb.group({
+      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       particularsOraccountingHead: ["", Validators.required],
       voucherNo: [""],
       amount: [""],
@@ -98,9 +102,9 @@ export class EditCashReceiptComponent implements OnInit {
   }
 
   setCashReceiptList(): void {
-    this.editCashReceipForm.setControl(
+    this.editCashReceiptForm.setControl(
       "cashReceiptEntryList",
-      this.setCashReceiptFormArray(this.cashRecieptDetail)
+      this.setCashReceiptFormArray(this.cashRecieptDetail.CashReceiptDetails)
     );
   }
 
@@ -108,15 +112,16 @@ export class EditCashReceiptComponent implements OnInit {
     const cashReceiptFormArray = new FormArray([]);
     if (cashRecepitDetails && cashRecepitDetails.length > 0) {
       cashRecepitDetails.forEach(element => {
-        cashRecepitDetails.push(
+        cashReceiptFormArray.push(
           this._fb.group({
+            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
             particularsOraccountingHead: [
-              element.LedgerName,
+              element.Ledger.EngName,
               Validators.required
             ],
-            voucherNo: element.VoucherNo,
-            amount: element.ActualBalance,
-            currentBalance: element.TotalAmount,
+            voucherNo: element.VoucherNumber,
+            amount: element.Amount,
+            currentBalance: element.Amount,
             vType: element.VoucherType,
             remarks: element.Remarks
           })
@@ -137,48 +142,54 @@ export class EditCashReceiptComponent implements OnInit {
     return cashReceiptFormArray;
   }
 
-  onCheckChange(event) {
-    // const formArray: FormArray = this.myForm.get('myChoices') as FormArray;
-
-    /* Selected */
-    if (event.target.checked) {
-      // Add a new control in the arrayForm
-      //   formArray.push(new FormControl(event.target.value));
-    } else {
-      /* unselected */
-      // find the unselected element
-      let i: number = 0;
-
-      // formArray.controls.forEach((ctrl: FormControl) => {
-      //   if(ctrl.value == event.target.value) {
-      //     // Remove the unselected element from the arrayForm
-      //     formArray.removeAt(i);
-      //     return;
-      //   }
-
-      i++;
-    }
-  }
-
   addCashReceiptEntry(): void {
     this.submitted = true;
-    if (this.editCashReceipForm.get("cashReceiptEntryList").invalid) return;
+    if (this.editCashReceiptForm.get("cashReceiptEntryList").invalid) return;
 
-    (<FormArray>this.editCashReceipForm.get("cashReceiptEntryList")).push(
+    (<FormArray>this.editCashReceiptForm.get("cashReceiptEntryList")).push(
       this.addCashReceiptEntryFormGroup()
     );
     this.submitted = false;
   }
 
+  changeLedgerValue(dataItem, selectedRow): void {
+    const cashReceiptFormArray = <FormArray>(
+      this.editCashReceiptForm.get("cashReceiptEntryList")
+    );
+
+    const ledgerCode = cashReceiptFormArray.controls[selectedRow].get(
+      "ledgerCode"
+    ).value;
+    if (
+      cashReceiptFormArray.controls[selectedRow].get("ledgerCode").status ===
+      "VALID"
+    ) {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+        const selectedItem = res.Entity;
+        if (selectedItem && selectedItem.length > 0) {
+          cashReceiptFormArray.controls[selectedRow]
+            .get("currentBalance")
+            .setValue(selectedItem[0].ActualBalance);
+          cashReceiptFormArray.controls[selectedRow]
+            .get("particularsOraccountingHead")
+            .setValue(selectedItem[0].LedgerName);
+          cashReceiptFormArray.controls[selectedRow]
+            .get("ledgerCode")
+            .setValue(selectedItem[0].LedgerCode);
+        }
+      });
+    }
+  }
+
   public save(): void {
-    if (this.editCashReceipForm.valid) {
+    if (this.editCashReceiptForm.valid) {
       this.router.navigate(["/cash"]);
     } else {
     }
   }
 
   public cancel(): void {
-    this.editCashReceipForm.reset();
+    this.editCashReceiptForm.reset();
     this.router.navigate(["/cash"]);
   }
 
@@ -186,8 +197,8 @@ export class EditCashReceiptComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.editCashReceipForm.get("cashReceiptEntryList").invalid) return;
-    (<FormArray>this.editCashReceipForm.get("cashReceiptEntryList")).push(
+    if (this.editCashReceiptForm.get("cashReceiptEntryList").invalid) return;
+    (<FormArray>this.editCashReceiptForm.get("cashReceiptEntryList")).push(
       this.addCashReceiptEntryFormGroup()
     );
     this.rowSubmitted = false;
@@ -197,7 +208,7 @@ export class EditCashReceiptComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     const cashRecieptEntry = <FormArray>(
-      this.editCashReceipForm.get("cashReceiptEntryList")
+      this.editCashReceiptForm.get("cashReceiptEntryList")
     );
     cashRecieptEntry.controls[rowIndex]
       .get("particularsOraccountingHead")
@@ -215,81 +226,38 @@ export class EditCashReceiptComponent implements OnInit {
     this.editedRowIndex = rowIndex;
     sender.editRow(
       rowIndex,
-      this.editCashReceipForm.get("cashReceiptEntryList")
+      this.editCashReceiptForm.get("cashReceiptEntryList")
     );
-  }
-
-  public sortChange(sort: SortDescriptor[]): void {
-    this.sort = sort;
-    this.getLedgerList();
-  }
-  public pageChange(event: PageChangeEvent): void {
-    this.skip = event.skip;
   }
 
   openModal(index: number): void {
-    this.mySelection = [];
-    this.selectedLedgerRow = index;
-    this.getLedgerList();
-  }
-
-  getLedgerList(): void {
-    this.ledgerListLoading = true;
-    this.cashReceiptService.getLedgerList().subscribe(
-      res => {
-        this.ledgerList = res;
-      },
-      error => {
-        this.ledgerListLoading = false;
-      },
-      () => {
-        this.ledgerListLoading = false;
+    this.modalRef = this.modalService.show(
+      LedgerModelPopupComponent,
+      this.config
+    );
+    this.modalRef.content.data = index;
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe(data => {
+      if (data) {
+        const cashReceiptFormArray = <FormArray>(
+          this.editCashReceiptForm.get("cashReceiptEntryList")
+        );
+        cashReceiptFormArray.controls[index]
+          .get("currentBalance")
+          .setValue(data.ActualBalance);
+        cashReceiptFormArray.controls[index]
+          .get("particularsOraccountingHead")
+          .setValue(data.LedgerName);
+        cashReceiptFormArray.controls[index]
+          .get("ledgerCode")
+          .setValue(data.LedgerCode);
       }
-    );
-  }
-
-  // select ledger column
-  selectedLedger(item, selectedRow): void {
-    const cashReceiptEntry = <FormArray>(
-      this.editCashReceipForm.get("cashReceiptEntryList")
-    );
-    cashReceiptEntry.controls[selectedRow]
-      .get("currentBalance")
-      .setValue(item.currentAmount);
-    cashReceiptEntry.controls[selectedRow]
-      .get("particularsOraccountingHead")
-      .setValue(item.LedgerName);
-    cashReceiptEntry.controls[selectedRow]
-      .get("amount")
-      .setValue(item.ActualBalance);
-    this.ledgerSelectModal.nativeElement.click();
-  }
-
-  //Selected the Ledger row
-  public onSelectedKeysChange(e, selectedRow) {
-    const len = this.mySelection.length;
-    if (len === 0) {
-      this.selectAllState = "unchecked";
-    } else if (len > 0 && len < this.ledgerList.length) {
-      this.selectAllState = "indeterminate";
-    } else {
-      this.selectAllState = "checked";
-    }
-    const selected = this.ledgerList.filter(function(obj) {
-      return obj.LedgerID == e[0];
     });
-
-    const cashReceiptFormArray = <FormArray>(
-      this.editCashReceipForm.get("cashReceiptEntryList")
-    );
-    cashReceiptFormArray.controls[selectedRow]
-      .get("balance")
-      .setValue(selected[0].ActualBalance);
-    cashReceiptFormArray.controls[selectedRow]
-      .get("particularsOraccountingHead")
-      .setValue(selected[0].LedgerName);
-    this.ledgerSelectModal.nativeElement.click();
+    this.modalRef.content.onClose.subscribe(data => {
+      //Do after Close the Modal
+    });
   }
+
   public cancelHandler({ sender, rowIndex }) {
     this.closeEditor(sender, rowIndex);
   }
@@ -302,11 +270,11 @@ export class EditCashReceiptComponent implements OnInit {
   public removeHandler({ dataItem, rowIndex }): void {
     // Calculation on Debit Total and Credit Total on Rows Removed
     const cashRecieptEntry = <FormArray>(
-      this.editCashReceipForm.get("cashReceiptEntryList")
+      this.editCashReceiptForm.get("cashReceiptEntryList")
     );
 
     // Remove the Row
-    (<FormArray>this.editCashReceipForm.get("cashReceiptEntryList")).removeAt(
+    (<FormArray>this.editCashReceiptForm.get("cashReceiptEntryList")).removeAt(
       rowIndex
     );
   }
