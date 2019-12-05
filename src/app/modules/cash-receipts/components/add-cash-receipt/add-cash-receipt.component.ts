@@ -142,20 +142,20 @@ export class AddCashReceiptComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const cashRecieptEntry = <FormArray>(
+    const cashReceiptEntry = <FormArray>(
       this.addCashReceiptForm.get("cashReceiptEntryList")
     );
-    cashRecieptEntry.controls[rowIndex]
+    cashReceiptEntry.controls[rowIndex]
       .get("particularsOraccountingHead")
       .setValue(dataItem.particularsOraccountingHead);
-    cashRecieptEntry.controls[rowIndex]
+    cashReceiptEntry.controls[rowIndex]
       .get("voucherNo")
       .setValue(dataItem.voucherNo);
-    cashRecieptEntry.controls[rowIndex]
+    cashReceiptEntry.controls[rowIndex]
       .get("currentAmount")
       .setValue(dataItem.currentAmount);
-    cashRecieptEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
-    cashRecieptEntry.controls[rowIndex]
+    cashReceiptEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
+    cashReceiptEntry.controls[rowIndex]
       .get("remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
@@ -201,7 +201,7 @@ export class AddCashReceiptComponent implements OnInit {
 
   public removeHandler({ dataItem, rowIndex }): void {
     // Calculation on Debit Total and Credit Total on Rows Removed
-    const cashRecieptEntry = <FormArray>(
+    const cashReceiptEntry = <FormArray>(
       this.addCashReceiptForm.get("cashReceiptEntryList")
     );
 

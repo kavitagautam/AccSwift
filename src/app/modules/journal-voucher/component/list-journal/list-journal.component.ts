@@ -40,6 +40,8 @@ export class ListJournalComponent implements OnInit {
   projectNameSerachKey = "";
   seriesNameSearchKey = "";
   remarkSearchKey = "";
+  orderByKey = "";
+  dirKey = "asc";
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
@@ -47,12 +49,7 @@ export class ListJournalComponent implements OnInit {
   public allowUnsort = true;
   public sort: SortDescriptor[] = [
     {
-      field:
-        "VoucherNo" ||
-        "JournalDate" ||
-        "ProjectName" ||
-        "SeriesName" ||
-        "Remarks",
+      field: "",
       dir: "asc"
     }
   ];
@@ -90,8 +87,25 @@ export class ListJournalComponent implements OnInit {
   };
 
   public sortChange(sort: SortDescriptor[]): void {
+    this.orderByKey = "";
+    this.dirKey=""
     this.sort = sort;
-    console.log("Sorting " + this.sort);
+    this.dirKey = this.sort[0].dir;
+    if (this.sort[0].field === "VoucherNo") {
+      this.orderByKey = "Voucher_No";
+    }
+    if (this.sort[0].field === "Date") {
+      this.orderByKey = "Journal_Date";
+    }
+    if (this.sort[0].field === "ProjectName") {
+      this.orderByKey = "Project";
+    }
+    if (this.sort[0].field === "SeriesName") {
+      this.orderByKey = "Series";
+    }
+    if (this.sort[0].field === "Remarks") {
+      this.orderByKey = "Remarks";
+    }
     this.getJournalList();
   }
 
@@ -100,8 +114,8 @@ export class ListJournalComponent implements OnInit {
     const params = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
-      OrderBy: "", // string[] OrderByList = new string[] { "Voucher_No", "Journal_Date", "Remarks", "Series", "Project" };
-      Direction: "asc", // "asc" or "desc"
+      OrderBy: this.orderByKey, // string[] OrderByList = new string[] { "Voucher_No", "Journal_Date", "Remarks", "Series", "Project" };
+      Direction: this.dirKey, // "asc" or "desc"
       SeriesId: this.seriesIdSearch,
       ProjectId: this.projectIdSearch,
       VoucherNo: this.voucherNoSearch,
