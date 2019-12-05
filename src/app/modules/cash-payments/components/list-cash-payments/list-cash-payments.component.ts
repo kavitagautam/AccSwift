@@ -1,10 +1,14 @@
-import { CashPaymentsService } from "./../../Services/cash-payments.service";
+import { CashPaymentMaster } from "./../../models/cash-payments.model";
+import { CashPaymentsService } from "./../../services/cash-payments.service";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import { SortDescriptor, CompositeFilterDescriptor } from "@progress/kendo-data-query";
+import {
+  SortDescriptor,
+  CompositeFilterDescriptor
+} from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
@@ -31,13 +35,12 @@ export class ListCashPaymentsComponent implements OnInit {
     public cashPaymentsService: CashPaymentsService
   ) {}
   ngOnInit() {
-    this.gridData = this.cashPaymentsService.getCashPaymentsMaster();
-
+    this.getCashPaymentslList();
     this.cashPaymentsForm = this._fb.group({
       series: [""],
       project: [""],
       voucherNo: [""],
-      bankAccount: [""],
+      cashAccount: [""],
       date: [""]
     });
     this.cashPaymentsService.init();
@@ -84,25 +87,23 @@ export class ListCashPaymentsComponent implements OnInit {
       Direction: "asc" // "asc" or "desc"
     };
 
-    // this.cashPaymentsService.getCashPaymentsMaster().subscribe(
-    //   res => {
-    //     this.listLoading = true;
-
-    //     //mapping the data to change string date format to Date
-
-    //     this.cashPaymentsList = res;
-    //     this.gridView = {
-    //       data: this.cashPaymentsList,
-    //       total: this.cashPaymentsList ? this.cashPaymentsList.length : 0
-    //     };
-    //   },
-    //   error => {
-    //     this.listLoading = false;
-    //   },
-    //   () => {
-    //     this.listLoading = false;
-    //   }
-    // );
+    this.cashPaymentsService.getCashPaymentsMaster().subscribe(
+      res => {
+        this.listLoading = true;
+        //mapping the data to change string date format to Date
+        this.cashPaymentsList = res;
+        this.gridView = {
+          data: this.cashPaymentsList,
+          total: this.cashPaymentsList ? this.cashPaymentsList.length : 0
+        };
+      },
+      error => {
+        this.listLoading = false;
+      },
+      () => {
+        this.listLoading = false;
+      }
+    );
   }
 
   public filterChange(filter): void {
@@ -138,7 +139,10 @@ export class ListCashPaymentsComponent implements OnInit {
     const journalId = {
       id: dataItem.ID
     };
-    this.modalRef = this.modalService.show(ConfirmationDialogComponent, this.config);
+    this.modalRef = this.modalService.show(
+      ConfirmationDialogComponent,
+      this.config
+    );
     this.modalRef.content.data = "Payments No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
     this.modalRef.content.onClose.subscribe(confirm => {

@@ -1,3 +1,4 @@
+import { CashPaymentMaster } from "./../models/cash-payments.model";
 import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
@@ -5,10 +6,12 @@ import { HttpClient } from "@angular/common/http";
 import {
   ProjectList,
   SeriesList,
-  CashReceiptMaster,
   LedgerList
 } from "../models/cash-payments.model";
 import { Observable } from "rxjs";
+import { of } from "rxjs";
+import { CashReceiptMaster } from "@app/modules/cash-receipts/models/cash-receipt.model";
+
 @Injectable({
   providedIn: "root"
 })
@@ -16,6 +19,48 @@ export class CashPaymentsService {
   seriesLists: SeriesList;
   projectLists: ProjectList;
   _api_URL = environment.baseAPI;
+  cashPayment = [
+    {
+      IsPayByInvoice: false,
+      TotalAmount: 1234.0,
+      CashReceiptDetails: null,
+      LedgerID: 20712,
+      LedgerName: "Pt Cash",
+      ID: 8,
+      SeriesID: 282,
+      SeriesName: "Main",
+      VoucherNo: "00024",
+      Date: "2019-01-10T00:00:00",
+      ProjectID: 1,
+      ProjectName: "All Project",
+      Fields: { Field1: "", Field2: "", Field3: "", Field4: "", Field5: "" },
+      Remarks: "",
+      CreatedBy: "root",
+      CreatedDate: "2019-01-10T00:00:00",
+      ModifiedBy: "root",
+      ModifiedDate: "2019-01-10T00:00:00"
+    },
+    {
+      IsPayByInvoice: true,
+      TotalAmount: 70.0,
+      CashReceiptDetails: null,
+      LedgerID: 20712,
+      LedgerName: "Pt Cash",
+      ID: 9,
+      SeriesID: 282,
+      SeriesName: "Main",
+      VoucherNo: "00031",
+      Date: "2019-01-11T00:00:00",
+      ProjectID: 1,
+      ProjectName: "All Project",
+      Fields: { Field1: "", Field2: "", Field3: "", Field4: "", Field5: "" },
+      Remarks: "",
+      CreatedBy: "root",
+      CreatedDate: "2019-01-11T00:00:00",
+      ModifiedBy: "root",
+      ModifiedDate: "2019-01-11T00:00:00"
+    }
+  ];
 
   constructor(
     private http: HttpClient,
@@ -25,6 +70,10 @@ export class CashPaymentsService {
   init() {
     this.getProjectLists();
     this.getSeriesList();
+  }
+
+  getCashPayment() {
+    return this.cashPayment;
   }
 
   getProjectLists(): void {
@@ -41,12 +90,12 @@ export class CashPaymentsService {
         this.seriesLists = res;
       });
   }
-  getCashPaymentsMaster() {
-    return this.httpService.get(`${this._api_URL}CashReceiptMaster`);
-  }
 
-  getCashPaymentDetails(id): Observable<CashReceiptMaster> {
-    return this.httpService.get(`${this._api_URL}CashReceiptMaster/${id}`);
+  getCashPaymentsMaster(): Observable<CashReceiptMaster[]> {
+    return Observable.create(observer => {
+      observer.next(this.cashPayment);
+      observer.complete();
+    });
   }
 
   getLedgerList(): Observable<LedgerList[]> {
