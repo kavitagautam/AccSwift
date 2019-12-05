@@ -19,7 +19,7 @@ export class EditCashReceiptComponent implements OnInit {
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
-  cashRecieptDetail: CashReceiptMaster;
+  cashReceiptDetails: CashReceiptMaster;
   editCashReceiptForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -46,12 +46,13 @@ export class EditCashReceiptComponent implements OnInit {
   ngOnInit() {
     this.buildCashReceiptForm();
     this.cashReceiptService.init();
+   // Get Id From the Route URL and get the Details
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
         this.cashReceiptService
           .getCashReceiptDetails(params.get("id"))
           .subscribe(res => {
-            this.cashRecieptDetail = res;
+            this.cashReceiptDetails = res;
             this.buildCashReceiptForm();
             this.setCashReceiptList();
           });
@@ -61,14 +62,14 @@ export class EditCashReceiptComponent implements OnInit {
 
   buildCashReceiptForm(): void {
     this.editCashReceiptForm = this._fb.group({
-      series: [this.cashRecieptDetail ? this.cashRecieptDetail.SeriesID : ""],
-      project: [this.cashRecieptDetail ? this.cashRecieptDetail.ProjectID : ""],
+      series: [this.cashReceiptDetails ? this.cashReceiptDetails.SeriesID : ""],
+      project: [this.cashReceiptDetails ? this.cashReceiptDetails.ProjectID : ""],
       voucherNo: [
-        this.cashRecieptDetail ? this.cashRecieptDetail.VoucherNo : ""
+        this.cashReceiptDetails ? this.cashReceiptDetails.VoucherNo : ""
       ],
-      cashAccount: [this.cashRecieptDetail ? this.cashRecieptDetail.LedgerID : ""],
+      cashAccount: [this.cashReceiptDetails ? this.cashReceiptDetails.LedgerID : ""],
       cashParty:[""],
-      date: [this.cashRecieptDetail ? formatDate(this.cashRecieptDetail.CreatedDate , "yyyy-MM-dd", "en-US"): ""],
+      date: [this.cashReceiptDetails ? formatDate(this.cashReceiptDetails.CreatedDate , "yyyy-MM-dd", "en-US"): ""],
       cashReceiptEntryList: this._fb.array([
         this.addCashReceiptEntryFormGroup()
       ])
@@ -94,7 +95,7 @@ export class EditCashReceiptComponent implements OnInit {
   setCashReceiptList(): void {
     this.editCashReceiptForm.setControl(
       "cashReceiptEntryList",
-      this.setCashReceiptFormArray(this.cashRecieptDetail.CashReceiptDetails)
+      this.setCashReceiptFormArray(this.cashReceiptDetails.CashReceiptDetails)
     );
   }
 
@@ -197,20 +198,20 @@ export class EditCashReceiptComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const cashRecieptEntry = <FormArray>(
+    const cashReceiptEntry = <FormArray>(
       this.editCashReceiptForm.get("cashReceiptEntryList")
     );
-    cashRecieptEntry.controls[rowIndex]
+    cashReceiptEntry.controls[rowIndex]
       .get("particularsOraccountingHead")
       .setValue(dataItem.particularsOraccountingHead);
-    cashRecieptEntry.controls[rowIndex]
+    cashReceiptEntry.controls[rowIndex]
       .get("voucherNo")
       .setValue(dataItem.voucherNo);
-    cashRecieptEntry.controls[rowIndex]
+    cashReceiptEntry.controls[rowIndex]
       .get("currentAmount")
       .setValue(dataItem.currentAmount);
-    cashRecieptEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
-    cashRecieptEntry.controls[rowIndex]
+    cashReceiptEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
+    cashReceiptEntry.controls[rowIndex]
       .get("remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
@@ -259,7 +260,7 @@ export class EditCashReceiptComponent implements OnInit {
 
   public removeHandler({ dataItem, rowIndex }): void {
     // Calculation on Debit Total and Credit Total on Rows Removed
-    const cashRecieptEntry = <FormArray>(
+    const cashReceiptEntry = <FormArray>(
       this.editCashReceiptForm.get("cashReceiptEntryList")
     );
 
