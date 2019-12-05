@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { environment } from "@env/environment.prod";
 
 @Component({
-  selector: "simpliflysaas-side-nav",
+  selector: "accswift-side-nav",
   templateUrl: "./side-nav.component.html",
   styleUrls: ["./side-nav.component.scss"]
 })

@@ -3,7 +3,7 @@ import { environment } from "@env/environment.prod";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: "simpliflysaas-nav-bar",
+  selector: "accswift-nav-bar",
   templateUrl: "./nav-bar.component.html",
   styleUrls: ["./nav-bar.component.scss"]
 })

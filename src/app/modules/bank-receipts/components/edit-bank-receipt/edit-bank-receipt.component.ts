@@ -10,7 +10,7 @@ import { formatDate } from "@angular/common";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 
 @Component({
-  selector: "simpliflysaas-edit-bank-receipt",
+  selector: "accswift-edit-bank-receipt",
   templateUrl: "./edit-bank-receipt.component.html",
   styleUrls: ["./edit-bank-receipt.component.scss"]
 })
