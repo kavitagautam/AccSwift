@@ -46,7 +46,7 @@ export class EditCashReceiptComponent implements OnInit {
   ngOnInit() {
     this.buildCashReceiptForm();
     this.cashReceiptService.init();
-   // Get Id From the Route URL and get the Details
+    // Get Id From the Route URL and get the Details
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
         this.cashReceiptService
@@ -63,29 +63,25 @@ export class EditCashReceiptComponent implements OnInit {
   buildCashReceiptForm(): void {
     this.editCashReceiptForm = this._fb.group({
       series: [this.cashReceiptDetails ? this.cashReceiptDetails.SeriesID : ""],
-      project: [this.cashReceiptDetails ? this.cashReceiptDetails.ProjectID : ""],
+      project: [
+        this.cashReceiptDetails ? this.cashReceiptDetails.ProjectID : ""
+      ],
       voucherNo: [
         this.cashReceiptDetails ? this.cashReceiptDetails.VoucherNo : ""
       ],
-<<<<<<< HEAD
       cashAccount: [
-        this.cashRecieptDetail ? this.cashRecieptDetail.LedgerID : ""
+        this.cashReceiptDetails ? this.cashReceiptDetails.LedgerID : ""
       ],
       cashParty: [""],
       date: [
-        this.cashRecieptDetail
+        this.cashReceiptDetails
           ? formatDate(
-              this.cashRecieptDetail.CreatedDate,
+              this.cashReceiptDetails.CreatedDate,
               "yyyy-MM-dd",
               "en-US"
             )
           : ""
       ],
-=======
-      cashAccount: [this.cashReceiptDetails ? this.cashReceiptDetails.LedgerID : ""],
-      cashParty:[""],
-      date: [this.cashReceiptDetails ? formatDate(this.cashReceiptDetails.CreatedDate , "yyyy-MM-dd", "en-US"): ""],
->>>>>>> bf644263d319893b57127448b7432cff5eaa08d3
       cashReceiptEntryList: this._fb.array([
         this.addCashReceiptEntryFormGroup()
       ])

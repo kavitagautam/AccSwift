@@ -19,7 +19,7 @@ import { CashPaymentsService } from "./../../services/cash-payments.service";
 export class EditCashPaymentsComponent implements OnInit {
   cashPaymentForm: FormGroup;
   cashPaymentMaster: CashPaymentMaster;
-
+  allCash;
   constructor(
     public cashPaymentService: CashPaymentsService,
     private fb: FormBuilder
