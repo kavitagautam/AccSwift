@@ -115,7 +115,7 @@
         [skip]="skip"
         [sortable]="{
           allowUnsort: allowUnsort,
-          mode: 'single'
+          mode: multiple ? 'multiple' : 'single'
         }"
         [sort]="sort"
         (sortChange)="sortChange($event)"
