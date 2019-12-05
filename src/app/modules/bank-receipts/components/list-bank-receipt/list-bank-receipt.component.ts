@@ -10,6 +10,7 @@ import { BankReceiptService } from "../../services/bank-receipt.service";
 import { ToastrService } from "ngx-toastr";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
+import { BankReceiptMaster } from "../../models/bank-receipt.model";
 
 @Component({
   selector: "simpliflysaas-list-bank-receipt",
@@ -76,18 +77,59 @@ export class ListBankReceiptComponent implements OnInit {
   }
 
   getBankReceiptlList(): void {
-    this.listLoading = true;
     const params = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
       Direction: "asc" // "asc" or "desc"
     };
+    this.bankReceiptService.getBankReceiptMaster().subscribe(
+      response => {
+        this.listLoading = true;
 
-    this.gridView = {
-      data: this.bankReceiptList,
-      total: this.bankReceiptList ? this.bankReceiptList.length : 0
-    };
+        //mapping the data to change string date format to Date
+        const sampleData = response.map(
+          dataItem =>
+            <BankReceiptMaster>{
+              IsPayByInvoice: dataItem.IsPayByInvoice,
+              TotalAmount: dataItem.TotalAmount,
+              BankReceiptDetailsList: dataItem.BankReceiptDetailsList,
+              LedgerID: dataItem.LedgerID,
+              LedgerName: dataItem.LedgerName,
+              ID: dataItem.ID,
+              SeriesID: dataItem.SeriesID,
+              SeriesName: dataItem.SeriesName,
+              VoucherNo: dataItem.VoucherNo,
+              Date: this.parseAdjust(dataItem.Date),
+              ProjectID: dataItem.ProjectID,
+              ProjectName: dataItem.ProjectName,
+              Fields: {
+                Field1: dataItem.Fields.Field1,
+                Field2: dataItem.Fields.Field1,
+                Field3: dataItem.Fields.Field1,
+                Field4: dataItem.Fields.Field1,
+                Field5: dataItem.Fields.Field1
+              },
+              Remarks: dataItem.Remarks,
+              CreatedBy: dataItem.CreatedBy,
+              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
+              ModifiedBy: dataItem.ModifiedBy,
+              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
+            }
+        );
+        this.bankReceiptList = sampleData;
+        this.gridView = {
+          data: this.bankReceiptList,
+          total: this.bankReceiptList ? this.bankReceiptList.length : 0
+        };
+      },
+      error => {
+        this.listLoading = false;
+      },
+      () => {
+        this.listLoading = false;
+      }
+    );
   }
 
   public filterChange(filter): void {
@@ -116,7 +158,7 @@ export class ListBankReceiptComponent implements OnInit {
   }
 
   public edit(item): void {
-    this.router.navigate(["/cash/edit", item.ID]);
+    this.router.navigate(["/bank/edit", item.ID]);
   }
 
   openConfirmationDialogue(dataItem) {
@@ -137,7 +179,7 @@ export class ListBankReceiptComponent implements OnInit {
   }
 
   public deleteReceiptByID(id): void {
-    this.toastr.success("Cash deleted successfully");
+    this.toastr.success("Bank deleted successfully");
     //call Delete Api
   }
 }

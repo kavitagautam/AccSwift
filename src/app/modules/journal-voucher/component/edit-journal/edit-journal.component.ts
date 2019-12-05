@@ -7,8 +7,8 @@ import { DatePipe, formatDate } from "@angular/common";
 import { JournalMaster } from "../../models/journal.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
-import { LedgerCodeAsyncValidators } from '@app/shared/validators/async-validators/ledger-code-validators.service';
-import { LedgerCodeMatchService } from '@app/shared/services/ledger-code-match/ledger-code-match.service';
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
+import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 
 @Component({
   selector: "app-edit-journal",
@@ -51,6 +51,7 @@ export class EditJournalComponent implements OnInit {
   ngOnInit() {
     this.buildJournalForm();
     this.journalService.init();
+    // Get Id From the Route URL and get the Details
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
         this.journalService
@@ -142,7 +143,11 @@ export class EditJournalComponent implements OnInit {
     } else {
       journalFormArray.push(
         this._fb.group({
-          ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+          ledgerCode: [
+            "",
+            null,
+            this.ledgerCodeMatchValidators.ledgerCodeMatch()
+          ],
           particularsOraccountingHead: ["", Validators.required],
           ledgerID: [""],
           debit: ["", Validators.required],

@@ -45,7 +45,7 @@
             </div>
             <div class="row clearfix mt-3">
               <div class="col-md-5">
-                <label class="float-right">Bank Accont: </label>
+                <label class="float-right">Bank Account: </label>
               </div>
               <div class="col-md-7">
                 <select
@@ -55,11 +55,11 @@
                 >
                   <option value="null"> </option>
                   <option
-                    *ngFor="let series of bankReceiptService.seriesLists"
-                    [ngValue]="series.ID"
-                  >
-                    {{ series.EngName }}</option
-                  >
+                  *ngFor="let account of bankReceiptService.bankAccountLists"
+                  [ngValue]="account.LedgerID"
+                >
+                  {{ account.LedgerName }}</option
+                >
                 </select>
               </div>
             </div>
@@ -143,25 +143,22 @@
         scrollable="none"
         (filterChange)="filterChange($event)"
       >
-        <kendo-grid-column field="" title="Code"> </kendo-grid-column>
-        <kendo-grid-column field="" title="Particular/Accounting Head">
+        <kendo-grid-column field="VoucherNo" title="VoucherNo."> </kendo-grid-column>
+        <kendo-grid-column field="LedgerName" title="Particular/Accounting Head">
         </kendo-grid-column>
-        <kendo-grid-column field="" title="Amount"> </kendo-grid-column>
-        <kendo-grid-column field="" title="Current Balance">
+        <kendo-grid-column field="TotalAmount" title="Amount"> </kendo-grid-column>
+        <kendo-grid-column field="SeriesName" title="Series">
         </kendo-grid-column>
-        <kendo-grid-column field="" title="Cheque Number"> </kendo-grid-column>
-        <kendo-grid-column field="" title="Cheque Bank"> </kendo-grid-column>
-        <kendo-grid-column field="" title="VoucherNo."> </kendo-grid-column>
-        <kendo-grid-column field="" title="V Type"> </kendo-grid-column>
+        <kendo-grid-column field="ProjectName" title="Project"> </kendo-grid-column>
         <kendo-grid-column
-          field=""
+          field="CreatedDate"
           title="Cheque Date"
           filter="date"
           [filterable]="false"
           format="{0: yyyy-mm-dd}"
         >
         </kendo-grid-column>
-        <kendo-grid-column field="" title="Remarks"> </kendo-grid-column>
+        <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
         <kendo-grid-command-column title="Action" width="220">
           <ng-template
             kendoGridCellTemplate
