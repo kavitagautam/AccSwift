@@ -1,5 +1,3 @@
-import { CashPaymentMaster } from "./../../models/cash-payments.model";
-import { CashPaymentsService } from "./../../services/cash-payments.service";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -11,6 +9,8 @@ import {
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { CashPaymentMaster } from "../../models/cash-payments.model";
+import { CashPaymentsService } from "../../services/cash-payments.service";
 
 @Component({
   selector: "app-list-cash-Payments",
@@ -19,6 +19,7 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
 })
 export class ListCashPaymentsComponent implements OnInit {
   cashPaymentsForm: FormGroup;
+  cashPaymentMaster: CashPaymentMaster;
   listLoading: boolean;
   cashPaymentsList = [];
   public gridView: GridDataResult;

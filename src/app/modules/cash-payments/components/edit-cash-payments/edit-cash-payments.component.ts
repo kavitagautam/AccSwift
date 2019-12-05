@@ -1,4 +1,7 @@
-import { CashReceitptDetails } from "./../../models/cash-payments.model";
+import {
+  CashReceitptDetails,
+  CashPaymentMaster
+} from "./../../models/cash-payments.model";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SortDescriptor } from "@progress/kendo-data-query";
 import {
@@ -15,8 +18,8 @@ import { CashPaymentsService } from "./../../services/cash-payments.service";
 })
 export class EditCashPaymentsComponent implements OnInit {
   cashPaymentForm: FormGroup;
-  cashPaymentMaster: any;
-  allCash;
+  cashPaymentMaster: CashPaymentMaster;
+
   constructor(
     public cashPaymentService: CashPaymentsService,
     private fb: FormBuilder
@@ -26,4 +29,8 @@ export class EditCashPaymentsComponent implements OnInit {
     this.allCash = this.cashPaymentService.getCashPayment();
     console.log(this.allCash);
   } // ngoninit method ends here...a
+
+  editCashPaymentForm() {
+    this.cashPaymentForm = this.fb.group({});
+  }
 }
