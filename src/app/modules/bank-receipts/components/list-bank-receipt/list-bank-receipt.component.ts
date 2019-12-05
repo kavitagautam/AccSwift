@@ -13,7 +13,7 @@ import { Router } from "@angular/router";
 import { BankReceiptMaster } from "../../models/bank-receipt.model";
 
 @Component({
-  selector: "simpliflysaas-list-bank-receipt",
+  selector: "accswift-list-bank-receipt",
   templateUrl: "./list-bank-receipt.component.html",
   styleUrls: ["./list-bank-receipt.component.scss"]
 })

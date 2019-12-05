@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import { Router } from "@angular/router";
 declare var $: any;
 @Component({
-  selector: "simpliflysaas-menu-item",
+  selector: "accswift-menu-item",
   templateUrl: "./menu-item.component.html",
   styleUrls: ["./menu-item.component.scss"]
 })

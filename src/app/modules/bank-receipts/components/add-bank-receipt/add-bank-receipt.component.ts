@@ -9,7 +9,7 @@ import { LedgerCodeMatchService } from '@app/shared/services/ledger-code-match/l
 import { BankReceiptMaster } from '../../models/bank-receipt.model';
 
 @Component({
-  selector: 'simpliflysaas-add-bank-receipt',
+  selector: 'accswift-add-bank-receipt',
   templateUrl: './add-bank-receipt.component.html',
   styleUrls: ['./add-bank-receipt.component.scss']
 })
