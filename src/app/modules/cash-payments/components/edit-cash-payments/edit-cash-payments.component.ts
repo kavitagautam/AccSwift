@@ -11,6 +11,10 @@ import {
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { CashPaymentsService } from "./../../services/cash-payments.service";
+import {
+  SeriesList,
+  ProjectList
+} from "@app/modules/bank-receipts/models/bank-receipt.model";
 @Component({
   selector: "app-edit-cash-payments",
   templateUrl: "./edit-cash-payments.component.html",
@@ -18,8 +22,11 @@ import { CashPaymentsService } from "./../../services/cash-payments.service";
 })
 export class EditCashPaymentsComponent implements OnInit {
   cashPaymentForm: FormGroup;
+  seriesList: SeriesList;
+  projectList: ProjectList;
   cashPaymentMaster: CashPaymentMaster;
   allCash;
+  date: Date = new Date();
   constructor(
     public cashPaymentService: CashPaymentsService,
     private fb: FormBuilder
@@ -27,10 +34,38 @@ export class EditCashPaymentsComponent implements OnInit {
 
   ngOnInit() {
     this.allCash = this.cashPaymentService.getCashPayment();
+    this.cashPaymentService.init();
+    this.editCashPaymentForm();
     console.log(this.allCash);
   } // ngoninit method ends here...a
 
   editCashPaymentForm() {
-    this.cashPaymentForm = this.fb.group({});
+    this.cashPaymentForm = this.fb.group({
+      series: [280],
+      project: [this.cashPaymentMaster ? this.cashPaymentMaster.ProjectID : ""],
+      voucher: [this.cashPaymentMaster ? this.cashPaymentMaster.VoucherNo : ""],
+      cashAccount: [
+        this.cashPaymentMaster ? this.cashPaymentMaster.LedgerID : ""
+      ],
+      cashParty: "",
+      date: [this.cashPaymentMaster ? this.cashPaymentMaster.CreatedDate : ""],
+      cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryFormGroup()])
+    });
+  }
+
+  addCashPaymentEntryFormGroup(): FormGroup {
+    return this.fb.group({
+      ledgerCode: "",
+      particularsOrAccountingHead: "",
+      voucherNo: "",
+      amount: "",
+      currentBalance: "",
+      vType: "",
+      remarks: ""
+    });
+  }
+
+  get getcashPaymentEntryList(): FormArray {
+    return <FormArray>this.cashPaymentForm.get("cashPaymentEntryList");
   }
 }

@@ -1,5 +1,5 @@
 <div class="box box-default">
-    <form>
+    <form [formGroup]="cashPaymentForm">
         <div class="col-md-12 mt-5 mr-2">
             <div class="col-md-4">
                 <div class="row clearfix">
@@ -7,9 +7,9 @@
                         <label class="float-right">Series no:</label>
                     </div>
                     <div class="col-md-7">
-                        <select class="form-control" id="seriesId">
-                            <option value=""></option>
-                            <option *ngFor="let series of cashPaymentService.seriesLists" [ngValue]="series.ID">
+                        <select class="form-control" id="seriesId" formControlName="series">
+
+                            <option *ngFor="let series of cashPaymentService.seriesList" [ngValue]="series.ID">
                                 {{ series.EngName }}
                             </option>
                         </select>
@@ -21,8 +21,10 @@
                         <label class="float-right">Cash Account: </label>
                     </div>
                     <div class="col-md-7">
-                        <select class="form-control">
-                            <option value="null">None</option>
+                        <select class="form-control" id="cashAccount" formControlName="cashAccount">
+                            <option *ngFor="let cash of cashPaymentService.cashAccountLists" [ngValue]="cash.LedgerID">
+                                {{cash.LedgerName}}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -46,10 +48,7 @@
                         <label class="float-right">Voucher#:</label>
                     </div>
                     <div class="col-md-7">
-                        <select class="form-control">
-                            <option value="null"></option>
-                            <option></option>
-                        </select>
+                        <input class="form-control" formControlName="voucher" />
                     </div>
                 </div>
                 <div class="row clearfix mt-3">
@@ -57,9 +56,11 @@
                         <label class="float-right">Project:</label>
                     </div>
                     <div class="col-md-7">
-                        <select class="form-control">
+                        <select class="form-control" formControlName="project" id="projectId">
                             <option value="null"></option>
-                            <option></option>
+                            <option *ngFor="let project of cashPaymentService.projectLists" [ngValue]="project.ID">
+                                {{project.EngName}}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -80,23 +81,45 @@
                         <label class="float-right">Date:</label>
                     </div>
                     <div class="col-md-7">
-                        <input type="date" class="form-control" value="date | date: 'MM/DD/YYYY'" />
+                        <input type="date" class="form-control" [value]="date | date: 'MM/DD/YYYY'" />
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-12 mt-5 ml-2">
-            <kendo-grid>
+            <!-- Kendo Grid is started -->
+            <kendo-grid [data]="getcashPaymentEntryList.value" (edit)="editHandler($event)"
+                (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
+                (add)="addHandler($event)">
+
                 <ng-template kendoGridToolbarTemplate>
                     <button kendoGridAddCommand>Add New</button>
                 </ng-template>
 
-                <kendo-grid-column title="Particulars Or Accounting Head" width="300">
-                    <ng-template kendoGridCellTemplate>
-                        <div class="col-md-12">
-                            <div class="col-md-4">
-                                <input type="" placeholder="Ledger Code" />
+                <kendo-grid-column title="Particulars Or Accounting Head" field="particularOrAccountingHead"
+                    width="300">
+                    <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column"
+                        let-formGroup="formGroup" let-isNew="isNew" let-rowIndex="rowIndex">
+                        <div class="col-md-12 p-0">
+
+                            <div class="col-md-4 pl-0">
+                                <input #input class="k-textbox" style="width: 100px;" placeholder="Ledger Code"
+                                    [formControl]="getcashPaymentEntryList.controls[rowIndex].get('ledgerCode')"
+                                    (change)="changeLedgerValue(dataItem, rowIndex)" />
+                                <kendo-popup [anchor]="input"
+                                    *ngIf="getcashPaymentEntryList.controls[rowIndex].get('ledgerCode').invalid"
+                                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg">
+                                    <span class="k-icon k-i-warning"></span>
+                                    Ledger Code is invalid
+                                </kendo-popup>
+                            </div>
+
+                            <div class="col-md-8 pr-0">
+                                <input #input class="k-textbox" [readonly]="true"
+                                    [formControl]="getcashPaymentEntryList.controls[rowIndex].get('particularsOrAccountingHead')" />
+                                <a (click)="openModal(rowIndex)"><i
+                                        class="                                                                                                                                                                                                                                                                                                                                                                                                 "></i></a>
                             </div>
                         </div>
                     </ng-template>

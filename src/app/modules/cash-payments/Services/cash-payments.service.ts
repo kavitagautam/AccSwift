@@ -2,7 +2,7 @@ import { CashPaymentMaster } from "./../models/cash-payments.model";
 import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import {
   ProjectList,
   SeriesList,
@@ -10,13 +10,17 @@ import {
 } from "../models/cash-payments.model";
 import { Observable } from "rxjs";
 import { of } from "rxjs";
-import { CashReceiptMaster } from "@app/modules/cash-receipts/models/cash-receipt.model";
+import {
+  CashReceiptMaster,
+  CashAccounts
+} from "@app/modules/cash-receipts/models/cash-receipt.model";
 
 @Injectable({
   providedIn: "root"
 })
 export class CashPaymentsService {
-  seriesLists: SeriesList;
+  seriesList: SeriesList;
+  cashAccountLists;
   projectLists: ProjectList;
   _api_URL = environment.baseAPI;
   cashPayment = [
@@ -84,10 +88,11 @@ export class CashPaymentsService {
       });
   }
   getSeriesList(): void {
+    const params = new HttpParams().set("VoucherType", "CASH_PMNT"); // Series List for Cash Receipt Voucher Type
     this.httpService
-      .get(`${this._api_URL}series/journal`)
+      .get(`${this._api_URL}series`, null, params)
       .subscribe((res: SeriesList) => {
-        this.seriesLists = res;
+        this.seriesList = res;
       });
   }
 
@@ -96,6 +101,14 @@ export class CashPaymentsService {
       observer.next(this.cashPayment);
       observer.complete();
     });
+  }
+
+  getCashPaymentAccounts(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/CashAccounts`)
+      .subscribe((res: CashAccounts) => {
+        this.cashAccountLists = res.Entity;
+      });
   }
 
   getLedgerList(): Observable<LedgerList[]> {
