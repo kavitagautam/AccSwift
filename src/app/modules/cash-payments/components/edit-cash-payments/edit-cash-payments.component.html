@@ -129,7 +129,7 @@
                     </ng-template>
                 </kendo-grid-column>
 
-                <kendo-grid-column title="Voucher No" field="voucherNo" width="150">
+                <kendo-grid-column title="Voucher No" field="voucherNo" width="">
                     <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column"
                         let-formGroup="formGroup" let isNew="isNew" let-rowIndex="rowIndex">
                         <input style="width: 130px;" [formControl]="
@@ -138,21 +138,21 @@
                     </ng-template>
                 </kendo-grid-column>
 
-                <kendo-grid-column title="Amount" width="200">
+                <kendo-grid-column title="Amount" width="">
                     <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column"
                         let-formGroup="formGroup" let-isNew="isNew" let-rowIndex="rowIndex">
                         <kendo-numerictextbox> </kendo-numerictextbox>
                     </ng-template>
                 </kendo-grid-column>
 
-                <kendo-grid-column title="Current Balance" field="currentBalance" title="Current Balance" width="150">
+                <kendo-grid-column title="Current Balance" field="currentBalance" title="Current Balance" width="">
                     <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column"
                         let-formGroup="formGroup" let-isNew="isNew">
                         <kendo-numerictextbox style="width: 130px;"> </kendo-numerictextbox>
                     </ng-template>
                 </kendo-grid-column>
 
-                <kendo-grid-column title="V. Type" field="vType" width="150">
+                <kendo-grid-column title="V. Type" field="vType" width="">
                     <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column"
                         let-formGroup="formGroup" let-isNew="isNew" let-rowIndex="rowIndex">
                         <input #input class="k-textbox" />
@@ -166,12 +166,29 @@
                     </ng-template>
                 </kendo-grid-column>
 
-                <kendo-grid-column title="Action">
-                    <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column"
-                        let-formGroup="formGroup" let-isNew="isNew" let-rowIndex="rowIndex">
+                <kendo-grid-command-column title="Action">
+                    <ng-template kendoGridCellTemplate let-isNew="isNew">
+                        <button kendoGridAddCommand class="k-button">
+                            <i class="fa fa-plus cursor-pointer" aria-hidden="true" tooltip="Add New"></i>
+                        </button>
+                        <button kendoGridRemoveCommand>
+                            <i class="fas fa-trash-alt mr-2 cursor-pointer" tooltip="Delete"></i>
+                        </button>
+
+                        <button kendoGridSaveCommand>
+
+                        </button>
+                        <button kendoGridCancelCommand>
+
+                        </button>
                     </ng-template>
-                </kendo-grid-column>
+                </kendo-grid-command-column>
             </kendo-grid>
+            <!-- Kendo Grid ended here -->
+        </div>
+        <div class="col-md-12 m-2">
+            <button class="btn btn-primary" disabled (click)="save()">Save</button>
+            <button class="btn btn-secondory ml-2" (click)="cancel()">Cancel</button>
         </div>
     </form>
 </div>
