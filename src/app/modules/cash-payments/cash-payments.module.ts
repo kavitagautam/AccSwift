@@ -11,8 +11,9 @@ import { CommonModule } from "@angular/common";
 
 import { CashPaymentsRoutingModule } from "./cash-payments-routing.module";
 import { EditCashPaymentsComponent } from "./components/edit-cash-payments/edit-cash-payments.component";
-import { AddCashPaymentsComponent } from "./components/add-cash-payments/add-cash-payments.component";
+
 import { ListCashPaymentsComponent } from "./components/list-cash-payments/list-cash-payments.component";
+import { AddCashPaymentsComponent } from "./components/add-cash-payments/add-cash-payments.component";
 
 @NgModule({
   declarations: [

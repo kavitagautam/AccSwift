@@ -43,7 +43,9 @@ export class EditCashPaymentsComponent implements OnInit {
     this.cashPaymentForm = this.fb.group({
       series: [280],
       project: [this.cashPaymentMaster ? this.cashPaymentMaster.ProjectID : ""],
-      voucher: [this.cashPaymentMaster ? this.cashPaymentMaster.VoucherNo : ""],
+      voucherNo: [
+        this.cashPaymentMaster ? this.cashPaymentMaster.VoucherNo : ""
+      ],
       cashAccount: [
         this.cashPaymentMaster ? this.cashPaymentMaster.LedgerID : ""
       ],
@@ -56,7 +58,7 @@ export class EditCashPaymentsComponent implements OnInit {
   addCashPaymentEntryFormGroup(): FormGroup {
     return this.fb.group({
       ledgerCode: "",
-      particularsOrAccountingHead: "",
+      particularsOraccountingHead: "",
       voucherNo: "",
       amount: "",
       currentBalance: "",
