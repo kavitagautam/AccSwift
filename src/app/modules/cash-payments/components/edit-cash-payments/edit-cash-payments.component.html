@@ -9,7 +9,7 @@
                     <div class="col-md-7">
                         <select class="form-control" id="seriesId" formControlName="series">
                             <option value="null"> </option>
-                            <option *ngFor="let series of cashPaymentService.seriesLists" [ngValue]="series.ID">
+                            <option *ngFor="let series of cashPaymentService.seriesList" [ngValue]="series.ID">
                                 {{ series.EngName }}</option>
                         </select>
                     </div>
