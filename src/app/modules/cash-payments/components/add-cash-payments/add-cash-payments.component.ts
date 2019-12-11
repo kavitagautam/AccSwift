@@ -26,10 +26,16 @@ export class AddCashPaymentsComponent implements OnInit {
   projectList: ProjectList;
   cashPaymentMaster: CashPaymentMaster;
   allCash;
+  submitted: boolean;
+  rowSubmitted: boolean;
   date: Date = new Date();
+  editedRowIndex: any;
+
+  // CONSTRUCTOR goes here....
   constructor(
     public cashPaymentService: CashPaymentsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -69,5 +75,73 @@ export class AddCashPaymentsComponent implements OnInit {
 
   get getcashPaymentEntryList(): FormArray {
     return <FormArray>this.addCashPaymentForm.get("cashPaymentEntryList");
+  }
+
+  // Save Funtion goes here....
+  public save(): void {
+    if (this.addCashPaymentForm.valid) {
+      this.router.navigate(["/cashPayments"]);
+    }
+  }
+
+  // Cancel Funtion goes here....
+  public cancel(): void {
+    this.addCashPaymentForm.reset();
+    this.router.navigate(["/cashPayments"]);
+  }
+
+  // Add Handler goes here .............
+  public addHandler({ sender }) {
+    this.closeEditor(sender);
+    this.submitted = true;
+    this.rowSubmitted = true;
+    if (this.addCashPaymentForm.get("cashPaymentEntryList").invalid) return;
+    (<FormArray>this.addCashPaymentForm.get("cashPaymentEntryList")).push(
+      this.addCashPaymentEntryFormGroup()
+    );
+    this.submitted = false;
+    this.rowSubmitted = false;
+  }
+
+  // Edit Handler goes here .............
+  public editHandler({ sender, rowIndex, dataItem }) {
+    this.closeEditor(sender);
+    const cashPaymentEntry = <FormArray>(
+      this.addCashPaymentForm.get("cashPaymentEntryList")
+    );
+    cashPaymentEntry.controls[rowIndex]
+      .get("particularsOraccountingHead")
+      .setValue(dataItem.particularsOraccountingHead);
+    cashPaymentEntry.controls[rowIndex]
+      .get("voucherNo")
+      .setValue(dataItem.voucherNo);
+    cashPaymentEntry.controls[rowIndex]
+      .get("currentAmount")
+      .setValue(dataItem.currentAmount);
+    cashPaymentEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
+    cashPaymentEntry.controls[rowIndex]
+      .get("remarks")
+      .setValue(dataItem.remarks);
+    this.editedRowIndex = rowIndex;
+    sender.editRow(
+      rowIndex,
+      this.addCashPaymentForm.get("cashPaymentEntryList")
+    );
+  }
+
+  //Cancel Handler goes here....
+  public cancelHandler({ sender, rowIndex }) {
+    this.closeEditor(sender, rowIndex);
+  }
+  // Remove Handler goes here......
+  public removeHandler({ dataItem, rowIndex }) {
+    (<FormArray>this.addCashPaymentForm.get("cashPaymentEntryList")).removeAt(
+      rowIndex
+    );
+  }
+
+  private closeEditor(grid, rowIndex = 1) {
+    grid.closeRow(rowIndex);
+    this.editedRowIndex = undefined;
   }
 }
