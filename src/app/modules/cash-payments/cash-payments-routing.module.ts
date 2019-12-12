@@ -1,8 +1,8 @@
-import { ListCashPaymentsComponent } from "./components/list-cash-payments/list-cash-payments.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { EditCashPaymentsComponent } from "./components/edit-cash-payments/edit-cash-payments.component";
 import { AddCashPaymentsComponent } from "./components/add-cash-payments/add-cash-payments.component";
+import { ListCashPaymentsComponent } from "./components/list-cash-payments/list-cash-payments.component";
 
 const routes: Routes = [
   {

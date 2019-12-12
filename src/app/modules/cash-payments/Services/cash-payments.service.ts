@@ -19,7 +19,7 @@ import {
   providedIn: "root"
 })
 export class CashPaymentsService {
-  seriesList: SeriesList;
+  seriesLists: SeriesList;
   cashAccountLists;
   projectLists: ProjectList;
   _api_URL = environment.baseAPI;
@@ -92,7 +92,7 @@ export class CashPaymentsService {
     this.httpService
       .get(`${this._api_URL}series`, null, params)
       .subscribe((res: SeriesList) => {
-        this.seriesList = res;
+        this.seriesLists = res;
       });
   }
 

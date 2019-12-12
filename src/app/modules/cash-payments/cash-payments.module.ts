@@ -25,13 +25,13 @@ import { AddCashPaymentsComponent } from "./components/add-cash-payments/add-cas
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    CashPaymentsRoutingModule,
     GridModule,
     PopupModule,
     InputsModule,
     DropDownListModule,
     DropDownsModule,
-    SharedModule,
-    CashPaymentsRoutingModule
+    SharedModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -103,6 +103,10 @@ export class AddCashPaymentsComponent implements OnInit {
     this.rowSubmitted = false;
   }
 
+  public saveHandler({ sender, rowIndex, dataItem }) {
+    // Do save Work Later
+  }
+
   // Edit Handler goes here .............
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
