@@ -5,7 +5,8 @@ import { AppComponent } from "./app.component";
 import { CoreModule } from "./core/core.module";
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
-import "@progress/kendo-angular-intl/locales/ne/all"; // For Kendo Nepali Input
+// import "@progress/kendo-angular-intl/locales/ne/all"; // For Kendo Nepali Input
+import "../../lib/ne/all"; //Customize locales for location Nepal fro kendo input 
 import { registerLocaleData } from "@angular/common";
 import localeNe from "@angular/common/locales/ne";
 registerLocaleData(localeNe, "ne");
