@@ -3,12 +3,8 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import {
-  process,
-  State,
   SortDescriptor,
-  orderBy,
-  CompositeFilterDescriptor,
-  filterBy
+  CompositeFilterDescriptor
 } from "@progress/kendo-data-query";
 
 import { JournalService } from "../../services/journal.service";
@@ -88,7 +84,7 @@ export class ListJournalComponent implements OnInit {
 
   public sortChange(sort: SortDescriptor[]): void {
     this.orderByKey = "";
-    this.dirKey=""
+    this.dirKey = "";
     this.sort = sort;
     this.dirKey = this.sort[0].dir;
     if (this.sort[0].field === "VoucherNo") {
@@ -187,7 +183,7 @@ export class ListJournalComponent implements OnInit {
 
   public searchForm() {
     this.voucherNoSearch = this.journalSearchForm.controls.voucherNo.value;
-    this.journalDateSearch = this.journalSearchForm.controls.journalDate.value;
+    this.journalDateSearch = this.journalSearchForm.controls.date.value;
     this.projectIdSearch = this.journalSearchForm.controls.project.value;
     this.seriesIdSearch = this.journalSearchForm.controls.series.value;
     this.getJournalList();

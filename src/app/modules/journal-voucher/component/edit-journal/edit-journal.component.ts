@@ -72,7 +72,7 @@ export class EditJournalComponent implements OnInit {
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
       date: [
         this.journalDetail
-          ? formatDate(this.journalDetail.Date, "yyyy-MM-dd", "en-US")
+          ? formatDate(this.journalDetail.CreatedDate, "yyyy-MM-dd", "en-US")
           : ""
       ],
       projectName: [this.journalDetail ? this.journalDetail.ProjectName : ""],
