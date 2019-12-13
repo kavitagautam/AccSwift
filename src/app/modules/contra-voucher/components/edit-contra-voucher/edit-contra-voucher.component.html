@@ -2,7 +2,6 @@
   <form [formGroup]="editContraVoucherForm" novalidate>
     <div class="col-md-12  mt-5 mr-2">
       <div class="col-md-4">
-
         <div class="row clearfix">
           <div class="col-md-5">
             <label class="float-right">Series: </label>
@@ -20,7 +19,11 @@
             <label class="float-right">Cash Account: </label>
           </div>
           <div class="col-md-7">
-            <select class="form-control" id="seriesId" formControlName="cashAccount">
+            <select
+              class="form-control"
+              id="seriesId"
+              formControlName="cashAccount"
+            >
               <option value="null"></option>
               <option>Ehhhh</option>
             </select>
@@ -32,7 +35,11 @@
             <label class="float-right">Cash Party / Customer </label>
           </div>
           <div class="col-md-7">
-            <select class="form-control" id="seriesId" formControlName="cashParty">
+            <select
+              class="form-control"
+              id="seriesId"
+              formControlName="cashParty"
+            >
               <option value="null"></option>
               <option>Ehhhh</option>
             </select>
@@ -41,7 +48,6 @@
       </div>
       <!-- NExt column is started form here... -->
       <div class="col-md-4">
-
         <div class="row clearfix">
           <div class="col-md-5">
             <label class="float-right">Voucher#: </label>
@@ -81,16 +87,250 @@
             <label class="float-right">Date:</label>
           </div>
           <div class="col-md-7">
-            <input class="form-control" type="date" [value]="date | date: 'MM/DD/YYYY'" formControlName="date" />
+            <input class="form-control" type="date" formControlName=" date" />
           </div>
         </div>
       </div>
 
       <div class="col-md-12 mt-5 ml-2">
-        <kendo-grid [data]="getCashReceiptEntryList.value"></kendo-grid>
+        <kendo-grid
+          [data]="getContraVoucherEntryList.value"
+          (edit)="editHandler($event)"
+          (cancel)="cancelHandler($event)"
+          (save)="saveHandler($event)"
+          (add)="addHandler($event)"
+          (remove)="removeHandler($event)"
+        >
+          <ng-template kendoGridToolbarTemplate>
+            <button kendoGridAddCommand>Add New</button>
+          </ng-template>
+
+          <kendo-grid-column
+            field="particularsOraccountingHead"
+            title="Particulars Or Accounting Head"
+            width="300"
+          >
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-xs-12 col-md-12 p-0">
+                <div class="col-md-4 pl-0">
+                  <input
+                    #input
+                    class="k-textbox"
+                    style="width: 100px;"
+                    placeholder="LedgerCode"
+                    [formControl]="
+                      getContraVoucherEntryList.controls[rowIndex].get(
+                        'ledgerCode'
+                      )
+                    "
+                    (change)="changeLedgerValue(dataItem, rowIndex)"
+                  />
+                  <kendo-popup
+                    [anchor]="input"
+                    *ngIf="
+                      getContraVoucherEntryList.controls[rowIndex].get(
+                        'ledgerCode'
+                      ).invalid
+                    "
+                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                  >
+                    <span class="k-icon k-i-warning"></span>
+                    Ledger Code is invalid
+                  </kendo-popup>
+                </div>
+
+                <div class="col-md-8 pr-0">
+                  <input
+                    #input
+                    class="k-textbox"
+                    [readonly]="true"
+                    [formControl]="
+                      getContraVoucherEntryList.controls[rowIndex].get(
+                        'particularsOraccountingHead'
+                      )
+                    "
+                  />
+                  <a (click)="openModal(rowIndex)">
+                    <i
+                      class="fa fa-eye pull-right ledgerSelectIcon"
+                      aria-hidden="true"
+                    ></i>
+                  </a>
+                  <kendo-popup
+                    [anchor]="input"
+                    *ngIf="
+                      getContraVoucherEntryList.controls[rowIndex].get(
+                        'particularsOraccountingHead'
+                      ).invalid &&
+                      rowSubmitted &&
+                      !(
+                        isNew &&
+                        getContraVoucherEntryList.controls[rowIndex].get(
+                          'particularsOraccountingHead'
+                        ).untouched
+                      ) &&
+                      !getContraVoucherEntryList.controls[rowIndex].get(
+                        'ledgerCode'
+                      )
+                    "
+                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                  >
+                    <span class="k-icon k-i-warning"></span>
+                    Ledger name is required
+                  </kendo-popup>
+                </div>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column title="Voucher No" field="voucherNo" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <input
+                style="width: 130px;"
+                [formControl]="
+                  getContraVoucherEntryList.controls[rowIndex].get(column.field)
+                "
+              />
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="amount" title="Amount" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <kendo-numerictextbox
+                popupAnchor
+                style="width: 130px;"
+                [readonly]="true"
+                [decimals]="decimals"
+                [format]="c0"
+                [formControl]="
+                  getContraVoucherEntryList.controls[rowIndex].get(
+                    'currentBalance'
+                  )
+                "
+              ></kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column
+            field="currentBalance"
+            title="Current Balance"
+            width="150"
+          >
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <kendo-numerictextbox
+                popupAnchor
+                style="width: 130px;"
+                [readonly]="true"
+                [decimals]="decimals"
+                [format]="c0"
+                [formControl]="
+                  getContraVoucherEntryList.controls[rowIndex].get(
+                    'currentBalance'
+                  )
+                "
+              >
+              </kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="vType" title="V. Type" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <input
+                #input
+                class="k-textbox"
+                [formControl]="
+                  getContraVoucherEntryList.controls[rowIndex].get(column.field)
+                "
+              />
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="remarks" title="Remarks" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <input
+                #input
+                class="k-textbox"
+                [formControl]="
+                  getContraVoucherEntryList.controls[rowIndex].get('remarks')
+                "
+              />
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-command-column title="Action" width="100">
+            <ng-template kendoGridCellTemplate let-isNew="isNew">
+              <button class="k-button" kendoGridAddCommand>
+                <i
+                  class="fa fa-plus cursor-pointer"
+                  aria-hidden="true"
+                  tooltip="Add New"
+                ></i>
+              </button>
+              <button kendoGridRemoveCommand>
+                <i
+                  class="fas fa-trash-alt mr-2 cursor-pointer"
+                  tooltip="Delete"
+                ></i>
+              </button>
+              <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
+                {{ isNew ? "Add" : "Update" }}
+              </button>
+              <button kendoGridCancelCommand>
+                {{ isNew ? "Discard changes" : "Cancel" }}
+              </button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
       </div>
 
-
+      <div class="col-md-12 m-2">
+        <button class="btn btn-primary" disabled (click)="save()">Save</button>
+        <button class="btn btn-secondory ml-2" (click)="cancel()">
+          Cancel
+        </button>
+      </div>
     </div>
   </form>
 </div>

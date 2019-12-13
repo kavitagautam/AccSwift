@@ -1,3 +1,4 @@
+import { InputsModule } from "@progress/kendo-angular-inputs";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
@@ -8,7 +9,10 @@ import { AddContraVoucherComponent } from "./components/add-contra-voucher/add-c
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { GridModule, SharedModule } from "@progress/kendo-angular-grid";
 import { PopupModule } from "@progress/kendo-angular-popup";
-import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
+import {
+  DropDownListModule,
+  DropDownsModule
+} from "@progress/kendo-angular-dropdowns";
 
 @NgModule({
   declarations: [
@@ -19,11 +23,12 @@ import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
   imports: [
     CommonModule,
     ContraVoucherRoutingModule,
-    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     GridModule,
     PopupModule,
+    InputsModule,
+    DropDownsModule,
     DropDownListModule,
     SharedModule
   ]

@@ -44,7 +44,7 @@ export class EditCashPaymentsComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private modalService: BsModalService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.allCash = this.cashPaymentService.getCashPayment();
@@ -147,7 +147,7 @@ export class EditCashPaymentsComponent implements OnInit {
       this.cashPaymentForm.get("cashPaymentEntryList")
     );
     (<FormArray>this.cashPaymentForm.get("cashPaymentEntryList")).removeAt(
-      dataItem
+      rowIndex
     );
   }
 
