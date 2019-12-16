@@ -44,7 +44,7 @@ export class EditContraVoucherComponent implements OnInit {
 
     private modalService: BsModalService,
     public ledgerCodeService: LedgerCodeMatchService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getEditContraVoucherForm();
@@ -67,18 +67,8 @@ export class EditContraVoucherComponent implements OnInit {
         this.contraVoucherMaster ? this.contraVoucherMaster.LedgerID : ""
       ],
       cashParty: [this.contraVoucherMaster ? this.contraVoucherMaster : ""],
-      date: [
-        this.contraVoucherMaster
-          ? formatDate(
-              this.contraVoucherMaster.CreatedDate,
-              "yyyy-MM-dd",
-              "en-US"
-            )
-          : ""
-      ],
-      contraVoucherEntryList: this.fb.array([
-        this.addContraVoucherEntryFormGroup()
-      ])
+      date: [this.contraVoucherMaster ? formatDate(this.contraVoucherMaster.CreatedDate, "yyyy-MM-dd", "en-US") : ""],
+      contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryFormGroup()])
     });
   }
 
@@ -156,5 +146,109 @@ export class EditContraVoucherComponent implements OnInit {
 
   addContraVoucherEntry(): void {
     this.submitted = true;
+    if (this.editContraVoucherForm.get("contraVoucherEntryList").invalid)
+      return;
+    (<FormArray>this.editContraVoucherForm.get("contraVoucherEntryList")).push(
+      this.addContraVoucherEntryFormGroup()
+    );
+    this.submitted = false;
   }
+  changeLedgerValue(dataItem, rowIndex): void {
+    const contraVoucherFormArray = <FormArray>(
+      this.editContraVoucherForm.get("contraVoucherEntryList"));
+    const ledgerCode = contraVoucherFormArray.controls[rowIndex].get(
+      "ledgerCode"
+    ).value;
+    if (contraVoucherFormArray.controls[rowIndex].get('ledgerCode').status === "VALID") {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+        const selectedItem = res.Entity;
+        if (selectedItem && selectedItem.length > 0) {
+          contraVoucherFormArray.controls[rowIndex].get('currentBalance').setValue(selectedItem[0].ActualBalance);
+          contraVoucherFormArray.controls[rowIndex].get('particularsOraccountingHead').setValue(selectedItem[0].LedgerName);
+          contraVoucherFormArray.controls[rowIndex].get('ledgerCode').setValue(selectedItem[0].LedgerCode);
+        }
+      });
+    }
+  }
+
+  public save(): void {
+    if (this.editContraVoucherForm.valid) {
+      this.router.navigate(['/contra'])
+    } else {
+
+    }
+  }
+  public cancel(): void {
+    this.editContraVoucherForm.reset();
+    this.router.navigate(["/contra"]);
+  }
+
+  private closeEditor(grid, rowIndex = 1) {
+    grid.closeRow(rowIndex)
+    this.editedRowIndex = undefined;
+    // this.FormGroup = undefined
+  }
+
+  // Add Handler Goes Here
+  public addHandler({ sender }) {
+    this.closeEditor(sender);
+    this.submitted = true;
+    this.rowSubmitted = true;
+    const contraVoucherEntry = <FormArray>(this.editContraVoucherForm.get('contraVoucherEntryList'));
+    if (contraVoucherEntry.invalid) return;
+    contraVoucherEntry.push(this.addContraVoucherEntryFormGroup());
+    this.rowSubmitted = false;
+    this.submitted = false;
+  }
+
+  //Edit Handler Goes Here.....
+  public editHandler({ sender, rowIndex, dataItem }) {
+    this.closeEditor(sender);
+    const contraVoucherEntry = <FormArray>(this.editContraVoucherForm.get('contraVoucherEntryList'));
+    contraVoucherEntry.controls[rowIndex].get('voucherNo').setValue(dataItem.voucherNo);
+    contraVoucherEntry.controls[rowIndex].get('currentAmount').setValue(dataItem.currentAmount);
+    contraVoucherEntry.controls[rowIndex].get('vType').setValue(dataItem.vType);
+    contraVoucherEntry.controls[rowIndex].get('remarks').setValue(dataItem.remarks);
+    this.editedRowIndex = rowIndex;
+    sender.editRow(rowIndex, this.editContraVoucherForm.get('contraVoucherEntryList'));
+  }
+
+  //Open Modal Goes Here...
+  openModal(index: number): void {
+    this.modalRef = this.modalService.show(
+      LedgerModelPopupComponent,
+      this.config
+    );
+    this.modalRef.content.data = index;
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe(data => {
+      if (data) {
+        const contraVoucherFormArray = <FormArray>(
+          this.editContraVoucherForm.get("contraVoucherEntryList")
+        );
+        contraVoucherFormArray.controls[index]
+          .get("currentBalance")
+          .setValue(data.ActualBalance);
+        contraVoucherFormArray.controls[index]
+          .get("particularsOraccountingHead")
+          .setValue(data.LedgerName);
+        contraVoucherFormArray.controls[index]
+          .get("ledgerCode")
+          .setValue(data.LedgerCode);
+      }
+    });
+    this.modalRef.content.onClose.subscribe(data => {
+      //Do after Close the Modal
+    });
+  }
+
+  public cancelHandler({ sender, rowIndex }) {
+    this.closeEditor(sender, rowIndex);
+  }
+
+  public removeHandler({ dataItem, rowIndex }): void {
+    const contraVoucherEntry = <FormArray>(this.editContraVoucherForm.get('contraVoucherEntryList'));
+    contraVoucherEntry.removeAt(rowIndex);
+  }
+
 }
