@@ -33,7 +33,7 @@ export class AddContraVoucherComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private contraVoucherService: ContraVoucherService,
+    public contraVoucherService: ContraVoucherService,
     private route: ActivatedRoute,
     private router: Router,
 
@@ -239,6 +239,11 @@ export class AddContraVoucherComponent implements OnInit {
 
   public cancelHandler({ sender, rowIndex }) {
     this.closeEditor(sender, rowIndex);
+  }
+
+  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
+    //Save code
+    sender.closeRow(rowIndex);
   }
 
   public removeHandler({ dataItem, rowIndex }): void {

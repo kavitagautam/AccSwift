@@ -38,7 +38,7 @@ export class EditContraVoucherComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private contraVoucherService: ContraVoucherService,
+    public contraVoucherService: ContraVoucherService,
     private route: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
@@ -90,7 +90,7 @@ export class EditContraVoucherComponent implements OnInit {
     });
   }
 
-  gFet getContraVoucherEntryList(): FormArray {
+  get getContraVoucherEntryList(): FormArray {
     const getContraVoucher = <FormArray>(this.editContraVoucherForm.get("contraVoucherEntryList"))
     return getContraVoucher;
   }
@@ -218,6 +218,11 @@ export class EditContraVoucherComponent implements OnInit {
 
   public cancelHandler({ sender, rowIndex }) {
     this.closeEditor(sender, rowIndex);
+  }
+
+  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
+    //Save code
+    sender.closeRow(rowIndex);
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
