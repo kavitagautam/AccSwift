@@ -35,10 +35,12 @@ export class ListContraVoucherComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.editContraVoucherForm();
+    this.getContraVoucherList();
+
   }
 
   editContraVoucherForm() {

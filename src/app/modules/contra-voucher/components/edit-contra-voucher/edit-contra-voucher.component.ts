@@ -41,7 +41,6 @@ export class EditContraVoucherComponent implements OnInit {
     private contraVoucherService: ContraVoucherService,
     private route: ActivatedRoute,
     private router: Router,
-
     private modalService: BsModalService,
     public ledgerCodeService: LedgerCodeMatchService
   ) { }
@@ -54,20 +53,13 @@ export class EditContraVoucherComponent implements OnInit {
 
   getEditContraVoucherForm() {
     this.editContraVoucherForm = this.fb.group({
-      series: [
-        this.contraVoucherMaster ? this.contraVoucherMaster.SeriesID : ""
-      ],
-      project: [
-        this.contraVoucherMaster ? this.contraVoucherMaster.ProjectID : ""
-      ],
-      voucherNo: [
-        this.contraVoucherMaster ? this.contraVoucherMaster.VoucherNo : ""
-      ],
-      cashAccount: [
-        this.contraVoucherMaster ? this.contraVoucherMaster.LedgerID : ""
-      ],
+      series: [this.contraVoucherMaster ? this.contraVoucherMaster.SeriesID : ""],
+      project: [this.contraVoucherMaster ? this.contraVoucherMaster.ProjectID : ""],
+      voucherNo: [this.contraVoucherMaster ? this.contraVoucherMaster.VoucherNo : ""],
+      cashAccount: [this.contraVoucherMaster ? this.contraVoucherMaster.LedgerID : ""],
       cashParty: [this.contraVoucherMaster ? this.contraVoucherMaster : ""],
       date: [this.contraVoucherMaster ? formatDate(this.contraVoucherMaster.CreatedDate, "yyyy-MM-dd", "en-US") : ""],
+      // FormArray
       contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryFormGroup()])
     });
   }
@@ -89,26 +81,25 @@ export class EditContraVoucherComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const paramGetId = params.get("id");
       if (paramGetId) {
-        this.contraVoucherService
-          .getCashReceiptDetails(paramGetId)
-          .subscribe(res => {
-            this.contraVoucherMaster = res;
-            this.getEditContraVoucherForm();
-            // this.setCashReceiptList();
-          });
+        this.contraVoucherService.getCashReceiptDetails(paramGetId).subscribe(res => {
+          this.contraVoucherMaster = res;
+          this.getEditContraVoucherForm();
+          // this.setCashReceiptList();
+        });
       }
     });
   }
 
-  get getContraVoucherEntryList(): FormArray {
-    return <FormArray>this.editContraVoucherForm.get("contraVoucherEntryList");
+  gFet getContraVoucherEntryList(): FormArray {
+    const getContraVoucher = <FormArray>(this.editContraVoucherForm.get("contraVoucherEntryList"))
+    return getContraVoucher;
   }
 
   // setCashReceiptList(): void {
   //   this.editContraVoucherForm.setControl(
   //     "contraVoucherEntryList",
   //     this.setContraVoucherFormArray(this.cashReceiptDetails.CashReceiptDetails)
-  //   );
+  //   );F
 
   setContraVoucherFormArray(contraVoucherDetails): FormArray {
     const contraVoucherFormArray = new FormArray([]);
@@ -117,10 +108,7 @@ export class EditContraVoucherComponent implements OnInit {
         contraVoucherFormArray.push(
           this.fb.group({
             ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
-            particularsOraccountingHead: [
-              element.Ledger.EngName,
-              Validators.required
-            ],
+            particularsOraccountingHead: [element.Ledger.EngName, Validators.required],
             voucherNo: [element.VoucherNumber],
             amount: element.Amount,
             currentBalance: element.Amount,
@@ -154,11 +142,8 @@ export class EditContraVoucherComponent implements OnInit {
     this.submitted = false;
   }
   changeLedgerValue(dataItem, rowIndex): void {
-    const contraVoucherFormArray = <FormArray>(
-      this.editContraVoucherForm.get("contraVoucherEntryList"));
-    const ledgerCode = contraVoucherFormArray.controls[rowIndex].get(
-      "ledgerCode"
-    ).value;
+    const contraVoucherFormArray = <FormArray>(this.editContraVoucherForm.get("contraVoucherEntryList"));
+    const ledgerCode = contraVoucherFormArray.controls[rowIndex].get("ledgerCode").value;
     if (contraVoucherFormArray.controls[rowIndex].get('ledgerCode').status === "VALID") {
       this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
         const selectedItem = res.Entity;
@@ -215,26 +200,15 @@ export class EditContraVoucherComponent implements OnInit {
 
   //Open Modal Goes Here...
   openModal(index: number): void {
-    this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
-      this.config
-    );
+    this.modalRef = this.modalService.show(LedgerModelPopupComponent, this.config);
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
     this.modalRef.content.onSelected.subscribe(data => {
       if (data) {
-        const contraVoucherFormArray = <FormArray>(
-          this.editContraVoucherForm.get("contraVoucherEntryList")
-        );
-        contraVoucherFormArray.controls[index]
-          .get("currentBalance")
-          .setValue(data.ActualBalance);
-        contraVoucherFormArray.controls[index]
-          .get("particularsOraccountingHead")
-          .setValue(data.LedgerName);
-        contraVoucherFormArray.controls[index]
-          .get("ledgerCode")
-          .setValue(data.LedgerCode);
+        const contraVoucherFormArray = <FormArray>(this.editContraVoucherForm.get("contraVoucherEntryList"));
+        contraVoucherFormArray.controls[index].get("currentBalance").setValue(data.ActualBalance);
+        contraVoucherFormArray.controls[index].get("particularsOraccountingHead").setValue(data.LedgerName);
+        contraVoucherFormArray.controls[index].get("ledgerCode").setValue(data.LedgerCode);
       }
     });
     this.modalRef.content.onClose.subscribe(data => {
