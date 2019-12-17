@@ -49,18 +49,10 @@ export class AddContraVoucherComponent implements OnInit {
 
   getEditContraVoucherForm() {
     this.addContraVoucherForm = this.fb.group({
-      series: [
-        this.contraVoucherMaster ? this.contraVoucherMaster.SeriesID : ""
-      ],
-      project: [
-        this.contraVoucherMaster ? this.contraVoucherMaster.ProjectID : ""
-      ],
-      voucherNo: [
-        this.contraVoucherMaster ? this.contraVoucherMaster.VoucherNo : ""
-      ],
-      cashAccount: [
-        this.contraVoucherMaster ? this.contraVoucherMaster.LedgerID : ""
-      ],
+      series: [this.contraVoucherMaster ? this.contraVoucherMaster.SeriesID : ""],
+      project: [this.contraVoucherMaster ? this.contraVoucherMaster.ProjectID : ""],
+      voucherNo: [this.contraVoucherMaster ? this.contraVoucherMaster.VoucherNo : ""],
+      cashAccount: [this.contraVoucherMaster ? this.contraVoucherMaster.LedgerID : ""],
       cashParty: [this.contraVoucherMaster ? this.contraVoucherMaster : ""],
       date: [this.contraVoucherMaster ? formatDate(this.contraVoucherMaster.CreatedDate, "yyyy-MM-dd", "en-US") : ""],
       contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryFormGroup()])
@@ -112,10 +104,7 @@ export class AddContraVoucherComponent implements OnInit {
         contraVoucherFormArray.push(
           this.fb.group({
             ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
-            particularsOraccountingHead: [
-              element.Ledger.EngName,
-              Validators.required
-            ],
+            particularsOraccountingHead: [element.Ledger.EngName, Validators.required],
             voucherNo: [element.VoucherNumber],
             amount: element.Amount,
             currentBalance: element.Amount,
@@ -149,11 +138,8 @@ export class AddContraVoucherComponent implements OnInit {
     this.submitted = false;
   }
   changeLedgerValue(dataItem, rowIndex): void {
-    const contraVoucherFormArray = <FormArray>(
-      this.addContraVoucherForm.get("contraVoucherEntryList"));
-    const ledgerCode = contraVoucherFormArray.controls[rowIndex].get(
-      "ledgerCode"
-    ).value;
+    const contraVoucherFormArray = <FormArray>(this.addContraVoucherForm.get("contraVoucherEntryList"));
+    const ledgerCode = contraVoucherFormArray.controls[rowIndex].get("ledgerCode").value;
     if (contraVoucherFormArray.controls[rowIndex].get('ledgerCode').status === "VALID") {
       this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
         const selectedItem = res.Entity;

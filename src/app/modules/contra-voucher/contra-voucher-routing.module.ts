@@ -8,17 +8,17 @@ const routes: Routes = [
   {
     path: "",
     component: ListContraVoucherComponent,
-    data: { breadcrumb: "Contra" }
+    data: { breadcrumb: "Contra Voucher" }
   },
   {
     path: "add",
     component: AddContraVoucherComponent,
-    data: { breadcrumb: "Add Contra" }
+    data: { breadcrumb: "Add Contra Voucher" }
   },
   {
     path: "edit",
     component: EditContraVoucherComponent,
-    data: { breadcrumb: "Edit Contra" }
+    data: { breadcrumb: "Edit Contra Voucher" }
   }
 ];
 
@@ -26,4 +26,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ContraVoucherRoutingModule {}
+export class ContraVoucherRoutingModule { }

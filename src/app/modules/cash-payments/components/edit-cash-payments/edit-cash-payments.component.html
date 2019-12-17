@@ -22,8 +22,7 @@
                         <select class="form-control" id="cashAccountNo" formControlName="cashAccount">
                             <option value="null"> </option>
                             <option *ngFor="let account of cashPaymentService.cashAccountLists"
-                                [ngValue]="account.LedgerID">
-                                {{ account.LedgerName }}</option>
+                                [ngValue]="account.LedgerID"> {{ account.LedgerName }}</option>
                         </select>
                     </div>
                 </div>
