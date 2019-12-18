@@ -1,7 +1,4 @@
-import {
-  CashReceitptDetails,
-  CashPaymentMaster
-} from "./../../models/cash-payments.model";
+import { CashPaymentMaster } from "./../../models/cash-payments.model";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SortDescriptor } from "@progress/kendo-data-query";
 import {
@@ -36,7 +33,7 @@ export class AddCashPaymentsComponent implements OnInit {
     public cashPaymentService: CashPaymentsService,
     private fb: FormBuilder,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.allCash = this.cashPaymentService.getCashPayment();

@@ -22,7 +22,7 @@ export class ContraVoucherService {
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {}
+  ) { }
   init() {
     this.getProjectLists();
     this.getSeriesList();
@@ -57,7 +57,7 @@ export class ContraVoucherService {
     return this.httpService.get(`${this._api_URL}CashReceiptMaster`);
   }
 
-  getCashReceiptDetails(id): Observable<ContraVoucherMaster> {
+  getContraVoucherDetails(id): Observable<ContraVoucherMaster> {
     return this.httpService.get(`${this._api_URL}CashReceiptMaster/${id}`);
   }
 

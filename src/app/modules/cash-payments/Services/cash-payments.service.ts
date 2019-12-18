@@ -69,7 +69,7 @@ export class CashPaymentsService {
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {}
+  ) { }
 
   init() {
     this.getProjectLists();
@@ -96,11 +96,8 @@ export class CashPaymentsService {
       });
   }
 
-  getCashPaymentsMaster(): Observable<CashReceiptMaster[]> {
-    return Observable.create(observer => {
-      observer.next(this.cashPayment);
-      observer.complete();
-    });
+  getCashPaymentsMaster(): Observable<CashPaymentMaster[]> {
+    return this.http.get<CashPaymentMaster[]>(`${this._api_URL}CashPaymentMaster`);
   }
 
   getCashPaymentAccounts(): void {

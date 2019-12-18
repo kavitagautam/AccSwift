@@ -1,8 +1,3 @@
-import { CashReceiptDetails } from "./../../../cash-receipts/models/cash-receipt.model";
-import {
-  SeriesList,
-  ProjectList
-} from "./../../../bank-receipts/models/bank-receipt.model";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ContraVoucherService } from "./../../services/contra-voucher.service";
@@ -20,10 +15,8 @@ import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-po
 })
 export class EditContraVoucherComponent implements OnInit {
   editContraVoucherForm: FormGroup;
-  seriesList: SeriesList;
-  projectList: ProjectList;
   date: Date = new Date();
-  contraVoucherMaster: ContraVoucherMaster;
+  contraVoucherDetail: ContraVoucherMaster;
   submitted: boolean;
   rowSubmitted: boolean;
   editedRowIndex: any;
@@ -53,12 +46,12 @@ export class EditContraVoucherComponent implements OnInit {
 
   getEditContraVoucherForm() {
     this.editContraVoucherForm = this.fb.group({
-      series: [this.contraVoucherMaster ? this.contraVoucherMaster.SeriesID : ""],
-      project: [this.contraVoucherMaster ? this.contraVoucherMaster.ProjectID : ""],
-      voucherNo: [this.contraVoucherMaster ? this.contraVoucherMaster.VoucherNo : ""],
-      cashAccount: [this.contraVoucherMaster ? this.contraVoucherMaster.LedgerID : ""],
-      cashParty: [this.contraVoucherMaster ? this.contraVoucherMaster : ""],
-      date: [this.contraVoucherMaster ? formatDate(this.contraVoucherMaster.CreatedDate, "yyyy-MM-dd", "en-US") : ""],
+      series: [this.contraVoucherDetail ? this.contraVoucherDetail.SeriesID : ""],
+      project: [this.contraVoucherDetail ? this.contraVoucherDetail.ProjectID : ""],
+      voucherNo: [this.contraVoucherDetail ? this.contraVoucherDetail.VoucherNo : ""],
+      cashAccount: [this.contraVoucherDetail ? this.contraVoucherDetail.LedgerID : ""],
+      cashParty: [this.contraVoucherDetail ? this.contraVoucherDetail : ""],
+      date: [this.contraVoucherDetail ? formatDate(this.contraVoucherDetail.CreatedDate, "yyyy-MM-dd", "en-US") : ""],
       // FormArray
       contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryFormGroup()])
     });
@@ -81,10 +74,10 @@ export class EditContraVoucherComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const paramGetId = params.get("id");
       if (paramGetId) {
-        this.contraVoucherService.getCashReceiptDetails(paramGetId).subscribe(res => {
-          this.contraVoucherMaster = res;
+        this.contraVoucherService.getContraVoucherDetails(paramGetId).subscribe(res => {
+          this.contraVoucherDetail = res;
           this.getEditContraVoucherForm();
-          // this.setCashReceiptList();
+          this.setContraVoucherList();
         });
       }
     });
@@ -95,11 +88,12 @@ export class EditContraVoucherComponent implements OnInit {
     return getContraVoucher;
   }
 
-  // setCashReceiptList(): void {
-  //   this.editContraVoucherForm.setControl(
-  //     "contraVoucherEntryList",
-  //     this.setContraVoucherFormArray(this.cashReceiptDetails.CashReceiptDetails)
-  //   );F
+  setContraVoucherList(): void {
+    this.editContraVoucherForm.setControl(
+      "contraVoucherEntryList",
+      this.setContraVoucherFormArray(this.contraVoucherDetail.CashReceiptDetails)
+    );
+  }
 
   setContraVoucherFormArray(contraVoucherDetails): FormArray {
     const contraVoucherFormArray = new FormArray([]);

@@ -1,16 +1,14 @@
 import {
-  CashReceitptDetails,
   CashPaymentMaster
 } from "./../../models/cash-payments.model";
-import { ActivatedRoute, Router } from "@angular/router";
-import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Router } from "@angular/router";
+import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
 import { CashPaymentsService } from "./../../services/cash-payments.service";
 import {
   SeriesList,
   ProjectList
 } from "@app/modules/bank-receipts/models/bank-receipt.model";
-import { headersToString } from "selenium-webdriver/http";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 @Component({
@@ -38,7 +36,6 @@ export class EditCashPaymentsComponent implements OnInit {
     centered: true
   };
 
-  // CONSTRUCTOR GOES HERE......
   constructor(
     public cashPaymentService: CashPaymentsService,
     private fb: FormBuilder,

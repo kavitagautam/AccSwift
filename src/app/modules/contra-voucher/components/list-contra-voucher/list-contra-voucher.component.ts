@@ -21,7 +21,6 @@ export class ListContraVoucherComponent implements OnInit {
   contraVoucherForm: FormGroup;
   public gridView: GridDataResult;
   listLoading: boolean;
-  contraVoucherMaster: ContraVoucherMaster;
   public filter: CompositeFilterDescriptor;
   date: Date = new Date();
   public pageSize = 10;

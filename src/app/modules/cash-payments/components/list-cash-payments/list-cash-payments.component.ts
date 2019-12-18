@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -15,7 +16,8 @@ import { CashPaymentsService } from "../../services/cash-payments.service";
 @Component({
   selector: "app-list-cash-Payments",
   templateUrl: "./list-cash-Payments.component.html",
-  styleUrls: ["./list-cash-Payments.component.scss"]
+  styleUrls: ["./list-cash-Payments.component.scss"],
+  providers: [DatePipe]
 })
 export class ListCashPaymentsComponent implements OnInit {
   cashPaymentsForm: FormGroup;
@@ -33,8 +35,9 @@ export class ListCashPaymentsComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
-    public cashPaymentsService: CashPaymentsService
-  ) {}
+    public cashPaymentsService: CashPaymentsService,
+    private datePipe: DatePipe
+  ) { }
   ngOnInit() {
     this.getCashPaymentslList();
     this.cashPaymentsForm = this._fb.group({
@@ -89,10 +92,12 @@ export class ListCashPaymentsComponent implements OnInit {
     };
 
     this.cashPaymentsService.getCashPaymentsMaster().subscribe(
-      res => {
+      (res: any) => {
+
         this.listLoading = true;
         //mapping the data to change string date format to Date
         this.cashPaymentsList = res;
+        console.log(res)
         this.gridView = {
           data: this.cashPaymentsList,
           total: this.cashPaymentsList ? this.cashPaymentsList.length : 0

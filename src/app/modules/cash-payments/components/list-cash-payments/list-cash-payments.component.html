@@ -103,6 +103,7 @@
   </div>
 </div>
 
+
 <div class="box box-default">
   <div class="col-md-12 mt-5 mr-2">
     <div class="grid-wrapper">
@@ -122,8 +123,10 @@
         </kendo-grid-column>
         <kendo-grid-column field="ProjectName" title="Project">
         </kendo-grid-column>
-        <kendo-grid-column field="CashReceiptDate" title="Cheque Date" filter="date" [filterable]="false"
-          format="{0: yyyy-mm-dd}">
+        <kendo-grid-column field="Date" title="Cheque Date" [filterable]="false" filter="date" format="{0:d}">
+          <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+            <span>{{dataItem.Date | date :'yyyy-MM-dd'}}</span>
+          </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
         <kendo-grid-command-column title="Action" width="150">
