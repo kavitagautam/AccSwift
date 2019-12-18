@@ -33,7 +33,7 @@ export class AddCashPaymentsComponent implements OnInit {
     public cashPaymentService: CashPaymentsService,
     private fb: FormBuilder,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.allCash = this.cashPaymentService.getCashPayment();
