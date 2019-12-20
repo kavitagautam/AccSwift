@@ -37,6 +37,11 @@ export class SideNavComponent implements OnInit {
           route: "/bank"
         },
         {
+          displayName: "Cash Payments",
+          iconName: "fas fa-file-invoice-dollar",
+          route: "/cashPayments"
+        },
+        {
           displayName: "Bank Payments",
           iconName: "fas fa-file-invoice-dollar",
           route: "/bankPayments"

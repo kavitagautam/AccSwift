@@ -7,7 +7,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
-import { formatDate } from '@angular/common';
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: "app-edit-cash-receipt",
@@ -46,7 +46,7 @@ export class EditCashReceiptComponent implements OnInit {
   ngOnInit() {
     this.buildCashReceiptForm();
     this.cashReceiptService.init();
-   // Get Id From the Route URL and get the Details
+    // Get Id From the Route URL and get the Details
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
         this.cashReceiptService
@@ -63,13 +63,25 @@ export class EditCashReceiptComponent implements OnInit {
   buildCashReceiptForm(): void {
     this.editCashReceiptForm = this._fb.group({
       series: [this.cashReceiptDetails ? this.cashReceiptDetails.SeriesID : ""],
-      project: [this.cashReceiptDetails ? this.cashReceiptDetails.ProjectID : ""],
+      project: [
+        this.cashReceiptDetails ? this.cashReceiptDetails.ProjectID : ""
+      ],
       voucherNo: [
         this.cashReceiptDetails ? this.cashReceiptDetails.VoucherNo : ""
       ],
-      cashAccount: [this.cashReceiptDetails ? this.cashReceiptDetails.LedgerID : ""],
-      cashParty:[""],
-      date: [this.cashReceiptDetails ? formatDate(this.cashReceiptDetails.CreatedDate , "yyyy-MM-dd", "en-US"): ""],
+      cashAccount: [
+        this.cashReceiptDetails ? this.cashReceiptDetails.LedgerID : ""
+      ],
+      cashParty: [""],
+      date: [
+        this.cashReceiptDetails
+          ? formatDate(
+              this.cashReceiptDetails.CreatedDate,
+              "yyyy-MM-dd",
+              "en-US"
+            )
+          : ""
+      ],
       cashReceiptEntryList: this._fb.array([
         this.addCashReceiptEntryFormGroup()
       ])
