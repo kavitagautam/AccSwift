@@ -34,12 +34,11 @@ export class ListContraVoucherComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.editContraVoucherForm();
     this.getContraVoucherList();
-
   }
 
   editContraVoucherForm() {
@@ -93,9 +92,7 @@ export class ListContraVoucherComponent implements OnInit {
         this.listLoading = true;
 
         //mapping the data to change string date format to Date
-        const sampleData = res.map(
-          dataItem =>
-            <ContraVoucherMaster>{
+        const sampleData = res.map(dataItem => <ContraVoucherMaster>{
               IsPayByInvoice: dataItem.IsPayByInvoice,
               TotalAmount: dataItem.TotalAmount,
               CashReceiptDetails: dataItem.CashReceiptDetails,
@@ -158,8 +155,8 @@ export class ListContraVoucherComponent implements OnInit {
     this.getContraVoucherList();
   }
 
-  public edit(): void {
-    this.router.navigate(["/contra/edit"]);
+  public edit(item): void {
+    this.router.navigate(["/contra/edit", item.ID]);
   }
 
   openConfirmationDialogue(dataItem) {

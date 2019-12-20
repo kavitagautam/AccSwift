@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -16,18 +15,16 @@ import { CashPaymentsService } from "../../services/cash-payments.service";
 @Component({
   selector: "app-list-cash-Payments",
   templateUrl: "./list-cash-Payments.component.html",
-  styleUrls: ["./list-cash-Payments.component.scss"],
-  providers: [DatePipe]
+  styleUrls: ["./list-cash-Payments.component.scss"]
 })
 export class ListCashPaymentsComponent implements OnInit {
   cashPaymentsForm: FormGroup;
-  cashPaymentMaster: CashPaymentMaster;
+  cashPaymentDetail: CashPaymentMaster;
   listLoading: boolean;
-  cashPaymentsList = [];
+  cashPaymentList = [];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
   date: Date = new Date();
-
   public gridData;
 
   constructor(
@@ -35,11 +32,10 @@ export class ListCashPaymentsComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
-    public cashPaymentsService: CashPaymentsService,
-    private datePipe: DatePipe
-  ) { }
+    public cashPaymentService: CashPaymentsService
+  ) {}
   ngOnInit() {
-    this.getCashPaymentslList();
+    this.getCashPaymentList();
     this.cashPaymentsForm = this._fb.group({
       series: [""],
       project: [""],
@@ -47,7 +43,7 @@ export class ListCashPaymentsComponent implements OnInit {
       cashAccount: [""],
       date: [""]
     });
-    this.cashPaymentsService.init();
+    this.cashPaymentService.init();
   }
 
   public pageSize = 10;
@@ -79,10 +75,10 @@ export class ListCashPaymentsComponent implements OnInit {
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
-    this.getCashPaymentslList();
+    this.getCashPaymentList();
   }
 
-  getCashPaymentslList(): void {
+  getCashPaymentList(): void {
     this.listLoading = true;
     const params = {
       PageNo: this.currentPage,
@@ -91,16 +87,15 @@ export class ListCashPaymentsComponent implements OnInit {
       Direction: "asc" // "asc" or "desc"
     };
 
-    this.cashPaymentsService.getCashPaymentsMaster().subscribe(
+    this.cashPaymentService.getCashPaymentMaster().subscribe(
       (res: any) => {
-
         this.listLoading = true;
         //mapping the data to change string date format to Date
-        this.cashPaymentsList = res;
-        console.log(res)
+        this.cashPaymentList = res;
+        console.log(res);
         this.gridView = {
-          data: this.cashPaymentsList,
-          total: this.cashPaymentsList ? this.cashPaymentsList.length : 0
+          data: this.cashPaymentList,
+          total: this.cashPaymentList ? this.cashPaymentList.length : 0
         };
       },
       error => {
@@ -115,11 +110,11 @@ export class ListCashPaymentsComponent implements OnInit {
   public filterChange(filter): void {
     this.filter = filter;
 
-    this.getCashPaymentslList();
+    this.getCashPaymentList();
   }
 
   public searchForm() {
-    this.getCashPaymentslList();
+    this.getCashPaymentList();
   }
 
   public pageChange(event: PageChangeEvent): void {
@@ -134,7 +129,7 @@ export class ListCashPaymentsComponent implements OnInit {
 
       this.currentPage = pageNo;
     }
-    this.getCashPaymentslList();
+    this.getCashPaymentList();
   }
 
   public edit(item): void {
@@ -142,7 +137,7 @@ export class ListCashPaymentsComponent implements OnInit {
   }
 
   openConfirmationDialogue(dataItem) {
-    const journalId = {
+    const cashPaymentID = {
       id: dataItem.ID
     };
     this.modalRef = this.modalService.show(
@@ -153,7 +148,7 @@ export class ListCashPaymentsComponent implements OnInit {
     this.modalRef.content.action = "delete";
     this.modalRef.content.onClose.subscribe(confirm => {
       if (confirm) {
-        this.deletePaymentsByID(journalId.id);
+        this.deletePaymentsByID(cashPaymentID.id);
       }
     });
   }

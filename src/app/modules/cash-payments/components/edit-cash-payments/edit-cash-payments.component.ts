@@ -1,16 +1,10 @@
-import {
-  CashPaymentMaster
-} from "./../../models/cash-payments.model";
+import { CashPaymentMaster } from "./../../models/cash-payments.model";
 import { Router } from "@angular/router";
 import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { CashPaymentsService } from "./../../services/cash-payments.service";
-import {
-  SeriesList,
-  ProjectList
-} from "@app/modules/bank-receipts/models/bank-receipt.model";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+
 @Component({
   selector: "app-edit-cash-payments",
   templateUrl: "./edit-cash-payments.component.html",
@@ -19,9 +13,7 @@ import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-po
 export class EditCashPaymentsComponent implements OnInit {
   private editedRowIndex: number;
   cashPaymentForm: FormGroup;
-  seriesList: SeriesList;
-  projectList: ProjectList;
-  cashPaymentMaster: CashPaymentMaster;
+  cashPaymentDetail: CashPaymentMaster;
   allCash;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -41,27 +33,26 @@ export class EditCashPaymentsComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private modalService: BsModalService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.allCash = this.cashPaymentService.getCashPayment();
     this.cashPaymentService.init();
-    this.editCashPaymentForm();
-    console.log(this.allCash);
-  } // ngoninit method ends here..
+    this.buildEditCashPaymentForm(); // initialize the form
+  }
 
-  editCashPaymentForm() {
+  buildEditCashPaymentForm() {
     this.cashPaymentForm = this.fb.group({
       series: [280],
-      project: [this.cashPaymentMaster ? this.cashPaymentMaster.ProjectID : ""],
+      project: [this.cashPaymentDetail ? this.cashPaymentDetail.ProjectID : ""],
       voucherNo: [
-        this.cashPaymentMaster ? this.cashPaymentMaster.VoucherNo : ""
+        this.cashPaymentDetail ? this.cashPaymentDetail.VoucherNo : ""
       ],
       cashAccount: [
-        this.cashPaymentMaster ? this.cashPaymentMaster.LedgerID : ""
+        this.cashPaymentDetail ? this.cashPaymentDetail.LedgerID : ""
       ],
       cashParty: "",
-      date: [this.cashPaymentMaster ? this.cashPaymentMaster.CreatedDate : ""],
+      date: [this.cashPaymentDetail ? this.cashPaymentDetail.CreatedDate : ""],
       cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryFormGroup()])
     });
   }
@@ -78,7 +69,7 @@ export class EditCashPaymentsComponent implements OnInit {
     });
   }
 
-  get getcashPaymentEntryList(): FormArray {
+  get getCashPaymentEntryList(): FormArray {
     return <FormArray>this.cashPaymentForm.get("cashPaymentEntryList");
   }
 
@@ -132,23 +123,18 @@ export class EditCashPaymentsComponent implements OnInit {
     sender.editRow(rowIndex, this.cashPaymentForm.get("cashPaymentEntryList"));
   }
 
-  // Save handler goes here....
   public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
     // code goes here ......
     sender.closeRow(rowIndex);
   }
 
-  //Remove Handler goes here.....
   public removeHandler({ dataItem, rowIndex }): void {
     const cashPaymentEntry = <FormArray>(
       this.cashPaymentForm.get("cashPaymentEntryList")
     );
-    (<FormArray>this.cashPaymentForm.get("cashPaymentEntryList")).removeAt(
-      rowIndex
-    );
+    cashPaymentEntry.removeAt(rowIndex);
   }
 
-  // Cancel Handler goes here...
   public cancelHandler({ sender, rowIndex }) {
     this.closeEditor(sender, rowIndex);
   }

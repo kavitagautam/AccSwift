@@ -39,12 +39,12 @@ export class EditContraVoucherComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getEditContraVoucherForm();
+    this.buildEditContraVoucherForm(); //initialize the buildEditContraVoucher Form
     this.contraVoucherService.init();
-    this.getParambyId();
+
   }
 
-  getEditContraVoucherForm() {
+  buildEditContraVoucherForm() {
     this.editContraVoucherForm = this.fb.group({
       series: [this.contraVoucherDetail ? this.contraVoucherDetail.SeriesID : ""],
       project: [this.contraVoucherDetail ? this.contraVoucherDetail.ProjectID : ""],
@@ -70,18 +70,18 @@ export class EditContraVoucherComponent implements OnInit {
     });
   }
 
-  getParambyId() {
-    this.route.paramMap.subscribe(params => {
-      const paramGetId = params.get("id");
-      if (paramGetId) {
-        this.contraVoucherService.getContraVoucherDetails(paramGetId).subscribe(res => {
-          this.contraVoucherDetail = res;
-          this.getEditContraVoucherForm();
-          this.setContraVoucherList();
-        });
-      }
-    });
-  }
+  // getParambyId() {
+  //   this.route.paramMap.subscribe(params => {
+  //     const paramGetId = params.get("id");
+  //     if (paramGetId) {
+  //       this.contraVoucherService.getContraVoucherDetails(paramGetId).subscribe(res => {
+  //         this.contraVoucherDetail = res;
+  //         this.getEditContraVoucherForm();
+  //         this.setContraVoucherList();
+  //       });
+  //     }
+  //   });
+  // }
 
   get getContraVoucherEntryList(): FormArray {
     const getContraVoucher = <FormArray>(this.editContraVoucherForm.get("contraVoucherEntryList"))
