@@ -29,31 +29,40 @@ const routes: Routes = [
         }
       },
       {
-        path: "cash",
+        path: "cash-receipt",
         loadChildren:
-          "@modules/cash-receipts/cash-receipts.module#CashReceiptsModule",
+          "@modules/cash-receipt/cash-receipt.module#CashReceiptModule",
         data: {
-          breadcrumb: "Cash"
+          breadcrumb: "Cash Receipt"
+        }
+      },
+
+      {
+        path: "cash-payment",
+        loadChildren:
+          "@modules/cash-payment/cash-payment.module#CashPaymentModule",
+        data: {
+          breadcrumb: "Cash Payment"
         }
       },
       {
-        path: "bank",
+        path: "bank-receipt",
         loadChildren:
-          "@modules/bank-receipts/bank-receipts.module#BankReceiptsModule",
+          "@modules/bank-receipt/bank-receipt.module#BankReceiptModule",
         data: {
-          breadcrumb: "Bank"
+          breadcrumb: "Bank Receipt"
         }
       },
       {
-        path: "bankPayments",
+        path: "bank-payment",
         loadChildren:
-          "@modules/bank-payments/bank-payments.module#BankPaymentsModule",
+          "@modules/bank-payment/bank-payment.module#BankPaymentModule",
         data: {
-          breadcrumb: "Bank Payments"
+          breadcrumb: "Bank Payment"
         }
       },
       {
-        path: "contra",
+        path: "contra-voucher",
         loadChildren:
           "@modules/contra-voucher/contra-voucher.module#ContraVoucherModule",
         data: {
@@ -61,10 +70,25 @@ const routes: Routes = [
         }
       },
       {
+        path: "bank-reconciliation",
+        loadChildren:
+          "@modules/bank-reconciliation/bank-reconciliation.module#BankReconciliationModule",
+        data: {
+          breadcrumb: "Bank Reconciliation"
+        }
+      },
+      {
         path: "product",
         loadChildren: "@modules/product/product.module#ProductModule",
         data: {
           breadcrumb: "Product"
+        }
+      },
+      {
+        path: "budget",
+        loadChildren: "@modules/budget/budget.module#BudgetModule",
+        data: {
+          breadcrumb: "Budget"
         }
       },
       {

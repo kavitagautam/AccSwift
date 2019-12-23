@@ -27,24 +27,34 @@ export class SideNavComponent implements OnInit {
           route: "/journal"
         },
         {
-          displayName: "Cash Receipts",
+          displayName: "Cash Receipt",
           iconName: "fas fa-money-bill",
-          route: "/cash"
+          route: "/cash-receipt"
         },
         {
-          displayName: "Bank Receipts",
+          displayName: "Bank Receipt",
           iconName: "fas fa-file-invoice",
-          route: "/bank"
+          route: "/bank-receipt"
         },
         {
-          displayName: "Bank Payments",
+          displayName: "Cash Payment",
           iconName: "fas fa-file-invoice-dollar",
-          route: "/bankPayments"
+          route: "/cash-payment"
+        },
+        {
+          displayName: "Bank Payment",
+          iconName: "fas fa-file-invoice-dollar",
+          route: "/bank-payment"
+        },
+        {
+          displayName: "Bank Reconciliation",
+          iconName: "fas fa-file-invoice-dollar",
+          route: "/bank-reconciliation"
         },
         {
           displayName: "Contra Voucher",
           iconName: "fas fa-file-invoice",
-          route: "/contra"
+          route: "/contra-voucher"
         }
       ]
     },
@@ -68,12 +78,18 @@ export class SideNavComponent implements OnInit {
     },
     {
       id: 6,
+      displayName: "Budget",
+      iconName: "fas fa-file-invoice-dollar",
+      route: "/budget"
+    },
+    {
+      id: 7,
       displayName: "Preference",
       iconName: "fas fa-cogs",
       route: "/preference"
     },
     {
-      id: 7,
+      id: 8,
       displayName: "Setting",
       iconName: "fas fa-tools",
       route: "/settings"
