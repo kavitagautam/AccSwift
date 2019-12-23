@@ -27,29 +27,29 @@ export class SideNavComponent implements OnInit {
           route: "/journal"
         },
         {
-          displayName: "Cash Receipts",
+          displayName: "Cash Receipt",
           iconName: "fas fa-money-bill",
-          route: "/cash"
+          route: "/cash-receipt"
         },
         {
-          displayName: "Bank Receipts",
+          displayName: "Bank Receipt",
           iconName: "fas fa-file-invoice",
-          route: "/bank"
+          route: "/bank-receipt"
         },
         {
-          displayName: "Cash Payments",
+          displayName: "Cash Payment",
           iconName: "fas fa-file-invoice-dollar",
-          route: "/cashPayments"
+          route: "/cash-payment"
         },
         {
-          displayName: "Bank Payments",
+          displayName: "Bank Payment",
           iconName: "fas fa-file-invoice-dollar",
-          route: "/bankPayments"
+          route: "/bank-payment"
         },
         {
           displayName: "Contra Voucher",
           iconName: "fas fa-file-invoice",
-          route: "/contra"
+          route: "/contra-voucher"
         }
       ]
     },

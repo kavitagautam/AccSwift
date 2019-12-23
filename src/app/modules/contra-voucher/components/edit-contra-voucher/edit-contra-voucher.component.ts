@@ -39,9 +39,8 @@ export class EditContraVoucherComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getParambyId();
     this.buildEditContraVoucherForm(); //initialize the buildEditContraVoucher Form
-    this.contraVoucherService.init();
-
   }
 
   buildEditContraVoucherForm() {
@@ -52,12 +51,10 @@ export class EditContraVoucherComponent implements OnInit {
       cashAccount: [this.contraVoucherDetail ? this.contraVoucherDetail.LedgerID : ""],
       cashParty: [this.contraVoucherDetail ? this.contraVoucherDetail : ""],
       date: [this.contraVoucherDetail ? formatDate(this.contraVoucherDetail.CreatedDate, "yyyy-MM-dd", "en-US") : ""],
-      // FormArray
       contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryFormGroup()])
     });
   }
 
-  // Building FormArray ......
   addContraVoucherEntryFormGroup(): FormGroup {
     return this.fb.group({
       ledgerCode: [""],
@@ -70,18 +67,18 @@ export class EditContraVoucherComponent implements OnInit {
     });
   }
 
-  // getParambyId() {
-  //   this.route.paramMap.subscribe(params => {
-  //     const paramGetId = params.get("id");
-  //     if (paramGetId) {
-  //       this.contraVoucherService.getContraVoucherDetails(paramGetId).subscribe(res => {
-  //         this.contraVoucherDetail = res;
-  //         this.getEditContraVoucherForm();
-  //         this.setContraVoucherList();
-  //       });
-  //     }
-  //   });
-  // }
+  getParambyId() {
+    this.route.paramMap.subscribe(params => {
+      const paramGetId = params.get("id");
+      if (paramGetId) {
+        this.contraVoucherService.getContraVoucherDetails(paramGetId).subscribe(res => {
+          this.contraVoucherDetail = res;
+          this.buildEditContraVoucherForm();
+          this.setContraVoucherList();
+        });
+      }
+    });
+  }
 
   get getContraVoucherEntryList(): FormArray {
     const getContraVoucher = <FormArray>(this.editContraVoucherForm.get("contraVoucherEntryList"))
@@ -135,6 +132,7 @@ export class EditContraVoucherComponent implements OnInit {
     );
     this.submitted = false;
   }
+
   changeLedgerValue(dataItem, rowIndex): void {
     const contraVoucherFormArray = <FormArray>(this.editContraVoucherForm.get("contraVoucherEntryList"));
     const ledgerCode = contraVoucherFormArray.controls[rowIndex].get("ledgerCode").value;
@@ -152,14 +150,14 @@ export class EditContraVoucherComponent implements OnInit {
 
   public save(): void {
     if (this.editContraVoucherForm.valid) {
-      this.router.navigate(['/contra'])
+      this.router.navigate(['/contra-voucher'])
     } else {
 
     }
   }
   public cancel(): void {
     this.editContraVoucherForm.reset();
-    this.router.navigate(["/contra"]);
+    this.router.navigate(["/contra-voucher"]);
   }
 
   private closeEditor(grid, rowIndex = 1) {

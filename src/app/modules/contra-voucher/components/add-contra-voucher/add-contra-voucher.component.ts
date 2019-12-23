@@ -39,7 +39,6 @@ export class AddContraVoucherComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.contraVoucherService.init();
     this.buildAddContraVoucherForm(); // initiate the AddContraVoucher Form
   }
 
@@ -57,7 +56,6 @@ export class AddContraVoucherComponent implements OnInit {
     });
   }
 
-  // Building FormArray ......
   addContraVoucherEntryFormGroup(): FormGroup {
     return this.fb.group({
       ledgerCode: [""],

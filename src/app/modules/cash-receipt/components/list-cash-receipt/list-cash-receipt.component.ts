@@ -1,57 +1,53 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { ContraVoucherService } from "../../services/contra-voucher.service";
 import { Router } from "@angular/router";
-import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
-import {
-  CompositeFilterDescriptor,
-  SortDescriptor
-} from "@progress/kendo-data-query";
-import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ContraVoucherMaster } from "../models/contravoucher.model";
+import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
+import { CashReceiptService } from "../../services/cash-receipt.service";
+import {
+  SortDescriptor,
+  CompositeFilterDescriptor
+} from "@progress/kendo-data-query";
+import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { CashReceiptMaster } from "../../models/cash-receipt.model";
 
 @Component({
-  selector: "app-list-contra-voucher",
-  templateUrl: "./list-contra-voucher.component.html",
-  styleUrls: ["./list-contra-voucher.component.scss"]
+  selector: "app-list-cash-receipt",
+  templateUrl: "./list-cash-receipt.component.html",
+  styleUrls: ["./list-cash-receipt.component.scss"]
 })
-export class ListContraVoucherComponent implements OnInit {
-  contraVoucherForm: FormGroup;
-  public gridView: GridDataResult;
+export class ListCashReceiptComponent implements OnInit {
+  cashReceiptForm: FormGroup;
   listLoading: boolean;
-  public filter: CompositeFilterDescriptor;
+  cashList: CashReceiptMaster[] = [];
+  public gridView: GridDataResult;
+  public filter: CompositeFilterDescriptor; //Muliti Column Filter
   date: Date = new Date();
-  public pageSize = 10;
-  public skip = 0;
-  public currentPage = 1;
-  modalRef: BsModalRef;
-  cashList: ContraVoucherMaster[];
   constructor(
-    private fb: FormBuilder,
-    public contraVoucherService: ContraVoucherService,
+    public _fb: FormBuilder,
     private router: Router,
     private modalService: BsModalService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public cashReceiptService: CashReceiptService
   ) {}
-
   ngOnInit() {
-    this.editContraVoucherForm();
-    this.getContraVoucherList();
-  }
-
-  editContraVoucherForm() {
-    this.contraVoucherForm = this.fb.group({
+    this.cashReceiptForm = this._fb.group({
       series: [""],
       project: [""],
       voucherNo: [""],
       cashAccount: [""],
+      cashParty:[""],
       date: [""]
     });
+    this.getCashReceiptlList();
+    this.cashReceiptService.init();
   }
 
-  //Sorting Kendo Data
+  public pageSize = 10;
+  public skip = 0;
+  public currentPage = 1;
+  //sorting kendo data
   public allowUnsort = true;
   public sort: SortDescriptor[] = [
     {
@@ -60,11 +56,13 @@ export class ListContraVoucherComponent implements OnInit {
     }
   ];
 
-  //modal config to unhide when clicked outside
+  modalRef: BsModalRef;
+  // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
     ignoreBackdropClick: true
   };
+
   // Date string parse
   public currentYear = new Date().getFullYear();
   public parseAdjust = (eventDate: Date): Date => {
@@ -75,10 +73,10 @@ export class ListContraVoucherComponent implements OnInit {
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
-    this.getContraVoucherList();
+    this.getCashReceiptlList();
   }
 
-  getContraVoucherList(): void {
+  getCashReceiptlList(): void {
     this.listLoading = true;
     const params = {
       PageNo: this.currentPage,
@@ -87,12 +85,14 @@ export class ListContraVoucherComponent implements OnInit {
       Direction: "asc" // "asc" or "desc"
     };
 
-    this.contraVoucherService.getCashReceiptMaster().subscribe(
+    this.cashReceiptService.getCashReceiptMaster().subscribe(
       res => {
         this.listLoading = true;
 
         //mapping the data to change string date format to Date
-        const sampleData = res.map(dataItem => <ContraVoucherMaster>{
+        const sampleData = res.map(
+          dataItem =>
+            <CashReceiptMaster>{
               IsPayByInvoice: dataItem.IsPayByInvoice,
               TotalAmount: dataItem.TotalAmount,
               CashReceiptDetails: dataItem.CashReceiptDetails,
@@ -134,33 +134,37 @@ export class ListContraVoucherComponent implements OnInit {
     );
   }
 
-  public searchForm() {
-    this.getContraVoucherList();
-  }
-
   public filterChange(filter): void {
     this.filter = filter;
+
+    this.getCashReceiptlList();
+  }
+
+  public searchForm() {
+    this.getCashReceiptlList();
   }
 
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
+
     if (event.skip == 0) {
       this.skip = event.skip;
       this.currentPage = 1;
     } else {
       this.skip = event.skip;
       const pageNo = event.skip / event.take + 1;
+
       this.currentPage = pageNo;
     }
-    this.getContraVoucherList();
+    this.getCashReceiptlList();
   }
 
   public edit(item): void {
-    this.router.navigate(["/contra/edit", item.ID]);
+    this.router.navigate(["/cash-receipt/edit", item.ID]);
   }
 
   openConfirmationDialogue(dataItem) {
-    const contraId = {
+    const journalId = {
       id: dataItem.ID
     };
     this.modalRef = this.modalService.show(
@@ -171,12 +175,13 @@ export class ListContraVoucherComponent implements OnInit {
     this.modalRef.content.action = "delete";
     this.modalRef.content.onClose.subscribe(confirm => {
       if (confirm) {
-        this.deleteContraById(contraId.id);
+        this.deleteReceiptByID(journalId.id);
       }
     });
   }
 
-  public deleteContraById(id): void {
-    this.toastr.success("Voucher deleted succesfully");
+  public deleteReceiptByID(id): void {
+    this.toastr.success("Cash deleted successfully");
+    //call Delete Api
   }
 }

@@ -22,12 +22,11 @@ export class ContraVoucherService {
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) { }
-  init() {
+  ) {
     this.getProjectLists();
     this.getSeriesList();
     this.getCashReceiptAccounts();
-  }
+   }
 
   getProjectLists(): void {
     this.httpService
