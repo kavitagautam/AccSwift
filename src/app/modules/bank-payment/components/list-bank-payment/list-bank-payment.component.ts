@@ -18,6 +18,10 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
   styleUrls: ["./list-bank-payment.component.scss"]
 })
 export class ListBankPaymentComponent implements OnInit {
+  bankPaymentList: any;
+  listLoading: boolean;
+  public gridView: GridDataResult;
+
   constructor(
     public bankPaymentService: BankPaymentService,
     private fb: FormBuilder,
@@ -38,12 +42,7 @@ export class ListBankPaymentComponent implements OnInit {
       bankAccount: "",
       date: ""
     });
-    this.getBankPaymentList();
   }
-
-  bankPaymentList: any;
-  listLoading: boolean;
-  public gridView: GridDataResult;
 
   getBankPaymentList(): void {
     const params = {
@@ -127,7 +126,7 @@ export class ListBankPaymentComponent implements OnInit {
   public skip = 0;
   public pageSize = 10;
   public currentPage = 1;
-  public pageChangeEvent(event: PageChangeEvent): void {
+  public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
     if (event.skip == 0) {
       this.currentPage = 1;
@@ -164,6 +163,10 @@ export class ListBankPaymentComponent implements OnInit {
         this.deletePaymentById(journalId.id);
       }
     });
+  }
+
+  public searchForm() {
+    this.getBankPaymentList();
   }
   private toastr: ToastrService;
   deletePaymentById(id): void {
