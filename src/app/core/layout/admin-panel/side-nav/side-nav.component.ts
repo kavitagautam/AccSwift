@@ -47,6 +47,11 @@ export class SideNavComponent implements OnInit {
           route: "/bank-payment"
         },
         {
+          displayName: "Bank Reconciliation",
+          iconName: "fas fa-file-invoice-dollar",
+          route: "/bank-reconciliation"
+        },
+        {
           displayName: "Contra Voucher",
           iconName: "fas fa-file-invoice",
           route: "/contra-voucher"
@@ -73,12 +78,18 @@ export class SideNavComponent implements OnInit {
     },
     {
       id: 6,
+      displayName: "Budget",
+      iconName: "fas fa-file-invoice-dollar",
+      route: "/budget"
+    },
+    {
+      id: 7,
       displayName: "Preference",
       iconName: "fas fa-cogs",
       route: "/preference"
     },
     {
-      id: 7,
+      id: 8,
       displayName: "Setting",
       iconName: "fas fa-tools",
       route: "/settings"
