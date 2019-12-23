@@ -70,10 +70,25 @@ const routes: Routes = [
         }
       },
       {
+        path: "bank-reconciliation",
+        loadChildren:
+          "@modules/bank-reconciliation/bank-reconciliation.module#BankReconciliationModule",
+        data: {
+          breadcrumb: "Bank Reconciliation"
+        }
+      },
+      {
         path: "product",
         loadChildren: "@modules/product/product.module#ProductModule",
         data: {
           breadcrumb: "Product"
+        }
+      },
+      {
+        path: "budget",
+        loadChildren: "@modules/budget/budget.module#BudgetModule",
+        data: {
+          breadcrumb: "Budget"
         }
       },
       {
