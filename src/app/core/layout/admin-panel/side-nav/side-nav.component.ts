@@ -83,6 +83,50 @@ export class SideNavComponent implements OnInit {
       route: "/budget"
     },
     {
+      id: 9,
+      displayName: "Purchase",
+      iconName: "fa fa-shopping-cart",
+      children: [
+        {
+          displayName: "Purchase Invoice",
+          iconName: "far fa-edit",
+          route: "/purchase-invoice"
+        },
+        {
+          displayName: "Purchase Order",
+          iconName: "fa fa-check-square-o",
+          route: "/purchase-order"
+        },
+        {
+          displayName: "Purchase Return",
+          iconName: "fas fa-file-invoice",
+          route: "/purchase-return"
+        }
+      ]
+    },
+    {
+      id: 10,
+      displayName: "Sales",
+      iconName: "fa fa-truck",
+      children: [
+        {
+          displayName: "Sales Invoice",
+          iconName: "far fa-edit",
+          route: "/sales-invoice"
+        },
+        {
+          displayName: "Sales Order",
+          iconName: "fa fa-check-square-o",
+          route: "/sales-order"
+        },
+        {
+          displayName: "Sales Return",
+          iconName: "fas fa-file-invoice",
+          route: "/sales-return"
+        }
+      ]
+    },
+    {
       id: 7,
       displayName: "Preference",
       iconName: "fas fa-cogs",
@@ -94,6 +138,7 @@ export class SideNavComponent implements OnInit {
       iconName: "fas fa-tools",
       route: "/settings"
     }
+    
   ];
 
   userName: string;
