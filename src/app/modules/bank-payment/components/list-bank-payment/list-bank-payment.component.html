@@ -1,13 +1,20 @@
 <div id="accordion" class="accordion">
   <div class="card mb-0">
-    <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+    <div
+      class="card-header collapsed"
+      data-toggle="collapse"
+      href="#collapseOne"
+    >
       <a class="card-title">
-        <h3 class="box-title" style="background: #fff;
-        padding: 5px;">
+        <h3
+          class="box-title"
+          style="background: #fff;
+        padding: 5px;"
+        >
           Search
           <button [routerLink]="['add']" class="btn btn-primary">
             <i class="fa fa-plus pull-right" aria-hidden="true"></i>Add Bank
-            Receipt
+            Payment
           </button>
         </h3>
       </a>
@@ -21,10 +28,18 @@
                 <label class="float-right">Series: </label>
               </div>
               <div class="col-md-7">
-                <select class="form-control" id="seriesId" formControlName="series">
+                <select
+                  class="form-control"
+                  id="seriesId"
+                  formControlName="series"
+                >
                   <option value="null"> </option>
-                  <option *ngFor="let series of bankPaymentService.seriesList" [ngValue]="series.ID">
-                    {{ series.EngName }}</option>
+                  <option
+                    *ngFor="let series of bankPaymentService.seriesList"
+                    [ngValue]="series.ID"
+                  >
+                    {{ series.EngName }}</option
+                  >
                 </select>
               </div>
             </div>
@@ -33,10 +48,18 @@
                 <label class="float-right">Bank Account: </label>
               </div>
               <div class="col-md-7">
-                <select class="form-control" id="bankAccountNo" formControlName="bankAccount">
+                <select
+                  class="form-control"
+                  id="bankAccountNo"
+                  formControlName="bankAccount"
+                >
                   <option value="null"> </option>
-                  <option *ngFor="let account of bankPaymentService.bankAccountList" [ngValue]="account.LedgerID">
-                    {{ account.LedgerName }}</option>
+                  <option
+                    *ngFor="let account of bankPaymentService.bankAccountList"
+                    [ngValue]="account.LedgerID"
+                  >
+                    {{ account.LedgerName }}</option
+                  >
                 </select>
               </div>
             </div>
@@ -55,10 +78,18 @@
                 <label class="float-right">Project: </label>
               </div>
               <div class="col-md-7">
-                <select class="form-control" id="projectId" formControlName="project">
+                <select
+                  class="form-control"
+                  id="projectId"
+                  formControlName="project"
+                >
                   <option value="null"> </option>
-                  <option *ngFor="let project of bankPaymentService.projectList" [ngValue]="project.ID">
-                    {{ project.EngName }}</option>
+                  <option
+                    *ngFor="let project of bankPaymentService.projectList"
+                    [ngValue]="project.ID"
+                  >
+                    {{ project.EngName }}</option
+                  >
                 </select>
               </div>
             </div>
@@ -69,7 +100,12 @@
                 <label class="float-right">Date :</label>
               </div>
               <div class="col-md-7">
-                <input formControlName="date" type="date" [value]="date | date: 'MM/dd/yyyy'" class="form-control" />
+                <input
+                  formControlName="date"
+                  type="date"
+                  [value]="date | date: 'MM/dd/yyyy'"
+                  class="form-control"
+                />
               </div>
             </div>
             <div class="row clearfix"></div>
@@ -90,30 +126,64 @@
 <div class="box box-default">
   <div class="col-md-12 mt-5 mr-2">
     <div class="grid-wrapper">
-      <kendo-grid [data]="gridView" [filterable]="true" [filter]="filter" [pageSize]="pageSize" [skip]="skip"
+      <kendo-grid
+        [data]="gridView"
+        [filterable]="true"
+        [filter]="filter"
+        [pageSize]="pageSize"
+        [skip]="skip"
         [sortable]="{
           allowUnsort: allowUnsort,
           mode: 'single'
-        }" [sort]="sort" (sortChange)="sortChange($event)" [pageable]="true" (pageChange)="pageChange($event)"
-        scrollable="none" (filterChange)="filterChange($event)">
-        <kendo-grid-column field="VoucherNo" title="VoucherNo."> </kendo-grid-column>
-        <kendo-grid-column field="LedgerName" title="Particular/Accounting Head">
+        }"
+        [sort]="sort"
+        (sortChange)="sortChange($event)"
+        [pageable]="true"
+        (pageChange)="pageChange($event)"
+        scrollable="none"
+        (filterChange)="filterChange($event)"
+      >
+        <kendo-grid-column field="VoucherNo" title="VoucherNo.">
         </kendo-grid-column>
-        <kendo-grid-column field="TotalAmount" title="Amount"> </kendo-grid-column>
+        <kendo-grid-column
+          field="LedgerName"
+          title="Particular/Accounting Head"
+        >
+        </kendo-grid-column>
+        <kendo-grid-column field="TotalAmount" title="Amount">
+        </kendo-grid-column>
         <kendo-grid-column field="SeriesName" title="Series">
         </kendo-grid-column>
-        <kendo-grid-column field="ProjectName" title="Project"> </kendo-grid-column>
-        <kendo-grid-column field="CreatedDate" title="Cheque Date" filter="date" [filterable]="false"
-          format="{0: yyyy-mm-dd}">
+        <kendo-grid-column field="ProjectName" title="Project">
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="CreatedDate"
+          title="Cheque Date"
+          filter="date"
+          [filterable]="false"
+          format="{0: yyyy-mm-dd}"
+        >
         </kendo-grid-column>
         <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
         <kendo-grid-command-column title="Action" width="220">
-          <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
-            <button kendoGridEditCommand (click)="edit(dataItem)" data-toggle="modal" data-target="#viewModal"
-              [primary]="true">
+          <ng-template
+            kendoGridCellTemplate
+            let-isNew="isNew"
+            let-dataItem="dataItem"
+          >
+            <button
+              kendoGridEditCommand
+              (click)="edit(dataItem)"
+              data-toggle="modal"
+              data-target="#viewModal"
+              [primary]="true"
+            >
               Edit
             </button>
-            <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">
+            <button
+              kendoGridRemoveCommand
+              (click)="openConfirmationDialogue(dataItem)"
+            >
               Delete
             </button>
           </ng-template>
