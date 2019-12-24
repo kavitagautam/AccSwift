@@ -113,6 +113,48 @@ const routes: Routes = [
         }
       },
       {
+        path: "purchase-invoice",
+        loadChildren: "@modules/purchase-invoice/purchase-invoice.module#PurchaseInvoiceModule",
+        data: {
+          breadcrumb: "Purchase Invoice"
+        }
+      },
+      {
+        path: "purchase-order",
+        loadChildren: "@modules/purchase-order/purchase-order.module#PurchaseOrderModule",
+        data: {
+          breadcrumb: "Purchase Order"
+        }
+      },
+      {
+        path: "purchase-return",
+        loadChildren: "@modules/purchase-return/purchase-return.module#PurchaseReturnModule",
+        data: {
+          breadcrumb: "Purchase Return"
+        }
+      },
+      {
+        path: "sales-invoice",
+        loadChildren: "@modules/sales-invoice/sales-invoice.module#SalesInvoiceModule",
+        data: {
+          breadcrumb: "Sales Invoice"
+        }
+      },
+      {
+        path: "sales-order",
+        loadChildren: "@modules/sales-order/sales-order.module#SalesOrderModule",
+        data: {
+          breadcrumb: "Sales Order"
+        }
+      },
+      {
+        path: "sales-return",
+        loadChildren: "@modules/sales-return/sales-return.module#SalesReturnModule",
+        data: {
+          breadcrumb: "Sales Return"
+        }
+      },
+      {
         path: "settings",
         loadChildren: "@modules/settings/settings.module#SettingsModule",
         data: {
