@@ -105,6 +105,10 @@ export class CashPaymentService {
       });
   }
 
+  getCashPaymentDetails(id): Observable<CashPaymentMaster> {
+    return this.httpService.get(`${this._api_URL}CashPaymentMaster/${id}`);
+  }
+
   getLedgerList(): Observable<LedgerList[]> {
     return this.httpService.get(`${this._api_URL}ledger/lov`);
   }

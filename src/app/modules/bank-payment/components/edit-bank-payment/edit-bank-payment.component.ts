@@ -1,10 +1,11 @@
+import { BankPaymentMaster } from "./../../models/bank-payment.model";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { BankPaymentService } from "../../services/bank-payment.service";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 
 @Component({
@@ -17,6 +18,7 @@ export class EditBankPaymentComponent implements OnInit {
   private editedRowIndex: number;
   numericFormat: string = "n2";
   public decimals: number = 2;
+  bankPaymentDetails: BankPaymentMaster;
   date: Date = new Date();
   submitted: boolean;
   rowSubmitted: boolean;
@@ -32,11 +34,67 @@ export class EditBankPaymentComponent implements OnInit {
     private modalService: BsModalService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.buildEditBankPaymentForm();
+    this.route.paramMap.subscribe(params => {
+      if (params.get("id")) {
+        console.log("AAHNU PARYO YEHA ");
+        this.bankPaymentService
+          .getBankPaymentDetails(params.get("id"))
+          .subscribe(res => {
+            this.bankPaymentDetails = res;
+            this.buildEditBankPaymentForm();
+            this.setBankPaymentList();
+          });
+      }
+    });
+  }
+
+  setBankPaymentList(): void {
+    this.editBankPaymentForm.setControl(
+      "bankPaymentEntryList",
+      this.setBankPaymentFormArray(
+        this.bankPaymentDetails.BankPaymentDetailsList
+      )
+    );
+  }
+
+  setBankPaymentFormArray(bankPaymentDetails): FormArray {
+    const bankPaymentFormArray = new FormArray([]);
+    if (bankPaymentDetails && bankPaymentDetails.length > 0) {
+      bankPaymentDetails.forEach(element => {
+        bankPaymentFormArray.push(
+          this.fb.group({
+            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
+            particularsOraccountingHead: [
+              element.Ledger.EngName,
+              Validators.required
+            ],
+            voucherNo: element.VoucherNumber,
+            amount: element.Amount,
+            currentBalance: element.Amount,
+            vType: element.VoucherType,
+            remarks: element.Remarks
+          })
+        );
+      });
+    } else {
+      bankPaymentFormArray.push(
+        this.fb.group({
+          particularsOraccountingHead: ["", Validators.required],
+          voucherNo: [""],
+          amount: [""],
+          currentBalance: [""],
+          vType: [""],
+          remarks: [""]
+        })
+      );
+    }
+    return bankPaymentFormArray;
   }
 
   buildEditBankPaymentForm() {
