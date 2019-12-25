@@ -82,6 +82,7 @@ export class AdminPanelComponent implements OnInit {
 
   logout(): void {
     this.router.navigate(["/login"]);
+    localStorage.clear();
   }
 
   scrollToTop(): void {

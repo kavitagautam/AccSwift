@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AdminPanelComponent } from "./core/layout/admin-panel/admin-panel.component";
+import { AuthGuard } from './core/services/auth.guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
   },
   {
     path: "",
+    canActivate:[AuthGuard],
     component: AdminPanelComponent,
     children: [
       { path: "", redirectTo: "dashboard", pathMatch: "full" },

@@ -8,7 +8,6 @@ import {
   ProjectList,
   SeriesList
 } from "../models/journal.model";
-import { LedgerMatch } from "../../../shared/models/ledgerCodeMatch.model";
 
 @Injectable({
   providedIn: "root"
