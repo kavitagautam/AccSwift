@@ -1,3 +1,126 @@
-<p>
-  add-purchase-invoice works!
-</p>
+<div class="box box-default">
+  <form [formGroup]="addPurchaseForm" novalidate>
+    <div class="col-md-12 mt-5 mr-2">
+
+      <div class="col-md-4">
+        <div class="row clearfix">
+          <div class="col-md-5">
+            <label class="float-right">Series Name: </label>
+          </div>
+          <div class="col-md-7">
+            <select class="form-control" id="seriesNameId" formControlName="seriesName">
+              <option value="null"> </option>
+              <!-- <option *ngFor="let series of cashPaymentService.seriesLists" [ngValue]="series.ID">
+              {{ series.EngName }}</option> -->
+            </select>
+          </div>
+        </div>
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label class="float-right">Cash/ Party/ A/C : </label>
+          </div>
+          <div class="col-md-7">
+            <select class="form-control" id="cashAccountNo" formControlName="cashParty">
+              <option value="null"> </option>
+
+            </select>
+          </div>
+        </div>
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label class="float-right">
+              Purchase A/C:
+            </label>
+          </div>
+          <div class="col-md-7">
+            <select class="form-control" id="purchaseAcId" formControlName="purchaseAc">
+              <option value="null"></option>
+
+            </select>
+          </div>
+        </div>
+
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label class="float-right">
+              Party Bill No:
+            </label>
+          </div>
+          <div class="col-md-7">
+            <input class="form-control" id="partyBillNoId" formControlName="partyBillNo" />
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-4">
+        <div class="row clearfix">
+          <div class="col-md-5">
+            <label class="float-right">Voucher No: </label>
+          </div>
+          <div class="col-md-7">
+            <input class="form-control" formControlName="voucherNo" />
+          </div>
+        </div>
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label class="float-right">Depot/ Location: </label>
+          </div>
+          <div class="col-md-7">
+            <select class="form-control" id="depotId" formControlName="depot">
+              <option value="null"> </option>
+
+            </select>
+          </div>
+        </div>
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label class="float-right">Project: </label>
+          </div>
+          <div class="col-md-7">
+            <select class="form-control" formControlName="project" id="projectId">
+              <option value="null"></option>
+
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row clearfix ">
+          <div class="col-md-5">
+            <label class="float-right">Date :</label>
+          </div>
+          <div class="col-md-7">
+            <input formControlName="date" type="date" [value]="date | date: 'MM/dd/yyyy'" class="form-control" />
+          </div>
+        </div>
+
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label class="float-right">Order No:</label>
+          </div>
+          <div class="col-md-7">
+            <input formControlName="orderNo" class="form-control" />
+          </div>
+        </div>
+
+        <div class="row clearfix mt-3">
+          <div class="col-md-5">
+            <label class="float-right">Remarks :</label>
+          </div>
+          <div class="col-md-7">
+            <input formControlName="remarks" class="form-control" />
+          </div>
+        </div>
+        <div class="row clearfix"></div>
+      </div>
+      <div class="col-md-12 ml-2">
+        <div class="mb-2">
+          <button class="btn btn-primary btn-flat" (click)="searchForm()">
+            Search
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
