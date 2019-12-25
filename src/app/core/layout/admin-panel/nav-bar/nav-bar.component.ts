@@ -24,6 +24,6 @@ export class NavBarComponent implements OnInit {
   }
 
   navigateToDashboard() {
-    this.router.navigate(["/dashboard/admin"]);
+    this.router.navigate(["/dashboard"]);
   }
 }
