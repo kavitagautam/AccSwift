@@ -38,7 +38,6 @@ export class EditCashPaymentComponent implements OnInit {
 
   ngOnInit() {
     this.allCash = this.cashPaymentService.getCashPayment();
-    this.cashPaymentService.init();
     this.buildEditCashPaymentForm(); // initialize the form
     this.route.paramMap.subscribe(params => {
       const param = +params.get("id");

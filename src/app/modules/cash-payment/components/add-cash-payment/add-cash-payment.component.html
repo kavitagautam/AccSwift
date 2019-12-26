@@ -147,14 +147,14 @@
                   style="width: 100px"
                   placeholder="Ledger Code"
                   [formControl]="
-                    getcashPaymentEntryList.controls[rowIndex].get('ledgerCode')
+                    getCashPaymentEntryList.controls[rowIndex].get('ledgerCode')
                   "
                   (change)="changeLedgerValue(dataItem, rowIndex)"
                 />
                 <kendo-popup
                   [anchor]="input"
                   *ngIf="
-                    getcashPaymentEntryList.controls[rowIndex].get('ledgerCode')
+                    getCashPaymentEntryList.controls[rowIndex].get('ledgerCode')
                       .invalid
                   "
                   popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
@@ -169,7 +169,7 @@
                   class="k-textbox"
                   [readonly]="true"
                   [formControl]="
-                    getcashPaymentEntryList.controls[rowIndex].get(
+                    getCashPaymentEntryList.controls[rowIndex].get(
                       'particularsOraccountingHead'
                     )
                   "
@@ -183,17 +183,17 @@
                 <kendo-popup
                   [anchor]="input"
                   *ngIf="
-                    getcashPaymentEntryList.controls[rowIndex].get(
+                    getCashPaymentEntryList.controls[rowIndex].get(
                       'particularsOraccountingHead'
                     ).invalid &&
                     rowSubmitted &&
                     !(
                       isNew &&
-                      getcashPaymentEntryList.controls[rowIndex].get(
+                      getCashPaymentEntryList.controls[rowIndex].get(
                         'particularsOraccountingHead'
                       ).untouched
                     ) &&
-                    !getcashPaymentEntryList.controls[rowIndex].get(
+                    !getCashPaymentEntryList.controls[rowIndex].get(
                       'ledgerCode'
                     )
                   "
@@ -221,7 +221,7 @@
               popupAnchor
               style="width:130px"
               [formControl]="
-                getcashPaymentEntryList.controls[rowIndex].get(column.field)
+                getCashPaymentEntryList.controls[rowIndex].get(column.field)
               "
             />
           </ng-template>
@@ -244,7 +244,7 @@
               [decimals]="decimals"
               [format]="'c0'"
               [formControl]="
-                getcashPaymentEntryList.controls[rowIndex].get('currentBalance')
+                getCashPaymentEntryList.controls[rowIndex].get('currentBalance')
               "
             ></kendo-numerictextbox>
           </ng-template>
@@ -271,7 +271,7 @@
               [decimals]="decimals"
               [format]="'c0'"
               [formControl]="
-                getcashPaymentEntryList.controls[rowIndex].get('currentBalance')
+                getCashPaymentEntryList.controls[rowIndex].get('currentBalance')
               "
             ></kendo-numerictextbox>
           </ng-template>
@@ -290,7 +290,7 @@
               #input
               class="k-textbox"
               [formControl]="
-                getcashPaymentEntryList.controls[rowIndex].get(column.field)
+                getCashPaymentEntryList.controls[rowIndex].get(column.field)
               "
             />
           </ng-template>
@@ -309,7 +309,7 @@
               #input
               class="k-textbox"
               [formControl]="
-                getcashPaymentEntryList.controls[rowIndex].get('remarks')
+                getCashPaymentEntryList.controls[rowIndex].get('remarks')
               "
             />
           </ng-template>
