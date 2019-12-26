@@ -1,10 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
-import * as $ from "jquery";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe, formatDate } from "@angular/common";
-import { LedgerList } from "../../models/journal.model";
+import { BsModalService, BsModalRef } from "ngx-bootstrap";
+import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
+import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
+
 @Component({
   selector: "app-add-journal",
   templateUrl: "./add-journal.component.html",
@@ -12,35 +15,34 @@ import { LedgerList } from "../../models/journal.model";
   providers: [DatePipe]
 })
 export class AddJournalComponent implements OnInit {
-  @ViewChild("ledgerSelectModal") ledgerSelectModal: ElementRef;
+  private editedRowIndex: number;
+  //Input Field Property
+  public decimals: number = 2;
+  numericFormat: string = "n3";
 
   addJournalForm: FormGroup;
   submitted: boolean;
-  ledgerList: LedgerList[] = [];
-  journalDate: Date = new Date();
-  ledgerListLoading: boolean;
+  rowSubmitted: boolean;
+  date: Date = new Date();
 
-  itemsPerPage: number = 10;
-  currentPage: number = 1;
   debitTotal: number = 0;
   creditTotal: number = 0;
   selectedLedgerRow: number;
   differenceTotal: number = 0;
 
-  // filtering
-  isCollapsed: boolean = false;
-  searchByLedgerName: string;
-  searchByLedgerCode: string;
-  searchByLedgerType: string;
-
+  modalRef: BsModalRef;
   config = {
     backdrop: true,
     ignoreBackdropClick: true
   };
+
   constructor(
     public _fb: FormBuilder,
     private router: Router,
-    public journalService: JournalService
+    public journalService: JournalService,
+    private modalService: BsModalService,
+    public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
+    public ledgerCodeService: LedgerCodeMatchService
   ) {}
 
   ngOnInit() {
@@ -53,13 +55,24 @@ export class AddJournalComponent implements OnInit {
       seriesID: [""],
       seriesName: [""],
       voucherNo: [""],
-      journalDate: [formatDate(new Date(), "yyyy-MM-dd", "en-US")],
+      date: [formatDate(new Date(), "yyyy-MM-dd", "en-US")],
       projectName: [""],
       narration: [""],
       journalEntryList: this._fb.array([this.addJournalEntryFormGroup()])
     });
   }
 
+  addJournalEntryFormGroup(): FormGroup {
+    return this._fb.group({
+      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+      particularsOraccountingHead: ["", Validators.required],
+      ledgerID: [""],
+      debit: ["", Validators.required],
+      credit: [""],
+      balance: [""],
+      remarks: [""]
+    });
+  }
   get getjournalEntryList(): FormArray {
     return <FormArray>this.addJournalForm.get("journalEntryList");
   }
@@ -106,17 +119,6 @@ export class AddJournalComponent implements OnInit {
     this.creditTotal = creditValue;
   }
 
-  addJournalEntryFormGroup(): FormGroup {
-    return this._fb.group({
-      particularsOraccountingHead: ["", Validators.required],
-      ledgerID: [""],
-      debit: ["", Validators.required],
-      credit: [""],
-      balance: [{ value: "", disabled: true }],
-      remarks: [""]
-    });
-  }
-
   addJournalEntry(): FormArray {
     this.submitted = true;
     if (this.addJournalForm.get("journalEntryList").invalid) return;
@@ -146,6 +148,36 @@ export class AddJournalComponent implements OnInit {
     (<FormArray>this.addJournalForm.get("journalEntryList")).removeAt(index);
   }
 
+  changeLedgerValue(dataItem, selectedRow): void {
+    const journalEntryFormArray = <FormArray>(
+      this.addJournalForm.get("journalEntryList")
+    );
+
+    const ledgerCode = journalEntryFormArray.controls[selectedRow].get(
+      "ledgerCode"
+    ).value;
+    if (
+      journalEntryFormArray.controls[selectedRow].get("ledgerCode").status ===
+      "VALID"
+    ) {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+        const selectedItem = res.Entity;
+        if (selectedItem && selectedItem.length > 0) {
+          journalEntryFormArray.controls[selectedRow]
+            .get("balance")
+            .setValue(selectedItem[0].ActualBalance);
+          journalEntryFormArray.controls[selectedRow].get("balance").disable();
+          journalEntryFormArray.controls[selectedRow]
+            .get("particularsOraccountingHead")
+            .setValue(selectedItem[0].LedgerName);
+          journalEntryFormArray.controls[selectedRow]
+            .get("ledgerID")
+            .setValue(selectedItem[0].LedgerID);
+        }
+      });
+    }
+  }
+
   public save(): void {
     if (this.addJournalForm.valid) {
       this.router.navigate(["/journal"]);
@@ -158,47 +190,107 @@ export class AddJournalComponent implements OnInit {
     this.router.navigate(["/journal"]);
   }
 
-  //ledger Select modal
-  setCurrentPage(pageNumber: number): void {
-    this.currentPage = pageNumber;
+  openModal(index: number): void {
+    this.modalRef = this.modalService.show(
+      LedgerModelPopupComponent,
+      this.config
+    );
+    this.modalRef.content.data = index;
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe(data => {
+      if (data) {
+        const journalEntryFormArray = <FormArray>(
+          this.addJournalForm.get("journalEntryList")
+        );
+        journalEntryFormArray.controls[index]
+          .get("balance")
+          .setValue(data.ActualBalance);
+        journalEntryFormArray.controls[index]
+          .get("particularsOraccountingHead")
+          .setValue(data.LedgerName);
+        journalEntryFormArray.controls[index]
+          .get("ledgerID")
+          .setValue(data.LedgerID);
+        journalEntryFormArray.controls[index]
+          .get("ledgerCode")
+          .setValue(data.LedgerCode);
+      }
+    });
+    this.modalRef.content.onClose.subscribe(data => {
+      //Do after Close the Modal
+    });
   }
 
-  selectedLedger(item, selectedRow: number): void {
+  // knedo uI
+  public addHandler({ sender }) {
+    this.closeEditor(sender);
+    this.submitted = true;
+    this.rowSubmitted = true;
+    if (this.addJournalForm.get("journalEntryList").invalid) return;
+    (<FormArray>this.addJournalForm.get("journalEntryList")).push(
+      this.addJournalEntryFormGroup()
+    );
+    this.rowSubmitted = false;
+    this.submitted = false;
+  }
+
+  public editHandler({ sender, rowIndex, dataItem }) {
+    this.closeEditor(sender);
     const journalEntryFormArray = <FormArray>(
       this.addJournalForm.get("journalEntryList")
     );
-    journalEntryFormArray.controls[selectedRow]
-      .get("balance")
-      .setValue(item.ActualBalance);
-    journalEntryFormArray.controls[selectedRow]
+    journalEntryFormArray.controls[rowIndex]
       .get("particularsOraccountingHead")
-      .setValue(item.LedgerName);
-    journalEntryFormArray.controls[selectedRow]
+      .setValue(dataItem.particularsOraccountingHead);
+    journalEntryFormArray.controls[rowIndex]
       .get("ledgerID")
-      .setValue(item.LedgerID);
-    this.ledgerSelectModal.nativeElement.click();
+      .setValue(dataItem.ledgerID);
+    journalEntryFormArray.controls[rowIndex]
+      .get("debit")
+      .setValue(dataItem.debit);
+    journalEntryFormArray.controls[rowIndex]
+      .get("credit")
+      .setValue(dataItem.credit);
+    journalEntryFormArray.controls[rowIndex]
+      .get("balance")
+      .setValue(dataItem.balance);
+    journalEntryFormArray.controls[rowIndex]
+      .get("remarks")
+      .setValue(dataItem.remarks);
+    this.editedRowIndex = rowIndex;
+    sender.editRow(rowIndex, this.addJournalForm.get("journalEntryList"));
   }
 
-  openModal(index: number): void {
-    this.selectedLedgerRow = index;
-    this.searchByLedgerName = "";
-    this.searchByLedgerCode = "";
-    this.searchByLedgerType = "";
-    this.getLedgerList();
+  public cancelHandler({ sender, rowIndex }) {
+    this.closeEditor(sender, rowIndex);
   }
 
-  getLedgerList(): void {
-    this.ledgerListLoading = true;
-    this.journalService.getLedgerList().subscribe(
-      res => {
-        this.ledgerList = res;
-      },
-      error => {
-        this.ledgerListLoading = false;
-      },
-      () => {
-        this.ledgerListLoading = false;
-      }
+  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
+    //Save Code
+    sender.closeRow(rowIndex);
+  }
+
+  public removeHandler({ dataItem, rowIndex }): void {
+    // Calculation on Debit Total and Credit Total on Rows Removed
+    const journalEntryFormArray = <FormArray>(
+      this.addJournalForm.get("journalEntryList")
     );
+    const deletedCreditValue =
+      journalEntryFormArray.controls[rowIndex].get("credit").value || 0;
+    if (parseFloat(deletedCreditValue) > 0) {
+      this.creditTotal = this.creditTotal - parseFloat(deletedCreditValue) || 0;
+    }
+    const deletedDebitValue =
+      journalEntryFormArray.controls[rowIndex].get("debit").value || 0;
+    if (parseFloat(deletedDebitValue) > 0) {
+      this.debitTotal = this.debitTotal - parseFloat(deletedDebitValue) || 0;
+    }
+    // Remove the Row
+    (<FormArray>this.addJournalForm.get("journalEntryList")).removeAt(rowIndex);
+  }
+
+  private closeEditor(grid, rowIndex = 1) {
+    grid.closeRow(rowIndex);
+    this.editedRowIndex = undefined;
   }
 }

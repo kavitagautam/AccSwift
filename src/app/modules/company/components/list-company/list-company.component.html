@@ -1,0 +1,60 @@
+<div class="mb-2">
+  <button [routerLink]="['add']" class="btn btn-primary">
+    <i class="fa fa-plus" aria-hidden="true"></i>Add Company
+  </button>
+</div>
+<div class="box box-default">
+
+  <div class="col-md-12 mt-5 mr-2">
+    <div class="grid-wrapper">
+      <kendo-grid
+        [data]="gridView"
+        [filterable]="true"
+        [filter]="filter"
+        [pageSize]="pageSize"
+        [skip]="skip"
+        [sortable]="{
+          allowUnsort: allowUnsort,
+          mode: 'single'
+        }"
+        [sort]="sort"
+        (sortChange)="sortChange($event)"
+        [pageable]="true"
+        [height]="400"
+        (pageChange)="pageChange($event)"
+        scrollable="none"
+        (filterChange)="filterChange($event)"
+      >
+        <kendo-grid-column field="Name" title="Name">
+        </kendo-grid-column>
+        <kendo-grid-column
+          field="Telephone"
+          title="Telephone"
+        >
+        </kendo-grid-column>
+        <kendo-grid-column field="Address1" title="Address1">
+        </kendo-grid-column>
+        <kendo-grid-column field="Email" title="Email">
+        </kendo-grid-column>
+        <kendo-grid-command-column title="Action" width="220">
+          <ng-template
+            kendoGridCellTemplate
+            let-isNew="isNew"
+            let-dataItem="dataItem"
+          >
+            <button
+              kendoGridEditCommand
+              (click)="editCompany(dataItem)"
+              [primary]="true"
+            >
+              Edit
+            </button>
+            <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">Delete</button>
+          </ng-template>
+        </kendo-grid-command-column>
+      </kendo-grid>
+
+      <div *ngIf="companyListLoading" class="k-i-loading"></div>
+    </div>
+  </div>
+</div>

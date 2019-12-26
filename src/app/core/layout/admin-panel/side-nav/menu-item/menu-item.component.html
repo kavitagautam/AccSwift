@@ -1,0 +1,35 @@
+<ul class="sidebar-menu" data-widget="tree">
+  <li class="header">MAIN NAVIGATION</li>
+
+  <ng-container *ngFor="let item of navItems">
+    <li *ngIf="!item.children" style="cursor: pointer;">
+      <!-- Menu Item  -->
+      <a routerLink="{{item.route}}" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+        true}">
+        <i class="{{ item.iconName }} mr-1"></i>
+        <span>{{ item.displayName }}</span>
+      </a>
+    </li>
+
+    <li class="treeview" *ngIf="item?.children" style="cursor: pointer;">
+      <a>
+        <i class="{{ item.iconName }} mr-1"></i>
+        <span>{{ item.displayName }}</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu">
+        <ng-container *ngFor="let childItem of item?.children">
+          <li>
+            <a routerLink="{{childItem.route}}" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+              true}">
+              <i class="{{ childItem.iconName }} mr-1"></i>
+              {{ childItem.displayName }}
+            </a>
+          </li>
+        </ng-container>
+      </ul>
+    </li>
+  </ng-container>
+</ul>

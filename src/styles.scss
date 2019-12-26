@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~ngx-toastr/toastr.css";
+@import "./assets/scss/main.scss";
 $color_1: red;
 $color_2: #6c7178;
 $color_3: #007bff;
@@ -34,10 +35,11 @@ sup {
   text-decoration: underline !important;
 }
 .ledger_name {
-  max-width: 115px;
+  max-width: 150px;
   word-break: break-word;
   display: inline-block;
   position: absolute;
+  margin: 5px;
 }
 .searchBar {
   display: flex;
@@ -53,4 +55,66 @@ sup {
   word-spacing: 3px;
   margin-bottom: 10px;
   text-decoration: none;
+}
+.btn-link {
+  font-weight: 400;
+  color: #007bff !important;
+  text-decoration: none;
+}
+
+legend {
+  font-size: 1.2em !important;
+  font-weight: bold !important;
+  text-align: left !important;
+  width: 100%;
+  background-color: #4891ec;
+  border: 1px solid #e2e2e2;
+  padding: 10px 20px;
+  border-radius: 0.25rem;
+  color: #fff;
+}
+
+//kendo input text overFlow Css
+.k-numeric-wrap .k-input {
+  text-overflow: inherit !important;
+  text-align: right;
+}
+
+.k-grid th,
+.k-grid td {
+  text-overflow: inherit !important;
+}
+
+.ledgerSelectIcon {
+  position: absolute;
+  right: 16px;
+  top: 8px;
+}
+
+.accordion .card-header:after {
+  font-family: "FontAwesome";
+  content: "\f068";
+  float: right;
+  bottom: 35px;
+  position: relative;
+  right: 15px;
+}
+.accordion .card-header.collapsed:after {
+  /* symbol for "collapsed" panels */
+  content: "\f067";
+}
+
+//Admin LTE Tempelete Changed CSS
+.content-header {
+  position: relative;
+  padding: 0px 0px 0 0px;
+}
+
+.content {
+  min-height: 250px;
+  padding: 0px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 5px;
+  padding-right: 5px;
 }

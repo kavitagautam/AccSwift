@@ -7,15 +7,24 @@ import { ListJournalComponent } from "./component/list-journal/list-journal.comp
 const routes: Routes = [
   {
     path: "add",
-    component: AddJournalComponent
+    component: AddJournalComponent,
+    data: {
+      breadcrumb: "Add Journal"
+    }
   },
   {
     path: "edit/:id",
-    component: EditJournalComponent
+    component: EditJournalComponent,
+    data: {
+      breadcrumb: "Edit Journal"
+    }
   },
   {
     path: "",
-    component: ListJournalComponent
+    component: ListJournalComponent,
+    data: {
+      breadcrumb: "List Journal"
+    }
   }
 ];
 

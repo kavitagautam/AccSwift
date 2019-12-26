@@ -1,0 +1,71 @@
+.size-a4 {
+  width: 595px;
+  height: 841px;
+}
+
+kendo-pdf-export {
+  font-family: "DejaVu Sans", "Arial", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+}
+kendo-pdf-document .table-bordered td,
+.table-bordered th {
+  border: 1px solid #0a0a0a;
+  height: 20px;
+}
+
+kendo-pdf-document .table-bordered {
+  border: 1px solid #0a0a0a;
+  border-collapse: collapse;
+  font-size: 8px;
+  padding: 2px;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 1px solid #000000;
+  height: 20px;
+  background-color: aqua;
+}
+
+.table-bordered td,
+.table-bordered th {
+  border: 1px solid #0a0a0a;
+}
+
+.table-bordered {
+  border: 1px solid #0a0a0a;
+  border-collapse: collapse;
+}
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 1px solid #000000;
+  height: 10px;
+  background-color: aqua;
+}
+
+.pageNum {
+  font-family: "DejaVu Sans", "Arial", sans-serif;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.pageHeader {
+  font-family: "DejaVu Sans", "Arial", sans-serif;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.table tbody td {
+  vertical-align: bottom;
+  border-bottom: 1px solid #000000;
+  height: 20px;
+}
+
+.table tfoot td {
+  vertical-align: bottom;
+  border-bottom: 1px solid #000000;
+  height: 20px;
+}

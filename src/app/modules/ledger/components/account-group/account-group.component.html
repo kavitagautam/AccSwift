@@ -1,0 +1,54 @@
+<div class="col-md-8 mt-3">
+  <form [formGroup]="accountGroupForm" novalidate>
+    <div class="row clearfix">
+      <div class="col-md-5">
+        <label class="float-right">Group Code:</label>
+      </div>
+      <div class="col-md-7">
+        <input class="form-control" formControlName="groupCode" />
+      </div>
+    </div>
+    <div class="row clearfix mt-3">
+      <div class="col-md-5">
+        <label class="float-right">Group Name: </label>
+      </div>
+      <div class="col-md-7">
+        <input class="form-control" formControlName="groupName" />
+      </div>
+    </div>
+    <div class="row clearfix mt-3">
+      <div class="col-md-5">
+        <label class="float-right">Parent Group:</label>
+      </div>
+      <div class="col-md-7">
+        <select
+          class="form-control"
+          id="projectId"
+          formControlName="parentGroup"
+        >
+          <option value="null"> </option>
+          <option *ngFor="let group of ledgerService.groupList" [ngValue]="group.ID">
+            {{ group.EngName }}</option
+          >
+        </select>
+      </div>
+    </div>
+    <div class="row clearfix mt-3">
+      <div class="col-md-5">
+        <label class="float-right">Description:</label>
+      </div>
+      <div class="col-md-7">
+        <textarea class="form-control" formControlName="description"></textarea>
+      </div>
+    </div>
+  </form>
+  <div class="row m-2">
+    <button class="btn btn-primary" disabled (click)="saveAccountGroup()">
+      Save
+    </button>
+    <button class="btn btn-secondary ml-2" (click)="cancelAccountGroup()">
+      Cancel
+    </button>
+  </div>
+</div>
+<div class="col-md-6"></div>

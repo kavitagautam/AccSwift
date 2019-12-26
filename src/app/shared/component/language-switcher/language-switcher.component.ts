@@ -5,7 +5,7 @@ import { LanguageSwitcherService } from "./services/language-switcher.service";
 import { SUPPORTED_LANGS } from 'config/translate';
 
 @Component({
-  selector: "simpliflysaas-language-switcher",
+  selector: "accswift-language-switcher",
   templateUrl: "./language-switcher.component.html",
   styleUrls: ["./language-switcher.component.scss"]
 })
