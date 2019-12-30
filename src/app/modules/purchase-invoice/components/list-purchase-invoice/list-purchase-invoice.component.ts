@@ -153,7 +153,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
   }
 
   public deletePaymentsByID(id): void {
-    this.toastr.success("Cash deleted successfully");
+    this.toastr.success("Invoice deleted successfully");
     //call Delete Api
   }
 }
