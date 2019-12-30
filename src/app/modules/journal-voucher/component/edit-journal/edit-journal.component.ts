@@ -50,7 +50,6 @@ export class EditJournalComponent implements OnInit {
 
   ngOnInit() {
     this.buildJournalForm();
-    this.journalService.init();
     // Get Id From the Route URL and get the Details
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
