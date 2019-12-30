@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
-import { DatePipe, formatDate } from "@angular/common";
+import { DatePipe } from "@angular/common";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
@@ -54,7 +54,7 @@ export class AddJournalComponent implements OnInit {
       seriesID: [""],
       seriesName: [""],
       voucherNo: [""],
-      date: [(new Date(), "yyyy-MM-dd", "en-US")],
+      date: [new Date()],
       projectName: [""],
       narration: [""],
       journalEntryList: this._fb.array([this.addJournalEntryFormGroup()])
