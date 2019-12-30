@@ -46,7 +46,6 @@ export class AddJournalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.journalService.init();
     this.buildAddJournalForm();
   }
 
@@ -55,7 +54,7 @@ export class AddJournalComponent implements OnInit {
       seriesID: [""],
       seriesName: [""],
       voucherNo: [""],
-      date: [formatDate(new Date(), "yyyy-MM-dd", "en-US")],
+      date: [(new Date(), "yyyy-MM-dd", "en-US")],
       projectName: [""],
       narration: [""],
       journalEntryList: this._fb.array([this.addJournalEntryFormGroup()])
