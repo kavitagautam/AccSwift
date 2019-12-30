@@ -91,15 +91,14 @@ legend {
   top: 8px;
 }
 
-.accordion .card-header:after {
+//collapsed and uncollapsed css 
+.accordion .box-header:after {
   font-family: "FontAwesome";
   content: "\f068";
   float: right;
-  bottom: 35px;
-  position: relative;
-  right: 15px;
 }
-.accordion .card-header.collapsed:after {
+
+.accordion .box-header.collapsed:after {
   /* symbol for "collapsed" panels */
   content: "\f067";
 }
@@ -110,6 +109,10 @@ legend {
   padding: 0px 0px 0 0px;
 }
 
+.control-label{
+top:5px;
+}
+
 .content {
   min-height: 250px;
   padding: 0px;
@@ -117,4 +120,12 @@ legend {
   margin-left: auto;
   padding-left: 5px;
   padding-right: 5px;
+}
+
+.float-right{
+  float: right;
+}
+
+.float-left{
+  float: left;
 }

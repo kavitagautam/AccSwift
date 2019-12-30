@@ -87,3 +87,4 @@ export interface SeriesList {
   AutoNumber: number;
   BuiltIn: boolean;
 }
+

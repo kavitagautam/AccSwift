@@ -22,9 +22,6 @@ const routes: Routes = [
   {
     path: "",
     component: ListJournalComponent,
-    data: {
-      breadcrumb: "List Journal"
-    }
   }
 ];
 

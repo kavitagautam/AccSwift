@@ -1,32 +1,30 @@
-<div id="accordion" class="accordion">
-  <div class="card mb-0">
+<div class="box-header">
+  <button [routerLink]="['add']" class="btn btn-primary pull-right">
+    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Journal
+  </button>
+</div>
+<div class="accordion" id="accordion">
+  <div class="box box-default">
     <div
-      class="card-header collapsed"
+      class="box-header with-border"
       data-toggle="collapse"
       href="#collapseOne"
     >
-      <a class="card-title">
-        <h3
-          class="box-title"
-          style="background: #fff;
-        padding: 5px;"
-        >
-          Search
-          <button [routerLink]="['add']" class="btn btn-primary">
-            <i class="fa fa-plus" aria-hidden="true"></i>Add Journal
-          </button>
-        </h3>
-      </a>
+      <h3 class="box-title">Search Terms</h3>
     </div>
-    <div id="collapseOne" class="card-body collapse" data-parent="#accordion">
-      <div class="col-md-12 m-3">
-        <form [formGroup]="journalSearchForm" novalidate>
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Series: </label>
+    <div class="box-body collapse in" id="collapseOne" data-parent="#accordion">
+      <div class="row">
+        <div class="col-md-12">
+          <form [formGroup]="journalSearchForm" novalidate>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label for="voucher#">Voucher #</label>
+                <input class="form-control" formControlName="voucherNo" />
               </div>
-              <div class="col-md-7">
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label for="series">Series</label>
                 <select
                   class="form-control"
                   id="seriesId"
@@ -42,11 +40,10 @@
                 </select>
               </div>
             </div>
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Project: </label>
-              </div>
-              <div class="col-md-7">
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Project</label>
                 <select
                   class="form-control"
                   id="projectId"
@@ -62,110 +59,99 @@
                 </select>
               </div>
             </div>
-          </div>
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Voucher #: </label>
-              </div>
-              <div class="col-md-7">
-                <input class="form-control" formControlName="voucherNo" />
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Date :</label>
-              </div>
-              <div class="col-md-7">
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label for="date">Date</label>
                 <!-- Nepali DatePicker-->
                 <!-- <np-datepicker formControlName="date"  class="form-group" inputClass="form-control"
-              ></np-datepicker> -->
-                <input
-                  formControlName="date"
-                  type="date"
-                  [value]="date | date: 'MM/dd/yyyy'"
-                  class="form-control"
-                />
+            ></np-datepicker> 
+          
+                            [value]="date | date: 'MM/dd/yyyy'"
+-->
+                <input type="text"
+                class="form-control"
+                formControlName="date"
+                bsDatepicker>
               </div>
             </div>
-            <div class="row clearfix"></div>
-          </div>
-          <div class="col-md-12 ml-2">
-            <div class="mb-2">
-              <button class="btn btn-primary btn-flat" (click)="searchForm()">
-                Search
-              </button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
+      </div>
+      <div class="box-footer">
+        <div class="mb-2">
+          <button class="btn btn-primary btn-flat" (click)="searchForm()">
+            Search
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
 <div class="box box-default">
-  <div class="col-md-12 mt-5 mr-2">
-    <div class="grid-wrapper">
-      <kendo-grid
-        [data]="gridView"
-        [filterable]="true"
-        [filter]="filter"
-        [pageSize]="pageSize"
-        [skip]="skip"
-        [sortable]="{
-          allowUnsort: allowUnsort,
-          mode: 'single'
-        }"
-        [sort]="sort"
-        (sortChange)="sortChange($event)"
-        [pageable]="true"
-        (pageChange)="pageChange($event)"
-        scrollable="none"
-        (filterChange)="filterChange($event)"
-      >
-        <kendo-grid-column field="VoucherNo" title="Voucher No.">
-        </kendo-grid-column>
-        <kendo-grid-column
-          field="Date"
-          title="Journal Date"
-          filter="date"
-          [filterable]="false"
-          format="{0: yyyy-mm-dd}"
+  <div class="box-body">
+    <div class="col-md-12 p-0">
+      <div class="grid-wrapper">
+        <kendo-grid
+          [data]="gridView"
+          [filterable]="true"
+          [filter]="filter"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          scrollable="none"
+          (filterChange)="filterChange($event)"
         >
-        </kendo-grid-column>
-        <kendo-grid-column field="ProjectName" title="Project Name">
-        </kendo-grid-column>
-        <kendo-grid-column field="SeriesName" title="Series Name">
-        </kendo-grid-column>
-        <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
-        <kendo-grid-command-column title="Action" width="220">
-          <ng-template
-            kendoGridCellTemplate
-            let-isNew="isNew"
-            let-dataItem="dataItem"
+          <kendo-grid-column field="VoucherNo" title="Voucher No.">
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="Date"
+            title="Journal Date"
+            filter="date"
+            [filterable]="false"
+            format="{0: yyyy-mm-dd}"
           >
-            <button
-              kendoGridEditCommand
-              (click)="editJournal(dataItem)"
-              data-toggle="modal"
-              data-target="#viewModal"
-              [primary]="true"
+          </kendo-grid-column>
+          <kendo-grid-column field="ProjectName" title="Project Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="SeriesName" title="Series Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="Remarks" title="Remarks">
+          </kendo-grid-column>
+          <kendo-grid-command-column title="Action" width="220">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
             >
-              Edit
-            </button>
-            <button
-              kendoGridRemoveCommand
-              (click)="openConfirmationDialogue(dataItem)"
-            >
-              Delete
-            </button>
-          </ng-template>
-        </kendo-grid-command-column>
-      </kendo-grid>
+              <button
+                kendoGridEditCommand
+                (click)="editJournal(dataItem)"
+                data-toggle="modal"
+                data-target="#viewModal"
+                [primary]="true"
+              >
+                Edit
+              </button>
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialogue(dataItem)"
+              >
+                Delete
+              </button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
 
-      <div *ngIf="journalListLoading" class="k-i-loading"></div>
+        <div *ngIf="journalListLoading" class="k-i-loading"></div>
+      </div>
     </div>
   </div>
 </div>
