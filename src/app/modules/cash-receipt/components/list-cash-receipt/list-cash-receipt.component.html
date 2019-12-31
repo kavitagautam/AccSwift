@@ -1,26 +1,21 @@
+<div class="box-header">
+  <button [routerLink]="['add']" class="btn btn-primary pull-right">
+    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Cash Receipt
+  </button>
+</div>
+
 <div id="accordion" class="accordion">
-  <div class="card mb-0">
-    <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
-      <a class="card-title">
-        <h3 class="box-title" style="background: #fff;
-        padding: 5px;">
-          Search
-          <button [routerLink]="['add']" class="btn btn-primary">
-            <i class="fa fa-plus pull-right" aria-hidden="true"></i>Add Cash
-            Receipt
-          </button>
-        </h3>
-      </a>
+  <div class="box box-default">
+    <div class="box-header with-border" data-toggle="collapse" href="#collapseOne">
+      <h3 class="box-title">Search Terms</h3>
     </div>
-    <div id="collapseOne" class="card-body collapse" data-parent="#accordion">
-      <div class="col-md-12 m-3">
-        <form [formGroup]="cashReceiptForm" novalidate>
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Series: </label>
-              </div>
-              <div class="col-md-7">
+    <div id="collapseOne" class="box-body collapse in" data-parent="#accordion">
+      <div class="row">
+        <div class="col-md-12">
+          <form [formGroup]="cashReceiptForm" novalidate>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Series </label>
                 <select class="form-control" id="seriesId" formControlName="series">
                   <option value="null"> </option>
                   <option *ngFor="let series of cashReceiptService.seriesLists" [ngValue]="series.ID">
@@ -28,11 +23,10 @@
                 </select>
               </div>
             </div>
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Cash Account: </label>
-              </div>
-              <div class="col-md-7">
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Cash Account </label>
                 <select class="form-control" id="cashAccountNo" formControlName="cashAccount">
                   <option value="null"> </option>
                   <option *ngFor="let account of cashReceiptService.cashAccountLists" [ngValue]="account.LedgerID">
@@ -40,110 +34,103 @@
                 </select>
               </div>
             </div>
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label>
-                  Cash Party / Customer
-                </label>
-              </div>
-              <div class="col-md-7">
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Cash Party/ Customer </label>
                 <select class="form-control" id="cashPartyId" formControlName="cashParty">
-                  <option value="null"> None</option>
+                  <option value="null"> </option>
                 </select>
               </div>
             </div>
-          </div>
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Voucher #: </label>
-              </div>
-              <div class="col-md-7">
-                <input class="form-control" formControlName="voucherNo" />
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Voucher #</label>
+                <input class="form-control" formControlName="voucherNo">
               </div>
             </div>
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Project: </label>
-              </div>
-              <div class="col-md-7">
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Project </label>
                 <select class="form-control" id="projectId" formControlName="project">
                   <option value="null"> </option>
-                  <option *ngFor="let project of cashReceiptService.projectLists" [ngValue]="project.ID">
+                  <option *ngFor="let project of cashReceiptService.projectLists" [ngValue]="account.LedgerID">
                     {{ project.EngName }}</option>
                 </select>
               </div>
             </div>
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Current Balance: </label>
-              </div>
-              <div class="col-md-7">
-                <span>0.00</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Date :</label>
-              </div>
-              <div class="col-md-7">
-                <input formControlName="date" type="date" [value]="date | date: 'MM/dd/yyyy'" class="form-control" />
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Date</label>
+                <input formControlName="date" class="form-control" bsDatepicker />
               </div>
             </div>
-            <div class="row clearfix"></div>
-          </div>
-          <div class="col-md-12 ml-2">
-            <div class="mb-2">
-              <button class="btn btn-primary btn-flat" (click)="searchForm()">
-                Search
-              </button>
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Current Balance</label>
+                <div class="row clearfix ml-2 mt-3">
+                  <span>0.00</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
+      </div>
+
+      <div class="box-footer">
+        <div class="mb-2">
+          <button class="btn btn-primary btn-flat" (click)="searchForm()">
+            Search
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="box box-default">
-  <div class="col-md-12 mt-5 mr-2">
-    <div class="grid-wrapper">
-      <kendo-grid [data]="gridView" [filterable]="true" [filter]="filter" [pageSize]="pageSize" [skip]="skip"
-        [sortable]="{
+  <div class="box-body">
+    <div class="col-md-12 p-0">
+      <div class="grid-wrapper">
+        <kendo-grid [data]="gridView" [filterable]="true" [filter]="filter" [pageSize]="pageSize" [skip]="skip"
+          [sortable]="{
           allowUnsort: allowUnsort,
           mode: 'single'
         }" [sort]="sort" (sortChange)="sortChange($event)" [pageable]="true" (pageChange)="pageChange($event)"
-        scrollable="none" (filterChange)="filterChange($event)">
-        <kendo-grid-column field="VoucherNo" title="VoucherNo.">
-        </kendo-grid-column>
-        <kendo-grid-column field="LedgerName" title="Ledger Name">
-        </kendo-grid-column>
-        <kendo-grid-column field="TotalAmount" title="Amount">
-        </kendo-grid-column>
-        <kendo-grid-column field="SeriesName" title="Series">
-        </kendo-grid-column>
-        <kendo-grid-column field="ProjectName" title="Project">
-        </kendo-grid-column>
-        <kendo-grid-column field="CashReceiptDate" title="Cheque Date" filter="date" [filterable]="false"
-          format="{0: yyyy-mm-dd}">
-        </kendo-grid-column>
-        <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
-        <kendo-grid-command-column title="Action" width="150">
-          <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
-            <button kendoGridEditCommand (click)="edit(dataItem)" data-toggle="modal" data-target="#viewModal"
-              [primary]="true">
-              Edit
-            </button>
-            <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">
-              Delete
-            </button>
-          </ng-template>
-        </kendo-grid-command-column>
-      </kendo-grid>
+          scrollable="none" (filterChange)="filterChange($event)">
+          <kendo-grid-column field="VoucherNo" title="VoucherNo.">
+          </kendo-grid-column>
+          <kendo-grid-column field="LedgerName" title="Ledger Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="TotalAmount" title="Amount">
+          </kendo-grid-column>
+          <kendo-grid-column field="SeriesName" title="Series">
+          </kendo-grid-column>
+          <kendo-grid-column field="ProjectName" title="Project">
+          </kendo-grid-column>
+          <kendo-grid-column field="CashReceiptDate" title="Cheque Date" filter="date" [filterable]="false"
+            format="{0: yyyy-mm-dd}">
+          </kendo-grid-column>
+          <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
+          <kendo-grid-command-column title="Action" width="150">
+            <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+              <button kendoGridEditCommand (click)="edit(dataItem)" data-toggle="modal" data-target="#viewModal"
+                [primary]="true">
+                Edit
+              </button>
+              <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">
+                Delete
+              </button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
 
-      <div *ngIf="listLoading" class="k-i-loading"></div>
+        <div *ngIf="listLoading" class="k-i-loading"></div>
+      </div>
     </div>
   </div>
 </div>
