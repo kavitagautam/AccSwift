@@ -1,3 +1,5 @@
+import { LedgerCodeMatchService } from './../../../../shared/services/ledger-code-match/ledger-code-match.service';
+import { LedgerCodeAsyncValidators } from './../../../../shared/validators/async-validators/ledger-code-validators.service';
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
@@ -33,7 +35,9 @@ export class EditCashPaymentComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private modalService: BsModalService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
+    public ledgerCodeService: LedgerCodeMatchService
   ) { }
 
   ngOnInit() {
@@ -108,8 +112,8 @@ export class EditCashPaymentComponent implements OnInit {
 
   addCashPaymentEntryFormGroup(): FormGroup {
     return this.fb.group({
-      ledgerCode: "",
-      particularsOraccountingHead: "",
+      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+      particularsOraccountingHead: ["", Validators.required],
       voucherNo: "",
       amount: "",
       currentBalance: "",
@@ -122,7 +126,7 @@ export class EditCashPaymentComponent implements OnInit {
     return <FormArray>this.cashPaymentForm.get("cashPaymentEntryList");
   }
 
-  // Save function goes here....
+
   public save(): void {
     if (this.cashPaymentForm.valid) {
       this.router.navigate(["/cash-payment"]);
@@ -130,13 +134,13 @@ export class EditCashPaymentComponent implements OnInit {
     }
   }
 
-  // Cancel function goes here....
+
   public cancel(): void {
     this.cashPaymentForm.reset();
     this.router.navigate(["/cash-payment"]);
   }
 
-  // Add Handler goes here....
+
   public addHandler({ sender }) {
     this.closeEditor(sender);
     this.submitted = true;
@@ -149,7 +153,7 @@ export class EditCashPaymentComponent implements OnInit {
     this.rowSubmitted = false;
   }
 
-  // Edit handler goes here....
+
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     const cashPaymentEntry = <FormArray>(
