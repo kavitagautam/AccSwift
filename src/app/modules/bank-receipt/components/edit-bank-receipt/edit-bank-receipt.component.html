@@ -15,10 +15,12 @@
 
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Bank Account</label>
+            <label>Bank Account </label>
             <select class="form-control" formControlName="bankAccount">
               <option value="null"></option>
-              <option *ngFor="let account of bankReceiptService.bankAccountLists" [ngValue]="account.LedgerID"></option>
+              <option *ngFor="let account of bankReceiptService.bankAccountLists" [ngValue]="account.LedgerID">
+                {{ account.LedgerName }}
+              </option>
             </select>
           </div>
         </div>

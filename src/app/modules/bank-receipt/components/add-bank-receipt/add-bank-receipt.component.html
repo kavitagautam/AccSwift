@@ -7,7 +7,7 @@
             <label>Series: </label>
             <select class="form-control" id="seriesId" formControlName="series">
               <option value="null"> </option>
-              <option *ngFor="let series of bankReceiptService.seriesList" [ngValue]="series.ID">
+              <option *ngFor="let series of bankReceiptService.seriesLists" [ngValue]="series.ID">
                 {{ series.EngName }}</option>
             </select>
           </div>
@@ -18,7 +18,8 @@
             <label>Bank Account</label>
             <select class="form-control" formControlName="bankAccount">
               <option value="null"></option>
-              <option *ngFor="let account of bankReceiptService.bankAccountList" [ngValue]="account.LedgerID"></option>
+              <option *ngFor="let account of bankReceiptService.bankAccountLists" [ngValue]="account.LedgerID">
+                {{account.LedgerName}}</option>
             </select>
           </div>
         </div>
@@ -44,7 +45,7 @@
             <label>Project </label>
             <select class="form-control" id="projectId" formControlName="project">
               <option value="null"> </option>
-              <option *ngFor="let project of bankReceiptService.projectList" [ngValue]="project.ID">
+              <option *ngFor="let project of bankReceiptService.projectLists" [ngValue]="project.ID">
                 {{ project.EngName }}</option>
             </select>
           </div>

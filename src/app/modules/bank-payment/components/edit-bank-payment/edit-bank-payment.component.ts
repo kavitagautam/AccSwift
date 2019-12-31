@@ -36,7 +36,7 @@ export class EditBankPaymentComponent implements OnInit {
     public ledgerCodeService: LedgerCodeMatchService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildEditBankPaymentForm();
@@ -99,15 +99,13 @@ export class EditBankPaymentComponent implements OnInit {
 
   buildEditBankPaymentForm() {
     this.editBankPaymentForm = this.fb.group({
-      series: [""],
-      project: [""],
-      voucherNo: [""],
-      bankAccount: [""],
+      series: [this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : ""],
+      project: [this.bankPaymentDetails ? this.bankPaymentDetails.ProjectID : ""],
+      voucherNo: [this.bankPaymentDetails ? this.bankPaymentDetails.VoucherNo : ""],
+      bankAccount: [this.bankPaymentDetails ? this.bankPaymentDetails.LedgerID : ""],
       cashParty: [""],
-      date: [],
-      bankPaymentEntryList: this.fb.array([
-        this.editBankPaymentEntryFormGroup()
-      ])
+      date: [this.bankPaymentDetails ? new Date(this.bankPaymentDetails.CreatedDate) : ""],
+      bankPaymentEntryList: this.fb.array([this.editBankPaymentEntryFormGroup()])
     });
   }
 
@@ -168,14 +166,14 @@ export class EditBankPaymentComponent implements OnInit {
 
   public save(): void {
     if (this.editBankPaymentForm.valid) {
-      this.router.navigate(["/cash-payment"]);
+      this.router.navigate(["/bank-payment"]);
     } else {
     }
   }
 
   public cancel(): void {
     this.editBankPaymentForm.reset();
-    this.router.navigate(["/cash-payment"]);
+    this.router.navigate(["/bank-payment"]);
   }
 
   public addHandler({ sender }) {

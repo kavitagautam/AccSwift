@@ -18,7 +18,9 @@
             <label>Bank Account</label>
             <select class="form-control" formControlName="bankAccount">
               <option value="null"></option>
-              <option *ngFor="let account of bankPaymentService.bankAccountList" [ngValue]="account.LedgerID"></option>
+              <option *ngFor="let account of bankPaymentService.bankAccountList" [ngValue]="account.LedgerID">
+                {{account.LedgerName}}
+              </option>
             </select>
           </div>
         </div>

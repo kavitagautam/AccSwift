@@ -34,7 +34,7 @@ export class EditCashPaymentComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.allCash = this.cashPaymentService.getCashPayment();
@@ -96,16 +96,12 @@ export class EditCashPaymentComponent implements OnInit {
 
   buildEditCashPaymentForm() {
     this.cashPaymentForm = this.fb.group({
-      series: [280],
+      series: [this.cashPaymentDetail ? this.cashPaymentDetail.SeriesID : ""],
       project: [this.cashPaymentDetail ? this.cashPaymentDetail.ProjectID : ""],
-      voucherNo: [
-        this.cashPaymentDetail ? this.cashPaymentDetail.VoucherNo : ""
-      ],
-      cashAccount: [
-        this.cashPaymentDetail ? this.cashPaymentDetail.LedgerID : ""
-      ],
+      voucherNo: [this.cashPaymentDetail ? this.cashPaymentDetail.VoucherNo : ""],
+      cashAccount: [this.cashPaymentDetail ? this.cashPaymentDetail.LedgerID : ""],
       cashParty: "",
-      date: [this.cashPaymentDetail ? this.cashPaymentDetail.CreatedDate : ""],
+      date: [this.cashPaymentDetail ? new Date(this.cashPaymentDetail.CreatedDate) : ""],
       cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryFormGroup()])
     });
   }

@@ -1,10 +1,6 @@
 <div class="accordion" class="accordion">
   <div class="card mb-0">
-    <div
-      class="card-header collapsed"
-      data-toggle="collapse"
-      href="#collapseOne"
-    >
+    <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
       <a class="card-title">
         <h3 class="box-title" style="background-color: #fff; padding: 5px;">
           Search
@@ -25,14 +21,8 @@
               <label class="float-right">Series Name: </label>
             </div>
             <div class="col-md-7">
-              <select
-                class="form-control"
-                id="seriesNameId"
-                formControlName="seriesName"
-              >
+              <select class="form-control" id="seriesNameId" formControlName="seriesName">
                 <option value="null"> </option>
-                <!-- <option *ngFor="let series of cashPaymentService.seriesLists" [ngValue]="series.ID">
-                  {{ series.EngName }}</option> -->
               </select>
             </div>
           </div>
@@ -41,11 +31,7 @@
               <label class="float-right">Cash/ Party/ A/C : </label>
             </div>
             <div class="col-md-7">
-              <select
-                class="form-control"
-                id="cashAccountNo"
-                formControlName="cashParty"
-              >
+              <select class="form-control" id="cashAccountNo" formControlName="cashParty">
                 <option value="null"> </option>
               </select>
             </div>
@@ -57,11 +43,7 @@
               </label>
             </div>
             <div class="col-md-7">
-              <select
-                class="form-control"
-                id="purchaseAcId"
-                formControlName="purchaseAc"
-              >
+              <select class="form-control" id="purchaseAcId" formControlName="purchaseAc">
                 <option value="null"></option>
               </select>
             </div>
@@ -74,11 +56,7 @@
               </label>
             </div>
             <div class="col-md-7">
-              <input
-                class="form-control"
-                id="partyBillNoId"
-                formControlName="partyBillNo"
-              />
+              <input class="form-control" id="partyBillNoId" formControlName="partyBillNo" />
             </div>
           </div>
         </div>
@@ -106,11 +84,7 @@
               <label class="float-right">Project: </label>
             </div>
             <div class="col-md-7">
-              <select
-                class="form-control"
-                formControlName="project"
-                id="projectId"
-              >
+              <select class="form-control" formControlName="project" id="projectId">
                 <option value="null"></option>
               </select>
             </div>
@@ -122,12 +96,7 @@
               <label class="float-right">Date :</label>
             </div>
             <div class="col-md-7">
-              <input
-                formControlName="date"
-                type="date"
-                [value]="date | date: 'MM/dd/yyyy'"
-                class="form-control"
-              />
+              <input formControlName="date" type="date" [value]="date | date: 'MM/dd/yyyy'" class="form-control" />
             </div>
           </div>
 
@@ -164,98 +133,36 @@
   <div class="box box-default">
     <div class="col-md-12 mt-5 mr-2">
       <div class="grid-wrapper">
-        <kendo-grid
-          [data]="gridView"
-          [filterable]="true"
-          [filter]="filter"
-          [pageSize]="pageSize"
-          [skip]="skip"
+        <kendo-grid [data]="gridView" [filterable]="true" [filter]="filter" [pageSize]="pageSize" [skip]="skip"
           [sortable]="{
             allowUnsort: allowUnsort,
             mode: 'single'
-          }"
-          [sort]="sort"
-          (sortChange)="sortChange($event)"
-          [pageable]="true"
-          (pageChange)="pageChange($event)"
-          scrollable="scrollable"
-          [resizable]="true"
-          (filterChange)="filterChange($event)"
-        >
-          <kendo-grid-column field="Code" title="Code" width="80">
+          }" [sort]="sort" (sortChange)="sortChange($event)" [pageable]="true" (pageChange)="pageChange($event)"
+          (filterChange)="filterChange($event)">
+
+          <kendo-grid-column field="ProductName" title="Product Name" width="110">
           </kendo-grid-column>
-          <kendo-grid-column
-            field="ProductName"
-            title="Product Name"
-            width="110"
-          >
+          <kendo-grid-column field="Quantity" title="Qty" width="50">
           </kendo-grid-column>
-          <kendo-grid-column field="Quantity" title="Qty" width="80">
+          <kendo-grid-column field="Unit" title="Unit" width="50">
           </kendo-grid-column>
-          <kendo-grid-column field="Unit" title="Unit" width="80">
+          <kendo-grid-column field="PurchaseRate" title="Purchase Rate" width="60">
           </kendo-grid-column>
-          <kendo-grid-column
-            field="PurchaseRate"
-            title="Purchase Rate"
-            width="110"
-          >
+          <kendo-grid-column field="Amount" title="Amount" width="100">
           </kendo-grid-column>
-          <kendo-grid-column field="Amount" title="Amount" width="80">
-          </kendo-grid-column>
-          <kendo-grid-column
-            field="SpecialDiscount"
-            title="Spl. Disc%"
-            width="110"
-          >
-          </kendo-grid-column>
-          <kendo-grid-column
-            field="SpecialDiscounts"
-            title="Spl. Disc"
-            width="110"
-          >
+          <kendo-grid-column field="SpecialDiscount" title="Spl. Disc%" width="110">
           </kendo-grid-column>
           <kendo-grid-column field="NetAmount" title="Net Amount" width="120">
           </kendo-grid-column>
           <kendo-grid-column field="VAT" title="VAT" width="80">
           </kendo-grid-column>
-          <kendo-grid-column
-            field="CustomDuty"
-            title="Custom Duty %"
-            width="120"
-          >
-          </kendo-grid-column>
-          <kendo-grid-column
-            field="CustomDutyAmt"
-            title="Custom Duty Amt"
-            width="140"
-          >
-          </kendo-grid-column>
-          <kendo-grid-column field="Freight" title="Freight" width="80">
-          </kendo-grid-column>
-          <kendo-grid-column field="TC" title="TC" width="80">
-          </kendo-grid-column>
-          <kendo-grid-column field="TCAmount" title="TC Amount" width="110">
-          </kendo-grid-column>
-
           <kendo-grid-command-column title="Action" width="150">
-            <ng-template
-              kendoGridCellTemplate
-              let-isNew="isNew"
-              let-dataItem="dataItem"
-            >
-              <button
-                kendoGridEditCommand
-                (click)="edit(dataItem)"
-                data-toggle="modal"
-                data-target="#viewModal"
-                [primary]="true"
-              >
+            <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+              <button kendoGridEditCommand (click)="edit(dataItem)" data-toggle="modal" data-target="#viewModal"
+                [primary]="true">
                 Edit
               </button>
-              <button
-                kendoGridRemoveCommand
-                (click)="openConfirmationDialogue(dataItem)"
-              >
+              <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">
                 Delete
               </button>
             </ng-template>

@@ -96,9 +96,8 @@ export class ListPurchaseInvoiceComponent implements OnInit {
         this.listLoading = true;
         this.purchaseInvoiceList = res;
         this.gridView = {
-          data: this.purchaseInvoiceList,
-          total: this.purchaseInvoiceList
-            ? this.purchaseInvoiceList.length : 0
+          data: this.purchaseInvoiceList.slice(this.skip, this.skip + this.pageSize),
+          total: this.purchaseInvoiceList ? this.purchaseInvoiceList.length : 0
         };
       },
       error => {

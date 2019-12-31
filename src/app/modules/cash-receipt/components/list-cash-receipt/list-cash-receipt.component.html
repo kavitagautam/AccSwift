@@ -53,10 +53,10 @@
 
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Project </label>
+                <label>Project</label>
                 <select class="form-control" id="projectId" formControlName="project">
                   <option value="null"> </option>
-                  <option *ngFor="let project of cashReceiptService.projectLists" [ngValue]="account.LedgerID">
+                  <option *ngFor="let project of cashReceiptService.projectLists" [ngValue]="project.LedgerID">
                     {{ project.EngName }}</option>
                 </select>
               </div>

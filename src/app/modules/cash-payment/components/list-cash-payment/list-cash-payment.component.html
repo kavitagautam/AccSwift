@@ -56,7 +56,7 @@
                 <label>Project </label>
                 <select class="form-control" id="projectId" formControlName="project">
                   <option value="null"> </option>
-                  <option *ngFor="let project of cashPaymentService.projectLists" [ngValue]="account.LedgerID">
+                  <option *ngFor="let project of cashPaymentService.projectLists" [ngValue]="project.LedgerID">
                     {{ project.EngName }}</option>
                 </select>
               </div>
