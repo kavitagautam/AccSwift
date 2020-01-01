@@ -15,7 +15,7 @@
           <form [formGroup]="cashReceiptForm" novalidate>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Series </label>
+                <label>Series</label>
                 <select class="form-control" id="seriesId" formControlName="series">
                   <option value="null"> </option>
                   <option *ngFor="let series of cashReceiptService.seriesLists" [ngValue]="series.ID">
@@ -80,7 +80,6 @@
           </form>
         </div>
       </div>
-
       <div class="box-footer">
         <div class="mb-2">
           <button class="btn btn-primary btn-flat" (click)="searchForm()">

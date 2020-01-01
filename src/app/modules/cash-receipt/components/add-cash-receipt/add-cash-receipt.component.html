@@ -2,10 +2,9 @@
   <form [formGroup]="addCashReceiptForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
-
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Series: </label>
+            <label>Series</label>
             <select class="form-control" formControlName="series">
               <option value="null"> </option>
               <option *ngFor="let series of cashReceiptService.seriesLists" [ngValue]="series.ID">
@@ -13,7 +12,6 @@
             </select>
           </div>
         </div>
-
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Cash Account </label>
@@ -24,7 +22,6 @@
             </select>
           </div>
         </div>
-
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Cash Party / Customer </label>
@@ -33,14 +30,12 @@
             </select>
           </div>
         </div>
-
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Voucher # </label>
             <input class="form-control" formControlName="voucherNo" />
           </div>
         </div>
-
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Project </label>
@@ -51,14 +46,12 @@
             </select>
           </div>
         </div>
-
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Date</label>
             <input formControlName="date" class="form-control" bsDatepicker />
           </div>
         </div>
-
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Current Balance</label>
@@ -67,12 +60,8 @@
             </div>
           </div>
         </div>
-
       </div>
-    </div>
-
-
-
+      
     <div class="col-md-12">
       <div class="box-body">
         <kendo-grid [data]="getCashReceiptEntryList.value" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
@@ -195,6 +184,7 @@
           </kendo-grid-command-column>
         </kendo-grid>
       </div>
+    </div>
     </div>
   </form>
   <div class="box-footer">

@@ -4,10 +4,13 @@
   </button>
 </div>
 
-
 <div id="accordion" class="accordion">
   <div class="box box-default">
-    <div class="box-header with-border" data-toggle="collapse" href="#collapseOne">
+    <div
+      class="box-header with-border"
+      data-toggle="collapse"
+      href="#collapseOne"
+    >
       <h3 class="box-title">Search Terms</h3>
     </div>
     <div id="collapseOne" class="box-body collapse in" data-parent="#accordion">
@@ -16,62 +19,71 @@
           <form [formGroup]="bankPaymentForm" novalidate>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Series: </label>
+                <label>Series</label>
                 <select class="form-control" formControlName="series">
                   <option value="null"></option>
-                  <option *ngFor="let series of bankPaymentService.seriesList" [ngValue]="series.ID">
-                    {{series.EngName}}
+                  <option
+                    *ngFor="let series of bankPaymentService.seriesList"
+                    [ngValue]="series.ID"
+                  >
+                    {{ series.EngName }}
                   </option>
                 </select>
               </div>
             </div>
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Bank Account </label>
                 <select class="form-control" formControlName="bankAccount">
                   <option value="null"></option>
-                  <option *ngFor="let account of bankPaymentService.bankAccountList" [ngValue]="account.LedgerID">
-                    {{account.LedgerName}}
+                  <option
+                    *ngFor="let account of bankPaymentService.bankAccountList"
+                    [ngValue]="account.LedgerID"
+                  >
+                    {{ account.LedgerName }}
                   </option>
                 </select>
               </div>
             </div>
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Voucher</label>
                 <input class="form-control" formControlName="voucherNo" />
               </div>
             </div>
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project</label>
                 <select class="form-control" formControlName="project">
                   <option value="null"> </option>
-                  <option *ngFor="let project of bankPaymentService.projectList" ngValue="project.ID">
-                    {{ project.EngName }}</option>
+                  <option
+                    *ngFor="let project of bankPaymentService.projectList"
+                    ngValue="project.ID"
+                  >
+                    {{ project.EngName }}</option
+                  >
                 </select>
               </div>
             </div>
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Date</label>
-                <input type="text" class="form-control" formControlName="date" bsDatepicker />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="date"
+                  bsDatepicker
+                />
               </div>
             </div>
           </form>
         </div>
-      </div>
-
-
-      <div class="box-footer">
-        <div class="mb-2">
-          <button class="btn btn-primary btn-flat" (click)="searchForm()">
-            Search
-          </button>
+        <div class="box-footer">
+          <div class="mb-2">
+            <button class="btn btn-primary btn-flat" (click)="searchForm()">
+              Search
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -82,15 +94,29 @@
   <div class="box-body">
     <div class="col-md-12 p-0">
       <div class="grid-wrapper">
-        <kendo-grid [data]="gridView" [filterable]="true" [filter]="filter" [pageSize]="pageSize" [skip]="skip"
+        <kendo-grid
+          [data]="gridView"
+          [filterable]="true"
+          [filter]="filter"
+          [pageSize]="pageSize"
+          [skip]="skip"
           [sortable]="{
-          allowUnsort: allowUnsort,
-          mode: 'single'
-        }" [sort]="sort" (sortChange)="sortChange($event)" [pageable]="true" (pageChange)="pageChange($event)"
-          scrollable="none" (filterChange)="filterChange($event)">
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          scrollable="none"
+          (filterChange)="filterChange($event)"
+        >
           <kendo-grid-column field="VoucherNo" title="VoucherNo.">
           </kendo-grid-column>
-          <kendo-grid-column field="LedgerName" title="Particular/Accounting Head">
+          <kendo-grid-column
+            field="LedgerName"
+            title="Particular/Accounting Head"
+          >
           </kendo-grid-column>
           <kendo-grid-column field="TotalAmount" title="Amount">
           </kendo-grid-column>
@@ -98,17 +124,35 @@
           </kendo-grid-column>
           <kendo-grid-column field="ProjectName" title="Project">
           </kendo-grid-column>
-          <kendo-grid-column field="CreatedDate" title="Cheque Date" filter="date" [filterable]="false"
-            format="{0: yyyy-mm-dd}">
+          <kendo-grid-column
+            field="CreatedDate"
+            title="Cheque Date"
+            filter="date"
+            [filterable]="false"
+            format="{0: yyyy-mm-dd}"
+          >
           </kendo-grid-column>
-          <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
+          <kendo-grid-column field="Remarks" title="Remarks">
+          </kendo-grid-column>
           <kendo-grid-command-column title="Action" width="220">
-            <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
-              <button kendoGridEditCommand (click)="edit(dataItem)" data-toggle="modal" data-target="#viewModal"
-                [primary]="true">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
+            >
+              <button
+                kendoGridEditCommand
+                (click)="edit(dataItem)"
+                data-toggle="modal"
+                data-target="#viewModal"
+                [primary]="true"
+              >
                 Edit
               </button>
-              <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialogue(dataItem)"
+              >
                 Delete
               </button>
             </ng-template>

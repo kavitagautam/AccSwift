@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Series: </label>
+            <label>Series</label>
             <select class="form-control" id="seriesId" formControlName="series">
               <option value="null"> </option>
               <option *ngFor="let series of bankPaymentService.seriesList" [ngValue]="series.ID">

@@ -45,7 +45,6 @@ export class AddCashReceiptComponent implements OnInit {
 
   ngOnInit() {
     this.buildCashReceiptForm();
-    this.cashReceiptService.init();
   }
 
   buildCashReceiptForm(): void {
