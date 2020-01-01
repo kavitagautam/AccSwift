@@ -1,153 +1,153 @@
+<div class="box-header">
+  <button [routerLink]="['add']" class="btn btn-primary pull-right">
+    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Contra Voucher
+  </button>
+</div>
+
 <div class="accordion" id="accordion">
-  <div class="card mb-0">
-    <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
-      <a class="card-title">
-        <h3 class="box-title" style="background: white; padding: 5px;">
-          Search
-          <button [routerLink]="['add']" class="btn btn-primary">
-            <i class="fa fa-plus pull-right" aria-hidden="true"></i>Add Contra
-            Voucher
-          </button>
-        </h3>
-      </a>
+  <div class="box box-default">
+    <div class="box-header with-border" data-toggle="collapse" href="#collapseOne">
+      <h3 class="box-title">Search terms</h3>
     </div>
 
-    <div class="card-body collapse" id="collapseOne" data-parent="#accordion">
-      <div class="col-md-12 m-3">
-        <form [formGroup]="contraVoucherForm" novalidate>
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Series: </label>
-              </div>
-              <div class="col-md-7">
-                <select class="form-control" id="seriesId" formControlName="series">
+    <div class="box-body collapse in" id="collapseOne" data-parent="#accordion">
+      <div class="row">
+        <div class="col-md-12">
+          <form [formGroup]="contraVoucherForm" novalidate>
+
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Series</label>
+                <select class="form-control" formControlName="series">
                   <option value="null"></option>
                   <option *ngFor="let series of contraVoucherService.seriesLists" [ngValue]="series.ID">
-                    {{ series.EngName }}
+                    {{series.EngName}}
                   </option>
                 </select>
               </div>
             </div>
 
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Cash Account: </label>
-              </div>
-              <div class="col-md-7">
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Cash Account</label>
                 <select class="form-control" id="cashAccountNo" formControlName="cashAccount">
                   <option value="null"></option>
                   <option *ngFor="let cash of contraVoucherService.cashAccountLists">
-                    {{ cash.LedgerName }}
+                    {{cash.LedgerName}}
                   </option>
                 </select>
               </div>
             </div>
 
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Cash Party / Customer </label>
-              </div>
-              <div class="col-md-7">
-                <select class="form-control" formControlName="series">
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Cash Party / Customer</label>
+                <select class="form-control" id="cashAccountNo" formControlName="series">
                   <option value="null"></option>
-                  <option *ngFor="let series of contraVoucherService.seriesLists">
-                    {{ series.EngName }}
+                  <option *ngFor="let cash of contraVoucherService.seriesLists">
+                    {{series.EngName}}
                   </option>
                 </select>
               </div>
             </div>
-          </div>
 
-          <div class="col-md-4">
-            <div class="row clearfix">
-              <div class="col-md-5">
-                <label class="float-right">Voucher#: </label>
-              </div>
-              <div class="col-md-7">
-                <input class="form-control" id="" formControlName="voucherNo" />
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Voucher#</label>
+                <input class="form-control" formControlName="voucherNo" />
               </div>
             </div>
 
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Project: </label>
-              </div>
-              <div class="col-md-7">
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Project</label>
                 <select class="form-control" id="project" formControlName="project">
                   <option value="null"></option>
                   <option *ngFor="let project of contraVoucherService.projectLists">
-                    {{ project.EngName }}
+                    {{project.EngName}}
                   </option>
                 </select>
               </div>
             </div>
 
-            <div class="row clearfix mt-3">
-              <div class="col-md-5">
-                <label class="float-right">Current Balance: </label>
-              </div>
-              <div class="col-md-7">
-                <span>0.00</span>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Date</label>
+                <input class="form-control" formControlName="date" bsDatepicker />
               </div>
             </div>
-          </div>
 
-          <div class="col-md-4">
-            <div class="col-md-5">
-              <label class="float-right">Date: </label>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Current Balance</label>
+                <div class="row clearfix ml-2 mt-3 ">
+                  <span>0.00</span>
+                </div>
+              </div>
             </div>
-            <div class="col-md-7">
-              <input class="formControl" type="date" [value]="date | date: 'MM/DD/YYYY'" formControlName="date" />
-            </div>
-          </div>
 
-          <div class="col-md-12">
-            <button class="btn btn-primary btn-flat">Search</button>
-          </div>
-        </form>
+          </form>
+        </div>
+      </div>
+
+
+
+      <div class="box-footer">
+        <div class="mb-2">
+          <button class="btn btn-primary btn-flat" (click)="searchForm()">
+            Search
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="box box-default">
-  <div class="col-md-12 mt-5 mr-2">
-    <div class="grid-wrapper">
-      <kendo-grid [data]="gridView" [filterable]="true" [filter]="filter" [pageSize]="pageSize" [skip]="skip"
-        [sortable]="{
+  <div class="box-body">
+    <div class="col-md-12 p-0">
+      <div class="grid-wrapper">
+        <kendo-grid [data]="gridView" [filterable]="true" [filter]="filter" [pageSize]="pageSize" [skip]="skip"
+          [sortable]="{
           allowUnsort: allowUnsort,
           mode: 'single'
         }" [sort]="sort" (sortChange)="sortChange($event)" [pageable]="true" (pageChange)="pageChange($event)"
-        scrollable="none" (filterChange)="filterChange($event)">
-        <kendo-grid-column field="VoucherNo" title="VoucherNo.">
-        </kendo-grid-column>
-        <kendo-grid-column field="LedgerName" title="Ledger Name">
-        </kendo-grid-column>
-        <kendo-grid-column field="TotalAmount" title="Amount">
-        </kendo-grid-column>
-        <kendo-grid-column field="SeriesName" title="Series">
-        </kendo-grid-column>
-        <kendo-grid-column field="ProjectName" title="Project">
-        </kendo-grid-column>
-        <kendo-grid-column field="CashReceiptDate" title="Cheque Date" filter="date" [filterable]="false"
-          format="{0: yyyy-mm-dd}">
-        </kendo-grid-column>
-        <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
-        <kendo-grid-command-column title="Action" width="150">
-          <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
-            <button kendoGridEditCommand (click)="edit(dataItem)" data-toggle="modal" data-target="#viewModal"
-              [primary]="true">
-              Edit
-            </button>
-            <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">
-              Delete
-            </button>
-          </ng-template>
-        </kendo-grid-command-column>
-      </kendo-grid>
+          scrollable="none" (filterChange)="filterChange($event)">
+          <kendo-grid-column field="VoucherNo" title="VoucherNo.">
+          </kendo-grid-column>
+          <kendo-grid-column field="LedgerName" title="Ledger Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="TotalAmount" title="Amount">
+          </kendo-grid-column>
+          <kendo-grid-column field="SeriesName" title="Series">
+          </kendo-grid-column>
+          <kendo-grid-column field="ProjectName" title="Project">
+          </kendo-grid-column>
+          <kendo-grid-column field="CashReceiptDate" title="Cheque Date" filter="date" [filterable]="false"
+            format="{0: yyyy-mm-dd}">
+          </kendo-grid-column>
+          <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
+          <kendo-grid-command-column title="Action" width="150">
+            <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+              <button kendoGridEditCommand (click)="edit(dataItem)" data-toggle="modal" data-target="#viewModal"
+                [primary]="true">
+                Edit
+              </button>
+              <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">
+                Delete
+              </button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
 
-      <div *ngIf="listLoading" class="k-i-loading"></div>
+        <div *ngIf="listLoading" class="k-i-loading"></div>
+
+
+
+
+      </div>
     </div>
   </div>
 </div>

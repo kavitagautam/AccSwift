@@ -36,7 +36,7 @@ export class AddContraVoucherComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     public ledgerCodeService: LedgerCodeMatchService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildAddContraVoucherForm(); // initiate the AddContraVoucher Form
@@ -49,7 +49,7 @@ export class AddContraVoucherComponent implements OnInit {
       voucherNo: [""],
       cashAccount: [""],
       cashParty: [""],
-      date: [formatDate(new Date(), "yyyy-MM-dd", "en-US")],
+      date: [new Date()],
       contraVoucherEntryList: this.fb.array([
         this.addContraVoucherEntryFormGroup()
       ])

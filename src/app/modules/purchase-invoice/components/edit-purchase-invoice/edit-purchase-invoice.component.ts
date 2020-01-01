@@ -58,21 +58,21 @@ export class EditPurchaseInvoiceComponent implements OnInit {
 
   addPurchaseEntryFormGroup(): FormGroup {
     return this.fb.group({
-      code: "",
-      productName: "",
-      quantity: "",
-      unit: "",
-      purchaseRate: "",
-      amount: "",
-      specialDiscount: "",
-      specialDiscounts: "",
-      netAmount: "",
-      vat: "",
-      customDuty: "",
-      customDutyAmt: "",
-      freight: "",
-      tc: "",
-      tcAmount: ""
+      code: [" "],
+      productName: [" "],
+      quantity: [" "],
+      unit: [" "],
+      purchaseRate: [" "],
+      amount: [" "],
+      specialDiscount: [" "],
+      specialDiscounts: [" "],
+      netAmount: [" "],
+      vat: [" "],
+      customDuty: [" "],
+      customDutyAmt: [" "],
+      freight: [" "],
+      tc: [" "],
+      tcAmount: [""]
     });
   }
 
@@ -156,8 +156,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.editPurchaseForm.get("purchaseInvoiceEntryList")).removeAt(
-      rowIndex
+    (<FormArray>this.editPurchaseForm.get("purchaseInvoiceEntryList")).removeAt(rowIndex
     );
   }
 

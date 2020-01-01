@@ -34,7 +34,7 @@ export class AddPurchaseInvoiceComponent implements OnInit {
       partyBillNo: "",
       depot: "",
       project: "",
-      date: [formatDate(new Date(), "yyyy-MM-dd", "en-US")],
+      date: [new Date()],
       orderNo: "",
       remarks: "",
       purchaseInvoiceEntryList: this.fb.array([
