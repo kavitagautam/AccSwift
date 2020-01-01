@@ -9,9 +9,8 @@ import {
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
-import { CashPaymentMaster } from '../../models/cash-payment.model';
-import { CashPaymentService } from '../../services/cash-payment.service';
-
+import { CashPaymentMaster } from "../../models/cash-payment.model";
+import { CashPaymentService } from "../../services/cash-payment.service";
 
 @Component({
   selector: "app-list-cash-payment",
@@ -44,7 +43,6 @@ export class ListCashPaymentComponent implements OnInit {
       cashAccount: [""],
       date: [""]
     });
-    this.cashPaymentService.init();
   }
 
   public pageSize = 10;

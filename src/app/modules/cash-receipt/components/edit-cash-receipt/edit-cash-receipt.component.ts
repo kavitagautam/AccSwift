@@ -7,7 +7,6 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
-import { formatDate } from "@angular/common";
 
 @Component({
   selector: "app-edit-cash-receipt",
@@ -41,7 +40,7 @@ export class EditCashReceiptComponent implements OnInit {
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildCashReceiptForm();
@@ -75,11 +74,10 @@ export class EditCashReceiptComponent implements OnInit {
       cashParty: [""],
       date: [
         this.cashReceiptDetails
-          ? formatDate(
-              this.cashReceiptDetails.CreatedDate,
-              "yyyy-MM-dd",
-              "en-US"
-            )
+          ? new Date(
+            this.cashReceiptDetails.CreatedDate
+
+          )
           : ""
       ],
       cashReceiptEntryList: this._fb.array([

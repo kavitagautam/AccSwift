@@ -8,17 +8,17 @@ const routes: Routes = [
   {
     path: "",
     component: ListBankPaymentComponent,
-    data: { breadcrumb: "Bank Payments" }
+    data: { breadcrumb: "Bank Payment" }
   },
   {
     path: "add",
     component: AddBankPaymentComponent,
-    data: { breadcrumb: "Add Payments" }
+    data: { breadcrumb: "Add Payment" }
   },
   {
-    path: "edit",
+    path: "edit/:id",
     component: EditBankPaymentComponent,
-    data: { breadcrumb: "Edit Payments" }
+    data: { breadcrumb: "Edit Payment" }
   }
 ];
 
