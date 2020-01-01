@@ -64,7 +64,6 @@ export class ListJournalComponent implements OnInit {
       date: [""]
     });
     this.getJournalList();
-    this.journalService.init();
   }
 
   modalRef: BsModalRef;

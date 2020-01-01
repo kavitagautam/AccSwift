@@ -9,9 +9,8 @@ import {
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
-import { CashPaymentMaster } from '../../models/cash-payment.model';
-import { CashPaymentService } from '../../services/cash-payment.service';
-
+import { CashPaymentMaster } from "../../models/cash-payment.model";
+import { CashPaymentService } from "../../services/cash-payment.service";
 
 @Component({
   selector: "app-list-cash-payment",
@@ -36,7 +35,6 @@ export class ListCashPaymentComponent implements OnInit {
     public cashPaymentService: CashPaymentService
   ) {}
   ngOnInit() {
-    this.getCashPaymentList();
     this.cashPaymentsForm = this._fb.group({
       series: [""],
       project: [""],
@@ -44,7 +42,7 @@ export class ListCashPaymentComponent implements OnInit {
       cashAccount: [""],
       date: [""]
     });
-    this.cashPaymentService.init();
+    this.getCashPaymentList();
   }
 
   public pageSize = 10;
@@ -93,9 +91,11 @@ export class ListCashPaymentComponent implements OnInit {
         this.listLoading = true;
         //mapping the data to change string date format to Date
         this.cashPaymentList = res;
-        console.log(res);
         this.gridView = {
-          data: this.cashPaymentList,
+          data: this.cashPaymentList.slice(
+            this.skip,
+            this.skip + this.pageSize
+          ),
           total: this.cashPaymentList ? this.cashPaymentList.length : 0
         };
       },

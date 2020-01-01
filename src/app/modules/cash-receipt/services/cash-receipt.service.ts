@@ -21,9 +21,7 @@ export class CashReceiptService {
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {}
-
-  init() {
+  ) {
     this.getProjectLists();
     this.getSeriesList();
     this.getCashReceiptAccounts();
