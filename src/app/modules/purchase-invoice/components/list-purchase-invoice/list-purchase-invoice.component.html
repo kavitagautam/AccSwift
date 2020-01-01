@@ -1,137 +1,120 @@
-<div class="accordion" class="accordion">
-  <div class="card mb-0">
-    <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
-      <a class="card-title">
-        <h3 class="box-title" style="background-color: #fff; padding: 5px;">
-          Search
-          <button [routerLink]="['add']" class="btn btn-primary">
-            <i class="fa fa-plus pull-right" aria-hidden="true"></i>Add Purchase
-            Invoice
-          </button>
-        </h3>
-      </a>
-    </div>
-  </div>
-  <div id="collapseOne" class="card-body collapse" data-parent="#accordion">
-    <div class="col-md-12 m-3">
-      <form [formGroup]="purchaseForm" novalidate>
-        <div class="col-md-4">
-          <div class="row clearfix">
-            <div class="col-md-5">
-              <label class="float-right">Series Name: </label>
-            </div>
-            <div class="col-md-7">
-              <select class="form-control" id="seriesNameId" formControlName="seriesName">
-                <option value="null"> </option>
-              </select>
-            </div>
-          </div>
-          <div class="row clearfix mt-3">
-            <div class="col-md-5">
-              <label class="float-right">Cash/ Party/ A/C : </label>
-            </div>
-            <div class="col-md-7">
-              <select class="form-control" id="cashAccountNo" formControlName="cashParty">
-                <option value="null"> </option>
-              </select>
-            </div>
-          </div>
-          <div class="row clearfix mt-3">
-            <div class="col-md-5">
-              <label class="float-right">
-                Purchase A/C:
-              </label>
-            </div>
-            <div class="col-md-7">
-              <select class="form-control" id="purchaseAcId" formControlName="purchaseAc">
-                <option value="null"></option>
-              </select>
-            </div>
-          </div>
+<div class="box-header">
+  <button [routerLink]="['add']" class="btn btn-primary pull-right">
+    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Purchase Invoice
+  </button>
+</div>
 
-          <div class="row clearfix mt-3">
-            <div class="col-md-5">
-              <label class="float-right">
-                Party Bill No:
-              </label>
-            </div>
-            <div class="col-md-7">
-              <input class="form-control" id="partyBillNoId" formControlName="partyBillNo" />
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="row clearfix">
-            <div class="col-md-5">
-              <label class="float-right">Voucher No: </label>
-            </div>
-            <div class="col-md-7">
-              <input class="form-control" formControlName="voucherNo" />
-            </div>
-          </div>
-          <div class="row clearfix mt-3">
-            <div class="col-md-5">
-              <label class="float-right">Depot/ Location: </label>
-            </div>
-            <div class="col-md-7">
-              <select class="form-control" id="depotId" formControlName="depot">
-                <option value="null"> </option>
-              </select>
-            </div>
-          </div>
-          <div class="row clearfix mt-3">
-            <div class="col-md-5">
-              <label class="float-right">Project: </label>
-            </div>
-            <div class="col-md-7">
-              <select class="form-control" formControlName="project" id="projectId">
-                <option value="null"></option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="row clearfix ">
-            <div class="col-md-5">
-              <label class="float-right">Date :</label>
-            </div>
-            <div class="col-md-7">
-              <input formControlName="date" type="date" [value]="date | date: 'MM/dd/yyyy'" class="form-control" />
-            </div>
-          </div>
 
-          <div class="row clearfix mt-3">
-            <div class="col-md-5">
-              <label class="float-right">Order No:</label>
-            </div>
-            <div class="col-md-7">
-              <input formControlName="orderNo" class="form-control" />
-            </div>
-          </div>
-
-          <div class="row clearfix mt-3">
-            <div class="col-md-5">
-              <label class="float-right">Remarks :</label>
-            </div>
-            <div class="col-md-7">
-              <input formControlName="remarks" class="form-control" />
-            </div>
-          </div>
-          <div class="row clearfix"></div>
-        </div>
-        <div class="col-md-12 ml-2">
-          <div class="mb-2">
-            <button class="btn btn-primary btn-flat" (click)="searchForm()">
-              Search
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
+<div class="accordion" id="accordion">
   <div class="box box-default">
-    <div class="col-md-12 mt-5 mr-2">
+    <div class="box-header with-border" data-toggle="collapse" href="#collapseOne">
+      <h3 class="box-title">Search Terms</h3>
+    </div>
+
+
+
+    <div id="collapseOne" class="box-body collapse in" data-parent="#accordion">
+      <div class="row">
+        <div class="col-md-12">
+          <form [formGroup]="purchaseForm" novalidate>
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Series </label>
+                <select class="form-control" id="seriesNameId" formControlName="seriesName">
+                  <option value="null"> </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Cash/ Party/ A/C </label>
+                <select class="form-control" id="cashAccountNo" formControlName="cashParty">
+                  <option value="null"> </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Purchase A/C </label>
+                <select class="form-control" id="purchaseAcId" formControlName="purchaseAc">
+                  <option value="null"> </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Party Bill No.</label>
+                <input class="form-control" id="partyBillNoId" formControlName="partyBillNo" />
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>VoucherNo.</label>
+                <input class="form-control" id="voucherNoId" formControlName="voucherNo" />
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Depot/ Location </label>
+                <select class="form-control" id="depotId" formControlName="depot">
+                  <option value="null"> </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Project </label>
+                <select class="form-control" id="projectId" formControlName="project">
+                  <option value="null"> </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Date</label>
+                <input class="form-control" formControlName="date" bsDatepicker />
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Order No.</label>
+                <input class="form-control" formControlName="orderNo" />
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Remarks</label>
+                <input class="form-control" formControlName="remarks" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="box-footer">
+        <div class="mb-2">
+          <button class="btn btn-primary btn-flat" (click)="searchForm()">
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="box box-default">
+  <div class="box-body">
+    <div class="col-md-12 p-0">
       <div class="grid-wrapper">
         <kendo-grid [data]="gridView" [filterable]="true" [filter]="filter" [pageSize]="pageSize" [skip]="skip"
           [sortable]="{
@@ -168,6 +151,8 @@
             </ng-template>
           </kendo-grid-command-column>
         </kendo-grid>
+
+        <div *ngIf="listLoading" class="k-i-loading"></div>
       </div>
     </div>
   </div>
