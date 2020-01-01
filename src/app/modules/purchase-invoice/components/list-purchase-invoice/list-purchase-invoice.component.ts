@@ -6,8 +6,7 @@ import {
   SortDescriptor,
   CompositeFilterDescriptor
 } from "@progress/kendo-data-query";
-import { FormBuilder } from "@angular/forms";
-import { FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { PurchaseInvoiceService } from "./../../services/purchase-invoice.service";
 import { Component, OnInit } from "@angular/core";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
@@ -42,7 +41,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
     ignoreBackdropClick: true
   };
   constructor(
-    private purchaseService: PurchaseInvoiceService,
+    public purchaseService: PurchaseInvoiceService,
     private fb: FormBuilder,
     private router: Router,
     private toastr: ToastrService,
@@ -54,7 +53,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
     this.getPurchaseInvoiceList();
   }
 
-  buildListPurchaseInvoiceForm() {
+  buildListPurchaseInvoiceForm(): void {
     this.purchaseForm = this.fb.group({
       seriesName: [""],
       cashParty: [""],

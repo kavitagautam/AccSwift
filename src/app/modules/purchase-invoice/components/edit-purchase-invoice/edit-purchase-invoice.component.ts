@@ -22,7 +22,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private purchaseInvoiceService: PurchaseInvoiceService
+    public purchaseService: PurchaseInvoiceService
   ) { }
 
   ngOnInit() {
@@ -30,7 +30,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const param = +params.get("id");
       if (param) {
-        this.purchaseInvoiceService
+        this.purchaseService
           .getPurchaseInvoiceDetails(param)
           .subscribe(res => {
             this.purchaseDetails = res;
@@ -58,21 +58,21 @@ export class EditPurchaseInvoiceComponent implements OnInit {
 
   addPurchaseEntryFormGroup(): FormGroup {
     return this.fb.group({
-      code: "",
-      productName: "",
-      quantity: "",
-      unit: "",
-      purchaseRate: "",
-      amount: "",
-      specialDiscount: "",
-      specialDiscounts: "",
-      netAmount: "",
-      vat: "",
-      customDuty: "",
-      customDutyAmt: "",
-      freight: "",
-      tc: "",
-      tcAmount: ""
+      code: [""],
+      productName: [""],
+      quantity: [""],
+      unit: [""],
+      purchaseRate: [""],
+      amount: [""],
+      specialDiscount: [""],
+      specialDiscounts: [""],
+      netAmount: [""],
+      vat: [""],
+      customDuty: [""],
+      customDutyAmt: [""],
+      freight: [""],
+      tc: [""],
+      tcAmount: [""]
     });
   }
 
