@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { FooterComponent } from "./footer/footer.component";
 import { IconConst } from "@shared/constants/icon.constant";
+import { Location } from '@angular/common';
 @Component({
   selector: "app-admin-panel",
   templateUrl: "./admin-panel.component.html",
@@ -60,14 +61,16 @@ export class AdminPanelComponent implements OnInit {
     }
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+    private location: Location,
+    private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
     this.getPageTitle();
   }
 
   getPageTitle() {
-    if (this.router.url.includes("admin")) this.pageTitle = "Admin";
+    if (this.router.url.includes("journal")) this.pageTitle = "Journal";
     else if (this.router.url.includes("client")) this.pageTitle = "Client";
     else if (this.router.url.includes("class-code"))
       this.pageTitle = "Class Code";
@@ -87,5 +90,9 @@ export class AdminPanelComponent implements OnInit {
 
   scrollToTop(): void {
     window.scroll(0, 0);
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }

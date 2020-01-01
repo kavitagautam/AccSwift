@@ -64,9 +64,7 @@ export class CashPaymentService {
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {}
-
-  init() {
+  ) {
     this.getProjectLists();
     this.getSeriesList();
   }
@@ -103,6 +101,10 @@ export class CashPaymentService {
       .subscribe(res => {
         this.cashAccountLists = res.Entity;
       });
+  }
+
+  getCashPaymentDetails(id): Observable<CashPaymentMaster> {
+    return this.httpService.get(`${this._api_URL}CashPaymentMaster/${id}`);
   }
 
   getLedgerList(): Observable<LedgerList[]> {

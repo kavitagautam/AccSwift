@@ -6,7 +6,6 @@ import { BankReceiptService } from "../../services/bank-receipt.service";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { BankReceiptMaster } from "../../models/bank-receipt.model";
-import { formatDate } from "@angular/common";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 
 @Component({
@@ -40,7 +39,7 @@ export class EditBankReceiptComponent implements OnInit {
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildBankReceiptForm();
@@ -74,11 +73,9 @@ export class EditBankReceiptComponent implements OnInit {
       cashParty: [""],
       date: [
         this.bankReceiptDetails
-          ? formatDate(
-              this.bankReceiptDetails.CreatedDate,
-              "yyyy-MM-dd",
-              "en-US"
-            )
+          ? new Date(
+            this.bankReceiptDetails.CreatedDate
+          )
           : ""
       ],
       bankReceiptEntryList: this._fb.array([
@@ -129,7 +126,7 @@ export class EditBankReceiptComponent implements OnInit {
             voucherNo: element.VoucherNumber,
             chequeNo: element.ChequeNumber,
             chequeBank: element.ChequeBank,
-            chequeDate: formatDate(element.ChequeDate, "yyyy-MM-dd", "en-US"),
+            chequeDate: new Date(element.ChequeDate),
             amount: element.Amount,
             currentBalance: element.Amount,
             vType: element.VoucherType,

@@ -14,6 +14,7 @@ import {
   MonthMapping,
   DateFormatter
 } from "./models/types.model";
+import { formatDate } from '@angular/common';
 declare var require: any;
 var adbs = require("ad-bs-converter");
 
@@ -266,8 +267,9 @@ export class NepaliDatepickerComponent {
    */
   writeValue(value) {
     if (value) {
+     const cDateV= formatDate(value, "yyyy-MM-dd", "en-US");// after usign bsdatepicker fromating the Date object
       // Using regex to replace '-' with '/' for Date "2019-12-11" to ""2019/12/11""
-      const fValue = value.replace(/[-]/g, "/");
+      const fValue = cDateV.replace(/[-]/g, "/");
       //Convert Ad Date To BS
       const bsDate = adbs.ad2bs(fValue);
       this.selectedDate = {

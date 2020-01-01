@@ -1,3 +1,4 @@
+import { LedgerCodeAsyncValidators } from './../../../../shared/validators/async-validators/ledger-code-validators.service';
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ContraVoucherService } from "./../../services/contra-voucher.service";
@@ -8,6 +9,7 @@ import { ContraVoucherMaster } from "../models/contravoucher.model";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 
+
 @Component({
   selector: "app-edit-contra-voucher",
   templateUrl: "./edit-contra-voucher.component.html",
@@ -16,6 +18,8 @@ import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-po
 export class EditContraVoucherComponent implements OnInit {
   editContraVoucherForm: FormGroup;
   date: Date = new Date();
+  numericFormat: string = "n2"
+  public decimals: number = 2;
   contraVoucherDetail: ContraVoucherMaster;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -35,6 +39,7 @@ export class EditContraVoucherComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
+    public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService
   ) { }
 
@@ -50,15 +55,15 @@ export class EditContraVoucherComponent implements OnInit {
       voucherNo: [this.contraVoucherDetail ? this.contraVoucherDetail.VoucherNo : ""],
       cashAccount: [this.contraVoucherDetail ? this.contraVoucherDetail.LedgerID : ""],
       cashParty: [this.contraVoucherDetail ? this.contraVoucherDetail : ""],
-      date: [this.contraVoucherDetail ? formatDate(this.contraVoucherDetail.CreatedDate, "yyyy-MM-dd", "en-US") : ""],
+      date: [this.contraVoucherDetail ? new Date(this.contraVoucherDetail.CreatedDate) : ""],
       contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryFormGroup()])
     });
   }
 
   addContraVoucherEntryFormGroup(): FormGroup {
     return this.fb.group({
-      ledgerCode: [""],
-      particularsOraccountingHead: [""],
+      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+      particularsOraccountingHead: ["", Validators.required],
       voucherNo: [""],
       amount: [""],
       currentBalance: [""],

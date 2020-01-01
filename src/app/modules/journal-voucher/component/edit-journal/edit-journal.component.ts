@@ -1,9 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
-import * as $ from "jquery";
 import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
-import { DatePipe, formatDate } from "@angular/common";
+import { DatePipe} from "@angular/common";
 import { JournalMaster } from "../../models/journal.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
@@ -50,7 +49,6 @@ export class EditJournalComponent implements OnInit {
 
   ngOnInit() {
     this.buildJournalForm();
-    this.journalService.init();
     // Get Id From the Route URL and get the Details
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
@@ -72,7 +70,7 @@ export class EditJournalComponent implements OnInit {
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
       date: [
         this.journalDetail
-          ? formatDate(this.journalDetail.CreatedDate, "yyyy-MM-dd", "en-US")
+          ? new Date(this.journalDetail.CreatedDate)
           : ""
       ],
       projectName: [this.journalDetail ? this.journalDetail.ProjectName : ""],

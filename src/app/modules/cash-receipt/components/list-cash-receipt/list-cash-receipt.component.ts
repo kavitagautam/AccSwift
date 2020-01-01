@@ -41,7 +41,6 @@ export class ListCashReceiptComponent implements OnInit {
       date: [""]
     });
     this.getCashReceiptlList();
-    this.cashReceiptService.init();
   }
 
   public pageSize = 10;
@@ -121,7 +120,7 @@ export class ListCashReceiptComponent implements OnInit {
         );
         this.cashList = sampleData;
         this.gridView = {
-          data: this.cashList,
+          data: this.cashList.slice(this.skip , this.skip + this.pageSize),
           total: this.cashList ? this.cashList.length : 0
         };
       },

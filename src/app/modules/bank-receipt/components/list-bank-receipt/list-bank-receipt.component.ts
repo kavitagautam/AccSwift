@@ -119,7 +119,7 @@ export class ListBankReceiptComponent implements OnInit {
         );
         this.bankReceiptList = sampleData;
         this.gridView = {
-          data: this.bankReceiptList,
+          data: this.bankReceiptList.slice(this.skip, this.skip+ this.pageSize),
           total: this.bankReceiptList ? this.bankReceiptList.length : 0
         };
       },
