@@ -1,9 +1,11 @@
-import { Router } from "@angular/router";
-import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
+import { LedgerCodeMatchService } from './../../../../shared/services/ledger-code-match/ledger-code-match.service';
+import { LedgerCodeAsyncValidators } from './../../../../shared/validators/async-validators/ledger-code-validators.service';
+import { Router, ActivatedRoute } from "@angular/router";
+import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { CashPaymentMaster } from '../../models/cash-payment.model';
-import { CashPaymentService } from '../../services/cash-payment.service';
+import { CashPaymentMaster } from "../../models/cash-payment.model";
+import { CashPaymentService } from "../../services/cash-payment.service";
 
 @Component({
   selector: "app-edit-cash-payment",
@@ -32,35 +34,86 @@ export class EditCashPaymentComponent implements OnInit {
     public cashPaymentService: CashPaymentService,
     private fb: FormBuilder,
     private router: Router,
-    private modalService: BsModalService
-  ) {}
+    private modalService: BsModalService,
+    private route: ActivatedRoute,
+    public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
+    public ledgerCodeService: LedgerCodeMatchService
+  ) { }
 
   ngOnInit() {
     this.allCash = this.cashPaymentService.getCashPayment();
-    this.cashPaymentService.init();
     this.buildEditCashPaymentForm(); // initialize the form
+    this.route.paramMap.subscribe(params => {
+      const param = +params.get("id");
+      if (param) {
+        this.cashPaymentService.getCashPaymentDetails(param).subscribe(res => {
+          this.cashPaymentDetail = res;
+          this.buildEditCashPaymentForm;
+          this.setCashPaymentList();
+        });
+      }
+    });
+  }
+
+  setCashPaymentList(): void {
+    this.cashPaymentForm.setControl(
+      "cashPaymentEntryList",
+      this.setCashPaymentFormArray(
+        this.cashPaymentDetail.CashPaymentDetailsList
+      )
+    );
+  }
+
+  setCashPaymentFormArray(cashPaymentDetails): FormArray {
+    const cashPaymentFormArray = new FormArray([]);
+    if (cashPaymentDetails && cashPaymentDetails.length > 0) {
+      cashPaymentDetails.forEach(element => {
+        cashPaymentFormArray.push(
+          this.fb.group({
+            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
+            particularsOraccountingHead: [
+              element.Ledger.EngName,
+              Validators.required
+            ],
+            voucherNo: element.VoucherNumber,
+            amount: element.Amount,
+            currentBalance: element.Amount,
+            vType: element.VoucherType,
+            remarks: element.Remarks
+          })
+        );
+      });
+    } else {
+      cashPaymentFormArray.push(
+        this.fb.group({
+          particularsOraccountingHead: ["", Validators.required],
+          voucherNo: [""],
+          amount: [""],
+          currentBalance: [""],
+          vType: [""],
+          remarks: [""]
+        })
+      );
+    }
+    return cashPaymentFormArray;
   }
 
   buildEditCashPaymentForm() {
     this.cashPaymentForm = this.fb.group({
-      series: [280],
+      series: [this.cashPaymentDetail ? this.cashPaymentDetail.SeriesID : ""],
       project: [this.cashPaymentDetail ? this.cashPaymentDetail.ProjectID : ""],
-      voucherNo: [
-        this.cashPaymentDetail ? this.cashPaymentDetail.VoucherNo : ""
-      ],
-      cashAccount: [
-        this.cashPaymentDetail ? this.cashPaymentDetail.LedgerID : ""
-      ],
+      voucherNo: [this.cashPaymentDetail ? this.cashPaymentDetail.VoucherNo : ""],
+      cashAccount: [this.cashPaymentDetail ? this.cashPaymentDetail.LedgerID : ""],
       cashParty: "",
-      date: [this.cashPaymentDetail ? this.cashPaymentDetail.CreatedDate : ""],
+      date: [this.cashPaymentDetail ? new Date(this.cashPaymentDetail.CreatedDate) : ""],
       cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryFormGroup()])
     });
   }
 
   addCashPaymentEntryFormGroup(): FormGroup {
     return this.fb.group({
-      ledgerCode: "",
-      particularsOraccountingHead: "",
+      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+      particularsOraccountingHead: ["", Validators.required],
       voucherNo: "",
       amount: "",
       currentBalance: "",
@@ -73,7 +126,7 @@ export class EditCashPaymentComponent implements OnInit {
     return <FormArray>this.cashPaymentForm.get("cashPaymentEntryList");
   }
 
-  // Save function goes here....
+
   public save(): void {
     if (this.cashPaymentForm.valid) {
       this.router.navigate(["/cash-payment"]);
@@ -81,13 +134,13 @@ export class EditCashPaymentComponent implements OnInit {
     }
   }
 
-  // Cancel function goes here....
+
   public cancel(): void {
     this.cashPaymentForm.reset();
     this.router.navigate(["/cash-payment"]);
   }
 
-  // Add Handler goes here....
+
   public addHandler({ sender }) {
     this.closeEditor(sender);
     this.submitted = true;
@@ -100,7 +153,7 @@ export class EditCashPaymentComponent implements OnInit {
     this.rowSubmitted = false;
   }
 
-  // Edit handler goes here....
+
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     const cashPaymentEntry = <FormArray>(

@@ -1,8 +1,8 @@
 import { Router } from "@angular/router";
 import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
-import { CashPaymentService } from '../../services/cash-payment.service';
-import { CashPaymentMaster } from '../../models/cash-payment.model';
+import { CashPaymentService } from "../../services/cash-payment.service";
+import { CashPaymentMaster } from "../../models/cash-payment.model";
 
 @Component({
   selector: "app-add-cash-payment",
@@ -25,7 +25,6 @@ export class AddCashPaymentComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.cashPaymentService.init();
     this.buildAddCashPaymentForm(); // initialize the form
   }
 
@@ -54,7 +53,10 @@ export class AddCashPaymentComponent implements OnInit {
   }
 
   get getCashPaymentEntryList(): FormArray {
-    return <FormArray>this.addCashPaymentForm.get("cashPaymentEntryList");
+    const cashPaymentFormArray = <FormArray>(
+      this.addCashPaymentForm.get("cashPaymentEntryList")
+    );
+    return cashPaymentFormArray;
   }
 
   public save(): void {
