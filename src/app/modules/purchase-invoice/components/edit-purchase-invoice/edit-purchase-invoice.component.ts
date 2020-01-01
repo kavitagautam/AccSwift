@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormArray } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
-import { formatDate } from "@angular/common";
+
 
 @Component({
   selector: "app-edit-purchase-invoice",
@@ -34,7 +34,6 @@ export class EditPurchaseInvoiceComponent implements OnInit {
           .getPurchaseInvoiceDetails(param)
           .subscribe(res => {
             this.purchaseDetails = res;
-            console.log(res);
             this.buildEditPurchaseInvoiceForm();
           });
       }
@@ -50,7 +49,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       partyBillNo: [this.purchaseDetails ? this.purchaseDetails.PartyBillNumber : ""],
       depot: [this.purchaseDetails ? this.purchaseDetails.DepotName : ""],
       project: [this.purchaseDetails ? this.purchaseDetails.ProjectName : ""],
-      date: [this.purchaseDetails ? formatDate(this.purchaseDetails.CreatedDate, "yyyy-MM-dd", "en-US") : ""],
+      date: [this.purchaseDetails ? new Date(this.purchaseDetails.CreatedDate) : ""],
       orderNo: [this.purchaseDetails ? this.purchaseDetails.OrderNo : ""],
       remarks: [this.purchaseDetails ? this.purchaseDetails.Remarks : ""],
       purchaseInvoiceEntryList: this.fb.array([this.addPurchaseEntryFormGroup()])

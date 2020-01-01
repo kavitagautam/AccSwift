@@ -3,7 +3,6 @@
     <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Cash Payment
   </button>
 </div>
-
 <div id="accordion" class="accordion">
   <div class="box box-default">
     <div class="box-header with-border" data-toggle="collapse" href="#collapseOne">
@@ -23,7 +22,6 @@
                 </select>
               </div>
             </div>
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Cash Account </label>
@@ -34,7 +32,6 @@
                 </select>
               </div>
             </div>
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Cash Party/ Customer </label>
@@ -43,14 +40,12 @@
                 </select>
               </div>
             </div>
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Voucher #</label>
-                <input class="form-control" formControlName="voucherNo">
+                <input class="form-control" formControlName="voucherNo" />
               </div>
             </div>
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project </label>
@@ -61,14 +56,12 @@
                 </select>
               </div>
             </div>
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Date</label>
                 <input formControlName="date" class="form-control" bsDatepicker />
               </div>
             </div>
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Current Balance</label>
@@ -80,7 +73,6 @@
           </form>
         </div>
       </div>
-
       <div class="box-footer">
         <div class="mb-2">
           <button class="btn btn-primary btn-flat" (click)="searchForm()">
@@ -91,16 +83,15 @@
     </div>
   </div>
 </div>
-
 <div class="box box-default">
   <div class="box-body">
     <div class="col-md-12 p-0">
       <div class="grid-wrapper">
         <kendo-grid [data]="gridView" [filterable]="true" [filter]="filter" [pageSize]="pageSize" [skip]="skip"
           [sortable]="{
-          allowUnsort: allowUnsort,
-          mode: 'single'
-        }" [sort]="sort" (sortChange)="sortChange($event)" [pageable]="true" (pageChange)="pageChange($event)"
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }" [sort]="sort" (sortChange)="sortChange($event)" [pageable]="true" (pageChange)="pageChange($event)"
           scrollable="none" (filterChange)="filterChange($event)">
           <kendo-grid-column field="VoucherNo" title="VoucherNo.">
           </kendo-grid-column>
@@ -117,7 +108,8 @@
               <span>{{ dataItem.Date | date: "yyyy-MM-dd" }}</span>
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
+          <kendo-grid-column field="Remarks" title="Remarks">
+          </kendo-grid-column>
           <kendo-grid-command-column title="Action" width="150">
             <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
               <button kendoGridEditCommand (click)="edit(dataItem)" data-toggle="modal" data-target="#viewModal"
@@ -130,7 +122,6 @@
             </ng-template>
           </kendo-grid-command-column>
         </kendo-grid>
-
         <div *ngIf="listLoading" class="k-i-loading"></div>
       </div>
     </div>
