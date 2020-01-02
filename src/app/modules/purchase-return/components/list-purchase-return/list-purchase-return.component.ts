@@ -1,3 +1,5 @@
+import { FormBuilder } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +8,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./list-purchase-return.component.scss']
 })
 export class ListPurchaseReturnComponent implements OnInit {
-
-  constructor() { }
+  purchaseReturnForm: FormGroup
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
   }
 
+  buildListPurchaseReturnForm() {
+    this.purchaseReturnForm = this.fb.group({
+      series: [""],
+      voucher: [""],
+      date: [""],
+      cashParty: [""],
+      depot: [""],
+      order: [""],
+      purchase: [""],
+      project: [""],
+      remarks: [""],
+    })
+  }
 }

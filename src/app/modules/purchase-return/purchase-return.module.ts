@@ -1,3 +1,6 @@
+import { GridModule } from '@progress/kendo-angular-grid';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -10,7 +13,7 @@ import { AddPurchaseReturnComponent } from './components/add-purchase-return/add
   declarations: [ListPurchaseReturnComponent, EditPurchaseReturnComponent, AddPurchaseReturnComponent],
   imports: [
     CommonModule,
-    PurchaseReturnRoutingModule
+    PurchaseReturnRoutingModule, FormsModule, ReactiveFormsModule, GridModule
   ]
 })
 export class PurchaseReturnModule { }
