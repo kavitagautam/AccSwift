@@ -103,12 +103,6 @@ legend {
   content: "\f067";
 }
 
-//Admin LTE Tempelete Changed CSS
-.content-header {
-  position: relative;
-  padding: 0px 0px 0 0px;
-}
-
 .control-label{
 top:5px;
 }
@@ -128,4 +122,19 @@ top:5px;
 
 .float-left{
   float: left;
+}
+
+
+.grid-wrapper {
+  position: relative;
+}
+.k-i-loading{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 64px;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #ff6757;
 }

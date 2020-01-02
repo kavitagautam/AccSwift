@@ -17,35 +17,28 @@
                 <label>Series </label>
                 <select class="form-control" id="seriesNameId" formControlName="seriesName">
                   <option value="null"> </option>
+                  <option *ngFor="let series of purchaseService.seriesList" [ngValue]="series.ID">{{series.EngName}} </option>
                 </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Cash/ Party/ A/C </label>
-                <select class="form-control" id="cashAccountNo" formControlName="cashParty">
-                  <option value="null"> </option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Purchase A/C </label>
-                <select class="form-control" id="purchaseAcId" formControlName="purchaseAc">
-                  <option value="null"> </option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Party Bill No.</label>
-                <input class="form-control" id="partyBillNoId" formControlName="partyBillNo" />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>VoucherNo.</label>
                 <input class="form-control" id="voucherNoId" formControlName="voucherNo" />
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Date</label>
+                <input type="text" class="form-control" formControlName="date" bsDatepicker>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Cash/Party/A/C </label>
+                <select class="form-control" id="cashAccountNo" formControlName="cashParty">
+                  <option value="null"> </option>
+                </select>
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
@@ -58,28 +51,37 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Project </label>
-                <select class="form-control" id="projectId" formControlName="project">
-                  <option value="null"> </option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Date</label>
-                <input type="text" class="form-control" formControlName="date" bsDatepicker>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
                 <label>Order No.</label>
                 <input class="form-control" formControlName="orderNo" />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
+                <label>Purchase A/C </label>
+                <select class="form-control" id="purchaseAcId" formControlName="purchaseAc">
+                  <option value="null"> </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Project </label>
+                <select class="form-control" id="projectId" formControlName="project">
+                  <option value="null"> </option>
+                  <option *ngFor="let project of purchaseService.projectList" [ngValue]="project.ID">{{project.EngName}} </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
                 <label>Remarks</label>
                 <input class="form-control" formControlName="remarks" />
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Party Bill No.</label>
+                <input class="form-control" id="partyBillNoId" formControlName="partyBillNo" />
               </div>
             </div>
           </form>
@@ -106,19 +108,19 @@
             mode: 'single'
           }" [sort]="sort" (sortChange)="sortChange($event)" [pageable]="true" (pageChange)="pageChange($event)"
           (filterChange)="filterChange($event)">
-          <kendo-grid-column field="ProductName" title="Product Name" width="110">
+          <kendo-grid-column field="ProductName" title="Product Name" width="150">
           </kendo-grid-column>
-          <kendo-grid-column field="Quantity" title="Qty" width="50">
+          <kendo-grid-column field="Quantity" title="Qty" width="80">
           </kendo-grid-column>
-          <kendo-grid-column field="Unit" title="Unit" width="50">
+          <kendo-grid-column field="Unit" title="Unit" width="80">
           </kendo-grid-column>
-          <kendo-grid-column field="PurchaseRate" title="Purchase Rate" width="60">
+          <kendo-grid-column field="PurchaseRate" title="Purchase Rate" width="80">
           </kendo-grid-column>
-          <kendo-grid-column field="Amount" title="Amount" width="100">
+          <kendo-grid-column field="Amount" title="Amount" width="120">
           </kendo-grid-column>
-          <kendo-grid-column field="SpecialDiscount" title="Spl. Disc%" width="110">
+          <kendo-grid-column field="SpecialDiscount" title="Spl. Disc%" width="150">
           </kendo-grid-column>
-          <kendo-grid-column field="NetAmount" title="Net Amount" width="120">
+          <kendo-grid-column field="NetAmount" title="Net Amount" width="150">
           </kendo-grid-column>
           <kendo-grid-column field="VAT" title="VAT" width="80">
           </kendo-grid-column>

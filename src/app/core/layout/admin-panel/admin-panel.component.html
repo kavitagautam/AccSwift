@@ -14,17 +14,31 @@
 
     <div class="content-wrapper">
       <ng-container>
-        <section class="content-header" style="border-bottom: 1px solid #eee;">
-          <!-- <div>
+        <section class="d-flex content-header"
+        style="border-bottom: 1px solid #eee; justify-content: space-between;">
+        <div class="d-flex">
+          <h1 class="m-0" style="font-size: 24px">
+            <b>{{pageTitle}}</b>
+          </h1>
+          <button class="btn btn-primary btn-xs ml-4" style="height: fit-content;"
+            (click)="goBack()">Back</button>
+        </div>
+
+        <div class="content-breadcrumb" >
+          <breadcrumb [allowBootstrap]="true"></breadcrumb>
+        </div>
+      </section>
+        <!-- <section class="content-header" style="border-bottom: 1px solid #eee;">
+          <div>
                 <h1 class="m-0" style="font-size: 24px">
                   <b>{{pageTitle}}</b>
                 </h1>
-              </div> -->
+              </div>
 
           <div class="content-breadcrumb">
             <breadcrumb [allowBootstrap]="true"></breadcrumb>
           </div>
-        </section>
+        </section> -->
       </ng-container>
 
       <section class="content">

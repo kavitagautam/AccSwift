@@ -1,5 +1,4 @@
-import { Router } from '@angular/router';
-import { formatDate } from "@angular/common";
+import { Router } from "@angular/router";
 import { PurchaseInvoiceService } from "./../../services/purchase-invoice.service";
 import { FormBuilder, FormArray } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
@@ -12,14 +11,14 @@ import { Component, OnInit } from "@angular/core";
 })
 export class AddPurchaseInvoiceComponent implements OnInit {
   addPurchaseForm: FormGroup;
-  date: Date = new Date();
   submitted: boolean;
   rowSubmitted: boolean;
   private editedRowIndex: number;
   constructor(
     private fb: FormBuilder,
-    private purchaseInvoiceService: PurchaseInvoiceService, private router: Router
-  ) { }
+    public purchaseService: PurchaseInvoiceService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.buildListPurchaseInvoiceForm();
@@ -27,6 +26,7 @@ export class AddPurchaseInvoiceComponent implements OnInit {
 
   buildListPurchaseInvoiceForm() {
     this.addPurchaseForm = this.fb.group({
+<<<<<<< HEAD
       seriesName: "",
       cashParty: "",
       purchaseAc: "",
@@ -37,6 +37,18 @@ export class AddPurchaseInvoiceComponent implements OnInit {
       date: [new Date()],
       orderNo: "",
       remarks: "",
+=======
+      seriesName: [""],
+      cashParty: [""],
+      purchaseAc: [""],
+      voucherNo: [""],
+      partyBillNo: [""],
+      depot: [""],
+      project: [""],
+      date: [new Date()],
+      orderNo: [""],
+      remarks: [""],
+>>>>>>> journal
       purchaseInvoiceEntryList: this.fb.array([
         this.addPurchaseEntryFormGroup()
       ])
@@ -45,33 +57,33 @@ export class AddPurchaseInvoiceComponent implements OnInit {
 
   addPurchaseEntryFormGroup(): FormGroup {
     return this.fb.group({
-      code: "",
-      productName: "",
-      quantity: "",
-      unit: "",
-      purchaseRate: "",
-      amount: "",
-      specialDiscount: "",
-      specialDiscounts: "",
-      netAmount: "",
-      vat: "",
-      customDuty: "",
-      customDutyAmt: "",
-      freight: "",
-      tc: "",
-      tcAmount: ""
+      code: [""],
+      productName: [""],
+      quantity: [""],
+      unit: [""],
+      purchaseRate: [""],
+      amount: [""],
+      specialDiscount: [""],
+      specialDiscounts: [""],
+      netAmount: [""],
+      vat: [""],
+      customDuty: [""],
+      customDutyAmt: [""],
+      freight: [""],
+      tc: [""],
+      tcAmount: [""]
     });
   }
 
   public save(): void {
     if (this.addPurchaseForm.valid) {
-      this.router.navigate(["/purchase-invoice"])
+      this.router.navigate(["/purchase-invoice"]);
     }
   }
 
   public cancel(): void {
     this.addPurchaseForm.reset();
-    this.router.navigate(["/purchase-invoice"])
+    this.router.navigate(["/purchase-invoice"]);
   }
 
   get getPurchaseEntryList(): FormArray {
@@ -81,7 +93,6 @@ export class AddPurchaseInvoiceComponent implements OnInit {
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
-    // this.FormGroup = undefined
   }
 
   public addHandler({ sender }) {
@@ -104,21 +115,42 @@ export class AddPurchaseInvoiceComponent implements OnInit {
     const purchaseInvoiceEntry = <FormArray>(
       this.addPurchaseForm.get("purchaseInvoiceEntryList")
     );
-    purchaseInvoiceEntry.controls[rowIndex].get('code').setValue(dataItem.code);
-    purchaseInvoiceEntry.controls[rowIndex].get('productName').setValue(dataItem.productName);
-    purchaseInvoiceEntry.controls[rowIndex].get('quantity').setValue(dataItem.quantity);
-    purchaseInvoiceEntry.controls[rowIndex].get('unit').setValue(dataItem.unit);
-    purchaseInvoiceEntry.controls[rowIndex].get('purchaseRate').setValue(dataItem.purchaseRate);
-    purchaseInvoiceEntry.controls[rowIndex].get('amount').setValue(dataItem.amount);
-    purchaseInvoiceEntry.controls[rowIndex].get('specialDiscount').setValue(dataItem.specialDiscount);
-    purchaseInvoiceEntry.controls[rowIndex].get('specialDiscounts').setValue(dataItem.specialDiscounts);
-    purchaseInvoiceEntry.controls[rowIndex].get('vat').setValue(dataItem.vat);
-    purchaseInvoiceEntry.controls[rowIndex].get('customDuty').setValue(dataItem.customDuty);
-    purchaseInvoiceEntry.controls[rowIndex].get('freight').setValue(dataItem.freight);
-    purchaseInvoiceEntry.controls[rowIndex].get('tc').setValue(dataItem.tc);
-    purchaseInvoiceEntry.controls[rowIndex].get('tcAmount').setValue(dataItem.tcAmount);
+    purchaseInvoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("productName")
+      .setValue(dataItem.productName);
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("quantity")
+      .setValue(dataItem.quantity);
+    purchaseInvoiceEntry.controls[rowIndex].get("unit").setValue(dataItem.unit);
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("purchaseRate")
+      .setValue(dataItem.purchaseRate);
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("amount")
+      .setValue(dataItem.amount);
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("specialDiscount")
+      .setValue(dataItem.specialDiscount);
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("specialDiscounts")
+      .setValue(dataItem.specialDiscounts);
+    purchaseInvoiceEntry.controls[rowIndex].get("vat").setValue(dataItem.vat);
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("customDuty")
+      .setValue(dataItem.customDuty);
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("freight")
+      .setValue(dataItem.freight);
+    purchaseInvoiceEntry.controls[rowIndex].get("tc").setValue(dataItem.tc);
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("tcAmount")
+      .setValue(dataItem.tcAmount);
     this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.addPurchaseForm.get("purchaseInvoiceEntryList"));
+    sender.editRow(
+      rowIndex,
+      this.addPurchaseForm.get("purchaseInvoiceEntryList")
+    );
   }
 
   public removeHandler({ dataItem, rowIndex }): void {

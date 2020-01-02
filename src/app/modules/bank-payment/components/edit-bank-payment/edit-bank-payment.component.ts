@@ -42,7 +42,6 @@ export class EditBankPaymentComponent implements OnInit {
     this.buildEditBankPaymentForm();
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
-        console.log("AAHNU PARYO YEHA ");
         this.bankPaymentService
           .getBankPaymentDetails(params.get("id"))
           .subscribe(res => {

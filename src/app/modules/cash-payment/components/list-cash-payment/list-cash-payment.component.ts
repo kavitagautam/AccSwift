@@ -35,7 +35,6 @@ export class ListCashPaymentComponent implements OnInit {
     public cashPaymentService: CashPaymentService
   ) {}
   ngOnInit() {
-    this.getCashPaymentList();
     this.cashPaymentsForm = this._fb.group({
       series: [""],
       project: [""],
@@ -43,6 +42,7 @@ export class ListCashPaymentComponent implements OnInit {
       cashAccount: [""],
       date: [""]
     });
+    this.getCashPaymentList();
   }
 
   public pageSize = 10;
@@ -91,9 +91,11 @@ export class ListCashPaymentComponent implements OnInit {
         this.listLoading = true;
         //mapping the data to change string date format to Date
         this.cashPaymentList = res;
-        console.log(res);
         this.gridView = {
-          data: this.cashPaymentList,
+          data: this.cashPaymentList.slice(
+            this.skip,
+            this.skip + this.pageSize
+          ),
           total: this.cashPaymentList ? this.cashPaymentList.length : 0
         };
       },

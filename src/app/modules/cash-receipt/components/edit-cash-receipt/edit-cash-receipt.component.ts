@@ -44,7 +44,6 @@ export class EditCashReceiptComponent implements OnInit {
 
   ngOnInit() {
     this.buildCashReceiptForm();
-    this.cashReceiptService.init();
     // Get Id From the Route URL and get the Details
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
