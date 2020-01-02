@@ -58,7 +58,6 @@ export class EditPurchaseInvoiceComponent implements OnInit {
 
   addPurchaseEntryFormGroup(): FormGroup {
     return this.fb.group({
-<<<<<<< HEAD
       code: [" "],
       productName: [" "],
       quantity: [" "],
@@ -73,22 +72,6 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       customDutyAmt: [" "],
       freight: [" "],
       tc: [" "],
-=======
-      code: [""],
-      productName: [""],
-      quantity: [""],
-      unit: [""],
-      purchaseRate: [""],
-      amount: [""],
-      specialDiscount: [""],
-      specialDiscounts: [""],
-      netAmount: [""],
-      vat: [""],
-      customDuty: [""],
-      customDutyAmt: [""],
-      freight: [""],
-      tc: [""],
->>>>>>> journal
       tcAmount: [""]
     });
   }
@@ -125,7 +108,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     (<FormArray>this.editPurchaseForm.get("purchaseInvoiceEntryList")).push(
       this.addPurchaseEntryFormGroup()
     );
-    this.rowSubmitted = false;
+    this.submitted = false;
     this.rowSubmitted = false;
   }
 

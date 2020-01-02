@@ -18,7 +18,7 @@ export class AddPurchaseInvoiceComponent implements OnInit {
     private fb: FormBuilder,
     public purchaseService: PurchaseInvoiceService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildListPurchaseInvoiceForm();
@@ -26,7 +26,6 @@ export class AddPurchaseInvoiceComponent implements OnInit {
 
   buildListPurchaseInvoiceForm() {
     this.addPurchaseForm = this.fb.group({
-<<<<<<< HEAD
       seriesName: "",
       cashParty: "",
       purchaseAc: "",
@@ -37,18 +36,6 @@ export class AddPurchaseInvoiceComponent implements OnInit {
       date: [new Date()],
       orderNo: "",
       remarks: "",
-=======
-      seriesName: [""],
-      cashParty: [""],
-      purchaseAc: [""],
-      voucherNo: [""],
-      partyBillNo: [""],
-      depot: [""],
-      project: [""],
-      date: [new Date()],
-      orderNo: [""],
-      remarks: [""],
->>>>>>> journal
       purchaseInvoiceEntryList: this.fb.array([
         this.addPurchaseEntryFormGroup()
       ])

@@ -17,7 +17,8 @@
                 <label>Series </label>
                 <select class="form-control" id="seriesNameId" formControlName="seriesName">
                   <option value="null"> </option>
-                  <option *ngFor="let series of purchaseService.seriesList" [ngValue]="series.ID">{{series.EngName}} </option>
+                  <option *ngFor="let series of purchaseService.seriesList" [ngValue]="series.ID">{{series.EngName}}
+                  </option>
                 </select>
               </div>
             </div>
@@ -68,7 +69,8 @@
                 <label>Project </label>
                 <select class="form-control" id="projectId" formControlName="project">
                   <option value="null"> </option>
-                  <option *ngFor="let project of purchaseService.projectList" [ngValue]="project.ID">{{project.EngName}} </option>
+                  <option *ngFor="let project of purchaseService.projectList" [ngValue]="project.ID">{{project.EngName}}
+                  </option>
                 </select>
               </div>
             </div>
@@ -137,4 +139,8 @@
           </kendo-grid-command-column>
         </kendo-grid>
 
-        <div *ngIf="listLoading" class="k-i-loading"></div </div> </div> </div> </div>
+        <div *ngIf="listLoading" class="k-i-loading"></div>
+      </div>
+    </div>
+  </div>
+</div>

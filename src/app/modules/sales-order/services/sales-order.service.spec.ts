@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PurchaseOrderService } from './purchase-order.service';
+import { SalesOrderService } from './sales-order.service';
 
-describe('PurchaseOrderService', () => {
+describe('SalesOrderService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: PurchaseOrderService = TestBed.get(PurchaseOrderService);
+    const service: SalesOrderService = TestBed.get(SalesOrderService);
     expect(service).toBeTruthy();
   });
 });
