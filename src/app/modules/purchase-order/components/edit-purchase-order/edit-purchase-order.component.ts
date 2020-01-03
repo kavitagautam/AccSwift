@@ -14,7 +14,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditPurchaseOrderComponent implements OnInit {
   editPurchaseOrderForm: FormGroup;
-  purchaseOrderDetails;
+  purchaseOrderDetails;   //purchaseOrderDetails: PurchaseOrderMaster
   date: Date = new Date();
   editedRowIndex: any;
   submitted: boolean;
@@ -64,6 +64,17 @@ export class EditPurchaseOrderComponent implements OnInit {
 
   get getPurchaseOrderEntryList(): FormArray {
     return <FormArray>this.editPurchaseOrderForm.get("purchaseOrderEntryList");
+  }
+
+  public save(): void {
+    if (this.editPurchaseOrderForm.valid) {
+      this.router.navigate(["/purchase-order"]);
+    }
+  }
+
+  public cancel(): void {
+    this.editPurchaseOrderForm.reset();
+    this.router.navigate(["/purchase-order"]);
   }
 
   //Date String Parse
