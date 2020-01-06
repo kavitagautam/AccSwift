@@ -1,5 +1,5 @@
 <div class="box box-default">
-  <form [formGroup]="addSalesInvoiceForm" novalidate>
+  <form [formGroup]="addSalesOrderForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -234,6 +234,7 @@
           </kendo-grid-command-column>
         </kendo-grid>
       </div>
+      <div *ngIf="listLoading" class="k-i-loading"></div>
     </div>
   </form>
   <div class="box-footer">

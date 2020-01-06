@@ -15,7 +15,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListSalesInvoiceComponent implements OnInit {
   salesInvoiceForm;
-  salesInvoiceList = [];
+  salesInvoiceList;
   date: Date = new Date();
   listLoading: Boolean;
   public gridView: GridDataResult;
@@ -73,30 +73,30 @@ export class ListSalesInvoiceComponent implements OnInit {
   }
 
   getSalesInvoiceList(): void {
-    //   this.listLoading = true;
-    //   const params = {
-    //     PageNo: this.currentPage,
-    //     DisplayRow: this.pageSize,
-    //     OrderBy: "",
-    //     Direction: "asc"
-    //   };
+    this.listLoading = true;
+    const params = {
+      PageNo: this.currentPage,
+      DisplayRow: this.pageSize,
+      OrderBy: "",
+      Direction: "asc"
+    };
 
-    //   this.salesInvoiceService.getPurchaseInvoiceMaster().subscribe(
-    //     res => {
-    //       this.listLoading = true;
-    //       this.salesInvoiceList = res;
-    //       this.gridView = {
-    //         data: this.salesInvoiceList.slice(this.skip, this.skip + this.pageSize),
-    //         total: this.salesInvoiceList ? this.salesInvoiceList.length : 0
-    //       };
-    //     },
-    //     error => {
-    //       this.listLoading = false;
-    //     },
-    //     () => {
-    //       this.listLoading = false;
-    //     }
-    //   );
+    this.salesInvoiceService.getSalesInvoiceMaster().subscribe(
+      res => {
+        this.listLoading = true;
+        this.salesInvoiceList = res;
+        this.gridView = {
+          data: this.salesInvoiceList.slice(this.skip, this.skip + this.pageSize),
+          total: this.salesInvoiceList ? this.salesInvoiceList.length : 0
+        };
+      },
+      error => {
+        this.listLoading = false;
+      },
+      () => {
+        this.listLoading = false;
+      }
+    );
   }
 
   public filterChange(filter) {
