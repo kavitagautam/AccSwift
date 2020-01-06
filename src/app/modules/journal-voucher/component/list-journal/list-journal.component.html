@@ -1,5 +1,5 @@
 <div class="box-header">
-  <button [routerLink]="['add']" class="btn btn-primary pull-right">
+  <button [routerLink]="['add']" class="btn btn-primary">
     <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Journal
   </button>
 </div>
@@ -27,15 +27,13 @@
                 <label for="series">Series</label>
                 <select
                   class="form-control"
-                  id="seriesId"
-                  formControlName="series"
+                  formControlName="seriesId"
                 >
-                  <option value="null"> </option>
+                  <option [value]="0" disabled>Select</option>
                   <option
                     *ngFor="let series of journalService.journalSeriesList"
-                    [ngValue]="series.ID"
-                  >
-                    {{ series.EngName }}</option
+                    [value]="series.ID"
+                    >{{ series.EngName }}</option
                   >
                 </select>
               </div>
@@ -47,12 +45,12 @@
                 <select
                   class="form-control"
                   id="projectId"
-                  formControlName="project"
+                  formControlName="projectId"
                 >
-                  <option value="null"> </option>
+                  <option [value]="0" disabled>Select</option>
                   <option
                     *ngFor="let project of journalService.projectLists"
-                    [ngValue]="project.ID"
+                    [value]="project.ID"
                   >
                     {{ project.EngName }}</option
                   >
@@ -69,10 +67,12 @@
           
                             [value]="date | date: 'MM/dd/yyyy'"
 -->
-                <input type="text"
-                class="form-control"
-                formControlName="date"
-                bsDatepicker>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="date"
+                  bsDatepicker
+                />
               </div>
             </div>
           </form>

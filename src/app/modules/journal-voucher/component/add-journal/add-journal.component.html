@@ -8,11 +8,14 @@
             <select
               class="form-control"
               id="seriesId"
-              formControlName="seriesName"
+              formControlName="seriesId"
             >
-              <option *ngFor="let series of journalService.journalSeriesList">{{
-                series.EngName
-              }}</option>
+              <option [value]="0" disabled>Select</option>
+              <option
+                *ngFor="let series of journalService.journalSeriesList"
+                [value]="series.ID"
+                >{{ series.EngName }}</option
+              >
             </select>
           </div>
         </div>
@@ -22,9 +25,13 @@
             <select
               class="form-control"
               id="projectId"
-              formControlName="projectName"
+              formControlName="projectId"
             >
-              <option *ngFor="let project of journalService.projectLists">
+              <option [value]="0" disabled>Select</option>
+              <option
+                *ngFor="let project of journalService.projectLists"
+                [value]="project.ID"
+              >
                 {{ project.EngName }}</option
               >
             </select>
