@@ -58,8 +58,8 @@ export class ListJournalComponent implements OnInit {
   ) { }
   ngOnInit() {
     this.journalSearchForm = this._fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
       voucherNo: [""],
       date: [""]
     });
