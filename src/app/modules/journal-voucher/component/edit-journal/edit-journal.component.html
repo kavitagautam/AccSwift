@@ -8,11 +8,14 @@
             <select
               class="form-control"
               id="seriesId"
-              formControlName="seriesName"
+              formControlName="seriesId"
             >
-              <option *ngFor="let series of journalService.journalSeriesList">{{
-                series.EngName
-              }}</option>
+              <option [value]="0" disabled>Select</option>
+              <option
+                *ngFor="let series of journalService.journalSeriesList"
+                [value]="series.ID"
+                >{{ series.EngName }}</option
+              >
             </select>
           </div>
         </div>
@@ -22,9 +25,13 @@
             <select
               class="form-control"
               id="projectId"
-              formControlName="projectName"
+              formControlName="projectId"
             >
-              <option *ngFor="let project of journalService.projectLists">
+              <option [value]="0" disabled>Select</option>
+              <option
+                *ngFor="let project of journalService.projectLists"
+                [value]="project.ID"
+              >
                 {{ project.EngName }}</option
               >
             </select>
@@ -62,311 +69,319 @@
         </div>
       </div>
       <div class="col-md-12 ">
-      <div class="box-body">
-        <div class="col-md-12 p-0">
-          <kendo-grid
-            [data]="getjournalEntryList.value"
-            (edit)="editHandler($event)"
-            (cancel)="cancelHandler($event)"
-            (save)="saveHandler($event)"
-            (remove)="removeHandler($event)"
-            (add)="addHandler($event)"
-          >
-            <ng-template kendoGridToolbarTemplate>
-              <button kendoGridAddCommand>Add new</button>
-            </ng-template>
-
-            <kendo-grid-column
-              field="particularsOraccountingHead"
-              title="Particulars Or Accounting Head"
-              width="300"
+        <div class="box-body">
+          <div class="col-md-12 p-0">
+            <kendo-grid
+              [data]="getjournalEntryList.value"
+              (edit)="editHandler($event)"
+              (cancel)="cancelHandler($event)"
+              (save)="saveHandler($event)"
+              (remove)="removeHandler($event)"
+              (add)="addHandler($event)"
             >
-              <ng-template
-                kendoGridCellTemplate
-                let-dataItem="dataItem"
-                let-column="column"
-                let-formGroup="formGroup"
-                let-isNew="isNew"
-                let-rowIndex="rowIndex"
+              <ng-template kendoGridToolbarTemplate>
+                <button kendoGridAddCommand>Add new</button>
+              </ng-template>
+
+              <kendo-grid-column
+                field="particularsOraccountingHead"
+                title="Particulars Or Accounting Head"
+                width="300"
               >
-                <div class="col-xs-12 col-md-12 p-0">
-                  <div class="col-md-4 pl-0">
-                    <input
-                      #input
-                      class="k-textbox"
-                      style="width: 100px"
-                      placeholder="Ledger Code"
-                      [formControl]="
-                        getjournalEntryList.controls[rowIndex].get('ledgerCode')
-                      "
-                      (change)="changeLedgerValue(dataItem, rowIndex)"
-                    />
-                    <kendo-popup
-                      [anchor]="input"
-                      *ngIf="
-                        getjournalEntryList.controls[rowIndex].get('ledgerCode')
-                          .invalid
-                      "
-                      popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-                    >
-                      <span class="k-icon k-i-warning"></span>
-                      Ledger Code is invalid
-                    </kendo-popup>
-                  </div>
-                  <div class="col-md-8 pr-0">
-                    <input
-                      #input
-                      class="k-textbox"
-                      [readonly]="true"
-                      [formControl]="
-                        getjournalEntryList.controls[rowIndex].get(
-                          'particularsOraccountingHead'
-                        )
-                      "
-                    />
-                    <a (click)="openModal(rowIndex)"
-                      ><i
-                        class="fa fa-eye pull-right ledgerSelectIcon"
-                        aria-hidden="true"
-                      ></i>
-                    </a>
-                    <kendo-popup
-                      [anchor]="input"
-                      *ngIf="
-                        getjournalEntryList.controls[rowIndex].get(
-                          'particularsOraccountingHead'
-                        ).invalid &&
-                        rowSubmitted &&
-                        !(
-                          isNew &&
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
+                >
+                  <div class="col-xs-12 col-md-12 p-0">
+                    <div class="col-md-4 pl-0">
+                      <input
+                        #input
+                        class="k-textbox"
+                        style="width: 100px"
+                        placeholder="Ledger Code"
+                        [formControl]="
+                          getjournalEntryList.controls[rowIndex].get(
+                            'ledgerCode'
+                          )
+                        "
+                        (change)="changeLedgerValue(dataItem, rowIndex)"
+                      />
+                      <kendo-popup
+                        [anchor]="input"
+                        *ngIf="
+                          getjournalEntryList.controls[rowIndex].get(
+                            'ledgerCode'
+                          ).invalid
+                        "
+                        popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                      >
+                        <span class="k-icon k-i-warning"></span>
+                        Ledger Code is invalid
+                      </kendo-popup>
+                    </div>
+                    <div class="col-md-8 pr-0">
+                      <input
+                        #input
+                        class="k-textbox"
+                        [readonly]="true"
+                        [formControl]="
                           getjournalEntryList.controls[rowIndex].get(
                             'particularsOraccountingHead'
-                          ).untouched
-                        ) &&
-                        !getjournalEntryList.controls[rowIndex].get(
-                          'ledgerCode'
-                        )
-                      "
-                      popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-                    >
-                      <span class="k-icon k-i-warning"></span>
-                      Ledger name is required
-                    </kendo-popup>
+                          )
+                        "
+                      />
+                      <a (click)="openModal(rowIndex)"
+                        ><i
+                          class="fa fa-eye pull-right ledgerSelectIcon"
+                          aria-hidden="true"
+                        ></i>
+                      </a>
+                      <kendo-popup
+                        [anchor]="input"
+                        *ngIf="
+                          getjournalEntryList.controls[rowIndex].get(
+                            'particularsOraccountingHead'
+                          ).invalid &&
+                          rowSubmitted &&
+                          !(
+                            isNew &&
+                            getjournalEntryList.controls[rowIndex].get(
+                              'particularsOraccountingHead'
+                            ).untouched
+                          ) &&
+                          !getjournalEntryList.controls[rowIndex].get(
+                            'ledgerCode'
+                          )
+                        "
+                        popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                      >
+                        <span class="k-icon k-i-warning"></span>
+                        Ledger name is required
+                      </kendo-popup>
+                    </div>
                   </div>
-                </div>
-              </ng-template>
-            </kendo-grid-column>
+                </ng-template>
+              </kendo-grid-column>
 
-            <kendo-grid-column field="debit" title="Debit" width="150">
-              <ng-template
-                kendoGridCellTemplate
-                let-dataItem="dataItem"
-                let-column="column"
-                let-formGroup="formGroup"
-                let-isNew="isNew"
-                let-rowIndex="rowIndex"
-              >
-                <kendo-numerictextbox
-                  #ntb="popupAnchor"
-                  popupAnchor
-                  style="width:130px"
-                  [decimals]="decimals"
-                  [format]="'c0'"
-                  locale="ne"
-                  [formControl]="
-                    getjournalEntryList.controls[rowIndex].get(column.field)
-                  "
-                  (change)="checkDebitValue(dataItem, rowIndex)"
-                ></kendo-numerictextbox>
-                <kendo-popup
-                  [anchor]="ntb.element"
-                  *ngIf="
-                    getjournalEntryList.controls[rowIndex].get('debit')
-                      .invalid &&
-                    rowSubmitted &&
-                    !getjournalEntryList.controls[rowIndex].get('debit')
-                      .untouched
-                  "
-                  popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+              <kendo-grid-column field="debit" title="Debit" width="150">
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
                 >
-                  <span class="k-icon k-i-warning"></span>
-                  Debit Amount is required
-                </kendo-popup>
-              </ng-template>
-              <ng-template
-                kendoGridFooterTemplate
-                let-column
-                let-columnIndex="columnIndex"
-              >
-                <span class="pull-right">
-                  Debit Total: {{ intlService.formatNumber(debitTotal, 'c') }}
-                  
-                </span>
-              </ng-template>
-            </kendo-grid-column>
-
-            <kendo-grid-column field="credit" title="Credit" width="150">
-              <ng-template
-                kendoGridCellTemplate
-                let-dataItem="dataItem"
-                let-column="column"
-                let-formGroup="formGroup"
-                let-isNew="isNew"
-                let-rowIndex="rowIndex"
-              >
-                <kendo-numerictextbox
-                  #ntb="popupAnchor"
-                  popupAnchor
-                  style="width:130px"
-                  [decimals]="decimals"
-                  [format]="'c0'"
-                  [formControl]="
-                    getjournalEntryList.controls[rowIndex].get('credit')
-                  "
-                  (change)="checkCreditValue(dataItem, rowIndex)"
-                ></kendo-numerictextbox>
-
-                <kendo-popup
-                  [anchor]="ntb.element"
-                  *ngIf="
-                    getjournalEntryList.controls[rowIndex].get('credit')
-                      .invalid &&
-                    rowSubmitted &&
-                    !(
-                      isNew &&
-                      getjournalEntryList.controls[rowIndex].get('credit')
+                  <kendo-numerictextbox
+                    #ntb="popupAnchor"
+                    popupAnchor
+                    style="width:130px"
+                    [decimals]="decimals"
+                    [format]="'c0'"
+                    locale="ne"
+                    [formControl]="
+                      getjournalEntryList.controls[rowIndex].get(column.field)
+                    "
+                    (change)="checkDebitValue(dataItem, rowIndex)"
+                  ></kendo-numerictextbox>
+                  <kendo-popup
+                    [anchor]="ntb.element"
+                    *ngIf="
+                      getjournalEntryList.controls[rowIndex].get('debit')
+                        .invalid &&
+                      rowSubmitted &&
+                      !getjournalEntryList.controls[rowIndex].get('debit')
                         .untouched
-                    )
-                  "
-                  popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                    "
+                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                  >
+                    <span class="k-icon k-i-warning"></span>
+                    Debit Amount is required
+                  </kendo-popup>
+                </ng-template>
+                <ng-template
+                  kendoGridFooterTemplate
+                  let-column
+                  let-columnIndex="columnIndex"
                 >
-                  <span class="k-icon k-i-warning"></span>
-                  Credit Amount is required
-                </kendo-popup>
-              </ng-template>
-              <ng-template
-                kendoGridFooterTemplate
-                let-column
-                let-columnIndex="columnIndex"
-              >
-                <span class="pull-right">
-                  Credit Total: {{ intlService.formatNumber(creditTotal, 'c') }}
-                </span>
-              </ng-template>
-            </kendo-grid-column>
+                  <span class="pull-right">
+                    Debit Total: {{ intlService.formatNumber(debitTotal, "c") }}
+                  </span>
+                </ng-template>
+              </kendo-grid-column>
 
-            <kendo-grid-column field="balance" title="Balance" width="150">
-              <ng-template
-                kendoGridCellTemplate
-                let-dataItem="dataItem"
-                let-column="column"
-                let-formGroup="formGroup"
-                let-isNew="isNew"
-                let-rowIndex="rowIndex"
-              >
-                <kendo-numerictextbox
-                  #ntb="popupAnchor"
-                  popupAnchor
-                  style="width:130px"
-                  [readonly]="true"
-                  [decimals]="decimals"
-                  [format]="'c0'"
-                  [formControl]="
-                    getjournalEntryList.controls[rowIndex].get(column.field)
-                  "
-                ></kendo-numerictextbox>
-              </ng-template>
-              <ng-template
-                kendoGridFooterTemplate
-                let-column
-                let-columnIndex="columnIndex"
-              >
-                <span class="pull-right">
-                  Difference :
-                  {{ intlService.formatNumber((debitTotal - creditTotal ),'c') }}</span
+              <kendo-grid-column field="credit" title="Credit" width="150">
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
                 >
-              </ng-template>
-            </kendo-grid-column>
+                  <kendo-numerictextbox
+                    #ntb="popupAnchor"
+                    popupAnchor
+                    style="width:130px"
+                    [decimals]="decimals"
+                    [format]="'c0'"
+                    [formControl]="
+                      getjournalEntryList.controls[rowIndex].get('credit')
+                    "
+                    (change)="checkCreditValue(dataItem, rowIndex)"
+                  ></kendo-numerictextbox>
 
-            <kendo-grid-column field="remarks" title="Remarks" width="150">
-              <ng-template
-                kendoGridCellTemplate
-                let-dataItem="dataItem"
-                let-column="column"
-                let-formGroup="formGroup"
-                let-isNew="isNew"
-                let-rowIndex="rowIndex"
-              >
-                <input
-                  #ntb="popupAnchor"
-                  popupAnchor
-                  style="width:130px"
-                  [formControl]="
-                    getjournalEntryList.controls[rowIndex].get('remarks')
-                  "
-                />
-              </ng-template>
-            </kendo-grid-column>
+                  <kendo-popup
+                    [anchor]="ntb.element"
+                    *ngIf="
+                      getjournalEntryList.controls[rowIndex].get('credit')
+                        .invalid &&
+                      rowSubmitted &&
+                      !(
+                        isNew &&
+                        getjournalEntryList.controls[rowIndex].get('credit')
+                          .untouched
+                      )
+                    "
+                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                  >
+                    <span class="k-icon k-i-warning"></span>
+                    Credit Amount is required
+                  </kendo-popup>
+                </ng-template>
+                <ng-template
+                  kendoGridFooterTemplate
+                  let-column
+                  let-columnIndex="columnIndex"
+                >
+                  <span class="pull-right">
+                    Credit Total:
+                    {{ intlService.formatNumber(creditTotal, "c") }}
+                  </span>
+                </ng-template>
+              </kendo-grid-column>
 
-            <kendo-grid-command-column title="Action" width="100">
-              <ng-template kendoGridCellTemplate let-isNew="isNew">
-                <button class="k-button" kendoGridAddCommand>
-                  <i
-                    class="fa fa-plus cursor-pointer"
-                    aria-hidden="true"
-                    tooltip="Add New"
-                  ></i>
-                </button>
-                <button kendoGridRemoveCommand>
-                  <i
-                    class="fas fa-trash-alt mr-2 cursor-pointer"
-                    tooltip="Delete"
-                  ></i>
-                </button>
+              <kendo-grid-column field="balance" title="Balance" width="150">
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
+                >
+                  <kendo-numerictextbox
+                    #ntb="popupAnchor"
+                    popupAnchor
+                    style="width:130px"
+                    [readonly]="true"
+                    [decimals]="decimals"
+                    [format]="'c0'"
+                    [formControl]="
+                      getjournalEntryList.controls[rowIndex].get(column.field)
+                    "
+                  ></kendo-numerictextbox>
+                </ng-template>
+                <ng-template
+                  kendoGridFooterTemplate
+                  let-column
+                  let-columnIndex="columnIndex"
+                >
+                  <span class="pull-right">
+                    Difference :
+                    {{
+                      intlService.formatNumber(debitTotal - creditTotal, "c")
+                    }}</span
+                  >
+                </ng-template>
+              </kendo-grid-column>
 
-                <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
-                  {{ isNew ? "Add" : "Update" }}
-                </button>
-                <button kendoGridCancelCommand>
-                  {{ isNew ? "Discard changes" : "Cancel" }}
-                </button>
-              </ng-template>
-            </kendo-grid-command-column>
-          </kendo-grid>
+              <kendo-grid-column field="remarks" title="Remarks" width="150">
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
+                >
+                  <input
+                    #ntb="popupAnchor"
+                    popupAnchor
+                    style="width:130px"
+                    [formControl]="
+                      getjournalEntryList.controls[rowIndex].get('remarks')
+                    "
+                  />
+                </ng-template>
+              </kendo-grid-column>
+
+              <kendo-grid-command-column title="Action" width="100">
+                <ng-template kendoGridCellTemplate let-isNew="isNew">
+                  <button class="k-button" kendoGridAddCommand>
+                    <i
+                      class="fa fa-plus cursor-pointer"
+                      aria-hidden="true"
+                      tooltip="Add New"
+                    ></i>
+                  </button>
+                  <button kendoGridRemoveCommand>
+                    <i
+                      class="fas fa-trash-alt mr-2 cursor-pointer"
+                      tooltip="Delete"
+                    ></i>
+                  </button>
+
+                  <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
+                    {{ isNew ? "Add" : "Update" }}
+                  </button>
+                  <button kendoGridCancelCommand>
+                    {{ isNew ? "Discard changes" : "Cancel" }}
+                  </button>
+                </ng-template>
+              </kendo-grid-command-column>
+            </kendo-grid>
+          </div>
         </div>
-    </div>
-    </div>
-    <div class="col-md-12">
-      <div class="col-md-2">
-        <label class="float-right">Narration :</label>
       </div>
-      <div class="col-md-8">
-        <input formControlName="narration" type="text" class="form-control" />
-      </div>
-      <div class="col-md-2"></div>
-    </div>
-    <div class="col-md-12">
-      <div class="col-md-2">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="donotClose" />
-          <label class="form-check-label" for="donotClose">Do not close</label>
+      <div class="col-md-12">
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Narration</label>
+            <input
+              formControlName="narration"
+              type="text"
+              class="form-control"
+            />
+          </div>
         </div>
       </div>
-      <div class="col-md-2">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="printonSaving" />
-          <label class="form-check-label" for="printonSaving"
-            >Print while saving</label
-          >
+      <div class="col-md-12">
+        <div class="col-sm-2">
+          <div class="form-group">
+            <div class="checkbox">
+              <label> <input type="checkbox" />Do not close </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="form-group">
+            <div class="checkbox">
+              <label> <input type="checkbox" />Print while saving </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-secondary" disabled>
+            <i class="fa fa-plus" aria-hidden="true"></i>Group Voucher Posting
+          </button>
         </div>
       </div>
-      <div class="col-md-3">
-        <button type="submit" class="btn btn-secondary" disabled>
-          <i class="fa fa-plus" aria-hidden="true"></i>Group Voucher Posting
-        </button>
-      </div>
     </div>
-  </div>
   </form>
   <div class="box-footer">
     <div class="mb-2">
