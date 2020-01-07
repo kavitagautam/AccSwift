@@ -21,7 +21,7 @@ export class EditSalesOrderComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public salesOrderService: SalesOrderService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildEditSalesOrderForm();
@@ -30,9 +30,9 @@ export class EditSalesOrderComponent implements OnInit {
   buildEditSalesOrderForm() {
     this.editSalesOrderForm = this.fb.group({
       orderNo: [""],
-      cashParty: [""],
+      cashPartyACId: [0],
       remarks: [""],
-      project: [""],
+      projectId: [0],
       date: [new Date()],
       salesOrderEntryList: this.fb.array([this.editSalesEntryFormGroup()])
     });

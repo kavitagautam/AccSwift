@@ -1,3 +1,4 @@
+import { ConfirmationDialogComponent } from './../../../../shared/component/confirmation-dialog/confirmation-dialog.component';
 import { SalesReturnService } from "./../../services/sales-return.service";
 import {
   SortDescriptor,
@@ -6,7 +7,7 @@ import {
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
-import { GridDataResult } from "@progress/kendo-angular-grid";
+import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
@@ -18,7 +19,7 @@ import { Component, OnInit } from "@angular/core";
 })
 export class ListSalesReturnComponent implements OnInit {
   salesReturnForm: FormGroup;
-  salesReturnList: SalesReturnMaster;
+  salesReturnList;
   date: Date = new Date();
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
@@ -34,7 +35,7 @@ export class ListSalesReturnComponent implements OnInit {
   config = { backdrop: true, ignoreBackdropClick: true };
 
   constructor(
-    private fb: FormBuilder,
+    private _fb: FormBuilder,
     private router: Router,
     private toastr: ToastrService,
     private modalService: BsModalService,
@@ -46,13 +47,13 @@ export class ListSalesReturnComponent implements OnInit {
   }
 
   buildSalesReturnForm() {
-    this.salesReturnForm = this.fb.group({
-      series: [""],
-      cash: [""],
-      sales: [""],
-      depot: [""],
-      project: [""],
-      date: [""],
+    this.salesReturnForm = this._fb.group({
+      seriesId: [0],
+      cashPartyACId: [0],
+      salesACId: [0],
+      depotLocationId: [0],
+      projectId: [0],
+      date: [new Date()],
       orderNo: [""],
       remarks: [""]
     });
@@ -104,4 +105,48 @@ export class ListSalesReturnComponent implements OnInit {
     this.filter = filter;
     this.getSalesReturnList();
   }
+
+  public searchForm() {
+    this.getSalesReturnList();
+  }
+
+  public pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    if (event.skip == 0) {
+      this.skip = event.skip;
+      this.currentPage = 1;
+    } else {
+      this.skip = event.skip;
+      const pageNo = event.skip / event.take + 1;
+      this.currentPage = pageNo;
+    }
+    this.getSalesReturnList();
+  }
+
+  public edit(item): void {
+    this.router.navigate(["/sales-return/edit", item.ID]);
+  }
+
+  openConfirmationDialogue(dataItem) {
+    const salesReturnID = {
+      id: dataItem.ID
+    };
+    this.modalRef = this.modalService.show(
+      ConfirmationDialogComponent,
+      this.config
+    );
+    this.modalRef.content.data = "Payments No." + dataItem.VoucherNo;
+    this.modalRef.content.action = "delete";
+    this.modalRef.content.onClose.subscribe(confirm => {
+      if (confirm) {
+        this.deletePaymentsByID(salesReturnID.id);
+      }
+    });
+  }
+
+  public deletePaymentsByID(id): void {
+    this.toastr.success("Invoice deleted successfully");
+    //call Delete Api
+  }
 }
+

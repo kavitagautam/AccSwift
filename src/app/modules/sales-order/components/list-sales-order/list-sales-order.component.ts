@@ -48,7 +48,7 @@ export class ListSalesOrderComponent implements OnInit {
     public salesOrderService: SalesOrderService,
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildListSalesOrderForm();
@@ -57,9 +57,9 @@ export class ListSalesOrderComponent implements OnInit {
   buildListSalesOrderForm() {
     this.listSalesOrderForm = this.fb.group({
       orderNo: [""],
-      cashParty: [""],
+      cashPartyACId: [0],
       remarks: [""],
-      project: [""],
+      projectId: [0],
       date: [new Date()]
     });
   }

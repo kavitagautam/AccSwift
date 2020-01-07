@@ -1,6 +1,6 @@
 <div class="box-header">
-  <button [routerLink]="['add']" class="btn btn-primary pull-right">
-    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Purchase Return
+  <button [routerLink]="['add']" class="btn btn-primary">
+    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Sales Return
   </button>
 </div>
 
@@ -16,37 +16,40 @@
           <form [formGroup]="salesReturnForm" novalidate>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Series Name</label>
-                <select class="form-control" formControlName="series">
-                  <option value="null"></option>
+                <label>Series</label>
+                <select class="form-control" formControlName="seriesId">
+                  <option [value]="0" disabled>Select</option>
                 </select>
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Cash/Party/A/C</label>
-                <input class="form-control" formControlName="cash">
+                <sup>*</sup> <label>Cash/Party/A/C</label>
+                <select class="form-control" formControlName="cashPartyACId">
+                  <option [value]="0" disabled>Select</option>
+                </select>
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Date</label>
+                <sup>*</sup> <label>Date</label>
                 <input class="form-control" type="text" formControlName="date" bsDatepicker />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Sales A/C </label>
-                <select class="form-control" formControlName="sales">
-                  <option value="null"> </option>
+                <sup>*</sup> <label for="">Sales A/C </label>
+                <select class="form-control" formControlName="salesACId">
+                  <option [value]="0" disabled>Select</option>
                 </select>
               </div>
             </div>
+
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Depot/Location </label>
-                <select class="form-control" formControlName="depot">
-                  <option value="null"> </option>
+                <select class="form-control" formControlName="depotLocationId">
+                  <option [value]="0" disabled>Select </option>
                 </select>
               </div>
             </div>
@@ -54,27 +57,25 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project</label>
-                <input class="form-control" formControlName="project" />
+                <select class="form-control" formControlName="projectId">
+                  <option [value]="0" disabled>Select</option>
+                </select>
               </div>
             </div>
 
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Order No.</label>
-                <select class="form-control" formControlName="orderNo">
-                  <option value="null"> </option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Remarks</label>
-                <select class="form-control" formControlName="remarks">
-                  <option value="null"> </option>
-                </select>
+                <sup>*</sup> <label>Order No.</label>
+                <input class="form-control" formControlName="orderNo">
               </div>
             </div>
 
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <sup>*</sup> <label>Remarks</label>
+                <input class="form-control" formControlName="remarks">
+              </div>
+            </div>
 
           </form>
         </div>
@@ -86,12 +87,9 @@
           </button>
         </div>
       </div>
-
-
     </div>
   </div>
 </div>
-
 
 <div class="box box-default">
   <div class="box-body">

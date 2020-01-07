@@ -1,3 +1,261 @@
-<p>
-  edit-sales-return works!
-</p>
+<div class="box box-default">
+  <form [formGroup]="editSalesReturnForm" novalidate>
+    <div class="row mt-3">
+      <div class="col-md-12">
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Series</label>
+            <select class="form-control" formControlName="seriesId">
+              <option [value]="0" disabled>Select</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <sup>*</sup> <label>Cash/Party/A/C</label>
+            <select class="form-control" formControlName="cashPartyACId">
+              <option [value]="0" disabled>Select</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <sup>*</sup> <label>Date</label>
+            <input class="form-control" type="text" formControlName="date" bsDatepicker />
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <sup>*</sup> <label for="">Sales A/C </label>
+            <select class="form-control" formControlName="salesACId">
+              <option [value]="0" disabled>Select</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Depot/Location </label>
+            <select class="form-control" formControlName="depotLocationId">
+              <option [value]="0" disabled>Select </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Project</label>
+            <select class="form-control" formControlName="projectId">
+              <option [value]="0" disabled>Select</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <sup>*</sup> <label>Order No.</label>
+            <input class="form-control" formControlName="orderNo">
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <sup>*</sup> <label>Remarks</label>
+            <input class="form-control" formControlName="remarks">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="box-body">
+        <!-- kendo grid started -->
+        <kendo-grid [data]="getSalesReturnEntryList.value" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
+          (save)="saveHandler($event)" (add)="addHandler($event)" (remove)="removeHandler($event)">
+          <ng-template kendoGridToolbarTemplate>
+            <button kendoGridAddCommand>Add New</button>
+          </ng-template>
+
+          <kendo-grid-column field="code" title="Title" width="140">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
+              let-isNew="isNew" let-rowIndex="rowIndex">
+              <input style="width: 120px" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('code')
+                " />
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="productName" title="Product Name" width="140">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
+              let-isNew="isNew" let-rowIndex="rowIndex">
+              <input style="width: 120px" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('productName')
+                " />
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="quantity" title="Quantity" width="140">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
+              let-isNew="isNew" let-column="column" let-rowIndex="rowIndex">
+              <input style="width: 120px" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('quantity')
+                " />
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="unit" title="Unit" width="150">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
+              let-isNew="isNew" let-column="column" let-rowIndex="rowIndex">
+              <input #input class="k-textbox" style="width: 130px" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('unit')
+                " />
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="purchaseRate" title="Purchase Rate" width="140">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-rowIndex="rowIndex"
+              let-isNew="isNew" let-formGroup="formGroup">
+              <kendo-numerictextbox popupAnchor style="width: 120px;" [readonly]="true" [decimals]="decimals"
+                [format]="c0" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('purchaseRate')
+                ">
+              </kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="amount" title="Amount" width="140">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-rowIndex="rowIndex"
+              let-isNew="isNew" let-formGroup="formGroup">
+              <kendo-numerictextbox popupAnchor style="width: 120px;" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('amount')
+                ">
+              </kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="specialDiscount" title="Special Discount %" width="140">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-rowIndex="rowIndex"
+              let-isNew="isNew" let-formGroup="formGroup">
+              <kendo-numerictextbox popupAnchor style="width: 120px;" [value]="percentage" [format]="'p'" [min]="0"
+                [max]="1" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('specialDiscount')
+                ">
+              </kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="specialDiscounts" title="Special Discount" width="140">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-rowIndex="rowIndex"
+              let-isNew="isNew" let-formGroup="formGroup">
+              <kendo-numerictextbox popupAnchor style="width: 120px;" [decimals]="decimals" [format]="c0" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get(
+                    'specialDiscounts'
+                  )
+                ">
+              </kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="netAmount" title="Net Amount" width="140">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-rowIndex="rowIndex"
+              let-isNew="isNew" let-formGroup="formGroup">
+              <kendo-numerictextbox popupAnchor style="width: 120px;" [decimals]="decimals" [format]="c0" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('netAmount')
+                ">
+              </kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="vat" title="VAT" width="140">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-rowIndex="rowIndex"
+              let-isNew="isNew" let-formGroup="formGroup">
+              <kendo-numerictextbox popupAnchor style="width: 120px;" [decimals]="decimals" [format]="c0" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('vat')
+                ">
+              </kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="customDuty" title="Custom Duty %" width="140">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-rowIndex="rowIndex"
+              let-isNew="isNew" let-formGroup="formGroup">
+              <kendo-numerictextbox popupAnchor style="width: 120px;" [value]="percentage" [format]="'p'" [min]="0"
+                [max]="1" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('customDuty')
+                ">
+              </kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="customDutyAmt" title="Custom Duty Amount" width="150">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-rowIndex="rowIndex"
+              let-isNew="isNew" let-formGroup="formGroup">
+              <kendo-numerictextbox popupAnchor style="width: 120px;" [decimals]="decimals" [format]="c0" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('customDutyAmt')
+                ">
+              </kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="freight" title="Freight" width="140">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-rowIndex="rowIndex"
+              let-isNew="isNew" let-formGroup="formGroup">
+              <kendo-numerictextbox popupAnchor style="width: 120px;" [decimals]="decimals" [format]="c0" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('freight')
+                ">
+              </kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="tc" title="TC (Select Tax)" width="140">
+            <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem" let-rowIndex="rowIndex"
+              let-formGroup="formGroup" let-column="column">
+              <input #input style="width: 120px;" class="k-textbox" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('tc')
+                " />
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="tcAmount" title="TC Amount" width="140">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-rowIndex="rowIndex"
+              let-isNew="isNew" let-formGroup="formGroup">
+              <kendo-numerictextbox popupAnchor style="width: 120px;" [decimals]="decimals" [format]="c0" [formControl]="
+                  getSalesReturnEntryList.controls[rowIndex].get('tcAmount')
+                ">
+              </kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-command-column title="Action" width="100">
+            <ng-template kendoGridCellTemplate let-isNew="isNew">
+              <button class="k-button" kendoGridAddCommand>
+                <i class="fa fa-plus cursor-pointer" aria-hidden="true" tooltip="Add New"></i>
+              </button>
+              <button kendoGridRemoveCommand>
+                <i class="fas fa-trash-alt mr-2 cursor-pointer" tooltip="Delete"></i>
+              </button>
+              <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
+                {{ isNew ? "Add" : "Update" }}
+              </button>
+              <button kendoGridCancelCommand>
+                {{ isNew ? "Discard changes" : "Cancel" }}
+              </button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
+      </div>
+      <div *ngIf="listLoading" class="k-i-loading"></div>
+    </div>
+  </form>
+  <div class="box-footer">
+    <div class="mb-2">
+      <button class="btn btn-primary" disabled (click)="save()">Save</button>
+      <button class="btn btn-secondary ml-2" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
