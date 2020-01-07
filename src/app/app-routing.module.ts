@@ -108,6 +108,13 @@ const routes: Routes = [
         }
       },
       {
+        path: "unit-maintenance",
+        loadChildren: "@modules/unit-maintenance/unit-maintenance.module#UnitMaintenanceModule",
+        data: {
+          breadcrumb: "Unit Maintenance"
+        }
+      },
+      {
         path: "report",
         loadChildren: "@modules/reports/reports.module#ReportsModule",
         data: {
