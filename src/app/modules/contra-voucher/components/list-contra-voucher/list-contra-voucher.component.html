@@ -1,5 +1,5 @@
 <div class="box-header">
-  <button [routerLink]="['add']" class="btn btn-primary pull-right">
+  <button [routerLink]="['add']" class="btn btn-primary">
     <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Contra Voucher
   </button>
 </div>
@@ -19,8 +19,8 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Series</label>
-                <select class="form-control" formControlName="series">
-                  <option value="null"></option>
+                <select class="form-control" formControlName="seriesId">
+                  <option [value]="0" disabled>Select</option>
                   <option *ngFor="let series of contraVoucherService.seriesLists" [ngValue]="series.ID">
                     {{series.EngName}}
                   </option>
@@ -31,8 +31,8 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Cash Account</label>
-                <select class="form-control" id="cashAccountNo" formControlName="cashAccount">
-                  <option value="null"></option>
+                <select class="form-control" id="cashAccountNo" formControlName="cashAccountId">
+                  <option [value]="0" disabled>Select</option>
                   <option *ngFor="let cash of contraVoucherService.cashAccountLists">
                     {{cash.LedgerName}}
                   </option>
@@ -44,8 +44,8 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Cash Party / Customer</label>
-                <select class="form-control" id="cashAccountNo" formControlName="series">
-                  <option value="null"></option>
+                <select class="form-control" formControlName="cashPartyId">
+                  <option [value]="0" disabled>Select</option>
                   <option *ngFor="let cash of contraVoucherService.seriesLists">
                     {{cash.EngName}}
                   </option>
@@ -63,8 +63,8 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project</label>
-                <select class="form-control" id="project" formControlName="project">
-                  <option value="null"></option>
+                <select class="form-control" id="project" formControlName="projectId">
+                  <option [value]="0" disabled>Select</option>
                   <option *ngFor="let project of contraVoucherService.projectLists">
                     {{project.EngName}}
                   </option>

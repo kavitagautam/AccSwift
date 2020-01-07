@@ -31,14 +31,14 @@ export class ListBankReceiptComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
     public bankReceiptService: BankReceiptService
-  ) {}
+  ) { }
   ngOnInit() {
     this.bankReceiptForm = this._fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
       voucherNo: [""],
-      bankAccount: [""],
-      date: [""]
+      bankAccountId: [0],
+      date: [new Date()]
     });
     this.getBankReceiptlList();
     this.bankReceiptService.init();
@@ -119,7 +119,7 @@ export class ListBankReceiptComponent implements OnInit {
         );
         this.bankReceiptList = sampleData;
         this.gridView = {
-          data: this.bankReceiptList.slice(this.skip, this.skip+ this.pageSize),
+          data: this.bankReceiptList.slice(this.skip, this.skip + this.pageSize),
           total: this.bankReceiptList ? this.bankReceiptList.length : 0
         };
       },

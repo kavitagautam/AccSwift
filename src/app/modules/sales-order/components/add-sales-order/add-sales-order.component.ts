@@ -13,7 +13,7 @@ export class AddSalesOrderComponent implements OnInit {
   editedRowIndex: any;
   submitted: boolean;
   rowSubmitted: boolean;
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router) { }
 
   ngOnInit() {
     this.buildAddSalesOrderForm();
@@ -22,9 +22,9 @@ export class AddSalesOrderComponent implements OnInit {
   buildAddSalesOrderForm() {
     this.addSalesOrderForm = this.fb.group({
       orderNo: [""],
-      cashParty: [""],
+      cashPartyACId: [0],
       remarks: [""],
-      project: [""],
+      projectId: [0],
       date: [new Date()],
       salesOrderEntryList: this.fb.array([this.addSalesEntryFormGroup()])
     });

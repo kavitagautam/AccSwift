@@ -53,6 +53,33 @@ export class EditBankPaymentComponent implements OnInit {
     });
   }
 
+  buildEditBankPaymentForm() {
+    this.editBankPaymentForm = this.fb.group({
+      seriesId: [this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : 0],
+      projectId: [this.bankPaymentDetails ? this.bankPaymentDetails.ProjectID : 0],
+      voucherNo: [this.bankPaymentDetails ? this.bankPaymentDetails.VoucherNo : ""],
+      bankAccountId: [this.bankPaymentDetails ? this.bankPaymentDetails.LedgerID : 0],
+      cashParty: [""],
+      date: [this.bankPaymentDetails ? new Date(this.bankPaymentDetails.CreatedDate) : ""],
+      bankPaymentEntryList: this.fb.array([this.editBankPaymentEntryFormGroup()])
+    });
+  }
+
+  editBankPaymentEntryFormGroup(): FormGroup {
+    return this.fb.group({
+      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+      particularsOraccountingHead: ["", Validators.required],
+      voucherNo: [""],
+      chequeNo: [""],
+      chequeBank: [""],
+      chequeDate: [""],
+      amount: [""],
+      currentBalance: [""],
+      vType: [""],
+      remarks: [""]
+    });
+  }
+
   setBankPaymentList(): void {
     this.editBankPaymentForm.setControl(
       "bankPaymentEntryList",
@@ -94,33 +121,6 @@ export class EditBankPaymentComponent implements OnInit {
       );
     }
     return bankPaymentFormArray;
-  }
-
-  buildEditBankPaymentForm() {
-    this.editBankPaymentForm = this.fb.group({
-      series: [this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : ""],
-      project: [this.bankPaymentDetails ? this.bankPaymentDetails.ProjectID : ""],
-      voucherNo: [this.bankPaymentDetails ? this.bankPaymentDetails.VoucherNo : ""],
-      bankAccount: [this.bankPaymentDetails ? this.bankPaymentDetails.LedgerID : ""],
-      cashParty: [""],
-      date: [this.bankPaymentDetails ? new Date(this.bankPaymentDetails.CreatedDate) : ""],
-      bankPaymentEntryList: this.fb.array([this.editBankPaymentEntryFormGroup()])
-    });
-  }
-
-  editBankPaymentEntryFormGroup(): FormGroup {
-    return this.fb.group({
-      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
-      particularsOraccountingHead: ["", Validators.required],
-      voucherNo: [""],
-      chequeNo: [""],
-      chequeBank: [""],
-      chequeDate: [""],
-      amount: [""],
-      currentBalance: [""],
-      vType: [""],
-      remarks: [""]
-    });
   }
 
   get getBankPaymentEntryList(): FormArray {

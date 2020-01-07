@@ -1,5 +1,5 @@
 <div class="box-header">
-  <button [routerLink]="['add']" class="btn btn-primary pull-right">
+  <button [routerLink]="['add']" class="btn btn-primary ">
     <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Purchase Invoice
   </button>
 </div>
@@ -15,8 +15,8 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Series </label>
-                <select class="form-control" id="seriesNameId" formControlName="seriesName">
-                  <option value="null"> </option>
+                <select class="form-control" id="seriesNameId" formControlName="seriesId">
+                  <option [value]="0">Select</option>
                   <option *ngFor="let series of purchaseService.seriesList" [ngValue]="series.ID">{{series.EngName}}
                   </option>
                 </select>
@@ -24,29 +24,29 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>VoucherNo.</label>
+                <sup>*</sup> <label>VoucherNo.</label>
                 <input class="form-control" id="voucherNoId" formControlName="voucherNo" />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Date</label>
+                <sup>*</sup> <label>Date</label>
                 <input type="text" class="form-control" formControlName="date" bsDatepicker>
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Cash/Party/A/C </label>
-                <select class="form-control" id="cashAccountNo" formControlName="cashParty">
-                  <option value="null"> </option>
+                <sup>*</sup> <label>Cash/Party/A/C </label>
+                <select class="form-control" id="cashAccountNo" formControlName="cashPartyACId">
+                  <option [value]="0" disabled>Select </option>
                 </select>
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Depot/ Location </label>
-                <select class="form-control" id="depotId" formControlName="depot">
-                  <option value="null"> </option>
+                <select class="form-control" id="depotId" formControlName="depotLocationId">
+                  <option [value]="0">Select </option>
                 </select>
               </div>
             </div>
@@ -58,17 +58,17 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Purchase A/C </label>
-                <select class="form-control" id="purchaseAcId" formControlName="purchaseAc">
-                  <option value="null"> </option>
+                <sup>*</sup> <label>Purchase A/C </label>
+                <select class="form-control" id="purchaseAcId" formControlName="purchaseAcId">
+                  <option [value]="0">Select </option>
                 </select>
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project </label>
-                <select class="form-control" id="projectId" formControlName="project">
-                  <option value="null"> </option>
+                <select class="form-control" id="projectId" formControlName="projectId">
+                  <option [value]="0"> Select</option>
                   <option *ngFor="let project of purchaseService.projectList" [ngValue]="project.ID">{{project.EngName}}
                   </option>
                 </select>
@@ -76,7 +76,7 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Remarks</label>
+                <sup>*</sup><label>Remarks</label>
                 <input class="form-control" formControlName="remarks" />
               </div>
             </div>

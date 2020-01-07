@@ -55,13 +55,13 @@ export class ListPurchaseInvoiceComponent implements OnInit {
 
   buildListPurchaseInvoiceForm(): void {
     this.purchaseForm = this.fb.group({
-      seriesName: [""],
-      cashParty: [""],
-      purchaseAc: [""],
+      seriesId: [0],
+      cashPartyACId: [0],
+      purchaseAcId: [0],
       voucherNo: [""],
       partyBillNo: [""],
-      depot: [""],
-      project: [""],
+      depotLocationId: [0],
+      projectId: [0],
       date: [new Date()],
       orderNo: [""],
       remarks: [""]

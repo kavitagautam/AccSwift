@@ -41,7 +41,7 @@ export class AddCashReceiptComponent implements OnInit {
     public cashReceiptService: CashReceiptService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildCashReceiptForm();
@@ -49,12 +49,12 @@ export class AddCashReceiptComponent implements OnInit {
 
   buildCashReceiptForm(): void {
     this.addCashReceiptForm = this._fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
       voucherNo: [""],
-      cashAccount: [""],
-      cashParty: [""],
-      date: [],
+      cashAccountId: [0],
+      cashPartyId: [0],
+      date: [new Date()],
       cashReceiptEntryList: this._fb.array([
         this.addCashReceiptEntryFormGroup()
       ])

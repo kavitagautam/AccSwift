@@ -30,15 +30,15 @@ export class ListCashReceiptComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
     public cashReceiptService: CashReceiptService
-  ) {}
+  ) { }
   ngOnInit() {
     this.cashReceiptForm = this._fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
       voucherNo: [""],
-      cashAccount: [""],
-      cashParty:[""],
-      date: [""]
+      cashAccountId: [0],
+      cashPartyId: [0],
+      date: [new Date()]
     });
     this.getCashReceiptlList();
   }
@@ -120,7 +120,7 @@ export class ListCashReceiptComponent implements OnInit {
         );
         this.cashList = sampleData;
         this.gridView = {
-          data: this.cashList.slice(this.skip , this.skip + this.pageSize),
+          data: this.cashList.slice(this.skip, this.skip + this.pageSize),
           total: this.cashList ? this.cashList.length : 0
         };
       },

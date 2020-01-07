@@ -34,7 +34,7 @@ export class AddBankPaymentComponent implements OnInit {
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildAddBankPaymentForm(); //Initialize the Form....
@@ -42,12 +42,11 @@ export class AddBankPaymentComponent implements OnInit {
 
   buildAddBankPaymentForm() {
     this.addBankPaymentForm = this.fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
       voucherNo: [""],
-      bankAccount: [""],
-      cashParty: [""],
-      date: [],
+      bankAccountId: [0],
+      date: [new Date()],
       bankPaymentEntryList: this.fb.array([this.addBankPaymentEntryFormGroup()])
     });
   }

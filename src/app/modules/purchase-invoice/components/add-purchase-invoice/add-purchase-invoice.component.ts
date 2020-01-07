@@ -26,16 +26,16 @@ export class AddPurchaseInvoiceComponent implements OnInit {
 
   buildListPurchaseInvoiceForm() {
     this.addPurchaseForm = this.fb.group({
-      seriesName: "",
-      cashParty: "",
-      purchaseAc: "",
-      voucherNo: "",
-      partyBillNo: "",
-      depot: "",
-      project: "",
+      seriesId: [0],
+      cashPartyACId: [0],
+      purchaseAcId: [0],
+      voucherNo: [""],
+      partyBillNo: [""],
+      depotLocationId: [0],
+      projectId: [0],
       date: [new Date()],
-      orderNo: "",
-      remarks: "",
+      orderNo: [""],
+      remarks: [""],
       purchaseInvoiceEntryList: this.fb.array([
         this.addPurchaseEntryFormGroup()
       ])

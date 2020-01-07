@@ -7,8 +7,8 @@
           <div class="col-md-3 col-sm-6 col-xs-6">
             <div class="form-group">
               <label>Series</label>
-              <select class="form-control" id="seriesId" formControlName="series">
-                <option value="null"></option>
+              <select class="form-control" formControlName="seriesId">
+                <option [value]="0" disabled>Select</option>
                 <option *ngFor="let series of contraVoucherService.seriesLists" [ngValue]="series.ID">
                   {{series.EngName}}
                 </option>
@@ -19,10 +19,23 @@
           <div class="col-md-3 col-sm-6 col-xs-6">
             <div class="form-group">
               <label>Cash Account</label>
-              <select class="form-control" id="cashAccount" formControlName="cashAccount">
-                <option value="null"></option>
-                <option *ngFor="let cash of contraVoucherService.cashAccountLists" [ngValue]="cash.LedgerID">
+              <select class="form-control" id="cashAccountNo" formControlName="cashAccountId">
+                <option [value]="0" disabled>Select</option>
+                <option *ngFor="let cash of contraVoucherService.cashAccountLists">
                   {{cash.LedgerName}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Cash Party / Customer</label>
+              <select class="form-control" formControlName="cashPartyId">
+                <option [value]="0" disabled>Select</option>
+                <option *ngFor="let cash of contraVoucherService.seriesLists">
+                  {{cash.EngName}}
                 </option>
               </select>
             </div>
@@ -30,27 +43,19 @@
 
           <div class="col-md-3 col-sm-6 col-xs-6">
             <div class="form-group">
-              <label>Cash Party / Customer</label>
-              <select class="form-control" id="cashParty" formControlName="cashParty">
-                <option value="null"></option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-md-3 col-sm-6 col-xs-6">
-            <div class="form-group">
               <label>Voucher#</label>
-              <input class="form-control" id="voucherNo" formControlName="voucherNo" />
+              <input class="form-control" formControlName="voucherNo" />
             </div>
           </div>
 
           <div class="col-md-3 col-sm-6 col-xs-6">
             <div class="form-group">
               <label>Project</label>
-              <select class="form-control" id="project" formControlName="project">
-                <option value="null"></option>
-                <option *ngFor="let project of contraVoucherService.projectLists" [ngValue]="project.ID">
-                  {{project.EngName}} </option>
+              <select class="form-control" id="project" formControlName="projectId">
+                <option [value]="0" disabled>Select</option>
+                <option *ngFor="let project of contraVoucherService.projectLists">
+                  {{project.EngName}}
+                </option>
               </select>
             </div>
           </div>
@@ -58,7 +63,7 @@
           <div class="col-md-3 col-sm-6 col-xs-6">
             <div class="form-group">
               <label>Date</label>
-              <input class="form-control" id="voucherNo" formControlName="date" bsDatepicker />
+              <input class="form-control" formControlName="date" bsDatepicker />
             </div>
           </div>
 

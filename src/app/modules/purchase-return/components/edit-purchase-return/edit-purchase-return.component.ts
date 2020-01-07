@@ -32,14 +32,14 @@ export class EditPurchaseReturnComponent implements OnInit {
 
   buildEditPurchaseReturnForm() {
     this.editPurchaseReturnForm = this.fb.group({
-      series: [""],
+      seriesId: [0],
       voucher: [""],
       date: [new Date()],
-      cashParty: [""],
-      depot: [""],
-      order: [""],
-      purchase: [""],
-      project: [""],
+      cashPartyACId: [0],
+      depotLocationId: [0],
+      orderNo: [""],
+      purchaseACId: [0],
+      projectId: [0],
       remarks: [""],
       purchaseReturnEntryList: this.fb.array([this.editPurchaseReturnFormGroup()])
     })

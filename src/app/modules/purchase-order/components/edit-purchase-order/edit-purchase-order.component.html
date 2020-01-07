@@ -18,9 +18,9 @@
 
         <div class="col-md-3 col-xs-6 col-sm-6">
           <div class="form-group">
-            <label>Cash/Party/A/C</label>
-            <select class="form-control" formControlName="cashParty">
-              <option value="null"></option>
+            <sup>*</sup><label>Cash/Party/A/C</label>
+            <select class="form-control" formControlName="cashPartyACId">
+              <option [value]="0" disabled>Select</option>
             </select>
           </div>
         </div>
@@ -28,8 +28,8 @@
         <div class="col-md-3 col-xs-6 col-sm-6">
           <div class="form-group">
             <label>Project</label>
-            <select class="form-control" formControlName="project">
-              <option value="null"></option>
+            <select class="form-control" formControlName="projectId">
+              <option [value]="0" disabled>Select</option>
               <option *ngFor="let project of purchaseOrderService.projectList" [ngValue]=project.ID>
                 {{project.EngName}}
               </option>

@@ -50,11 +50,11 @@ export class EditContraVoucherComponent implements OnInit {
 
   buildEditContraVoucherForm() {
     this.editContraVoucherForm = this.fb.group({
-      series: [this.contraVoucherDetail ? this.contraVoucherDetail.SeriesID : ""],
-      project: [this.contraVoucherDetail ? this.contraVoucherDetail.ProjectID : ""],
+      seriesId: [this.contraVoucherDetail ? this.contraVoucherDetail.SeriesID : 0],
+      projectId: [this.contraVoucherDetail ? this.contraVoucherDetail.ProjectID : 0],
       voucherNo: [this.contraVoucherDetail ? this.contraVoucherDetail.VoucherNo : ""],
-      cashAccount: [this.contraVoucherDetail ? this.contraVoucherDetail.LedgerID : ""],
-      cashParty: [this.contraVoucherDetail ? this.contraVoucherDetail : ""],
+      cashAccountId: [this.contraVoucherDetail ? this.contraVoucherDetail.LedgerID : 0],
+      cashPartyId: [this.contraVoucherDetail ? this.contraVoucherDetail.CashReceiptDetails : 0],
       date: [this.contraVoucherDetail ? new Date(this.contraVoucherDetail.CreatedDate) : ""],
       contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryFormGroup()])
     });

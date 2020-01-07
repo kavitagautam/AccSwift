@@ -4,53 +4,57 @@
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Series Name</label>
-            <select class="form-control" formControlName="series">
-              <option value="null"></option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Voucher No.</label>
-            <input class="form-control" formControlName="voucher">
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Date</label>
-            <input class="form-control" type="text" formControlName="date" bsDatepicker />
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Cash/Party/A/C </label>
-            <select class="form-control" formControlName="cashParty">
-              <option value="null"> </option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Depot/Location </label>
-            <select class="form-control" formControlName="depot">
-              <option value="null"> </option>
+            <label>Series</label>
+            <select class="form-control" formControlName="seriesId">
+              <option [value]="0" disabled>Select</option>
             </select>
           </div>
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Order No.</label>
-            <input class="form-control" formControlName="order" />
+            <sup>*</sup><label>Voucher No.</label>
+            <input class="form-control" formControlName="voucher">
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <sup>*</sup><label>Date</label>
+            <input class="form-control" type="text" formControlName="date" bsDatepicker />
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <sup>*</sup> <label>Cash/Party/A/C </label>
+            <select class="form-control" formControlName="cashPartyACId">
+              <option [value]="0" disabled>Select</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Depot/Location </label>
+            <select class="form-control" formControlName="depotLocationId">
+              <option [value]="0" disabled>Select</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <sup>*</sup> <label>Order No.</label>
+            <input class="form-control" formControlName="orderNo" />
           </div>
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Purchase A/C </label>
-            <select class="form-control" formControlName="purchase">
-              <option value="null"> </option>
+            <select class="form-control" formControlName="purchaseACId">
+              <option [value]="0" disabled>Select</option>
             </select>
           </div>
         </div>
@@ -58,18 +62,16 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Project </label>
-            <select class="form-control" id="projectId" formControlName="project">
-              <option value="null"> </option>
+            <select class="form-control" id="projectId" formControlName="projectId">
+              <option [value]="0">Select</option>
             </select>
           </div>
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Remarks</label>
-            <select class="form-control" formControlName="remarks">
-              <option value="null"> </option>
-            </select>
+            <sup>*</sup><label>Remarks</label>
+            <input class="form-control" formControlName="remarks" />
           </div>
         </div>
       </div>

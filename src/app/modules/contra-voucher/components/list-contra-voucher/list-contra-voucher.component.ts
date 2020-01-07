@@ -34,7 +34,7 @@ export class ListContraVoucherComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.editContraVoucherForm();
@@ -43,11 +43,12 @@ export class ListContraVoucherComponent implements OnInit {
 
   editContraVoucherForm() {
     this.contraVoucherForm = this.fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
+      cashAccountId: [0],
       voucherNo: [""],
-      cashAccount: [""],
-      date: [""]
+      cashPartyId: [0],
+      date: [new Date()]
     });
   }
 

@@ -44,11 +44,11 @@ export class AddContraVoucherComponent implements OnInit {
 
   buildAddContraVoucherForm() {
     this.addContraVoucherForm = this.fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
+      cashAccountId: [0],
       voucherNo: [""],
-      cashAccount: [""],
-      cashParty: [""],
+      cashPartyId: [0],
       date: [new Date()],
       contraVoucherEntryList: this.fb.array([
         this.addContraVoucherEntryFormGroup()

@@ -31,11 +31,11 @@ export class EditSalesInvoiceComponent implements OnInit {
 
   buildEditSalesInvoiceForm() {
     this.editSalesInvoiceForm = this.fb.group({
-      series: [this.salesDetails ? this.salesDetails.SeriesName : ""],
-      cashParty: [this.salesDetails ? this.salesDetails.CashPartName : ""],
-      sales: [this.salesDetails ? this.salesDetails.SalesName : ""],
-      depot: [this.salesDetails ? this.salesDetails.DepotName : ""],
-      project: [this.salesDetails ? this.salesDetails.ProjectName : ""],
+      seriesId: [this.salesDetails ? this.salesDetails.SeriesID : 0],
+      cashPartyACId: [this.salesDetails ? this.salesDetails.CashPartyLedgerID : 0],
+      salesACId: [this.salesDetails ? this.salesDetails.SalesLedgerID : 0],
+      depotLocationId: [this.salesDetails ? this.salesDetails.DepotID : 0],
+      projectId: [this.salesDetails ? this.salesDetails.ProjectID : 0],
       date: [this.salesDetails ? new Date(this.salesDetails.CreatedDate) : ""],
       orderNo: [this.salesDetails ? this.salesDetails.OrderNo : ""],
       salesInvoiceEntryList: this.fb.array([this.editSalesInvoiceEntryFormGroup()])

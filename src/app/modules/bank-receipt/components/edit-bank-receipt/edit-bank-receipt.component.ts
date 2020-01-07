@@ -60,24 +60,12 @@ export class EditBankReceiptComponent implements OnInit {
 
   buildBankReceiptForm(): void {
     this.editBankReceiptForm = this._fb.group({
-      series: [this.bankReceiptDetails ? this.bankReceiptDetails.SeriesID : ""],
-      project: [
-        this.bankReceiptDetails ? this.bankReceiptDetails.ProjectID : ""
-      ],
-      voucherNo: [
-        this.bankReceiptDetails ? this.bankReceiptDetails.VoucherNo : ""
-      ],
-      bankAccount: [
-        this.bankReceiptDetails ? this.bankReceiptDetails.LedgerID : ""
-      ],
+      seriesId: [this.bankReceiptDetails ? this.bankReceiptDetails.SeriesID : 0],
+      projectId: [this.bankReceiptDetails ? this.bankReceiptDetails.ProjectID : 0],
+      voucherNo: [this.bankReceiptDetails ? this.bankReceiptDetails.VoucherNo : ""],
+      bankAccountId: [this.bankReceiptDetails ? this.bankReceiptDetails.LedgerID : 0],
       cashParty: [""],
-      date: [
-        this.bankReceiptDetails
-          ? new Date(
-            this.bankReceiptDetails.CreatedDate
-          )
-          : ""
-      ],
+      date: [this.bankReceiptDetails ? new Date(this.bankReceiptDetails.CreatedDate) : ""],
       bankReceiptEntryList: this._fb.array([
         this.addCashReceiptEntryFormGroup()
       ])

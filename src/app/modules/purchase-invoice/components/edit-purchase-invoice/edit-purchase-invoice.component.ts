@@ -42,13 +42,13 @@ export class EditPurchaseInvoiceComponent implements OnInit {
 
   buildEditPurchaseInvoiceForm() {
     this.editPurchaseForm = this.fb.group({
-      seriesName: [this.purchaseDetails ? this.purchaseDetails.SeriesName : ""],
-      cashParty: [this.purchaseDetails ? this.purchaseDetails.CashPartName : ""],
-      purchaseAc: [this.purchaseDetails ? this.purchaseDetails.PurchInvoiceDetails : ""],
+      seriesId: [this.purchaseDetails ? this.purchaseDetails.SeriesID : 0],
+      cashPartyACId: [this.purchaseDetails ? this.purchaseDetails.CashPartyLedgerID : 0],
+      purchaseAcId: [this.purchaseDetails ? this.purchaseDetails.PurchLedgerID : 0],
       voucherNo: [this.purchaseDetails ? this.purchaseDetails.VoucherNo : ""],
       partyBillNo: [this.purchaseDetails ? this.purchaseDetails.PartyBillNumber : ""],
-      depot: [this.purchaseDetails ? this.purchaseDetails.DepotName : ""],
-      project: [this.purchaseDetails ? this.purchaseDetails.ProjectName : ""],
+      depotLocationId: [this.purchaseDetails ? this.purchaseDetails.DepotID : 0],
+      projectId: [this.purchaseDetails ? this.purchaseDetails.ProjectID : 0],
       date: [this.purchaseDetails ? new Date(this.purchaseDetails.CreatedDate) : ""],
       orderNo: [this.purchaseDetails ? this.purchaseDetails.OrderNo : ""],
       remarks: [this.purchaseDetails ? this.purchaseDetails.Remarks : ""],

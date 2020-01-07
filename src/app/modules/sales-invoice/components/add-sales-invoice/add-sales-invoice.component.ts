@@ -26,12 +26,12 @@ export class AddSalesInvoiceComponent implements OnInit {
 
   buildEditSalesInvoiceForm() {
     this.addSalesInvoiceForm = this.fb.group({
-      series: [""],
-      cashParty: [""],
-      sales: [""],
-      depot: [""],
-      project: [""],
-      date: [new Date()],
+      seriesId: [0],
+      cashPartyACId: [0],
+      salesACId: [0],
+      depotLocationId: [0],
+      projectId: [0],
+      date: [""],
       orderNo: [""],
       salesInvoiceEntryList: this.fb.array([this.addSalesInvoiceEntryFormGroup()])
     });

@@ -51,14 +51,14 @@ export class ListPurchaseReturnComponent implements OnInit {
 
   buildListPurchaseReturnForm() {
     this.purchaseReturnForm = this.fb.group({
-      series: [""],
+      seriesId: [0],
       voucher: [""],
       date: [""],
-      cashParty: [""],
-      depot: [""],
-      order: [""],
-      purchase: [""],
-      project: [""],
+      cashPartyACId: [0],
+      depotLocationId: [0],
+      orderNo: [""],
+      purchaseACId: [0],
+      projectId: [0],
       remarks: [""]
     });
   }

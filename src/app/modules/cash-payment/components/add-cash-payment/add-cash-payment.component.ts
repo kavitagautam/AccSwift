@@ -22,7 +22,7 @@ export class AddCashPaymentComponent implements OnInit {
     public cashPaymentService: CashPaymentService,
     private fb: FormBuilder,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildAddCashPaymentForm(); // initialize the form
@@ -30,12 +30,12 @@ export class AddCashPaymentComponent implements OnInit {
 
   buildAddCashPaymentForm() {
     this.addCashPaymentForm = this.fb.group({
-      series: "",
-      project: "",
-      voucherNo: "",
-      cashAccount: "",
-      cashParty: "",
-      date: "",
+      seriesId: [0],
+      projectId: [0],
+      voucherNo: [""],
+      cashPartyId: [0],
+      cashAccountId: [0],
+      date: [new Date()],
       cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryFormGroup()])
     });
   }

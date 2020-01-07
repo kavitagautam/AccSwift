@@ -31,8 +31,8 @@ export class EditPurchaseOrderComponent implements OnInit {
     this.editPurchaseOrderForm = this.fb.group({
       orderNo: [""],
       date: [new Date()],
-      cashParty: [""],
-      project: [""],
+      cashPartyACId: [0],
+      projectId: [0],
       purchaseOrderEntryList: this.fb.array([this.editPurchaseOrderEntryFormGroup()])
     });
   }

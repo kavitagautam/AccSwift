@@ -1,5 +1,5 @@
 <div class="box-header">
-  <button [routerLink]="['add']" class="btn btn-primary pull-right">
+  <button [routerLink]="['add']" class="btn btn-primary">
     <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Purchase Order
   </button>
 </div>
@@ -26,18 +26,20 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Cash/Party/A/C </label>
-                <select class="form-control" id="cashAccountNo" formControlName="cashParty">
-                  <option value="null"> </option>
+                <sup>*</sup><label>Cash/Party/A/C </label>
+                <select class="form-control" id="cashAccountNo" formControlName="cashPartyACId">
+                  <option [value]="0" disabled>Select </option>
                 </select>
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Project </label>
-                <select class="form-control" id="projectId" formControlName="project">
-                  <option value="null"> </option>
-                  <option *ngFor="let project of pOrderService.projectList" [ngValue]="project.ID">{{project.EngName}} </option>
+                <label>Project</label>
+                <select class="form-control" id="projectId" formControlName="projectId">
+                  <option [value]="0" disabled>Select</option>
+                  <option *ngFor="let project of pOrderService.projectList" [ngValue]="project.ID">
+                    {{project.EngName}}
+                  </option>
                 </select>
               </div>
             </div>
