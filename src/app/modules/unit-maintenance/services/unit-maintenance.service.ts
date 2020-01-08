@@ -26,4 +26,8 @@ export class UnitMaintenanceService {
   getUnitDetails(id): Observable<Units>{
     return this.httpService.get(`${this._api_URL}UnitMaintenance/${id}`);
   }
+
+  saveUnit(body){
+    return this.httpService.post(`${this._api_URL}UnitMaintenance`,body);
+  }
 }
