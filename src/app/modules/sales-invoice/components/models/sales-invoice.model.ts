@@ -23,29 +23,7 @@ export interface SalesInvoiceMaster {
   TableNumber: string;
   PrintCount: number;
   IRDSync: true;
-  InvoiceDetails: [
-    {
-      ID: number;
-      SalesInvoiceID: number;
-      ProductID: number;
-      ProductName: string;
-      ProductCode: string;
-      Quantity: number;
-      SalesRate: number;
-      Amount: number;
-      DiscPercentage: number;
-      DiscountAmount: number;
-      NetAmount: number;
-      Electricity: number;
-      Garbage: number;
-      TaxAmount: number;
-      QtyUnitID: number;
-      QtyUnitName: string;
-      TaxID: number;
-      GeneralName: string;
-      Description: string
-    }
-  ],
+  InvoiceDetails: InvoiceDetailsList[];
   VoucherNo: string;
   SeriesID: number;
   SeriesName: string;
@@ -61,6 +39,28 @@ export interface SalesInvoiceMaster {
   CreatedDate: Date;
   ModifiedBy: string;
   ModifiedDate: Date;
+}
+
+export interface InvoiceDetailsList {
+  ID: number;
+  SalesInvoiceID: number;
+  ProductID: number;
+  ProductName: string;
+  ProductCode: string;
+  Quantity: number;
+  SalesRate: number;
+  Amount: number;
+  DiscPercentage: number;
+  DiscountAmount: number;
+  NetAmount: number;
+  Electricity: number;
+  Garbage: number;
+  TaxAmount: number;
+  QtyUnitID: number;
+  QtyUnitName: string;
+  TaxID: number;
+  GeneralName: string;
+  Description: string
 }
 
 export interface SalesInvoiceDetail {

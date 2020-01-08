@@ -16,7 +16,7 @@
               <div class="form-group">
                 <label>Series </label>
                 <select class="form-control" id="seriesNameId" formControlName="seriesId">
-                  <option [value]="0">Select</option>
+                  <option [value]="0" disabled>Select</option>
                   <option *ngFor="let series of purchaseService.seriesList" [ngValue]="series.ID">{{series.EngName}}
                   </option>
                 </select>
@@ -46,7 +46,7 @@
               <div class="form-group">
                 <label>Depot/ Location </label>
                 <select class="form-control" id="depotId" formControlName="depotLocationId">
-                  <option [value]="0">Select </option>
+                  <option [value]="0" disabled>Select </option>
                 </select>
               </div>
             </div>
@@ -60,7 +60,7 @@
               <div class="form-group">
                 <sup>*</sup> <label>Purchase A/C </label>
                 <select class="form-control" id="purchaseAcId" formControlName="purchaseAcId">
-                  <option [value]="0">Select </option>
+                  <option [value]="0" disabled>Select </option>
                 </select>
               </div>
             </div>
@@ -68,7 +68,7 @@
               <div class="form-group">
                 <label>Project </label>
                 <select class="form-control" id="projectId" formControlName="projectId">
-                  <option [value]="0"> Select</option>
+                  <option [value]="0" disabled> Select</option>
                   <option *ngFor="let project of purchaseService.projectList" [ngValue]="project.ID">{{project.EngName}}
                   </option>
                 </select>

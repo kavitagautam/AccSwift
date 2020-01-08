@@ -14,9 +14,13 @@ export class SalesOrderService {
   constructor(
     private httpService: HttpClientService,
     private http: HttpClient
-  ) {}
+  ) { }
 
   getSalesOrderMaster() {
     return this.httpService.get(`${this.api}SalesInvoiceMaster`);
+  }
+
+  getSalesOrderDetails(id): Observable<SalesOrderMaster> {
+    return this.httpService.get(`${this.api}SalesOrderDetails/${id}`);
   }
 }
