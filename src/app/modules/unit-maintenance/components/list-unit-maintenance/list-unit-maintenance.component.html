@@ -1,0 +1,105 @@
+
+<div class="box-header">
+  <button [routerLink]="['add']" class="btn btn-primary">
+    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add New Unit
+  </button>
+</div>
+<div class="accordion" id="accordion">
+  <div class="box box-default">
+    <div
+      class="box-header with-border"
+      data-toggle="collapse"
+      href="#collapseOne"
+    >
+      <h3 class="box-title">Search Terms</h3>
+    </div>
+    <div class="box-body collapse in" id="collapseOne" data-parent="#accordion">
+      <div class="row">
+        <div class="col-md-12">
+          <form [formGroup]="unitSearchForm" novalidate>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label for="voucher#">Unit Name</label>
+                <input class="form-control" formControlName="unit" />
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label for="series">Symbol</label>
+               <input class="form-control" formControlName="symbol"/>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Description</label>
+                <textarea  row="2" class="form-control" formControlName="description">
+                  </textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="box-footer">
+        <div class="mb-2">
+          <button class="btn btn-primary btn-flat" (click)="searchForm()">
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="box box-default">
+  <div class="box-body">
+    <div class="col-md-12 p-0">
+      <div class="grid-wrapper">
+        <kendo-grid
+          [data]="gridView"
+          [filterable]="true"
+          [filter]="filter"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          scrollable="none"
+          (filterChange)="filterChange($event)"
+        >
+          <kendo-grid-column field="UnitName" title="Unit Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="Symbol" title="Symbol">
+          </kendo-grid-column>
+          <kendo-grid-column field="Remarks" title="Remarks">
+          </kendo-grid-column>
+          <kendo-grid-command-column title="Action" width="220">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
+            >
+              <button
+                kendoGridEditCommand
+                (click)="editUnit(dataItem)"
+              >
+                Edit
+              </button>
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialogue(dataItem)"
+              >
+                Delete
+              </button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
+        <div *ngIf="listLoading" class="k-i-loading"></div>
+      </div>
+    </div>
+  </div>
+</div>
