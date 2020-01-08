@@ -163,6 +163,7 @@ top:5px;
 .grid-wrapper {
   position: relative;
 }
+
 .k-i-loading{
   position: absolute;
   top: 0;
@@ -171,7 +172,7 @@ top:5px;
   bottom: 0;
   font-size: 64px;
   background-color: rgba(255, 255, 255, 0.3);
-  color: #ff6757;
+  color: #ff6757 !important;
 }
 
 .box-header.with-border {
