@@ -35,11 +35,10 @@ import {
     DropDownListModule,
     DropDownsModule,
     SharedModule,
-    SharedModule,
     BankReceiptRoutingModule
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [LedgerModelPopupComponent]
 })
-export class BankReceiptModule {}
+export class BankReceiptModule { }

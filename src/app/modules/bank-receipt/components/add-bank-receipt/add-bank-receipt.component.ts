@@ -119,14 +119,14 @@ export class AddBankReceiptComponent implements OnInit {
   }
   public save(): void {
     if (this.addBankReceiptForm.valid) {
-      this.router.navigate(["/cash-receipt"]);
+      this.router.navigate(["/bank-receipt"]);
     } else {
     }
   }
 
   public cancel(): void {
     this.addBankReceiptForm.reset();
-    this.router.navigate(["/cash-receipt"]);
+    this.router.navigate(["/bank-receipt"]);
   }
 
   public addHandler({ sender }) {
