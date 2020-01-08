@@ -118,4 +118,15 @@ export class EditSalesReturnComponent implements OnInit {
   public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
     sender.closeRow(rowIndex);
   }
+
+  public save(): void {
+    if (this.editSalesReturnForm.valid) {
+      this.router.navigate(["/sales-return"]);
+    }
+  }
+
+  public cancel(): void {
+    this.editSalesReturnForm.reset();
+    this.router.navigate(["/sales-return"]);
+  }
 }

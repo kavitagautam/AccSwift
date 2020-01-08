@@ -13,24 +13,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./edit-sales-invoice.component.scss']
 })
 export class EditSalesInvoiceComponent implements OnInit {
-  editSalesInvoiceForm: FormGroup;
+  editInvoiceForm: FormGroup;
   salesDetails: SalesInvoiceMaster;
   editedRowIndex: any;
   submitted: boolean;
   rowSubmitted: boolean;
 
-  constructor(private fb: FormBuilder,
+  constructor(private _fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute, public salesInvoiceService: SalesInvoiceService) { }
 
   ngOnInit() {
-    this.buildEditSalesInvoiceForm();
-    this.getRouteFromParams();
+    this.buildEditInvoiceForm();
+    this.getIdFromRoute();
   }
 
 
-  buildEditSalesInvoiceForm() {
-    this.editSalesInvoiceForm = this.fb.group({
+  buildEditInvoiceForm() {
+    this.editInvoiceForm = this._fb.group({
       seriesId: [this.salesDetails ? this.salesDetails.SeriesID : 0],
       cashPartyACId: [this.salesDetails ? this.salesDetails.CashPartyLedgerID : 0],
       salesACId: [this.salesDetails ? this.salesDetails.SalesLedgerID : 0],
@@ -38,12 +38,12 @@ export class EditSalesInvoiceComponent implements OnInit {
       projectId: [this.salesDetails ? this.salesDetails.ProjectID : 0],
       date: [this.salesDetails ? new Date(this.salesDetails.CreatedDate) : ""],
       orderNo: [this.salesDetails ? this.salesDetails.OrderNo : ""],
-      salesInvoiceEntryList: this.fb.array([this.editSalesInvoiceEntryFormGroup()])
+      invoiceEntryList: this._fb.array([this.addInvoiceEntryList()])
     });
   }
 
-  editSalesInvoiceEntryFormGroup(): FormGroup {
-    return this.fb.group({
+  addInvoiceEntryList(): FormGroup {
+    return this._fb.group({
       code: [""],
       productName: [""],
       quantity: [""],
@@ -62,31 +62,32 @@ export class EditSalesInvoiceComponent implements OnInit {
     });
   }
 
-  getRouteFromParams() {
+  // Get id from route
+  getIdFromRoute() {
     this.route.paramMap.subscribe(params => {
       const param = params.get('id');
       if (param) {
         this.salesInvoiceService.getSalesInvoiceDetails(param).subscribe(res => {
           this.salesDetails = res;
-          this.buildEditSalesInvoiceForm();
+          this.buildEditInvoiceForm();
         })
       }
     })
   }
 
   public save(): void {
-    if (this.editSalesInvoiceForm.valid) {
+    if (this.editInvoiceForm.valid) {
       this.router.navigate(["/sales-invoice"]);
     }
   }
 
   public cancel(): void {
-    this.editSalesInvoiceForm.reset();
+    this.editInvoiceForm.reset();
     this.router.navigate(["/sales-invoice"]);
   }
 
-  get getSalesInvoiceEntryList(): FormArray {
-    return <FormArray>this.editSalesInvoiceForm.get("salesInvoiceEntryList");
+  get getInvoiceEntryList(): FormArray {
+    return <FormArray>this.editInvoiceForm.get("invoiceEntryList");
   }
 
   private closeEditor(grid, rowIndex = 1) {
@@ -98,12 +99,12 @@ export class EditSalesInvoiceComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    const salesInvoiceEntry = <FormArray>(
-      this.editSalesInvoiceForm.get("salesInvoiceEntryList")
+    const invoiceEntry = <FormArray>(
+      this.editInvoiceForm.get("invoiceEntryList")
     );
-    if (salesInvoiceEntry.invalid) return;
-    (<FormArray>this.editSalesInvoiceForm.get("salesInvoiceEntryList")).push(
-      this.editSalesInvoiceEntryFormGroup()
+    if (invoiceEntry.invalid) return;
+    (<FormArray>this.editInvoiceForm.get("invoiceEntryList")).push(
+      this.addInvoiceEntryList()
     );
     this.rowSubmitted = false;
     this.rowSubmitted = false;
@@ -111,32 +112,32 @@ export class EditSalesInvoiceComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const salesInvoiceEntry = <FormArray>(
-      this.editSalesInvoiceForm.get("salesInvoiceEntryList")
+    const invoiceEntry = <FormArray>(
+      this.editInvoiceForm.get("invoiceEntryList")
     );
-    salesInvoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
-    salesInvoiceEntry.controls[rowIndex].get("productName").setValue(dataItem.productName);
-    salesInvoiceEntry.controls[rowIndex].get("quantity").setValue(dataItem.quantity);
-    salesInvoiceEntry.controls[rowIndex].get("unit").setValue(dataItem.unit);
-    salesInvoiceEntry.controls[rowIndex].get("purchaseRate").setValue(dataItem.purchaseRate);
-    salesInvoiceEntry.controls[rowIndex].get("amount").setValue(dataItem.amount);
-    salesInvoiceEntry.controls[rowIndex].get("specialDiscount").setValue(dataItem.specialDiscount);
-    salesInvoiceEntry.controls[rowIndex].get("specialDiscounts")
+    invoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
+    invoiceEntry.controls[rowIndex].get("productName").setValue(dataItem.productName);
+    invoiceEntry.controls[rowIndex].get("quantity").setValue(dataItem.quantity);
+    invoiceEntry.controls[rowIndex].get("unit").setValue(dataItem.unit);
+    invoiceEntry.controls[rowIndex].get("purchaseRate").setValue(dataItem.purchaseRate);
+    invoiceEntry.controls[rowIndex].get("amount").setValue(dataItem.amount);
+    invoiceEntry.controls[rowIndex].get("specialDiscount").setValue(dataItem.specialDiscount);
+    invoiceEntry.controls[rowIndex].get("specialDiscounts")
       .setValue(dataItem.specialDiscounts);
-    salesInvoiceEntry.controls[rowIndex].get("vat").setValue(dataItem.vat);
-    salesInvoiceEntry.controls[rowIndex].get("customDuty").setValue(dataItem.customDuty);
-    salesInvoiceEntry.controls[rowIndex].get("freight").setValue(dataItem.freight);
-    salesInvoiceEntry.controls[rowIndex].get("tc").setValue(dataItem.tc);
-    salesInvoiceEntry.controls[rowIndex].get("tcAmount").setValue(dataItem.tcAmount);
+    invoiceEntry.controls[rowIndex].get("vat").setValue(dataItem.vat);
+    invoiceEntry.controls[rowIndex].get("customDuty").setValue(dataItem.customDuty);
+    invoiceEntry.controls[rowIndex].get("freight").setValue(dataItem.freight);
+    invoiceEntry.controls[rowIndex].get("tc").setValue(dataItem.tc);
+    invoiceEntry.controls[rowIndex].get("tcAmount").setValue(dataItem.tcAmount);
     this.editedRowIndex = rowIndex;
     sender.editRow(
       rowIndex,
-      this.editSalesInvoiceForm.get("salesInvoiceEntryList")
+      this.editInvoiceForm.get("invoiceEntryList")
     );
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.editSalesInvoiceForm.get("salesInvoiceEntryList")).removeAt(
+    (<FormArray>this.editInvoiceForm.get("invoiceEntryList")).removeAt(
       rowIndex
     );
   }
