@@ -116,4 +116,7 @@ export class ProductComponent implements OnInit, OnChanges {
     this.editedRowIndex = undefined;
   }
 
+  public saveProduct() {
+    if (this.productForm.invalid) return;
+  }
 }

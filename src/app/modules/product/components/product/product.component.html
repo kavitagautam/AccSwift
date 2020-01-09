@@ -5,64 +5,103 @@
         <ng-template kendoTabContent>
           <div class="col-md-12 p-0 mt-3">
             <form [formGroup]="productForm" novalidate>
-              <div class="col-md-4 col-sm-6 col-xs-6">
-                <div class="form-group">
-                  <label>Code </label>
+              <div class="row clearfix mt-3" [ngClass]="{'has-error': formErrors.productCode}">
+                <div class="col-md-4">
+                  <label class="float-right">Product Code:<sup>*</sup> </label>
+                </div>
+                <div class="col-md-8">
                   <input type="text" class="form-control" formControlName="productCode">
                 </div>
               </div>
 
-              <div class="col-md-4 col-sm-6 col-xs-6">
-                <div class="form-group">
-                  <label>Name </label>
+              <div class="row clearfix mt-4">
+                <div class="col-md-4">
+                  <label class="float-right">Product Name:<sup>*</sup> </label>
+                </div>
+                <div class="col-md-8">
                   <input type="text" class="form-control" formControlName="productName">
                 </div>
               </div>
 
-              <div class="col-md-4 col-sm-6 col-xs-6">
-                <div class="form-group">
-                  <label>Product Group </label>
+              <div class="row clearfix mt-4">
+                <div class="col-md-4">
+                  <label class="float-right">Product Group:<sup>*</sup></label>
+                </div>
+                <div class="col-md-8">
                   <input type="text" class="form-control" formControlName="productGroup">
                 </div>
               </div>
 
-              <div class="col-md-4 col-sm-6 col-xs-6">
-                <div class="form-group">
-                  <label>Department</label>
+              <div class="row clearfix mt-4">
+                <div class="col-md-4">
+                  <label class="float-right">Depot/Location: </label>
+                </div>
+                <div class="col-md-8">
                   <input type="text" class="form-control" formControlName="departmentandLocation">
                 </div>
               </div>
 
-              <div class="col-md-4 col-sm-6 col-xs-6">
-                <div class="form-group">
-                  <label>Base Unit </label>
-                  <input type="text" class="form-control" formControlName="baseUnit">
+              <div class="row clearfix mt-4">
+                <div class="col-md-4">
+                  <label class="float-right">Base Unit:<sup>*</sup></label>
+                </div>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" formControlName="baseUnit" />
                 </div>
               </div>
 
-              <div class="col-md-4 col-sm-6 col-xs-6">
-                <div class="form-group">
-                  <label>Remarks </label>
-                  <textarea class="form-control" formControlName="remarks"></textarea>
+              <div class="row clearfix mt-4">
+                <div class="col-md-4">
+                  <label class="float-right">Remarks:</label>
+                </div>
+                <div class="col-md-8">
+                  <textarea type="text" class="form-control" formControlName="remarks"></textarea>
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <div class="row clearfix mt-3">
-                  <div class="col-md-5">
-                    <label class="float-right">Opening Balance:<sup>*</sup></label>
+              <div class="row clearfix mt-4">
+                <div class="col-md-4">
+                  <label class="float-right">Opening Balance <sup>*</sup>:</label>
+                </div>
+                <div class="col-md-8">
+                  <button type="button" class="btn btn-secondory" (click)="openModal()" data-toggle="modal"
+                    data-target="#openingBalanceModal">Opening Quantity Entry</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 p-0 ml-4">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> IsVat Applicable
+                    </label>
                   </div>
-                  <div class="col-md-7">
-                    <button type="button" class="btn btn-secondary" (click)="openModal()" data-toggle="modal"
-                      data-target="#openingBalanceModal">
-                      Opening Balance
-                    </button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 p-0 ml-4">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> IsInventory Applicable
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 p-0 ml-4">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> IsDecimal Applicable
+                    </label>
                   </div>
                 </div>
               </div>
             </form>
+
             <div class="col-md-12 m-2">
-              <button class="btn btn-primary" disabled (click)="saveProduct()">
+              <button class="btn btn-primary" (click)="saveProduct()">
                 Save
               </button>
               <button class="btn btn-secondary ml-2" (click)="cancelProduct()">

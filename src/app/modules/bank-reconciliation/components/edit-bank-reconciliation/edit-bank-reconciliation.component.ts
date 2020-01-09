@@ -42,7 +42,7 @@ export class EditBankReconciliationComponent implements OnInit {
 
   ngOnInit() {
     this.buildeditReconciliationForm();
-    this.getRouteFromParam();
+    this.getIdFromRoute();
   }
 
   buildeditReconciliationForm() {
@@ -52,11 +52,11 @@ export class EditBankReconciliationComponent implements OnInit {
       voucherNo: [this.reconciliationDetails ? this.reconciliationDetails.VoucherNo : ""],
       bankAccountId: [this.reconciliationDetails ? this.reconciliationDetails.LedgerID : 0],
       date: [this.reconciliationDetails ? new Date(this.reconciliationDetails.CreatedDate) : ""],
-      reconciliationEntryList: this._fb.array([this.editReconciliationEntryList()])
+      reconciliationEntryList: this._fb.array([this.addReconciliationEntryList()])
     });
   }
 
-  editReconciliationEntryList(): FormGroup {
+  addReconciliationEntryList(): FormGroup {
     return this._fb.group({
       ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       particularsOrAccountingHead: ["", Validators.required],
@@ -71,7 +71,7 @@ export class EditBankReconciliationComponent implements OnInit {
     });
   }
 
-  getRouteFromParam() {
+  getIdFromRoute() {
     this.route.paramMap.subscribe(params => {
       const param = params.get("id");
       if (param) {
@@ -134,7 +134,7 @@ export class EditBankReconciliationComponent implements OnInit {
     if (this.editReconciliationForm.get("reconciliationEntryList").invalid) return;
 
     (<FormArray>this.editReconciliationForm.get("reconciliationEntryList")).push(
-      this.editReconciliationEntryList()
+      this.addReconciliationEntryList()
     );
     this.submitted = false;
   }
@@ -143,14 +143,8 @@ export class EditBankReconciliationComponent implements OnInit {
     const reconciliationFormArray = <FormArray>(
       this.editReconciliationForm.get("reconciliationEntryList")
     );
-
-    const ledgerCode = reconciliationFormArray.controls[selectedRow].get(
-      "ledgerCode"
-    ).value;
-    if (
-      reconciliationFormArray.controls[selectedRow].get("ledgerCode").status ===
-      "VALID"
-    ) {
+    const ledgerCode = reconciliationFormArray.controls[selectedRow].get("ledgerCode").value;
+    if (reconciliationFormArray.controls[selectedRow].get("ledgerCode").status === "VALID") {
       this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
@@ -185,7 +179,7 @@ export class EditBankReconciliationComponent implements OnInit {
     this.rowSubmitted = true;
     if (this.editReconciliationForm.get("reconciliationEntryList").invalid) return;
     (<FormArray>this.editReconciliationForm.get("reconciliationEntryList")).push(
-      this.editReconciliationEntryList());
+      this.addReconciliationEntryList());
     this.rowSubmitted = false;
     this.submitted = false;
   }
@@ -238,14 +232,10 @@ export class EditBankReconciliationComponent implements OnInit {
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    const bankReconciliationEntry = <FormArray>(
-      this.editReconciliationForm.get("reconciliationEntryList")
+    const bankReconciliationEntry = <FormArray>(this.editReconciliationForm.get("reconciliationEntryList")
     );
-
     // Remove the Row
-    (<FormArray>bankReconciliationEntry).removeAt(
-      rowIndex
-    );
+    (<FormArray>bankReconciliationEntry).removeAt(rowIndex);
   }
 
   private closeEditor(grid, rowIndex = 1) {

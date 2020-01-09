@@ -7,7 +7,6 @@ import {
   OnChanges,
   SimpleChange
 } from "@angular/core";
-import { formatDate } from "@angular/common";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
@@ -22,6 +21,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   @ViewChild("openingBalanceModal") openingBalanceModal: ElementRef;
   @ViewChild("previousYearBalanceModal") previousYearBalanceModal: ElementRef;
   @Input("selectedItem") selectedItem;
+  date: Date = new Date();
   selectedLedgerId: number;
   accoutLedgerForm: FormGroup;
   ledgerDetails: LedgerDetails;
@@ -33,7 +33,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     public _fb: FormBuilder,
     public ledgerService: LedgerService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildAccountLedgerForm();
@@ -75,7 +75,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         this.ledgerDetails ? this.ledgerDetails.Currency : "",
         Validators.required
       ],
-      date: [this.ledgerDetails ? formatDate(this.ledgerDetails.CreatedDate, "yyyy-MM-dd", "en-US"): ""],
+      date: [this.ledgerDetails ? new Date(this.ledgerDetails.CreatedDate) : ""],
       openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
       previousYearBalanceList: this._fb.array([
         this.addPreviousYearBalanceFormGroup()
@@ -106,7 +106,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     return <FormArray>this.accoutLedgerForm.get("previousYearBalanceList");
   }
 
-  openModal(index: number): void {}
+  openModal(index: number): void { }
 
   public addHandler({ sender }) {
     this.closeEditor(sender);

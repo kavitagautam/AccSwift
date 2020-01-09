@@ -50,13 +50,11 @@ export class AddContraVoucherComponent implements OnInit {
       voucherNo: [""],
       cashPartyId: [0],
       date: [new Date()],
-      contraVoucherEntryList: this.fb.array([
-        this.addContraVoucherEntryFormGroup()
-      ])
+      contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryList()])
     });
   }
 
-  addContraVoucherEntryFormGroup(): FormGroup {
+  addContraVoucherEntryList(): FormGroup {
     return this.fb.group({
       ledgerCode: [""],
       particularsOraccountingHead: [""],
@@ -76,10 +74,11 @@ export class AddContraVoucherComponent implements OnInit {
     this.submitted = true;
     if (this.addContraVoucherForm.get("contraVoucherEntryList").invalid) return;
     (<FormArray>this.addContraVoucherForm.get("contraVoucherEntryList")).push(
-      this.addContraVoucherEntryFormGroup()
+      this.addContraVoucherEntryList()
     );
     this.submitted = false;
   }
+
   changeLedgerValue(dataItem, rowIndex): void {
     const contraVoucherFormArray = <FormArray>(
       this.addContraVoucherForm.get("contraVoucherEntryList")
@@ -110,13 +109,13 @@ export class AddContraVoucherComponent implements OnInit {
 
   public save(): void {
     if (this.addContraVoucherForm.valid) {
-      this.router.navigate(["/contra"]);
+      this.router.navigate(["/contra-voucher"]);
     } else {
     }
   }
   public cancel(): void {
     this.addContraVoucherForm.reset();
-    this.router.navigate(["/contra"]);
+    this.router.navigate(["/contra-voucher"]);
   }
 
   private closeEditor(grid, rowIndex = 1) {
@@ -133,7 +132,7 @@ export class AddContraVoucherComponent implements OnInit {
       this.addContraVoucherForm.get("contraVoucherEntryList")
     );
     if (contraVoucherEntry.invalid) return;
-    contraVoucherEntry.push(this.addContraVoucherEntryFormGroup());
+    contraVoucherEntry.push(this.addContraVoucherEntryList());
     this.rowSubmitted = false;
     this.submitted = false;
   }

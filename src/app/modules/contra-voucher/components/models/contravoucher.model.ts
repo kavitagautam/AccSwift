@@ -23,7 +23,7 @@ export interface SeriesList {
 export interface ContraVoucherMaster {
   IsPayByInvoice: boolean;
   TotalAmount: number;
-  CashReceiptDetails: CashReceiptDetails[];
+  ContraVoucherDetail: ContraVoucherDetails[];
   LedgerID: number;
   LedgerName: string;
   ID: number;
@@ -47,7 +47,7 @@ export interface ContraVoucherMaster {
   ModifiedDate: Date;
 }
 
-export interface CashReceiptDetails {
+export interface ContraVoucherDetails {
   VoucherType: string;
   VoucherNumber: string;
   DiscountAmount: number;

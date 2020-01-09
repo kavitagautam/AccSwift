@@ -46,9 +46,7 @@ export class AddBankReconciliationComponent implements OnInit {
       voucherNo: [""],
       bankAccountId: [0],
       date: [new Date()],
-      reconciliationEntryList: this._fb.array([
-        this.addReconciliationEntryList()
-      ])
+      reconciliationEntryList: this._fb.array([this.addReconciliationEntryList()])
     })
   }
 

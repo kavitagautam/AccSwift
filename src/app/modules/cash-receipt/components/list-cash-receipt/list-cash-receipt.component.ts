@@ -24,25 +24,6 @@ export class ListCashReceiptComponent implements OnInit {
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
   date: Date = new Date();
-  constructor(
-    public _fb: FormBuilder,
-    private router: Router,
-    private modalService: BsModalService,
-    private toastr: ToastrService,
-    public cashReceiptService: CashReceiptService
-  ) { }
-  ngOnInit() {
-    this.cashReceiptForm = this._fb.group({
-      seriesId: [0],
-      projectId: [0],
-      voucherNo: [""],
-      cashAccountId: [0],
-      cashPartyId: [0],
-      date: [new Date()]
-    });
-    this.getCashReceiptlList();
-  }
-
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
@@ -61,6 +42,26 @@ export class ListCashReceiptComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true
   };
+
+  constructor(
+    public _fb: FormBuilder,
+    private router: Router,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
+    public cashReceiptService: CashReceiptService
+  ) { }
+
+  ngOnInit() {
+    this.cashReceiptForm = this._fb.group({
+      seriesId: [0],
+      projectId: [0],
+      voucherNo: [""],
+      cashAccountId: [0],
+      cashPartyId: [0],
+      date: [new Date()]
+    });
+    this.getCashReceiptlList();
+  }
 
   // Date string parse
   public currentYear = new Date().getFullYear();
@@ -87,7 +88,6 @@ export class ListCashReceiptComponent implements OnInit {
     this.cashReceiptService.getCashReceiptMaster().subscribe(
       res => {
         this.listLoading = true;
-
         //mapping the data to change string date format to Date
         const sampleData = res.map(
           dataItem =>
@@ -135,7 +135,6 @@ export class ListCashReceiptComponent implements OnInit {
 
   public filterChange(filter): void {
     this.filter = filter;
-
     this.getCashReceiptlList();
   }
 
@@ -145,14 +144,12 @@ export class ListCashReceiptComponent implements OnInit {
 
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
-
     if (event.skip == 0) {
       this.skip = event.skip;
       this.currentPage = 1;
     } else {
       this.skip = event.skip;
       const pageNo = event.skip / event.take + 1;
-
       this.currentPage = pageNo;
     }
     this.getCashReceiptlList();
@@ -163,7 +160,7 @@ export class ListCashReceiptComponent implements OnInit {
   }
 
   openConfirmationDialogue(dataItem) {
-    const journalId = {
+    const cashReceiptId = {
       id: dataItem.ID
     };
     this.modalRef = this.modalService.show(
@@ -174,7 +171,7 @@ export class ListCashReceiptComponent implements OnInit {
     this.modalRef.content.action = "delete";
     this.modalRef.content.onClose.subscribe(confirm => {
       if (confirm) {
-        this.deleteReceiptByID(journalId.id);
+        this.deleteReceiptByID(cashReceiptId.id);
       }
     });
   }

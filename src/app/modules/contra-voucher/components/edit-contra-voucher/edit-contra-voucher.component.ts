@@ -44,7 +44,7 @@ export class EditContraVoucherComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getParambyId();
+    this.getIdFromRoute();
     this.buildEditContraVoucherForm(); //initialize the buildEditContraVoucher Form
   }
 
@@ -54,13 +54,13 @@ export class EditContraVoucherComponent implements OnInit {
       projectId: [this.contraVoucherDetail ? this.contraVoucherDetail.ProjectID : 0],
       voucherNo: [this.contraVoucherDetail ? this.contraVoucherDetail.VoucherNo : ""],
       cashAccountId: [this.contraVoucherDetail ? this.contraVoucherDetail.LedgerID : 0],
-      cashPartyId: [this.contraVoucherDetail ? this.contraVoucherDetail.CashReceiptDetails : 0],
+      cashPartyId: [this.contraVoucherDetail ? this.contraVoucherDetail.ContraVoucherDetail : 0],
       date: [this.contraVoucherDetail ? new Date(this.contraVoucherDetail.CreatedDate) : ""],
-      contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryFormGroup()])
+      contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryList()])
     });
   }
 
-  addContraVoucherEntryFormGroup(): FormGroup {
+  addContraVoucherEntryList(): FormGroup {
     return this.fb.group({
       ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       particularsOraccountingHead: ["", Validators.required],
@@ -72,7 +72,7 @@ export class EditContraVoucherComponent implements OnInit {
     });
   }
 
-  getParambyId() {
+  getIdFromRoute() {
     this.route.paramMap.subscribe(params => {
       const paramGetId = params.get("id");
       if (paramGetId) {
@@ -86,15 +86,13 @@ export class EditContraVoucherComponent implements OnInit {
   }
 
   get getContraVoucherEntryList(): FormArray {
-    const getContraVoucher = <FormArray>(this.editContraVoucherForm.get("contraVoucherEntryList"))
-    return getContraVoucher;
+    return <FormArray>(this.editContraVoucherForm.get("contraVoucherEntryList"));
+
   }
 
   setContraVoucherList(): void {
-    this.editContraVoucherForm.setControl(
-      "contraVoucherEntryList",
-      this.setContraVoucherFormArray(this.contraVoucherDetail.CashReceiptDetails)
-    );
+    this.editContraVoucherForm.setControl("contraVoucherEntryList",
+      this.setContraVoucherFormArray(this.contraVoucherDetail.ContraVoucherDetail));
   }
 
   setContraVoucherFormArray(contraVoucherDetails): FormArray {
@@ -133,7 +131,7 @@ export class EditContraVoucherComponent implements OnInit {
     if (this.editContraVoucherForm.get("contraVoucherEntryList").invalid)
       return;
     (<FormArray>this.editContraVoucherForm.get("contraVoucherEntryList")).push(
-      this.addContraVoucherEntryFormGroup()
+      this.addContraVoucherEntryList()
     );
     this.submitted = false;
   }
@@ -178,7 +176,7 @@ export class EditContraVoucherComponent implements OnInit {
     this.rowSubmitted = true;
     const contraVoucherEntry = <FormArray>(this.editContraVoucherForm.get('contraVoucherEntryList'));
     if (contraVoucherEntry.invalid) return;
-    contraVoucherEntry.push(this.addContraVoucherEntryFormGroup());
+    contraVoucherEntry.push(this.addContraVoucherEntryList());
     this.rowSubmitted = false;
     this.submitted = false;
   }

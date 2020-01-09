@@ -67,7 +67,7 @@
             <button kendoGridAddCommand>Add new</button>
           </ng-template>
 
-          <kendo-grid-column field="particularsOraccountingHead" title="Particulars Or Accounting Head" width="300">
+          <kendo-grid-column field="particularsOrAccountingHead" title="Particulars Or Accounting Head" width="300">
             <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
               let-isNew="isNew" let-rowIndex="rowIndex">
               <div class="col-xs-12 col-md-12 p-0">
@@ -89,7 +89,7 @@
                 <div class="col-md-8 pr-0">
                   <input #input class="k-textbox" [readonly]="true" [formControl]="
                       getBankPaymentEntryList.controls[rowIndex].get(
-                        'particularsOraccountingHead'
+                        'particularsOrAccountingHead'
                       )
                     " />
                   <a (click)="openModal(rowIndex)"><i class="fa fa-eye pull-right ledgerSelectIcon"
@@ -97,13 +97,13 @@
                   </a>
                   <kendo-popup [anchor]="input" *ngIf="
                       getBankPaymentEntryList.controls[rowIndex].get(
-                        'particularsOraccountingHead'
+                        'particularsOrAccountingHead'
                       ).invalid &&
                       rowSubmitted &&
                       !(
                         isNew &&
                         getBankPaymentEntryList.controls[rowIndex].get(
-                          'particularsOraccountingHead'
+                          'particularsOrAccountingHead'
                         ).untouched
                       ) &&
                       !getBankPaymentEntryList.controls[rowIndex].get(

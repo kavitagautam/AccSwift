@@ -18,13 +18,10 @@ export class AddBankReceiptComponent implements OnInit {
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
-
   BankRecieptDetail: BankReceiptMaster;
   addBankReceiptForm: FormGroup;
   submitted: boolean;
-
   rowSubmitted: boolean;
-
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -33,6 +30,7 @@ export class AddBankReceiptComponent implements OnInit {
     ignoreBackdropClick: true,
     centered: true
   };
+
   constructor(
     public _fb: FormBuilder,
     private router: Router,
@@ -55,7 +53,7 @@ export class AddBankReceiptComponent implements OnInit {
       bankAccountId: [0],
       date: [new Date()],
       bankReceiptEntryList: this._fb.array([
-        this.addBankReceiptEntryFormGroup()
+        this.addBankReceiptEntryList()
       ])
     });
   }
@@ -64,7 +62,7 @@ export class AddBankReceiptComponent implements OnInit {
     return <FormArray>this.addBankReceiptForm.get("bankReceiptEntryList");
   }
 
-  addBankReceiptEntryFormGroup(): FormGroup {
+  addBankReceiptEntryList(): FormGroup {
     return this._fb.group({
       ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       particularsOraccountingHead: ["", Validators.required],
@@ -84,7 +82,7 @@ export class AddBankReceiptComponent implements OnInit {
     if (this.addBankReceiptForm.get("bankReceiptEntryList").invalid) return;
 
     (<FormArray>this.addBankReceiptForm.get("bankReceiptEntryList")).push(
-      this.addBankReceiptEntryFormGroup()
+      this.addBankReceiptEntryList()
     );
     this.submitted = false;
   }
@@ -117,6 +115,7 @@ export class AddBankReceiptComponent implements OnInit {
       });
     }
   }
+
   public save(): void {
     if (this.addBankReceiptForm.valid) {
       this.router.navigate(["/bank-receipt"]);
@@ -135,7 +134,7 @@ export class AddBankReceiptComponent implements OnInit {
     this.rowSubmitted = true;
     if (this.addBankReceiptForm.get("bankReceiptEntryList").invalid) return;
     (<FormArray>this.addBankReceiptForm.get("bankReceiptEntryList")).push(
-      this.addBankReceiptEntryFormGroup()
+      this.addBankReceiptEntryList()
     );
     this.rowSubmitted = false;
     this.submitted = false;
@@ -146,18 +145,14 @@ export class AddBankReceiptComponent implements OnInit {
     const bankReceiptEntry = <FormArray>(
       this.addBankReceiptForm.get("bankReceiptEntryList")
     );
-    bankReceiptEntry.controls[rowIndex]
-      .get("particularsOraccountingHead")
+    bankReceiptEntry.controls[rowIndex].get("particularsOraccountingHead")
       .setValue(dataItem.particularsOraccountingHead);
-    bankReceiptEntry.controls[rowIndex]
-      .get("voucherNo")
+    bankReceiptEntry.controls[rowIndex].get("voucherNo")
       .setValue(dataItem.voucherNo);
-    bankReceiptEntry.controls[rowIndex]
-      .get("currentAmount")
+    bankReceiptEntry.controls[rowIndex].get("currentAmount")
       .setValue(dataItem.currentAmount);
     bankReceiptEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
-    bankReceiptEntry.controls[rowIndex]
-      .get("remarks")
+    bankReceiptEntry.controls[rowIndex].get("remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
     sender.editRow(
@@ -175,14 +170,11 @@ export class AddBankReceiptComponent implements OnInit {
     this.modalRef.content.action = "Select";
     this.modalRef.content.onSelected.subscribe(data => {
       if (data) {
-        const bankReceiptFormArray = <FormArray>(
-          this.addBankReceiptForm.get("bankReceiptEntryList")
+        const bankReceiptFormArray = <FormArray>(this.addBankReceiptForm.get("bankReceiptEntryList")
         );
-        bankReceiptFormArray.controls[index]
-          .get("currentBalance")
+        bankReceiptFormArray.controls[index].get("currentBalance")
           .setValue(data.ActualBalance);
-        bankReceiptFormArray.controls[index]
-          .get("particularsOraccountingHead")
+        bankReceiptFormArray.controls[index].get("particularsOraccountingHead")
           .setValue(data.LedgerName);
       }
     });
