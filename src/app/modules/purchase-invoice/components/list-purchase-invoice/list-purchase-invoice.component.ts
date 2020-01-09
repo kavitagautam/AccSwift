@@ -12,7 +12,7 @@ import { Component, OnInit } from "@angular/core";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
-  selector: "app-list-purchase-invoice",
+  selector: "accSwift-list-purchase-invoice",
   templateUrl: "./list-purchase-invoice.component.html",
   styleUrls: ["./list-purchase-invoice.component.scss"]
 })

@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { CompanyService } from "../../services/company.service";
 import { CompanyList } from "../../models/company.model";
 @Component({
-  selector: "app-edit-company",
+  selector: "accSwift-edit-company",
   templateUrl: "./edit-company.component.html",
   styleUrls: ["./edit-company.component.scss"]
 })

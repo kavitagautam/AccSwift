@@ -11,7 +11,7 @@ import { Router } from "@angular/router";
 import { GroupDetails } from "../../models/ledger.models";
 
 @Component({
-  selector: "app-account-group",
+  selector: "accSwift-account-group",
   templateUrl: "./account-group.component.html",
   styleUrls: ["./account-group.component.scss"]
 })

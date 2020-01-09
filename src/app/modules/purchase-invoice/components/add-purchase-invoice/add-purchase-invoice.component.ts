@@ -5,7 +5,7 @@ import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: "app-add-purchase-invoice",
+  selector: "accSwift-add-purchase-invoice",
   templateUrl: "./add-purchase-invoice.component.html",
   styleUrls: ["./add-purchase-invoice.component.scss"]
 })

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-list-bank-reconciliation',
+  selector: 'accSwift-list-bank-reconciliation',
   templateUrl: './list-bank-reconciliation.component.html',
   styleUrls: ['./list-bank-reconciliation.component.scss']
 })

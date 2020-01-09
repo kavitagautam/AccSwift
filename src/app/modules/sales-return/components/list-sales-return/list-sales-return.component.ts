@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-list-sales-return',
+  selector: 'accSwift-list-sales-return',
   templateUrl: './list-sales-return.component.html',
   styleUrls: ['./list-sales-return.component.scss']
 })

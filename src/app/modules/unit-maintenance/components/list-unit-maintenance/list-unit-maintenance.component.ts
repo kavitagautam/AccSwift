@@ -13,7 +13,7 @@ import { ToastrService } from "ngx-toastr";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
-  selector: "app-list-unit-maintenance",
+  selector: "accSwift-list-unit-maintenance",
   templateUrl: "./list-unit-maintenance.component.html",
   styleUrls: ["./list-unit-maintenance.component.scss"]
 })

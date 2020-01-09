@@ -10,7 +10,7 @@ import { ProductService } from "../../services/product.service";
 import { Product } from '../../models/product.models';
 
 @Component({
-  selector: "app-product",
+  selector: "accSwift-product",
   templateUrl: "./product.component.html",
   styleUrls: ["./product.component.scss"]
 })

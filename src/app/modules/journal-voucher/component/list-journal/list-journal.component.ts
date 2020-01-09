@@ -13,7 +13,7 @@ import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 @Component({
-  selector: "app-list-journal",
+  selector: "accSwift-list-journal",
   templateUrl: "./list-journal.component.html",
   styleUrls: ["./list-journal.component.css"]
 })

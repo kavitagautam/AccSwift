@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-add-ledger',
+  selector: 'accSwift-add-ledger',
   templateUrl: './add-ledger.component.html',
   styleUrls: ['./add-ledger.component.scss']
 })

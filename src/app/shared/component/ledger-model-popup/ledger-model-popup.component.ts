@@ -12,7 +12,7 @@ import {
 } from "@progress/kendo-angular-grid";
 
 @Component({
-  selector: "app-ledger-model-popup",
+  selector: "accSwift-ledger-model-popup",
   templateUrl: "./ledger-model-popup.component.html",
   styleUrls: ["./ledger-model-popup.component.scss"]
 })

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-preference',
+  selector: 'accSwift-preference',
   templateUrl: './preference.component.html',
   styleUrls: ['./preference.component.scss']
 })

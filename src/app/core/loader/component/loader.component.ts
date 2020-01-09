@@ -3,7 +3,7 @@ import { Loader } from "../model/loader";
 import { LoaderService } from "../service/loader.service";
 
 @Component({
-  selector: "app-loader",
+  selector: "accSwift-loader",
   templateUrl: "./loader.component.html",
   styleUrls: ["./loader.component.scss"]
 })
