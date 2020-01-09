@@ -1,14 +1,13 @@
 import { PurchaseOrderService } from './../../services/purchase-order.service';
 import { Router } from '@angular/router';
 import { BsModalRef } from 'ngx-bootstrap';
-import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
 import { FormGroup, FormArray } from '@angular/forms';
 
 import { FormBuilder } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-add-purchase-order',
+  selector: 'accSwift-add-purchase-order',
   templateUrl: './add-purchase-order.component.html',
   styleUrls: ['./add-purchase-order.component.scss']
 })
@@ -37,11 +36,11 @@ export class AddPurchaseOrderComponent implements OnInit {
       date: [new Date()],
       cashPartyACId: [0],
       projectId: [0],
-      purchaseOrderEntryList: this.fb.array([this.addPurchaseOrderEntryFormGroup()])
+      purchaseOrderEntryList: this.fb.array([this.addPurchaseOrderEntryList()])
     });
   }
 
-  addPurchaseOrderEntryFormGroup() {
+  addPurchaseOrderEntryList(): FormGroup {
     return this.fb.group({
       ProductName: [""],
       Quantity: [""],
@@ -89,7 +88,7 @@ export class AddPurchaseOrderComponent implements OnInit {
     this.rowSubmitted = true;
     const purchaseOrderEntry = <FormArray>(this.addPurchaseOrderForm.get("purchaseOrderEntryList"));
     if (purchaseOrderEntry.invalid) return;
-    (<FormArray>purchaseOrderEntry).push(this.addPurchaseOrderEntryFormGroup());
+    (<FormArray>purchaseOrderEntry).push(this.addPurchaseOrderEntryList());
     this.submitted = false;
     this.rowSubmitted = false;
   }

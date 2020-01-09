@@ -12,7 +12,7 @@ import { IntlService } from '@progress/kendo-angular-intl';
 import { LocaleService } from '@app/core/services/locale/locale.services';
 
 @Component({
-  selector: "app-edit-journal",
+  selector: "accSwift-edit-journal",
   templateUrl: "./edit-journal.component.html",
   styleUrls: ["./edit-journal.component.css"],
   providers: [DatePipe]

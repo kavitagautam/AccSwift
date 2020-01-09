@@ -5,7 +5,7 @@ import { CompanyService } from "../../services/company.service";
 import { ToastrMessageService } from "@app/shared/services/toastr-message/toastr-message.service";
 
 @Component({
-  selector: "app-add-company",
+  selector: "accSwift-add-company",
   templateUrl: "./add-company.component.html",
   styleUrls: ["./add-company.component.scss"]
 })

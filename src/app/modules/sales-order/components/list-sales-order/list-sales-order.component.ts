@@ -1,6 +1,7 @@
+import { SalesOrderMaster } from './../models/list-sales-order.model';
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
-import { BsModalRef } from "ngx-bootstrap";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import {
   CompositeFilterDescriptor,
   SortDescriptor
@@ -13,12 +14,12 @@ import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
-  selector: "app-list-sales-order",
-  templateUrl: "./list-sales-order.component.html",
-  styleUrls: ["./list-sales-order.component.scss"]
+  selector: 'accSwift-list-sales-order',
+  templateUrl: './list-sales-order.component.html',
+  styleUrls: ['./list-sales-order.component.scss']
 })
 export class ListSalesOrderComponent implements OnInit {
-  listSalesOrderForm: FormGroup;
+  salesOrderForm: FormGroup;
   date: Date = new Date();
   listLoading: Boolean;
   public gridView: GridDataResult;
@@ -40,8 +41,8 @@ export class ListSalesOrderComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true
   };
-  salesOrderList: any;
-  modalService: any;
+  salesOrderList: SalesOrderMaster[];
+  modalService: BsModalService;
 
   constructor(
     private fb: FormBuilder,
@@ -51,11 +52,11 @@ export class ListSalesOrderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.buildListSalesOrderForm();
+    this.buildSalesOrderForm();
   }
 
-  buildListSalesOrderForm() {
-    this.listSalesOrderForm = this.fb.group({
+  buildSalesOrderForm() {
+    this.salesOrderForm = this.fb.group({
       orderNo: [""],
       cashPartyACId: [0],
       remarks: [""],

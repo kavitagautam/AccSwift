@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 import { LedgerModelPopupComponent } from '@app/shared/component/ledger-model-popup/ledger-model-popup.component';
 
 @Component({
-  selector: 'app-add-bank-reconciliation',
+  selector: 'accSwift-add-bank-reconciliation',
   templateUrl: './add-bank-reconciliation.component.html',
   styleUrls: ['./add-bank-reconciliation.component.scss']
 })

@@ -5,9 +5,9 @@ import { FormBuilder, FormGroup, FormArray } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: "app-edit-sales-return",
-  templateUrl: "./edit-sales-return.component.html",
-  styleUrls: ["./edit-sales-return.component.scss"]
+  selector: 'accSwift-edit-sales-return',
+  templateUrl: './edit-sales-return.component.html',
+  styleUrls: ['./edit-sales-return.component.scss']
 })
 export class EditSalesReturnComponent implements OnInit {
   editSalesReturnForm: FormGroup;
@@ -18,14 +18,14 @@ export class EditSalesReturnComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    public editSalesRetService: SalesReturnService,
+    public salesReturnService: SalesReturnService,
     private router: Router,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.buildEditSalesReturnForm(); //Initialize the form
-    this.getRouteFromParam();
+    this.getIdFromRoute();
   }
 
   buildEditSalesReturnForm() {
@@ -38,11 +38,11 @@ export class EditSalesReturnComponent implements OnInit {
       date: [new Date()],
       orderNo: [""],
       remarks: [""],
-      salesReturnEntryList: this._fb.array([this.editSalesReturnFormGroup()])
+      salesReturnEntryList: this._fb.array([this.addSalesReturnEntryList()])
     })
   }
 
-  editSalesReturnFormGroup(): FormGroup {
+  addSalesReturnEntryList(): FormGroup {
     return this._fb.group({
       code: [""],
       productName: [""],
@@ -66,17 +66,18 @@ export class EditSalesReturnComponent implements OnInit {
     return this.editSalesReturnForm.get("salesReturnEntryList");
   }
 
-  getRouteFromParam() {
+  getIdFromRoute() {
     this.route.paramMap.subscribe(params => {
       const param = params.get('id');
       if (param) {
-        this.editSalesRetService.getSalesReturnDetails(param).subscribe(res => {
+        this.salesReturnService.getSalesReturnDetails(param).subscribe(res => {
           this.salesReturnDetails = res;
           this.buildEditSalesReturnForm();
         })
       }
     })
   }
+
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
@@ -89,7 +90,7 @@ export class EditSalesReturnComponent implements OnInit {
     this.rowSubmitted = true;
     const salesReturnEntry = <FormArray>(this.editSalesReturnForm.get("salesReturnEntryList"));
     if (salesReturnEntry.invalid) return;
-    (<FormArray>salesReturnEntry).push(this.editSalesReturnFormGroup());
+    (<FormArray>salesReturnEntry).push(this.addSalesReturnEntryList());
     this.submitted = false;
     this.rowSubmitted = false;
   }

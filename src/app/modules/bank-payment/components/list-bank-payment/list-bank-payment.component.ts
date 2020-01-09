@@ -13,7 +13,7 @@ import {
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
-  selector: "app-list-bank-payment",
+  selector: "accSwift-list-bank-payment",
   templateUrl: "./list-bank-payment.component.html",
   styleUrls: ["./list-bank-payment.component.scss"]
 })

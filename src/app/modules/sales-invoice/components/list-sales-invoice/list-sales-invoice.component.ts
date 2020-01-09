@@ -9,7 +9,7 @@ import { FormBuilder } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-list-sales-invoice',
+  selector: 'accSwift-list-sales-invoice',
   templateUrl: './list-sales-invoice.component.html',
   styleUrls: ['./list-sales-invoice.component.scss']
 })

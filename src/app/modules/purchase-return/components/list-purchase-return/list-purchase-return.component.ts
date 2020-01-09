@@ -10,9 +10,9 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ConfirmationDialogComponent } from '@app/shared/component/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
-  selector: "app-list-purchase-return",
-  templateUrl: "./list-purchase-return.component.html",
-  styleUrls: ["./list-purchase-return.component.scss"]
+  selector: 'accSwift-list-purchase-return',
+  templateUrl: './list-purchase-return.component.html',
+  styleUrls: ['./list-purchase-return.component.scss']
 })
 export class ListPurchaseReturnComponent implements OnInit {
   purchaseReturnForm: FormGroup;
@@ -39,17 +39,17 @@ export class ListPurchaseReturnComponent implements OnInit {
   listLoading: boolean;
   constructor(
     private fb: FormBuilder,
-    public purchaseRetService: PurchaseReturnService,
+    public purchaseReturnService: PurchaseReturnService,
     private router: Router,
     private toastr: ToastrService,
     private modalService: BsModalService
   ) { }
 
   ngOnInit() {
-    this.buildListPurchaseReturnForm();
+    this.buildPurchaseReturnForm();
   }
 
-  buildListPurchaseReturnForm() {
+  buildPurchaseReturnForm() {
     this.purchaseReturnForm = this.fb.group({
       seriesId: [0],
       voucher: [""],
@@ -85,7 +85,7 @@ export class ListPurchaseReturnComponent implements OnInit {
       Direction: "asc"
     };
 
-    this.purchaseRetService.getPurchaseOrderMaster().subscribe(
+    this.purchaseReturnService.getPurchaseOrderMaster().subscribe(
       res => {
         this.listLoading = true;
         this.purchaseReturnList = res;
@@ -132,7 +132,7 @@ export class ListPurchaseReturnComponent implements OnInit {
   }
 
   openConfirmationDialogue(dataItem) {
-    const purchaseInvoiceID = {
+    const purchaseReturnID = {
       id: dataItem.ID
     };
     this.modalRef = this.modalService.show(
@@ -143,7 +143,7 @@ export class ListPurchaseReturnComponent implements OnInit {
     this.modalRef.content.action = "delete";
     this.modalRef.content.onClose.subscribe(confirm => {
       if (confirm) {
-        this.deletePaymentsByID(purchaseInvoiceID.id);
+        this.deletePaymentsByID(purchaseReturnID.id);
       }
     });
   }

@@ -2,16 +2,15 @@ import { LedgerCodeAsyncValidators } from './../../../../shared/validators/async
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ContraVoucherService } from "./../../services/contra-voucher.service";
-import { formatDate } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
-import { ContraVoucherMaster } from "../models/contravoucher.model";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { ContraVoucherMaster } from '../../models/contraVoucher.model';
 
 
 @Component({
-  selector: "app-edit-contra-voucher",
+  selector: "accSwift-edit-contra-voucher",
   templateUrl: "./edit-contra-voucher.component.html",
   styleUrls: ["./edit-contra-voucher.component.scss"]
 })
@@ -54,7 +53,7 @@ export class EditContraVoucherComponent implements OnInit {
       projectId: [this.contraVoucherDetail ? this.contraVoucherDetail.ProjectID : 0],
       voucherNo: [this.contraVoucherDetail ? this.contraVoucherDetail.VoucherNo : ""],
       cashAccountId: [this.contraVoucherDetail ? this.contraVoucherDetail.LedgerID : 0],
-      cashPartyId: [this.contraVoucherDetail ? this.contraVoucherDetail.ContraVoucherDetail : 0],
+      cashPartyId: [this.contraVoucherDetail ? this.contraVoucherDetail.ContraVoucherDetails : 0],
       date: [this.contraVoucherDetail ? new Date(this.contraVoucherDetail.CreatedDate) : ""],
       contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryList()])
     });
@@ -92,7 +91,7 @@ export class EditContraVoucherComponent implements OnInit {
 
   setContraVoucherList(): void {
     this.editContraVoucherForm.setControl("contraVoucherEntryList",
-      this.setContraVoucherFormArray(this.contraVoucherDetail.ContraVoucherDetail));
+      this.setContraVoucherFormArray(this.contraVoucherDetail.ContraVoucherDetails));
   }
 
   setContraVoucherFormArray(contraVoucherDetails): FormArray {

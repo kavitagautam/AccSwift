@@ -8,7 +8,7 @@ import { FormBuilder } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-edit-purchase-order',
+  selector: 'accSwift-edit-purchase-order',
   templateUrl: './edit-purchase-order.component.html',
   styleUrls: ['./edit-purchase-order.component.scss']
 })
@@ -24,7 +24,7 @@ export class EditPurchaseOrderComponent implements OnInit {
 
   ngOnInit() {
     this.buildEditPurchaseOrderForm();
-    this.getRouteFromParam();
+    this.getIdFromRoute();
   }
 
   buildEditPurchaseOrderForm() {
@@ -33,11 +33,11 @@ export class EditPurchaseOrderComponent implements OnInit {
       date: [new Date()],
       cashPartyACId: [0],
       projectId: [0],
-      purchaseOrderEntryList: this.fb.array([this.editPurchaseOrderEntryFormGroup()])
+      purchaseOrderEntryList: this.fb.array([this.addPurchaseOrderEntryList()])
     });
   }
 
-  editPurchaseOrderEntryFormGroup() {
+  addPurchaseOrderEntryList(): FormGroup {
     return this.fb.group({
       ProductName: [""],
       Quantity: [""],
@@ -50,7 +50,7 @@ export class EditPurchaseOrderComponent implements OnInit {
     })
   }
 
-  getRouteFromParam() {
+  getIdFromRoute() {
     this.route.paramMap.subscribe(params => {
       const param = +params.get('id');
       if (param) {
@@ -97,7 +97,7 @@ export class EditPurchaseOrderComponent implements OnInit {
     this.rowSubmitted = true;
     const purchaseOrderEntry = <FormArray>(this.editPurchaseOrderForm.get("purchaseOrderEntryList"));
     if (purchaseOrderEntry.invalid) return;
-    (<FormArray>purchaseOrderEntry).push(this.editPurchaseOrderEntryFormGroup());
+    (<FormArray>purchaseOrderEntry).push(this.addPurchaseOrderEntryList());
     this.submitted = false;
     this.rowSubmitted = false;
   }

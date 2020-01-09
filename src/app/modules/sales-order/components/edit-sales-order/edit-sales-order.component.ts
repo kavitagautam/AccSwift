@@ -6,9 +6,9 @@ import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: "app-edit-sales-order",
-  templateUrl: "./edit-sales-order.component.html",
-  styleUrls: ["./edit-sales-order.component.scss"]
+  selector: 'accSwift-edit-sales-order',
+  templateUrl: './edit-sales-order.component.html',
+  styleUrls: ['./edit-sales-order.component.scss']
 })
 export class EditSalesOrderComponent implements OnInit {
   editSalesOrderForm: FormGroup;
@@ -25,6 +25,7 @@ export class EditSalesOrderComponent implements OnInit {
 
   ngOnInit() {
     this.buildEditSalesOrderForm();
+    // this.getIdFromRoute();
   }
 
   buildEditSalesOrderForm() {
@@ -34,11 +35,11 @@ export class EditSalesOrderComponent implements OnInit {
       remarks: [""],
       projectId: [0],
       date: [new Date()],
-      salesOrderEntryList: this.fb.array([this.editSalesEntryFormGroup()])
+      salesOrderEntryList: this.fb.array([this.addSalesEntryList()])
     });
   }
 
-  editSalesEntryFormGroup(): FormGroup {
+  addSalesEntryList(): FormGroup {
     return this.fb.group({
       code: [""],
       productName: [""],
@@ -58,7 +59,7 @@ export class EditSalesOrderComponent implements OnInit {
     });
   }
 
-  // getRouteFromParam() {
+  // getIdFromRoute {
   //   this.route.paramMap.subscribe(params => {
   //     const param = params.get("id");
   //     if (param) {
@@ -96,7 +97,7 @@ export class EditSalesOrderComponent implements OnInit {
     );
     if (salesOrderEntry.invalid) return;
     (<FormArray>this.editSalesOrderForm.get("salesOrderEntryList")).push(
-      this.editSalesEntryFormGroup()
+      this.addSalesEntryList()
     );
     this.rowSubmitted = false;
     this.rowSubmitted = false;
@@ -108,33 +109,25 @@ export class EditSalesOrderComponent implements OnInit {
       this.editSalesOrderForm.get("salesOrderEntryList")
     );
     salesOrderEntry.controls[rowIndex].get("code").setValue(dataItem.code);
-    salesOrderEntry.controls[rowIndex]
-      .get("productName")
+    salesOrderEntry.controls[rowIndex].get("productName")
       .setValue(dataItem.productName);
-    salesOrderEntry.controls[rowIndex]
-      .get("quantity")
+    salesOrderEntry.controls[rowIndex].get("quantity")
       .setValue(dataItem.quantity);
     salesOrderEntry.controls[rowIndex].get("unit").setValue(dataItem.unit);
-    salesOrderEntry.controls[rowIndex]
-      .get("purchaseRate")
+    salesOrderEntry.controls[rowIndex].get("purchaseRate")
       .setValue(dataItem.purchaseRate);
     salesOrderEntry.controls[rowIndex].get("amount").setValue(dataItem.amount);
-    salesOrderEntry.controls[rowIndex]
-      .get("specialDiscount")
+    salesOrderEntry.controls[rowIndex].get("specialDiscount")
       .setValue(dataItem.specialDiscount);
-    salesOrderEntry.controls[rowIndex]
-      .get("specialDiscounts")
+    salesOrderEntry.controls[rowIndex].get("specialDiscounts")
       .setValue(dataItem.specialDiscounts);
     salesOrderEntry.controls[rowIndex].get("vat").setValue(dataItem.vat);
-    salesOrderEntry.controls[rowIndex]
-      .get("customDuty")
+    salesOrderEntry.controls[rowIndex].get("customDuty")
       .setValue(dataItem.customDuty);
-    salesOrderEntry.controls[rowIndex]
-      .get("freight")
+    salesOrderEntry.controls[rowIndex].get("freight")
       .setValue(dataItem.freight);
     salesOrderEntry.controls[rowIndex].get("tc").setValue(dataItem.tc);
-    salesOrderEntry.controls[rowIndex]
-      .get("tcAmount")
+    salesOrderEntry.controls[rowIndex].get("tcAmount")
       .setValue(dataItem.tcAmount);
     this.editedRowIndex = rowIndex;
     sender.editRow(

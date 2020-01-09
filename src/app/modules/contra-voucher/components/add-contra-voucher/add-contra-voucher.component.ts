@@ -6,16 +6,15 @@ import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/l
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { ContraVoucherService } from "../../services/contra-voucher.service";
-import { ContraVoucherMaster } from "../models/contravoucher.model";
+import { ContraVoucherMaster } from '../../models/contraVoucher.model';
 
 @Component({
-  selector: "app-add-contra-voucher",
+  selector: "accSwift-add-contra-voucher",
   templateUrl: "./add-contra-voucher.component.html",
   styleUrls: ["./add-contra-voucher.component.scss"]
 })
 export class AddContraVoucherComponent implements OnInit {
   addContraVoucherForm: FormGroup;
-
   date: Date = new Date();
   contraVoucherDetail: ContraVoucherMaster;
   submitted: boolean;
@@ -139,19 +138,12 @@ export class AddContraVoucherComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const contraVoucherEntry = <FormArray>(
-      this.addContraVoucherForm.get("contraVoucherEntryList")
+    const contraVoucherEntry = <FormArray>(this.addContraVoucherForm.get("contraVoucherEntryList")
     );
-    contraVoucherEntry.controls[rowIndex]
-      .get("voucherNo")
-      .setValue(dataItem.voucherNo);
-    contraVoucherEntry.controls[rowIndex]
-      .get("currentAmount")
-      .setValue(dataItem.currentAmount);
+    contraVoucherEntry.controls[rowIndex].get("voucherNo").setValue(dataItem.voucherNo);
+    contraVoucherEntry.controls[rowIndex].get("currentAmount").setValue(dataItem.currentAmount);
     contraVoucherEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
-    contraVoucherEntry.controls[rowIndex]
-      .get("remarks")
-      .setValue(dataItem.remarks);
+    contraVoucherEntry.controls[rowIndex].get("remarks").setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
     sender.editRow(
       rowIndex,

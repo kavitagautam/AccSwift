@@ -7,7 +7,7 @@ import { FormBuilder } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-edit-purchase-return',
+  selector: 'accSwift-edit-purchase-return',
   templateUrl: './edit-purchase-return.component.html',
   styleUrls: ['./edit-purchase-return.component.scss']
 })
@@ -27,7 +27,7 @@ export class EditPurchaseReturnComponent implements OnInit {
 
   ngOnInit() {
     this.buildEditPurchaseReturnForm(); //initialializing the form
-    this.getRouteFromParam();
+    this.getIdFromRoute();
   }
 
   buildEditPurchaseReturnForm() {
@@ -41,11 +41,11 @@ export class EditPurchaseReturnComponent implements OnInit {
       purchaseACId: [0],
       projectId: [0],
       remarks: [""],
-      purchaseReturnEntryList: this.fb.array([this.editPurchaseReturnFormGroup()])
+      purchaseReturnEntryList: this.fb.array([this.addPurchaseReturnEntryList()])
     })
   }
 
-  editPurchaseReturnFormGroup() {
+  addPurchaseReturnEntryList(): FormGroup {
     return this.fb.group({
       ProductName: [""],
       Quantity: [""],
@@ -62,7 +62,7 @@ export class EditPurchaseReturnComponent implements OnInit {
     return <FormArray>this.editPurchaseReturnForm.get("purchaseReturnEntryList");
   }
 
-  getRouteFromParam() {
+  getIdFromRoute() {
     this.route.paramMap.subscribe(params => {
       const param = params.get('id');
       if (param) {
@@ -105,7 +105,7 @@ export class EditPurchaseReturnComponent implements OnInit {
     this.rowSubmitted = true;
     const purchaseReturnEntry = <FormArray>(this.editPurchaseReturnForm.get("purchaseReturnEntryList"));
     if (purchaseReturnEntry.invalid) return;
-    (<FormArray>purchaseReturnEntry).push(this.editPurchaseReturnFormGroup());
+    (<FormArray>purchaseReturnEntry).push(this.addPurchaseReturnEntryList());
     this.submitted = false;
     this.rowSubmitted = false;
   }

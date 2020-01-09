@@ -7,7 +7,7 @@ import { Component, OnInit } from "@angular/core";
 
 
 @Component({
-  selector: "app-edit-purchase-invoice",
+  selector: "accSwift-edit-purchase-invoice",
   templateUrl: "./edit-purchase-invoice.component.html",
   styleUrls: ["./edit-purchase-invoice.component.scss"]
 })
@@ -26,21 +26,12 @@ export class EditPurchaseInvoiceComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.buildEditPurchaseInvoiceForm();
-    this.route.paramMap.subscribe(params => {
-      const param = +params.get("id");
-      if (param) {
-        this.purchaseService
-          .getPurchaseInvoiceDetails(param)
-          .subscribe(res => {
-            this.purchaseDetails = res;
-            this.buildEditPurchaseInvoiceForm();
-          });
-      }
-    });
+    this.buildEditInvoiceForm();
+    this.getIdFromRoute();
+
   }
 
-  buildEditPurchaseInvoiceForm() {
+  buildEditInvoiceForm() {
     this.editPurchaseForm = this.fb.group({
       seriesId: [this.purchaseDetails ? this.purchaseDetails.SeriesID : 0],
       cashPartyACId: [this.purchaseDetails ? this.purchaseDetails.CashPartyLedgerID : 0],
@@ -52,11 +43,11 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       date: [this.purchaseDetails ? new Date(this.purchaseDetails.CreatedDate) : ""],
       orderNo: [this.purchaseDetails ? this.purchaseDetails.OrderNo : ""],
       remarks: [this.purchaseDetails ? this.purchaseDetails.Remarks : ""],
-      purchaseInvoiceEntryList: this.fb.array([this.addPurchaseEntryFormGroup()])
+      purchaseInvoiceEntryList: this.fb.array([this.addPurchaseInvoiceEntryList()])
     });
   }
 
-  addPurchaseEntryFormGroup(): FormGroup {
+  addPurchaseInvoiceEntryList(): FormGroup {
     return this.fb.group({
       code: [" "],
       productName: [" "],
@@ -73,6 +64,18 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       freight: [" "],
       tc: [" "],
       tcAmount: [""]
+    });
+  }
+
+  getIdFromRoute() {
+    this.route.paramMap.subscribe(params => {
+      const param = +params.get("id");
+      if (param) {
+        this.purchaseService.getPurchaseInvoiceDetails(param).subscribe(res => {
+          this.purchaseDetails = res;
+          this.buildEditInvoiceForm();
+        });
+      }
     });
   }
 
@@ -101,12 +104,11 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    const purchaseInvoiceEntry = <FormArray>(
-      this.editPurchaseForm.get("purchaseInvoiceEntryList")
+    const purchaseInvoiceEntry = <FormArray>(this.editPurchaseForm.get("purchaseInvoiceEntryList")
     );
     if (purchaseInvoiceEntry.invalid) return;
     (<FormArray>this.editPurchaseForm.get("purchaseInvoiceEntryList")).push(
-      this.addPurchaseEntryFormGroup()
+      this.addPurchaseInvoiceEntryList()
     );
     this.submitted = false;
     this.rowSubmitted = false;
@@ -118,35 +120,26 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       this.editPurchaseForm.get("purchaseInvoiceEntryList")
     );
     purchaseInvoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
-    purchaseInvoiceEntry.controls[rowIndex]
-      .get("productName")
+    purchaseInvoiceEntry.controls[rowIndex].get("productName")
       .setValue(dataItem.productName);
-    purchaseInvoiceEntry.controls[rowIndex]
-      .get("quantity")
+    purchaseInvoiceEntry.controls[rowIndex].get("quantity")
       .setValue(dataItem.quantity);
     purchaseInvoiceEntry.controls[rowIndex].get("unit").setValue(dataItem.unit);
-    purchaseInvoiceEntry.controls[rowIndex]
-      .get("purchaseRate")
+    purchaseInvoiceEntry.controls[rowIndex].get("purchaseRate")
       .setValue(dataItem.purchaseRate);
-    purchaseInvoiceEntry.controls[rowIndex]
-      .get("amount")
+    purchaseInvoiceEntry.controls[rowIndex].get("amount")
       .setValue(dataItem.amount);
-    purchaseInvoiceEntry.controls[rowIndex]
-      .get("specialDiscount")
+    purchaseInvoiceEntry.controls[rowIndex].get("specialDiscount")
       .setValue(dataItem.specialDiscount);
-    purchaseInvoiceEntry.controls[rowIndex]
-      .get("specialDiscounts")
+    purchaseInvoiceEntry.controls[rowIndex].get("specialDiscounts")
       .setValue(dataItem.specialDiscounts);
     purchaseInvoiceEntry.controls[rowIndex].get("vat").setValue(dataItem.vat);
-    purchaseInvoiceEntry.controls[rowIndex]
-      .get("customDuty")
+    purchaseInvoiceEntry.controls[rowIndex].get("customDuty")
       .setValue(dataItem.customDuty);
-    purchaseInvoiceEntry.controls[rowIndex]
-      .get("freight")
+    purchaseInvoiceEntry.controls[rowIndex].get("freight")
       .setValue(dataItem.freight);
     purchaseInvoiceEntry.controls[rowIndex].get("tc").setValue(dataItem.tc);
-    purchaseInvoiceEntry.controls[rowIndex]
-      .get("tcAmount")
+    purchaseInvoiceEntry.controls[rowIndex].get("tcAmount")
       .setValue(dataItem.tcAmount);
     this.editedRowIndex = rowIndex;
     sender.editRow(

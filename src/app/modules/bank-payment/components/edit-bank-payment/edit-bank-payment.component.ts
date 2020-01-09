@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 
 @Component({
-  selector: "app-edit-bank-payment",
+  selector: "accSwift-edit-bank-payment",
   templateUrl: "./edit-bank-payment.component.html",
   styleUrls: ["./edit-bank-payment.component.scss"]
 })

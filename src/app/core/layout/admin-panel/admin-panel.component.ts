@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { FooterComponent } from "./footer/footer.component";
 import { Location } from "@angular/common";
 @Component({
-  selector: "app-admin-panel",
+  selector: "accSwift-admin-panel",
   templateUrl: "./admin-panel.component.html",
   styleUrls: ["./admin-panel.component.scss"]
 })

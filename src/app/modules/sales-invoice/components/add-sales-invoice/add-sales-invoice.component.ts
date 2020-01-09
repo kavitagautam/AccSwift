@@ -5,7 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-add-sales-invoice',
+  selector: 'accSwift-add-sales-invoice',
   templateUrl: './add-sales-invoice.component.html',
   styleUrls: ['./add-sales-invoice.component.scss']
 })
@@ -19,7 +19,6 @@ export class AddSalesInvoiceComponent implements OnInit {
   ngOnInit() {
     this.buildAddSalesInvoiceForm();
   }
-
 
   buildAddSalesInvoiceForm() {
     this.addInvoiceForm = this._fb.group({

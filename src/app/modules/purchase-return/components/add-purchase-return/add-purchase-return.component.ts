@@ -6,7 +6,7 @@ import { FormGroup } from '@angular/forms';
 import { PurchaseReturnService } from '../../services/purchase-return.service';
 
 @Component({
-  selector: 'app-add-purchase-return',
+  selector: 'accSwift-add-purchase-return',
   templateUrl: './add-purchase-return.component.html',
   styleUrls: ['./add-purchase-return.component.scss']
 })
@@ -17,7 +17,7 @@ export class AddPurchaseReturnComponent implements OnInit {
   submitted: boolean;
   rowSubmitted: boolean;
 
-  constructor(public addPurRetService: PurchaseReturnService,
+  constructor(public purchaseReturnService: PurchaseReturnService,
     private fb: FormBuilder, private router: Router
   ) { }
 
@@ -36,11 +36,11 @@ export class AddPurchaseReturnComponent implements OnInit {
       purchaseACId: [0],
       projectId: [0],
       remarks: [""],
-      purchaseReturnEntryList: this.fb.array([this.addPurchaseReturnFormGroup()])
+      purchaseReturnEntryList: this.fb.array([this.addPurchaseReturnEntryList()])
     })
   }
 
-  addPurchaseReturnFormGroup() {
+  addPurchaseReturnEntryList(): FormGroup {
     return this.fb.group({
       ProductName: [""],
       Quantity: [""],
@@ -89,8 +89,9 @@ export class AddPurchaseReturnComponent implements OnInit {
     this.rowSubmitted = true;
     const purchaseReturnEntry = <FormArray>(this.addPurchaseReturnForm.get("purchaseReturnEntryList"));
     if (purchaseReturnEntry.invalid) return;
-    (<FormArray>purchaseReturnEntry).push(this.addPurchaseReturnFormGroup());
+    (<FormArray>purchaseReturnEntry).push(this.addPurchaseReturnEntryList());
     this.submitted = false;
+
     this.rowSubmitted = false;
   }
 

@@ -13,7 +13,7 @@ import { CashPaymentMaster } from "../../models/cash-payment.model";
 import { CashPaymentService } from "../../services/cash-payment.service";
 
 @Component({
-  selector: "app-list-cash-payment",
+  selector: "accSwift-list-cash-payment",
   templateUrl: "./list-cash-payment.component.html",
   styleUrls: ["./list-cash-payment.component.scss"]
 })

@@ -5,7 +5,7 @@ import { FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-add-sales-return',
+  selector: 'accSwift-add-sales-return',
   templateUrl: './add-sales-return.component.html',
   styleUrls: ['./add-sales-return.component.scss']
 })
@@ -31,11 +31,11 @@ export class AddSalesReturnComponent implements OnInit {
       date: [new Date()],
       orderNo: [""],
       remarks: [""],
-      salesReturnEntryList: this._fb.array([this.addSalesReturnFormGroup()])
+      salesReturnEntryList: this._fb.array([this.addSalesReturnEntryList()])
     })
   }
 
-  addSalesReturnFormGroup(): FormGroup {
+  addSalesReturnEntryList(): FormGroup {
     return this._fb.group({
       code: [""],
       productName: [""],
@@ -90,7 +90,7 @@ export class AddSalesReturnComponent implements OnInit {
     this.rowSubmitted = true;
     const salesReturnEntry = <FormArray>(this.addSalesReturnForm.get("salesReturnEntryList"));
     if (salesReturnEntry.invalid) return;
-    (<FormArray>salesReturnEntry).push(this.addSalesReturnFormGroup());
+    (<FormArray>salesReturnEntry).push(this.addSalesReturnEntryList());
     this.submitted = false;
     this.rowSubmitted = false;
   }

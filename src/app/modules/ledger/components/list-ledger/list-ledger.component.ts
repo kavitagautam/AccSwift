@@ -11,7 +11,7 @@ import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: "app-list-ledger",
+  selector: "accSwift-list-ledger",
   templateUrl: "./list-ledger.component.html",
   styleUrls: ["./list-ledger.component.scss"]
 })

@@ -8,7 +8,7 @@ import { FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-edit-sales-invoice',
+  selector: 'accSwift-edit-sales-invoice',
   templateUrl: './edit-sales-invoice.component.html',
   styleUrls: ['./edit-sales-invoice.component.scss']
 })

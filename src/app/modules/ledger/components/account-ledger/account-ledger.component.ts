@@ -13,7 +13,7 @@ import { Router } from "@angular/router";
 import { LedgerDetails } from "../../models/ledger.models";
 
 @Component({
-  selector: "app-account-ledger",
+  selector: "accSwift-account-ledger",
   templateUrl: "./account-ledger.component.html",
   styleUrls: ["./account-ledger.component.scss"]
 })

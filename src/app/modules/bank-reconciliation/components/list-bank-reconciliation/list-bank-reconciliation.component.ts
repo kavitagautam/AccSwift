@@ -10,7 +10,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ConfirmationDialogComponent } from '@app/shared/component/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
-  selector: 'app-list-bank-reconciliation',
+  selector: 'accSwift-list-bank-reconciliation',
   templateUrl: './list-bank-reconciliation.component.html',
   styleUrls: ['./list-bank-reconciliation.component.scss']
 })

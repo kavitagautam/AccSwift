@@ -23,7 +23,7 @@ export interface SeriesList {
 export interface ContraVoucherMaster {
   IsPayByInvoice: boolean;
   TotalAmount: number;
-  ContraVoucherDetail: ContraVoucherDetails[];
+  ContraVoucherDetails: ContraVoucherDetails[];
   LedgerID: number;
   LedgerName: string;
   ID: number;

@@ -13,7 +13,7 @@ import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 @Component({
-  selector: "app-list-journal",
+  selector: "accSwift-list-journal",
   templateUrl: "./list-journal.component.html",
   styleUrls: ["./list-journal.component.css"]
 })
@@ -184,8 +184,8 @@ export class ListJournalComponent implements OnInit {
   public searchForm() {
     this.voucherNoSearch = this.journalSearchForm.controls.voucherNo.value;
     this.journalDateSearch = this.journalSearchForm.controls.date.value;
-    this.projectIdSearch = this.journalSearchForm.controls.project.value;
-    this.seriesIdSearch = this.journalSearchForm.controls.series.value;
+    this.projectIdSearch = this.journalSearchForm.controls.projectId.value;
+    this.seriesIdSearch = this.journalSearchForm.controls.seriesId.value;
     this.getJournalList();
   }
 

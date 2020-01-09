@@ -11,9 +11,9 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from '@app/shared/component/ledger-model-popup/ledger-model-popup.component';
 
 @Component({
-  selector: "app-edit-bank-reconciliation",
-  templateUrl: "./edit-bank-reconciliation.component.html",
-  styleUrls: ["./edit-bank-reconciliation.component.scss"]
+  selector: 'accSwift-edit-bank-reconciliation',
+  templateUrl: './edit-bank-reconciliation.component.html',
+  styleUrls: ['./edit-bank-reconciliation.component.scss']
 })
 export class EditBankReconciliationComponent implements OnInit {
   editReconciliationForm: FormGroup;

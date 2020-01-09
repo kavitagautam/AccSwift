@@ -8,7 +8,7 @@ import { CashPaymentMaster } from "../../models/cash-payment.model";
 import { CashPaymentService } from "../../services/cash-payment.service";
 
 @Component({
-  selector: "app-edit-cash-payment",
+  selector: "accSwift-edit-cash-payment",
   templateUrl: "./edit-cash-payment.component.html",
   styleUrls: ["./edit-cash-payment.component.scss"]
 })
