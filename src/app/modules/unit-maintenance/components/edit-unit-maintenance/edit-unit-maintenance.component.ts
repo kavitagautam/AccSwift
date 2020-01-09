@@ -21,10 +21,10 @@ export class EditUnitMaintenanceComponent implements OnInit {
 
   ngOnInit() {
     this.buildEditUnitForm();
-    this.getParambyId();
+    this.getIdFromURL();
   }
 
-  getParambyId() {
+  getIdFromURL() {
     this.route.paramMap.subscribe(params => {
       const paramGetId = params.get("id");
       if (paramGetId) {
