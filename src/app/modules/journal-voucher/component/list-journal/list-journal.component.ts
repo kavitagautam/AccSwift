@@ -183,8 +183,8 @@ export class ListJournalComponent implements OnInit {
   public searchForm() {
     this.voucherNoSearch = this.journalSearchForm.controls.voucherNo.value;
     this.journalDateSearch = this.journalSearchForm.controls.date.value;
-    this.projectIdSearch = this.journalSearchForm.controls.project.value;
-    this.seriesIdSearch = this.journalSearchForm.controls.series.value;
+    this.projectIdSearch = this.journalSearchForm.controls.projectId.value;
+    this.seriesIdSearch = this.journalSearchForm.controls.seriesId.value;
     this.getJournalList();
   }
 
