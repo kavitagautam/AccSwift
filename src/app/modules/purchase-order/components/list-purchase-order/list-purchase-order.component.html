@@ -37,7 +37,7 @@
                 <label>Project</label>
                 <select class="form-control" id="projectId" formControlName="projectId">
                   <option [value]="0" disabled>Select</option>
-                  <option *ngFor="let project of pOrderService.projectList" [ngValue]="project.ID">
+                  <option *ngFor="let project of purchaseOrderService.projectList" [ngValue]="project.ID">
                     {{project.EngName}}
                   </option>
                 </select>
