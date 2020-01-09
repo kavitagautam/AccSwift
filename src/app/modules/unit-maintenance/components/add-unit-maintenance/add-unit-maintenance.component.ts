@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { Router } from '@angular/router';
 
 @Component({
-  selector: "app-add-unit-maintenance",
+  selector: "accSwift-add-unit-maintenance",
   templateUrl: "./add-unit-maintenance.component.html",
   styleUrls: ["./add-unit-maintenance.component.scss"]
 })

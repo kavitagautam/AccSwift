@@ -9,7 +9,7 @@ import { Component, OnInit } from "@angular/core";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 
 @Component({
-  selector: "app-add-bank-payment",
+  selector: "accSwift-add-bank-payment",
   templateUrl: "./add-bank-payment.component.html",
   styleUrls: ["./add-bank-payment.component.scss"]
 })

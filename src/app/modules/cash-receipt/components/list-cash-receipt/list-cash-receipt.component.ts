@@ -13,7 +13,7 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
 import { CashReceiptMaster } from "../../models/cash-receipt.model";
 
 @Component({
-  selector: "app-list-cash-receipt",
+  selector: "accSwift-list-cash-receipt",
   templateUrl: "./list-cash-receipt.component.html",
   styleUrls: ["./list-cash-receipt.component.scss"]
 })

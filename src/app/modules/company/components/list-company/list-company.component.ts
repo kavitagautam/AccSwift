@@ -17,7 +17,7 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
 import { CompanyService } from "../../services/company.service";
 import { CompanyList } from "../../models/company.model";
 @Component({
-  selector: "app-list-company",
+  selector: "accSwift-list-company",
   templateUrl: "./list-company.component.html",
   styleUrls: ["./list-company.component.scss"]
 })

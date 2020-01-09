@@ -11,7 +11,7 @@ import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-po
 
 
 @Component({
-  selector: "app-edit-contra-voucher",
+  selector: "accSwift-edit-contra-voucher",
   templateUrl: "./edit-contra-voucher.component.html",
   styleUrls: ["./edit-contra-voucher.component.scss"]
 })

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-add-purchase-return',
+  selector: 'accSwift-add-purchase-return',
   templateUrl: './add-purchase-return.component.html',
   styleUrls: ['./add-purchase-return.component.scss']
 })

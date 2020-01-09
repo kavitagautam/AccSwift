@@ -5,7 +5,7 @@ import { Units } from "../../models/unit-maintenance.model";
 import { FormGroup, FormBuilder } from "@angular/forms";
 
 @Component({
-  selector: "app-edit-unit-maintenance",
+  selector: "accSwift-edit-unit-maintenance",
   templateUrl: "./edit-unit-maintenance.component.html",
   styleUrls: ["./edit-unit-maintenance.component.scss"]
 })

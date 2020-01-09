@@ -9,7 +9,7 @@ import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validato
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 
 @Component({
-  selector: "app-add-journal",
+  selector: "accSwift-add-journal",
   templateUrl: "./add-journal.component.html",
   styleUrls: ["./add-journal.component.scss"],
   providers: [DatePipe]

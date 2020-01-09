@@ -4,7 +4,7 @@ import { AuthenticationService } from "../services/authentication.service";
 import { first } from "rxjs/operators";
 
 @Component({
-  selector: "app-login",
+  selector: "accSwift-login",
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"]
 })

@@ -9,7 +9,7 @@ import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { ConfirmationDialogComponent } from '@app/shared/component/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
-  selector: "app-list-purchase-order",
+  selector: "accSwift-list-purchase-order",
   templateUrl: "./list-purchase-order.component.html",
   styleUrls: ["./list-purchase-order.component.scss"]
 })

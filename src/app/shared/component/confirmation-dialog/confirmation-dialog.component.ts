@@ -3,7 +3,7 @@ import { BsModalRef } from "ngx-bootstrap";
 import { Subject } from "rxjs";
 
 @Component({
-  selector: "app-confirmation-dialog",
+  selector: "accSwift-confirmation-dialog",
   templateUrl: "./confirmation-dialog.component.html",
   styleUrls: ["./confirmation-dialog.component.scss"]
 })

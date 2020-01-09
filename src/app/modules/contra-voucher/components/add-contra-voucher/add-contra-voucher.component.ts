@@ -9,7 +9,7 @@ import { ContraVoucherService } from "../../services/contra-voucher.service";
 import { ContraVoucherMaster } from "../models/contravoucher.model";
 
 @Component({
-  selector: "app-add-contra-voucher",
+  selector: "accSwift-add-contra-voucher",
   templateUrl: "./add-contra-voucher.component.html",
   styleUrls: ["./add-contra-voucher.component.scss"]
 })

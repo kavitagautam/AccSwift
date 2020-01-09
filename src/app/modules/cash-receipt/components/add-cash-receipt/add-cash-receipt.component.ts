@@ -9,7 +9,7 @@ import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validato
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 
 @Component({
-  selector: "app-add-cash-receipt",
+  selector: "accSwift-add-cash-receipt",
   templateUrl: "./add-cash-receipt.component.html",
   styleUrls: ["./add-cash-receipt.component.scss"]
 })

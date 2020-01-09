@@ -13,7 +13,7 @@ import { ToastrService } from "ngx-toastr";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
-  selector: "app-list-contra-voucher",
+  selector: "accSwift-list-contra-voucher",
   templateUrl: "./list-contra-voucher.component.html",
   styleUrls: ["./list-contra-voucher.component.scss"]
 })

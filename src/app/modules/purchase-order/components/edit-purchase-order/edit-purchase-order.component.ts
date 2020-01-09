@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-edit-purchase-order',
+  selector: 'accSwift-edit-purchase-order',
   templateUrl: './edit-purchase-order.component.html',
   styleUrls: ['./edit-purchase-order.component.scss']
 })
