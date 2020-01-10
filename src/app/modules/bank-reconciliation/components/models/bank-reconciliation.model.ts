@@ -20,10 +20,10 @@ export interface SeriesList {
   BuiltIn: boolean;
 }
 
-export interface ContraVoucherMaster {
+export interface BankReconciliationMaster {
   IsPayByInvoice: boolean;
   TotalAmount: number;
-  CashReceiptDetails: CashReceiptDetails[];
+  BankReconciliationDetailsList: BankReconciliationDetailsLists[];
   LedgerID: number;
   LedgerName: string;
   ID: number;
@@ -47,12 +47,15 @@ export interface ContraVoucherMaster {
   ModifiedDate: Date;
 }
 
-export interface CashReceiptDetails {
-  VoucherType: string;
+export interface BankReconciliationDetailsLists {
+  ChequeNumber: string;
+  ChequeBank: string;
+  ChequeDate: Date;
   VoucherNumber: string;
-  DiscountAmount: number;
-  InvoiceType: string;
+  VoucherType: string;
   InvoiceID: number;
+  InvoiceType: string;
+  DiscountAmount: number;
   ID: number;
   MasterID: number;
   LedgerID: number;
@@ -97,7 +100,7 @@ export interface CashReceiptDetails {
   Remarks: string;
 }
 
-export interface CashAccounts {
+export interface BankAccounts {
   Status: number;
   Entity: Entity[];
 }

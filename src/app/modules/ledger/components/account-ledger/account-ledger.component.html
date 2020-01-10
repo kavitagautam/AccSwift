@@ -45,12 +45,7 @@
                     <label class="float-right">Date:</label>
                   </div>
                   <div class="col-md-7">
-                    <input
-                    type="date"
-                      class="form-control"
-                      formControlName="date"
-                      [value]="date | date: 'MM/dd/yyyy'"
-                    />
+                    <input type="text" class="form-control" formControlName="date" bsDatepicker />
                   </div>
                 </div>
                 <div class="row clearfix mt-3">
@@ -58,13 +53,8 @@
                     <label class="float-right">Opt. Balance:<sup>*</sup></label>
                   </div>
                   <div class="col-md-7">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      (click)="openModal()"
-                      data-toggle="modal"
-                      data-target="#openingBalanceModal"
-                    >
+                    <button type="button" class="btn btn-secondary" (click)="openModal()" data-toggle="modal"
+                      data-target="#openingBalanceModal">
                       Opening Balance
                     </button>
                   </div>
@@ -74,13 +64,8 @@
                     <label class="float-right">Prev. Year Balance:</label>
                   </div>
                   <div class="col-md-7">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      (click)="openModal()"
-                      data-toggle="modal"
-                      data-target="#previousYearBalanceModal"
-                    >
+                    <button type="button" class="btn btn-secondary" (click)="openModal()" data-toggle="modal"
+                      data-target="#previousYearBalanceModal">
                       Previous Year Balance
                     </button>
                   </div>
@@ -88,17 +73,10 @@
               </fieldset>
             </form>
             <div class="row m-2">
-              <button
-                class="btn btn-primary"
-                disabled
-                (click)="saveAccountLedger()"
-              >
+              <button class="btn btn-primary" disabled (click)="saveAccountLedger()">
                 Save
               </button>
-              <button
-                class="btn btn-secondary ml-2"
-                (click)="cancelAccountLedger()"
-              >
+              <button class="btn btn-secondary ml-2" (click)="cancelAccountLedger()">
                 Cancel
               </button>
             </div>
@@ -115,65 +93,35 @@
 </div>
 
 <!--Modal PopUp Opening Balance Modal-->
-<div
-  class="modal fade bd-example-modal"
-  #openingBalanceModal
-  id="openingBalanceModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade bd-example-modal" #openingBalanceModal id="openingBalanceModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Opening Balance</h5>
-        <button
-          class="close"
-          type="button"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
         <div class="container-fluid">
           <div class="row mt-2">
-            <kendo-grid
-              [data]="getOpeningBalanceList.value"
-              (edit)="editHandler($event)"
-              (cancel)="cancelHandler($event)"
-              (save)="saveHandler($event)"
-              (remove)="removeHandler($event)"
-              (add)="addHandler($event)"
-              [height]="250"
-            >
+            <kendo-grid [data]="getOpeningBalanceList.value" (edit)="editHandler($event)"
+              (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
+              (add)="addHandler($event)" [height]="250">
               <ng-template kendoGridToolbarTemplate>
                 <button kendoGridAddCommand>Add new</button>
               </ng-template>
 
               <kendo-grid-column field="accountClass" title="Account Class">
-                <ng-template
-                  kendoGridCellTemplate
-                  let-dataItem="dataItem"
-                  let-column="column"
-                  let-formGroup="formGroup"
-                  let-isNew="isNew"
-                  let-rowIndex="rowIndex"
-                >
-                  <input
-                    #input
-                    class="k-textbox"
-                    [formControl]="
+                <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
+                  let-isNew="isNew" let-rowIndex="rowIndex">
+                  <input #input class="k-textbox" [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(
                         'accountClass'
                       )
-                    "
-                  />
-                  <kendo-popup
-                    [anchor]="input"
-                    *ngIf="
+                    " />
+                  <kendo-popup [anchor]="input" *ngIf="
                       getOpeningBalanceList.controls[rowIndex].get(
                         'accountClass'
                       ).invalid &&
@@ -184,9 +132,7 @@
                           'accountClass'
                         ).untouched
                       )
-                    "
-                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-                  >
+                    " popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg">
                     <span class="k-icon k-i-warning"></span>
                     Account Class is required
                   </kendo-popup>
@@ -194,42 +140,22 @@
               </kendo-grid-column>
 
               <kendo-grid-column field="openingBalance" title="Opening Balance">
-                <ng-template
-                  kendoGridCellTemplate
-                  let-dataItem="dataItem"
-                  let-column="column"
-                  let-formGroup="formGroup"
-                  let-isNew="isNew"
-                  let-rowIndex="rowIndex"
-                >
-                  <kendo-numerictextbox
-                    #ntb="popupAnchor"
-                    popupAnchor
-                    [formControl]="
+                <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
+                  let-isNew="isNew" let-rowIndex="rowIndex">
+                  <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(column.field)
-                    "
-                  ></kendo-numerictextbox>
+                    "></kendo-numerictextbox>
                 </ng-template>
               </kendo-grid-column>
 
               <kendo-grid-column field="balanceType" title="Balance Type">
-                <ng-template
-                  kendoGridCellTemplate
-                  let-dataItem="dataItem"
-                  let-column="column"
-                  let-formGroup="formGroup"
-                  let-isNew="isNew"
-                  let-rowIndex="rowIndex"
-                >
-                  <kendo-numerictextbox
-                    #ntb="popupAnchor"
-                    popupAnchor
-                    [formControl]="
+                <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
+                  let-isNew="isNew" let-rowIndex="rowIndex">
+                  <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(
                         'balanceType'
                       )
-                    "
-                  ></kendo-numerictextbox>
+                    "></kendo-numerictextbox>
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-command-column title="Action">
@@ -259,67 +185,37 @@
 </div>
 
 <!--Modal PopUp Previous Year Balance-->
-<div
-  class="modal fade bd-example-modal"
-  #previousYearBalanceModal
-  id="previousYearBalanceModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade bd-example-modal" #previousYearBalanceModal id="previousYearBalanceModal" tabindex="-1"
+  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">
           Previous Year Balance
         </h5>
-        <button
-          class="close"
-          type="button"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
         <div class="container-fluid">
           <div class="row mt-2">
-            <kendo-grid
-              [data]="getPreviousYearBalanceList.value"
-              (edit)="editHandler($event)"
-              (cancel)="cancelHandler($event)"
-              (save)="saveHandler($event)"
-              (remove)="removeHandler($event)"
-              (add)="addHandler($event)"
-              [height]="250"
-            >
+            <kendo-grid [data]="getPreviousYearBalanceList.value" (edit)="editHandler($event)"
+              (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
+              (add)="addHandler($event)" [height]="250">
               <ng-template kendoGridToolbarTemplate>
                 <button kendoGridAddCommand>Add new</button>
               </ng-template>
 
               <kendo-grid-column field="accountClass" title="Account Class">
-                <ng-template
-                  kendoGridCellTemplate
-                  let-dataItem="dataItem"
-                  let-column="column"
-                  let-formGroup="formGroup"
-                  let-isNew="isNew"
-                  let-rowIndex="rowIndex"
-                >
-                  <input
-                    #input
-                    class="k-textbox"
-                    [formControl]="
+                <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
+                  let-isNew="isNew" let-rowIndex="rowIndex">
+                  <input #input class="k-textbox" [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(
                         'accountClass'
                       )
-                    "
-                  />
-                  <kendo-popup
-                    [anchor]="input"
-                    *ngIf="
+                    " />
+                  <kendo-popup [anchor]="input" *ngIf="
                       getPreviousYearBalanceList.controls[rowIndex].get(
                         'accountClass'
                       ).invalid &&
@@ -330,9 +226,7 @@
                           'accountClass'
                         ).untouched
                       )
-                    "
-                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-                  >
+                    " popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg">
                     <span class="k-icon k-i-warning"></span>
                     Account Class is required
                   </kendo-popup>
@@ -340,42 +234,22 @@
               </kendo-grid-column>
 
               <kendo-grid-column field="openingBalance" title="Opening Balance">
-                <ng-template
-                  kendoGridCellTemplate
-                  let-dataItem="dataItem"
-                  let-column="column"
-                  let-formGroup="formGroup"
-                  let-isNew="isNew"
-                  let-rowIndex="rowIndex"
-                >
-                  <kendo-numerictextbox
-                    #ntb="popupAnchor"
-                    popupAnchor
-                    [formControl]="
+                <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
+                  let-isNew="isNew" let-rowIndex="rowIndex">
+                  <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(column.field)
-                    "
-                  ></kendo-numerictextbox>
+                    "></kendo-numerictextbox>
                 </ng-template>
               </kendo-grid-column>
 
               <kendo-grid-column field="balanceType" title="Balance Type">
-                <ng-template
-                  kendoGridCellTemplate
-                  let-dataItem="dataItem"
-                  let-column="column"
-                  let-formGroup="formGroup"
-                  let-isNew="isNew"
-                  let-rowIndex="rowIndex"
-                >
-                  <kendo-numerictextbox
-                    #ntb="popupAnchor"
-                    popupAnchor
-                    [formControl]="
+                <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
+                  let-isNew="isNew" let-rowIndex="rowIndex">
+                  <kendo-numerictextbox #ntb="popupAnchor" popupAnchor [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(
                         'balanceType'
                       )
-                    "
-                  ></kendo-numerictextbox>
+                    "></kendo-numerictextbox>
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-command-column title="Action">
