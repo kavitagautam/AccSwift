@@ -37,7 +37,7 @@ export class JournalService {
         this.projectLists = res;
       });
   }
-  
+
   getSeriesList(): void {
     this.httpService
       .get(`${this._api_URL}series/journal`)
@@ -58,7 +58,8 @@ export class JournalService {
       .set("ProjectName", paramsData.ProjectNameSearchTerm)
       .set("VoucherNo", paramsData.VoucherNo)
       .set("VoucherNoSearchTerm", paramsData.VoucherNoSearchTerm)
-      .set("JournalDate", paramsData.JournalDate)
+      .set("JournalDateTo", paramsData.JournalDateTo)
+      .set("JournalDateFrom", paramsData.JournalDateFrom)
       .set("Remarks", paramsData.Remarks);
     return this.httpService.get(
       `${this._api_URL}JournalMaster/Navigate`,
