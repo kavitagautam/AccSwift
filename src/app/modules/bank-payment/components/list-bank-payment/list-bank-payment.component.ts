@@ -26,7 +26,7 @@ export class ListBankPaymentComponent implements OnInit {
     public bankPaymentService: BankPaymentService,
     private fb: FormBuilder,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildListBankPaymentForm();
@@ -36,11 +36,11 @@ export class ListBankPaymentComponent implements OnInit {
   bankPaymentForm: FormGroup;
   buildListBankPaymentForm() {
     this.bankPaymentForm = this.fb.group({
-      series: "",
-      project: "",
-      voucherNo: "",
-      bankAccount: "",
-      date: ""
+      seriesId: [0],
+      projectId: [0],
+      voucherNo: [""],
+      bankAccountId: [0],
+      date: new Date()
     });
   }
 

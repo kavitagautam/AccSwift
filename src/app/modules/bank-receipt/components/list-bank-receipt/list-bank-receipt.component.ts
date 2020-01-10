@@ -24,26 +24,6 @@ export class ListBankReceiptComponent implements OnInit {
   bankReceiptList: any;
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
-
-  constructor(
-    public _fb: FormBuilder,
-    private router: Router,
-    private modalService: BsModalService,
-    private toastr: ToastrService,
-    public bankReceiptService: BankReceiptService
-  ) {}
-  ngOnInit() {
-    this.bankReceiptForm = this._fb.group({
-      series: [""],
-      project: [""],
-      voucherNo: [""],
-      bankAccount: [""],
-      date: [""]
-    });
-    this.getBankReceiptlList();
-    this.bankReceiptService.init();
-  }
-
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
@@ -62,6 +42,26 @@ export class ListBankReceiptComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true
   };
+
+  constructor(
+    public _fb: FormBuilder,
+    private router: Router,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
+    public bankReceiptService: BankReceiptService
+  ) { }
+
+  ngOnInit() {
+    this.bankReceiptForm = this._fb.group({
+      seriesId: [0],
+      projectId: [0],
+      voucherNo: [""],
+      bankAccountId: [0],
+      date: [new Date()]
+    });
+    this.getBankReceiptlList();
+    this.bankReceiptService.init();
+  }
 
   // Date string parse
   public currentYear = new Date().getFullYear();
@@ -86,40 +86,37 @@ export class ListBankReceiptComponent implements OnInit {
     this.bankReceiptService.getBankReceiptMaster().subscribe(
       response => {
         this.listLoading = true;
-
         //mapping the data to change string date format to Date
-        const sampleData = response.map(
-          dataItem =>
-            <BankReceiptMaster>{
-              IsPayByInvoice: dataItem.IsPayByInvoice,
-              TotalAmount: dataItem.TotalAmount,
-              BankReceiptDetailsList: dataItem.BankReceiptDetailsList,
-              LedgerID: dataItem.LedgerID,
-              LedgerName: dataItem.LedgerName,
-              ID: dataItem.ID,
-              SeriesID: dataItem.SeriesID,
-              SeriesName: dataItem.SeriesName,
-              VoucherNo: dataItem.VoucherNo,
-              Date: this.parseAdjust(dataItem.Date),
-              ProjectID: dataItem.ProjectID,
-              ProjectName: dataItem.ProjectName,
-              Fields: {
-                Field1: dataItem.Fields.Field1,
-                Field2: dataItem.Fields.Field1,
-                Field3: dataItem.Fields.Field1,
-                Field4: dataItem.Fields.Field1,
-                Field5: dataItem.Fields.Field1
-              },
-              Remarks: dataItem.Remarks,
-              CreatedBy: dataItem.CreatedBy,
-              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
-              ModifiedBy: dataItem.ModifiedBy,
-              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
-            }
+        const sampleData = response.map(dataItem => <BankReceiptMaster>{
+          IsPayByInvoice: dataItem.IsPayByInvoice,
+          TotalAmount: dataItem.TotalAmount,
+          BankReceiptDetailsList: dataItem.BankReceiptDetailsList,
+          LedgerID: dataItem.LedgerID,
+          LedgerName: dataItem.LedgerName,
+          ID: dataItem.ID,
+          SeriesID: dataItem.SeriesID,
+          SeriesName: dataItem.SeriesName,
+          VoucherNo: dataItem.VoucherNo,
+          Date: this.parseAdjust(dataItem.Date),
+          ProjectID: dataItem.ProjectID,
+          ProjectName: dataItem.ProjectName,
+          Fields: {
+            Field1: dataItem.Fields.Field1,
+            Field2: dataItem.Fields.Field1,
+            Field3: dataItem.Fields.Field1,
+            Field4: dataItem.Fields.Field1,
+            Field5: dataItem.Fields.Field1
+          },
+          Remarks: dataItem.Remarks,
+          CreatedBy: dataItem.CreatedBy,
+          CreatedDate: this.parseAdjust(dataItem.CreatedDate),
+          ModifiedBy: dataItem.ModifiedBy,
+          ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
+        }
         );
         this.bankReceiptList = sampleData;
         this.gridView = {
-          data: this.bankReceiptList.slice(this.skip, this.skip+ this.pageSize),
+          data: this.bankReceiptList.slice(this.skip, this.skip + this.pageSize),
           total: this.bankReceiptList ? this.bankReceiptList.length : 0
         };
       },
@@ -134,7 +131,6 @@ export class ListBankReceiptComponent implements OnInit {
 
   public filterChange(filter): void {
     this.filter = filter;
-
     this.getBankReceiptlList();
   }
 
@@ -144,14 +140,12 @@ export class ListBankReceiptComponent implements OnInit {
 
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
-
     if (event.skip == 0) {
       this.skip = event.skip;
       this.currentPage = 1;
     } else {
       this.skip = event.skip;
       const pageNo = event.skip / event.take + 1;
-
       this.currentPage = pageNo;
     }
     this.getBankReceiptlList();

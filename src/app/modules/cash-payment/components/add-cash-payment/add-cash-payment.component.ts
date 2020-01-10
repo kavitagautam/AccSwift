@@ -22,7 +22,7 @@ export class AddCashPaymentComponent implements OnInit {
     public cashPaymentService: CashPaymentService,
     private fb: FormBuilder,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildAddCashPaymentForm(); // initialize the form
@@ -30,17 +30,17 @@ export class AddCashPaymentComponent implements OnInit {
 
   buildAddCashPaymentForm() {
     this.addCashPaymentForm = this.fb.group({
-      series: "",
-      project: "",
-      voucherNo: "",
-      cashAccount: "",
-      cashParty: "",
-      date: "",
-      cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryFormGroup()])
+      seriesId: [0],
+      projectId: [0],
+      voucherNo: [""],
+      cashPartyId: [0],
+      cashAccountId: [0],
+      date: [new Date()],
+      cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryList()])
     });
   }
 
-  addCashPaymentEntryFormGroup(): FormGroup {
+  addCashPaymentEntryList(): FormGroup {
     return this.fb.group({
       ledgerCode: "",
       particularsOraccountingHead: "",
@@ -76,7 +76,7 @@ export class AddCashPaymentComponent implements OnInit {
     this.rowSubmitted = true;
     if (this.addCashPaymentForm.get("cashPaymentEntryList").invalid) return;
     (<FormArray>this.addCashPaymentForm.get("cashPaymentEntryList")).push(
-      this.addCashPaymentEntryFormGroup()
+      this.addCashPaymentEntryList()
     );
     this.submitted = false;
     this.rowSubmitted = false;
@@ -88,21 +88,15 @@ export class AddCashPaymentComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const cashPaymentEntry = <FormArray>(
-      this.addCashPaymentForm.get("cashPaymentEntryList")
-    );
-    cashPaymentEntry.controls[rowIndex]
-      .get("particularsOraccountingHead")
+    const cashPaymentEntry = <FormArray>(this.addCashPaymentForm.get("cashPaymentEntryList"));
+    cashPaymentEntry.controls[rowIndex].get("particularsOraccountingHead")
       .setValue(dataItem.particularsOraccountingHead);
-    cashPaymentEntry.controls[rowIndex]
-      .get("voucherNo")
+    cashPaymentEntry.controls[rowIndex].get("voucherNo")
       .setValue(dataItem.voucherNo);
-    cashPaymentEntry.controls[rowIndex]
-      .get("currentAmount")
+    cashPaymentEntry.controls[rowIndex].get("currentAmount")
       .setValue(dataItem.currentAmount);
     cashPaymentEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
-    cashPaymentEntry.controls[rowIndex]
-      .get("remarks")
+    cashPaymentEntry.controls[rowIndex].get("remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
     sender.editRow(

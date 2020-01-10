@@ -17,6 +17,7 @@ import { CashPaymentService } from "../../services/cash-payment.service";
   templateUrl: "./list-cash-payment.component.html",
   styleUrls: ["./list-cash-payment.component.scss"]
 })
+
 export class ListCashPaymentComponent implements OnInit {
   cashPaymentsForm: FormGroup;
   cashPaymentDetail: CashPaymentMaster;
@@ -33,14 +34,15 @@ export class ListCashPaymentComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
     public cashPaymentService: CashPaymentService
-  ) {}
+  ) { }
   ngOnInit() {
     this.cashPaymentsForm = this._fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
       voucherNo: [""],
-      cashAccount: [""],
-      date: [""]
+      cashPartyId: [0],
+      cashAccountId: [0],
+      date: [new Date()]
     });
     this.getCashPaymentList();
   }
@@ -86,19 +88,15 @@ export class ListCashPaymentComponent implements OnInit {
       Direction: "asc" // "asc" or "desc"
     };
 
-    this.cashPaymentService.getCashPaymentMaster().subscribe(
-      (res: any) => {
-        this.listLoading = true;
-        //mapping the data to change string date format to Date
-        this.cashPaymentList = res;
-        this.gridView = {
-          data: this.cashPaymentList.slice(
-            this.skip,
-            this.skip + this.pageSize
-          ),
-          total: this.cashPaymentList ? this.cashPaymentList.length : 0
-        };
-      },
+    this.cashPaymentService.getCashPaymentMaster().subscribe((res: any) => {
+      this.listLoading = true;
+      //mapping the data to change string date format to Date
+      this.cashPaymentList = res;
+      this.gridView = {
+        data: this.cashPaymentList.slice(this.skip, this.skip + this.pageSize),
+        total: this.cashPaymentList ? this.cashPaymentList.length : 0
+      };
+    },
       error => {
         this.listLoading = false;
       },
@@ -110,7 +108,6 @@ export class ListCashPaymentComponent implements OnInit {
 
   public filterChange(filter): void {
     this.filter = filter;
-
     this.getCashPaymentList();
   }
 
@@ -120,14 +117,12 @@ export class ListCashPaymentComponent implements OnInit {
 
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
-
     if (event.skip == 0) {
       this.skip = event.skip;
       this.currentPage = 1;
     } else {
       this.skip = event.skip;
       const pageNo = event.skip / event.take + 1;
-
       this.currentPage = pageNo;
     }
     this.getCashPaymentList();
