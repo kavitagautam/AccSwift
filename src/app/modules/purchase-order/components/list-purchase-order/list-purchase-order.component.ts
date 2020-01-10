@@ -38,11 +38,11 @@ export class ListPurchaseOrderComponent implements OnInit {
   };
   constructor(
     private _fb: FormBuilder,
-    public pOrderService: PurchaseOrderService,
+    public purchaseOrderService: PurchaseOrderService,
     private router: Router,
     private toastr: ToastrService,
     private modalService: BsModalService
-  ) {}
+  ) { }
   ngOnInit() {
     this.buildPurchaseOrderForm();
     this.getPurchaseOrderList();
@@ -50,14 +50,13 @@ export class ListPurchaseOrderComponent implements OnInit {
 
   buildPurchaseOrderForm(): void {
     this.purchaseOrderForm = this._fb.group({
-      cashParty: [""],
-      project: [""],
+      cashPartyACId: [0],
+      projectId: [0],
       date: [new Date()],
       orderNo: [""]
     });
   }
 
-  
   //Date String Parse
   public currentYear = new Date().getFullYear();
   public parseAdjust = (eventDate: Date): Date => {
@@ -80,7 +79,7 @@ export class ListPurchaseOrderComponent implements OnInit {
       Direction: "asc"
     };
 
-    this.pOrderService.getPurchaseOrderMaster().subscribe(
+    this.purchaseOrderService.getPurchaseOrderMaster().subscribe(
       res => {
         this.listLoading = true;
         this.purchaseOrderList = res;

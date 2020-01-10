@@ -15,15 +15,14 @@ import { DropDownListModule, DropDownsModule } from '@progress/kendo-angular-dro
   declarations: [ListPurchaseOrderComponent, EditPurchaseOrderComponent, AddPurchaseOrderComponent],
   imports: [
     CommonModule,
-    FormsModule,ReactiveFormsModule,GridModule,
+    FormsModule, ReactiveFormsModule, GridModule,
     PopupModule,
     SharedModule,
-    PopupModule,
     InputsModule,
     DropDownListModule,
     DropDownsModule,
     PurchaseOrderRoutingModule
   ],
-  schemas:[CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PurchaseOrderModule { }

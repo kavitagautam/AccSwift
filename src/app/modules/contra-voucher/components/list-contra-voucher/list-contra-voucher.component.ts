@@ -8,9 +8,9 @@ import {
   SortDescriptor
 } from "@progress/kendo-data-query";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ContraVoucherMaster } from "../models/contravoucher.model";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ContraVoucherMaster } from '../../models/contraVoucher.model';
 
 @Component({
   selector: "accSwift-list-contra-voucher",
@@ -28,13 +28,14 @@ export class ListContraVoucherComponent implements OnInit {
   public currentPage = 1;
   modalRef: BsModalRef;
   cashList: ContraVoucherMaster[];
+
   constructor(
     private fb: FormBuilder,
     public contraVoucherService: ContraVoucherService,
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.editContraVoucherForm();
@@ -43,11 +44,12 @@ export class ListContraVoucherComponent implements OnInit {
 
   editContraVoucherForm() {
     this.contraVoucherForm = this.fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
+      cashAccountId: [0],
       voucherNo: [""],
-      cashAccount: [""],
-      date: [""]
+      cashPartyId: [0],
+      date: [new Date()]
     });
   }
 
@@ -65,6 +67,7 @@ export class ListContraVoucherComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true
   };
+
   // Date string parse
   public currentYear = new Date().getFullYear();
   public parseAdjust = (eventDate: Date): Date => {
@@ -90,14 +93,13 @@ export class ListContraVoucherComponent implements OnInit {
     this.contraVoucherService.getCashReceiptMaster().subscribe(
       res => {
         this.listLoading = true;
-
         //mapping the data to change string date format to Date
         const sampleData = res.map(
           dataItem =>
             <ContraVoucherMaster>{
               IsPayByInvoice: dataItem.IsPayByInvoice,
               TotalAmount: dataItem.TotalAmount,
-              CashReceiptDetails: dataItem.CashReceiptDetails,
+              ContraVoucherDetails: dataItem.ContraVoucherDetails,
               LedgerID: dataItem.LedgerID,
               LedgerName: dataItem.LedgerName,
               ID: dataItem.ID,

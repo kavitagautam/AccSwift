@@ -9,35 +9,19 @@
                 <button class="btn btn-secondary" (click)="expandAllNode()">
                   Expand All
                 </button>
-                <button
-                  class="btn btn-secondary ml-2"
-                  (click)="collapseAllNode()"
-                >
+                <button class="btn btn-secondary ml-2" (click)="collapseAllNode()">
                   Collapse All
                 </button>
 
-                <kendo-treeview
-                [nodes]="productTreeList"
-                textField="Title"
-                kendoTreeViewExpandable
-                kendoTreeViewSelectable
-                kendoTreeViewHierarchyBinding
-                childrenField="Child"
-                [expandBy]="'Title'"
-                kendoTreeViewExpandable
-                [(expandedKeys)]="expandedKeys"
-                style="height: 76vh ; overflow:scroll"
-
-              >
-              <ng-template kendoTreeViewNodeTemplate let-dataItem>
-                <span
-                  [ngClass]="colorGroupOrLedger(dataItem)"
-                  (click)="selectedNode(dataItem)"
-                >
-                  {{ dataItem.Title }}
-                </span>
-              </ng-template>
-              </kendo-treeview>
+                <kendo-treeview [nodes]="productTreeList" textField="Title" kendoTreeViewExpandable
+                  kendoTreeViewSelectable kendoTreeViewHierarchyBinding childrenField="Child" [expandBy]="'Title'"
+                  kendoTreeViewExpandable [(expandedKeys)]="expandedKeys" style="height: 76vh ; overflow:scroll">
+                  <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                    <span [ngClass]="colorGroupOrLedger(dataItem)" (click)="selectedNode(dataItem)">
+                      {{ dataItem.Title }}
+                    </span>
+                  </ng-template>
+                </kendo-treeview>
                 <div *ngIf="treeViewLoading" class="k-i-loading"></div>
               </div>
             </div>
@@ -71,24 +55,14 @@
     <div class="row">
       <div class="col-md-12 mr-2">
         <kendo-tabstrip>
-          <kendo-tabstrip-tab
-            [title]="'Product'"
-            [selected]="selectedProductTab ? true : false"
-          >
+          <kendo-tabstrip-tab [title]="'Product'" [selected]="selectedProductTab ? true : false">
             <ng-template kendoTabContent>
-              <accSwift-product
-                [selectedItem]="selectedItem"
-              ></accSwift-product>
+              <accSwift-product [selectedItem]="selectedItem"></accSwift-product>
             </ng-template>
           </kendo-tabstrip-tab>
-          <kendo-tabstrip-tab
-            [title]="'Product Group'"
-            [selected]="selectedProductGroupTab ? true : false"
-          >
+          <kendo-tabstrip-tab [title]="'Product Group'" [selected]="selectedProductGroupTab ? true : false">
             <ng-template kendoTabContent>
-              <accSwift-product-group
-                [selectedItem]="selectedItem"
-              ></accSwift-product-group>
+              <accSwift-product-group [selectedItem]="selectedItem"></accSwift-product-group>
             </ng-template>
           </kendo-tabstrip-tab>
         </kendo-tabstrip>
@@ -96,4 +70,3 @@
     </div>
   </div>
 </div>
-

@@ -1,5 +1,5 @@
 <div class="box-header">
-  <button [routerLink]="['add']" class="btn btn-primary pull-right">
+  <button [routerLink]="['add']" class="btn btn-primary">
     <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Cash Payment
   </button>
 </div>
@@ -15,8 +15,8 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Series </label>
-                <select class="form-control" id="seriesId" formControlName="series">
-                  <option value="null"> </option>
+                <select class="form-control" id="seriesId" formControlName="seriesId">
+                  <option [ngValue]="0" disabled>Select </option>
                   <option *ngFor="let series of cashPaymentService.seriesLists" [ngValue]="series.ID">
                     {{ series.EngName }}</option>
                 </select>
@@ -25,8 +25,8 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Cash Account </label>
-                <select class="form-control" id="cashAccountNo" formControlName="cashAccount">
-                  <option value="null"> </option>
+                <select class="form-control" id="cashAccountNo" formControlName="cashAccountId">
+                  <option [ngValue]="0" disabled>Select </option>
                   <option *ngFor="let account of cashPaymentService.cashAccountLists" [ngValue]="account.LedgerID">
                     {{ account.LedgerName }}</option>
                 </select>
@@ -35,8 +35,8 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Cash Party/ Customer </label>
-                <select class="form-control" id="cashPartyId" formControlName="cashParty">
-                  <option value="null"> </option>
+                <select class="form-control" id="cashPartyId" formControlName="cashPartyId">
+                  <option [ngValue]="0" disabled>Select </option>
                 </select>
               </div>
             </div>
@@ -49,8 +49,8 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project </label>
-                <select class="form-control" id="projectId" formControlName="project">
-                  <option value="null"> </option>
+                <select class="form-control" id="projectId" formControlName="projectId">
+                  <option [ngValue]="0" disabled>Select </option>
                   <option *ngFor="let project of cashPaymentService.projectLists" [ngValue]="project.LedgerID">
                     {{ project.EngName }}</option>
                 </select>
