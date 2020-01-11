@@ -22,7 +22,7 @@
               <div class="form-group">
                 <label>Series</label>
                 <select class="form-control" formControlName="seriesId">
-                  <option [value]="0" disabled>Select</option>
+                  <option [ngValue]="0" disabled>Select</option>
                   <!-- <option *ngFor="let series of bankPaymentService.seriesList" [ngValue]="series.ID">
                     {{ series.EngName }}
                   </option> -->
@@ -33,7 +33,7 @@
               <div class="form-group">
                 <label>Bank Account </label>
                 <select class="form-control" formControlName="bankAccountId">
-                  <option [value]="0" disabled>Select</option>
+                  <option [ngValue]="0" disabled>Select</option>
                   <!-- <option *ngFor="let account of bankPaymentService.bankAccountList" [ngValue]="account.LedgerID">
                     {{ account.LedgerName }}
                   </option> -->
@@ -50,7 +50,7 @@
               <div class="form-group">
                 <label>Project</label>
                 <select class="form-control" formControlName="projectId">
-                  <option [value]="0" disabled>Select</option>
+                  <option [ngValue]="0" disabled>Select</option>
                   <!-- <option *ngFor="let project of bankPaymentService.projectList" [ngValue]="project.ID">
                     {{ project.EngName }}</option> -->
                 </select>
