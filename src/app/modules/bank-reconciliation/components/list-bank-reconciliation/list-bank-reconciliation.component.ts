@@ -1,18 +1,21 @@
-import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
-import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
-import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
-import { BankReconciliationService } from './../../services/bank-reconciliation.service';
-import { FormBuilder } from '@angular/forms';
-import { FormGroup } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { ConfirmationDialogComponent } from '@app/shared/component/confirmation-dialog/confirmation-dialog.component';
+import { ToastrService } from "ngx-toastr";
+import { Router } from "@angular/router";
+import {
+  CompositeFilterDescriptor,
+  SortDescriptor
+} from "@progress/kendo-data-query";
+import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
+import { BankReconciliationService } from "./../../services/bank-reconciliation.service";
+import { FormBuilder } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
-  selector: 'accSwift-list-bank-reconciliation',
-  templateUrl: './list-bank-reconciliation.component.html',
-  styleUrls: ['./list-bank-reconciliation.component.scss']
+  selector: "accSwift-list-bank-reconciliation",
+  templateUrl: "./list-bank-reconciliation.component.html",
+  styleUrls: ["./list-bank-reconciliation.component.scss"]
 })
 export class ListBankReconciliationComponent implements OnInit {
   bankReconciliationForm: FormGroup;
@@ -42,8 +45,11 @@ export class ListBankReconciliationComponent implements OnInit {
     ignoreBackdropClick: true
   };
 
-  constructor(private fb: FormBuilder, public bankReconcService: BankReconciliationService,
-    private router: Router) { }
+  constructor(
+    private fb: FormBuilder,
+    public bankReconcService: BankReconciliationService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.buildBankReconciliationForm();
@@ -56,7 +62,7 @@ export class ListBankReconciliationComponent implements OnInit {
       voucherNo: [""],
       bankAccountId: [0],
       date: [new Date()]
-    })
+    });
   }
 
   // Date string parse
@@ -116,8 +122,13 @@ export class ListBankReconciliationComponent implements OnInit {
         // );
         this.bankReconciliationList = response;
         this.gridView = {
-          data: this.bankReconciliationList.slice(this.skip, this.skip + this.pageSize),
-          total: this.bankReconciliationList ? this.bankReconciliationList.length : 0
+          data: this.bankReconciliationList.slice(
+            this.skip,
+            this.skip + this.pageSize
+          ),
+          total: this.bankReconciliationList
+            ? this.bankReconciliationList.length
+            : 0
         };
       },
       error => {

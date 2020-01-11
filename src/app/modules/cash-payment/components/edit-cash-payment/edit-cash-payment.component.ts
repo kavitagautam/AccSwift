@@ -1,5 +1,5 @@
-import { LedgerCodeMatchService } from './../../../../shared/services/ledger-code-match/ledger-code-match.service';
-import { LedgerCodeAsyncValidators } from './../../../../shared/validators/async-validators/ledger-code-validators.service';
+import { LedgerCodeMatchService } from "./../../../../shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerCodeAsyncValidators } from "./../../../../shared/validators/async-validators/ledger-code-validators.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
@@ -37,7 +37,7 @@ export class EditCashPaymentComponent implements OnInit {
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.allCash = this.cashPaymentService.getCashPayment();
@@ -48,11 +48,21 @@ export class EditCashPaymentComponent implements OnInit {
   buildEditCashPaymentForm() {
     this.editCashPaymentForm = this.fb.group({
       seriesId: [this.cashPaymentDetail ? this.cashPaymentDetail.SeriesID : 0],
-      projectId: [this.cashPaymentDetail ? this.cashPaymentDetail.ProjectID : 0],
-      voucherNo: [this.cashPaymentDetail ? this.cashPaymentDetail.VoucherNo : ""],
-      cashAccountId: [this.cashPaymentDetail ? this.cashPaymentDetail.LedgerID : 0],
+      projectId: [
+        this.cashPaymentDetail ? this.cashPaymentDetail.ProjectID : 0
+      ],
+      voucherNo: [
+        this.cashPaymentDetail ? this.cashPaymentDetail.VoucherNo : ""
+      ],
+      cashAccountId: [
+        this.cashPaymentDetail ? this.cashPaymentDetail.LedgerID : 0
+      ],
       cashPartyId: [0],
-      date: [this.cashPaymentDetail ? new Date(this.cashPaymentDetail.CreatedDate) : ""],
+      date: [
+        this.cashPaymentDetail
+          ? new Date(this.cashPaymentDetail.CreatedDate)
+          : ""
+      ],
       cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryList()])
     });
   }
@@ -83,8 +93,12 @@ export class EditCashPaymentComponent implements OnInit {
   }
 
   setCashPaymentList(): void {
-    this.editCashPaymentForm.setControl("cashPaymentEntryList", this.setCashPaymentFormArray(
-      this.cashPaymentDetail.CashPaymentDetailsList));
+    this.editCashPaymentForm.setControl(
+      "cashPaymentEntryList",
+      this.setCashPaymentFormArray(
+        this.cashPaymentDetail.CashPaymentDetailsList
+      )
+    );
   }
 
   setCashPaymentFormArray(cashPaymentDetails): FormArray {
@@ -151,18 +165,27 @@ export class EditCashPaymentComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const cashPaymentEntry = <FormArray>(this.editCashPaymentForm.get("cashPaymentEntryList"));
-    cashPaymentEntry.controls[rowIndex].get("particularsOraccountingHead")
+    const cashPaymentEntry = <FormArray>(
+      this.editCashPaymentForm.get("cashPaymentEntryList")
+    );
+    cashPaymentEntry.controls[rowIndex]
+      .get("particularsOraccountingHead")
       .setValue(dataItem.particularsOraccountingHead);
-    cashPaymentEntry.controls[rowIndex].get("voucherNo")
+    cashPaymentEntry.controls[rowIndex]
+      .get("voucherNo")
       .setValue(dataItem.voucherNo);
-    cashPaymentEntry.controls[rowIndex].get("currentAmount")
+    cashPaymentEntry.controls[rowIndex]
+      .get("currentAmount")
       .setValue(dataItem.currentAmount);
     cashPaymentEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
-    cashPaymentEntry.controls[rowIndex].get("remarks")
+    cashPaymentEntry.controls[rowIndex]
+      .get("remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.editCashPaymentForm.get("cashPaymentEntryList"));
+    sender.editRow(
+      rowIndex,
+      this.editCashPaymentForm.get("cashPaymentEntryList")
+    );
   }
 
   public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
@@ -171,7 +194,9 @@ export class EditCashPaymentComponent implements OnInit {
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    const cashPaymentEntry = <FormArray>(this.editCashPaymentForm.get("cashPaymentEntryList"));
+    const cashPaymentEntry = <FormArray>(
+      this.editCashPaymentForm.get("cashPaymentEntryList")
+    );
     cashPaymentEntry.removeAt(rowIndex);
   }
 

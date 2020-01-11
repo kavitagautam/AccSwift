@@ -5,9 +5,9 @@
         <ng-template kendoTabContent>
           <div class="col-md-12 p-0 mt-3">
             <form [formGroup]="productForm" novalidate>
-              <div class="row clearfix mt-3" [ngClass]="{'has-error': formErrors.productCode}">
+              <div class="row clearfix mt-3">
                 <div class="col-md-4">
-                  <label class="float-right">Product Code:<sup>*</sup> </label>
+                  <label class="float-right">Product Code<sup>*</sup> </label>
                 </div>
                 <div class="col-md-8">
                   <input type="text" class="form-control" formControlName="productCode">
@@ -16,7 +16,7 @@
 
               <div class="row clearfix mt-4">
                 <div class="col-md-4">
-                  <label class="float-right">Product Name:<sup>*</sup> </label>
+                  <label class="float-right">Product Name<sup>*</sup> </label>
                 </div>
                 <div class="col-md-8">
                   <input type="text" class="form-control" formControlName="productName">
@@ -25,7 +25,7 @@
 
               <div class="row clearfix mt-4">
                 <div class="col-md-4">
-                  <label class="float-right">Product Group:<sup>*</sup></label>
+                  <label class="float-right">Product Group<sup>*</sup></label>
                 </div>
                 <div class="col-md-8">
                   <input type="text" class="form-control" formControlName="productGroup">
@@ -34,7 +34,7 @@
 
               <div class="row clearfix mt-4">
                 <div class="col-md-4">
-                  <label class="float-right">Depot/Location: </label>
+                  <label class="float-right">Depot/Location </label>
                 </div>
                 <div class="col-md-8">
                   <input type="text" class="form-control" formControlName="departmentandLocation">
@@ -43,7 +43,7 @@
 
               <div class="row clearfix mt-4">
                 <div class="col-md-4">
-                  <label class="float-right">Base Unit:<sup>*</sup></label>
+                  <label class="float-right">Base Unit<sup>*</sup></label>
                 </div>
                 <div class="col-md-8">
                   <input type="text" class="form-control" formControlName="baseUnit" />
@@ -52,7 +52,7 @@
 
               <div class="row clearfix mt-4">
                 <div class="col-md-4">
-                  <label class="float-right">Remarks:</label>
+                  <label class="float-right">Remarks</label>
                 </div>
                 <div class="col-md-8">
                   <textarea type="text" class="form-control" formControlName="remarks"></textarea>

@@ -22,7 +22,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
   constructor(
     public _fb: FormBuilder,
     private productService: ProductService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildProductGroupForm();
@@ -58,7 +58,6 @@ export class ProductGroupComponent implements OnInit, OnChanges {
   }
   saveProduct(): void {
     if (this.productGroupForm.invalid) return;
-
   }
-  cancelProduct(): void { }
+  cancelProduct(): void {}
 }

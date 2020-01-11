@@ -49,7 +49,7 @@ export class ListCashReceiptComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
     public cashReceiptService: CashReceiptService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.cashReceiptForm = this._fb.group({

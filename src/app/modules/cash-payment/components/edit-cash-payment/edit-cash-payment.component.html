@@ -2,32 +2,51 @@
   <form [formGroup]="editCashPaymentForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
-
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Series </label>
-            <select class="form-control" id="seriesId" formControlName="seriesId">
-              <option [value]=0 disabled>Select </option>
-              <option *ngFor="let series of cashPaymentService.seriesLists" [ngValue]="series.ID">
-                {{ series.EngName }}</option>
+            <select
+              class="form-control"
+              id="seriesId"
+              formControlName="seriesId"
+            >
+              <option [value]="0" disabled>Select </option>
+              <option
+                *ngFor="let series of cashPaymentService.seriesLists"
+                [ngValue]="series.ID"
+              >
+                {{ series.EngName }}</option
+              >
             </select>
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Cash Account </label>
-            <select class="form-control" id="cashAccountNo" formControlName="cashAccountId">
-              <option [value]=0 disabled>Select </option>
-              <option *ngFor="let account of cashPaymentService.cashAccountLists" [ngValue]="account.LedgerID">
-                {{ account.LedgerName }}</option>
+            <select
+              class="form-control"
+              id="cashAccountNo"
+              formControlName="cashAccountId"
+            >
+              <option [value]="0" disabled>Select </option>
+              <option
+                *ngFor="let account of cashPaymentService.cashAccountLists"
+                [ngValue]="account.LedgerID"
+              >
+                {{ account.LedgerName }}</option
+              >
             </select>
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Cash Party/ Customer </label>
-            <select class="form-control" id="cashPartyId" formControlName="cashPartyId">
-              <option [value]=0 disabled>Select </option>
+            <select
+              class="form-control"
+              id="cashPartyId"
+              formControlName="cashPartyId"
+            >
+              <option [value]="0" disabled>Select </option>
             </select>
           </div>
         </div>
@@ -40,10 +59,18 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Project </label>
-            <select class="form-control" id="projectId" formControlName="projectId">
-              <option [value]=0 disabled>Select </option>
-              <option *ngFor="let project of cashPaymentService.projectLists" [ngValue]="project.LedgerID">
-                {{ project.EngName }}</option>
+            <select
+              class="form-control"
+              id="projectId"
+              formControlName="projectId"
+            >
+              <option [value]="0" disabled>Select </option>
+              <option
+                *ngFor="let project of cashPaymentService.projectLists"
+                [ngValue]="project.LedgerID"
+              >
+                {{ project.EngName }}</option
+              >
             </select>
           </div>
         </div>
@@ -61,7 +88,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -69,52 +95,94 @@
       <div class="box-body">
         <!-- kendo grid started -->
 
-        <kendo-grid [data]="getCashPaymentEntryList.value" (edit)="editHandler($event)" (cancel)="cancelHandler($event)"
-          (save)="saveHandler($event)" (remove)="removeHandler($event)" (add)="addHandler($event)">
+        <kendo-grid
+          [data]="getCashPaymentEntryList.value"
+          (edit)="editHandler($event)"
+          (cancel)="cancelHandler($event)"
+          (save)="saveHandler($event)"
+          (remove)="removeHandler($event)"
+          (add)="addHandler($event)"
+        >
           <ng-template kendoGridToolbarTemplate>
             <button kendoGridAddCommand>Add new</button>
           </ng-template>
 
-          <kendo-grid-column field="particularsOraccountingHead" title="Particulars Or Accounting Head" width="300">
-            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
-              let-isNew="isNew" let-rowIndex="rowIndex">
+          <kendo-grid-column
+            field="particularsOraccountingHead"
+            title="Particulars Or Accounting Head"
+            width="300"
+          >
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
               <div class="col-xs-12 col-md-12 p-0">
                 <div class="col-md-4 pl-0">
-                  <input #input class="k-textbox" style="width: 100px" placeholder="Ledger Code" [formControl]="
-                    getCashPaymentEntryList.controls[rowIndex].get('ledgerCode')
-                  " (change)="changeLedgerValue(dataItem, rowIndex)" />
-                  <kendo-popup [anchor]="input" *ngIf="
-                    getCashPaymentEntryList.controls[rowIndex].get('ledgerCode')
-                      .invalid
-                  " popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg">
+                  <input
+                    #input
+                    class="k-textbox"
+                    style="width: 100px"
+                    placeholder="Ledger Code"
+                    [formControl]="
+                      getCashPaymentEntryList.controls[rowIndex].get(
+                        'ledgerCode'
+                      )
+                    "
+                    (change)="changeLedgerValue(dataItem, rowIndex)"
+                  />
+                  <kendo-popup
+                    [anchor]="input"
+                    *ngIf="
+                      getCashPaymentEntryList.controls[rowIndex].get(
+                        'ledgerCode'
+                      ).invalid
+                    "
+                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                  >
                     <span class="k-icon k-i-warning"></span>
                     Ledger Code is invalid
                   </kendo-popup>
                 </div>
                 <div class="col-md-8 pr-0">
-                  <input #input class="k-textbox" [readonly]="true" [formControl]="
-                    getCashPaymentEntryList.controls[rowIndex].get(
-                      'particularsOraccountingHead'
-                    )
-                  " />
-                  <a (click)="openModal(rowIndex)"><i class="fa fa-eye pull-right ledgerSelectIcon"
-                      aria-hidden="true"></i>
-                  </a>
-                  <kendo-popup [anchor]="input" *ngIf="
-                    getCashPaymentEntryList.controls[rowIndex].get(
-                      'particularsOraccountingHead'
-                    ).invalid &&
-                    rowSubmitted &&
-                    !(
-                      isNew &&
+                  <input
+                    #input
+                    class="k-textbox"
+                    [readonly]="true"
+                    [formControl]="
                       getCashPaymentEntryList.controls[rowIndex].get(
                         'particularsOraccountingHead'
-                      ).untouched
-                    ) &&
-                    !getCashPaymentEntryList.controls[rowIndex].get(
-                      'ledgerCode'
-                    )
-                  " popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg">
+                      )
+                    "
+                  />
+                  <a (click)="openModal(rowIndex)"
+                    ><i
+                      class="fa fa-eye pull-right ledgerSelectIcon"
+                      aria-hidden="true"
+                    ></i>
+                  </a>
+                  <kendo-popup
+                    [anchor]="input"
+                    *ngIf="
+                      getCashPaymentEntryList.controls[rowIndex].get(
+                        'particularsOraccountingHead'
+                      ).invalid &&
+                      rowSubmitted &&
+                      !(
+                        isNew &&
+                        getCashPaymentEntryList.controls[rowIndex].get(
+                          'particularsOraccountingHead'
+                        ).untouched
+                      ) &&
+                      !getCashPaymentEntryList.controls[rowIndex].get(
+                        'ledgerCode'
+                      )
+                    "
+                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                  >
                     <span class="k-icon k-i-warning"></span>
                     Ledger name is required
                   </kendo-popup>
@@ -124,59 +192,131 @@
           </kendo-grid-column>
 
           <kendo-grid-column field="voucherNo" title="Voucher No" width="150">
-            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
-              let-isNew="isNew" let-rowIndex="rowIndex">
-              <input #ntb="popupAnchor" popupAnchor style="width:130px" [formControl]="
-                getCashPaymentEntryList.controls[rowIndex].get(column.field)
-              " />
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <input
+                #ntb="popupAnchor"
+                popupAnchor
+                style="width:130px"
+                [formControl]="
+                  getCashPaymentEntryList.controls[rowIndex].get(column.field)
+                "
+              />
             </ng-template>
           </kendo-grid-column>
 
           <kendo-grid-column field="amount" title="Amount" width="150">
-            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
-              let-isNew="isNew" let-rowIndex="rowIndex">
-              <kendo-numerictextbox #ntb="popupAnchor" popupAnchor style="width:130px" [readonly]="true"
-                [decimals]="decimals" [format]="'c0'" [formControl]="
-                getCashPaymentEntryList.controls[rowIndex].get('currentBalance')
-              "></kendo-numerictextbox>
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <kendo-numerictextbox
+                #ntb="popupAnchor"
+                popupAnchor
+                style="width:130px"
+                [readonly]="true"
+                [decimals]="decimals"
+                [format]="'c0'"
+                [formControl]="
+                  getCashPaymentEntryList.controls[rowIndex].get(
+                    'currentBalance'
+                  )
+                "
+              ></kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="currentBalance" title="Current Balance" width="150">
-            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
-              let-isNew="isNew" let-rowIndex="rowIndex">
-              <kendo-numerictextbox #ntb="popupAnchor" popupAnchor style="width:130px" [readonly]="true"
-                [decimals]="decimals" [format]="'c0'" [formControl]="
-                getCashPaymentEntryList.controls[rowIndex].get('currentBalance')
-              "></kendo-numerictextbox>
+          <kendo-grid-column
+            field="currentBalance"
+            title="Current Balance"
+            width="150"
+          >
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <kendo-numerictextbox
+                #ntb="popupAnchor"
+                popupAnchor
+                style="width:130px"
+                [readonly]="true"
+                [decimals]="decimals"
+                [format]="'c0'"
+                [formControl]="
+                  getCashPaymentEntryList.controls[rowIndex].get(
+                    'currentBalance'
+                  )
+                "
+              ></kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
 
           <kendo-grid-column field="vType" title="V. Type" width="150">
-            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
-              let-isNew="isNew" let-rowIndex="rowIndex">
-              <input #input class="k-textbox" [formControl]="
-                getCashPaymentEntryList.controls[rowIndex].get(column.field)
-              " />
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <input
+                #input
+                class="k-textbox"
+                [formControl]="
+                  getCashPaymentEntryList.controls[rowIndex].get(column.field)
+                "
+              />
             </ng-template>
           </kendo-grid-column>
 
           <kendo-grid-column field="remarks" title="Remarks" width="150">
-            <ng-template kendoGridCellTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
-              let-isNew="isNew" let-rowIndex="rowIndex">
-              <input #input class="k-textbox" [formControl]="
-                getCashPaymentEntryList.controls[rowIndex].get('remarks')
-              " />
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <input
+                #input
+                class="k-textbox"
+                [formControl]="
+                  getCashPaymentEntryList.controls[rowIndex].get('remarks')
+                "
+              />
             </ng-template>
           </kendo-grid-column>
 
           <kendo-grid-command-column title="Action" width="100">
             <ng-template kendoGridCellTemplate let-isNew="isNew">
               <button class="k-button" kendoGridAddCommand>
-                <i class="fa fa-plus cursor-pointer" aria-hidden="true" tooltip="Add New"></i>
+                <i
+                  class="fa fa-plus cursor-pointer"
+                  aria-hidden="true"
+                  tooltip="Add New"
+                ></i>
               </button>
               <button kendoGridRemoveCommand>
-                <i class="fas fa-trash-alt mr-2 cursor-pointer" tooltip="Delete"></i>
+                <i
+                  class="fas fa-trash-alt mr-2 cursor-pointer"
+                  tooltip="Delete"
+                ></i>
               </button>
 
               <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
