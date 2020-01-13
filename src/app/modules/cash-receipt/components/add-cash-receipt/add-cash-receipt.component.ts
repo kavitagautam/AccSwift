@@ -38,7 +38,7 @@ export class AddCashReceiptComponent implements OnInit {
     public cashReceiptService: CashReceiptService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildAddCashReceiptForm();
