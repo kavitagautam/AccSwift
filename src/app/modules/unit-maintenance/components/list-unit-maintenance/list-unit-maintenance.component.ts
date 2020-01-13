@@ -61,7 +61,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.listLoading = true;
     this.unitService.getUnitList().subscribe(
       res => {
-        this.unitLists=res;
+        this.unitLists = res;
         this.gridView = {
           data: this.unitLists,
           total: this.unitLists ? this.unitLists.length : 0
@@ -140,9 +140,16 @@ export class ListUnitMaintenanceComponent implements OnInit {
   }
 
   public deleteJournalByID(id): void {
-    this.unitService.deleteUnitById(id).subscribe(response => {
-      this.toastr.success("Units deleted successfully");
-      this.getUnits();
-    });
+    this.unitService.deleteUnitById(id).subscribe(
+      response => {
+        this.getUnits();
+      },
+      error => {
+        this.toastr.success("Unauthorized to delete Unit");
+      },
+      () => {
+        this.toastr.success("Units deleted successfully");
+      }
+    );
   }
 }

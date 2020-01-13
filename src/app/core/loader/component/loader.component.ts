@@ -9,7 +9,9 @@ import { LoaderService } from "../service/loader.service";
 })
 export class LoaderComponent implements OnInit {
   show: boolean;
-  constructor(private loaderService: LoaderService) {}
+  constructor(private loaderService: LoaderService) {
+    console.log("Loader COmponent Called");
+  }
 
   ngOnInit() {
     this.loaderService.loaderState.subscribe((state: Loader) => {
