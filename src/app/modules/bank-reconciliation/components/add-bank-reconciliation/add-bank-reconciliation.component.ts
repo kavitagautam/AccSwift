@@ -1,19 +1,19 @@
-import { FormArray } from '@angular/forms';
-import { Validators } from '@angular/forms';
-import { LedgerCodeMatchService } from './../../../../shared/services/ledger-code-match/ledger-code-match.service';
-import { LedgerCodeAsyncValidators } from './../../../../shared/validators/async-validators/ledger-code-validators.service';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { Router } from '@angular/router';
-import { BankReconciliationService } from './../../services/bank-reconciliation.service';
-import { FormBuilder } from '@angular/forms';
-import { FormGroup } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { LedgerModelPopupComponent } from '@app/shared/component/ledger-model-popup/ledger-model-popup.component';
+import { FormArray } from "@angular/forms";
+import { Validators } from "@angular/forms";
+import { LedgerCodeMatchService } from "./../../../../shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerCodeAsyncValidators } from "./../../../../shared/validators/async-validators/ledger-code-validators.service";
+import { BsModalService, BsModalRef } from "ngx-bootstrap";
+import { Router } from "@angular/router";
+import { BankReconciliationService } from "./../../services/bank-reconciliation.service";
+import { FormBuilder } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
+import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 
 @Component({
-  selector: 'accSwift-add-bank-reconciliation',
-  templateUrl: './add-bank-reconciliation.component.html',
-  styleUrls: ['./add-bank-reconciliation.component.scss']
+  selector: "accSwift-add-bank-reconciliation",
+  templateUrl: "./add-bank-reconciliation.component.html",
+  styleUrls: ["./add-bank-reconciliation.component.scss"]
 })
 export class AddBankReconciliationComponent implements OnInit {
   addReconciliationForm: FormGroup;
@@ -28,12 +28,14 @@ export class AddBankReconciliationComponent implements OnInit {
     centered: true
   };
 
-  constructor(private _fb: FormBuilder,
+  constructor(
+    private _fb: FormBuilder,
     public reconciliationService: BankReconciliationService,
     private router: Router,
     private modalService: BsModalService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
-    public ledgerCodeService: LedgerCodeMatchService) { }
+    public ledgerCodeService: LedgerCodeMatchService
+  ) {}
 
   ngOnInit() {
     this.buildAddReconciliationForm();
@@ -46,8 +48,10 @@ export class AddBankReconciliationComponent implements OnInit {
       voucherNo: [""],
       bankAccountId: [0],
       date: [new Date()],
-      reconciliationEntryList: this._fb.array([this.addReconciliationEntryList()])
-    })
+      reconciliationEntryList: this._fb.array([
+        this.addReconciliationEntryList()
+      ])
+    });
   }
 
   addReconciliationEntryList(): FormGroup {
@@ -71,7 +75,8 @@ export class AddBankReconciliationComponent implements OnInit {
 
   addreconciliationEntry(): void {
     this.submitted = true;
-    if (this.addReconciliationForm.get("reconciliationEntryList").invalid) return;
+    if (this.addReconciliationForm.get("reconciliationEntryList").invalid)
+      return;
 
     (<FormArray>this.addReconciliationForm.get("reconciliationEntryList")).push(
       this.addReconciliationEntryList()
@@ -123,9 +128,11 @@ export class AddBankReconciliationComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.addReconciliationForm.get("reconciliationEntryList").invalid) return;
+    if (this.addReconciliationForm.get("reconciliationEntryList").invalid)
+      return;
     (<FormArray>this.addReconciliationForm.get("reconciliationEntryList")).push(
-      this.addReconciliationEntryList());
+      this.addReconciliationEntryList()
+    );
     this.rowSubmitted = false;
     this.submitted = false;
   }
@@ -135,11 +142,21 @@ export class AddBankReconciliationComponent implements OnInit {
     const reconciliationEntry = <FormArray>(
       this.addReconciliationForm.get("reconciliationEntryList")
     );
-    reconciliationEntry.controls[rowIndex].get("particularsOrAccountingHead").setValue(dataItem.particularsOrAccountingHead);
-    reconciliationEntry.controls[rowIndex].get("voucherNo").setValue(dataItem.voucherNo);
-    reconciliationEntry.controls[rowIndex].get("currentAmount").setValue(dataItem.currentAmount);
-    reconciliationEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
-    reconciliationEntry.controls[rowIndex].get("remarks").setValue(dataItem.remarks);
+    reconciliationEntry.controls[rowIndex]
+      .get("particularsOrAccountingHead")
+      .setValue(dataItem.particularsOrAccountingHead);
+    reconciliationEntry.controls[rowIndex]
+      .get("voucherNo")
+      .setValue(dataItem.voucherNo);
+    reconciliationEntry.controls[rowIndex]
+      .get("currentAmount")
+      .setValue(dataItem.currentAmount);
+    reconciliationEntry.controls[rowIndex]
+      .get("vType")
+      .setValue(dataItem.vType);
+    reconciliationEntry.controls[rowIndex]
+      .get("remarks")
+      .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
     sender.editRow(
       rowIndex,
@@ -159,8 +176,12 @@ export class AddBankReconciliationComponent implements OnInit {
         const reconciliationFormArray = <FormArray>(
           this.addReconciliationForm.get("reconciliationEntryList")
         );
-        reconciliationFormArray.controls[index].get("currentBalance").setValue(data.ActualBalance);
-        reconciliationFormArray.controls[index].get("particularsOrAccountingHead").setValue(data.LedgerName);
+        reconciliationFormArray.controls[index]
+          .get("currentBalance")
+          .setValue(data.ActualBalance);
+        reconciliationFormArray.controls[index]
+          .get("particularsOrAccountingHead")
+          .setValue(data.LedgerName);
       }
     });
     this.modalRef.content.onClose.subscribe(data => {
@@ -183,9 +204,7 @@ export class AddBankReconciliationComponent implements OnInit {
     );
 
     // Remove the Row
-    (<FormArray>bankReconciliationEntry).removeAt(
-      rowIndex
-    );
+    (<FormArray>bankReconciliationEntry).removeAt(rowIndex);
   }
 
   private closeEditor(grid, rowIndex = 1) {

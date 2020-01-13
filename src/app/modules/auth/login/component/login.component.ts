@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthenticationService } from "../services/authentication.service";
 import { first } from "rxjs/operators";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: "accSwift-login",
@@ -15,7 +16,9 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private toastr: ToastrService
+
   ) {}
 
   ngOnInit() {
@@ -35,8 +38,12 @@ export class LoginComponent implements OnInit {
           this.router.navigate([""]);
         },
         error => {
-          // this.alertService.error(error);
+           this.toastr.error(JSON.stringify(error.error));
+        },
+        ()=>{
+          this.toastr.success("Login Successful!");
         }
+        
       );
   }
 }

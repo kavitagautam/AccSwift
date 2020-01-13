@@ -28,11 +28,13 @@ export class ListJournalComponent implements OnInit {
 
   //Filter Serach Key
   voucherNoSearch = "";
-  journalDateSearch = "";
+  journalDateToSearch = "";
+  journalDateFromSearch = "";
   projectIdSearch = "";
   seriesIdSearch = "";
   voucherNoSearchKey = "";
-  journalDateSerchKey = "";
+  journalDateToSerchKey = "";
+  journalDateFromSerchKey = "";
   projectNameSerachKey = "";
   seriesNameSearchKey = "";
   remarkSearchKey = "";
@@ -61,7 +63,8 @@ export class ListJournalComponent implements OnInit {
       seriesId: [0],
       projectId: [0],
       voucherNo: [""],
-      date: [""]
+      toDate: [""],
+      fromDate:[""]
     });
     this.getJournalList();
   }
@@ -114,7 +117,8 @@ export class ListJournalComponent implements OnInit {
       SeriesId: this.seriesIdSearch,
       ProjectId: this.projectIdSearch,
       VoucherNo: this.voucherNoSearch,
-      JournalDate: this.journalDateSearch,
+      JournalDateTo: this.journalDateToSearch,
+      JournalDateFrom: this.journalDateFromSearch,
       VoucherNoSearchTerm: this.voucherNoSearchKey,
       ProjectNameSearchTerm: this.projectNameSerachKey,
       SeriesNameSearchTerm: this.seriesNameSearchKey,
@@ -183,7 +187,8 @@ export class ListJournalComponent implements OnInit {
 
   public searchForm() {
     this.voucherNoSearch = this.journalSearchForm.controls.voucherNo.value;
-    this.journalDateSearch = this.journalSearchForm.controls.date.value;
+    this.journalDateToSearch = this.journalSearchForm.controls.toDate.value;
+    this.journalDateFromSearch = this.journalSearchForm.controls.fromDate.value;
     this.projectIdSearch = this.journalSearchForm.controls.projectId.value;
     this.seriesIdSearch = this.journalSearchForm.controls.seriesId.value;
     this.getJournalList();

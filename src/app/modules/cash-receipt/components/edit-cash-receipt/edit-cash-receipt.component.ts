@@ -40,23 +40,36 @@ export class EditCashReceiptComponent implements OnInit {
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildCashReceiptForm(); // Initialize the form
-    this.getIdFromRoute();  // Get Id From the Route URL and get the Details
-
+    this.getIdFromRoute(); // Get Id From the Route URL and get the Details
   }
 
   buildCashReceiptForm(): void {
     this.editCashReceiptForm = this._fb.group({
-      seriesId: [this.cashReceiptDetails ? this.cashReceiptDetails.SeriesID : 0],
-      projectId: [this.cashReceiptDetails ? this.cashReceiptDetails.ProjectID : 0],
-      voucherNo: [this.cashReceiptDetails ? this.cashReceiptDetails.VoucherNo : ""],
-      cashAccountId: [this.cashReceiptDetails ? this.cashReceiptDetails.LedgerID : 0],
+      seriesId: [
+        this.cashReceiptDetails ? this.cashReceiptDetails.SeriesID : 0
+      ],
+      projectId: [
+        this.cashReceiptDetails ? this.cashReceiptDetails.ProjectID : 0
+      ],
+      voucherNo: [
+        this.cashReceiptDetails ? this.cashReceiptDetails.VoucherNo : ""
+      ],
+      cashAccountId: [
+        this.cashReceiptDetails ? this.cashReceiptDetails.LedgerID : 0
+      ],
       cashPartyId: [0],
-      date: [this.cashReceiptDetails ? new Date(this.cashReceiptDetails.CreatedDate) : ""],
-      cashReceiptEntryList: this._fb.array([this.addCashReceiptEntryFormGroup()])
+      date: [
+        this.cashReceiptDetails
+          ? new Date(this.cashReceiptDetails.CreatedDate)
+          : ""
+      ],
+      cashReceiptEntryList: this._fb.array([
+        this.addCashReceiptEntryFormGroup()
+      ])
     });
   }
 

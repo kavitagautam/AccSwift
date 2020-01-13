@@ -17,7 +17,6 @@ import { CashPaymentService } from "../../services/cash-payment.service";
   templateUrl: "./list-cash-payment.component.html",
   styleUrls: ["./list-cash-payment.component.scss"]
 })
-
 export class ListCashPaymentComponent implements OnInit {
   cashPaymentsForm: FormGroup;
   cashPaymentDetail: CashPaymentMaster;
@@ -34,7 +33,7 @@ export class ListCashPaymentComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
     public cashPaymentService: CashPaymentService
-  ) { }
+  ) {}
   ngOnInit() {
     this.cashPaymentsForm = this._fb.group({
       seriesId: [0],
@@ -88,15 +87,19 @@ export class ListCashPaymentComponent implements OnInit {
       Direction: "asc" // "asc" or "desc"
     };
 
-    this.cashPaymentService.getCashPaymentMaster().subscribe((res: any) => {
-      this.listLoading = true;
-      //mapping the data to change string date format to Date
-      this.cashPaymentList = res;
-      this.gridView = {
-        data: this.cashPaymentList.slice(this.skip, this.skip + this.pageSize),
-        total: this.cashPaymentList ? this.cashPaymentList.length : 0
-      };
-    },
+    this.cashPaymentService.getCashPaymentMaster().subscribe(
+      (res: any) => {
+        this.listLoading = true;
+        //mapping the data to change string date format to Date
+        this.cashPaymentList = res;
+        this.gridView = {
+          data: this.cashPaymentList.slice(
+            this.skip,
+            this.skip + this.pageSize
+          ),
+          total: this.cashPaymentList ? this.cashPaymentList.length : 0
+        };
+      },
       error => {
         this.listLoading = false;
       },
