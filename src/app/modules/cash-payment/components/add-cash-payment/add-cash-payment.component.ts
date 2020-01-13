@@ -22,7 +22,7 @@ export class AddCashPaymentComponent implements OnInit {
     public cashPaymentService: CashPaymentService,
     private fb: FormBuilder,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildAddCashPaymentForm(); // initialize the form
@@ -88,15 +88,21 @@ export class AddCashPaymentComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const cashPaymentEntry = <FormArray>(this.addCashPaymentForm.get("cashPaymentEntryList"));
-    cashPaymentEntry.controls[rowIndex].get("particularsOraccountingHead")
+    const cashPaymentEntry = <FormArray>(
+      this.addCashPaymentForm.get("cashPaymentEntryList")
+    );
+    cashPaymentEntry.controls[rowIndex]
+      .get("particularsOraccountingHead")
       .setValue(dataItem.particularsOraccountingHead);
-    cashPaymentEntry.controls[rowIndex].get("voucherNo")
+    cashPaymentEntry.controls[rowIndex]
+      .get("voucherNo")
       .setValue(dataItem.voucherNo);
-    cashPaymentEntry.controls[rowIndex].get("currentAmount")
+    cashPaymentEntry.controls[rowIndex]
+      .get("currentAmount")
       .setValue(dataItem.currentAmount);
     cashPaymentEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
-    cashPaymentEntry.controls[rowIndex].get("remarks")
+    cashPaymentEntry.controls[rowIndex]
+      .get("remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
     sender.editRow(

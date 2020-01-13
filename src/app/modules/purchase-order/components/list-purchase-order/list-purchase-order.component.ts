@@ -1,12 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { PurchaseOrderService } from "../../services/purchase-order.service";
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { SortDescriptor, CompositeFilterDescriptor } from '@progress/kendo-data-query';
-import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
-import { ConfirmationDialogComponent } from '@app/shared/component/confirmation-dialog/confirmation-dialog.component';
+import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
+import { BsModalService, BsModalRef } from "ngx-bootstrap";
+import {
+  SortDescriptor,
+  CompositeFilterDescriptor
+} from "@progress/kendo-data-query";
+import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
+import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-list-purchase-order",
@@ -42,7 +45,7 @@ export class ListPurchaseOrderComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private modalService: BsModalService
-  ) { }
+  ) {}
   ngOnInit() {
     this.buildPurchaseOrderForm();
     this.getPurchaseOrderList();
@@ -84,7 +87,10 @@ export class ListPurchaseOrderComponent implements OnInit {
         this.listLoading = true;
         this.purchaseOrderList = res;
         this.gridView = {
-          data: this.purchaseOrderList.slice(this.skip, this.skip + this.pageSize),
+          data: this.purchaseOrderList.slice(
+            this.skip,
+            this.skip + this.pageSize
+          ),
           total: this.purchaseOrderList ? this.purchaseOrderList.length : 0
         };
       },

@@ -1,17 +1,20 @@
-import { ConfirmationDialogComponent } from './../../../../shared/component/confirmation-dialog/confirmation-dialog.component';
-import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
-import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
-import { SalesInvoiceService } from './../../services/sales-invoice.service';
-import { FormBuilder } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { ConfirmationDialogComponent } from "./../../../../shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ToastrService } from "ngx-toastr";
+import { Router } from "@angular/router";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import {
+  CompositeFilterDescriptor,
+  SortDescriptor
+} from "@progress/kendo-data-query";
+import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
+import { SalesInvoiceService } from "./../../services/sales-invoice.service";
+import { FormBuilder } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'accSwift-list-sales-invoice',
-  templateUrl: './list-sales-invoice.component.html',
-  styleUrls: ['./list-sales-invoice.component.scss']
+  selector: "accSwift-list-sales-invoice",
+  templateUrl: "./list-sales-invoice.component.html",
+  styleUrls: ["./list-sales-invoice.component.scss"]
 })
 export class ListSalesInvoiceComponent implements OnInit {
   salesInvoiceForm;
@@ -38,10 +41,13 @@ export class ListSalesInvoiceComponent implements OnInit {
     ignoreBackdropClick: true
   };
 
-  constructor(private fb: FormBuilder, public salesInvoiceService: SalesInvoiceService,
+  constructor(
+    private fb: FormBuilder,
+    public salesInvoiceService: SalesInvoiceService,
     private router: Router,
     private toastr: ToastrService,
-    private modalService: BsModalService) { }
+    private modalService: BsModalService
+  ) {}
 
   ngOnInit() {
     this.buildListSalesForm();
@@ -56,7 +62,7 @@ export class ListSalesInvoiceComponent implements OnInit {
       projectId: [0],
       date: [""],
       orderNo: [""]
-    })
+    });
   }
 
   //Date String Parse
@@ -86,7 +92,10 @@ export class ListSalesInvoiceComponent implements OnInit {
         this.listLoading = true;
         this.salesInvoiceList = res;
         this.gridView = {
-          data: this.salesInvoiceList.slice(this.skip, this.skip + this.pageSize),
+          data: this.salesInvoiceList.slice(
+            this.skip,
+            this.skip + this.pageSize
+          ),
           total: this.salesInvoiceList ? this.salesInvoiceList.length : 0
         };
       },
@@ -146,5 +155,4 @@ export class ListSalesInvoiceComponent implements OnInit {
     this.toastr.success("Invoice deleted successfully");
     //call Delete Api
   }
-
 }

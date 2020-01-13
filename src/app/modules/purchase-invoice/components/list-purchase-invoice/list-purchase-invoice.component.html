@@ -5,7 +5,11 @@
 </div>
 <div class="accordion" id="accordion">
   <div class="box box-default">
-    <div class="box-header with-border" data-toggle="collapse" href="#collapseOne">
+    <div
+      class="box-header with-border"
+      data-toggle="collapse"
+      href="#collapseOne"
+    >
       <h3 class="box-title">Search Terms</h3>
     </div>
     <div id="collapseOne" class="box-body collapse in" data-parent="#accordion">
@@ -15,9 +19,16 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Series </label>
-                <select class="form-control" id="seriesNameId" formControlName="seriesId">
+                <select
+                  class="form-control"
+                  id="seriesNameId"
+                  formControlName="seriesId"
+                >
                   <option [ngValue]="0" disabled>Select</option>
-                  <option *ngFor="let series of purchaseService.seriesList" [ngValue]="series.ID">{{series.EngName}}
+                  <option
+                    *ngFor="let series of purchaseService.seriesList"
+                    [ngValue]="series.ID"
+                    >{{ series.EngName }}
                   </option>
                 </select>
               </div>
@@ -25,19 +36,32 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <sup>*</sup> <label>VoucherNo.</label>
-                <input class="form-control" id="voucherNoId" formControlName="voucherNo" />
+                <input
+                  class="form-control"
+                  id="voucherNoId"
+                  formControlName="voucherNo"
+                />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <sup>*</sup> <label>Date</label>
-                <input type="text" class="form-control" formControlName="date" bsDatepicker>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="date"
+                  bsDatepicker
+                />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <sup>*</sup> <label>Cash/Party/A/C </label>
-                <select class="form-control" id="cashAccountNo" formControlName="cashPartyACId">
+                <select
+                  class="form-control"
+                  id="cashAccountNo"
+                  formControlName="cashPartyACId"
+                >
                   <option [ngValue]="0" disabled>Select </option>
                 </select>
               </div>
@@ -45,7 +69,11 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Depot/ Location </label>
-                <select class="form-control" id="depotId" formControlName="depotLocationId">
+                <select
+                  class="form-control"
+                  id="depotId"
+                  formControlName="depotLocationId"
+                >
                   <option [ngValue]="0" disabled>Select </option>
                 </select>
               </div>
@@ -59,7 +87,11 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <sup>*</sup> <label>Purchase A/C </label>
-                <select class="form-control" id="purchaseAcId" formControlName="purchaseAcId">
+                <select
+                  class="form-control"
+                  id="purchaseAcId"
+                  formControlName="purchaseAcId"
+                >
                   <option [ngValue]="0" disabled>Select </option>
                 </select>
               </div>
@@ -67,9 +99,16 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project </label>
-                <select class="form-control" id="projectId" formControlName="projectId">
+                <select
+                  class="form-control"
+                  id="projectId"
+                  formControlName="projectId"
+                >
                   <option [ngValue]="0" disabled> Select</option>
-                  <option *ngFor="let project of purchaseService.projectList" [ngValue]="project.ID">{{project.EngName}}
+                  <option
+                    *ngFor="let project of purchaseService.projectList"
+                    [ngValue]="project.ID"
+                    >{{ project.EngName }}
                   </option>
                 </select>
               </div>
@@ -83,7 +122,11 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Party Bill No.</label>
-                <input class="form-control" id="partyBillNoId" formControlName="partyBillNo" />
+                <input
+                  class="form-control"
+                  id="partyBillNoId"
+                  formControlName="partyBillNo"
+                />
               </div>
             </div>
           </form>
@@ -102,37 +145,70 @@
 <div class="box box-default">
   <div class="box-body">
     <div class="col-md-12 p-0">
-
       <div class="grid-wrapper">
-        <kendo-grid [data]="gridView" [filterable]="true" [filter]="filter" [pageSize]="pageSize" [skip]="skip"
+        <kendo-grid
+          [data]="gridView"
+          [filterable]="true"
+          [filter]="filter"
+          [pageSize]="pageSize"
+          [skip]="skip"
           [sortable]="{
             allowUnsort: allowUnsort,
             mode: 'single'
-          }" [sort]="sort" (sortChange)="sortChange($event)" [pageable]="true" (pageChange)="pageChange($event)"
-          (filterChange)="filterChange($event)">
-          <kendo-grid-column field="ProductName" title="Product Name" width="150">
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          (filterChange)="filterChange($event)"
+        >
+          <kendo-grid-column
+            field="ProductName"
+            title="Product Name"
+            width="150"
+          >
           </kendo-grid-column>
           <kendo-grid-column field="Quantity" title="Qty" width="80">
           </kendo-grid-column>
           <kendo-grid-column field="Unit" title="Unit" width="80">
           </kendo-grid-column>
-          <kendo-grid-column field="PurchaseRate" title="Purchase Rate" width="80">
+          <kendo-grid-column
+            field="PurchaseRate"
+            title="Purchase Rate"
+            width="80"
+          >
           </kendo-grid-column>
           <kendo-grid-column field="Amount" title="Amount" width="120">
           </kendo-grid-column>
-          <kendo-grid-column field="SpecialDiscount" title="Spl. Disc%" width="150">
+          <kendo-grid-column
+            field="SpecialDiscount"
+            title="Spl. Disc%"
+            width="150"
+          >
           </kendo-grid-column>
           <kendo-grid-column field="NetAmount" title="Net Amount" width="150">
           </kendo-grid-column>
           <kendo-grid-column field="VAT" title="VAT" width="80">
           </kendo-grid-column>
           <kendo-grid-command-column title="Action" width="150">
-            <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
-              <button kendoGridEditCommand (click)="edit(dataItem)" data-toggle="modal" data-target="#viewModal"
-                [primary]="true">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
+            >
+              <button
+                kendoGridEditCommand
+                (click)="edit(dataItem)"
+                data-toggle="modal"
+                data-target="#viewModal"
+                [primary]="true"
+              >
                 Edit
               </button>
-              <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialogue(dataItem)"
+              >
                 Delete
               </button>
             </ng-template>
@@ -140,7 +216,7 @@
         </kendo-grid>
 
         <div *ngIf="listLoading" class="k-i-loading"></div>
-
       </div>
     </div>
   </div>
+</div>

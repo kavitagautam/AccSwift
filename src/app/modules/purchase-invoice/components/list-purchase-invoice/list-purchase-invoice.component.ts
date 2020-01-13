@@ -46,7 +46,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private modalService: BsModalService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildPurchaseInvoiceForm();
@@ -95,7 +95,10 @@ export class ListPurchaseInvoiceComponent implements OnInit {
         this.listLoading = true;
         this.purchaseInvoiceList = res;
         this.gridView = {
-          data: this.purchaseInvoiceList.slice(this.skip, this.skip + this.pageSize),
+          data: this.purchaseInvoiceList.slice(
+            this.skip,
+            this.skip + this.pageSize
+          ),
           total: this.purchaseInvoiceList ? this.purchaseInvoiceList.length : 0
         };
       },

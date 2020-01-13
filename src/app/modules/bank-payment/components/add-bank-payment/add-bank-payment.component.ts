@@ -35,7 +35,7 @@ export class AddBankPaymentComponent implements OnInit {
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildAddBankPaymentForm(); //Initialize the Form....
@@ -197,8 +197,12 @@ export class AddBankPaymentComponent implements OnInit {
 
   public removeHandler({ dataItem, rowIndex }): void {
     // Calculation on Debit Total and Credit Total on Rows Removed
-    const bankPaymentEntry = <FormArray>(this.addBankPaymentForm.get("bankPaymentEntryList"));
+    const bankPaymentEntry = <FormArray>(
+      this.addBankPaymentForm.get("bankPaymentEntryList")
+    );
     // Remove the Row
-    (<FormArray>this.addBankPaymentForm.get("bankPaymentEntryList")).removeAt(rowIndex);
+    (<FormArray>this.addBankPaymentForm.get("bankPaymentEntryList")).removeAt(
+      rowIndex
+    );
   }
 }

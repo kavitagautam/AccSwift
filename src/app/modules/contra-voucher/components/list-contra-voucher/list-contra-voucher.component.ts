@@ -10,7 +10,7 @@ import {
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
-import { ContraVoucherMaster } from '../../models/contraVoucher.model';
+import { ContraVoucherMaster } from "../../models/contraVoucher.model";
 
 @Component({
   selector: "accSwift-list-contra-voucher",
@@ -35,7 +35,7 @@ export class ListContraVoucherComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.editContraVoucherForm();

@@ -5,7 +5,11 @@
 </div>
 <div class="accordion" id="accordion">
   <div class="box box-default">
-    <div class="box-header with-border" data-toggle="collapse" href="#collapseOne">
+    <div
+      class="box-header with-border"
+      data-toggle="collapse"
+      href="#collapseOne"
+    >
       <h3 class="box-title">
         Search Terms
       </h3>
@@ -45,7 +49,12 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Date</label>
-                <input type="text" class="form-control" formControlName="date" bsDatepicker>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="date"
+                  bsDatepicker
+                />
               </div>
             </div>
           </form>
@@ -64,37 +73,70 @@
 <div class="box box-default">
   <div class="box-body">
     <div class="col-md-12 p-0">
-
       <div class="grid-wrapper">
-        <kendo-grid [data]="gridView" [filterable]="true" [filter]="filter" [pageSize]="pageSize" [skip]="skip"
+        <kendo-grid
+          [data]="gridView"
+          [filterable]="true"
+          [filter]="filter"
+          [pageSize]="pageSize"
+          [skip]="skip"
           [sortable]="{
             allowUnsort: allowUnsort,
             mode: 'single'
-          }" [sort]="sort" (sortChange)="sortChange($event)" [pageable]="true" (pageChange)="pageChange($event)"
-          (filterChange)="filterChange($event)">
-          <kendo-grid-column field="ProductName" title="Product Name" width="150">
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          (filterChange)="filterChange($event)"
+        >
+          <kendo-grid-column
+            field="ProductName"
+            title="Product Name"
+            width="150"
+          >
           </kendo-grid-column>
           <kendo-grid-column field="Quantity" title="Qty" width="80">
           </kendo-grid-column>
           <kendo-grid-column field="Unit" title="Unit" width="80">
           </kendo-grid-column>
-          <kendo-grid-column field="PurchaseRate" title="Purchase Rate" width="80">
+          <kendo-grid-column
+            field="PurchaseRate"
+            title="Purchase Rate"
+            width="80"
+          >
           </kendo-grid-column>
           <kendo-grid-column field="Amount" title="Amount" width="120">
           </kendo-grid-column>
-          <kendo-grid-column field="SpecialDiscount" title="Spl. Disc%" width="150">
+          <kendo-grid-column
+            field="SpecialDiscount"
+            title="Spl. Disc%"
+            width="150"
+          >
           </kendo-grid-column>
           <kendo-grid-column field="NetAmount" title="Net Amount" width="150">
           </kendo-grid-column>
           <kendo-grid-column field="VAT" title="VAT" width="80">
           </kendo-grid-column>
           <kendo-grid-command-column title="Action" width="150">
-            <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
-              <button kendoGridEditCommand (click)="edit(dataItem)" data-toggle="modal" data-target="#viewModal"
-                [primary]="true">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
+            >
+              <button
+                kendoGridEditCommand
+                (click)="edit(dataItem)"
+                data-toggle="modal"
+                data-target="#viewModal"
+                [primary]="true"
+              >
                 Edit
               </button>
-              <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialogue(dataItem)"
+              >
                 Delete
               </button>
             </ng-template>
