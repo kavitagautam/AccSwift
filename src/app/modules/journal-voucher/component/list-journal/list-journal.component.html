@@ -25,8 +25,11 @@
             <div class="col-md-2 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="series">Series</label>
-                <select class="form-control" formControlName="seriesId">
-                  <option [value]="0" disabled>Select</option>
+                <select
+                  class="form-control"
+                  formControlName="seriesId"
+                >
+                  <option [ngValue]="0" disabled>Select</option>
                   <option
                     *ngFor="let series of journalService.journalSeriesList"
                     [value]="series.ID"
@@ -43,7 +46,7 @@
                   id="projectId"
                   formControlName="projectId"
                 >
-                  <option [value]="0" disabled>Select</option>
+                  <option [ngValue]="0" disabled>Select</option>
                   <option
                     *ngFor="let project of journalService.projectLists"
                     [value]="project.ID"

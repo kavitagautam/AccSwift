@@ -1,5 +1,5 @@
 <div class="box-header">
-  <button [routerLink]="['add']" class="btn btn-primary pull-right">
+  <button [routerLink]="['add']" class="btn btn-primary">
     <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Bank Payment
   </button>
 </div>
@@ -20,8 +20,8 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Series</label>
-                <select class="form-control" formControlName="series">
-                  <option value="null"></option>
+                <select class="form-control" formControlName="seriesId">
+                  <option [ngValue]="0" disabled>Select</option>
                   <option
                     *ngFor="let series of bankPaymentService.seriesList"
                     [ngValue]="series.ID"
@@ -34,8 +34,8 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Bank Account </label>
-                <select class="form-control" formControlName="bankAccount">
-                  <option value="null"></option>
+                <select class="form-control" formControlName="bankAccountId">
+                  <option [ngValue]="0" disabled>Select</option>
                   <option
                     *ngFor="let account of bankPaymentService.bankAccountList"
                     [ngValue]="account.LedgerID"
@@ -54,11 +54,11 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project</label>
-                <select class="form-control" formControlName="project">
-                  <option value="null"> </option>
+                <select class="form-control" formControlName="projectId">
+                  <option [ngValue]="0" disabled>Select</option>
                   <option
                     *ngFor="let project of bankPaymentService.projectList"
-                    ngValue="project.ID"
+                    [ngValue]="project.ID"
                   >
                     {{ project.EngName }}</option
                   >

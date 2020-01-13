@@ -1,11 +1,5 @@
+import { SeriesList, ProjectList, CashAccounts, ContraVoucherMaster } from './../models/contraVoucher.model';
 import { Injectable } from "@angular/core";
-
-import {
-  ProjectList,
-  SeriesList,
-  CashAccounts,
-  ContraVoucherMaster
-} from "../components/models/contravoucher.model";
 import { environment } from "@env/environment";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
@@ -26,7 +20,7 @@ export class ContraVoucherService {
     this.getProjectLists();
     this.getSeriesList();
     this.getCashReceiptAccounts();
-   }
+  }
 
   getProjectLists(): void {
     this.httpService

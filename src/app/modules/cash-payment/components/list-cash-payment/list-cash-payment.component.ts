@@ -36,11 +36,12 @@ export class ListCashPaymentComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.cashPaymentsForm = this._fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
       voucherNo: [""],
-      cashAccount: [""],
-      date: [""]
+      cashPartyId: [0],
+      cashAccountId: [0],
+      date: [new Date()]
     });
     this.getCashPaymentList();
   }
@@ -110,7 +111,6 @@ export class ListCashPaymentComponent implements OnInit {
 
   public filterChange(filter): void {
     this.filter = filter;
-
     this.getCashPaymentList();
   }
 
@@ -120,14 +120,12 @@ export class ListCashPaymentComponent implements OnInit {
 
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
-
     if (event.skip == 0) {
       this.skip = event.skip;
       this.currentPage = 1;
     } else {
       this.skip = event.skip;
       const pageNo = event.skip / event.take + 1;
-
       this.currentPage = pageNo;
     }
     this.getCashPaymentList();

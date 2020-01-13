@@ -56,6 +56,8 @@ export class ProductGroupComponent implements OnInit, OnChanges {
         this.buildProductGroupForm();
       });
   }
-  saveProduct(): void {}
+  saveProduct(): void {
+    if (this.productGroupForm.invalid) return;
+  }
   cancelProduct(): void {}
 }

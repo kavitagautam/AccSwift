@@ -14,17 +14,14 @@ import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/l
   styleUrls: ["./add-cash-receipt.component.scss"]
 })
 export class AddCashReceiptComponent implements OnInit {
+  addCashReceiptForm: FormGroup;
   private editedRowIndex: number;
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
-
   cashRecieptDetail: CashReceiptMaster;
-  addCashReceiptForm: FormGroup;
   submitted: boolean;
-
   rowSubmitted: boolean;
-
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -44,17 +41,17 @@ export class AddCashReceiptComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.buildCashReceiptForm();
+    this.buildAddCashReceiptForm();
   }
 
-  buildCashReceiptForm(): void {
+  buildAddCashReceiptForm(): void {
     this.addCashReceiptForm = this._fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
       voucherNo: [""],
-      cashAccount: [""],
-      cashParty: [""],
-      date: [],
+      cashAccountId: [0],
+      cashPartyId: [0],
+      date: [new Date()],
       cashReceiptEntryList: this._fb.array([
         this.addCashReceiptEntryFormGroup()
       ])
