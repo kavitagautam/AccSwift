@@ -12,6 +12,8 @@ import { Component, OnInit } from "@angular/core";
 })
 export class EditPurchaseInvoiceComponent implements OnInit {
   editPurchaseForm: FormGroup;
+  numericFormat: string = "n2";
+  public decimals: number = 2;
   purchaseDetails: PurchaseInvoiceMaster;
   date: Date = new Date();
   submitted: boolean;
@@ -53,7 +55,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       remarks: [this.purchaseDetails ? this.purchaseDetails.Remarks : ""],
       purchaseInvoiceEntryList: this.fb.array([
         this.addPurchaseInvoiceEntryList()
-      ])
+      ]) // Form Array..
     });
   }
 

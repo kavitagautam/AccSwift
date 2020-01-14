@@ -1,13 +1,17 @@
-import { Observable } from 'rxjs';
-import { HttpParams } from '@angular/common/http';
-import { HttpClientService } from './../../../core/services/http-client/http-client.service';
-import { HttpClient } from '@angular/common/http';
-import { environment } from './../../../../environments/environment';
-import { SeriesList, ProjectList, BankReconciliationMaster } from './../components/models/bank-reconciliation.model';
-import { Injectable } from '@angular/core';
+import { Observable } from "rxjs";
+import { HttpParams } from "@angular/common/http";
+import { HttpClientService } from "./../../../core/services/http-client/http-client.service";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "./../../../../environments/environment";
+import {
+  SeriesList,
+  ProjectList,
+  BankReconciliationMaster
+} from "./../components/models/bank-reconciliation.model";
+import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class BankReconciliationService {
   seriesLists: SeriesList;
@@ -17,9 +21,7 @@ export class BankReconciliationService {
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) { }
-
-  init() {
+  ) {
     this.getProjectLists();
     this.getSeriesList();
   }
@@ -54,6 +56,8 @@ export class BankReconciliationService {
   }
 
   getBankReconciliationDetails(id): Observable<BankReconciliationMaster> {
-    return this.httpService.get(`${this._api_URL}BankReconciliationMaster/${id}`);
+    return this.httpService.get(
+      `${this._api_URL}BankReconciliationMaster/${id}`
+    );
   }
 }

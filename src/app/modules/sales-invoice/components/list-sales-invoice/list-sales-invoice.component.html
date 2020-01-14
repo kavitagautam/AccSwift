@@ -23,6 +23,12 @@
                 <label>Series</label>
                 <select class="form-control" formControlName="seriesId">
                   <option [ngValue]="0" disabled>Select</option>
+                  <option
+                    *ngFor="let series of salesInvoiceService.seriesList"
+                    [ngValue]="series.ID"
+                  >
+                    {{ series.EngName }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -31,6 +37,12 @@
                 <sup>*</sup> <label>Cash/ Party /A/C</label>
                 <select class="form-control" formControlName="cashPartyACId">
                   <option [ngValue]="0" disabled>Select</option>
+                  <option
+                    *ngFor="let series of salesInvoiceService.seriesList"
+                    [ngValue]="series.ID"
+                  >
+                    {{ series.EngName }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -55,6 +67,12 @@
                 <label>Project</label>
                 <select class="form-control" formControlName="projectId">
                   <option [ngValue]="0" disabled>Select</option>
+                  <option
+                    *ngFor="let project of salesInvoiceService.projectList"
+                    [ngValue]="project.LedgerID"
+                  >
+                    {{ project.EngName }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -118,7 +136,7 @@
             width="150"
           >
           </kendo-grid-column>
-          <kendo-grid-column field="Quantity" title="Qty" width="80">
+          <!-- <kendo-grid-column field="Quantity" title="Qty" width="80">
           </kendo-grid-column>
           <kendo-grid-column field="Unit" title="Unit" width="80">
           </kendo-grid-column>
@@ -129,7 +147,7 @@
           >
           </kendo-grid-column>
           <kendo-grid-column field="Amount" title="Amount" width="120">
-          </kendo-grid-column>
+          </kendo-grid-column> -->
           <kendo-grid-column
             field="SpecialDiscount"
             title="Spl. Disc%"

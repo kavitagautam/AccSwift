@@ -1,3 +1,4 @@
+import { SalesInvoiceService } from "./../../services/sales-invoice.service";
 import { FormArray } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -14,7 +15,11 @@ export class AddSalesInvoiceComponent implements OnInit {
   submitted: boolean;
   rowSubmitted: boolean;
   private editedRowIndex: number;
-  constructor(private _fb: FormBuilder, private router: Router) {}
+  constructor(
+    private _fb: FormBuilder,
+    private router: Router,
+    public salesInvoiceService: SalesInvoiceService
+  ) {}
 
   ngOnInit() {
     this.buildAddSalesInvoiceForm();

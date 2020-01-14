@@ -51,6 +51,7 @@ export class ListSalesInvoiceComponent implements OnInit {
 
   ngOnInit() {
     this.buildListSalesForm();
+    this.getSalesInvoiceList();
   }
 
   buildListSalesForm() {
