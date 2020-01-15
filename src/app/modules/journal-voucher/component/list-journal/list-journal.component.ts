@@ -75,15 +75,7 @@ export class ListJournalComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true
   };
-
-  // Date string parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
-
+ 
   public sortChange(sort: SortDescriptor[]): void {
     this.orderByKey = "";
     this.dirKey = "";
@@ -126,31 +118,7 @@ export class ListJournalComponent implements OnInit {
     };
     this.journalService.getJournalList(params).subscribe(
       res => {
-        //mapping the data to change string date format to Date
-        const sampleData = res.Entity.map(
-          dataItem =>
-            <JournalMaster>{
-              ID: dataItem.ID,
-              VoucherNo: dataItem.VoucherNo,
-              Date: this.parseAdjust(dataItem.JournalDate),
-              SeriesID: dataItem.SeriesID,
-              SeriesName: dataItem.SeriesName,
-              ProjectID: dataItem.ProjectID,
-              ProjectName: dataItem.ProjectName,
-              Field1: dataItem.Field1,
-              Field2: dataItem.Field2,
-              Field3: dataItem.Field3,
-              Field4: dataItem.Field4,
-              Field5: dataItem.Field5,
-              Journaldetails: dataItem.Journaldetails,
-              Remarks: dataItem.Remarks,
-              CreatedBy: dataItem.CreatedBy,
-              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
-              ModifiedBy: dataItem.ModifiedBy,
-              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
-            }
-        );
-        this.journalList = sampleData;
+        this.journalList = res.Entity;
         this.gridView = {
           data: this.journalList,
           total: res.TotalItemsAvailable
@@ -213,7 +181,7 @@ export class ListJournalComponent implements OnInit {
     this.router.navigate(["/journal/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const journalId = {
       id: dataItem.ID
     };
