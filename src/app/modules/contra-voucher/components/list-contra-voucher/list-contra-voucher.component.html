@@ -158,8 +158,10 @@
             title="Cheque Date"
             filter="date"
             [filterable]="false"
-            format="{0: yyyy-mm-dd}"
           >
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              {{ dataItem.CashReceiptDate | dateStringFormat: "yyyy-MM-dd" }}
+            </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="Remarks" title="Remarks">
           </kendo-grid-column>
@@ -187,7 +189,6 @@
             </ng-template>
           </kendo-grid-command-column>
         </kendo-grid>
-
         <div *ngIf="listLoading" class="k-i-loading"></div>
       </div>
     </div>

@@ -16,11 +16,11 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Description</label>
+            <label>Remarks</label>
             <textarea
               row="2"
               class="form-control"
-              formControlName="description"
+              formControlName="remarks"
             >
             </textarea>
           </div>
@@ -31,7 +31,7 @@
 </div>
 <div class="box-footer">
   <div class="mb-2">
-    <button class="btn btn-primary" disabled (click)="save()">Save</button>
+    <button class="btn btn-primary"  (click)="save()">Save</button>
     <button class="btn btn-secondary ml-2" (click)="cancel()">
       Cancel
     </button>

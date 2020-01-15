@@ -25,10 +25,7 @@
             <div class="col-md-2 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="series">Series</label>
-                <select
-                  class="form-control"
-                  formControlName="seriesId"
-                >
+                <select class="form-control" formControlName="seriesId">
                   <option [ngValue]="0" disabled>Select</option>
                   <option
                     *ngFor="let series of journalService.journalSeriesList"
@@ -127,8 +124,10 @@
             title="Journal Date"
             filter="date"
             [filterable]="false"
-            format="{0: yyyy-mm-dd}"
           >
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              {{ dataItem.Date | dateStringFormat: "yyyy-MM-dd" }}
+            </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="ProjectName" title="Project Name">
           </kendo-grid-column>

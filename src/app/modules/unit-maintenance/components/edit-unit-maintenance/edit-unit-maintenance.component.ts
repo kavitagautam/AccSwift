@@ -3,6 +3,7 @@ import { UnitMaintenanceService } from "../../services/unit-maintenance.service"
 import { ActivatedRoute, Router } from "@angular/router";
 import { Units } from "../../models/unit-maintenance.model";
 import { FormGroup, FormBuilder } from "@angular/forms";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-edit-unit-maintenance",
@@ -11,12 +12,14 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 })
 export class EditUnitMaintenanceComponent implements OnInit {
   unitDetails: Units;
+  unitsId: number;
   editUnitForm: FormGroup;
   constructor(
     private _fb: FormBuilder,
     public unitService: UnitMaintenanceService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -24,12 +27,12 @@ export class EditUnitMaintenanceComponent implements OnInit {
     this.getIdFromURL();
   }
 
-  getIdFromURL() {
+  getIdFromURL(): void {
     this.route.paramMap.subscribe(params => {
-      const paramGetId = params.get("id");
-      if (paramGetId) {
-        this.unitService.getUnitDetails(paramGetId).subscribe(res => {
-          this.unitDetails = res;
+      this.unitsId = parseInt(params.get("id"));
+      if (this.unitsId) {
+        this.unitService.getUnitDetails(this.unitsId).subscribe(response => {
+          this.unitDetails = response;
           this.buildEditUnitForm();
         });
       }
@@ -40,13 +43,25 @@ export class EditUnitMaintenanceComponent implements OnInit {
     this.editUnitForm = this._fb.group({
       unit: [this.unitDetails ? this.unitDetails.UnitName : ""],
       symbol: [this.unitDetails ? this.unitDetails.Symbol : ""],
-      description: [this.unitDetails ? this.unitDetails.Remarks : ""]
+      remarks: [this.unitDetails ? this.unitDetails.Remarks : ""]
     });
   }
 
   public save(): void {
     if (this.editUnitForm.valid) {
-      this.router.navigate(["/unit-maintenance"]);
+      this.unitService
+        .updateUnit(this.unitsId, this.editUnitForm.value)
+        .subscribe(
+          response => {
+            this.router.navigate(["/unit-maintenance"]);
+          },
+          error => {
+            this.toastr.error(JSON.stringify(error));
+          },
+          () => {
+            this.toastr.success("Units edited successfully");
+          }
+        );
     } else {
     }
   }

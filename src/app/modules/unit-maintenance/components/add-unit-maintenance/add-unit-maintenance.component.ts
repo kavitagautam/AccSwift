@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
+import { UnitMaintenanceService } from "../../services/unit-maintenance.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-add-unit-maintenance",
@@ -9,7 +11,12 @@ import { Router } from '@angular/router';
 })
 export class AddUnitMaintenanceComponent implements OnInit {
   addUnitForm: FormGroup;
-  constructor(private _fb: FormBuilder,private router: Router) {}
+  constructor(
+    private _fb: FormBuilder,
+    private router: Router,
+    private toastr: ToastrService,
+    public unitServices: UnitMaintenanceService
+  ) {}
 
   ngOnInit() {
     this.buildAddUnitForm();
@@ -19,13 +26,23 @@ export class AddUnitMaintenanceComponent implements OnInit {
     this.addUnitForm = this._fb.group({
       unit: [""],
       symbol: [""],
-      description: [""]
+      remarks: [""]
     });
   }
 
   public save(): void {
     if (this.addUnitForm.valid) {
-      this.router.navigate(["/unit-maintenance"]);
+      this.unitServices.saveUnit(this.addUnitForm.value).subscribe(
+        response => {
+          this.router.navigate(["/unit-maintenance"]);
+        },
+        error => {
+          this.toastr.error(JSON.stringify(error));
+        },
+        () => {
+          this.toastr.success("Units added successfully");
+        }
+      );
     } else {
     }
   }

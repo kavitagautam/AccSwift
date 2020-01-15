@@ -57,14 +57,14 @@ export class ListJournalComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
     public journalService: JournalService
-  ) { }
+  ) {}
   ngOnInit() {
     this.journalSearchForm = this._fb.group({
       seriesId: [0],
       projectId: [0],
       voucherNo: [""],
       toDate: [""],
-      fromDate:[""]
+      fromDate: [""]
     });
     this.getJournalList();
   }
@@ -74,14 +74,6 @@ export class ListJournalComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true
-  };
-
-  // Date string parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
   };
 
   public sortChange(sort: SortDescriptor[]): void {
@@ -126,31 +118,7 @@ export class ListJournalComponent implements OnInit {
     };
     this.journalService.getJournalList(params).subscribe(
       res => {
-        //mapping the data to change string date format to Date
-        const sampleData = res.Entity.map(
-          dataItem =>
-            <JournalMaster>{
-              ID: dataItem.ID,
-              VoucherNo: dataItem.VoucherNo,
-              Date: this.parseAdjust(dataItem.JournalDate),
-              SeriesID: dataItem.SeriesID,
-              SeriesName: dataItem.SeriesName,
-              ProjectID: dataItem.ProjectID,
-              ProjectName: dataItem.ProjectName,
-              Field1: dataItem.Field1,
-              Field2: dataItem.Field2,
-              Field3: dataItem.Field3,
-              Field4: dataItem.Field4,
-              Field5: dataItem.Field5,
-              Journaldetails: dataItem.Journaldetails,
-              Remarks: dataItem.Remarks,
-              CreatedBy: dataItem.CreatedBy,
-              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
-              ModifiedBy: dataItem.ModifiedBy,
-              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
-            }
-        );
-        this.journalList = sampleData;
+        this.journalList = res.Entity;
         this.gridView = {
           data: this.journalList,
           total: res.TotalItemsAvailable
@@ -170,7 +138,7 @@ export class ListJournalComponent implements OnInit {
     this.projectNameSerachKey = "";
     this.seriesNameSearchKey = "";
     this.filter = filter;
-    console.log(filter)
+    console.log(filter);
     for (let i = 0; i < filter.filters.length; i++) {
       if (filter.filters[i].field == "VoucherNo") {
         this.voucherNoSearchKey = filter.filters[i].value;
@@ -213,7 +181,7 @@ export class ListJournalComponent implements OnInit {
     this.router.navigate(["/journal/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const journalId = {
       id: dataItem.ID
     };

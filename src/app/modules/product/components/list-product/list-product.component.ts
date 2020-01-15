@@ -28,7 +28,7 @@ export class ListProductComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.selectedProductTab=true;
+    this.selectedProductGroupTab=true;
     this.getProductTreeView();
   }
 

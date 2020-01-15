@@ -1,7 +1,16 @@
+export interface JournalLists {
+  Entity: JournalMaster[];
+  ItemsPerPage: number;
+  ItemsReturned: number;
+  TotalItemsAvailable: number;
+  CurrentPage: number;
+  TotalPage: number;
+}
+
 export interface JournalMaster {
   ID: number;
   VoucherNo: number;
-  Date: Date;
+  Date: string;
   SeriesID: number;
   SeriesName: string;
   ProjectID: number;
@@ -14,9 +23,9 @@ export interface JournalMaster {
   Journaldetails: JournalDetails[];
   Remarks: string;
   CreatedBy: string;
-  CreatedDate: Date;
+  CreatedDate: string;
   ModifiedBy: string;
-  ModifiedDate: Date;
+  ModifiedDate: string;
 }
 
 export interface JournalDetails {
@@ -32,7 +41,7 @@ export interface JournalDetails {
     OpCCYID: number;
     Currency: string;
     OpCCR: number;
-    OpCCRDate: Date;
+    OpCCRDate: string;
     DebitCredit: string;
     GroupID: number;
     GroupName: string;
@@ -54,9 +63,9 @@ export interface JournalDetails {
     IsBillReference: boolean;
     Remarks: string;
     CreatedBy: string;
-    CreatedDate: Date;
+    CreatedDate: string;
     ModifiedBy: string;
-    ModifiedDate: Date;
+    ModifiedDate: string;
   };
   ID: number;
   MasterID: number;
@@ -87,4 +96,3 @@ export interface SeriesList {
   AutoNumber: number;
   BuiltIn: boolean;
 }
-

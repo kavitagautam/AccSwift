@@ -2,14 +2,14 @@ import { Component, OnInit, Inject, LOCALE_ID } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
-import { DatePipe} from "@angular/common";
+import { DatePipe } from "@angular/common";
 import { JournalMaster } from "../../models/journal.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
-import { IntlService } from '@progress/kendo-angular-intl';
-import { LocaleService } from '@app/core/services/locale/locale.services';
+import { IntlService } from "@progress/kendo-angular-intl";
+import { LocaleService } from "@app/core/services/locale/locale.services";
 
 @Component({
   selector: "accSwift-edit-journal",
@@ -47,8 +47,11 @@ export class EditJournalComponent implements OnInit {
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
-    public intlService: IntlService, private localeService: LocaleService
-  ) {   this.localeService.set("en-US");}
+    public intlService: IntlService,
+    private localeService: LocaleService
+  ) {
+    this.localeService.set("en-US");
+  }
 
   ngOnInit() {
     this.buildJournalForm();
@@ -71,11 +74,9 @@ export class EditJournalComponent implements OnInit {
       seriesId: [this.journalDetail ? this.journalDetail.SeriesID : 0],
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
       date: [
-        this.journalDetail
-          ? new Date(this.journalDetail.CreatedDate)
-          : ""
+        this.journalDetail ? new Date(this.journalDetail.CreatedDate) : ""
       ],
-      projectId:[this.journalDetail ? this.journalDetail.ProjectID : 0],
+      projectId: [this.journalDetail ? this.journalDetail.ProjectID : 0],
       narration: [this.journalDetail ? this.journalDetail.Remarks : ""],
       journalEntryList: [this.addJournalEntryFormGroup()]
     });

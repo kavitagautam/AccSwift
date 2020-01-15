@@ -30,7 +30,7 @@ export interface ContraVoucherMaster {
   SeriesID: number;
   SeriesName: string;
   VoucherNo: string;
-  Date: Date;
+  Date: string;
   ProjectID: number;
   ProjectName: string;
   Fields: {
@@ -42,9 +42,9 @@ export interface ContraVoucherMaster {
   };
   Remarks: string;
   CreatedBy: string;
-  CreatedDate: Date;
+  CreatedDate: string;
   ModifiedBy: string;
-  ModifiedDate: Date;
+  ModifiedDate: string;
 }
 
 export interface ContraVoucherDetails {
@@ -67,7 +67,7 @@ export interface ContraVoucherDetails {
     OpCCYID: number;
     Currency: string;
     OpCCR: number;
-    OpCCRDate: Date;
+    OpCCRDate: string;
     DebitCredit: string;
     GroupID: number;
     GroupName: string;
@@ -89,9 +89,9 @@ export interface ContraVoucherDetails {
     IsBillReference: boolean;
     Remarks: string;
     CreatedBy: string;
-    CreatedDate: Date;
+    CreatedDate: string;
     ModifiedBy: string;
-    ModifiedDate: Date;
+    ModifiedDate: string;
   };
   Amount: number;
   Remarks: string;

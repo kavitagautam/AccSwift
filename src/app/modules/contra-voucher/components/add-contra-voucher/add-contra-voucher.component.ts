@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { FormArray, Validators, FormGroup, FormBuilder } from "@angular/forms";
+import { FormArray, FormGroup, FormBuilder } from "@angular/forms";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
-import { formatDate } from "@angular/common";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";

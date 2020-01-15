@@ -60,8 +60,8 @@ export class ListUnitMaintenanceComponent implements OnInit {
   getUnits(): void {
     this.listLoading = true;
     this.unitService.getUnitList().subscribe(
-      res => {
-        this.unitLists = res;
+      response => {
+        this.unitLists = response;
         this.gridView = {
           data: this.unitLists,
           total: this.unitLists ? this.unitLists.length : 0
@@ -80,7 +80,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.unitSearchForm = this._fb.group({
       unit: [""],
       symbol: [""],
-      description: [""]
+      remarks: [""]
     });
   }
 
@@ -122,7 +122,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.router.navigate(["/unit-maintenance/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const unitId = {
       id: dataItem.ID
     };
@@ -145,7 +145,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
         this.getUnits();
       },
       error => {
-        this.toastr.success("Unauthorized to delete Unit");
+        this.toastr.error(JSON.stringify(error));
       },
       () => {
         this.toastr.success("Units deleted successfully");
