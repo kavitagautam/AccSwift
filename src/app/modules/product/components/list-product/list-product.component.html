@@ -55,14 +55,14 @@
     <div class="row">
       <div class="col-md-12 mr-2">
         <kendo-tabstrip>
-          <kendo-tabstrip-tab [title]="'Product'" [selected]="selectedProductTab ? true : false">
-            <ng-template kendoTabContent>
-              <accSwift-product [selectedItem]="selectedItem"></accSwift-product>
-            </ng-template>
-          </kendo-tabstrip-tab>
           <kendo-tabstrip-tab [title]="'Product Group'" [selected]="selectedProductGroupTab ? true : false">
             <ng-template kendoTabContent>
               <accSwift-product-group [selectedItem]="selectedItem"></accSwift-product-group>
+            </ng-template>
+          </kendo-tabstrip-tab>
+          <kendo-tabstrip-tab [title]="'Product'" [selected]="selectedProductTab ? true : false">
+            <ng-template kendoTabContent>
+              <accSwift-product [selectedItem]="selectedItem"></accSwift-product>
             </ng-template>
           </kendo-tabstrip-tab>
         </kendo-tabstrip>
