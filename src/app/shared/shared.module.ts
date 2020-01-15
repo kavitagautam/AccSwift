@@ -14,6 +14,7 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 import { DropDownListModule, DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { LedgerFilterPipe } from './pipes/ledger-filter/ledger-filter.pipe';
 import { CollapseModule, TooltipModule, TabsModule, ModalModule, TimepickerModule, BsDatepickerModule, BsDropdownModule } from 'ngx-bootstrap';
+import { DateFormatPipe } from './pipes/dateFormat/date-format.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CollapseModule, TooltipModule, TabsModule, ModalModule, TimepickerModul
     PopupAnchorDirective,
     CurrencyDirective,
     LedgerFilterPipe,
-    LedgerModelPopupComponent
+    LedgerModelPopupComponent,
+    DateFormatPipe
   ],
   imports: [
     CommonModule,
@@ -59,7 +61,8 @@ import { CollapseModule, TooltipModule, TabsModule, ModalModule, TimepickerModul
     CommonModalComponent,
     PopupAnchorDirective,
     CurrencyFormatPipe,
-    CurrencyDirective
+    CurrencyDirective,
+    DateFormatPipe
   ]
 })
 export class SharedModule {}

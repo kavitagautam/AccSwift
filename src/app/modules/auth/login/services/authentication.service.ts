@@ -35,4 +35,5 @@ export class AuthenticationService {
   isLoggedIn() {
     return this.getToken() !== null;
   }
+ 
 }

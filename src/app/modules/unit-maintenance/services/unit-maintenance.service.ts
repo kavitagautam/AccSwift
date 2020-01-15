@@ -23,11 +23,26 @@ export class UnitMaintenanceService {
     return this.http.delete(`${this._api_URL}UnitMaintenance/${id}`);
   }
 
-  getUnitDetails(id): Observable<Units>{
+  getUnitDetails(id): Observable<Units> {
     return this.httpService.get(`${this._api_URL}UnitMaintenance/${id}`);
   }
 
-  saveUnit(body){
-    return this.httpService.post(`${this._api_URL}UnitMaintenance`,body);
+  saveUnit(value): Observable<any> {
+    const obj = {
+      UnitName: value.unit,
+      Symbol: value.symbol,
+      Remarks: value.remarks
+    };
+    return this.httpService.post(`${this._api_URL}UnitMaintenance`, obj);
+  }
+
+  updateUnit(id, value): Observable<any> {
+    const obj = {
+      ID: id,
+      UnitName: value.unit,
+      Symbol: value.symbol,
+      Remarks: value.remarks
+    };
+    return this.httpService.put(`${this._api_URL}UnitMaintenance/${id}`, obj);
   }
 }

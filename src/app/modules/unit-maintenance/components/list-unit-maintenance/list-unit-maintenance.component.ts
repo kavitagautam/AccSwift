@@ -80,7 +80,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.unitSearchForm = this._fb.group({
       unit: [""],
       symbol: [""],
-      description: [""]
+      remarks: [""]
     });
   }
 

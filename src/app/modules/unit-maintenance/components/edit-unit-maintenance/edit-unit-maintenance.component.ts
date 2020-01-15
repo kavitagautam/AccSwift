@@ -11,6 +11,7 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 })
 export class EditUnitMaintenanceComponent implements OnInit {
   unitDetails: Units;
+  unitsId: number;
   editUnitForm: FormGroup;
   constructor(
     private _fb: FormBuilder,
@@ -26,9 +27,9 @@ export class EditUnitMaintenanceComponent implements OnInit {
 
   getIdFromURL() {
     this.route.paramMap.subscribe(params => {
-      const paramGetId = params.get("id");
-      if (paramGetId) {
-        this.unitService.getUnitDetails(paramGetId).subscribe(res => {
+      this.unitsId = parseInt(params.get("id"));
+      if (this.unitsId) {
+        this.unitService.getUnitDetails(this.unitsId).subscribe(res => {
           this.unitDetails = res;
           this.buildEditUnitForm();
         });
@@ -40,13 +41,22 @@ export class EditUnitMaintenanceComponent implements OnInit {
     this.editUnitForm = this._fb.group({
       unit: [this.unitDetails ? this.unitDetails.UnitName : ""],
       symbol: [this.unitDetails ? this.unitDetails.Symbol : ""],
-      description: [this.unitDetails ? this.unitDetails.Remarks : ""]
+      remarks: [this.unitDetails ? this.unitDetails.Remarks : ""]
     });
   }
 
   public save(): void {
     if (this.editUnitForm.valid) {
-      this.router.navigate(["/unit-maintenance"]);
+      this.unitService.updateUnit(this.unitsId, this.editUnitForm.value).subscribe(res=>{
+        this.router.navigate(["/unit-maintenance"]);
+      }),error =>{
+        //
+        console.log(error);
+      },()=>{
+        //
+        console.log("success");
+
+      }
     } else {
     }
   }

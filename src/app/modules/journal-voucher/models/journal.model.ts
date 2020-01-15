@@ -1,7 +1,16 @@
+export interface JournalLists {
+  Entity: JournalMaster[];
+  ItemsPerPage: number;
+  ItemsReturned: number;
+  TotalItemsAvailable: number;
+  CurrentPage: number;
+  TotalPage: number;
+}
+
 export interface JournalMaster {
   ID: number;
   VoucherNo: number;
-  Date: Date;
+  Date: string;
   SeriesID: number;
   SeriesName: string;
   ProjectID: number;
@@ -14,9 +23,9 @@ export interface JournalMaster {
   Journaldetails: JournalDetails[];
   Remarks: string;
   CreatedBy: string;
-  CreatedDate: Date;
+  CreatedDate: string;
   ModifiedBy: string;
-  ModifiedDate: Date;
+  ModifiedDate: string;
 }
 
 export interface JournalDetails {
@@ -74,9 +83,9 @@ export interface ProjectList {
   NepName: string;
   Description: string;
   CreatedBy: string;
-  CreatedDate: string;
+  CreatedDate: Date;
   ModifiedBy: string;
-  ModifiedDate: string;
+  ModifiedDate: Date;
 }
 
 export interface SeriesList {
@@ -87,4 +96,3 @@ export interface SeriesList {
   AutoNumber: number;
   BuiltIn: boolean;
 }
-
