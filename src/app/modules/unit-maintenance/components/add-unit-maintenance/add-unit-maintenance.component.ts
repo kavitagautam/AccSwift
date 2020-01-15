@@ -32,18 +32,18 @@ export class AddUnitMaintenanceComponent implements OnInit {
 
   public save(): void {
     if (this.addUnitForm.valid) {
-      this.unitServices.saveUnit(this.addUnitForm.value).subscribe(res => {
-        console.log("res " + JSON.stringify(res));
-        this.router.navigate(["/unit-maintenance"]);
-      }),
+      this.unitServices.saveUnit(this.addUnitForm.value).subscribe(
+        response => {
+          this.router.navigate(["/unit-maintenance"]);
+        },
         error => {
-          this.toastr.success("Unauthorized to Add Unit");
+          this.toastr.error(JSON.stringify(error));
         },
         () => {
           this.toastr.success("Units added successfully");
-        };
+        }
+      );
     } else {
-      return;
     }
   }
 

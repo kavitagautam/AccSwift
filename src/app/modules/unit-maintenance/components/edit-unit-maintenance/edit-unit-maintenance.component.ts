@@ -3,6 +3,7 @@ import { UnitMaintenanceService } from "../../services/unit-maintenance.service"
 import { ActivatedRoute, Router } from "@angular/router";
 import { Units } from "../../models/unit-maintenance.model";
 import { FormGroup, FormBuilder } from "@angular/forms";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-edit-unit-maintenance",
@@ -17,7 +18,8 @@ export class EditUnitMaintenanceComponent implements OnInit {
     private _fb: FormBuilder,
     public unitService: UnitMaintenanceService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -25,12 +27,12 @@ export class EditUnitMaintenanceComponent implements OnInit {
     this.getIdFromURL();
   }
 
-  getIdFromURL() {
+  getIdFromURL(): void {
     this.route.paramMap.subscribe(params => {
       this.unitsId = parseInt(params.get("id"));
       if (this.unitsId) {
-        this.unitService.getUnitDetails(this.unitsId).subscribe(res => {
-          this.unitDetails = res;
+        this.unitService.getUnitDetails(this.unitsId).subscribe(response => {
+          this.unitDetails = response;
           this.buildEditUnitForm();
         });
       }
@@ -47,16 +49,19 @@ export class EditUnitMaintenanceComponent implements OnInit {
 
   public save(): void {
     if (this.editUnitForm.valid) {
-      this.unitService.updateUnit(this.unitsId, this.editUnitForm.value).subscribe(res=>{
-        this.router.navigate(["/unit-maintenance"]);
-      }),error =>{
-        //
-        console.log(error);
-      },()=>{
-        //
-        console.log("success");
-
-      }
+      this.unitService
+        .updateUnit(this.unitsId, this.editUnitForm.value)
+        .subscribe(
+          response => {
+            this.router.navigate(["/unit-maintenance"]);
+          },
+          error => {
+            this.toastr.error(JSON.stringify(error));
+          },
+          () => {
+            this.toastr.success("Units edited successfully");
+          }
+        );
     } else {
     }
   }
