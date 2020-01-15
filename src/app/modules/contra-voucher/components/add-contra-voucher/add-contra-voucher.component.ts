@@ -1,12 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { FormArray, Validators, FormGroup, FormBuilder } from "@angular/forms";
+import { FormArray, FormGroup, FormBuilder } from "@angular/forms";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
-import { formatDate } from "@angular/common";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { ContraVoucherService } from "../../services/contra-voucher.service";
-import { ContraVoucherMaster } from '../../models/contraVoucher.model';
+import { ContraVoucherMaster } from "../../models/contraVoucher.model";
 
 @Component({
   selector: "accSwift-add-contra-voucher",
@@ -35,7 +34,7 @@ export class AddContraVoucherComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     public ledgerCodeService: LedgerCodeMatchService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildAddContraVoucherForm(); // initiate the AddContraVoucher Form
@@ -138,12 +137,19 @@ export class AddContraVoucherComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const contraVoucherEntry = <FormArray>(this.addContraVoucherForm.get("contraVoucherEntryList")
+    const contraVoucherEntry = <FormArray>(
+      this.addContraVoucherForm.get("contraVoucherEntryList")
     );
-    contraVoucherEntry.controls[rowIndex].get("voucherNo").setValue(dataItem.voucherNo);
-    contraVoucherEntry.controls[rowIndex].get("currentAmount").setValue(dataItem.currentAmount);
+    contraVoucherEntry.controls[rowIndex]
+      .get("voucherNo")
+      .setValue(dataItem.voucherNo);
+    contraVoucherEntry.controls[rowIndex]
+      .get("currentAmount")
+      .setValue(dataItem.currentAmount);
     contraVoucherEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
-    contraVoucherEntry.controls[rowIndex].get("remarks").setValue(dataItem.remarks);
+    contraVoucherEntry.controls[rowIndex]
+      .get("remarks")
+      .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
     sender.editRow(
       rowIndex,

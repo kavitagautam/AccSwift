@@ -124,7 +124,7 @@ export class AddCashReceiptComponent implements OnInit {
     this.router.navigate(["/cash-receipt"]);
   }
 
-  public addHandler({ sender }) {
+  public addHandler({ sender }): void {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
@@ -136,7 +136,7 @@ export class AddCashReceiptComponent implements OnInit {
     this.submitted = false;
   }
 
-  public editHandler({ sender, rowIndex, dataItem }) {
+  public editHandler({ sender, rowIndex, dataItem }): void {
     this.closeEditor(sender);
     const cashReceiptEntry = <FormArray>(
       this.addCashReceiptForm.get("cashReceiptEntryList")
@@ -186,7 +186,7 @@ export class AddCashReceiptComponent implements OnInit {
     });
   }
 
-  public cancelHandler({ sender, rowIndex }) {
+  public cancelHandler({ sender, rowIndex }): void {
     this.closeEditor(sender, rowIndex);
   }
 
@@ -207,7 +207,7 @@ export class AddCashReceiptComponent implements OnInit {
     );
   }
 
-  private closeEditor(grid, rowIndex = 1) {
+  private closeEditor(grid, rowIndex = 1): void {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
   }

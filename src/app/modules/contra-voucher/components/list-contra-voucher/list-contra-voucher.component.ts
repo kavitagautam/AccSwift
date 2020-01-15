@@ -10,7 +10,7 @@ import {
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
-import { ContraVoucherMaster } from '../../models/contraVoucher.model';
+import { ContraVoucherMaster } from "../../models/contraVoucher.model";
 
 @Component({
   selector: "accSwift-list-contra-voucher",
@@ -27,7 +27,7 @@ export class ListContraVoucherComponent implements OnInit {
   public skip = 0;
   public currentPage = 1;
   modalRef: BsModalRef;
-  cashList: ContraVoucherMaster[];
+  contraVoucherList: ContraVoucherMaster[];
 
   constructor(
     private fb: FormBuilder,
@@ -35,7 +35,7 @@ export class ListContraVoucherComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.editContraVoucherForm();
@@ -68,14 +68,6 @@ export class ListContraVoucherComponent implements OnInit {
     ignoreBackdropClick: true
   };
 
-  // Date string parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
-
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     this.getContraVoucherList();
@@ -94,39 +86,10 @@ export class ListContraVoucherComponent implements OnInit {
       res => {
         this.listLoading = true;
         //mapping the data to change string date format to Date
-        const sampleData = res.map(
-          dataItem =>
-            <ContraVoucherMaster>{
-              IsPayByInvoice: dataItem.IsPayByInvoice,
-              TotalAmount: dataItem.TotalAmount,
-              ContraVoucherDetails: dataItem.ContraVoucherDetails,
-              LedgerID: dataItem.LedgerID,
-              LedgerName: dataItem.LedgerName,
-              ID: dataItem.ID,
-              SeriesID: dataItem.SeriesID,
-              SeriesName: dataItem.SeriesName,
-              VoucherNo: dataItem.VoucherNo,
-              Date: this.parseAdjust(dataItem.Date),
-              ProjectID: dataItem.ProjectID,
-              ProjectName: dataItem.ProjectName,
-              Fields: {
-                Field1: dataItem.Fields.Field1,
-                Field2: dataItem.Fields.Field2,
-                Field3: dataItem.Fields.Field3,
-                Field4: dataItem.Fields.Field4,
-                Field5: dataItem.Fields.Field5
-              },
-              Remarks: dataItem.Remarks,
-              CreatedBy: dataItem.CreatedBy,
-              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
-              ModifiedBy: dataItem.ModifiedBy,
-              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
-            }
-        );
-        this.cashList = sampleData;
+        this.contraVoucherList = res;
         this.gridView = {
-          data: this.cashList,
-          total: this.cashList ? this.cashList.length : 0
+          data: this.contraVoucherList,
+          total: this.contraVoucherList ? this.contraVoucherList.length : 0
         };
       },
       error => {
@@ -163,7 +126,7 @@ export class ListContraVoucherComponent implements OnInit {
     this.router.navigate(["/contra-voucher/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const contraId = {
       id: dataItem.ID
     };
@@ -181,6 +144,6 @@ export class ListContraVoucherComponent implements OnInit {
   }
 
   public deleteContraById(id): void {
-    this.toastr.success("Voucher deleted succesfully");
+    this.toastr.success("Contra Voucher deleted succesfully");
   }
 }

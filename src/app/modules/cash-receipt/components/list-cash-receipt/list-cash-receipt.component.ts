@@ -63,14 +63,6 @@ export class ListCashReceiptComponent implements OnInit {
     this.getCashReceiptlList();
   }
 
-  // Date string parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
-
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     this.getCashReceiptlList();
@@ -89,36 +81,7 @@ export class ListCashReceiptComponent implements OnInit {
       res => {
         this.listLoading = true;
         //mapping the data to change string date format to Date
-        const sampleData = res.map(
-          dataItem =>
-            <CashReceiptMaster>{
-              IsPayByInvoice: dataItem.IsPayByInvoice,
-              TotalAmount: dataItem.TotalAmount,
-              CashReceiptDetails: dataItem.CashReceiptDetails,
-              LedgerID: dataItem.LedgerID,
-              LedgerName: dataItem.LedgerName,
-              ID: dataItem.ID,
-              SeriesID: dataItem.SeriesID,
-              SeriesName: dataItem.SeriesName,
-              VoucherNo: dataItem.VoucherNo,
-              Date: this.parseAdjust(dataItem.Date),
-              ProjectID: dataItem.ProjectID,
-              ProjectName: dataItem.ProjectName,
-              Fields: {
-                Field1: dataItem.Fields.Field1,
-                Field2: dataItem.Fields.Field2,
-                Field3: dataItem.Fields.Field3,
-                Field4: dataItem.Fields.Field4,
-                Field5: dataItem.Fields.Field5
-              },
-              Remarks: dataItem.Remarks,
-              CreatedBy: dataItem.CreatedBy,
-              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
-              ModifiedBy: dataItem.ModifiedBy,
-              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
-            }
-        );
-        this.cashList = sampleData;
+        this.cashList = res;
         this.gridView = {
           data: this.cashList.slice(this.skip, this.skip + this.pageSize),
           total: this.cashList ? this.cashList.length : 0
@@ -138,7 +101,7 @@ export class ListCashReceiptComponent implements OnInit {
     this.getCashReceiptlList();
   }
 
-  public searchForm() {
+  public searchForm(): void {
     this.getCashReceiptlList();
   }
 
@@ -159,7 +122,7 @@ export class ListCashReceiptComponent implements OnInit {
     this.router.navigate(["/cash-receipt/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const cashReceiptId = {
       id: dataItem.ID
     };

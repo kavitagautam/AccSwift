@@ -41,7 +41,7 @@ export interface JournalDetails {
     OpCCYID: number;
     Currency: string;
     OpCCR: number;
-    OpCCRDate: Date;
+    OpCCRDate: string;
     DebitCredit: string;
     GroupID: number;
     GroupName: string;
@@ -63,9 +63,9 @@ export interface JournalDetails {
     IsBillReference: boolean;
     Remarks: string;
     CreatedBy: string;
-    CreatedDate: Date;
+    CreatedDate: string;
     ModifiedBy: string;
-    ModifiedDate: Date;
+    ModifiedDate: string;
   };
   ID: number;
   MasterID: number;
@@ -83,9 +83,9 @@ export interface ProjectList {
   NepName: string;
   Description: string;
   CreatedBy: string;
-  CreatedDate: Date;
+  CreatedDate: string;
   ModifiedBy: string;
-  ModifiedDate: Date;
+  ModifiedDate: string;
 }
 
 export interface SeriesList {

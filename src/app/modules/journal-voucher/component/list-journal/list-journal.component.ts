@@ -57,14 +57,14 @@ export class ListJournalComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
     public journalService: JournalService
-  ) { }
+  ) {}
   ngOnInit() {
     this.journalSearchForm = this._fb.group({
       seriesId: [0],
       projectId: [0],
       voucherNo: [""],
       toDate: [""],
-      fromDate:[""]
+      fromDate: [""]
     });
     this.getJournalList();
   }
@@ -75,7 +75,7 @@ export class ListJournalComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true
   };
- 
+
   public sortChange(sort: SortDescriptor[]): void {
     this.orderByKey = "";
     this.dirKey = "";
@@ -138,7 +138,7 @@ export class ListJournalComponent implements OnInit {
     this.projectNameSerachKey = "";
     this.seriesNameSearchKey = "";
     this.filter = filter;
-    console.log(filter)
+    console.log(filter);
     for (let i = 0; i < filter.filters.length; i++) {
       if (filter.filters[i].field == "VoucherNo") {
         this.voucherNoSearchKey = filter.filters[i].value;

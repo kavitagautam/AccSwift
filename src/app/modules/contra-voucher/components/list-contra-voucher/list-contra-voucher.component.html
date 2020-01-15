@@ -6,7 +6,11 @@
 
 <div class="accordion" id="accordion">
   <div class="box box-default">
-    <div class="box-header with-border" data-toggle="collapse" href="#collapseOne">
+    <div
+      class="box-header with-border"
+      data-toggle="collapse"
+      href="#collapseOne"
+    >
       <h3 class="box-title">Search terms</h3>
     </div>
 
@@ -14,15 +18,16 @@
       <div class="row">
         <div class="col-md-12">
           <form [formGroup]="contraVoucherForm" novalidate>
-
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Series</label>
                 <select class="form-control" formControlName="seriesId">
                   <option [ngValue]="0" disabled>Select</option>
-                  <option *ngFor="let series of contraVoucherService.seriesLists" [ngValue]="series.ID">
-                    {{series.EngName}}
+                  <option
+                    *ngFor="let series of contraVoucherService.seriesLists"
+                    [ngValue]="series.ID"
+                  >
+                    {{ series.EngName }}
                   </option>
                 </select>
               </div>
@@ -31,15 +36,20 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Cash Account</label>
-                <select class="form-control" id="cashAccountNo" formControlName="cashAccountId">
+                <select
+                  class="form-control"
+                  id="cashAccountNo"
+                  formControlName="cashAccountId"
+                >
                   <option [ngValue]="0" disabled>Select</option>
-                  <option *ngFor="let cash of contraVoucherService.cashAccountLists">
-                    {{cash.LedgerName}}
+                  <option
+                    *ngFor="let cash of contraVoucherService.cashAccountLists"
+                  >
+                    {{ cash.LedgerName }}
                   </option>
                 </select>
               </div>
             </div>
-
 
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
@@ -47,7 +57,7 @@
                 <select class="form-control" formControlName="cashPartyId">
                   <option [ngValue]="0" disabled>Select</option>
                   <option *ngFor="let cash of contraVoucherService.seriesLists">
-                    {{cash.EngName}}
+                    {{ cash.EngName }}
                   </option>
                 </select>
               </div>
@@ -63,10 +73,16 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project</label>
-                <select class="form-control" id="project" formControlName="projectId">
+                <select
+                  class="form-control"
+                  id="project"
+                  formControlName="projectId"
+                >
                   <option [ngValue]="0" disabled>Select</option>
-                  <option *ngFor="let project of contraVoucherService.projectLists">
-                    {{project.EngName}}
+                  <option
+                    *ngFor="let project of contraVoucherService.projectLists"
+                  >
+                    {{ project.EngName }}
                   </option>
                 </select>
               </div>
@@ -75,7 +91,11 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Date</label>
-                <input class="form-control" formControlName="date" bsDatepicker />
+                <input
+                  class="form-control"
+                  formControlName="date"
+                  bsDatepicker
+                />
               </div>
             </div>
 
@@ -87,12 +107,9 @@
                 </div>
               </div>
             </div>
-
           </form>
         </div>
       </div>
-
-
 
       <div class="box-footer">
         <div class="mb-2">
@@ -109,12 +126,23 @@
   <div class="box-body">
     <div class="col-md-12 p-0">
       <div class="grid-wrapper">
-        <kendo-grid [data]="gridView" [filterable]="true" [filter]="filter" [pageSize]="pageSize" [skip]="skip"
+        <kendo-grid
+          [data]="gridView"
+          [filterable]="true"
+          [filter]="filter"
+          [pageSize]="pageSize"
+          [skip]="skip"
           [sortable]="{
-          allowUnsort: allowUnsort,
-          mode: 'single'
-        }" [sort]="sort" (sortChange)="sortChange($event)" [pageable]="true" (pageChange)="pageChange($event)"
-          scrollable="none" (filterChange)="filterChange($event)">
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          scrollable="none"
+          (filterChange)="filterChange($event)"
+        >
           <kendo-grid-column field="VoucherNo" title="VoucherNo.">
           </kendo-grid-column>
           <kendo-grid-column field="LedgerName" title="Ledger Name">
@@ -125,17 +153,37 @@
           </kendo-grid-column>
           <kendo-grid-column field="ProjectName" title="Project">
           </kendo-grid-column>
-          <kendo-grid-column field="CashReceiptDate" title="Cheque Date" filter="date" [filterable]="false"
-            format="{0: yyyy-mm-dd}">
+          <kendo-grid-column
+            field="CashReceiptDate"
+            title="Cheque Date"
+            filter="date"
+            [filterable]="false"
+          >
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              {{ dataItem.CashReceiptDate | dateStringFormat: "yyyy-MM-dd" }}
+            </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="Remarks" title="Remarks"> </kendo-grid-column>
+          <kendo-grid-column field="Remarks" title="Remarks">
+          </kendo-grid-column>
           <kendo-grid-command-column title="Action" width="150">
-            <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
-              <button kendoGridEditCommand (click)="edit(dataItem)" data-toggle="modal" data-target="#viewModal"
-                [primary]="true">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
+            >
+              <button
+                kendoGridEditCommand
+                (click)="edit(dataItem)"
+                data-toggle="modal"
+                data-target="#viewModal"
+                [primary]="true"
+              >
                 Edit
               </button>
-              <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialogue(dataItem)"
+              >
                 Delete
               </button>
             </ng-template>
@@ -143,10 +191,6 @@
         </kendo-grid>
 
         <div *ngIf="listLoading" class="k-i-loading"></div>
-
-
-
-
       </div>
     </div>
   </div>
