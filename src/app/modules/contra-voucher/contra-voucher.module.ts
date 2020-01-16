@@ -8,7 +8,7 @@ import { EditContraVoucherComponent } from "./components/edit-contra-voucher/edi
 import { AddContraVoucherComponent } from "./components/add-contra-voucher/add-contra-voucher.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { GridModule } from "@progress/kendo-angular-grid";
-import { SharedModule } from '@app/shared/shared.module';
+import { SharedModule } from "@app/shared/shared.module";
 import { PopupModule } from "@progress/kendo-angular-popup";
 import {
   DropDownListModule,
@@ -34,4 +34,4 @@ import {
     SharedModule
   ]
 })
-export class ContraVoucherModule { }
+export class ContraVoucherModule {}

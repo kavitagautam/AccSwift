@@ -36,7 +36,7 @@ export class HttpInterceptorsService implements HttpInterceptor {
         return event;
       }),
       catchError((error: HttpErrorResponse) => {
-       // console.log("error " + JSON.stringify(error));
+        // console.log("error " + JSON.stringify(error));
         if (error.status == 403) {
           // localStorage.clear();
         }

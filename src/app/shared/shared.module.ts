@@ -7,14 +7,25 @@ import { CommonModalComponent } from "./component/common-modal/common-modal.comp
 import { PopupAnchorDirective } from "./directives/popup-anchor/popup.anchor-target.directive";
 import { CurrencyFormatPipe } from "./pipes/currency-format.pipe";
 import { CurrencyDirective } from "./directives/localCurrency/currency.directive";
-import { LedgerModelPopupComponent } from './component/ledger-model-popup/ledger-model-popup.component';
-import { GridModule } from '@progress/kendo-angular-grid';
-import { PopupModule } from '@progress/kendo-angular-popup';
-import { InputsModule } from '@progress/kendo-angular-inputs';
-import { DropDownListModule, DropDownsModule } from '@progress/kendo-angular-dropdowns';
-import { LedgerFilterPipe } from './pipes/ledger-filter/ledger-filter.pipe';
-import { CollapseModule, TooltipModule, TabsModule, ModalModule, TimepickerModule, BsDatepickerModule, BsDropdownModule } from 'ngx-bootstrap';
-import { DateFormatPipe } from './pipes/dateFormat/date-format.pipe';
+import { LedgerModelPopupComponent } from "./component/ledger-model-popup/ledger-model-popup.component";
+import { GridModule } from "@progress/kendo-angular-grid";
+import { PopupModule } from "@progress/kendo-angular-popup";
+import { InputsModule } from "@progress/kendo-angular-inputs";
+import {
+  DropDownListModule,
+  DropDownsModule
+} from "@progress/kendo-angular-dropdowns";
+import { LedgerFilterPipe } from "./pipes/ledger-filter/ledger-filter.pipe";
+import {
+  CollapseModule,
+  TooltipModule,
+  TabsModule,
+  ModalModule,
+  TimepickerModule,
+  BsDatepickerModule,
+  BsDropdownModule
+} from "ngx-bootstrap";
+import { DateFormatPipe } from "./pipes/dateFormat/date-format.pipe";
 
 @NgModule({
   declarations: [

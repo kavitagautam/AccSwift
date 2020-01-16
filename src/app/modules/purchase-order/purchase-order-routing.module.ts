@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { ListPurchaseOrderComponent } from "./components/list-purchase-order/list-purchase-order.component";
-import { AddPurchaseOrderComponent } from './components/add-purchase-order/add-purchase-order.component';
-import { EditPurchaseOrderComponent } from './components/edit-purchase-order/edit-purchase-order.component';
+import { AddPurchaseOrderComponent } from "./components/add-purchase-order/add-purchase-order.component";
+import { EditPurchaseOrderComponent } from "./components/edit-purchase-order/edit-purchase-order.component";
 
 const routes: Routes = [
   {

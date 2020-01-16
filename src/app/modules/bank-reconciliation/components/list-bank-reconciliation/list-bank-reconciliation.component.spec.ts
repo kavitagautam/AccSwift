@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ListBankReconciliationComponent } from './list-bank-reconciliation.component';
+import { ListBankReconciliationComponent } from "./list-bank-reconciliation.component";
 
-describe('ListBankReconciliationComponent', () => {
+describe("ListBankReconciliationComponent", () => {
   let component: ListBankReconciliationComponent;
   let fixture: ComponentFixture<ListBankReconciliationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListBankReconciliationComponent ]
-    })
-    .compileComponents();
+      declarations: [ListBankReconciliationComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ListBankReconciliationComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

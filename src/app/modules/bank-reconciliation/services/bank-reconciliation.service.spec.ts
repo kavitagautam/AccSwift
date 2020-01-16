@@ -1,12 +1,14 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { BankReconciliationService } from './bank-reconciliation.service';
+import { BankReconciliationService } from "./bank-reconciliation.service";
 
-describe('BankReconciliationService', () => {
+describe("BankReconciliationService", () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
-  it('should be created', () => {
-    const service: BankReconciliationService = TestBed.get(BankReconciliationService);
+  it("should be created", () => {
+    const service: BankReconciliationService = TestBed.get(
+      BankReconciliationService
+    );
     expect(service).toBeTruthy();
   });
 });

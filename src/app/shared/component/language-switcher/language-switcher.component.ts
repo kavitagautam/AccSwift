@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { LocalStorageService } from "@app/shared/services/local-storage/local-storage.service";
 import { LanguageSwitcherService } from "./services/language-switcher.service";
-import { SUPPORTED_LANGS } from 'config/translate';
+import { SUPPORTED_LANGS } from "config/translate";
 
 @Component({
   selector: "accswift-language-switcher",

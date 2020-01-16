@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AdminPanelComponent } from "./core/layout/admin-panel/admin-panel.component";
-import { AuthGuard } from './core/services/auth.guard/auth.guard';
+import { AuthGuard } from "./core/services/auth.guard/auth.guard";
 
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: "",
-    canActivate:[AuthGuard],
+    canActivate: [AuthGuard],
     component: AdminPanelComponent,
     children: [
       { path: "", redirectTo: "dashboard", pathMatch: "full" },
@@ -109,7 +109,8 @@ const routes: Routes = [
       },
       {
         path: "unit-maintenance",
-        loadChildren: "@modules/unit-maintenance/unit-maintenance.module#UnitMaintenanceModule",
+        loadChildren:
+          "@modules/unit-maintenance/unit-maintenance.module#UnitMaintenanceModule",
         data: {
           breadcrumb: "Unit Maintenance"
         }
@@ -123,42 +124,48 @@ const routes: Routes = [
       },
       {
         path: "purchase-invoice",
-        loadChildren: "@modules/purchase-invoice/purchase-invoice.module#PurchaseInvoiceModule",
+        loadChildren:
+          "@modules/purchase-invoice/purchase-invoice.module#PurchaseInvoiceModule",
         data: {
           breadcrumb: "Purchase Invoice"
         }
       },
       {
         path: "purchase-order",
-        loadChildren: "@modules/purchase-order/purchase-order.module#PurchaseOrderModule",
+        loadChildren:
+          "@modules/purchase-order/purchase-order.module#PurchaseOrderModule",
         data: {
           breadcrumb: "Purchase Order"
         }
       },
       {
         path: "purchase-return",
-        loadChildren: "@modules/purchase-return/purchase-return.module#PurchaseReturnModule",
+        loadChildren:
+          "@modules/purchase-return/purchase-return.module#PurchaseReturnModule",
         data: {
           breadcrumb: "Purchase Return"
         }
       },
       {
         path: "sales-invoice",
-        loadChildren: "@modules/sales-invoice/sales-invoice.module#SalesInvoiceModule",
+        loadChildren:
+          "@modules/sales-invoice/sales-invoice.module#SalesInvoiceModule",
         data: {
           breadcrumb: "Sales Invoice"
         }
       },
       {
         path: "sales-order",
-        loadChildren: "@modules/sales-order/sales-order.module#SalesOrderModule",
+        loadChildren:
+          "@modules/sales-order/sales-order.module#SalesOrderModule",
         data: {
           breadcrumb: "Sales Order"
         }
       },
       {
         path: "sales-return",
-        loadChildren: "@modules/sales-return/sales-return.module#SalesReturnModule",
+        loadChildren:
+          "@modules/sales-return/sales-return.module#SalesReturnModule",
         data: {
           breadcrumb: "Sales Return"
         }
