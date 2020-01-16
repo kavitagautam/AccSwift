@@ -1,4 +1,3 @@
-
 export interface ProjectList {
   ID: number;
   ProjectNumber: number;
@@ -20,4 +19,3 @@ export interface SeriesList {
   AutoNumber: number;
   BuiltIn: boolean;
 }
-

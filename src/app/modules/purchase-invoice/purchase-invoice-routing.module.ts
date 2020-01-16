@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { ListPurchaseInvoiceComponent } from "./components/list-purchase-invoice/list-purchase-invoice.component";
-import { AddPurchaseInvoiceComponent } from './components/add-purchase-invoice/add-purchase-invoice.component';
-import { EditPurchaseInvoiceComponent } from './components/edit-purchase-invoice/edit-purchase-invoice.component';
+import { AddPurchaseInvoiceComponent } from "./components/add-purchase-invoice/add-purchase-invoice.component";
+import { EditPurchaseInvoiceComponent } from "./components/edit-purchase-invoice/edit-purchase-invoice.component";
 
 const routes: Routes = [
   {

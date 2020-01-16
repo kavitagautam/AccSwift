@@ -22,7 +22,7 @@ import {
 } from "@ngx-translate/core";
 import { JournalService } from "./services/journal.service";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
-import { NepaliDatepickerModule } from '../../../../lib/nepali-datepicker/src/public-api';
+import { NepaliDatepickerModule } from "../../../../lib/nepali-datepicker/src/public-api";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/admin/", ".json");
@@ -31,7 +31,7 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AddJournalComponent,
     EditJournalComponent,
-    ListJournalComponent,
+    ListJournalComponent
   ],
   imports: [
     FormsModule,

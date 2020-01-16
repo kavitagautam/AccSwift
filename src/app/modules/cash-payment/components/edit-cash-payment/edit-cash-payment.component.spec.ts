@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { EditCashPaymentComponent } from './edit-cash-payment.component';
+import { EditCashPaymentComponent } from "./edit-cash-payment.component";
 
-describe('EditCashPaymentComponent', () => {
+describe("EditCashPaymentComponent", () => {
   let component: EditCashPaymentComponent;
   let fixture: ComponentFixture<EditCashPaymentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditCashPaymentComponent ]
-    })
-    .compileComponents();
+      declarations: [EditCashPaymentComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('EditCashPaymentComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

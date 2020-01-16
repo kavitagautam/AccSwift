@@ -14,7 +14,7 @@ import {
   DropDownListModule,
   DropDownsModule
 } from "@progress/kendo-angular-dropdowns";
-import { SharedModule } from '@app/shared/shared.module';
+import { SharedModule } from "@app/shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -36,4 +36,4 @@ import { SharedModule } from '@app/shared/shared.module';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class PurchaseInvoiceModule { }
+export class PurchaseInvoiceModule {}

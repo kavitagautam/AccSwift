@@ -1,15 +1,12 @@
 <body class="bg-gradient-primary">
   <div class="container">
-
     <div class="row justify-content-center">
-
       <div class="col-xl-10 col-lg-12 col-md-9">
-
         <div class="card o-hidden border-0 shadow-lg my-5">
           <div class="card-body p-0">
             <div class="row">
               <div class="col-lg-6 d-none d-lg-block bg-login-image">
-                <img src="../../../../../assets/images/AccSwift-Logo.png"/>
+                <img src="../../../../../assets/images/AccSwift-Logo.png" />
               </div>
               <div class="col-lg-6">
                 <div class="p-5">
@@ -18,66 +15,85 @@
                   </div>
                   <form class="user">
                     <div class="form-group">
-                      <input type="text" id="username" [(ngModel)]="username" class="form-control" placeholder="Username/Email" tabindex="1" [ngModelOptions]="{standalone: true}">
-
+                      <input
+                        type="text"
+                        id="username"
+                        [(ngModel)]="username"
+                        class="form-control"
+                        placeholder="Username/Email"
+                        tabindex="1"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control" placeholder="Password" id="accPwd" [(ngModel)]="password" tabindex="2" ng-enter="login()" [ngModelOptions]="{standalone: true}">
-
+                      <input
+                        type="password"
+                        class="form-control"
+                        placeholder="Password"
+                        id="accPwd"
+                        [(ngModel)]="password"
+                        tabindex="2"
+                        ng-enter="login()"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
-                        <span class="character-checkbox" ng-click="handleRememberMe()" onclick="onRememberPwdChange()" tabindex="3"></span>
+                        <span
+                          class="character-checkbox"
+                          ng-click="handleRememberMe()"
+                          onclick="onRememberPwdChange()"
+                          tabindex="3"
+                        ></span>
                         <span class="label">Remember me</span>
                       </div>
                     </div>
-                    <a class="btn btn-primary btn-user btn-block" (click)="login()">
+                    <a
+                      class="btn btn-primary btn-user btn-block"
+                      (click)="login()"
+                    >
                       Login
                     </a>
-                    <hr>
-                 
+                    <hr />
                   </form>
-                  <hr>
+                  <hr />
                   <div class="text-center">
                     <a class="small">Forgot Password?</a>
                   </div>
                   <div class="text-center">
-                    <a class="small" [routerLink]="['/register']">Create an Account!</a>
+                    <a class="small" [routerLink]="['/register']"
+                      >Create an Account!</a
+                    >
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
-
     </div>
-
   </div>
 </body>
 
 <script>
-    function onRememberPwdChange() {
-        if (!$('#accPwd').prop('checked')) {
-            $('.checkbox').addClass('show');
-            $('#accPwd').prop('checked', true);
-        } else {
-            $('#accPwd').prop('checked', false);
-            $('.checkbox').removeClass('show');
-        }
+  function onRememberPwdChange() {
+    if (!$("#accPwd").prop("checked")) {
+      $(".checkbox").addClass("show");
+      $("#accPwd").prop("checked", true);
+    } else {
+      $("#accPwd").prop("checked", false);
+      $(".checkbox").removeClass("show");
     }
+  }
 
-        setTimeout(function () {
-            $('#login-page').css({ 'visibility': 'visible' });
-        }, 1000);
-    
+  setTimeout(function() {
+    $("#login-page").css({ visibility: "visible" });
+  }, 1000);
 
-    $(window).load(function () {
-        $('#login-page').css({ 'min-height': $(window).height() - 78 });
-
-    });
-    $(window).resize(function () {
-        $('#login-page').css({ 'min-height': $(window).height() - 78 });
-    });
+  $(window).load(function() {
+    $("#login-page").css({ "min-height": $(window).height() - 78 });
+  });
+  $(window).resize(function() {
+    $("#login-page").css({ "min-height": $(window).height() - 78 });
+  });
 </script>

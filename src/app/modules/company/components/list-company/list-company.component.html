@@ -4,7 +4,6 @@
   </button>
 </div>
 <div class="box box-default">
-
   <div class="col-md-12 mt-5 mr-2">
     <div class="grid-wrapper">
       <kendo-grid
@@ -25,17 +24,12 @@
         scrollable="none"
         (filterChange)="filterChange($event)"
       >
-        <kendo-grid-column field="Name" title="Name">
-        </kendo-grid-column>
-        <kendo-grid-column
-          field="Telephone"
-          title="Telephone"
-        >
+        <kendo-grid-column field="Name" title="Name"> </kendo-grid-column>
+        <kendo-grid-column field="Telephone" title="Telephone">
         </kendo-grid-column>
         <kendo-grid-column field="Address1" title="Address1">
         </kendo-grid-column>
-        <kendo-grid-column field="Email" title="Email">
-        </kendo-grid-column>
+        <kendo-grid-column field="Email" title="Email"> </kendo-grid-column>
         <kendo-grid-command-column title="Action" width="220">
           <ng-template
             kendoGridCellTemplate
@@ -49,7 +43,12 @@
             >
               Edit
             </button>
-            <button kendoGridRemoveCommand (click)="openConfirmationDialogue(dataItem)">Delete</button>
+            <button
+              kendoGridRemoveCommand
+              (click)="openConfirmationDialogue(dataItem)"
+            >
+              Delete
+            </button>
           </ng-template>
         </kendo-grid-command-column>
       </kendo-grid>

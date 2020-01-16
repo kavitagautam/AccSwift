@@ -96,7 +96,7 @@ export class ListLedgerComponent implements OnInit {
       this.loadLedgerlistView();
     }
   }
-  
+
   expandAllNode(): void {
     this.expandedKeys = this.ledgerTreeNode;
   }

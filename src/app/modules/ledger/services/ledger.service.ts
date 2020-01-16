@@ -2,7 +2,11 @@ import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
-import { GroupDetails, LedgerDetails, LedgerList } from "../models/ledger.models";
+import {
+  GroupDetails,
+  LedgerDetails,
+  LedgerList
+} from "../models/ledger.models";
 import { Observable } from "rxjs";
 
 @Injectable({

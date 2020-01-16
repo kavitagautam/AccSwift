@@ -15,7 +15,7 @@ import { SideNavComponent } from "./admin-panel/side-nav/side-nav.component";
 @NgModule({
   declarations: [
     AdminPanelComponent,
-    
+
     FooterComponent,
     MenuItemComponent,
     ConfirmationDialogComponent,

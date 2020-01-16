@@ -33,7 +33,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     public _fb: FormBuilder,
     public ledgerService: LedgerService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildAccountLedgerForm();
@@ -59,7 +59,6 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         this.ledgerDetails = res;
         this.buildAccountLedgerForm();
       });
-
   }
 
   buildAccountLedgerForm(): void {
@@ -75,7 +74,9 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         this.ledgerDetails ? this.ledgerDetails.Currency : "",
         Validators.required
       ],
-      date: [this.ledgerDetails ? new Date(this.ledgerDetails.CreatedDate) : ""],
+      date: [
+        this.ledgerDetails ? new Date(this.ledgerDetails.CreatedDate) : ""
+      ],
       openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
       previousYearBalanceList: this._fb.array([
         this.addPreviousYearBalanceFormGroup()
@@ -106,7 +107,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     return <FormArray>this.accoutLedgerForm.get("previousYearBalanceList");
   }
 
-  openModal(index: number): void { }
+  openModal(index: number): void {}
 
   public addHandler({ sender }) {
     this.closeEditor(sender);
