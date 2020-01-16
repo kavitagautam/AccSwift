@@ -20,8 +20,8 @@ export class PaginationComponent implements OnInit, OnChanges {
 
   startCount: number;
   endCount: number;
-  
-  constructor(){}
+
+  constructor() {}
 
   ngOnInit() {
     this.getStartAndEndCounts();
@@ -34,7 +34,7 @@ export class PaginationComponent implements OnInit, OnChanges {
   onPageChange(pageNumber) {
     this.pageChange.emit(pageNumber);
     this.currentPage = pageNumber;
-      this.getStartAndEndCounts();
+    this.getStartAndEndCounts();
   }
 
   getStartAndEndCounts() {

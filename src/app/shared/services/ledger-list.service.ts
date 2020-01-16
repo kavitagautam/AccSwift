@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { environment } from '@env/environment.prod';
-import { HttpClientService } from '@app/core/services/http-client/http-client.service';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { environment } from "@env/environment.prod";
+import { HttpClientService } from "@app/core/services/http-client/http-client.service";
+import { HttpClient } from "@angular/common/http";
 export interface LedgerList {
   LedgerCode: string;
   LedgerName: string;
@@ -15,10 +15,9 @@ export interface LedgerList {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class LedgerListService {
-
   _api_URL = environment.baseAPI;
   constructor(
     private http: HttpClient,

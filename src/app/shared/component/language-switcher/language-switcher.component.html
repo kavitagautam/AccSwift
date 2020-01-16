@@ -1,7 +1,6 @@
-Language
-&nbsp;
+Language &nbsp;
 <select (change)="useLanguage($event)" [value]="selectedLanguage">
   <option *ngFor="let lang of translate.getLangs()" [value]="lang">
-    {{lang}}
+    {{ lang }}
   </option>
 </select>

@@ -27,7 +27,10 @@
           formControlName="parentGroup"
         >
           <option value="null"> </option>
-          <option *ngFor="let group of ledgerService.groupList" [ngValue]="group.ID">
+          <option
+            *ngFor="let group of ledgerService.groupList"
+            [ngValue]="group.ID"
+          >
             {{ group.EngName }}</option
           >
         </select>

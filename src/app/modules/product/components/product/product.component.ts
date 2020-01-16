@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 import { ProductService } from "../../services/product.service";
-import { Product } from '../../models/product.models';
+import { Product } from "../../models/product.models";
 
 @Component({
   selector: "accSwift-product",
@@ -25,7 +25,7 @@ export class ProductComponent implements OnInit, OnChanges {
   constructor(
     public _fb: FormBuilder,
     private productService: ProductService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildProductForm();
@@ -33,13 +33,25 @@ export class ProductComponent implements OnInit, OnChanges {
 
   buildProductForm(): void {
     this.productForm = this._fb.group({
-      productCode: [this.productDetails ? this.productDetails.Code : "", Validators.required],
-      productName: [this.productDetails ? this.productDetails.EngName : "", Validators.required],
-      productGroup: [this.productDetails ? this.productDetails.GroupName : "", Validators.required],
+      productCode: [
+        this.productDetails ? this.productDetails.Code : "",
+        Validators.required
+      ],
+      productName: [
+        this.productDetails ? this.productDetails.EngName : "",
+        Validators.required
+      ],
+      productGroup: [
+        this.productDetails ? this.productDetails.GroupName : "",
+        Validators.required
+      ],
       departmentandLocation: [""],
-      baseUnit: [this.productDetails ? this.productDetails.UnitMaintenanceID : "", Validators.required],
+      baseUnit: [
+        this.productDetails ? this.productDetails.UnitMaintenanceID : "",
+        Validators.required
+      ],
       remarks: [this.productDetails ? this.productDetails.Remarks : ""],
-      openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
+      openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()])
     });
   }
 
@@ -56,12 +68,13 @@ export class ProductComponent implements OnInit, OnChanges {
     }
   }
 
-
   getProductDetails(): void {
-    this.productService.getProductDetails(this.selectedProductId).subscribe(res => {
-      this.productDetails = res;
-      this.buildProductForm();
-    })
+    this.productService
+      .getProductDetails(this.selectedProductId)
+      .subscribe(res => {
+        this.productDetails = res;
+        this.buildProductForm();
+      });
   }
 
   addOpeningBalanceFormGroup(): FormGroup {
@@ -72,12 +85,11 @@ export class ProductComponent implements OnInit, OnChanges {
     });
   }
 
-
   get getOpeningBalanceList(): FormArray {
     return <FormArray>this.productForm.get("openingBalanceList");
   }
 
-  openModal(index: number): void { }
+  openModal(index: number): void {}
 
   public addHandler({ sender }) {
     this.closeEditor(sender);
@@ -107,9 +119,7 @@ export class ProductComponent implements OnInit, OnChanges {
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.productForm.get("openingBalanceList")).removeAt(
-      rowIndex
-    );
+    (<FormArray>this.productForm.get("openingBalanceList")).removeAt(rowIndex);
   }
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);

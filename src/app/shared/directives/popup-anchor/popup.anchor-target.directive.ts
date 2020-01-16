@@ -1,8 +1,8 @@
-import { Directive, ElementRef, ViewContainerRef } from '@angular/core';
+import { Directive, ElementRef, ViewContainerRef } from "@angular/core";
 
 @Directive({
-  selector: '[popupAnchor]',
-  exportAs: 'popupAnchor'
+  selector: "[popupAnchor]",
+  exportAs: "popupAnchor"
 })
 export class PopupAnchorDirective {
   constructor(public element: ElementRef) {}

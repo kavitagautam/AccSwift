@@ -1,7 +1,7 @@
-import { DateFormatPipe } from './date-format.pipe';
+import { DateFormatPipe } from "./date-format.pipe";
 
-describe('DateFormatPipe', () => {
-  it('create an instance', () => {
+describe("DateFormatPipe", () => {
+  it("create an instance", () => {
     const pipe = new DateFormatPipe();
     expect(pipe).toBeTruthy();
   });

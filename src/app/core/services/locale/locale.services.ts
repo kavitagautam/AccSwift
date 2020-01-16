@@ -8,8 +8,7 @@ import {
 import { LocaleDataNe } from "@app/core/models/ne-locale.model";
 import { registerLocaleData } from "@angular/common";
 import enUS from "@progress/kendo-angular-intl/locales/en/all";
-@Injectable({  providedIn: "root"
-})
+@Injectable({ providedIn: "root" })
 export class LocaleService {
   //   private url =
   //     "https://unpkg.com/@progress/kendo-angular-intl/locales/json/{0}/all.json"; // get locale Data From Server

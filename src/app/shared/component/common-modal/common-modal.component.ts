@@ -1,25 +1,23 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
+import { Component, OnInit, ViewChild, Input } from "@angular/core";
+import { ModalDirective } from "ngx-bootstrap";
 
 @Component({
-  selector: 'accSwift-common-modal',
-  templateUrl: './common-modal.component.html',
-  styleUrls: ['./common-modal.component.scss']
+  selector: "accSwift-common-modal",
+  templateUrl: "./common-modal.component.html",
+  styleUrls: ["./common-modal.component.scss"]
 })
 export class CommonModalComponent implements OnInit {
- @ViewChild('childModal') public childModal: ModalDirective;
-  @Input() title?:string;
+  @ViewChild("childModal") public childModal: ModalDirective;
+  @Input() title?: string;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  show(){
+  show() {
     this.childModal.show();
   }
-  hide(){
+  hide() {
     this.childModal.hide();
   }
-
 }
