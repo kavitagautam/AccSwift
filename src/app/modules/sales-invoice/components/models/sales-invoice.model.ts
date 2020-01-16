@@ -1,3 +1,24 @@
+export interface ProjectList {
+  ID: number;
+  ProjectNumber: number;
+  ParentProjectID: number;
+  EngName: string;
+  NepName: string;
+  Description: string;
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedDate: Date;
+}
+
+export interface SeriesList {
+  ID: number;
+  EngName: string;
+  NepName: string;
+  VoucherType: string;
+  AutoNumber: number;
+  BuiltIn: true;
+}
+
 export interface SalesInvoiceMaster {
   ID: number;
   SalesLedgerID: number;
@@ -60,7 +81,7 @@ export interface InvoiceDetailsList {
   QtyUnitName: string;
   TaxID: number;
   GeneralName: string;
-  Description: string
+  Description: string;
 }
 
 export interface SalesInvoiceDetail {

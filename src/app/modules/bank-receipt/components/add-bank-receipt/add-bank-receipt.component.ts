@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { LedgerModelPopupComponent } from '@app/shared/component/ledger-model-popup/ledger-model-popup.component';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { Router } from '@angular/router';
-import { BankReceiptService } from '../../services/bank-receipt.service';
-import { LedgerCodeAsyncValidators } from '@app/shared/validators/async-validators/ledger-code-validators.service';
-import { LedgerCodeMatchService } from '@app/shared/services/ledger-code-match/ledger-code-match.service';
-import { BankReceiptMaster } from '../../models/bank-receipt.model';
+import { Component, OnInit } from "@angular/core";
+import { FormArray, FormGroup, Validators, FormBuilder } from "@angular/forms";
+import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { BsModalService, BsModalRef } from "ngx-bootstrap";
+import { Router } from "@angular/router";
+import { BankReceiptService } from "../../services/bank-receipt.service";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
+import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
+import { BankReceiptMaster } from "../../models/bank-receipt.model";
 
 @Component({
-  selector: 'accswift-add-bank-receipt',
-  templateUrl: './add-bank-receipt.component.html',
-  styleUrls: ['./add-bank-receipt.component.scss']
+  selector: "accswift-add-bank-receipt",
+  templateUrl: "./add-bank-receipt.component.html",
+  styleUrls: ["./add-bank-receipt.component.scss"]
 })
 export class AddBankReceiptComponent implements OnInit {
   private editedRowIndex: number;
@@ -38,7 +38,7 @@ export class AddBankReceiptComponent implements OnInit {
     public bankReceiptService: BankReceiptService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildBankReceiptForm();
@@ -52,9 +52,7 @@ export class AddBankReceiptComponent implements OnInit {
       voucherNo: [""],
       bankAccountId: [0],
       date: [new Date()],
-      bankReceiptEntryList: this._fb.array([
-        this.addBankReceiptEntryList()
-      ])
+      bankReceiptEntryList: this._fb.array([this.addBankReceiptEntryList()])
     });
   }
 
@@ -145,14 +143,18 @@ export class AddBankReceiptComponent implements OnInit {
     const bankReceiptEntry = <FormArray>(
       this.addBankReceiptForm.get("bankReceiptEntryList")
     );
-    bankReceiptEntry.controls[rowIndex].get("particularsOraccountingHead")
+    bankReceiptEntry.controls[rowIndex]
+      .get("particularsOraccountingHead")
       .setValue(dataItem.particularsOraccountingHead);
-    bankReceiptEntry.controls[rowIndex].get("voucherNo")
+    bankReceiptEntry.controls[rowIndex]
+      .get("voucherNo")
       .setValue(dataItem.voucherNo);
-    bankReceiptEntry.controls[rowIndex].get("currentAmount")
+    bankReceiptEntry.controls[rowIndex]
+      .get("currentAmount")
       .setValue(dataItem.currentAmount);
     bankReceiptEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
-    bankReceiptEntry.controls[rowIndex].get("remarks")
+    bankReceiptEntry.controls[rowIndex]
+      .get("remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
     sender.editRow(
@@ -170,11 +172,14 @@ export class AddBankReceiptComponent implements OnInit {
     this.modalRef.content.action = "Select";
     this.modalRef.content.onSelected.subscribe(data => {
       if (data) {
-        const bankReceiptFormArray = <FormArray>(this.addBankReceiptForm.get("bankReceiptEntryList")
+        const bankReceiptFormArray = <FormArray>(
+          this.addBankReceiptForm.get("bankReceiptEntryList")
         );
-        bankReceiptFormArray.controls[index].get("currentBalance")
+        bankReceiptFormArray.controls[index]
+          .get("currentBalance")
           .setValue(data.ActualBalance);
-        bankReceiptFormArray.controls[index].get("particularsOraccountingHead")
+        bankReceiptFormArray.controls[index]
+          .get("particularsOraccountingHead")
           .setValue(data.LedgerName);
       }
     });
@@ -208,5 +213,4 @@ export class AddBankReceiptComponent implements OnInit {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
   }
-
 }

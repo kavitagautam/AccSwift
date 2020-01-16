@@ -39,22 +39,34 @@ export class EditBankReceiptComponent implements OnInit {
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildBankReceiptForm();
     this.bankReceiptService.init();
-    this.getIdFromRoute();     // Get Id From the Route URL and get the Details
+    this.getIdFromRoute(); // Get Id From the Route URL and get the Details
   }
 
   buildBankReceiptForm(): void {
     this.editBankReceiptForm = this._fb.group({
-      seriesId: [this.bankReceiptDetails ? this.bankReceiptDetails.SeriesID : 0],
-      projectId: [this.bankReceiptDetails ? this.bankReceiptDetails.ProjectID : 0],
-      voucherNo: [this.bankReceiptDetails ? this.bankReceiptDetails.VoucherNo : ""],
-      bankAccountId: [this.bankReceiptDetails ? this.bankReceiptDetails.LedgerID : 0],
+      seriesId: [
+        this.bankReceiptDetails ? this.bankReceiptDetails.SeriesID : 0
+      ],
+      projectId: [
+        this.bankReceiptDetails ? this.bankReceiptDetails.ProjectID : 0
+      ],
+      voucherNo: [
+        this.bankReceiptDetails ? this.bankReceiptDetails.VoucherNo : ""
+      ],
+      bankAccountId: [
+        this.bankReceiptDetails ? this.bankReceiptDetails.LedgerID : 0
+      ],
       cashParty: [""],
-      date: [this.bankReceiptDetails ? new Date(this.bankReceiptDetails.CreatedDate) : ""],
+      date: [
+        this.bankReceiptDetails
+          ? new Date(this.bankReceiptDetails.CreatedDate)
+          : ""
+      ],
       bankReceiptEntryList: this._fb.array([this.addBankReceiptEntryList()])
     });
   }
@@ -166,11 +178,14 @@ export class EditBankReceiptComponent implements OnInit {
       this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
-          bankReceiptFormArray.controls[selectedRow].get("currentBalance")
+          bankReceiptFormArray.controls[selectedRow]
+            .get("currentBalance")
             .setValue(selectedItem[0].ActualBalance);
-          bankReceiptFormArray.controls[selectedRow].get("particularsOraccountingHead")
+          bankReceiptFormArray.controls[selectedRow]
+            .get("particularsOraccountingHead")
             .setValue(selectedItem[0].LedgerName);
-          bankReceiptFormArray.controls[selectedRow].get("ledgerCode")
+          bankReceiptFormArray.controls[selectedRow]
+            .get("ledgerCode")
             .setValue(selectedItem[0].LedgerCode);
         }
       });

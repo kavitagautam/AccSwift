@@ -1,15 +1,15 @@
-import { PurchaseOrderService } from './../../services/purchase-order.service';
-import { Router } from '@angular/router';
-import { BsModalRef } from 'ngx-bootstrap';
-import { FormGroup, FormArray } from '@angular/forms';
+import { PurchaseOrderService } from "./../../services/purchase-order.service";
+import { Router } from "@angular/router";
+import { BsModalRef } from "ngx-bootstrap";
+import { FormGroup, FormArray } from "@angular/forms";
 
-import { FormBuilder } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'accSwift-add-purchase-order',
-  templateUrl: './add-purchase-order.component.html',
-  styleUrls: ['./add-purchase-order.component.scss']
+  selector: "accSwift-add-purchase-order",
+  templateUrl: "./add-purchase-order.component.html",
+  styleUrls: ["./add-purchase-order.component.scss"]
 })
 export class AddPurchaseOrderComponent implements OnInit {
   addPurchaseOrderForm: FormGroup;
@@ -21,10 +21,11 @@ export class AddPurchaseOrderComponent implements OnInit {
   submitted: boolean;
   rowSubmitted: boolean;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     public purchaseOrderService: PurchaseOrderService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildAddPurchaseOrderForm(); // initialize the form
@@ -49,8 +50,8 @@ export class AddPurchaseOrderComponent implements OnInit {
       Amount: [""],
       SpecialDiscount: [""],
       NetAmount: [""],
-      VAT: [""],
-    })
+      VAT: [""]
+    });
   }
 
   //Date String Parse
@@ -59,7 +60,7 @@ export class AddPurchaseOrderComponent implements OnInit {
     const date = new Date(eventDate);
     date.setFullYear(this.currentYear);
     return date;
-  }
+  };
 
   get getPurchaseOrderEntryList(): FormArray {
     return <FormArray>this.addPurchaseOrderForm.get("purchaseOrderEntryList");
@@ -86,7 +87,9 @@ export class AddPurchaseOrderComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    const purchaseOrderEntry = <FormArray>(this.addPurchaseOrderForm.get("purchaseOrderEntryList"));
+    const purchaseOrderEntry = <FormArray>(
+      this.addPurchaseOrderForm.get("purchaseOrderEntryList")
+    );
     if (purchaseOrderEntry.invalid) return;
     (<FormArray>purchaseOrderEntry).push(this.addPurchaseOrderEntryList());
     this.submitted = false;
@@ -95,19 +98,34 @@ export class AddPurchaseOrderComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const purchaseOrderEntry = <FormArray>(this.addPurchaseOrderForm.get("purchaseOrderEntryList"));
-    purchaseOrderEntry.controls[rowIndex].get("ProductName").setValue(dataItem.ProductName);
+    const purchaseOrderEntry = <FormArray>(
+      this.addPurchaseOrderForm.get("purchaseOrderEntryList")
+    );
+    purchaseOrderEntry.controls[rowIndex]
+      .get("ProductName")
+      .setValue(dataItem.ProductName);
     purchaseOrderEntry.controls[rowIndex].get("Unit").setValue(dataItem.Unit);
-    purchaseOrderEntry.controls[rowIndex].get("PurchaseRate").setValue(dataItem.PurchaseRate);
-    purchaseOrderEntry.controls[rowIndex].get("Amount").setValue(dataItem.Amount);
-    purchaseOrderEntry.controls[rowIndex].get("NetAmount").setValue(dataItem.NetAmount);
+    purchaseOrderEntry.controls[rowIndex]
+      .get("PurchaseRate")
+      .setValue(dataItem.PurchaseRate);
+    purchaseOrderEntry.controls[rowIndex]
+      .get("Amount")
+      .setValue(dataItem.Amount);
+    purchaseOrderEntry.controls[rowIndex]
+      .get("NetAmount")
+      .setValue(dataItem.NetAmount);
     purchaseOrderEntry.controls[rowIndex].get("VAT").setValue(dataItem.VAT);
     this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.addPurchaseOrderForm.get("purchaseOrderEntryList"));
+    sender.editRow(
+      rowIndex,
+      this.addPurchaseOrderForm.get("purchaseOrderEntryList")
+    );
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.addPurchaseOrderForm.get("purchaseOrderEntryList")).removeAt(rowIndex);
+    (<FormArray>(
+      this.addPurchaseOrderForm.get("purchaseOrderEntryList")
+    )).removeAt(rowIndex);
   }
 
   public cancelHandler({ sender, rowIndex }) {

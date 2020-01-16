@@ -18,7 +18,7 @@ export class AddPurchaseInvoiceComponent implements OnInit {
     private fb: FormBuilder,
     public purchaseService: PurchaseInvoiceService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildPurchaseInvoiceForm();
@@ -36,9 +36,7 @@ export class AddPurchaseInvoiceComponent implements OnInit {
       date: [new Date()],
       orderNo: [""],
       remarks: [""],
-      purchaseInvoiceEntryList: this.fb.array([
-        this.addPurchaseEntryList()
-      ])
+      purchaseInvoiceEntryList: this.fb.array([this.addPurchaseEntryList()])
     });
   }
 
@@ -103,26 +101,35 @@ export class AddPurchaseInvoiceComponent implements OnInit {
       this.addPurchaseForm.get("purchaseInvoiceEntryList")
     );
     purchaseInvoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
-    purchaseInvoiceEntry.controls[rowIndex].get("productName")
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("productName")
       .setValue(dataItem.productName);
-    purchaseInvoiceEntry.controls[rowIndex].get("quantity")
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("quantity")
       .setValue(dataItem.quantity);
     purchaseInvoiceEntry.controls[rowIndex].get("unit").setValue(dataItem.unit);
-    purchaseInvoiceEntry.controls[rowIndex].get("purchaseRate")
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("purchaseRate")
       .setValue(dataItem.purchaseRate);
-    purchaseInvoiceEntry.controls[rowIndex].get("amount")
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("amount")
       .setValue(dataItem.amount);
-    purchaseInvoiceEntry.controls[rowIndex].get("specialDiscount")
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("specialDiscount")
       .setValue(dataItem.specialDiscount);
-    purchaseInvoiceEntry.controls[rowIndex].get("specialDiscounts")
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("specialDiscounts")
       .setValue(dataItem.specialDiscounts);
     purchaseInvoiceEntry.controls[rowIndex].get("vat").setValue(dataItem.vat);
-    purchaseInvoiceEntry.controls[rowIndex].get("customDuty")
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("customDuty")
       .setValue(dataItem.customDuty);
-    purchaseInvoiceEntry.controls[rowIndex].get("freight")
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("freight")
       .setValue(dataItem.freight);
     purchaseInvoiceEntry.controls[rowIndex].get("tc").setValue(dataItem.tc);
-    purchaseInvoiceEntry.controls[rowIndex].get("tcAmount")
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("tcAmount")
       .setValue(dataItem.tcAmount);
     this.editedRowIndex = rowIndex;
     sender.editRow(

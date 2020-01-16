@@ -1,18 +1,21 @@
-import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
-import { PurchaseReturnService } from './../../services/purchase-return.service';
-import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
-import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
-import { FormBuilder } from '@angular/forms';
-import { FormGroup } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { ConfirmationDialogComponent } from '@app/shared/component/confirmation-dialog/confirmation-dialog.component';
+import { ToastrService } from "ngx-toastr";
+import { Router } from "@angular/router";
+import { PurchaseReturnService } from "./../../services/purchase-return.service";
+import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
+import {
+  CompositeFilterDescriptor,
+  SortDescriptor
+} from "@progress/kendo-data-query";
+import { FormBuilder } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
-  selector: 'accSwift-list-purchase-return',
-  templateUrl: './list-purchase-return.component.html',
-  styleUrls: ['./list-purchase-return.component.scss']
+  selector: "accSwift-list-purchase-return",
+  templateUrl: "./list-purchase-return.component.html",
+  styleUrls: ["./list-purchase-return.component.scss"]
 })
 export class ListPurchaseReturnComponent implements OnInit {
   purchaseReturnForm: FormGroup;
@@ -43,7 +46,7 @@ export class ListPurchaseReturnComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private modalService: BsModalService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildPurchaseReturnForm();

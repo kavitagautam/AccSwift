@@ -1,3 +1,25 @@
+export interface ProjectList {
+  ID: number;
+  ProjectNumber: number;
+  ParentProjectID: number;
+  EngName: string;
+  NepName: string;
+  Description: string;
+  CreatedBy: string;
+  CreatedDate: string;
+  ModifiedBy: string;
+  ModifiedDate: string;
+}
+
+export interface SeriesList {
+  ID: number;
+  EngName: string;
+  NepName: string;
+  VoucherType: string;
+  AutoNumber: number;
+  BuiltIn: boolean;
+}
+
 export interface SalesOrderMaster {
   ID: number;
   CashPartyLedgerID: number;
@@ -17,9 +39,9 @@ export interface SalesOrderMaster {
   Field5: string;
   Remarks: string;
   CreatedBy: string;
-  CreatedDate: Date
+  CreatedDate: Date;
   ModifiedBy: string;
-  ModifiedDate: Date
+  ModifiedDate: Date;
 }
 
 export interface OrderDetailsList {
@@ -47,4 +69,3 @@ export interface SalesOrderDetails {
   UpdatedQuantity: number;
   PenndingQuantity: number;
 }
-

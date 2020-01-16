@@ -26,7 +26,7 @@ export class ListBankPaymentComponent implements OnInit {
     public bankPaymentService: BankPaymentService,
     private fb: FormBuilder,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildListBankPaymentForm();
