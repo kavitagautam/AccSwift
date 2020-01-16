@@ -155,7 +155,6 @@
             title="Cheque Date"
             [filterable]="false"
             filter="date"
-            format="{0:d}"
           >
             <ng-template kendoGridCellTemplate let-dataItem="dataItem">
               <span>{{ dataItem.Date | date: "yyyy-MM-dd" }}</span>
