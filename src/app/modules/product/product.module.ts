@@ -43,6 +43,8 @@ import { EditProductGroupComponent } from "./components/product-group/edit-produ
     DropDownsModule,
     TreeViewModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents: [AddProductGroupComponent, EditProductGroupComponent],
+  bootstrap: [ProductGroupComponent]
 })
 export class ProductModule {}
