@@ -75,7 +75,6 @@ export class ListSalesReturnComponent implements OnInit {
 
     this.salesReturnService.getSalesReturnMaster().subscribe(
       res => {
-        this.listLoading = true;
         this.salesReturnList = res;
         this.gridView = {
           data: this.salesReturnList.slice(

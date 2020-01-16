@@ -84,7 +84,6 @@ export class ListContraVoucherComponent implements OnInit {
 
     this.contraVoucherService.getCashReceiptMaster().subscribe(
       res => {
-        this.listLoading = true;
         this.contraVoucherList = res;
         this.gridView = {
           data: this.contraVoucherList,

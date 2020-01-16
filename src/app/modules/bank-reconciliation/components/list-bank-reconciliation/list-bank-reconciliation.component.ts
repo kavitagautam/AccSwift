@@ -82,7 +82,6 @@ export class ListBankReconciliationComponent implements OnInit {
     };
     this.reconciliationService.getBankReconciliationMaster().subscribe(
       response => {
-        this.listLoading = true;
         this.bankReconciliationList = response;
         this.gridView = {
           data: this.bankReconciliationList.slice(

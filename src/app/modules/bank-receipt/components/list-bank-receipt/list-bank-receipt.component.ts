@@ -69,6 +69,7 @@ export class ListBankReceiptComponent implements OnInit {
   }
 
   getBankReceiptlList(): void {
+    this.listLoading = true;
     const params = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
@@ -77,7 +78,6 @@ export class ListBankReceiptComponent implements OnInit {
     };
     this.bankReceiptService.getBankReceiptMaster().subscribe(
       response => {
-        this.listLoading = true;
         this.bankReceiptList = response;
         this.gridView = {
           data: this.bankReceiptList.slice(

@@ -76,7 +76,6 @@ export class ListPurchaseOrderComponent implements OnInit {
 
     this.purchaseOrderService.getPurchaseOrderMaster().subscribe(
       res => {
-        this.listLoading = true;
         this.purchaseOrderList = res;
         this.gridView = {
           data: this.purchaseOrderList.slice(

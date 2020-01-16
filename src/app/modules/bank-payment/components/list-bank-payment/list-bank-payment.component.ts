@@ -45,6 +45,7 @@ export class ListBankPaymentComponent implements OnInit {
   }
 
   getBankPaymentList(): void {
+    this.listLoading = true;
     const params = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
@@ -53,7 +54,6 @@ export class ListBankPaymentComponent implements OnInit {
     };
     this.bankPaymentService.getBankPaymentMaster().subscribe(
       response => {
-        this.listLoading = true;
         this.bankPaymentList = response;
         this.gridView = {
           data: this.bankPaymentList,

@@ -80,7 +80,6 @@ export class ListSalesOrderComponent implements OnInit {
 
     this.salesOrderService.getSalesOrderMaster().subscribe(
       res => {
-        this.listLoading = true;
         this.salesOrderList = res;
         this.gridView = {
           data: this.salesOrderList.slice(this.skip, this.skip + this.pageSize),

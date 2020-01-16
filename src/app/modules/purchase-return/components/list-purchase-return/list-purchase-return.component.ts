@@ -82,7 +82,6 @@ export class ListPurchaseReturnComponent implements OnInit {
 
     this.purchaseReturnService.getPurchaseOrderMaster().subscribe(
       res => {
-        this.listLoading = true;
         this.purchaseReturnList = res;
         this.gridView = {
           data: this.purchaseReturnList.slice(
