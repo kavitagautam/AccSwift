@@ -81,7 +81,6 @@ export class ListSalesInvoiceComponent implements OnInit {
 
     this.salesInvoiceService.getSalesInvoiceMaster().subscribe(
       res => {
-        this.listLoading = true;
         this.salesInvoiceList = res;
         this.gridView = {
           data: this.salesInvoiceList.slice(
