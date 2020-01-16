@@ -1,11 +1,11 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { PurchaseReturnService } from './purchase-return.service';
+import { PurchaseReturnService } from "./purchase-return.service";
 
-describe('PurchaseReturnService', () => {
+describe("PurchaseReturnService", () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
-  it('should be created', () => {
+  it("should be created", () => {
     const service: PurchaseReturnService = TestBed.get(PurchaseReturnService);
     expect(service).toBeTruthy();
   });

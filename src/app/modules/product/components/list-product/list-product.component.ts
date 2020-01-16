@@ -28,10 +28,9 @@ export class ListProductComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.selectedProductGroupTab=true;
+    this.selectedProductGroupTab = true;
     this.getProductTreeView();
   }
-
 
   selectedNode(dataItem): void {
     if (dataItem.TypeOf === 0) {

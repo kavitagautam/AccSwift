@@ -1,3 +1,3 @@
 export interface Loader {
-    show: boolean;
+  show: boolean;
 }

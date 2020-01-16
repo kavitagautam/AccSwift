@@ -15,9 +15,9 @@ import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
 import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import { ProductComponent } from "./components/product/product.component";
 import { ProductGroupComponent } from "./components/product-group/product-group.component";
-import { SharedModule } from '@app/shared/shared.module';
-import { AddProductGroupComponent } from './components/product-group/add-product-group/add-product-group.component';
-import { EditProductGroupComponent } from './components/product-group/edit-product-group/edit-product-group.component';
+import { SharedModule } from "@app/shared/shared.module";
+import { AddProductGroupComponent } from "./components/product-group/add-product-group/add-product-group.component";
+import { EditProductGroupComponent } from "./components/product-group/edit-product-group/edit-product-group.component";
 
 @NgModule({
   declarations: [
