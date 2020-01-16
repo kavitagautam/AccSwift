@@ -1,3 +1,166 @@
-<p>
-  add-purchase-order works!
-</p>
+<div class="box box-default">
+  <form [formGroup]="addPurchaseOrderForm" novalidate>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="col-md-3 col-xs-6 col-sm-6">
+          <div class="form-group">
+            <label>Order No.</label>
+            <input class="form-control" formControlName="orderNo" />
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-6 col-sm-6">
+          <div class="form-group">
+            <label>Date</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="date"
+              bsDatepicker
+            />
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-6 col-sm-6">
+          <div class="form-group">
+            <sup>*</sup> <label>Cash/Party/A/C</label>
+            <select class="form-control" formControlName="cashPartyACId">
+              <option [ngValue]="0" disabled>Select</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-6 col-sm-6">
+          <div class="form-group">
+            <label>Project</label>
+            <select class="form-control" formControlName="projectId">
+              <option [ngValue]="0" disabled>Select</option>
+              <option
+                *ngFor="let project of purchaseOrderService.projectList"
+                [ngValue]="project.ID"
+              >
+                {{ project.EngName }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="box box-default">
+  <div class="box-body">
+    <div class="col-md-12 p-0">
+      <div class="grid-wrapper">
+        <kendo-grid
+          [data]="getPurchaseOrderEntryList.value"
+          (remove)="removeHandler($event)"
+          (add)="addHandler($event)"
+          (edit)="editHandler($event)"
+          (save)="saveHandler($event)"
+          (cancel)="cancelHandler($event)"
+        >
+          <ng-template kendoGridToolbarTemplate>
+            <button kendoGridAddCommand>Add New</button>
+          </ng-template>
+
+          <kendo-grid-column
+            field="ProductName"
+            title="Product Name"
+            width="150"
+          >
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-isNew="isNew"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+              let-column="column"
+            >
+              <input
+                style="width: 120px"
+                [formControl]="
+                  getPurchaseOrderEntryList.controls[rowIndex].get(
+                    'ProductName'
+                  )
+                "
+              />
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="Quantity" title="Qty" width="120">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-isNew="isNew"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+              let-column="column"
+            >
+              <kendo-numerictextbox
+                popupAnchor
+                style="width: 100px;"
+                [decimals]="decimals"
+                [format]="c0"
+                [formControl]="
+                  getPurchaseOrderEntryList.controls[rowIndex].get('Quantity')
+                "
+              ></kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="Unit" title="Unit" width="80">
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="PurchaseRate"
+            title="Purchase Rate"
+            width="80"
+          >
+          </kendo-grid-column>
+          <kendo-grid-column field="Amount" title="Amount" width="120">
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="SpecialDiscount"
+            title="Spl. Disc%"
+            width="150"
+          >
+          </kendo-grid-column>
+          <kendo-grid-column field="NetAmount" title="Net Amount" width="150">
+          </kendo-grid-column>
+          <kendo-grid-column field="VAT" title="VAT" width="80">
+          </kendo-grid-column>
+          <kendo-grid-command-column title="Action" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
+            >
+              <button
+                kendoGridEditCommand
+                (click)="edit(dataItem)"
+                data-toggle="modal"
+                data-target="#viewModal"
+                [primary]="true"
+              >
+                Edit
+              </button>
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialogue(dataItem)"
+              >
+                Delete
+              </button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
+
+        <div *ngIf="listLoading" class="k-i-loading"></div>
+      </div>
+      <div class="box-footer">
+        <div class="mb-2">
+          <button class="btn btn-primary" disabled (click)="save()">
+            Save
+          </button>
+          <button class="btn btn-secondary ml-2" (click)="cancel()">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

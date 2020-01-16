@@ -4,15 +4,16 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormArray } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
-import { formatDate } from "@angular/common";
 
 @Component({
-  selector: "app-edit-purchase-invoice",
+  selector: "accSwift-edit-purchase-invoice",
   templateUrl: "./edit-purchase-invoice.component.html",
   styleUrls: ["./edit-purchase-invoice.component.scss"]
 })
 export class EditPurchaseInvoiceComponent implements OnInit {
   editPurchaseForm: FormGroup;
+  numericFormat: string = "n2";
+  public decimals: number = 2;
   purchaseDetails: PurchaseInvoiceMaster;
   date: Date = new Date();
   submitted: boolean;
@@ -22,58 +23,71 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private purchaseInvoiceService: PurchaseInvoiceService
-  ) { }
+    public purchaseService: PurchaseInvoiceService
+  ) {}
 
   ngOnInit() {
-    this.buildEditPurchaseInvoiceForm();
+    this.buildEditInvoiceForm();
+    this.getIdFromRoute();
+  }
+
+  buildEditInvoiceForm() {
+    this.editPurchaseForm = this.fb.group({
+      seriesId: [this.purchaseDetails ? this.purchaseDetails.SeriesID : 0],
+      cashPartyACId: [
+        this.purchaseDetails ? this.purchaseDetails.CashPartyLedgerID : 0
+      ],
+      purchaseAcId: [
+        this.purchaseDetails ? this.purchaseDetails.PurchLedgerID : 0
+      ],
+      voucherNo: [this.purchaseDetails ? this.purchaseDetails.VoucherNo : ""],
+      partyBillNo: [
+        this.purchaseDetails ? this.purchaseDetails.PartyBillNumber : ""
+      ],
+      depotLocationId: [
+        this.purchaseDetails ? this.purchaseDetails.DepotID : 0
+      ],
+      projectId: [this.purchaseDetails ? this.purchaseDetails.ProjectID : 0],
+      date: [
+        this.purchaseDetails ? new Date(this.purchaseDetails.CreatedDate) : ""
+      ],
+      orderNo: [this.purchaseDetails ? this.purchaseDetails.OrderNo : ""],
+      remarks: [this.purchaseDetails ? this.purchaseDetails.Remarks : ""],
+      purchaseInvoiceEntryList: this.fb.array([
+        this.addPurchaseInvoiceEntryList()
+      ]) // Form Array..
+    });
+  }
+
+  addPurchaseInvoiceEntryList(): FormGroup {
+    return this.fb.group({
+      code: [" "],
+      productName: [" "],
+      quantity: [" "],
+      unit: [" "],
+      purchaseRate: [" "],
+      amount: [" "],
+      specialDiscount: [" "],
+      specialDiscounts: [" "],
+      netAmount: [" "],
+      vat: [" "],
+      customDuty: [" "],
+      customDutyAmt: [" "],
+      freight: [" "],
+      tc: [" "],
+      tcAmount: [""]
+    });
+  }
+
+  getIdFromRoute() {
     this.route.paramMap.subscribe(params => {
       const param = +params.get("id");
       if (param) {
-        this.purchaseInvoiceService
-          .getPurchaseInvoiceDetails(param)
-          .subscribe(res => {
-            this.purchaseDetails = res;
-            console.log(res);
-            this.buildEditPurchaseInvoiceForm();
-          });
+        this.purchaseService.getPurchaseInvoiceDetails(param).subscribe(res => {
+          this.purchaseDetails = res;
+          this.buildEditInvoiceForm();
+        });
       }
-    });
-  }
-
-  buildEditPurchaseInvoiceForm() {
-    this.editPurchaseForm = this.fb.group({
-      seriesName: [this.purchaseDetails ? this.purchaseDetails.SeriesName : ""],
-      cashParty: [this.purchaseDetails ? this.purchaseDetails.CashPartName : ""],
-      purchaseAc: [this.purchaseDetails ? this.purchaseDetails.PurchInvoiceDetails : ""],
-      voucherNo: [this.purchaseDetails ? this.purchaseDetails.VoucherNo : ""],
-      partyBillNo: [this.purchaseDetails ? this.purchaseDetails.PartyBillNumber : ""],
-      depot: [this.purchaseDetails ? this.purchaseDetails.DepotName : ""],
-      project: [this.purchaseDetails ? this.purchaseDetails.ProjectName : ""],
-      date: [this.purchaseDetails ? formatDate(this.purchaseDetails.CreatedDate, "yyyy-MM-dd", "en-US") : ""],
-      orderNo: [this.purchaseDetails ? this.purchaseDetails.OrderNo : ""],
-      remarks: [this.purchaseDetails ? this.purchaseDetails.Remarks : ""],
-      purchaseInvoiceEntryList: this.fb.array([this.addPurchaseEntryFormGroup()])
-    });
-  }
-
-  addPurchaseEntryFormGroup(): FormGroup {
-    return this.fb.group({
-      code: "",
-      productName: "",
-      quantity: "",
-      unit: "",
-      purchaseRate: "",
-      amount: "",
-      specialDiscount: "",
-      specialDiscounts: "",
-      netAmount: "",
-      vat: "",
-      customDuty: "",
-      customDutyAmt: "",
-      freight: "",
-      tc: "",
-      tcAmount: ""
     });
   }
 
@@ -107,9 +121,9 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     );
     if (purchaseInvoiceEntry.invalid) return;
     (<FormArray>this.editPurchaseForm.get("purchaseInvoiceEntryList")).push(
-      this.addPurchaseEntryFormGroup()
+      this.addPurchaseInvoiceEntryList()
     );
-    this.rowSubmitted = false;
+    this.submitted = false;
     this.rowSubmitted = false;
   }
 

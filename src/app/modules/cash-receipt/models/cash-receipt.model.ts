@@ -30,7 +30,7 @@ export interface CashReceiptMaster {
   SeriesID: number;
   SeriesName: string;
   VoucherNo: string;
-  Date: Date;
+  Date: string;
   ProjectID: number;
   ProjectName: string;
   Fields: {
@@ -42,9 +42,9 @@ export interface CashReceiptMaster {
   };
   Remarks: string;
   CreatedBy: string;
-  CreatedDate: Date;
+  CreatedDate: string;
   ModifiedBy: string;
-  ModifiedDate: Date;
+  ModifiedDate: string;
 }
 
 export interface CashReceiptDetails {
@@ -67,7 +67,7 @@ export interface CashReceiptDetails {
     OpCCYID: number;
     Currency: string;
     OpCCR: number;
-    OpCCRDate: Date;
+    OpCCRDate: string;
     DebitCredit: string;
     GroupID: number;
     GroupName: string;
@@ -89,22 +89,22 @@ export interface CashReceiptDetails {
     IsBillReference: boolean;
     Remarks: string;
     CreatedBy: string;
-    CreatedDate: Date;
+    CreatedDate: string;
     ModifiedBy: string;
-    ModifiedDate: Date;
+    ModifiedDate: string;
   };
   Amount: number;
   Remarks: string;
 }
 
-export interface CashAccounts{
-  Status: number,
-  Entity: Entity[]
+export interface CashAccounts {
+  Status: number;
+  Entity: Entity[];
 }
 
-export interface Entity{
-  LedgerID: number,
-  LedgerCode: string,
-  LedgerName: string,
-  GroupID: number
+export interface Entity {
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  GroupID: number;
 }

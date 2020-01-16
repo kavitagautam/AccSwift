@@ -13,24 +13,27 @@ export class AuthenticationService {
     private httpService: HttpClientService
   ) {}
   login(username: string, password: string) {
-    const params = new HttpParams()
-      .set("username", username)
-      .set("password", password);
+    let body = new URLSearchParams();
+    body.set("username", username);
+    body.set("password", password);
+    body.set("grant_type", "password");
+
     const reqHeader = new HttpHeaders({
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
       "No-Auth": "True"
     });
 
-    return this.httpService.get(
-      `${this._api_URL}users/token`,
-      reqHeader,
-      params
+    return this.httpService.post(
+      `${this._api_URL}token`,
+      body.toString(),
+      reqHeader
     );
   }
   getToken() {
-    return localStorage.getItem("token");
+    return localStorage.getItem("access_token");
   }
   isLoggedIn() {
     return this.getToken() !== null;
   }
+ 
 }

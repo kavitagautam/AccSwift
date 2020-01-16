@@ -13,7 +13,7 @@ import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 @Component({
-  selector: "app-list-journal",
+  selector: "accSwift-list-journal",
   templateUrl: "./list-journal.component.html",
   styleUrls: ["./list-journal.component.css"]
 })
@@ -28,11 +28,13 @@ export class ListJournalComponent implements OnInit {
 
   //Filter Serach Key
   voucherNoSearch = "";
-  journalDateSearch = "";
+  journalDateToSearch = "";
+  journalDateFromSearch = "";
   projectIdSearch = "";
   seriesIdSearch = "";
   voucherNoSearchKey = "";
-  journalDateSerchKey = "";
+  journalDateToSerchKey = "";
+  journalDateFromSerchKey = "";
   projectNameSerachKey = "";
   seriesNameSearchKey = "";
   remarkSearchKey = "";
@@ -58,10 +60,11 @@ export class ListJournalComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.journalSearchForm = this._fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
       voucherNo: [""],
-      date: [""]
+      toDate: [""],
+      fromDate: [""]
     });
     this.getJournalList();
   }
@@ -71,14 +74,6 @@ export class ListJournalComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true
-  };
-
-  // Date string parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
   };
 
   public sortChange(sort: SortDescriptor[]): void {
@@ -114,7 +109,8 @@ export class ListJournalComponent implements OnInit {
       SeriesId: this.seriesIdSearch,
       ProjectId: this.projectIdSearch,
       VoucherNo: this.voucherNoSearch,
-      JournalDate: this.journalDateSearch,
+      JournalDateTo: this.journalDateToSearch,
+      JournalDateFrom: this.journalDateFromSearch,
       VoucherNoSearchTerm: this.voucherNoSearchKey,
       ProjectNameSearchTerm: this.projectNameSerachKey,
       SeriesNameSearchTerm: this.seriesNameSearchKey,
@@ -122,31 +118,7 @@ export class ListJournalComponent implements OnInit {
     };
     this.journalService.getJournalList(params).subscribe(
       res => {
-        //mapping the data to change string date format to Date
-        const sampleData = res.Entity.map(
-          dataItem =>
-            <JournalMaster>{
-              ID: dataItem.ID,
-              VoucherNo: dataItem.VoucherNo,
-              Date: this.parseAdjust(dataItem.JournalDate),
-              SeriesID: dataItem.SeriesID,
-              SeriesName: dataItem.SeriesName,
-              ProjectID: dataItem.ProjectID,
-              ProjectName: dataItem.ProjectName,
-              Field1: dataItem.Field1,
-              Field2: dataItem.Field2,
-              Field3: dataItem.Field3,
-              Field4: dataItem.Field4,
-              Field5: dataItem.Field5,
-              Journaldetails: dataItem.Journaldetails,
-              Remarks: dataItem.Remarks,
-              CreatedBy: dataItem.CreatedBy,
-              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
-              ModifiedBy: dataItem.ModifiedBy,
-              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
-            }
-        );
-        this.journalList = sampleData;
+        this.journalList = res.Entity;
         this.gridView = {
           data: this.journalList,
           total: res.TotalItemsAvailable
@@ -166,6 +138,7 @@ export class ListJournalComponent implements OnInit {
     this.projectNameSerachKey = "";
     this.seriesNameSearchKey = "";
     this.filter = filter;
+    console.log(filter);
     for (let i = 0; i < filter.filters.length; i++) {
       if (filter.filters[i].field == "VoucherNo") {
         this.voucherNoSearchKey = filter.filters[i].value;
@@ -182,9 +155,10 @@ export class ListJournalComponent implements OnInit {
 
   public searchForm() {
     this.voucherNoSearch = this.journalSearchForm.controls.voucherNo.value;
-    this.journalDateSearch = this.journalSearchForm.controls.date.value;
-    this.projectIdSearch = this.journalSearchForm.controls.project.value;
-    this.seriesIdSearch = this.journalSearchForm.controls.series.value;
+    this.journalDateToSearch = this.journalSearchForm.controls.toDate.value;
+    this.journalDateFromSearch = this.journalSearchForm.controls.fromDate.value;
+    this.projectIdSearch = this.journalSearchForm.controls.projectId.value;
+    this.seriesIdSearch = this.journalSearchForm.controls.seriesId.value;
     this.getJournalList();
   }
 
@@ -207,7 +181,7 @@ export class ListJournalComponent implements OnInit {
     this.router.navigate(["/journal/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const journalId = {
       id: dataItem.ID
     };

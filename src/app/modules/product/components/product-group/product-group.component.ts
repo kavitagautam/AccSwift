@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
 import { ProductService } from "../../services/product.service";
 import { ProductGroup } from "../../models/product.models";
 @Component({
-  selector: "app-product-group",
+  selector: "accSwift-product-group",
   templateUrl: "./product-group.component.html",
   styleUrls: ["./product-group.component.scss"]
 })
@@ -56,6 +56,8 @@ export class ProductGroupComponent implements OnInit, OnChanges {
         this.buildProductGroupForm();
       });
   }
-  saveProduct(): void {}
+  saveProduct(): void {
+    if (this.productGroupForm.invalid) return;
+  }
   cancelProduct(): void {}
 }

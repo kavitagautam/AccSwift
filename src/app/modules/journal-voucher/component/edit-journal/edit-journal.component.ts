@@ -1,16 +1,18 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Inject, LOCALE_ID } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
-import { DatePipe} from "@angular/common";
+import { DatePipe } from "@angular/common";
 import { JournalMaster } from "../../models/journal.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
+import { IntlService } from "@progress/kendo-angular-intl";
+import { LocaleService } from "@app/core/services/locale/locale.services";
 
 @Component({
-  selector: "app-edit-journal",
+  selector: "accSwift-edit-journal",
   templateUrl: "./edit-journal.component.html",
   styleUrls: ["./edit-journal.component.css"],
   providers: [DatePipe]
@@ -44,8 +46,12 @@ export class EditJournalComponent implements OnInit {
     private modalService: BsModalService,
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
-    public ledgerCodeService: LedgerCodeMatchService
-  ) {}
+    public ledgerCodeService: LedgerCodeMatchService,
+    public intlService: IntlService,
+    private localeService: LocaleService
+  ) {
+    this.localeService.set("en-US");
+  }
 
   ngOnInit() {
     this.buildJournalForm();
@@ -65,15 +71,12 @@ export class EditJournalComponent implements OnInit {
 
   buildJournalForm(): void {
     this.editJournalForm = this._fb.group({
-      seriesID: [this.journalDetail ? this.journalDetail.SeriesID : ""],
-      seriesName: [this.journalDetail ? this.journalDetail.SeriesName : ""],
+      seriesId: [this.journalDetail ? this.journalDetail.SeriesID : 0],
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
       date: [
-        this.journalDetail
-          ? new Date(this.journalDetail.CreatedDate)
-          : ""
+        this.journalDetail ? new Date(this.journalDetail.CreatedDate) : ""
       ],
-      projectName: [this.journalDetail ? this.journalDetail.ProjectName : ""],
+      projectId: [this.journalDetail ? this.journalDetail.ProjectID : 0],
       narration: [this.journalDetail ? this.journalDetail.Remarks : ""],
       journalEntryList: [this.addJournalEntryFormGroup()]
     });

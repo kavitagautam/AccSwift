@@ -1,5 +1,5 @@
 <div class="box-header">
-  <button [routerLink]="['add']" class="btn btn-primary pull-right">
+  <button [routerLink]="['add']" class="btn btn-primary">
     <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Journal
   </button>
 </div>
@@ -16,63 +16,71 @@
       <div class="row">
         <div class="col-md-12">
           <form [formGroup]="journalSearchForm" novalidate>
-            <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="col-md-2 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="voucher#">Voucher #</label>
                 <input class="form-control" formControlName="voucherNo" />
               </div>
             </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="col-md-2 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="series">Series</label>
-                <select
-                  class="form-control"
-                  id="seriesId"
-                  formControlName="series"
-                >
-                  <option value="null"> </option>
+                <select class="form-control" formControlName="seriesId">
+                  <option [ngValue]="0" disabled>Select</option>
                   <option
                     *ngFor="let series of journalService.journalSeriesList"
-                    [ngValue]="series.ID"
-                  >
-                    {{ series.EngName }}</option
+                    [value]="series.ID"
+                    >{{ series.EngName }}</option
                   >
                 </select>
               </div>
             </div>
-
-            <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="col-md-2 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project</label>
                 <select
                   class="form-control"
                   id="projectId"
-                  formControlName="project"
+                  formControlName="projectId"
                 >
-                  <option value="null"> </option>
+                  <option [ngValue]="0" disabled>Select</option>
                   <option
                     *ngFor="let project of journalService.projectLists"
-                    [ngValue]="project.ID"
+                    [value]="project.ID"
                   >
                     {{ project.EngName }}</option
                   >
                 </select>
               </div>
             </div>
-
-            <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="col-md-2 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label for="date">Date</label>
-                <!-- Nepali DatePicker-->
-                <!-- <np-datepicker formControlName="date"  class="form-group" inputClass="form-control"
+                <label for="date">To Date</label>
+                <input
+                  type="text"
+                  placeholder="To Date"
+                  class="form-control"
+                  formControlName="toDate"
+                  bsDatepicker
+                />
+              </div>
+
+              <!-- <np-datepicker formControlName="date"  class="form-group" inputClass="form-control"
             ></np-datepicker> 
           
                             [value]="date | date: 'MM/dd/yyyy'"
 -->
-                <input type="text"
-                class="form-control"
-                formControlName="date"
-                bsDatepicker>
+            </div>
+            <div class="col-md-2 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label for="date">From Date</label>
+                <input
+                  type="text"
+                  placeholder="From Date"
+                  class="form-control"
+                  formControlName="fromDate"
+                  bsDatepicker
+                />
               </div>
             </div>
           </form>
@@ -116,8 +124,10 @@
             title="Journal Date"
             filter="date"
             [filterable]="false"
-            format="{0: yyyy-mm-dd}"
           >
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              {{ dataItem.Date | dateStringFormat: "yyyy-MM-dd" }}
+            </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="ProjectName" title="Project Name">
           </kendo-grid-column>

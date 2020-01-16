@@ -13,7 +13,7 @@ import {
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
-  selector: "app-list-bank-payment",
+  selector: "accSwift-list-bank-payment",
   templateUrl: "./list-bank-payment.component.html",
   styleUrls: ["./list-bank-payment.component.scss"]
 })
@@ -36,11 +36,11 @@ export class ListBankPaymentComponent implements OnInit {
   bankPaymentForm: FormGroup;
   buildListBankPaymentForm() {
     this.bankPaymentForm = this.fb.group({
-      series: "",
-      project: "",
-      voucherNo: "",
-      bankAccount: "",
-      date: ""
+      seriesId: [0],
+      projectId: [0],
+      voucherNo: [""],
+      bankAccountId: [0],
+      date: new Date()
     });
   }
 

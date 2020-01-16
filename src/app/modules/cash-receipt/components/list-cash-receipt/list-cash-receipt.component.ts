@@ -13,7 +13,7 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
 import { CashReceiptMaster } from "../../models/cash-receipt.model";
 
 @Component({
-  selector: "app-list-cash-receipt",
+  selector: "accSwift-list-cash-receipt",
   templateUrl: "./list-cash-receipt.component.html",
   styleUrls: ["./list-cash-receipt.component.scss"]
 })
@@ -24,25 +24,6 @@ export class ListCashReceiptComponent implements OnInit {
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
   date: Date = new Date();
-  constructor(
-    public _fb: FormBuilder,
-    private router: Router,
-    private modalService: BsModalService,
-    private toastr: ToastrService,
-    public cashReceiptService: CashReceiptService
-  ) {}
-  ngOnInit() {
-    this.cashReceiptForm = this._fb.group({
-      series: [""],
-      project: [""],
-      voucherNo: [""],
-      cashAccount: [""],
-      cashParty:[""],
-      date: [""]
-    });
-    this.getCashReceiptlList();
-  }
-
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
@@ -62,13 +43,25 @@ export class ListCashReceiptComponent implements OnInit {
     ignoreBackdropClick: true
   };
 
-  // Date string parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
+  constructor(
+    public _fb: FormBuilder,
+    private router: Router,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
+    public cashReceiptService: CashReceiptService
+  ) {}
+
+  ngOnInit() {
+    this.cashReceiptForm = this._fb.group({
+      seriesId: [0],
+      projectId: [0],
+      voucherNo: [""],
+      cashAccountId: [0],
+      cashPartyId: [0],
+      date: [new Date()]
+    });
+    this.getCashReceiptlList();
+  }
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
@@ -87,40 +80,10 @@ export class ListCashReceiptComponent implements OnInit {
     this.cashReceiptService.getCashReceiptMaster().subscribe(
       res => {
         this.listLoading = true;
-
         //mapping the data to change string date format to Date
-        const sampleData = res.map(
-          dataItem =>
-            <CashReceiptMaster>{
-              IsPayByInvoice: dataItem.IsPayByInvoice,
-              TotalAmount: dataItem.TotalAmount,
-              CashReceiptDetails: dataItem.CashReceiptDetails,
-              LedgerID: dataItem.LedgerID,
-              LedgerName: dataItem.LedgerName,
-              ID: dataItem.ID,
-              SeriesID: dataItem.SeriesID,
-              SeriesName: dataItem.SeriesName,
-              VoucherNo: dataItem.VoucherNo,
-              Date: this.parseAdjust(dataItem.Date),
-              ProjectID: dataItem.ProjectID,
-              ProjectName: dataItem.ProjectName,
-              Fields: {
-                Field1: dataItem.Fields.Field1,
-                Field2: dataItem.Fields.Field2,
-                Field3: dataItem.Fields.Field3,
-                Field4: dataItem.Fields.Field4,
-                Field5: dataItem.Fields.Field5
-              },
-              Remarks: dataItem.Remarks,
-              CreatedBy: dataItem.CreatedBy,
-              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
-              ModifiedBy: dataItem.ModifiedBy,
-              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
-            }
-        );
-        this.cashList = sampleData;
+        this.cashList = res;
         this.gridView = {
-          data: this.cashList.slice(this.skip , this.skip + this.pageSize),
+          data: this.cashList.slice(this.skip, this.skip + this.pageSize),
           total: this.cashList ? this.cashList.length : 0
         };
       },
@@ -135,24 +98,21 @@ export class ListCashReceiptComponent implements OnInit {
 
   public filterChange(filter): void {
     this.filter = filter;
-
     this.getCashReceiptlList();
   }
 
-  public searchForm() {
+  public searchForm(): void {
     this.getCashReceiptlList();
   }
 
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
-
     if (event.skip == 0) {
       this.skip = event.skip;
       this.currentPage = 1;
     } else {
       this.skip = event.skip;
       const pageNo = event.skip / event.take + 1;
-
       this.currentPage = pageNo;
     }
     this.getCashReceiptlList();
@@ -162,8 +122,8 @@ export class ListCashReceiptComponent implements OnInit {
     this.router.navigate(["/cash-receipt/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
-    const journalId = {
+  openConfirmationDialogue(dataItem): void {
+    const cashReceiptId = {
       id: dataItem.ID
     };
     this.modalRef = this.modalService.show(
@@ -174,7 +134,7 @@ export class ListCashReceiptComponent implements OnInit {
     this.modalRef.content.action = "delete";
     this.modalRef.content.onClose.subscribe(confirm => {
       if (confirm) {
-        this.deleteReceiptByID(journalId.id);
+        this.deleteReceiptByID(cashReceiptId.id);
       }
     });
   }

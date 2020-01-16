@@ -5,7 +5,7 @@ const is = (fileName: string, ext: string) =>
   new RegExp(`.${ext}\$`).test(fileName);
 
 @Component({
-  selector: "app-list-product",
+  selector: "accSwift-list-product",
   templateUrl: "./list-product.component.html",
   styleUrls: ["./list-product.component.scss"]
 })
@@ -28,7 +28,7 @@ export class ListProductComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.selectedProductTab=true;
+    this.selectedProductGroupTab=true;
     this.getProductTreeView();
   }
 

@@ -1,12 +1,13 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable, Subscriber } from "rxjs";
+import { Observable } from "rxjs";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import {
   JournalMaster,
   ProjectList,
-  SeriesList
+  SeriesList,
+  JournalLists
 } from "../models/journal.model";
 
 @Injectable({
@@ -37,7 +38,7 @@ export class JournalService {
         this.projectLists = res;
       });
   }
-  
+
   getSeriesList(): void {
     this.httpService
       .get(`${this._api_URL}series/journal`)
@@ -46,7 +47,7 @@ export class JournalService {
       });
   }
 
-  getJournalList(paramsData) {
+  getJournalList(paramsData): Observable<JournalLists> {
     const params = new HttpParams()
       .set("PageNo", paramsData.PageNo)
       .set("DisplayRow", paramsData.DisplayRow)
@@ -58,7 +59,8 @@ export class JournalService {
       .set("ProjectName", paramsData.ProjectNameSearchTerm)
       .set("VoucherNo", paramsData.VoucherNo)
       .set("VoucherNoSearchTerm", paramsData.VoucherNoSearchTerm)
-      .set("JournalDate", paramsData.JournalDate)
+      .set("JournalDateTo", paramsData.JournalDateTo)
+      .set("JournalDateFrom", paramsData.JournalDateFrom)
       .set("Remarks", paramsData.Remarks);
     return this.httpService.get(
       `${this._api_URL}JournalMaster/Navigate`,

@@ -1,30 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { LedgerModelPopupComponent } from '@app/shared/component/ledger-model-popup/ledger-model-popup.component';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { Router } from '@angular/router';
-import { BankReceiptService } from '../../services/bank-receipt.service';
-import { LedgerCodeAsyncValidators } from '@app/shared/validators/async-validators/ledger-code-validators.service';
-import { LedgerCodeMatchService } from '@app/shared/services/ledger-code-match/ledger-code-match.service';
-import { BankReceiptMaster } from '../../models/bank-receipt.model';
+import { Component, OnInit } from "@angular/core";
+import { FormArray, FormGroup, Validators, FormBuilder } from "@angular/forms";
+import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { BsModalService, BsModalRef } from "ngx-bootstrap";
+import { Router } from "@angular/router";
+import { BankReceiptService } from "../../services/bank-receipt.service";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
+import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
+import { BankReceiptMaster } from "../../models/bank-receipt.model";
 
 @Component({
-  selector: 'accswift-add-bank-receipt',
-  templateUrl: './add-bank-receipt.component.html',
-  styleUrls: ['./add-bank-receipt.component.scss']
+  selector: "accswift-add-bank-receipt",
+  templateUrl: "./add-bank-receipt.component.html",
+  styleUrls: ["./add-bank-receipt.component.scss"]
 })
 export class AddBankReceiptComponent implements OnInit {
   private editedRowIndex: number;
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
-
   BankRecieptDetail: BankReceiptMaster;
   addBankReceiptForm: FormGroup;
   submitted: boolean;
-
   rowSubmitted: boolean;
-
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -33,6 +30,7 @@ export class AddBankReceiptComponent implements OnInit {
     ignoreBackdropClick: true,
     centered: true
   };
+
   constructor(
     public _fb: FormBuilder,
     private router: Router,
@@ -40,7 +38,7 @@ export class AddBankReceiptComponent implements OnInit {
     public bankReceiptService: BankReceiptService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildBankReceiptForm();
@@ -49,15 +47,12 @@ export class AddBankReceiptComponent implements OnInit {
 
   buildBankReceiptForm(): void {
     this.addBankReceiptForm = this._fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
       voucherNo: [""],
-      bankAccount: [""],
-      cashParty: [""],
-      date: [],
-      bankReceiptEntryList: this._fb.array([
-        this.addBankReceiptEntryFormGroup()
-      ])
+      bankAccountId: [0],
+      date: [new Date()],
+      bankReceiptEntryList: this._fb.array([this.addBankReceiptEntryList()])
     });
   }
 
@@ -65,7 +60,7 @@ export class AddBankReceiptComponent implements OnInit {
     return <FormArray>this.addBankReceiptForm.get("bankReceiptEntryList");
   }
 
-  addBankReceiptEntryFormGroup(): FormGroup {
+  addBankReceiptEntryList(): FormGroup {
     return this._fb.group({
       ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       particularsOraccountingHead: ["", Validators.required],
@@ -85,7 +80,7 @@ export class AddBankReceiptComponent implements OnInit {
     if (this.addBankReceiptForm.get("bankReceiptEntryList").invalid) return;
 
     (<FormArray>this.addBankReceiptForm.get("bankReceiptEntryList")).push(
-      this.addBankReceiptEntryFormGroup()
+      this.addBankReceiptEntryList()
     );
     this.submitted = false;
   }
@@ -118,16 +113,17 @@ export class AddBankReceiptComponent implements OnInit {
       });
     }
   }
+
   public save(): void {
     if (this.addBankReceiptForm.valid) {
-      this.router.navigate(["/cash-receipt"]);
+      this.router.navigate(["/bank-receipt"]);
     } else {
     }
   }
 
   public cancel(): void {
     this.addBankReceiptForm.reset();
-    this.router.navigate(["/cash-receipt"]);
+    this.router.navigate(["/bank-receipt"]);
   }
 
   public addHandler({ sender }) {
@@ -136,7 +132,7 @@ export class AddBankReceiptComponent implements OnInit {
     this.rowSubmitted = true;
     if (this.addBankReceiptForm.get("bankReceiptEntryList").invalid) return;
     (<FormArray>this.addBankReceiptForm.get("bankReceiptEntryList")).push(
-      this.addBankReceiptEntryFormGroup()
+      this.addBankReceiptEntryList()
     );
     this.rowSubmitted = false;
     this.submitted = false;
@@ -217,5 +213,4 @@ export class AddBankReceiptComponent implements OnInit {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
   }
-
 }

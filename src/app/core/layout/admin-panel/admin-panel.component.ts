@@ -1,82 +1,30 @@
 import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { FooterComponent } from "./footer/footer.component";
-import { IconConst } from "@shared/constants/icon.constant";
-import { Location } from '@angular/common';
+import { Location } from "@angular/common";
 @Component({
-  selector: "app-admin-panel",
+  selector: "accSwift-admin-panel",
   templateUrl: "./admin-panel.component.html",
   styleUrls: ["./admin-panel.component.scss"]
 })
 export class AdminPanelComponent implements OnInit {
   entryComponent = FooterComponent;
-  iconConst = IconConst;
   pageTitle: string;
 
-  // list of items at the top of the main container
-  menuItems = [
-    {
-      name: "Dashboard",
-      iconName: this.iconConst.DASHBOARD,
-      route: "/dashboard"
-    },
-    {
-      name: "Suspect",
-      iconName: this.iconConst.SUSPECT,
-      route: "/suspect"
-    },
-    {
-      name: "Prospect",
-      iconName: this.iconConst.PROSPECT,
-      route: "/prospect"
-    },
-    {
-      name: "Client",
-      iconName: this.iconConst.CLIENT,
-      route: "/client"
-    },
-    {
-      name: "On Board Candidate",
-      iconName: this.iconConst.ON_BOARD_CANDIDATE,
-      flex: 3
-    },
-    {
-      name: "Invoice Billing",
-      iconName: this.iconConst.PROSPECT,
-      flex: 2
-    },
-    {
-      name: "Generate Tokens",
-      iconName: this.iconConst.DASHBOARD,
-      flex: 2
-    },
-    {
-      name: "Export Invoice",
-      iconName: this.iconConst.EXPORT_INVOICE,
-      flex: 2
-    },
-    {
-      name: "Task",
-      iconName: this.iconConst.TASK
-    }
-  ];
-
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private location: Location,
-    private activatedRoute: ActivatedRoute) {}
-
-  ngOnInit() {
-    this.getPageTitle();
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        let child = this.activatedRoute.firstChild;
+        this.pageTitle = child.snapshot.data["breadcrumb"];
+      }
+    });
   }
 
-  getPageTitle() {
-    if (this.router.url.includes("journal")) this.pageTitle = "Journal";
-    else if (this.router.url.includes("client")) this.pageTitle = "Client";
-    else if (this.router.url.includes("class-code"))
-      this.pageTitle = "Class Code";
-    else if (this.router.url.includes("staffing-company"))
-      this.pageTitle = "Staffing Company";
-  }
+  ngOnInit() {}
 
   isNotDashboard() {
     if (this.router.url.includes("dashboard")) return false;

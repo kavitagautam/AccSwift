@@ -9,7 +9,7 @@ import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validato
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 
 @Component({
-  selector: "app-add-journal",
+  selector: "accSwift-add-journal",
   templateUrl: "./add-journal.component.html",
   styleUrls: ["./add-journal.component.scss"],
   providers: [DatePipe]
@@ -51,11 +51,10 @@ export class AddJournalComponent implements OnInit {
 
   buildAddJournalForm(): void {
     this.addJournalForm = this._fb.group({
-      seriesID: [""],
-      seriesName: [""],
+      seriesId: [0],
       voucherNo: [""],
       date: [new Date()],
-      projectName: [""],
+      projectId: [0],
       narration: [""],
       journalEntryList: this._fb.array([this.addJournalEntryFormGroup()])
     });

@@ -18,7 +18,7 @@ const routes: Routes = [
     data: { breadcrumb: "Add Reconciliation" }
   },
   {
-    path: "edit",
+    path: "edit/:id",
     component: EditBankReconciliationComponent,
     data: { breadcrumb: "Edit Reconciliation" }
   }
@@ -28,4 +28,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class BankReconciliationRoutingModule {}
+export class BankReconciliationRoutingModule { }

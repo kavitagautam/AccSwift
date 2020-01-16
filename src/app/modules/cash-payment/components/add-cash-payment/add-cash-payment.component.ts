@@ -5,7 +5,7 @@ import { CashPaymentService } from "../../services/cash-payment.service";
 import { CashPaymentMaster } from "../../models/cash-payment.model";
 
 @Component({
-  selector: "app-add-cash-payment",
+  selector: "accSwift-add-cash-payment",
   templateUrl: "./add-cash-payment.component.html",
   styleUrls: ["./add-cash-payment.component.scss"]
 })
@@ -30,17 +30,17 @@ export class AddCashPaymentComponent implements OnInit {
 
   buildAddCashPaymentForm() {
     this.addCashPaymentForm = this.fb.group({
-      series: "",
-      project: "",
-      voucherNo: "",
-      cashAccount: "",
-      cashParty: "",
-      date: "",
-      cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryFormGroup()])
+      seriesId: [0],
+      projectId: [0],
+      voucherNo: [""],
+      cashPartyId: [0],
+      cashAccountId: [0],
+      date: [new Date()],
+      cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryList()])
     });
   }
 
-  addCashPaymentEntryFormGroup(): FormGroup {
+  addCashPaymentEntryList(): FormGroup {
     return this.fb.group({
       ledgerCode: "",
       particularsOraccountingHead: "",
@@ -76,7 +76,7 @@ export class AddCashPaymentComponent implements OnInit {
     this.rowSubmitted = true;
     if (this.addCashPaymentForm.get("cashPaymentEntryList").invalid) return;
     (<FormArray>this.addCashPaymentForm.get("cashPaymentEntryList")).push(
-      this.addCashPaymentEntryFormGroup()
+      this.addCashPaymentEntryList()
     );
     this.submitted = false;
     this.rowSubmitted = false;

@@ -1,4 +1,4 @@
-import { GridModule, SharedModule } from "@progress/kendo-angular-grid";
+import { GridModule } from "@progress/kendo-angular-grid";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormsModule } from "@angular/forms";
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
@@ -14,6 +14,7 @@ import {
   DropDownListModule,
   DropDownsModule
 } from "@progress/kendo-angular-dropdowns";
+import { SharedModule } from '@app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -26,13 +27,13 @@ import {
     PurchaseInvoiceRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     GridModule,
     PopupModule,
     InputsModule,
     DropDownListModule,
-    DropDownsModule,
-    SharedModule
+    DropDownsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class PurchaseInvoiceModule {}
+export class PurchaseInvoiceModule { }

@@ -1,0 +1,39 @@
+<div class="box box-default">
+  <form [formGroup]="editUnitForm" novalidate>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label for="voucher#">Unit Name</label>
+            <input class="form-control" formControlName="unit" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label for="series">Symbol</label>
+            <input class="form-control" formControlName="symbol" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Remarks</label>
+            <textarea
+              row="2"
+              class="form-control"
+              formControlName="remarks"
+            >
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="box-footer">
+  <div class="mb-2">
+    <button class="btn btn-primary" (click)="save()">Save</button>
+    <button class="btn btn-secondary ml-2" (click)="cancel()">
+      Cancel
+    </button>
+  </div>
+</div>

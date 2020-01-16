@@ -5,17 +5,20 @@ import {
   LedgerListService,
   LedgerList
 } from "@app/shared/services/ledger-list.service";
-import { SortDescriptor } from '@progress/kendo-data-query';
-import { SelectAllCheckboxState, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { SortDescriptor } from "@progress/kendo-data-query";
+import {
+  SelectAllCheckboxState,
+  PageChangeEvent
+} from "@progress/kendo-angular-grid";
 
 @Component({
-  selector: "app-ledger-model-popup",
+  selector: "accSwift-ledger-model-popup",
   templateUrl: "./ledger-model-popup.component.html",
   styleUrls: ["./ledger-model-popup.component.scss"]
 })
 export class LedgerModelPopupComponent implements OnInit {
   public onClose: Subject<boolean>;
-  public onSelected: Subject<boolean>
+  public onSelected: Subject<boolean>;
   ledgerList: LedgerList[] = [];
   ledgerListLoading: boolean;
 
@@ -23,7 +26,7 @@ export class LedgerModelPopupComponent implements OnInit {
   public pageSize = 10;
   public skip = 0;
   public allowUnsort = true;
-  selected: any ;
+  selected: any;
   public sort: SortDescriptor[] = [
     {
       field: "LedgerName" || "LedgerCode" || "ActualBalance" || "LedgerType",
@@ -40,7 +43,7 @@ export class LedgerModelPopupComponent implements OnInit {
   public ngOnInit(): void {
     this.getLedgerList();
     this.onClose = new Subject();
-    this.onSelected=new Subject();
+    this.onSelected = new Subject();
   }
 
   getLedgerList(): void {
@@ -59,7 +62,6 @@ export class LedgerModelPopupComponent implements OnInit {
   }
 
   public onSelectedKeysChange(e, selectedRow) {
-
     const len = this.mySelection.length;
     if (len === 0) {
       this.selectAllState = "unchecked";
@@ -68,13 +70,15 @@ export class LedgerModelPopupComponent implements OnInit {
     } else {
       this.selectAllState = "checked";
     }
-  this.selected = this.ledgerList.filter(function(obj) {
+    this.selected = this.ledgerList.filter(function(obj) {
       return obj.LedgerID == e[0];
     });
+    this.onSelected.next(this.selected[0]);
+    this.onClose.next(true);
+    this.bsModalRef.hide();
   }
   public onConfirm(): void {
     this.onClose.next(true);
- 
     this.bsModalRef.hide();
   }
 
@@ -83,7 +87,6 @@ export class LedgerModelPopupComponent implements OnInit {
     this.bsModalRef.hide();
   }
 
-  
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     this.getLedgerList();
@@ -97,5 +100,4 @@ export class LedgerModelPopupComponent implements OnInit {
     this.onClose.next(true);
     this.bsModalRef.hide();
   }
-
 }

@@ -1,10 +1,10 @@
 <body class="hold-transition skin-blue-light sidebar-mini">
   <div class="wrapper">
     <!-- Main Header -->
-    <!-- <app-topbar></app-topbar> -->
+    <!-- <accSwift-topbar></accSwift-topbar> -->
     <accswift-nav-bar></accswift-nav-bar>
     <!-- Left side column. contains the logo and sidebar -->
-    <!-- <app-sidebar></app-sidebar> -->
+    <!-- <accSwift-sidebar></accSwift-sidebar> -->
     <accswift-side-nav></accswift-side-nav>
 
     <!-- Content Wrapper. Contains page content -->
@@ -13,7 +13,15 @@
     <!-- <section class="content container-fluid"> -->
 
     <div class="content-wrapper">
-      <ng-container>
+
+       <!-- Begin Main content -->
+       <section class="content container-fluid">
+
+    
+      <div class="panel"
+      [ngStyle]="{'background-color': isNotDashboard() ? '#fff' : '#ecf0f5', 'box-shadow': isNotDashboard() ? 'inherit' : 'none'  }">
+      <!-- Panel Heading -->
+      <ng-container *ngIf="isNotDashboard()">
         <section class="d-flex content-header"
         style="border-bottom: 1px solid #eee; justify-content: space-between;">
         <div class="d-flex">
@@ -28,22 +36,12 @@
           <breadcrumb [allowBootstrap]="true"></breadcrumb>
         </div>
       </section>
-        <!-- <section class="content-header" style="border-bottom: 1px solid #eee;">
-          <div>
-                <h1 class="m-0" style="font-size: 24px">
-                  <b>{{pageTitle}}</b>
-                </h1>
-              </div>
-
-          <div class="content-breadcrumb">
-            <breadcrumb [allowBootstrap]="true"></breadcrumb>
-          </div>
-        </section> -->
       </ng-container>
-
       <section class="content">
         <router-outlet></router-outlet>
       </section>
+    </div>
+    </section>
     </div>
 
     <!-- </section> -->

@@ -9,22 +9,19 @@ import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validato
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 
 @Component({
-  selector: "app-add-cash-receipt",
+  selector: "accSwift-add-cash-receipt",
   templateUrl: "./add-cash-receipt.component.html",
   styleUrls: ["./add-cash-receipt.component.scss"]
 })
 export class AddCashReceiptComponent implements OnInit {
+  addCashReceiptForm: FormGroup;
   private editedRowIndex: number;
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
-
   cashRecieptDetail: CashReceiptMaster;
-  addCashReceiptForm: FormGroup;
   submitted: boolean;
-
   rowSubmitted: boolean;
-
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -44,17 +41,17 @@ export class AddCashReceiptComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.buildCashReceiptForm();
+    this.buildAddCashReceiptForm();
   }
 
-  buildCashReceiptForm(): void {
+  buildAddCashReceiptForm(): void {
     this.addCashReceiptForm = this._fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
       voucherNo: [""],
-      cashAccount: [""],
-      cashParty: [""],
-      date: [],
+      cashAccountId: [0],
+      cashPartyId: [0],
+      date: [new Date()],
       cashReceiptEntryList: this._fb.array([
         this.addCashReceiptEntryFormGroup()
       ])
@@ -127,7 +124,7 @@ export class AddCashReceiptComponent implements OnInit {
     this.router.navigate(["/cash-receipt"]);
   }
 
-  public addHandler({ sender }) {
+  public addHandler({ sender }): void {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
@@ -139,7 +136,7 @@ export class AddCashReceiptComponent implements OnInit {
     this.submitted = false;
   }
 
-  public editHandler({ sender, rowIndex, dataItem }) {
+  public editHandler({ sender, rowIndex, dataItem }): void {
     this.closeEditor(sender);
     const cashReceiptEntry = <FormArray>(
       this.addCashReceiptForm.get("cashReceiptEntryList")
@@ -189,7 +186,7 @@ export class AddCashReceiptComponent implements OnInit {
     });
   }
 
-  public cancelHandler({ sender, rowIndex }) {
+  public cancelHandler({ sender, rowIndex }): void {
     this.closeEditor(sender, rowIndex);
   }
 
@@ -210,7 +207,7 @@ export class AddCashReceiptComponent implements OnInit {
     );
   }
 
-  private closeEditor(grid, rowIndex = 1) {
+  private closeEditor(grid, rowIndex = 1): void {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
   }

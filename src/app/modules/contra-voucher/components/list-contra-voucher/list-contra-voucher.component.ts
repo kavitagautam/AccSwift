@@ -8,12 +8,12 @@ import {
   SortDescriptor
 } from "@progress/kendo-data-query";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ContraVoucherMaster } from "../models/contravoucher.model";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ContraVoucherMaster } from "../../models/contraVoucher.model";
 
 @Component({
-  selector: "app-list-contra-voucher",
+  selector: "accSwift-list-contra-voucher",
   templateUrl: "./list-contra-voucher.component.html",
   styleUrls: ["./list-contra-voucher.component.scss"]
 })
@@ -27,7 +27,8 @@ export class ListContraVoucherComponent implements OnInit {
   public skip = 0;
   public currentPage = 1;
   modalRef: BsModalRef;
-  cashList: ContraVoucherMaster[];
+  contraVoucherList: ContraVoucherMaster[];
+
   constructor(
     private fb: FormBuilder,
     public contraVoucherService: ContraVoucherService,
@@ -43,11 +44,12 @@ export class ListContraVoucherComponent implements OnInit {
 
   editContraVoucherForm() {
     this.contraVoucherForm = this.fb.group({
-      series: [""],
-      project: [""],
+      seriesId: [0],
+      projectId: [0],
+      cashAccountId: [0],
       voucherNo: [""],
-      cashAccount: [""],
-      date: [""]
+      cashPartyId: [0],
+      date: [new Date()]
     });
   }
 
@@ -64,13 +66,6 @@ export class ListContraVoucherComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true
-  };
-  // Date string parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
   };
 
   public sortChange(sort: SortDescriptor[]): void {
@@ -90,41 +85,11 @@ export class ListContraVoucherComponent implements OnInit {
     this.contraVoucherService.getCashReceiptMaster().subscribe(
       res => {
         this.listLoading = true;
-
         //mapping the data to change string date format to Date
-        const sampleData = res.map(
-          dataItem =>
-            <ContraVoucherMaster>{
-              IsPayByInvoice: dataItem.IsPayByInvoice,
-              TotalAmount: dataItem.TotalAmount,
-              CashReceiptDetails: dataItem.CashReceiptDetails,
-              LedgerID: dataItem.LedgerID,
-              LedgerName: dataItem.LedgerName,
-              ID: dataItem.ID,
-              SeriesID: dataItem.SeriesID,
-              SeriesName: dataItem.SeriesName,
-              VoucherNo: dataItem.VoucherNo,
-              Date: this.parseAdjust(dataItem.Date),
-              ProjectID: dataItem.ProjectID,
-              ProjectName: dataItem.ProjectName,
-              Fields: {
-                Field1: dataItem.Fields.Field1,
-                Field2: dataItem.Fields.Field2,
-                Field3: dataItem.Fields.Field3,
-                Field4: dataItem.Fields.Field4,
-                Field5: dataItem.Fields.Field5
-              },
-              Remarks: dataItem.Remarks,
-              CreatedBy: dataItem.CreatedBy,
-              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
-              ModifiedBy: dataItem.ModifiedBy,
-              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
-            }
-        );
-        this.cashList = sampleData;
+        this.contraVoucherList = res;
         this.gridView = {
-          data: this.cashList,
-          total: this.cashList ? this.cashList.length : 0
+          data: this.contraVoucherList,
+          total: this.contraVoucherList ? this.contraVoucherList.length : 0
         };
       },
       error => {
@@ -161,7 +126,7 @@ export class ListContraVoucherComponent implements OnInit {
     this.router.navigate(["/contra-voucher/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const contraId = {
       id: dataItem.ID
     };
@@ -179,6 +144,6 @@ export class ListContraVoucherComponent implements OnInit {
   }
 
   public deleteContraById(id): void {
-    this.toastr.success("Voucher deleted succesfully");
+    this.toastr.success("Contra Voucher deleted succesfully");
   }
 }

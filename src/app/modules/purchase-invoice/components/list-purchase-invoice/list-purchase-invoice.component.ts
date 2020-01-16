@@ -6,14 +6,13 @@ import {
   SortDescriptor,
   CompositeFilterDescriptor
 } from "@progress/kendo-data-query";
-import { FormBuilder } from "@angular/forms";
-import { FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { PurchaseInvoiceService } from "./../../services/purchase-invoice.service";
 import { Component, OnInit } from "@angular/core";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
-  selector: "app-list-purchase-invoice",
+  selector: "accSwift-list-purchase-invoice",
   templateUrl: "./list-purchase-invoice.component.html",
   styleUrls: ["./list-purchase-invoice.component.scss"]
 })
@@ -42,40 +41,32 @@ export class ListPurchaseInvoiceComponent implements OnInit {
     ignoreBackdropClick: true
   };
   constructor(
-    private purchaseService: PurchaseInvoiceService,
+    public purchaseService: PurchaseInvoiceService,
     private fb: FormBuilder,
     private router: Router,
     private toastr: ToastrService,
     private modalService: BsModalService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.buildListPurchaseInvoiceForm();
+    this.buildPurchaseInvoiceForm();
     this.getPurchaseInvoiceList();
   }
 
-  buildListPurchaseInvoiceForm() {
+  buildPurchaseInvoiceForm(): void {
     this.purchaseForm = this.fb.group({
-      seriesName: "",
-      cashParty: "",
-      purchaseAc: "",
-      voucherNo: "",
-      partyBillNo: "",
-      depot: "",
-      project: "",
-      date: "",
-      orderNo: "",
-      remarks: ""
+      seriesId: [0],
+      cashPartyACId: [0],
+      purchaseAcId: [0],
+      voucherNo: [""],
+      partyBillNo: [""],
+      depotLocationId: [0],
+      projectId: [0],
+      date: [new Date()],
+      orderNo: [""],
+      remarks: [""]
     });
   }
-
-  //Date String Parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
@@ -92,11 +83,14 @@ export class ListPurchaseInvoiceComponent implements OnInit {
     };
 
     this.purchaseService.getPurchaseInvoiceMaster().subscribe(
-      res => {
+      response => {
         this.listLoading = true;
-        this.purchaseInvoiceList = res;
+        this.purchaseInvoiceList = response;
         this.gridView = {
-          data: this.purchaseInvoiceList.slice(this.skip, this.skip + this.pageSize),
+          data: this.purchaseInvoiceList.slice(
+            this.skip,
+            this.skip + this.pageSize
+          ),
           total: this.purchaseInvoiceList ? this.purchaseInvoiceList.length : 0
         };
       },
@@ -134,7 +128,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
     this.router.navigate(["/purchase-invoice/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const purchaseInvoiceID = {
       id: dataItem.ID
     };
@@ -152,7 +146,16 @@ export class ListPurchaseInvoiceComponent implements OnInit {
   }
 
   public deletePaymentsByID(id): void {
-    this.toastr.success("Invoice deleted successfully");
-    //call Delete Api
+    this.purchaseService.deleteInvoiceById(id).subscribe(
+      response => {
+        this.getPurchaseInvoiceList();
+      },
+      error => {
+        this.toastr.error(JSON.stringify(error));
+      },
+      () => {
+        this.toastr.success("Invoice deleted successfully");
+      }
+    );
   }
 }
