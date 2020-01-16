@@ -135,6 +135,9 @@
             [filterable]="false"
             format="{0: yyyy-mm-dd}"
           >
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              {{ dataItem.CreatedDate | dateStringFormat: "yyyy-MM-dd" }}
+            </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="Remarks" title="Remarks">
           </kendo-grid-column>

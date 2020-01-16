@@ -64,13 +64,6 @@ export class ListSalesOrderComponent implements OnInit {
       date: [new Date()]
     });
   }
-  //Date String Parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;

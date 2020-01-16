@@ -56,7 +56,7 @@ export class ListPurchaseReturnComponent implements OnInit {
     this.purchaseReturnForm = this.fb.group({
       seriesId: [0],
       voucher: [""],
-      date: [""],
+      date: [new Date()],
       cashPartyACId: [0],
       depotLocationId: [0],
       orderNo: [""],
@@ -65,14 +65,6 @@ export class ListPurchaseReturnComponent implements OnInit {
       remarks: [""]
     });
   }
-
-  //Date String Parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
