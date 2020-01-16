@@ -24,7 +24,7 @@
                 <select class="form-control" formControlName="seriesId">
                   <option [ngValue]="0" disabled>Select</option>
                   <option
-                    *ngFor="let series of reconciliationService.seriesList"
+                    *ngFor="let series of reconciliationService.seriesLists"
                     [ngValue]="series.ID"
                   >
                     {{ series.EngName }}
@@ -52,7 +52,7 @@
                 <select class="form-control" formControlName="projectId">
                   <option [ngValue]="0" disabled>Select</option>
                   <option
-                    *ngFor="let project of reconciliationService.projectList"
+                    *ngFor="let project of reconciliationService.projectLists"
                     [ngValue]="project.ID"
                   >
                     {{ project.EngName }}</option

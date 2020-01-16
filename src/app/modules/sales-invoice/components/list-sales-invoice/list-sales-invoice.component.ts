@@ -19,7 +19,6 @@ import { Component, OnInit } from "@angular/core";
 export class ListSalesInvoiceComponent implements OnInit {
   salesInvoiceForm;
   salesInvoiceList;
-  date: Date = new Date();
   listLoading: Boolean;
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
@@ -61,18 +60,10 @@ export class ListSalesInvoiceComponent implements OnInit {
       salesACId: [0],
       depotLocationId: [0],
       projectId: [0],
-      date: [""],
+      date: [new Date()],
       orderNo: [""]
     });
   }
-
-  //Date String Parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
@@ -153,7 +144,16 @@ export class ListSalesInvoiceComponent implements OnInit {
   }
 
   public deletePaymentsByID(id): void {
-    this.toastr.success("Invoice deleted successfully");
-    //call Delete Api
+    this.salesInvoiceService.deleteSalesById(id).subscribe(
+      response => {
+        this.getSalesInvoiceList();
+      },
+      error => {
+        this.toastr.error(JSON.stringify(error));
+      },
+      () => {
+        this.toastr.success("Invoice deleted successfully");
+      }
+    );
   }
 }

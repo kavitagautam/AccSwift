@@ -68,14 +68,6 @@ export class ListPurchaseInvoiceComponent implements OnInit {
     });
   }
 
-  //Date String Parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
-
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     this.getPurchaseInvoiceList();
@@ -91,9 +83,9 @@ export class ListPurchaseInvoiceComponent implements OnInit {
     };
 
     this.purchaseService.getPurchaseInvoiceMaster().subscribe(
-      res => {
+      response => {
         this.listLoading = true;
-        this.purchaseInvoiceList = res;
+        this.purchaseInvoiceList = response;
         this.gridView = {
           data: this.purchaseInvoiceList.slice(
             this.skip,
@@ -136,7 +128,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
     this.router.navigate(["/purchase-invoice/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const purchaseInvoiceID = {
       id: dataItem.ID
     };
@@ -154,7 +146,16 @@ export class ListPurchaseInvoiceComponent implements OnInit {
   }
 
   public deletePaymentsByID(id): void {
-    this.toastr.success("Invoice deleted successfully");
-    //call Delete Api
+    this.purchaseService.deleteInvoiceById(id).subscribe(
+      response => {
+        this.getPurchaseInvoiceList();
+      },
+      error => {
+        this.toastr.error(JSON.stringify(error));
+      },
+      () => {
+        this.toastr.success("Invoice deleted successfully");
+      }
+    );
   }
 }

@@ -48,4 +48,8 @@ export class PurchaseInvoiceService {
   getPurchaseInvoiceDetails(id: any): Observable<PurchaseInvoiceMaster> {
     return this.httpService.get(`${this._api_URL}PurchaseInvoiceMaster/${id}`);
   }
+
+  deleteInvoiceById(id): Observable<any> {
+    return this.http.delete(`${this._api_URL}PurchaseInvoiceMaster/${id}`);
+  }
 }

@@ -48,4 +48,8 @@ export class SalesInvoiceService {
   getSalesInvoiceDetails(id: any): Observable<SalesInvoiceMaster> {
     return this.httpService.get(`${this.api}SalesInvoiceMaster/${id}`);
   }
+
+  deleteSalesById(id): Observable<any> {
+    return this.http.delete(`${this.api}SalesInvoiceMaster/${id}`);
+  }
 }
