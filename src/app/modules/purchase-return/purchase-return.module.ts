@@ -1,5 +1,8 @@
-import { DropDownListModule, DropDownsModule } from '@progress/kendo-angular-dropdowns';
-import { PopupModule } from '@progress/kendo-angular-popup';
+import {
+  DropDownListModule,
+  DropDownsModule
+} from "@progress/kendo-angular-dropdowns";
+import { PopupModule } from "@progress/kendo-angular-popup";
 import { SharedModule } from "./../../shared/shared.module";
 import { GridModule } from "@progress/kendo-angular-grid";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -32,4 +35,4 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
     SharedModule
   ]
 })
-export class PurchaseReturnModule { }
+export class PurchaseReturnModule {}

@@ -1,4 +1,4 @@
-import { SalesOrderMaster } from './../models/list-sales-order.model';
+import { SalesOrderMaster } from "./../models/list-sales-order.model";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
@@ -14,9 +14,9 @@ import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
-  selector: 'accSwift-list-sales-order',
-  templateUrl: './list-sales-order.component.html',
-  styleUrls: ['./list-sales-order.component.scss']
+  selector: "accSwift-list-sales-order",
+  templateUrl: "./list-sales-order.component.html",
+  styleUrls: ["./list-sales-order.component.scss"]
 })
 export class ListSalesOrderComponent implements OnInit {
   salesOrderForm: FormGroup;
@@ -49,7 +49,7 @@ export class ListSalesOrderComponent implements OnInit {
     public salesOrderService: SalesOrderService,
     private router: Router,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildSalesOrderForm();

@@ -5,9 +5,9 @@ import { FormBuilder, FormGroup, FormArray } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'accSwift-edit-sales-return',
-  templateUrl: './edit-sales-return.component.html',
-  styleUrls: ['./edit-sales-return.component.scss']
+  selector: "accSwift-edit-sales-return",
+  templateUrl: "./edit-sales-return.component.html",
+  styleUrls: ["./edit-sales-return.component.scss"]
 })
 export class EditSalesReturnComponent implements OnInit {
   editSalesReturnForm: FormGroup;
@@ -21,7 +21,7 @@ export class EditSalesReturnComponent implements OnInit {
     public salesReturnService: SalesReturnService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildEditSalesReturnForm(); //Initialize the form
@@ -39,7 +39,7 @@ export class EditSalesReturnComponent implements OnInit {
       orderNo: [""],
       remarks: [""],
       salesReturnEntryList: this._fb.array([this.addSalesReturnEntryList()])
-    })
+    });
   }
 
   addSalesReturnEntryList(): FormGroup {
@@ -59,7 +59,7 @@ export class EditSalesReturnComponent implements OnInit {
       freight: [""],
       tc: [""],
       tcAmount: [""]
-    })
+    });
   }
 
   get getSalesReturnEntryList() {
@@ -68,14 +68,14 @@ export class EditSalesReturnComponent implements OnInit {
 
   getIdFromRoute() {
     this.route.paramMap.subscribe(params => {
-      const param = params.get('id');
+      const param = params.get("id");
       if (param) {
         this.salesReturnService.getSalesReturnDetails(param).subscribe(res => {
           this.salesReturnDetails = res;
           this.buildEditSalesReturnForm();
-        })
+        });
       }
-    })
+    });
   }
 
   private closeEditor(grid, rowIndex = 1) {
@@ -88,7 +88,9 @@ export class EditSalesReturnComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    const salesReturnEntry = <FormArray>(this.editSalesReturnForm.get("salesReturnEntryList"));
+    const salesReturnEntry = <FormArray>(
+      this.editSalesReturnForm.get("salesReturnEntryList")
+    );
     if (salesReturnEntry.invalid) return;
     (<FormArray>salesReturnEntry).push(this.addSalesReturnEntryList());
     this.submitted = false;
@@ -97,19 +99,32 @@ export class EditSalesReturnComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const salesReturnEntry = <FormArray>(this.editSalesReturnForm.get("salesReturnEntryList"));
-    salesReturnEntry.controls[rowIndex].get("ProductName").setValue(dataItem.ProductName);
+    const salesReturnEntry = <FormArray>(
+      this.editSalesReturnForm.get("salesReturnEntryList")
+    );
+    salesReturnEntry.controls[rowIndex]
+      .get("ProductName")
+      .setValue(dataItem.ProductName);
     salesReturnEntry.controls[rowIndex].get("Unit").setValue(dataItem.Unit);
-    salesReturnEntry.controls[rowIndex].get("PurchaseRate").setValue(dataItem.PurchaseRate);
+    salesReturnEntry.controls[rowIndex]
+      .get("PurchaseRate")
+      .setValue(dataItem.PurchaseRate);
     salesReturnEntry.controls[rowIndex].get("Amount").setValue(dataItem.Amount);
-    salesReturnEntry.controls[rowIndex].get("NetAmount").setValue(dataItem.NetAmount);
+    salesReturnEntry.controls[rowIndex]
+      .get("NetAmount")
+      .setValue(dataItem.NetAmount);
     salesReturnEntry.controls[rowIndex].get("VAT").setValue(dataItem.VAT);
     this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.editSalesReturnForm.get("salesReturnEntryList"));
+    sender.editRow(
+      rowIndex,
+      this.editSalesReturnForm.get("salesReturnEntryList")
+    );
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.editSalesReturnForm.get("salesReturnEntryList")).removeAt(rowIndex);
+    (<FormArray>this.editSalesReturnForm.get("salesReturnEntryList")).removeAt(
+      rowIndex
+    );
   }
 
   public cancelHandler({ sender, rowIndex }) {

@@ -36,7 +36,7 @@ export class EditBankPaymentComponent implements OnInit {
     public ledgerCodeService: LedgerCodeMatchService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildEditBankPaymentForm();
@@ -44,12 +44,24 @@ export class EditBankPaymentComponent implements OnInit {
 
   buildEditBankPaymentForm() {
     this.editBankPaymentForm = this.fb.group({
-      seriesId: [this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : 0],
-      projectId: [this.bankPaymentDetails ? this.bankPaymentDetails.ProjectID : 0],
-      voucherNo: [this.bankPaymentDetails ? this.bankPaymentDetails.VoucherNo : ""],
-      bankAccountId: [this.bankPaymentDetails ? this.bankPaymentDetails.LedgerID : 0],
+      seriesId: [
+        this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : 0
+      ],
+      projectId: [
+        this.bankPaymentDetails ? this.bankPaymentDetails.ProjectID : 0
+      ],
+      voucherNo: [
+        this.bankPaymentDetails ? this.bankPaymentDetails.VoucherNo : ""
+      ],
+      bankAccountId: [
+        this.bankPaymentDetails ? this.bankPaymentDetails.LedgerID : 0
+      ],
       cashParty: [""],
-      date: [this.bankPaymentDetails ? new Date(this.bankPaymentDetails.CreatedDate) : ""],
+      date: [
+        this.bankPaymentDetails
+          ? new Date(this.bankPaymentDetails.CreatedDate)
+          : ""
+      ],
       bankPaymentEntryList: this.fb.array([this.addBankPaymentEntryList()])
     });
   }
@@ -72,18 +84,24 @@ export class EditBankPaymentComponent implements OnInit {
   getIdFromRoute() {
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
-        this.bankPaymentService.getBankPaymentDetails(params.get("id")).subscribe(res => {
-          this.bankPaymentDetails = res;
-          this.buildEditBankPaymentForm();
-          this.setBankPaymentList();
-        });
+        this.bankPaymentService
+          .getBankPaymentDetails(params.get("id"))
+          .subscribe(res => {
+            this.bankPaymentDetails = res;
+            this.buildEditBankPaymentForm();
+            this.setBankPaymentList();
+          });
       }
     });
   }
 
   setBankPaymentList(): void {
-    this.editBankPaymentForm.setControl("bankPaymentEntryList",
-      this.setBankPaymentFormArray(this.bankPaymentDetails.BankPaymentDetailsList));
+    this.editBankPaymentForm.setControl(
+      "bankPaymentEntryList",
+      this.setBankPaymentFormArray(
+        this.bankPaymentDetails.BankPaymentDetailsList
+      )
+    );
   }
 
   setBankPaymentFormArray(bankPaymentDetails): FormArray {
@@ -178,7 +196,8 @@ export class EditBankPaymentComponent implements OnInit {
     this.rowSubmitted = true;
     if (this.editBankPaymentForm.get("bankPaymentEntryList").invalid) return;
     (<FormArray>this.editBankPaymentForm.get("bankPaymentEntryList")).push(
-      this.addBankPaymentEntryList());
+      this.addBankPaymentEntryList()
+    );
     this.rowSubmitted = false;
     this.submitted = false;
   }

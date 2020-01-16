@@ -1,4 +1,4 @@
-import { ConfirmationDialogComponent } from './../../../../shared/component/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from "./../../../../shared/component/confirmation-dialog/confirmation-dialog.component";
 import { SalesReturnService } from "./../../services/sales-return.service";
 import {
   SortDescriptor,
@@ -13,9 +13,9 @@ import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'accSwift-list-sales-return',
-  templateUrl: './list-sales-return.component.html',
-  styleUrls: ['./list-sales-return.component.scss']
+  selector: "accSwift-list-sales-return",
+  templateUrl: "./list-sales-return.component.html",
+  styleUrls: ["./list-sales-return.component.scss"]
 })
 export class ListSalesReturnComponent implements OnInit {
   salesReturnForm: FormGroup;
@@ -40,7 +40,7 @@ export class ListSalesReturnComponent implements OnInit {
     private toastr: ToastrService,
     private modalService: BsModalService,
     public salesReturnService: SalesReturnService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.buildSalesReturnForm();
@@ -149,4 +149,3 @@ export class ListSalesReturnComponent implements OnInit {
     //call Delete Api
   }
 }
-

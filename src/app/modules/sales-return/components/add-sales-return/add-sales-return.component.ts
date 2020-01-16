@@ -1,13 +1,13 @@
-import { Router } from '@angular/router';
-import { SalesReturnService } from './../../services/sales-return.service';
-import { FormBuilder, FormArray } from '@angular/forms';
-import { FormGroup } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+import { SalesReturnService } from "./../../services/sales-return.service";
+import { FormBuilder, FormArray } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'accSwift-add-sales-return',
-  templateUrl: './add-sales-return.component.html',
-  styleUrls: ['./add-sales-return.component.scss']
+  selector: "accSwift-add-sales-return",
+  templateUrl: "./add-sales-return.component.html",
+  styleUrls: ["./add-sales-return.component.scss"]
 })
 export class AddSalesReturnComponent implements OnInit {
   addSalesReturnForm: FormGroup;
@@ -15,7 +15,11 @@ export class AddSalesReturnComponent implements OnInit {
   submitted: boolean;
   rowSubmitted: boolean;
 
-  constructor(private _fb: FormBuilder, public addSalesRetService: SalesReturnService, private router: Router) { }
+  constructor(
+    private _fb: FormBuilder,
+    public addSalesRetService: SalesReturnService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.buildAddSalesReturnForm();
@@ -32,7 +36,7 @@ export class AddSalesReturnComponent implements OnInit {
       orderNo: [""],
       remarks: [""],
       salesReturnEntryList: this._fb.array([this.addSalesReturnEntryList()])
-    })
+    });
   }
 
   addSalesReturnEntryList(): FormGroup {
@@ -52,7 +56,7 @@ export class AddSalesReturnComponent implements OnInit {
       freight: [""],
       tc: [""],
       tcAmount: [""]
-    })
+    });
   }
 
   get getSalesReturnEntryList() {
@@ -65,7 +69,7 @@ export class AddSalesReturnComponent implements OnInit {
     const date = new Date(eventDate);
     date.setFullYear(this.currentYear);
     return date;
-  }
+  };
 
   public save(): void {
     if (this.addSalesReturnForm.valid) {
@@ -88,7 +92,9 @@ export class AddSalesReturnComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    const salesReturnEntry = <FormArray>(this.addSalesReturnForm.get("salesReturnEntryList"));
+    const salesReturnEntry = <FormArray>(
+      this.addSalesReturnForm.get("salesReturnEntryList")
+    );
     if (salesReturnEntry.invalid) return;
     (<FormArray>salesReturnEntry).push(this.addSalesReturnEntryList());
     this.submitted = false;
@@ -97,19 +103,32 @@ export class AddSalesReturnComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const salesReturnEntry = <FormArray>(this.addSalesReturnForm.get("salesReturnEntryList"));
-    salesReturnEntry.controls[rowIndex].get("ProductName").setValue(dataItem.ProductName);
+    const salesReturnEntry = <FormArray>(
+      this.addSalesReturnForm.get("salesReturnEntryList")
+    );
+    salesReturnEntry.controls[rowIndex]
+      .get("ProductName")
+      .setValue(dataItem.ProductName);
     salesReturnEntry.controls[rowIndex].get("Unit").setValue(dataItem.Unit);
-    salesReturnEntry.controls[rowIndex].get("PurchaseRate").setValue(dataItem.PurchaseRate);
+    salesReturnEntry.controls[rowIndex]
+      .get("PurchaseRate")
+      .setValue(dataItem.PurchaseRate);
     salesReturnEntry.controls[rowIndex].get("Amount").setValue(dataItem.Amount);
-    salesReturnEntry.controls[rowIndex].get("NetAmount").setValue(dataItem.NetAmount);
+    salesReturnEntry.controls[rowIndex]
+      .get("NetAmount")
+      .setValue(dataItem.NetAmount);
     salesReturnEntry.controls[rowIndex].get("VAT").setValue(dataItem.VAT);
     this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.addSalesReturnForm.get("salesReturnEntryList"));
+    sender.editRow(
+      rowIndex,
+      this.addSalesReturnForm.get("salesReturnEntryList")
+    );
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.addSalesReturnForm.get("salesReturnEntryList")).removeAt(rowIndex);
+    (<FormArray>this.addSalesReturnForm.get("salesReturnEntryList")).removeAt(
+      rowIndex
+    );
   }
 
   public cancelHandler({ sender, rowIndex }) {

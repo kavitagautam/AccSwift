@@ -1,20 +1,25 @@
-import { FormArray } from '@angular/forms';
-import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { SalesInvoiceService } from "./../../services/sales-invoice.service";
+import { FormArray } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
+import { Router } from "@angular/router";
+import { FormBuilder } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'accSwift-add-sales-invoice',
-  templateUrl: './add-sales-invoice.component.html',
-  styleUrls: ['./add-sales-invoice.component.scss']
+  selector: "accSwift-add-sales-invoice",
+  templateUrl: "./add-sales-invoice.component.html",
+  styleUrls: ["./add-sales-invoice.component.scss"]
 })
 export class AddSalesInvoiceComponent implements OnInit {
   addInvoiceForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
   private editedRowIndex: number;
-  constructor(private _fb: FormBuilder, private router: Router) { }
+  constructor(
+    private _fb: FormBuilder,
+    private router: Router,
+    public salesInvoiceService: SalesInvoiceService
+  ) {}
 
   ngOnInit() {
     this.buildAddSalesInvoiceForm();
@@ -77,9 +82,7 @@ export class AddSalesInvoiceComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    const invoiceEntry = <FormArray>(
-      this.addInvoiceForm.get("invoiceEntryList")
-    );
+    const invoiceEntry = <FormArray>this.addInvoiceForm.get("invoiceEntryList");
     if (invoiceEntry.invalid) return;
     (<FormArray>this.addInvoiceForm.get("invoiceEntryList")).push(
       this.addInvoiceEntryList()
@@ -90,34 +93,36 @@ export class AddSalesInvoiceComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const invoiceEntry = <FormArray>(
-      this.addInvoiceForm.get("invoiceEntryList")
-    );
+    const invoiceEntry = <FormArray>this.addInvoiceForm.get("invoiceEntryList");
     invoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
-    invoiceEntry.controls[rowIndex].get("productName").setValue(dataItem.productName);
+    invoiceEntry.controls[rowIndex]
+      .get("productName")
+      .setValue(dataItem.productName);
     invoiceEntry.controls[rowIndex].get("quantity").setValue(dataItem.quantity);
     invoiceEntry.controls[rowIndex].get("unit").setValue(dataItem.unit);
-    invoiceEntry.controls[rowIndex].get("purchaseRate").setValue(dataItem.purchaseRate);
+    invoiceEntry.controls[rowIndex]
+      .get("purchaseRate")
+      .setValue(dataItem.purchaseRate);
     invoiceEntry.controls[rowIndex].get("amount").setValue(dataItem.amount);
-    invoiceEntry.controls[rowIndex].get("specialDiscount").setValue(dataItem.specialDiscount);
-    invoiceEntry.controls[rowIndex].get("specialDiscounts")
+    invoiceEntry.controls[rowIndex]
+      .get("specialDiscount")
+      .setValue(dataItem.specialDiscount);
+    invoiceEntry.controls[rowIndex]
+      .get("specialDiscounts")
       .setValue(dataItem.specialDiscounts);
     invoiceEntry.controls[rowIndex].get("vat").setValue(dataItem.vat);
-    invoiceEntry.controls[rowIndex].get("customDuty").setValue(dataItem.customDuty);
+    invoiceEntry.controls[rowIndex]
+      .get("customDuty")
+      .setValue(dataItem.customDuty);
     invoiceEntry.controls[rowIndex].get("freight").setValue(dataItem.freight);
     invoiceEntry.controls[rowIndex].get("tc").setValue(dataItem.tc);
     invoiceEntry.controls[rowIndex].get("tcAmount").setValue(dataItem.tcAmount);
     this.editedRowIndex = rowIndex;
-    sender.editRow(
-      rowIndex,
-      this.addInvoiceForm.get("invoiceEntryList")
-    );
+    sender.editRow(rowIndex, this.addInvoiceForm.get("invoiceEntryList"));
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.addInvoiceForm.get("invoiceEntryList")).removeAt(
-      rowIndex
-    );
+    (<FormArray>this.addInvoiceForm.get("invoiceEntryList")).removeAt(rowIndex);
   }
 
   public cancelHandler({ sender, rowIndex }) {
