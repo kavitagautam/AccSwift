@@ -8,3 +8,9 @@ export interface Units {
   ModifiedBy: string;
   ModifiedDate: Date;
 }
+
+export interface UnitsModel {
+  StatusCode: number;
+  Message: string;
+  Entity: Units;
+}

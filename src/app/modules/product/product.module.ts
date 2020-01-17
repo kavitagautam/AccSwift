@@ -14,26 +14,22 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
 import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
 import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import { ProductComponent } from "./components/product/product.component";
-import { ProductGroupComponent } from "./components/product-group/product-group.component";
 import { SharedModule } from "@app/shared/shared.module";
-import { AddProductGroupComponent } from "./components/product-group/add-product-group/add-product-group.component";
-import { EditProductGroupComponent } from "./components/product-group/edit-product-group/edit-product-group.component";
+import { ProductGroupModule } from "./product-group/product-group.module";
 
 @NgModule({
   declarations: [
     AddProductComponent,
     EditProductComponent,
     ListProductComponent,
-    ProductComponent,
-    ProductGroupComponent,
-    AddProductGroupComponent,
-    EditProductGroupComponent
+    ProductComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     ProductRoutingModule,
+    ProductGroupModule,
     SharedModule,
     GridModule,
     PopupModule,
@@ -43,8 +39,8 @@ import { EditProductGroupComponent } from "./components/product-group/edit-produ
     DropDownsModule,
     TreeViewModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [AddProductGroupComponent, EditProductGroupComponent],
-  bootstrap: [ProductGroupComponent]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  // entryComponents: [AddProductGroupComponent, EditProductGroupComponent],
+  // bootstrap: [ProductGroupComponent]
 })
 export class ProductModule {}

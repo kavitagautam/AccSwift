@@ -3,7 +3,7 @@ import { environment } from "@env/environment";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { Observable } from "rxjs";
-import { Units } from "../models/unit-maintenance.model";
+import { Units, UnitsModel } from "../models/unit-maintenance.model";
 
 @Injectable({
   providedIn: "root"
@@ -23,7 +23,7 @@ export class UnitMaintenanceService {
     return this.http.delete(`${this._api_URL}UnitMaintenance/${id}`);
   }
 
-  getUnitDetails(id): Observable<Units> {
+  getUnitDetails(id): Observable<UnitsModel> {
     return this.httpService.get(`${this._api_URL}UnitMaintenance/${id}`);
   }
 
@@ -43,6 +43,6 @@ export class UnitMaintenanceService {
       Symbol: value.symbol,
       Remarks: value.remarks
     };
-    return this.httpService.put(`${this._api_URL}UnitMaintenance/${id}`, obj);
+    return this.httpService.put(`${this._api_URL}UnitMaintenance`, obj);
   }
 }

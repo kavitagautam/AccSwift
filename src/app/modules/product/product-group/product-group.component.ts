@@ -12,11 +12,10 @@ import {
   Type
 } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { ProductService } from "../../services/product.service";
-import { ProductGroup } from "../../models/product.models";
-import { AddProductGroupComponent } from "./add-product-group/add-product-group.component";
-import { EditProductGroupComponent } from "./edit-product-group/edit-product-group.component";
-import { ProductModule } from "../../product.module";
+import { ProductGroupModule } from "./product-group.module";
+import { ProductService } from "../services/product.service";
+import { ProductGroup } from "./models/product-group.models";
+
 export function decoratorOfType<T>(
   decoratedType: Type<any>,
   decoratorType: Type<T>
@@ -34,10 +33,9 @@ export function decoratorOfType<T>(
 @Component({
   selector: "accSwift-product-group",
   templateUrl: "./product-group.component.html",
-  styleUrls: ["./product-group.component.scss"],
-  entryComponents: [AddProductGroupComponent, EditProductGroupComponent]
+  styleUrls: ["./product-group.component.scss"]
 })
-export class ProductGroupComponent implements OnInit, OnChanges {
+export class ProductGroupComponent implements OnInit {
   @Input("selectedItem") selectedItem;
   @ViewChild("viewContainerRef", { read: ViewContainerRef })
   VCR: ViewContainerRef;
@@ -53,45 +51,19 @@ export class ProductGroupComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    this.buildProductGroupForm();
-    this.createComponent(ProductModule, "accSwift-add-product-group");
+    this.createComponent(ProductGroupModule, "accSwift-view-product-group");
   }
 
-  ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-    let log: string[] = [];
-    for (let p in changes) {
-      let c = changes[p];
-      this.selectedItem = c.currentValue;
-      this.selectedGroupId = this.selectedItem.ID;
-    }
-    if (this.selectedGroupId) {
-      this.getGroupDetails();
-    }
-  }
-
-  buildProductGroupForm(): void {
-    this.productGroupForm = this._fb.group({
-      groupName: [this.groupDetails ? this.groupDetails.EngName : ""],
-      parentGroup: [this.groupDetails ? this.groupDetails.ParentGroupName : ""],
-      remarks: [this.groupDetails ? this.groupDetails.Remarks : ""]
-    });
-  }
-
-  getGroupDetails(): void {
-    this.productService
-      .getProductGroupDetails(this.selectedGroupId)
-      .subscribe(res => {
-        this.groupDetails = res;
-        this.buildProductGroupForm();
-      });
+  viewProductGroup() {
+    this.createComponent(ProductGroupModule, "accSwift-view-product-group");
   }
 
   editProductGroup() {
-    this.createComponent(ProductModule, "accSwift-edit-product-group");
+    this.createComponent(ProductGroupModule, "accSwift-edit-product-group");
   }
 
   addProductGroup() {
-    this.createComponent(ProductModule, "accSwift-add-product-group");
+    this.createComponent(ProductGroupModule, "accSwift-add-product-group");
   }
 
   private createComponent(moduleType: Type<any>, componentSelector: string) {
