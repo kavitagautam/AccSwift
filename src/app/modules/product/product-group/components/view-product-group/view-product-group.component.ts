@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  SimpleChange,
-  OnChanges
-} from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { ProductGroup } from "../../models/product-group.models";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { ProductService } from "@app/modules/product/services/product.service";
@@ -14,9 +8,8 @@ import { ProductService } from "@app/modules/product/services/product.service";
   templateUrl: "./view-product-group.component.html",
   styleUrls: ["./view-product-group.component.scss"]
 })
-export class ViewProductGroupComponent implements OnInit, OnChanges {
-  @Input("selectedItem") selectedItem;
-  selectedGroupId: number;
+export class ViewProductGroupComponent implements OnInit {
+  @Input("selectedGroupId") selectedGroupId;
   groupDetails: ProductGroup;
   productGroupForm: FormGroup;
   constructor(
@@ -26,15 +19,6 @@ export class ViewProductGroupComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.buildProductGroupForm();
-  }
-
-  ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-    let log: string[] = [];
-    for (let p in changes) {
-      let c = changes[p];
-      this.selectedItem = c.currentValue;
-      this.selectedGroupId = this.selectedItem.ID;
-    }
     if (this.selectedGroupId) {
       this.getGroupDetails();
     }
@@ -52,7 +36,7 @@ export class ViewProductGroupComponent implements OnInit, OnChanges {
     this.productService
       .getProductGroupDetails(this.selectedGroupId)
       .subscribe(res => {
-        this.groupDetails = res;
+        this.groupDetails = res.Entity;
         this.buildProductGroupForm();
       });
   }

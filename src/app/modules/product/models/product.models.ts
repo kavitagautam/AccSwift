@@ -57,3 +57,28 @@ export interface OpeningQuantities {
   SquareFeet: number;
   RentRate: number;
 }
+
+export interface Child {
+  ID: number;
+  TypeOf: number;
+  Title: string;
+  Child?: Child[];
+}
+
+export interface Tree {
+  ID: number;
+  TypeOf: number;
+  Title: string;
+  Child: Child[];
+}
+
+export interface Entity {
+  Tree: Tree[];
+  Node: string[];
+}
+
+export interface ProductGroupTree {
+  StatusCode: number;
+  Message: string;
+  Entity: Entity;
+}

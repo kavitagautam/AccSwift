@@ -1,19 +1,3 @@
-export interface ProductGroup {
-  ID: number;
-  ParentID: number;
-  ParentGroupName: string;
-  Level: number;
-  EngName: string;
-  NepName: string;
-  IsBuiltIn: boolean;
-  BackColor: number;
-  Remarks: string;
-  CreatedBy: string;
-  CreatedDate: string;
-  ModifiedBy: string;
-  ModifiedDate: string;
-}
-
 export interface Product {
   ID: number;
   EngName: string;
@@ -56,4 +40,26 @@ export interface OpeningQuantities {
   OpenQuantityDate: string;
   SquareFeet: number;
   RentRate: number;
+}
+
+export interface ProductGroup {
+  ID: number;
+  ParentID: number;
+  ParentGroupName: string;
+  Level: number;
+  EngName: string;
+  NepName: string;
+  IsBuiltIn: boolean;
+  BackColor: number;
+  Remarks: string;
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedBy: string;
+  ModifiedDate?: any;
+}
+
+export interface ProductGroupModel {
+  StatusCode: number;
+  Message: string;
+  Entity: ProductGroup;
 }

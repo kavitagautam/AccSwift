@@ -20,6 +20,7 @@ import { ViewProductGroupComponent } from "./components/view-product-group/view-
     AddProductGroupComponent,
     EditProductGroupComponent
   ]
+
   // bootstrap: [ProductGroupComponent]
 })
 export class ProductGroupModule {}

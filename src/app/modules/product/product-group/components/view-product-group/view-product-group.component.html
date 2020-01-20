@@ -1,4 +1,4 @@
-<form [formGroup]="productGroupForm" novalidate>
+<!-- <form [formGroup]="productGroupForm" novalidate>
   <div class="col-md-12 mt-3">
     <div class="row clearfix">
       <div class="col-md-5">
@@ -25,4 +25,31 @@
       </div>
     </div>
   </div>
-</form>
+</form> -->
+
+<div class="box box-default">
+  <form [formGroup]="productGroupForm" novalidate>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="col-md-4 col-sm-6 col-xs-6 p-0">
+          <div class="form-group">
+            <label>Group Name </label>
+            <input class="form-control" formControlName="groupName" />
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-6 pr-0">
+          <div class="form-group">
+            <label>Parent Group</label>
+            <input class="form-control" formControlName="parentGroup" />
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-6 pr-0">
+          <div class="form-group">
+            <label>Remarks</label>
+            <textarea class="form-control" formControlName="remarks"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

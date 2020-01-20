@@ -1,20 +1,19 @@
 import {
   Component,
   OnInit,
-  Input,
-  OnChanges,
-  SimpleChange,
   ViewChild,
   ViewContainerRef,
   ComponentFactoryResolver,
-  ComponentRef,
   NgModule,
-  Type
+  Type,
+  Input,
+  OnChanges,
+  SimpleChange
 } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { ProductGroupModule } from "./product-group.module";
-import { ProductService } from "../services/product.service";
-import { ProductGroup } from "./models/product-group.models";
+
+import { AddProductGroupComponent } from "./components/add-product-group/add-product-group.component";
+import { ViewProductGroupComponent } from "./components/view-product-group/view-product-group.component";
+import { EditProductGroupComponent } from "./components/edit-product-group/edit-product-group.component";
 
 export function decoratorOfType<T>(
   decoratedType: Type<any>,
@@ -35,36 +34,60 @@ export function decoratorOfType<T>(
   templateUrl: "./product-group.component.html",
   styleUrls: ["./product-group.component.scss"]
 })
-export class ProductGroupComponent implements OnInit {
-  @Input("selectedItem") selectedItem;
-  @ViewChild("viewContainerRef", { read: ViewContainerRef })
-  VCR: ViewContainerRef;
+export class ProductGroupComponent implements OnInit, OnChanges {
+  @Input("selectedProductGroup") selectedProductGroup;
+
+  selectedGroupId: number;
+
   @ViewChild("dynamicContentDiv", { read: ViewContainerRef })
   dynamicContentDiv: ViewContainerRef;
-  selectedGroupId: number;
-  groupDetails: ProductGroup;
-  productGroupForm: FormGroup;
-  constructor(
-    public _fb: FormBuilder,
-    private productService: ProductService,
-    private CFR: ComponentFactoryResolver
-  ) {}
+
+  constructor(private CFR: ComponentFactoryResolver) {}
 
   ngOnInit() {
-    this.createComponent(ProductGroupModule, "accSwift-view-product-group");
+    // this.createComponent(ProductGroupModule, "accSwift-view-product-group");
+    this.viewProductGroup();
   }
 
-  viewProductGroup() {
-    this.createComponent(ProductGroupModule, "accSwift-view-product-group");
+  ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
+    let log: string[] = [];
+    for (let p in changes) {
+      let c = changes[p];
+      this.selectedProductGroup = c.currentValue;
+      this.selectedGroupId = this.selectedProductGroup.ID;
+    }
+    if (this.selectedGroupId) {
+      this.viewProductGroup();
+    }
+  }
+  viewProductGroup(): void {
+    this.dynamicContentDiv.clear();
+    const factory = this.CFR.resolveComponentFactory(ViewProductGroupComponent);
+    const componentRef = this.dynamicContentDiv.createComponent(factory);
+    componentRef.instance.selectedGroupId = this.selectedGroupId;
+    // // componentRef.instance = this.name;
+    //  this.createComponent(
+    //    ProductGroupModule,
+    //    "accSwift-view-product-group"
+    //  );
   }
 
-  editProductGroup() {
-    this.createComponent(ProductGroupModule, "accSwift-edit-product-group");
+  editProductGroup(): void {
+    this.dynamicContentDiv.clear();
+    const factory = this.CFR.resolveComponentFactory(EditProductGroupComponent);
+    const componentRef = this.dynamicContentDiv.createComponent(factory);
+
+    // this.createComponent(ProductGroupModule, "accSwift-edit-product-group");
   }
 
-  addProductGroup() {
-    this.createComponent(ProductGroupModule, "accSwift-add-product-group");
+  addProductGroup(): void {
+    this.dynamicContentDiv.clear();
+    const factory = this.CFR.resolveComponentFactory(AddProductGroupComponent);
+    const componentRef = this.dynamicContentDiv.createComponent(factory);
+    //  this.createComponent(ProductGroupModule, "accSwift-add-product-group");
   }
+
+  deleteProductGroup(): void {}
 
   private createComponent(moduleType: Type<any>, componentSelector: string) {
     // get the @NgModule decorator
@@ -94,25 +117,4 @@ export class ProductGroupComponent implements OnInit {
     );
     componentRef.instance.text = "Hello World";
   }
-
-  // createComponent() {
-  //   let componentFactory = this.CFR.resolveComponentFactory(
-  //     AddProductGroupComponent
-  //   );
-  //   let componentRef: ComponentRef<AddProductGroupComponent> = this.VCR.createComponent(
-  //     componentFactory
-  //   );
-  //   let currentComponent = componentRef.instance;
-
-  //   // currentComponent.selfRef = currentComponent;
-  //   // // to track the added component, you can reuse this index to remove it later
-  //   // currentComponent.index = ++this.index;
-
-  //   // // providing parent Component reference to get access to parent class methods
-  //   // currentComponent.compInteraction = this;
-  // }
-  saveProduct(): void {
-    if (this.productGroupForm.invalid) return;
-  }
-  cancelProduct(): void {}
 }
