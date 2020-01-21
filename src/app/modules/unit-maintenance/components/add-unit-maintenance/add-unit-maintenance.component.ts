@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { UnitMaintenanceService } from "../../services/unit-maintenance.service";
 import { ToastrService } from "ngx-toastr";
@@ -24,7 +24,7 @@ export class AddUnitMaintenanceComponent implements OnInit {
 
   buildAddUnitForm(): void {
     this.addUnitForm = this._fb.group({
-      unit: [""],
+      unit: ["", [Validators.required, Validators.maxLength(50)]],
       symbol: [""],
       remarks: [""]
     });
@@ -37,7 +37,7 @@ export class AddUnitMaintenanceComponent implements OnInit {
           this.router.navigate(["/unit-maintenance"]);
         },
         error => {
-          this.toastr.error(JSON.stringify(error));
+          this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
           this.toastr.success("Units added successfully");

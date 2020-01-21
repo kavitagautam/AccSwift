@@ -15,7 +15,7 @@ import { Product } from "../../models/product.models";
   styleUrls: ["./product.component.scss"]
 })
 export class ProductComponent implements OnInit, OnChanges {
-  @Input("selectedItem") selectedItem;
+  @Input("selectedProduct") selectedProduct;
   private editedRowIndex: number;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -59,8 +59,8 @@ export class ProductComponent implements OnInit, OnChanges {
     let log: string[] = [];
     for (let p in changes) {
       let c = changes[p];
-      this.selectedItem = c.currentValue;
-      this.selectedProductId = this.selectedItem.ID;
+      this.selectedProduct = c.currentValue;
+      this.selectedProductId = this.selectedProduct.ID;
     }
 
     if (this.selectedProductId) {

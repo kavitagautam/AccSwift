@@ -138,7 +138,6 @@ export class ListJournalComponent implements OnInit {
     this.projectNameSerachKey = "";
     this.seriesNameSearchKey = "";
     this.filter = filter;
-    console.log(filter);
     for (let i = 0; i < filter.filters.length; i++) {
       if (filter.filters[i].field == "VoucherNo") {
         this.voucherNoSearchKey = filter.filters[i].value;
