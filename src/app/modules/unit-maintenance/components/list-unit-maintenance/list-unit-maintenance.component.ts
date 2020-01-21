@@ -6,7 +6,7 @@ import {
   CompositeFilterDescriptor,
   SortDescriptor
 } from "@progress/kendo-data-query";
-import { Units } from "../../models/unit-maintenance.model";
+import { Units, Filter } from "../../models/unit-maintenance.model";
 import { Router } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
@@ -20,7 +20,10 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
 export class ListUnitMaintenanceComponent implements OnInit {
   unitSearchForm: FormGroup;
   unitLists: Units[];
+  filterList: Array<any> = [];
   unitNameSearchKey = "";
+  orderByKey = "";
+  dirKey = "asc";
   listLoading: boolean;
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
@@ -57,25 +60,6 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.getUnits();
   }
 
-  getUnits(): void {
-    this.listLoading = true;
-    this.unitService.getUnitList().subscribe(
-      response => {
-        this.unitLists = response;
-        this.gridView = {
-          data: this.unitLists,
-          total: this.unitLists ? this.unitLists.length : 0
-        };
-      },
-      error => {
-        this.listLoading = false;
-      },
-      () => {
-        this.listLoading = false;
-      }
-    );
-  }
-
   buildUnitMaintenanceForm(): void {
     this.unitSearchForm = this._fb.group({
       unit: [""],
@@ -89,20 +73,32 @@ export class ListUnitMaintenanceComponent implements OnInit {
   }
 
   public sortChange(sort: SortDescriptor[]): void {
+    this.orderByKey = "";
+    this.dirKey = "";
+    this.sort = sort;
+    this.dirKey = this.sort[0].dir;
+    this.orderByKey = this.sort[0].field;
     this.getUnits();
   }
 
   public filterChange(filter): void {
+    this.filterList = [];
     this.unitNameSearchKey = "";
-
     this.filter = filter;
-    for (let i = 0; i < filter.filters.length; i++) {
-      if (filter.filters[i].field == "UnitName") {
-        this.unitNameSearchKey = filter.filters[i].value;
-      }
+    if (filter.filters.length > 0) {
+      let filters = [];
+      filter.filters.forEach(function(item) {
+        filters.push({
+          Field: item.field,
+          Operator: item.operator,
+          Value: item.value
+        });
+      });
+      this.filterList = filters;
     }
     this.getUnits();
   }
+
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
 
@@ -116,6 +112,33 @@ export class ListUnitMaintenanceComponent implements OnInit {
       this.currentPage = pageNo;
     }
     this.getUnits();
+  }
+
+  getUnits(): void {
+    this.listLoading = true;
+    const obj = {
+      PageNo: this.currentPage,
+      DisplayRow: this.pageSize,
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey,
+      FilterList: this.filterList
+    };
+
+    this.unitService.getUnitList(obj).subscribe(
+      response => {
+        this.unitLists = response.Entity.Entity;
+        this.gridView = {
+          data: this.unitLists,
+          total: this.unitLists ? this.unitLists.length : 0
+        };
+      },
+      error => {
+        this.listLoading = false;
+      },
+      () => {
+        this.listLoading = false;
+      }
+    );
   }
 
   public editUnit(item): void {

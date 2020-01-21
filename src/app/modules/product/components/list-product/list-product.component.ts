@@ -10,7 +10,9 @@ const is = (fileName: string, ext: string) =>
   styleUrls: ["./list-product.component.scss"]
 })
 export class ListProductComponent implements OnInit {
-  @Output("selectedItem") selectedItem = new EventEmitter();
+  @Output("selectedProductGroup") selectedProductGroup = new EventEmitter();
+  @Output("selectedProduct") selectedProduct = new EventEmitter();
+
   selectedProductGroupTab: boolean;
   selectedProductTab: boolean;
   productListForm: FormGroup;
@@ -34,11 +36,11 @@ export class ListProductComponent implements OnInit {
 
   selectedNode(dataItem): void {
     if (dataItem.TypeOf === 0) {
-      this.selectedItem = dataItem;
+      this.selectedProductGroup = dataItem;
       this.selectedProductGroupTab = true;
       this.selectedProductTab = false;
     } else {
-      this.selectedItem = dataItem;
+      this.selectedProduct = dataItem;
       this.selectedProductTab = true;
       this.selectedProductGroupTab = false;
     }
@@ -48,8 +50,8 @@ export class ListProductComponent implements OnInit {
     this.treeViewLoading = true;
     this.productService.getProductTree().subscribe(
       res => {
-        this.productTreeNode = res.Node;
-        this.productTreeList = res.Tree;
+        this.productTreeNode = res.Entity.Node;
+        this.productTreeList = res.Entity.Tree;
         this.treeViewLoading = false;
       },
       error => {
