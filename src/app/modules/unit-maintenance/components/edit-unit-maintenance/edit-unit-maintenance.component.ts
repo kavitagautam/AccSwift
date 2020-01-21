@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { UnitMaintenanceService } from "../../services/unit-maintenance.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Units } from "../../models/unit-maintenance.model";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
+import { Units } from "../../models/unit-maintenance.model";
 
 @Component({
   selector: "accSwift-edit-unit-maintenance",
@@ -32,7 +32,7 @@ export class EditUnitMaintenanceComponent implements OnInit {
       this.unitsId = parseInt(params.get("id"));
       if (this.unitsId) {
         this.unitService.getUnitDetails(this.unitsId).subscribe(response => {
-          this.unitDetails = response;
+          this.unitDetails = response.Entity;
           this.buildEditUnitForm();
         });
       }
@@ -41,7 +41,10 @@ export class EditUnitMaintenanceComponent implements OnInit {
 
   buildEditUnitForm(): void {
     this.editUnitForm = this._fb.group({
-      unit: [this.unitDetails ? this.unitDetails.UnitName : ""],
+      unit: [
+        this.unitDetails ? this.unitDetails.UnitName : "",
+        [Validators.required, Validators.maxLength(50)]
+      ],
       symbol: [this.unitDetails ? this.unitDetails.Symbol : ""],
       remarks: [this.unitDetails ? this.unitDetails.Remarks : ""]
     });
@@ -56,7 +59,7 @@ export class EditUnitMaintenanceComponent implements OnInit {
             this.router.navigate(["/unit-maintenance"]);
           },
           error => {
-            this.toastr.error(JSON.stringify(error));
+            this.toastr.error(JSON.stringify(error.error.Message));
           },
           () => {
             this.toastr.success("Units edited successfully");

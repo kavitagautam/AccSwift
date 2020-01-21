@@ -1,19 +1,3 @@
-export interface ProductGroup {
-  ID: number;
-  ParentID: number;
-  ParentGroupName: string;
-  Level: number;
-  EngName: string;
-  NepName: string;
-  IsBuiltIn: boolean;
-  BackColor: number;
-  Remarks: string;
-  CreatedBy: string;
-  CreatedDate: string;
-  ModifiedBy: string;
-  ModifiedDate: string;
-}
-
 export interface Product {
   ID: number;
   EngName: string;
@@ -58,27 +42,24 @@ export interface OpeningQuantities {
   RentRate: number;
 }
 
-export interface Child {
+export interface ProductGroup {
   ID: number;
-  TypeOf: number;
-  Title: string;
-  Child?: Child[];
+  ParentID: number;
+  ParentGroupName: string;
+  Level: number;
+  EngName: string;
+  NepName: string;
+  IsBuiltIn: boolean;
+  BackColor: number;
+  Remarks: string;
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedBy: string;
+  ModifiedDate?: any;
 }
 
-export interface Tree {
-  ID: number;
-  TypeOf: number;
-  Title: string;
-  Child: Child[];
-}
-
-export interface Entity {
-  Tree: Tree[];
-  Node: string[];
-}
-
-export interface ProductGroupTree {
+export interface ProductGroupModel {
   StatusCode: number;
   Message: string;
-  Entity: Entity;
+  Entity: ProductGroup;
 }
