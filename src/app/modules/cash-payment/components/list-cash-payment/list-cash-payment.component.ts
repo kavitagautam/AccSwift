@@ -65,6 +65,14 @@ export class ListCashPaymentComponent implements OnInit {
     ignoreBackdropClick: true
   };
 
+  // Date string parse
+  public currentYear = new Date().getFullYear();
+  public parseAdjust = (eventDate: Date): Date => {
+    const date = new Date(eventDate);
+    date.setFullYear(this.currentYear);
+    return date;
+  };
+
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     this.getCashPaymentList();
@@ -82,6 +90,7 @@ export class ListCashPaymentComponent implements OnInit {
     this.cashPaymentService.getCashPaymentMaster().subscribe(
       (res: any) => {
         this.listLoading = true;
+        //mapping the data to change string date format to Date
         this.cashPaymentList = res;
         this.gridView = {
           data: this.cashPaymentList.slice(
