@@ -29,9 +29,3 @@ export interface UnitsDetailsModel {
   Message: string;
   Entity: Units;
 }
-
-export interface Filter {
-  Attribute: string;
-  Operator: string;
-  Value: string;
-}
