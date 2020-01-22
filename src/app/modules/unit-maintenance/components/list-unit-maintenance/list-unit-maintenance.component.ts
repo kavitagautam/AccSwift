@@ -6,7 +6,7 @@ import {
   CompositeFilterDescriptor,
   SortDescriptor
 } from "@progress/kendo-data-query";
-import { Units, Filter } from "../../models/unit-maintenance.model";
+import { Units } from "../../models/unit-maintenance.model";
 import { Router } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
@@ -21,6 +21,8 @@ export class ListUnitMaintenanceComponent implements OnInit {
   unitSearchForm: FormGroup;
   unitLists: Units[];
   filterList: Array<any> = [];
+  searchFilterList: Array<any> = [];
+
   unitNameSearchKey = "";
   orderByKey = "";
   dirKey = "asc";
@@ -69,7 +71,32 @@ export class ListUnitMaintenanceComponent implements OnInit {
   }
 
   searchForm(): void {
+    this.searchFilterList = [];
     if (this.unitSearchForm.invalid) return;
+    if (this.unitSearchForm.get("unit").value) {
+      this.searchFilterList.push({
+        Field: "UnitName",
+        Operator: "=",
+        Value: this.unitSearchForm.get("unit").value
+      });
+    }
+
+    if (this.unitSearchForm.get("symbol").value) {
+      this.searchFilterList.push({
+        Field: "Symbol",
+        Operator: "=",
+        Value: this.unitSearchForm.get("symbol").value
+      });
+    }
+
+    if (this.unitSearchForm.get("remarks").value) {
+      this.searchFilterList.push({
+        Field: "Remarks",
+        Operator: "=",
+        Value: this.unitSearchForm.get("remarks").value
+      });
+    }
+    this.getUnits();
   }
 
   public sortChange(sort: SortDescriptor[]): void {
@@ -82,11 +109,9 @@ export class ListUnitMaintenanceComponent implements OnInit {
   }
 
   public filterChange(filter): void {
-    this.filterList = [];
     this.unitNameSearchKey = "";
-    this.filter = filter;
     if (filter.filters.length > 0) {
-      let filters = [];
+      const filters = [];
       filter.filters.forEach(function(item) {
         filters.push({
           Field: item.field,
@@ -116,20 +141,20 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   getUnits(): void {
     this.listLoading = true;
+    const arrayFilter = this.searchFilterList.concat(this.filterList);
     const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: this.orderByKey,
       Direction: this.dirKey,
-      FilterList: this.filterList
+      FilterList: arrayFilter
     };
-
     this.unitService.getUnitList(obj).subscribe(
       response => {
         this.unitLists = response.Entity.Entity;
         this.gridView = {
           data: this.unitLists,
-          total: this.unitLists ? this.unitLists.length : 0
+          total: response.Entity.TotalItemsAvailable
         };
       },
       error => {
