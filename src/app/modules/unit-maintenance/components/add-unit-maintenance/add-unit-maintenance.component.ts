@@ -25,7 +25,7 @@ export class AddUnitMaintenanceComponent implements OnInit {
   buildAddUnitForm(): void {
     this.addUnitForm = this._fb.group({
       unit: ["", [Validators.required, Validators.maxLength(50)]],
-      symbol: [""],
+      symbol: ["", Validators.required],
       remarks: [""]
     });
   }
