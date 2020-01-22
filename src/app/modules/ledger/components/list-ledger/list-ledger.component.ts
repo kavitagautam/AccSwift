@@ -74,8 +74,8 @@ export class ListLedgerComponent implements OnInit {
 
   public colorGroupOrLedger({ Title, TypeOf }: any): any {
     return {
-      "tree-group": TypeOf == 1,
-      "tree-ledger": TypeOf == 0
+      "tree-node": TypeOf == 1,
+      "tree-child": TypeOf == 0
     };
   }
 

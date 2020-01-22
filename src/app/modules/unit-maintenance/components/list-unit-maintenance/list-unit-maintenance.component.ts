@@ -71,6 +71,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
   }
 
   searchForm(): void {
+    this.searchFilterList = [];
     if (this.unitSearchForm.invalid) return;
     if (this.unitSearchForm.get("unit").value) {
       this.searchFilterList.push({
@@ -78,22 +79,22 @@ export class ListUnitMaintenanceComponent implements OnInit {
         Operator: "=",
         Value: this.unitSearchForm.get("unit").value
       });
+    }
 
-      if (this.unitSearchForm.get("symbol").value) {
-        this.searchFilterList.push({
-          Field: "Symbol",
-          Operator: "=",
-          Value: this.unitSearchForm.get("symbol").value
-        });
-      }
+    if (this.unitSearchForm.get("symbol").value) {
+      this.searchFilterList.push({
+        Field: "Symbol",
+        Operator: "=",
+        Value: this.unitSearchForm.get("symbol").value
+      });
+    }
 
-      if (this.unitSearchForm.get("remarks").value) {
-        this.searchFilterList.push({
-          Field: "Remarks",
-          Operator: "=",
-          Value: this.unitSearchForm.get("remarks").value
-        });
-      }
+    if (this.unitSearchForm.get("remarks").value) {
+      this.searchFilterList.push({
+        Field: "Remarks",
+        Operator: "=",
+        Value: this.unitSearchForm.get("remarks").value
+      });
     }
     this.getUnits();
   }
