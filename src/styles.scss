@@ -62,7 +62,6 @@ sup {
   text-decoration: none;
 }
 
-
 /* breadcrumbs */
 breadcrumb {
   .fluid-bread {
@@ -89,8 +88,6 @@ breadcrumb {
     float: right;
   }
 }
-
-
 
 .form-control {
   background-color: #f7f9fc !important;
@@ -126,7 +123,7 @@ legend {
   top: 8px;
 }
 
-//collapsed and uncollapsed css 
+//collapsed and uncollapsed css
 .accordion .box-header:after {
   font-family: "FontAwesome";
   content: "\f068";
@@ -138,8 +135,8 @@ legend {
   content: "\f067";
 }
 
-.control-label{
-top:5px;
+.control-label {
+  top: 5px;
 }
 
 .content {
@@ -151,20 +148,26 @@ top:5px;
   padding-right: 5px;
 }
 
-.float-right{
+.float-right {
   float: right;
 }
 
-.float-left{
+.float-left {
   float: left;
 }
 
+.tree-node {
+  color: $background_color_1;
+}
+.tree-child {
+  color: black;
+}
 
 .grid-wrapper {
   position: relative;
 }
 
-.k-i-loading{
+.k-i-loading {
   position: absolute;
   top: 0;
   left: 0;

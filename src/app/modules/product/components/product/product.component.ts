@@ -55,14 +55,14 @@ export class ProductComponent implements OnInit, OnChanges {
     });
   }
 
+  //Detect the changes in tree selection of product with ngOnChanges
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-    let log: string[] = [];
-    for (let p in changes) {
-      let c = changes[p];
-      this.selectedProduct = c.currentValue;
+    const log: string[] = [];
+    for (const selectedProduct in changes) {
+      const change = changes[selectedProduct];
+      this.selectedProduct = change.currentValue;
       this.selectedProductId = this.selectedProduct.ID;
     }
-
     if (this.selectedProductId) {
       this.getProductDetails();
     }
@@ -71,8 +71,8 @@ export class ProductComponent implements OnInit, OnChanges {
   getProductDetails(): void {
     this.productService
       .getProductDetails(this.selectedProductId)
-      .subscribe(res => {
-        this.productDetails = res;
+      .subscribe(response => {
+        this.productDetails = response;
         this.buildProductForm();
       });
   }
