@@ -73,13 +73,15 @@
           (pageChange)="pageChange($event)"
           scrollable="none"
           (filterChange)="filterChange($event)"
+          style="width: 800px"
         >
-          <kendo-grid-column field="UnitName" title="Unit Name">
+          <kendo-grid-column field="UnitName" title="Unit Name" width="200">
           </kendo-grid-column>
-          <kendo-grid-column field="Symbol" title="Symbol"> </kendo-grid-column>
-          <kendo-grid-column field="Remarks" title="Remarks">
+          <kendo-grid-column field="Symbol" title="Symbol" width="150">
           </kendo-grid-column>
-          <kendo-grid-command-column title="Action" width="220">
+          <kendo-grid-column field="Remarks" title="Remarks" width="250">
+          </kendo-grid-column>
+          <kendo-grid-command-column title="Action" width="150">
             <ng-template
               kendoGridCellTemplate
               let-isNew="isNew"

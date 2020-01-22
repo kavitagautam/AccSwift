@@ -84,10 +84,10 @@ export class ListProductComponent implements OnInit {
     }
   }
 
-  public colorGroupOrLedger({ Title, TypeOf }: any): any {
+  public colorGroupOrProduct({ Title, TypeOf }: any): any {
     return {
-      "tree-group": TypeOf == 1,
-      "tree-ledger": TypeOf == 0
+      "tree-child": TypeOf == 1,
+      "tree-node": TypeOf == 0
     };
   }
 
