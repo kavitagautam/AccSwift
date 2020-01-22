@@ -30,7 +30,7 @@
                 >
                   <ng-template kendoTreeViewNodeTemplate let-dataItem>
                     <span
-                      [ngClass]="colorGroupOrLedger(dataItem)"
+                      [ngClass]="colorGroupOrProduct(dataItem)"
                       (click)="selectedNode(dataItem)"
                     >
                       {{ dataItem.Title }}

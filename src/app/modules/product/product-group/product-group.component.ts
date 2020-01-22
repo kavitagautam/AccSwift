@@ -42,27 +42,31 @@ export class ProductGroupComponent implements OnInit, OnChanges {
   @ViewChild("dynamicContentDiv", { read: ViewContainerRef })
   dynamicContentDiv: ViewContainerRef;
 
-  constructor(private CFR: ComponentFactoryResolver) {}
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
   ngOnInit() {
     // this.createComponent(ProductGroupModule, "accSwift-view-product-group");
     this.viewProductGroup();
   }
 
+  //Detect the changes in tree selection of product group with ngOnChanges
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-    let log: string[] = [];
-    for (let p in changes) {
-      let c = changes[p];
-      this.selectedProductGroup = c.currentValue;
+    const log: string[] = [];
+    for (const selectedProductGroup in changes) {
+      const change = changes[selectedProductGroup];
+      this.selectedProductGroup = change.currentValue;
       this.selectedGroupId = this.selectedProductGroup.ID;
     }
     if (this.selectedGroupId) {
       this.viewProductGroup();
     }
   }
+
   viewProductGroup(): void {
     this.dynamicContentDiv.clear();
-    const factory = this.CFR.resolveComponentFactory(ViewProductGroupComponent);
+    const factory = this.componentFactoryResolver.resolveComponentFactory(
+      ViewProductGroupComponent
+    );
     const componentRef = this.dynamicContentDiv.createComponent(factory);
     componentRef.instance.selectedGroupId = this.selectedGroupId;
     // // componentRef.instance = this.name;
@@ -74,7 +78,9 @@ export class ProductGroupComponent implements OnInit, OnChanges {
 
   editProductGroup(): void {
     this.dynamicContentDiv.clear();
-    const factory = this.CFR.resolveComponentFactory(EditProductGroupComponent);
+    const factory = this.componentFactoryResolver.resolveComponentFactory(
+      EditProductGroupComponent
+    );
     const componentRef = this.dynamicContentDiv.createComponent(factory);
 
     // this.createComponent(ProductGroupModule, "accSwift-edit-product-group");
@@ -82,16 +88,18 @@ export class ProductGroupComponent implements OnInit, OnChanges {
 
   addProductGroup(): void {
     this.dynamicContentDiv.clear();
-    const factory = this.CFR.resolveComponentFactory(AddProductGroupComponent);
+    const factory = this.componentFactoryResolver.resolveComponentFactory(
+      AddProductGroupComponent
+    );
     const componentRef = this.dynamicContentDiv.createComponent(factory);
     //  this.createComponent(ProductGroupModule, "accSwift-add-product-group");
   }
 
   deleteProductGroup(): void {}
 
-  private createComponent(moduleType: Type<any>, componentSelector: string) {
+  private createComponent(moduconstype: Type<any>, componentSelector: string) {
     // get the @NgModule decorator
-    const ngModuleAnnotation = decoratorOfType(moduleType, NgModule);
+    const ngModuleAnnotation = decoratorOfType(moduconstype, NgModule);
     const componentType = ngModuleAnnotation.declarations.find(
       (declaration: Type<any>) => {
         // get the @Component decorator
@@ -106,7 +114,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
     );
 
     // get the component factory using the component type
-    const componentFactory = this.CFR.resolveComponentFactory(
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       componentType as Type<any>
     );
 
