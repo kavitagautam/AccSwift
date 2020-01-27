@@ -26,6 +26,9 @@ import {
   BsDropdownModule
 } from "ngx-bootstrap";
 import { DateFormatPipe } from "./pipes/dateFormat/date-format.pipe";
+import { FormSubmitValidationMsgDirective } from "./directives/form-validators/submit-validation-msg.directive";
+import { FormControlValidationMsgDirective } from "./directives/form-validators/validation-message.directive";
+import { ValidationMsgService } from "./services/form-validators/validation-message.service";
 
 @NgModule({
   declarations: [
@@ -37,7 +40,9 @@ import { DateFormatPipe } from "./pipes/dateFormat/date-format.pipe";
     CurrencyDirective,
     LedgerFilterPipe,
     LedgerModelPopupComponent,
-    DateFormatPipe
+    DateFormatPipe,
+    FormSubmitValidationMsgDirective,
+    FormControlValidationMsgDirective
   ],
   imports: [
     CommonModule,
@@ -73,7 +78,10 @@ import { DateFormatPipe } from "./pipes/dateFormat/date-format.pipe";
     PopupAnchorDirective,
     CurrencyFormatPipe,
     CurrencyDirective,
-    DateFormatPipe
-  ]
+    DateFormatPipe,
+    FormSubmitValidationMsgDirective,
+    FormControlValidationMsgDirective
+  ],
+  providers: [ValidationMsgService]
 })
 export class SharedModule {}

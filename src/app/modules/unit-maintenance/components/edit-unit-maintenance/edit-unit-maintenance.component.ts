@@ -45,7 +45,10 @@ export class EditUnitMaintenanceComponent implements OnInit {
         this.unitDetails ? this.unitDetails.UnitName : "",
         [Validators.required, Validators.maxLength(50)]
       ],
-      symbol: [this.unitDetails ? this.unitDetails.Symbol : ""],
+      symbol: [
+        this.unitDetails ? this.unitDetails.Symbol : "",
+        Validators.required
+      ],
       remarks: [this.unitDetails ? this.unitDetails.Remarks : ""]
     });
   }
