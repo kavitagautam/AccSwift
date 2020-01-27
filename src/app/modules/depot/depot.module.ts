@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { FormsModule } from "@angular/forms";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { SharedModule } from "@app/shared/shared.module";
 
 import { DepotRoutingModule } from "./depot-routing.module";
 
@@ -25,7 +26,8 @@ import { AddDepotComponent } from "./components/add-depot/add-depot.component";
     PopupModule,
     DropDownListModule,
     DropDownsModule,
-    InputsModule
+    InputsModule,
+    SharedModule
   ]
 })
 export class DepotModule {}
