@@ -84,6 +84,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
 
     this.purchaseService.getPurchaseInvoiceMaster().subscribe(
       response => {
+        this.listLoading = true;
         this.purchaseInvoiceList = response;
         this.gridView = {
           data: this.purchaseInvoiceList.slice(
