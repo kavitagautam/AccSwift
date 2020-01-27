@@ -72,6 +72,13 @@ const routes: Routes = [
         }
       },
       {
+        path: "depot",
+        loadChildren: "@modules/depot/depot.module#DepotModule",
+        data: {
+          breadcrumb: "Depot"
+        }
+      },
+      {
         path: "bank-reconciliation",
         loadChildren:
           "@modules/bank-reconciliation/bank-reconciliation.module#BankReconciliationModule",

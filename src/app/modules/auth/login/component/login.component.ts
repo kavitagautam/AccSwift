@@ -12,6 +12,7 @@ import { ToastrService } from "ngx-toastr";
 export class LoginComponent implements OnInit {
   returnUrl: string;
   username: string;
+  errorMsg: string;
   password: string;
   constructor(
     private router: Router,
@@ -37,7 +38,8 @@ export class LoginComponent implements OnInit {
           this.router.navigate([""]);
         },
         error => {
-          this.toastr.error(JSON.stringify(error.error));
+          this.errorMsg = JSON.stringify(error.error.error);
+          this.toastr.error(JSON.stringify(error.error.error));
         },
         () => {
           this.toastr.success("Login Successful!");

@@ -5,6 +5,7 @@ import { AddProductGroupComponent } from "./components/add-product-group/add-pro
 import { ProductGroupComponent } from "./product-group.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ViewProductGroupComponent } from "./components/view-product-group/view-product-group.component";
+import { SharedModule } from '@app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,7 @@ import { ViewProductGroupComponent } from "./components/view-product-group/view-
     EditProductGroupComponent,
     ViewProductGroupComponent
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,SharedModule],
   exports: [ProductGroupComponent],
   entryComponents: [
     ViewProductGroupComponent,

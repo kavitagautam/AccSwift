@@ -82,10 +82,17 @@ export class SideNavComponent implements OnInit {
       iconName: "fas fa-file-invoice-dollar",
       route: "/budget"
     },
-    {id: 15,
+    {
+      id: 15,
       displayName: "Unit Maintenance",
       iconName: "fas fa-file-invoice-dollar",
       route: "/unit-maintenance"
+    },
+    {
+      id: 11,
+      displayName: "Depot",
+      iconName: "fas fa-file-invoice-dollar",
+      route: "/depot"
     },
     {
       id: 9,
@@ -143,7 +150,6 @@ export class SideNavComponent implements OnInit {
       iconName: "fas fa-tools",
       route: "/settings"
     }
-    
   ];
 
   userName: string;
