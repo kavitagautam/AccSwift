@@ -1,0 +1,80 @@
+<div class="box box-default">
+  <form [formGroup]="addDepotForm" novalidate>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label><sup>*</sup>Depot Name</label>
+            <input class="form-control" formControlName="depot" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>City </label>
+            <input class="form-control" id="city" formControlName="city" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Telephone </label>
+            <input
+              class="form-control"
+              id="telephone"
+              formControlName="telephone"
+            />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Contact Person</label>
+            <input class="form-control" formControlName="contact" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>License No. </label>
+            <input class="form-control" formControlName="license" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Address</label>
+            <input class="form-control" formControlName="address" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Postal Code</label>
+            <input class="form-control" formControlName="postalCode" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Mobile</label>
+            <input class="form-control" formControlName="mobile" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Reg. No.</label>
+            <input class="form-control" formControlName="regNo" />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Remarks</label>
+            <input class="form-control" formControlName="remarks" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="box-footer">
+  <div class="mb-2">
+    <button class="btn btn-primary" (click)="save()">Save</button>
+    <button class="btn btn-secondary ml-2" (click)="cancel()">
+      Cancel
+    </button>
+  </div>
+</div>
