@@ -1,18 +1,34 @@
 <div class="box box-default">
-  <h5>Add New Product Group</h5>
+  <h5 class="form_heading">New Product Group</h5>
   <form [formGroup]="addProductGroupForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-4 col-sm-6 col-xs-6 p-0">
           <div class="form-group">
             <label>Group Name <sup>*</sup></label>
-            <input class="form-control" formControlName="groupName" />
+            <input
+              class="form-control"
+              formControlName="groupName"
+              accSwiftFormValidator
+            />
           </div>
         </div>
         <div class="col-md-4 col-sm-6 col-xs-6 pr-0">
           <div class="form-group">
             <label>Parent Group <sup>*</sup></label>
-            <input class="form-control" formControlName="parentGroup" />
+            <select
+              class="form-control"
+              formControlName="parentGroupId"
+              accSwiftFormValidator
+            >
+              <option [ngValue]="0">Select</option>
+              <option
+                *ngFor="let product of productGroupService.productGroupList"
+                [value]="product.ID"
+                >{{ product.EngName }}
+              </option>
+            </select>
+            <!-- <input class="form-control" formControlName="parentGroup" accSwiftFormValidator /> -->
           </div>
         </div>
         <div class="col-md-4 col-sm-6 col-xs-6 pr-0">
@@ -26,7 +42,14 @@
   </form>
   <div class="box-footer">
     <div class="mb-2">
-      <button class="btn btn-primary" disabled (click)="save()">Save</button>
+      <button
+        class="btn btn-primary"
+        (click)="save()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="addProductGroupForm"
+      >
+        Save
+      </button>
       <button class="btn btn-secondary ml-2" (click)="cancel()">
         Cancel
       </button>
