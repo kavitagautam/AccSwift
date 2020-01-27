@@ -28,8 +28,4 @@ export class ProductService {
   getProductDetails(id): Observable<Product> {
     return this.httpService.get(`${this._api_URL}Product/${id}`);
   }
-
-  getProductGroupDetails(id): Observable<ProductGroupModel> {
-    return this.httpService.get(`${this._api_URL}ProductGroup/${id}`);
-  }
 }

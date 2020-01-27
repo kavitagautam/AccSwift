@@ -82,7 +82,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
       EditProductGroupComponent
     );
     const componentRef = this.dynamicContentDiv.createComponent(factory);
-
+    componentRef.instance.selectedGroupId = this.selectedGroupId;
     // this.createComponent(ProductGroupModule, "accSwift-edit-product-group");
   }
 
@@ -92,6 +92,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
       AddProductGroupComponent
     );
     const componentRef = this.dynamicContentDiv.createComponent(factory);
+    componentRef.instance.selectedGroupId = this.selectedGroupId;
     //  this.createComponent(ProductGroupModule, "accSwift-add-product-group");
   }
 

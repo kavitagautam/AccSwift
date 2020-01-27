@@ -80,6 +80,7 @@ export class ListCashReceiptComponent implements OnInit {
     this.cashReceiptService.getCashReceiptMaster().subscribe(
       res => {
         this.listLoading = true;
+        //mapping the data to change string date format to Date
         this.cashList = res;
         this.gridView = {
           data: this.cashList.slice(this.skip, this.skip + this.pageSize),

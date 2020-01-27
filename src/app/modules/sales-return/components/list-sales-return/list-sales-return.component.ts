@@ -59,6 +59,14 @@ export class ListSalesReturnComponent implements OnInit {
     });
   }
 
+  //Date String Parse
+  public currentYear = new Date().getFullYear();
+  public parseAdjust = (eventDate: Date): Date => {
+    const date = new Date(eventDate);
+    date.setFullYear(this.currentYear);
+    return date;
+  };
+
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     this.getSalesReturnList();
@@ -75,6 +83,7 @@ export class ListSalesReturnComponent implements OnInit {
 
     this.salesReturnService.getSalesReturnMaster().subscribe(
       res => {
+        this.listLoading = true;
         this.salesReturnList = res;
         this.gridView = {
           data: this.salesReturnList.slice(

@@ -60,6 +60,14 @@ export class ListPurchaseOrderComponent implements OnInit {
     });
   }
 
+  //Date String Parse
+  public currentYear = new Date().getFullYear();
+  public parseAdjust = (eventDate: Date): Date => {
+    const date = new Date(eventDate);
+    date.setFullYear(this.currentYear);
+    return date;
+  };
+
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     this.getPurchaseOrderList();
@@ -76,6 +84,7 @@ export class ListPurchaseOrderComponent implements OnInit {
 
     this.purchaseOrderService.getPurchaseOrderMaster().subscribe(
       res => {
+        this.listLoading = true;
         this.purchaseOrderList = res;
         this.gridView = {
           data: this.purchaseOrderList.slice(

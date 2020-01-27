@@ -21,7 +21,11 @@ export class FormControlValidationMsgDirective implements OnInit, OnDestroy {
   ) {}
 
   errorSpanId: string = "";
-  inputLabelName = this.elRef.nativeElement.previousSibling.innerText;
+  inputLabelName = this.elRef.nativeElement.previousSibling.innerText.replace(
+    /\*/g,
+    ""
+  );
+
   statusChangeSubscription: Subscription;
 
   ngOnInit(): void {
