@@ -55,11 +55,11 @@ export class ListSalesInvoiceComponent implements OnInit {
 
   buildListSalesForm() {
     this.salesInvoiceForm = this.fb.group({
-      seriesId: [0],
-      cashPartyACId: [0],
-      salesACId: [0],
-      depotLocationId: [0],
-      projectId: [0],
+      seriesId: [null],
+      cashPartyACId: [null],
+      salesACId: [null],
+      depotLocationId: [null],
+      projectId: [null],
       date: [new Date()],
       orderNo: [""]
     });

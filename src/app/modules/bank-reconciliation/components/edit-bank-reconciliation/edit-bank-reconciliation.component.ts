@@ -52,16 +52,18 @@ export class EditBankReconciliationComponent implements OnInit {
   buildeditReconciliationForm() {
     this.editReconciliationForm = this._fb.group({
       seriesId: [
-        this.reconciliationDetails ? this.reconciliationDetails.SeriesID : 0
+        this.reconciliationDetails ? this.reconciliationDetails.SeriesID : null
       ],
       projectId: [
-        this.reconciliationDetails ? this.reconciliationDetails.ProjectID : 0
+        this.reconciliationDetails ? this.reconciliationDetails.ProjectID : null
       ],
       voucherNo: [
-        this.reconciliationDetails ? this.reconciliationDetails.VoucherNo : ""
+        this.reconciliationDetails ? this.reconciliationDetails.VoucherNo : "",
+        [Validators.required]
       ],
       bankAccountId: [
-        this.reconciliationDetails ? this.reconciliationDetails.LedgerID : 0
+        this.reconciliationDetails ? this.reconciliationDetails.LedgerID : null,
+        [Validators.required]
       ],
       date: [
         this.reconciliationDetails

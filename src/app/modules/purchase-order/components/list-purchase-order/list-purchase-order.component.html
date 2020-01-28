@@ -41,7 +41,7 @@
                   id="cashAccountNo"
                   formControlName="cashPartyACId"
                 >
-                  <option [ngValue]="0" disabled>Select </option>
+                  <option [ngValue]="null">Choose Option....</option>
                 </select>
               </div>
             </div>
@@ -53,7 +53,7 @@
                   id="projectId"
                   formControlName="projectId"
                 >
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let project of purchaseOrderService.projectList"
                     [ngValue]="project.ID"

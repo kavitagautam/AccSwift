@@ -43,10 +43,10 @@ export class AddBankPaymentComponent implements OnInit {
 
   buildAddBankPaymentForm() {
     this.addBankPaymentForm = this.fb.group({
-      seriesId: [0],
-      projectId: [0],
-      voucherNo: [""],
-      bankAccountId: [0],
+      seriesId: [null],
+      projectId: [null],
+      voucherNo: ["", [Validators.required]],
+      bankAccountId: [null, [Validators.required]],
       date: [new Date()],
       bankPaymentEntryList: this.fb.array([this.addBankPaymentEntryList()])
     });

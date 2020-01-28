@@ -1,4 +1,4 @@
-import { FormArray } from "@angular/forms";
+import { FormArray, Validators } from "@angular/forms";
 import { PurchaseOrderService } from "./../../services/purchase-order.service";
 import { ActivatedRoute } from "@angular/router";
 import { FormGroup } from "@angular/forms";
@@ -34,10 +34,10 @@ export class EditPurchaseOrderComponent implements OnInit {
 
   buildEditPurchaseOrderForm() {
     this.editPurchaseOrderForm = this.fb.group({
-      orderNo: [""],
+      orderNo: ["", [Validators.required]],
       date: [new Date()],
-      cashPartyACId: [0],
-      projectId: [0],
+      cashPartyACId: [null, [Validators.required]],
+      projectId: [null],
       purchaseOrderEntryList: this.fb.array([this.addPurchaseOrderEntryList()])
     });
   }

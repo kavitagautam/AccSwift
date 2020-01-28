@@ -59,10 +59,10 @@ export class ListBankReconciliationComponent implements OnInit {
 
   buildBankReconciliationForm() {
     this.bankReconciliationForm = this.fb.group({
-      seriesId: [0],
-      projectId: [0],
+      seriesId: [null],
+      projectId: [null],
       voucherNo: [""],
-      bankAccountId: [0],
+      bankAccountId: [null],
       date: [new Date()]
     });
   }

@@ -36,10 +36,10 @@ export class ListBankPaymentComponent implements OnInit {
   bankPaymentForm: FormGroup;
   buildListBankPaymentForm() {
     this.bankPaymentForm = this.fb.group({
-      seriesId: [0],
-      projectId: [0],
+      seriesId: [null],
+      projectId: [null],
       voucherNo: [""],
-      bankAccountId: [0],
+      bankAccountId: [null],
       date: new Date()
     });
   }

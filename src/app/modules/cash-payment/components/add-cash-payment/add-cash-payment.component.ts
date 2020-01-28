@@ -1,5 +1,5 @@
 import { Router } from "@angular/router";
-import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
+import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { CashPaymentService } from "../../services/cash-payment.service";
 import { CashPaymentMaster } from "../../models/cash-payment.model";
@@ -30,11 +30,11 @@ export class AddCashPaymentComponent implements OnInit {
 
   buildAddCashPaymentForm() {
     this.addCashPaymentForm = this.fb.group({
-      seriesId: [0],
-      projectId: [0],
-      voucherNo: [""],
-      cashPartyId: [0],
-      cashAccountId: [0],
+      seriesId: [null],
+      projectId: [null],
+      voucherNo: ["", [Validators.required]],
+      cashPartyId: [null, [Validators.required]],
+      cashAccountId: [null],
       date: [new Date()],
       cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryList()])
     });

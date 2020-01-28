@@ -50,16 +50,18 @@ export class EditBankReceiptComponent implements OnInit {
   buildBankReceiptForm(): void {
     this.editBankReceiptForm = this._fb.group({
       seriesId: [
-        this.bankReceiptDetails ? this.bankReceiptDetails.SeriesID : 0
+        this.bankReceiptDetails ? this.bankReceiptDetails.SeriesID : null
       ],
       projectId: [
-        this.bankReceiptDetails ? this.bankReceiptDetails.ProjectID : 0
+        this.bankReceiptDetails ? this.bankReceiptDetails.ProjectID : null
       ],
       voucherNo: [
-        this.bankReceiptDetails ? this.bankReceiptDetails.VoucherNo : ""
+        this.bankReceiptDetails ? this.bankReceiptDetails.VoucherNo : "",
+        [Validators.required]
       ],
       bankAccountId: [
-        this.bankReceiptDetails ? this.bankReceiptDetails.LedgerID : 0
+        this.bankReceiptDetails ? this.bankReceiptDetails.LedgerID : null,
+        [Validators.required]
       ],
       cashParty: [""],
       date: [

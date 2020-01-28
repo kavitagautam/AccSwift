@@ -44,11 +44,11 @@ export class ListContraVoucherComponent implements OnInit {
 
   editContraVoucherForm() {
     this.contraVoucherForm = this.fb.group({
-      seriesId: [0],
-      projectId: [0],
-      cashAccountId: [0],
+      seriesId: [null],
+      projectId: [null],
+      cashAccountId: [null],
       voucherNo: [""],
-      cashPartyId: [0],
+      cashPartyId: [null],
       date: [new Date()]
     });
   }
