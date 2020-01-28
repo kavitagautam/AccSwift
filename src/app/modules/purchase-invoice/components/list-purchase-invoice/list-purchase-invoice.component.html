@@ -6,13 +6,13 @@
 <div class="accordion" id="accordion">
   <div class="box box-default">
     <div
-      class="box-header with-border"
+      class="box-header with-border collapsed"
       data-toggle="collapse"
       href="#collapseOne"
     >
       <h3 class="box-title">Search Terms</h3>
     </div>
-    <div id="collapseOne" class="box-body collapse in" data-parent="#accordion">
+    <div id="collapseOne" class="box-body collapse" data-parent="#accordion">
       <div class="row">
         <div class="col-md-12">
           <form [formGroup]="purchaseForm" novalidate>
@@ -24,7 +24,7 @@
                   id="seriesNameId"
                   formControlName="seriesId"
                 >
-                <option [ngValue]="null">Choose Option....</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let series of purchaseService.seriesList"
                     [ngValue]="series.ID"
@@ -62,7 +62,7 @@
                   id="cashAccountNo"
                   formControlName="cashPartyACId"
                 >
-                <option [ngValue]="null">Choose Option....</option>
+                  <option [ngValue]="null">Choose Option....</option>
                 </select>
               </div>
             </div>
@@ -74,7 +74,7 @@
                   id="depotId"
                   formControlName="depotLocationId"
                 >
-                <option [ngValue]="null">Choose Option....</option>
+                  <option [ngValue]="null">Choose Option....</option>
                 </select>
               </div>
             </div>
@@ -92,7 +92,7 @@
                   id="purchaseAcId"
                   formControlName="purchaseAcId"
                 >
-                <option [ngValue]="null">Choose Option....</option>
+                  <option [ngValue]="null">Choose Option....</option>
                 </select>
               </div>
             </div>
@@ -104,7 +104,7 @@
                   id="projectId"
                   formControlName="projectId"
                 >
-                <option [ngValue]="null">Choose Option....</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let project of purchaseService.projectList"
                     [ngValue]="project.LedgerID"
