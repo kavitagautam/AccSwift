@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label><sup>*</sup>Depot Name</label>
+            <label>Depot Name <sup>*</sup></label>
             <input
               class="form-control"
               formControlName="depot"
@@ -36,6 +36,10 @@
             <input class="form-control" formControlName="contact" />
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>License No. </label>
@@ -60,6 +64,10 @@
             <input class="form-control" formControlName="mobile" />
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Reg. No.</label>
@@ -78,7 +86,15 @@
 </div>
 <div class="box-footer">
   <div class="mb-2">
-    <button class="btn btn-primary" (click)="save()">Save</button>
+    <button
+      class="btn btn-primary"
+      type="submit"
+      accSwiftFormSubmitValidationMsg
+      [validationControl]="editDepotForm"
+      (click)="save()"
+    >
+      Save
+    </button>
     <button class="btn btn-secondary ml-2" (click)="cancel()">
       Cancel
     </button>

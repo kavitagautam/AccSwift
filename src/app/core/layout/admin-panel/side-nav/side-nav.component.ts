@@ -91,7 +91,7 @@ export class SideNavComponent implements OnInit {
     {
       id: 11,
       displayName: "Depot",
-      iconName: "fas fa-file-invoice-dollar",
+      iconName: "fas fa-home",
       route: "/depot"
     },
     {
