@@ -2,7 +2,7 @@ import { ToastrService } from "ngx-toastr";
 
 import { Router } from "@angular/router";
 import { DepotService } from "./../../services/depot.service";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
@@ -26,7 +26,7 @@ export class AddDepotComponent implements OnInit {
 
   buildAddDepotForm(): void {
     this.addDepotForm = this._fb.group({
-      depot: [""],
+      depot: ["", [Validators.required, Validators.maxLength(20)]],
       city: [""],
       telephone: [""],
       contact: [""],
