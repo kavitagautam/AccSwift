@@ -83,10 +83,9 @@ export class ListContraVoucherComponent implements OnInit {
     };
 
     this.contraVoucherService.getCashReceiptMaster().subscribe(
-      res => {
+      response => {
         this.listLoading = true;
-        //mapping the data to change string date format to Date
-        this.contraVoucherList = res;
+        this.contraVoucherList = response;
         this.gridView = {
           data: this.contraVoucherList,
           total: this.contraVoucherList ? this.contraVoucherList.length : 0
