@@ -1,4 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ViewContainerRef,
+  ComponentFactoryResolver
+} from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ProductGroup } from "../../models/product-group.models";
 import { ToastrService } from "ngx-toastr";
@@ -13,6 +22,7 @@ import { Subject } from "rxjs";
 export class AddProductGroupComponent implements OnInit {
   @Input("selectedGroupId") selectedGroupId;
   @Output() onSave: Subject<boolean>;
+  @Output() onCancel = new EventEmitter<boolean>();
 
   groupDetails: ProductGroup;
   addProductGroupForm: FormGroup;
@@ -33,7 +43,7 @@ export class AddProductGroupComponent implements OnInit {
     this.addProductGroupForm = this._fb.group({
       groupName: ["", Validators.required],
       parentGroupId: [
-        this.groupDetails ? this.groupDetails.ParentID : 0,
+        this.groupDetails ? this.groupDetails.ParentGroupName : null,
         Validators.required
       ],
       remarks: [""]
@@ -51,7 +61,6 @@ export class AddProductGroupComponent implements OnInit {
 
   save(): void {
     if (this.addProductGroupForm.invalid) return;
-
     const obj = {
       ParentID: this.addProductGroupForm.get("parentGroupId").value,
       EngName: this.addProductGroupForm.get("groupName").value,
@@ -72,5 +81,8 @@ export class AddProductGroupComponent implements OnInit {
     );
   }
 
-  cancel(): void {}
+  cancel(): void {
+    //execute callback to the viewProductGroupComponent
+    this.onCancel.emit(true);
+  }
 }
