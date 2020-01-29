@@ -51,4 +51,8 @@ export class ProductGroupService {
     };
     return this.httpService.put(`${this._api_URL}ProductGroup`, obj);
   }
+
+  deleteProductGroupByID(id): Observable<any> {
+    return this.httpService.delete(`${this._api_URL}ProductGroup/${id}`);
+  }
 }

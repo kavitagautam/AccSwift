@@ -13,6 +13,7 @@
             />
           </div>
         </div>
+
         <div class="col-md-4 col-sm-6 col-xs-6 pr-0">
           <div class="form-group">
             <label>Parent Group <sup>*</sup></label>
@@ -21,27 +22,30 @@
               formControlName="parentGroupId"
               accSwiftFormValidator
             >
-              <option [ngValue]="0">Select</option>
+              <option [ngValue]="null">Choose option...</option>
               <option
                 *ngFor="let product of productGroupService.productGroupList"
                 [value]="product.ID"
-                >{{ product.EngName }}
+                >{{ product.Name }}
               </option>
             </select>
-            <!-- <input class="form-control" formControlName="parentGroup" accSwiftFormValidator /> -->
           </div>
         </div>
         <div class="col-md-4 col-sm-6 col-xs-6 pr-0">
           <div class="form-group">
             <label>Remarks</label>
-            <textarea class="form-control" formControlName="remarks"></textarea>
+            <textarea
+              class="form-control"
+              rows="2"
+              formControlName="remarks"
+            ></textarea>
           </div>
         </div>
       </div>
     </div>
   </form>
   <div class="box-footer">
-    <div class="mb-2">
+    <div class="mb-2" style="display: table;margin: auto;">
       <button
         class="btn btn-primary"
         (click)="save()"
