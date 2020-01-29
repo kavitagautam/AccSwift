@@ -1,17 +1,34 @@
-export interface ProductGroup {
+export interface OpeningQuantity {
   ID: number;
-  ParentID: number;
-  ParentGroupName: string;
-  Level: number;
-  EngName: string;
-  NepName: string;
-  IsBuiltIn: boolean;
+  ProductID: number;
+  AccClassID: number;
+  OpenPurchaseQty: number;
+  OpenPurchaseRate: number;
+  OpenSalesRate: number;
+  OpenQuantityDate: Date;
+}
+
+export interface Entity {
+  ID: number;
+  Name: string;
+  GroupID: number;
+  ProductCode: string;
+  ProductColor: string;
+  DepotID: number;
+  UnitID: number;
+  IsVatApplicable: boolean;
+  IsInventoryApplicable: boolean;
+  IsDecimalApplicable: boolean;
+  IsActive: boolean;
   BackColor: number;
+  OpeningQuantity: OpeningQuantity;
   Remarks: string;
-  CreatedBy: string;
-  CreatedDate: string;
-  ModifiedBy: string;
-  ModifiedDate: string;
+}
+
+export interface ProductModel {
+  StatusCode: number;
+  Message: string;
+  Entity: Entity[];
 }
 
 export interface Product {

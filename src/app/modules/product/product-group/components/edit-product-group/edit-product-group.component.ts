@@ -23,6 +23,7 @@ export class EditProductGroupComponent implements OnInit {
 
   ngOnInit() {
     this.buildProductGroupForm();
+    this.getGroupDetails();
   }
 
   buildProductGroupForm(): void {
@@ -51,13 +52,15 @@ export class EditProductGroupComponent implements OnInit {
     if (this.editProductGroupForm.invalid) return;
     const obj = {
       ID: this.groupDetails.ID,
-      ParentID: this.editProductGroupForm.get("parentGroupId").value,
-      EngName: this.editProductGroupForm.get("groupName").value,
+      ParentGroupID: this.editProductGroupForm.get("parentGroupId").value,
+      Name: this.editProductGroupForm.get("groupName").value,
       Remarks: this.editProductGroupForm.get("remarks").value
     };
     this.productGroupService.updateProductGroup(obj).subscribe(
       response => {
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       },
       error => {
         this.toastr.error(JSON.stringify(error.error.Message));

@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   username: string;
   errorMsg: string;
   password: string;
+  submitted: boolean;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.submitted = true;
     this.authenticationService
       .login(this.username, this.password)
       .pipe(first())

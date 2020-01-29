@@ -1,6 +1,4 @@
 <body>
-  <div class="overlay"></div>
-
   <div class="container" id="login-card">
     <!-- pull push used to aletr thge ordering of columns in large screens -->
 
@@ -10,8 +8,8 @@
         <div class="row">
           <div class="logo">
             <img
-              src="../../../../../assets/images
-/AccSwift-Logo_white-01-300x68.png"
+              src="../../../../../assets/images/AccSwift-Logo_white-01-300x68.png"
+              class="img-fluid"
               alt="logo"
               title="logo"
             />
@@ -19,59 +17,77 @@
         </div>
 
         <div class="row">
-          <form id="main-form">
-            <div class="form-group">
-              <label for="exampleInputEmail1">Username or Email</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Username or Email"
-                id="username"
-                [(ngModel)]="username"
-                tabindex="1"
-                [ngModelOptions]="{ standalone: true }"
-              />
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                placeholder="Password"
-                id="accPwd"
-                [(ngModel)]="password"
-                tabindex="2"
-                ng-enter="login()"
-                [ngModelOptions]="{ standalone: true }"
-              />
-            </div>
-            <div class="pwd-util-row">
-              <div class="form-check">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="exampleCheck1"
-                />
-                <label
-                  class="form-check-label"
-                  for="exampleCheck1"
-                  ng-click="handleRememberMe()"
-                  onclick="onRememberPwdChange()"
-                  >Remember Me</label
-                >
+          <div class="col">
+            <form id="main-form">
+              <div
+                class="form-group error-msg"
+                *ngIf="(!username || !password) && submitted"
+              >
+                Username or Password did not match
               </div>
-              <a class="secondary-link" href="">Forgot Password?</a>
-            </div>
-            <button type="submit" class="btn btn-login" (click)="login()">
-              Log In
-            </button>
-          </form>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Username or Email</label>
 
-          <img
-            src="../../../../../assets/images
-/"
-            alt=""
-          />
+                <div class="icon-wrapper">
+                  <img src="../../../../../assets/images/user.svg" alt="" />
+                  <input
+                    type="email"
+                    class="form-control"
+                    placeholder="Username or Email"
+                    id="username"
+                    [(ngModel)]="username"
+                    tabindex="1"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                  <div class="error-msg" *ngIf="!username && submitted">
+                    Password is required
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <div class="icon-wrapper">
+                  <img src="../../../../../assets/images/padlock.svg" alt="" />
+                  <input
+                    type="password"
+                    class="form-control"
+                    placeholder="Password"
+                    id="accPwd"
+                    [(ngModel)]="password"
+                    tabindex="2"
+                    (keyup.enter)="login()"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                  <div class="error-msg" *ngIf="!password && submitted">
+                    Password is required
+                  </div>
+                </div>
+              </div>
+              <div class="pwd-util-row">
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="exampleCheck1"
+                    ng-click="handleRememberMe()"
+                    onclick="onRememberPwdChange()"
+                  />
+                  <label class="form-check-label" for="exampleCheck1"
+                    >Remember Me</label
+                  >
+                </div>
+                <a class="secondary-link" href="">Forgot Password?</a>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-login"
+                (click)="login()"
+                [disabled]="!username || !password"
+              >
+                Sign In
+              </button>
+            </form>
+          </div>
         </div>
 
         <div class="row alt-login-container">
@@ -85,150 +101,177 @@
 
       <!-- left part -->
       <div class="col-sm-4 col-sm-pull-8" id="welcome-section">
-        <h1>
-          Welcome Back
-        </h1>
-
-        <div class="welcome-footer">
-          <ul class="social">
-            <li>
-              <a
-                href="https://www.facebook.com/accswift.accounting.software"
-                target="_blank"
-                ><i class="fab fa-facebook-square"></i
-              ></a>
-            </li>
-            <li>
-              <a href=""><i class="fab fa-twitter-square"></i></a>
-            </li>
-            <li>
-              <a href="https://www.linkedin.com/company/bent-ray-technologies"
-                ><i class="fab fa-linkedin"></i
-              ></a>
-            </li>
-          </ul>
-          <a class="secondary-link white" [routerLink]="['/register']"
-            >Create Account</a
-          >
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-<!-- <body class="bg-gradient-primary">
-  <div class="container-fluid">
-    <div class="login-box">
-      <div class="login-logo">
-        <img src="../../../../../assets/images/AccSwift-Logo.png" />
-      </div>
-
-      <div class="login-box-body">
-        <p class="login-box-msg">Sign in to AccSwift</p>
-        <div class="col-md-12 error-msgLogin" *ngIf="errorMsg">
-          {{ errorMsg }}
-        </div>
-        <div class="col-md-12">
-          <div class="form-group clearfix">
-            <div class="input-group mb-3">
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <span class="glyphicon glyphicon-user"></span>
-                </div>
-              </div>
-              <input
-                type="Username Or Email"
-                class="form-control"
-                placeholder="Email"
-                id="username"
-                [(ngModel)]="username"
-                class="form-control"
-                tabindex="1"
-                [ngModelOptions]="{ standalone: true }"
-              />
-            </div>
-          </div>
-          <div class="form-group clearfix">
-            <div class="input-group mb-3">
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <span class="glyphicon glyphicon-lock"></span>
-                </div>
-              </div>
-              <input
-                type="password"
-                class="form-control"
-                placeholder="Password"
-                id="accPwd"
-                [(ngModel)]="password"
-                tabindex="2"
-                ng-enter="login()"
-                [ngModelOptions]="{ standalone: true }"
-              />
-            </div>
-          </div>
-        </div>
         <div class="row">
-          <div class="col-xs-12 col-xs-offset-4">
-            <div class="checkbox icheck">
-              <label>
-                <input
-                  type="checkbox"
-                  ng-click="handleRememberMe()"
-                  onclick="onRememberPwdChange()"
-                  tabindex="3"
-                />
-                Remember Me
-              </label>
-            </div>
-          </div>
-          <div class="col-xs-12">
-            <button
-              type="submit"
-              (click)="login()"
-              class="btn btn-primary btn-block btn-flat"
-            >
-              Sign In
+          <div class="col">
+            <h1>
+              Welcome Back
+            </h1>
+            <button class="btn btn-signup" [routerLink]="['/register']">
+              Sign up
             </button>
           </div>
         </div>
 
-        <div class="social-auth-links text-center">
-          <p>- OR -</p>
-      
+        <div class="row">
+          <div class="col">
+            <div class="welcome-footer">
+              <ul class="social">
+                <li>
+                  <a
+                    href="https://www.facebook.com/accswift.accounting.software"
+                    target="_blank"
+                    ><i class="fab fa-facebook-square"></i
+                  ></a>
+                </li>
+                <li>
+                  <a href=""><i class="fab fa-twitter-square"></i></a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/company/bent-ray-technologies"
+                    target="_blank"
+                    ><i class="fab fa-linkedin"></i
+                  ></a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-
-        <a href="#">I forgot my password</a><br />
-        <a [routerLink]="['/register']" class="text-center"
-          >Register a new account</a
-        >
-      </div>
-    </div>
-    <div class="footer">
-      <div
-        class="col-xs-6 col-md-4 col-md-push-4 social-links-wrapper  clearfix"
-      >
-        <ul class="social-icons clearfix pull-right">
-          <li>
-            <a
-              href="https://www.facebook.com/accswift.accounting.software"
-              target="_blank"
-              ><i class="fa fa-facebook"></i
-            ></a>
-          </li>
-          <li>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-          </li>
-          <li>
-            <a href="https://www.linkedin.com/company/bent-ray-technologies"
-              ><i class="fa fa-linkedin"></i
-            ></a>
-          </li>
-        </ul>
       </div>
     </div>
   </div>
-</body> -->
 
+  <!-- <div class="container" id="login-card">
+
+    <div class="row">
+      <div class="col-sm-8 login-form col-sm-push-4">
+        <div class="row">
+          <div class="logo">
+            <img
+              src="../../../../../assets/images/AccSwift-Logo_white-01-300x68.png"
+              class="img-fluid"
+              alt="logo"
+              title="logo"
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <form id="main-form">
+              <div class="form-group error-msg">
+                Username or Password did not match
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Username or Email</label>
+
+                <div class="icon-wrapper">
+                  <img src="../../../../../assets/images/user.svg" alt="" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Username or Email"
+                    id="username"
+                    [(ngModel)]="username"
+                    tabindex="1"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <div class="icon-wrapper">
+                  <img src="../../../../../assets/images/padlock.svg" alt="" />
+                  <input
+                    type="password"
+                    class="form-control"
+                    placeholder="Password"
+                    id="accPwd"
+                    [(ngModel)]="password"
+                    tabindex="2"
+                    ng-enter="login()"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="pwd-util-row">
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="exampleCheck1"
+                  />
+                  <label
+                    class="form-check-label"
+                    for="exampleCheck1"
+                    ng-click="handleRememberMe()"
+                    onclick="onRememberPwdChange()"
+                    >Remember Me</label
+                  >
+                </div>
+                <a class="secondary-link" href="">Forgot Password?</a>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-login disabled"
+                (click)="login()"
+              >
+                Sign In
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="row alt-login-container">
+          <h5>or Sign In with</h5>
+          <div id="alt-login">
+            <button class="google-btn alt-login-btn">Google</button>
+            <button class="fb-btn alt-login-btn">Facebook</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4 col-sm-pull-8" id="welcome-section">
+        <div class="row">
+          <div class="col">
+            <h1>
+              Welcome Back
+            </h1>
+
+            <button class="btn btn-signup">Sign up</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="welcome-footer">
+              <ul class="social">
+                <li>
+                  <a
+                    href="https://www.facebook.com/accswift.accounting.software"
+                    target="_blank"
+                    ><i class="fab fa-facebook-square"></i
+                  ></a>
+                </li>
+                <li>
+                  <a href=""><i class="fab fa-twitter-square"></i></a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/company/bent-ray-technologies"
+                    target="_blank"
+                    ><i class="fab fa-linkedin"></i
+                  ></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</body>
 <script>
   function onRememberPwdChange() {
     if (!$("#accPwd").prop("checked")) {
@@ -249,5 +292,29 @@
   });
   $(window).resize(function() {
     $("#login-page").css({ "min-height": $(window).height() - 78 });
+  });
+
+  $("#exampleInputEmail1").focus(function() {
+    $(this)
+      .siblings()
+      .attr("src", "../../../../../assets/images/user-active.svg");
+  });
+
+  $("#exampleInputEmail1").focusout(function() {
+    $(this)
+      .siblings()
+      .attr("src", "../../../../../assets/images/user.svg");
+  });
+
+  $("#exampleInputPassword1").focus(function() {
+    $(this)
+      .siblings()
+      .attr("src", "../../../../../assets/images/padlock-active.svg");
+  });
+
+  $("#exampleInputPassword1").focusout(function() {
+    $(this)
+      .siblings()
+      .attr("src", "../../../../../assets/images/padlock.svg");
   });
 </script>
