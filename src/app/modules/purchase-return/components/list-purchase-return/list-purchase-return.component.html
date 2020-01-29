@@ -7,13 +7,13 @@
 <div class="accordion" id="accordion">
   <div class="box box-default">
     <div
-      class="box-header with-border"
+      class="box-header with-border collapsed"
       data-toggle="collapse"
       href="#collapseOne"
     >
       <h3 class="box-title">Search Terms</h3>
     </div>
-    <div id="collapseOne" class="box-body collapse in" data-parent="#accordion">
+    <div id="collapseOne" class="box-body collapse" data-parent="#accordion">
       <div class="row">
         <div class="col-md-12">
           <form [formGroup]="purchaseReturnForm" novalidate>
@@ -21,7 +21,7 @@
               <div class="form-group">
                 <label>Series</label>
                 <select class="form-control" formControlName="seriesId">
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                 </select>
               </div>
             </div>
@@ -46,7 +46,7 @@
               <div class="form-group">
                 <sup>*</sup> <label>Cash/Party/A/C </label>
                 <select class="form-control" formControlName="cashPartyACId">
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                 </select>
               </div>
             </div>
@@ -54,7 +54,7 @@
               <div class="form-group">
                 <label>Depot/Location </label>
                 <select class="form-control" formControlName="depotLocationId">
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                 </select>
               </div>
             </div>
@@ -70,7 +70,7 @@
               <div class="form-group">
                 <label>Purchase A/C </label>
                 <select class="form-control" formControlName="purchaseACId">
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                 </select>
               </div>
             </div>
@@ -83,7 +83,7 @@
                   id="projectId"
                   formControlName="projectId"
                 >
-                  <option [ngValue]="0">Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                 </select>
               </div>
             </div>

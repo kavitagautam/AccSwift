@@ -45,18 +45,20 @@ export class EditBankPaymentComponent implements OnInit {
   buildEditBankPaymentForm() {
     this.editBankPaymentForm = this.fb.group({
       seriesId: [
-        this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : 0
+        this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : null
       ],
       projectId: [
-        this.bankPaymentDetails ? this.bankPaymentDetails.ProjectID : 0
+        this.bankPaymentDetails ? this.bankPaymentDetails.ProjectID : null
       ],
       voucherNo: [
-        this.bankPaymentDetails ? this.bankPaymentDetails.VoucherNo : ""
+        this.bankPaymentDetails ? this.bankPaymentDetails.VoucherNo : "",
+        [Validators.required]
       ],
       bankAccountId: [
-        this.bankPaymentDetails ? this.bankPaymentDetails.LedgerID : 0
+        this.bankPaymentDetails ? this.bankPaymentDetails.LedgerID : null,
+        [Validators.required]
       ],
-      cashParty: [""],
+      cashParty: ["", [Validators.required]],
       date: [
         this.bankPaymentDetails
           ? new Date(this.bankPaymentDetails.CreatedDate)

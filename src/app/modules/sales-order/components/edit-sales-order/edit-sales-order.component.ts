@@ -1,5 +1,5 @@
 import { SalesOrderService } from "./../../services/sales-order.service";
-import { FormArray } from "@angular/forms";
+import { FormArray, Validators } from "@angular/forms";
 import { FormBuilder } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormGroup } from "@angular/forms";
@@ -30,10 +30,10 @@ export class EditSalesOrderComponent implements OnInit {
 
   buildEditSalesOrderForm() {
     this.editSalesOrderForm = this.fb.group({
-      orderNo: [""],
-      cashPartyACId: [0],
+      orderNo: ["", [Validators.required]],
+      cashPartyACId: [null, [Validators.required]],
       remarks: [""],
-      projectId: [0],
+      projectId: [null],
       date: [new Date()],
       salesOrderEntryList: this.fb.array([this.addSalesEntryList()])
     });

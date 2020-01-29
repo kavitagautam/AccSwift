@@ -58,19 +58,12 @@ export class ListSalesOrderComponent implements OnInit {
   buildSalesOrderForm() {
     this.salesOrderForm = this.fb.group({
       orderNo: [""],
-      cashPartyACId: [0],
+      cashPartyACId: [null],
       remarks: [""],
-      projectId: [0],
+      projectId: [null],
       date: [new Date()]
     });
   }
-  //Date String Parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;

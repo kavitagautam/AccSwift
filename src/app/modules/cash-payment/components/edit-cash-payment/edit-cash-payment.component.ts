@@ -47,17 +47,21 @@ export class EditCashPaymentComponent implements OnInit {
 
   buildEditCashPaymentForm() {
     this.editCashPaymentForm = this.fb.group({
-      seriesId: [this.cashPaymentDetail ? this.cashPaymentDetail.SeriesID : 0],
+      seriesId: [
+        this.cashPaymentDetail ? this.cashPaymentDetail.SeriesID : null
+      ],
       projectId: [
-        this.cashPaymentDetail ? this.cashPaymentDetail.ProjectID : 0
+        this.cashPaymentDetail ? this.cashPaymentDetail.ProjectID : null
       ],
       voucherNo: [
-        this.cashPaymentDetail ? this.cashPaymentDetail.VoucherNo : ""
+        this.cashPaymentDetail ? this.cashPaymentDetail.VoucherNo : "",
+        [Validators.required]
       ],
       cashAccountId: [
-        this.cashPaymentDetail ? this.cashPaymentDetail.LedgerID : 0
+        this.cashPaymentDetail ? this.cashPaymentDetail.LedgerID : null,
+        [Validators.required]
       ],
-      cashPartyId: [0],
+      cashPartyId: [null, [Validators.required]],
       date: [
         this.cashPaymentDetail
           ? new Date(this.cashPaymentDetail.CreatedDate)

@@ -51,10 +51,10 @@ export class AddJournalComponent implements OnInit {
 
   buildAddJournalForm(): void {
     this.addJournalForm = this._fb.group({
-      seriesId: [0],
-      voucherNo: [""],
+      seriesId: [null],
+      voucherNo: ["", [Validators.required]],
       date: [new Date()],
-      projectId: [0],
+      projectId: [null],
       narration: [""],
       journalEntryList: this._fb.array([this.addJournalEntryFormGroup()])
     });
