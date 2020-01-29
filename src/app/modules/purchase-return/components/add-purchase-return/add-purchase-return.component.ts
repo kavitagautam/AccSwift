@@ -29,14 +29,14 @@ export class AddPurchaseReturnComponent implements OnInit {
 
   buildaddPurchaseReturnForm() {
     this.addPurchaseReturnForm = this.fb.group({
-      seriesId: [0],
+      seriesId: [null],
       voucher: [""],
       date: [new Date()],
-      cashPartyACId: [0],
-      depotLocationId: [0],
+      cashPartyACId: [null],
+      depotLocationId: [null],
       orderNo: [""],
-      purchaseACId: [0],
-      projectId: [0],
+      purchaseACId: [null],
+      projectId: [null],
       remarks: [""],
       purchaseReturnEntryList: this.fb.array([
         this.addPurchaseReturnEntryList()

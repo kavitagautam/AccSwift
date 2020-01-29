@@ -43,10 +43,10 @@ export class AddBankReconciliationComponent implements OnInit {
 
   buildAddReconciliationForm() {
     this.addReconciliationForm = this._fb.group({
-      seriesId: [0],
-      projectId: [0],
-      voucherNo: [""],
-      bankAccountId: [0],
+      seriesId: [null],
+      projectId: [null],
+      voucherNo: ["", [Validators.required]],
+      bankAccountId: [null, [Validators.required]],
       date: [new Date()],
       reconciliationEntryList: this._fb.array([
         this.addReconciliationEntryList()

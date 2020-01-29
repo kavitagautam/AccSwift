@@ -6,20 +6,20 @@
 <div class="accordion" id="accordion">
   <div class="box box-default">
     <div
-      class="box-header with-border"
+      class="box-header with-border collapsed"
       data-toggle="collapse"
       href="#collapseOne"
     >
       <h3 class="box-title">Search Terms</h3>
     </div>
-    <div class="box-body collapse in" id="collapseOne" data-parent="#accordion">
+    <div class="box-body collapse" id="collapseOne" data-parent="#accordion">
       <div class="row">
         <div class="col-md-12">
           <form [formGroup]="unitSearchForm" novalidate>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="voucher#">Unit Name</label>
-                <input class="form-control" formControlName="unit" />
+                <input class="form-control" formControlName="unitName" />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">

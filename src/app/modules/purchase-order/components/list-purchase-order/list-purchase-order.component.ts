@@ -53,12 +53,20 @@ export class ListPurchaseOrderComponent implements OnInit {
 
   buildPurchaseOrderForm(): void {
     this.purchaseOrderForm = this._fb.group({
-      cashPartyACId: [0],
-      projectId: [0],
+      cashPartyACId: [null],
+      projectId: [null],
       date: [new Date()],
       orderNo: [""]
     });
   }
+
+  //Date String Parse
+  public currentYear = new Date().getFullYear();
+  public parseAdjust = (eventDate: Date): Date => {
+    const date = new Date(eventDate);
+    date.setFullYear(this.currentYear);
+    return date;
+  };
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
@@ -76,6 +84,7 @@ export class ListPurchaseOrderComponent implements OnInit {
 
     this.purchaseOrderService.getPurchaseOrderMaster().subscribe(
       res => {
+        this.listLoading = true;
         this.purchaseOrderList = res;
         this.gridView = {
           data: this.purchaseOrderList.slice(

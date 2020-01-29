@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import { ProductGroup } from "../../models/product-group.models";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { ProductService } from "@app/modules/product/services/product.service";
+import { ProductGroupService } from "../../services/product-group.service";
 
 @Component({
   selector: "accSwift-view-product-group",
@@ -14,7 +15,7 @@ export class ViewProductGroupComponent implements OnInit {
   productGroupForm: FormGroup;
   constructor(
     public _fb: FormBuilder,
-    private productService: ProductService
+    private productGroupService: ProductGroupService
   ) {}
 
   ngOnInit() {
@@ -26,14 +27,14 @@ export class ViewProductGroupComponent implements OnInit {
 
   buildProductGroupForm(): void {
     this.productGroupForm = this._fb.group({
-      groupName: [this.groupDetails ? this.groupDetails.EngName : ""],
+      groupName: [this.groupDetails ? this.groupDetails.Name : ""],
       parentGroup: [this.groupDetails ? this.groupDetails.ParentGroupName : ""],
       remarks: [this.groupDetails ? this.groupDetails.Remarks : ""]
     });
   }
 
   getGroupDetails(): void {
-    this.productService
+    this.productGroupService
       .getProductGroupDetails(this.selectedGroupId)
       .subscribe(res => {
         this.groupDetails = res.Entity;

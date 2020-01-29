@@ -1,31 +1,59 @@
 <div class="box box-default">
+  <h5 class="form_heading">Edit Product Group</h5>
+
   <form [formGroup]="editProductGroupForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-4 col-sm-6 col-xs-6 p-0">
           <div class="form-group">
-            <label>Group Name </label>
-            <input class="form-control" formControlName="groupName" />
+            <label>Group Name <sup>*</sup></label>
+            <input
+              class="form-control"
+              formControlName="groupName"
+              accSwiftFormValidator
+            />
           </div>
         </div>
         <div class="col-md-4 col-sm-6 col-xs-6 pr-0">
           <div class="form-group">
-            <label>Parent Group</label>
-            <input class="form-control" formControlName="parentGroup" />
+            <label>Parent Group <sup>*</sup></label>
+            <select
+              class="form-control"
+              formControlName="parentGroupId"
+              accSwiftFormValidator
+            >
+              <option [ngValue]="null">Choose option...</option>
+              <option
+                *ngFor="let product of productGroupService.productGroupList"
+                [value]="product.ID"
+                >{{ product.Name }}
+              </option>
+            </select>
           </div>
         </div>
         <div class="col-md-4 col-sm-6 col-xs-6 pr-0">
           <div class="form-group">
             <label>Remarks</label>
-            <textarea class="form-control" formControlName="remarks"></textarea>
+            <textarea
+              class="form-control"
+              rows="2"
+              formControlName="remarks"
+            ></textarea>
           </div>
         </div>
       </div>
     </div>
   </form>
   <div class="box-footer">
-    <div class="mb-2">
-      <button class="btn btn-primary" disabled (click)="save()">Save</button>
+    <div class="mb-2" style="display: table;margin: auto;">
+      <button
+        class="btn btn-primary"
+        (click)="save()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="editProductGroupForm"
+      >
+        Save
+      </button>
       <button class="btn btn-secondary ml-2" (click)="cancel()">
         Cancel
       </button>

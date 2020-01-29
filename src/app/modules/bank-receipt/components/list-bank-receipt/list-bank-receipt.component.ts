@@ -53,15 +53,23 @@ export class ListBankReceiptComponent implements OnInit {
 
   ngOnInit() {
     this.bankReceiptForm = this._fb.group({
-      seriesId: [0],
-      projectId: [0],
+      seriesId: [null],
+      projectId: [null],
       voucherNo: [""],
-      bankAccountId: [0],
+      bankAccountId: [null],
       date: [new Date()]
     });
     this.getBankReceiptlList();
     this.bankReceiptService.init();
   }
+
+  // Date string parse
+  public currentYear = new Date().getFullYear();
+  public parseAdjust = (eventDate: Date): Date => {
+    const date = new Date(eventDate);
+    date.setFullYear(this.currentYear);
+    return date;
+  };
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
@@ -69,7 +77,6 @@ export class ListBankReceiptComponent implements OnInit {
   }
 
   getBankReceiptlList(): void {
-    this.listLoading = true;
     const params = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
@@ -78,7 +85,38 @@ export class ListBankReceiptComponent implements OnInit {
     };
     this.bankReceiptService.getBankReceiptMaster().subscribe(
       response => {
-        this.bankReceiptList = response;
+        this.listLoading = true;
+        //mapping the data to change string date format to Date
+        const sampleData = response.map(
+          dataItem =>
+            <BankReceiptMaster>{
+              IsPayByInvoice: dataItem.IsPayByInvoice,
+              TotalAmount: dataItem.TotalAmount,
+              BankReceiptDetailsList: dataItem.BankReceiptDetailsList,
+              LedgerID: dataItem.LedgerID,
+              LedgerName: dataItem.LedgerName,
+              ID: dataItem.ID,
+              SeriesID: dataItem.SeriesID,
+              SeriesName: dataItem.SeriesName,
+              VoucherNo: dataItem.VoucherNo,
+              Date: this.parseAdjust(dataItem.Date),
+              ProjectID: dataItem.ProjectID,
+              ProjectName: dataItem.ProjectName,
+              Fields: {
+                Field1: dataItem.Fields.Field1,
+                Field2: dataItem.Fields.Field1,
+                Field3: dataItem.Fields.Field1,
+                Field4: dataItem.Fields.Field1,
+                Field5: dataItem.Fields.Field1
+              },
+              Remarks: dataItem.Remarks,
+              CreatedBy: dataItem.CreatedBy,
+              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
+              ModifiedBy: dataItem.ModifiedBy,
+              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
+            }
+        );
+        this.bankReceiptList = sampleData;
         this.gridView = {
           data: this.bankReceiptList.slice(
             this.skip,

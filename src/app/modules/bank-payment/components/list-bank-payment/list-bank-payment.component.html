@@ -7,13 +7,13 @@
 <div id="accordion" class="accordion">
   <div class="box box-default">
     <div
-      class="box-header with-border"
+      class="box-header with-border collapsed"
       data-toggle="collapse"
       href="#collapseOne"
     >
       <h3 class="box-title">Search Terms</h3>
     </div>
-    <div id="collapseOne" class="box-body collapse in" data-parent="#accordion">
+    <div id="collapseOne" class="box-body collapse" data-parent="#accordion">
       <div class="row">
         <div class="col-md-12">
           <form [formGroup]="bankPaymentForm" novalidate>
@@ -21,7 +21,7 @@
               <div class="form-group">
                 <label>Series</label>
                 <select class="form-control" formControlName="seriesId">
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let series of bankPaymentService.seriesList"
                     [ngValue]="series.ID"
@@ -35,7 +35,7 @@
               <div class="form-group">
                 <label>Bank Account </label>
                 <select class="form-control" formControlName="bankAccountId">
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let account of bankPaymentService.bankAccountList"
                     [ngValue]="account.LedgerID"
@@ -55,7 +55,7 @@
               <div class="form-group">
                 <label>Project</label>
                 <select class="form-control" formControlName="projectId">
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let project of bankPaymentService.projectList"
                     [ngValue]="project.ID"
@@ -129,10 +129,8 @@
             title="Cheque Date"
             filter="date"
             [filterable]="false"
+            format="{0: yyyy-mm-dd}"
           >
-            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
-              {{ dataItem.CreatedDate | dateStringFormat: "yyyy-MM-dd" }}
-            </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="Remarks" title="Remarks">
           </kendo-grid-column>

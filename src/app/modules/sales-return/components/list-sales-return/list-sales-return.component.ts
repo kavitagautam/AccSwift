@@ -48,11 +48,11 @@ export class ListSalesReturnComponent implements OnInit {
 
   buildSalesReturnForm() {
     this.salesReturnForm = this._fb.group({
-      seriesId: [0],
-      cashPartyACId: [0],
-      salesACId: [0],
-      depotLocationId: [0],
-      projectId: [0],
+      seriesId: [null],
+      cashPartyACId: [null],
+      salesACId: [null],
+      depotLocationId: [null],
+      projectId: [null],
       date: [new Date()],
       orderNo: [""],
       remarks: [""]
@@ -75,6 +75,7 @@ export class ListSalesReturnComponent implements OnInit {
 
     this.salesReturnService.getSalesReturnMaster().subscribe(
       res => {
+        this.listLoading = true;
         this.salesReturnList = res;
         this.gridView = {
           data: this.salesReturnList.slice(

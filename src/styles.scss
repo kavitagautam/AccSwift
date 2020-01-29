@@ -12,6 +12,10 @@ $background_color_2: #fff;
 sup {
   color: $color_1;
 }
+// input box red when validation fails.
+.form-control.ng-touched.ng-invalid {
+  border-color: red;
+}
 
 .error-msg {
   color: $color_1;
@@ -180,4 +184,13 @@ legend {
 
 .box-header.with-border {
   border-bottom: 1px solid #c0c4cc;
+}
+
+.form_heading{
+  background: #7295d4;
+    color: #fff;
+    padding: 6px;
+    border-radius: 10px;
+    font-size: 16px;
+    text-align: center;
 }

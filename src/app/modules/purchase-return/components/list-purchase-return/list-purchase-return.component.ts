@@ -54,17 +54,25 @@ export class ListPurchaseReturnComponent implements OnInit {
 
   buildPurchaseReturnForm() {
     this.purchaseReturnForm = this.fb.group({
-      seriesId: [0],
+      seriesId: [null],
       voucher: [""],
-      date: [new Date()],
-      cashPartyACId: [0],
-      depotLocationId: [0],
+      date: [""],
+      cashPartyACId: [null],
+      depotLocationId: [null],
       orderNo: [""],
-      purchaseACId: [0],
-      projectId: [0],
+      purchaseACId: [null],
+      projectId: [null],
       remarks: [""]
     });
   }
+
+  //Date String Parse
+  public currentYear = new Date().getFullYear();
+  public parseAdjust = (eventDate: Date): Date => {
+    const date = new Date(eventDate);
+    date.setFullYear(this.currentYear);
+    return date;
+  };
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
@@ -82,6 +90,7 @@ export class ListPurchaseReturnComponent implements OnInit {
 
     this.purchaseReturnService.getPurchaseOrderMaster().subscribe(
       res => {
+        this.listLoading = true;
         this.purchaseReturnList = res;
         this.gridView = {
           data: this.purchaseReturnList.slice(

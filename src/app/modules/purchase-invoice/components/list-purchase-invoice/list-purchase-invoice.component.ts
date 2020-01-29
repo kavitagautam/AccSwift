@@ -55,13 +55,13 @@ export class ListPurchaseInvoiceComponent implements OnInit {
 
   buildPurchaseInvoiceForm(): void {
     this.purchaseForm = this.fb.group({
-      seriesId: [0],
-      cashPartyACId: [0],
-      purchaseAcId: [0],
+      seriesId: [null],
+      cashPartyACId: [null],
+      purchaseAcId: [null],
       voucherNo: [""],
       partyBillNo: [""],
-      depotLocationId: [0],
-      projectId: [0],
+      depotLocationId: [null],
+      projectId: [null],
       date: [new Date()],
       orderNo: [""],
       remarks: [""]
@@ -84,6 +84,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
 
     this.purchaseService.getPurchaseInvoiceMaster().subscribe(
       response => {
+        this.listLoading = true;
         this.purchaseInvoiceList = response;
         this.gridView = {
           data: this.purchaseInvoiceList.slice(

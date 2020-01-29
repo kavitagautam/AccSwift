@@ -46,11 +46,11 @@ export class AddCashReceiptComponent implements OnInit {
 
   buildAddCashReceiptForm(): void {
     this.addCashReceiptForm = this._fb.group({
-      seriesId: [0],
-      projectId: [0],
+      seriesId: [null],
+      projectId: [null],
       voucherNo: [""],
-      cashAccountId: [0],
-      cashPartyId: [0],
+      cashAccountId: [null],
+      cashPartyId: null,
       date: [new Date()],
       cashReceiptEntryList: this._fb.array([
         this.addCashReceiptEntryFormGroup()

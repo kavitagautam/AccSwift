@@ -1,7 +1,7 @@
 import { PurchaseInvoiceMaster } from "./../../models/purchase-invoice.model";
 import { PurchaseInvoiceService } from "./../../services/purchase-invoice.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { FormBuilder, FormArray } from "@angular/forms";
+import { FormBuilder, FormArray, Validators } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 
@@ -33,21 +33,25 @@ export class EditPurchaseInvoiceComponent implements OnInit {
 
   buildEditInvoiceForm() {
     this.editPurchaseForm = this.fb.group({
-      seriesId: [this.purchaseDetails ? this.purchaseDetails.SeriesID : 0],
+      seriesId: [this.purchaseDetails ? this.purchaseDetails.SeriesID : null],
       cashPartyACId: [
-        this.purchaseDetails ? this.purchaseDetails.CashPartyLedgerID : 0
+        this.purchaseDetails ? this.purchaseDetails.CashPartyLedgerID : null
       ],
       purchaseAcId: [
-        this.purchaseDetails ? this.purchaseDetails.PurchLedgerID : 0
+        this.purchaseDetails ? this.purchaseDetails.PurchLedgerID : null
       ],
-      voucherNo: [this.purchaseDetails ? this.purchaseDetails.VoucherNo : ""],
+      voucherNo: [
+        this.purchaseDetails ? this.purchaseDetails.VoucherNo : "",
+        [Validators.required]
+      ],
       partyBillNo: [
         this.purchaseDetails ? this.purchaseDetails.PartyBillNumber : ""
       ],
       depotLocationId: [
-        this.purchaseDetails ? this.purchaseDetails.DepotID : 0
+        this.purchaseDetails ? this.purchaseDetails.DepotID : null,
+        [Validators.required]
       ],
-      projectId: [this.purchaseDetails ? this.purchaseDetails.ProjectID : 0],
+      projectId: [this.purchaseDetails ? this.purchaseDetails.ProjectID : null],
       date: [
         this.purchaseDetails ? new Date(this.purchaseDetails.CreatedDate) : ""
       ],
