@@ -3,8 +3,10 @@ import { environment } from "@env/environment";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { Observable } from "rxjs";
-import { ProductGroupModel } from "../models/product-group.models";
-import { ProductGroup } from "../../models/product.models";
+import {
+  ProductGroupModel,
+  ProductGroup
+} from "../models/product-group.models";
 
 @Injectable({
   providedIn: "root"
@@ -33,23 +35,22 @@ export class ProductGroupService {
 
   //add Product Group
   addProductGroup(value): Observable<any> {
-    const obj = {
-      ParentID: value.ParentID,
-      EngName: value.EngName,
+    const body = {
+      ParentGroupID: value.ParentGroupID,
+      Name: value.Name,
       Remarks: value.Remarks
     };
-    console.log("obj" + JSON.stringify(obj));
-    return this.httpService.post(`${this._api_URL}ProductGroup`, obj);
+    return this.httpService.post(`${this._api_URL}ProductGroup`, body);
   }
 
   updateProductGroup(value): Observable<any> {
-    const obj = {
+    const body = {
       ID: value.ID,
-      ParentID: value.ParentID,
-      EngName: value.EngName,
+      ParentGroupID: value.ParentGroupID,
+      Name: value.Name,
       Remarks: value.Remarks
     };
-    return this.httpService.put(`${this._api_URL}ProductGroup`, obj);
+    return this.httpService.put(`${this._api_URL}ProductGroup`, body);
   }
 
   deleteProductGroupByID(id): Observable<any> {

@@ -126,7 +126,11 @@ export class ProductGroupComponent implements OnInit, OnChanges {
 
   public deleteProductGroupByID(id): void {
     this.productGroupService.deleteProductGroupByID(id).subscribe(
-      response => {},
+      response => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      },
       error => {
         this.toastr.success(JSON.stringify(error.error.Message));
       },

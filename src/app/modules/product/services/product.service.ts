@@ -3,7 +3,11 @@ import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { Product, ProductGroupTree } from "../models/product.models";
+import {
+  Product,
+  ProductGroupTree,
+  ProductModel
+} from "../models/product.models";
 import { ProductGroupModel } from "../product-group/models/product-group.models";
 
 @Injectable({
@@ -21,7 +25,7 @@ export class ProductService {
     return this.httpService.get(`${this._api_URL}ProductGroup/Tree`);
   }
 
-  getProductList(): Observable<Product[]> {
+  getProductList(): Observable<ProductModel> {
     return this.httpService.get(`${this._api_URL}Product`);
   }
 
