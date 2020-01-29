@@ -47,10 +47,10 @@ export class AddBankReceiptComponent implements OnInit {
 
   buildBankReceiptForm(): void {
     this.addBankReceiptForm = this._fb.group({
-      seriesId: [0],
-      projectId: [0],
-      voucherNo: [""],
-      bankAccountId: [0],
+      seriesId: [null],
+      projectId: [null],
+      voucherNo: ["", [Validators.required]],
+      bankAccountId: [null, [Validators.required]],
       date: [new Date()],
       bankReceiptEntryList: this._fb.array([this.addBankReceiptEntryList()])
     });

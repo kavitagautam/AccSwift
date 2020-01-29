@@ -60,8 +60,8 @@ export class ListJournalComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.journalSearchForm = this._fb.group({
-      seriesId: [0],
-      projectId: [0],
+      seriesId: [null],
+      projectId: [null],
       voucherNo: [""],
       toDate: [""],
       fromDate: [""]
@@ -163,7 +163,6 @@ export class ListJournalComponent implements OnInit {
 
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
-
     if (event.skip == 0) {
       this.skip = event.skip;
       this.currentPage = 1;

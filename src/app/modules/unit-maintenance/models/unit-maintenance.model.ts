@@ -3,10 +3,6 @@ export interface Units {
   UnitName: string;
   Symbol: string;
   Remarks: string;
-  CreatedBy: string;
-  CreatedDate: Date;
-  ModifiedBy: string;
-  ModifiedDate: Date;
 }
 
 export interface Entity {

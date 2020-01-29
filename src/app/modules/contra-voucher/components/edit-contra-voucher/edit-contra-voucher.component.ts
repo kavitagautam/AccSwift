@@ -49,21 +49,23 @@ export class EditContraVoucherComponent implements OnInit {
   buildEditContraVoucherForm() {
     this.editContraVoucherForm = this.fb.group({
       seriesId: [
-        this.contraVoucherDetail ? this.contraVoucherDetail.SeriesID : 0
+        this.contraVoucherDetail ? this.contraVoucherDetail.SeriesID : null
       ],
       projectId: [
-        this.contraVoucherDetail ? this.contraVoucherDetail.ProjectID : 0
+        this.contraVoucherDetail ? this.contraVoucherDetail.ProjectID : null
       ],
       voucherNo: [
-        this.contraVoucherDetail ? this.contraVoucherDetail.VoucherNo : ""
+        this.contraVoucherDetail ? this.contraVoucherDetail.VoucherNo : "",
+        [Validators.required]
       ],
       cashAccountId: [
-        this.contraVoucherDetail ? this.contraVoucherDetail.LedgerID : 0
+        this.contraVoucherDetail ? this.contraVoucherDetail.LedgerID : null,
+        [Validators.required]
       ],
       cashPartyId: [
         this.contraVoucherDetail
           ? this.contraVoucherDetail.ContraVoucherDetails
-          : 0
+          : null
       ],
       date: [
         this.contraVoucherDetail

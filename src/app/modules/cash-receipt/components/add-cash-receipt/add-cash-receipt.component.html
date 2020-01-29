@@ -10,7 +10,7 @@
               id="seriesId"
               formControlName="seriesId"
             >
-              <option [ngValue]="0" disabled>Select </option
+              <option [ngValue]="null">Choose option.... </option
               ><option> </option
               ><option
                 *ngFor="let series of cashReceiptService.seriesLists"
@@ -30,7 +30,7 @@
               id="cashAccountNo"
               formControlName="cashAccountId"
             >
-              <option [ngValue]="0" disabled>Select </option>
+              <option [ngValue]="null">Choose option... </option>
               <option
                 *ngFor="let account of cashReceiptService.cashAccountLists"
                 [ngValue]="account.LedgerID"
@@ -49,7 +49,7 @@
               id="cashPartyId"
               formControlName="cashPartyId"
             >
-              <option [ngValue]="0" disabled>Select </option>
+              <option [ngValue]="null">Choose option... </option>
             </select>
           </div>
         </div>
@@ -69,7 +69,7 @@
               id="projectId"
               formControlName="projectId"
             >
-              <option [ngValue]="0" disabled>Select</option>
+              <option [ngValue]="null">Choose option...</option>
               <option
                 *ngFor="let project of cashReceiptService.projectLists"
                 [ngValue]="project.LedgerID"

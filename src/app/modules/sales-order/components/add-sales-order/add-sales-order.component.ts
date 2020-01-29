@@ -1,5 +1,5 @@
 import { Router } from "@angular/router";
-import { FormBuilder, FormArray } from "@angular/forms";
+import { FormBuilder, FormArray, Validators } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 
@@ -21,10 +21,10 @@ export class AddSalesOrderComponent implements OnInit {
 
   buildAddSalesOrderForm() {
     this.addSalesOrderForm = this.fb.group({
-      orderNo: [""],
-      cashPartyACId: [0],
+      orderNo: ["", [Validators.required]],
+      cashPartyACId: [null, [Validators.required]],
       remarks: [""],
-      projectId: [0],
+      projectId: [null],
       date: [new Date()],
       salesOrderEntryList: this.fb.array([this.addSalesOrderEntryList()])
     });

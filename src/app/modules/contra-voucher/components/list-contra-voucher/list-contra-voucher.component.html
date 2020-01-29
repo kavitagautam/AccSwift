@@ -7,14 +7,14 @@
 <div class="accordion" id="accordion">
   <div class="box box-default">
     <div
-      class="box-header with-border"
+      class="box-header with-border collapsed"
       data-toggle="collapse"
       href="#collapseOne"
     >
       <h3 class="box-title">Search terms</h3>
     </div>
 
-    <div class="box-body collapse in" id="collapseOne" data-parent="#accordion">
+    <div class="box-body collapse" id="collapseOne" data-parent="#accordion">
       <div class="row">
         <div class="col-md-12">
           <form [formGroup]="contraVoucherForm" novalidate>
@@ -22,7 +22,7 @@
               <div class="form-group">
                 <label>Series</label>
                 <select class="form-control" formControlName="seriesId">
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let series of contraVoucherService.seriesLists"
                     [ngValue]="series.ID"
@@ -41,7 +41,7 @@
                   id="cashAccountNo"
                   formControlName="cashAccountId"
                 >
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let cash of contraVoucherService.cashAccountLists"
                   >
@@ -55,7 +55,7 @@
               <div class="form-group">
                 <label>Cash Party / Customer</label>
                 <select class="form-control" formControlName="cashPartyId">
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option *ngFor="let cash of contraVoucherService.seriesLists">
                     {{ cash.EngName }}
                   </option>
@@ -78,7 +78,7 @@
                   id="project"
                   formControlName="projectId"
                 >
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let project of contraVoucherService.projectLists"
                   >

@@ -1,7 +1,7 @@
 import { PurchaseOrderService } from "./../../services/purchase-order.service";
 import { Router } from "@angular/router";
 import { BsModalRef } from "ngx-bootstrap";
-import { FormGroup, FormArray } from "@angular/forms";
+import { FormGroup, FormArray, Validators } from "@angular/forms";
 
 import { FormBuilder } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
@@ -35,8 +35,8 @@ export class AddPurchaseOrderComponent implements OnInit {
     this.addPurchaseOrderForm = this.fb.group({
       orderNo: [""],
       date: [new Date()],
-      cashPartyACId: [0],
-      projectId: [0],
+      cashPartyACId: [null, [Validators.required]],
+      projectId: [null],
       purchaseOrderEntryList: this.fb.array([this.addPurchaseOrderEntryList()])
     });
   }

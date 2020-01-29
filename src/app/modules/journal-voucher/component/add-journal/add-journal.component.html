@@ -10,7 +10,7 @@
               id="seriesId"
               formControlName="seriesId"
             >
-              <option [ngValue]="0" disabled>Select</option>
+            <option [ngValue]="null">Choose Option....</option>
               <option
                 *ngFor="let series of journalService.journalSeriesList"
                 [value]="series.ID"
@@ -27,7 +27,7 @@
               id="projectId"
               formControlName="projectId"
             >
-              <option [ngValue]="0" disabled>Select</option>
+              <option [ngValue]="null">Choose option..</option>
               <option
                 *ngFor="let project of journalService.projectLists"
                 [value]="project.ID"
@@ -40,7 +40,12 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Voucher #</label>
-            <input class="form-control" formControlName="voucherNo" />
+            <input
+              class="form-control"
+              formControlName="voucherNo"
+              id="voucherNo"
+              accSwiftFormValidator
+            />
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">

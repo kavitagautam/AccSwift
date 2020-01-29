@@ -31,7 +31,6 @@ import { SharedModule } from "@app/shared/shared.module";
     InputsModule,
     DropDownListModule,
     DropDownsModule,
-    CommonModule,
     UnitMaintenanceRoutingModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

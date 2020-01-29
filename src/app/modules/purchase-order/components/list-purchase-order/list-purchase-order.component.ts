@@ -53,8 +53,8 @@ export class ListPurchaseOrderComponent implements OnInit {
 
   buildPurchaseOrderForm(): void {
     this.purchaseOrderForm = this._fb.group({
-      cashPartyACId: [0],
-      projectId: [0],
+      cashPartyACId: [null],
+      projectId: [null],
       date: [new Date()],
       orderNo: [""]
     });

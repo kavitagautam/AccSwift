@@ -2,7 +2,7 @@ import { DepotList } from "./../../models/depot.model";
 import { ToastrService } from "ngx-toastr";
 import { Router, ActivatedRoute } from "@angular/router";
 import { DepotService } from "./../../services/depot.service";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
@@ -30,7 +30,10 @@ export class EditDepotComponent implements OnInit {
   buildEditDepotForm(): void {
     this.editDepotForm = this._fb.group({
       depotId: [this.depotDetails ? this.depotDetails.ID : ""],
-      depot: [this.depotDetails ? this.depotDetails.DepotName : ""],
+      depot: [
+        this.depotDetails ? this.depotDetails.DepotName : "",
+        [Validators.required, Validators.maxLength(20)]
+      ],
       city: [this.depotDetails ? this.depotDetails.City : ""],
       telephone: [this.depotDetails ? this.depotDetails.Telephone : ""],
       contact: [this.depotDetails ? this.depotDetails.ContactPerson : ""],

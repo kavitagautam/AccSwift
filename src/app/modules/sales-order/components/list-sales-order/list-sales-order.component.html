@@ -6,7 +6,7 @@
 <div class="accordion" id="accordion">
   <div class="box box-default">
     <div
-      class="box-header with-border"
+      class="box-header with-border collapsed"
       data-toggle="collapse"
       href="#collapseOne"
     >
@@ -14,7 +14,7 @@
         Search Terms
       </h3>
     </div>
-    <div id="collapseOne" class="box-body collapse-in" data-parent="#accordion">
+    <div id="collapseOne" class="box-body collapse" data-parent="#accordion">
       <div class="row">
         <div class="col-md-12">
           <form [formGroup]="salesOrderForm" novalidate>
@@ -28,7 +28,7 @@
               <div class="form-group">
                 <sup>*</sup> <label>Cash/ Party /A/C</label>
                 <select class="form-control" formControlName="cashPartyACId">
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                 </select>
               </div>
             </div>
@@ -42,7 +42,7 @@
               <div class="form-group">
                 <label>Project</label>
                 <select class="form-control" formControlName="projectId">
-                  <option [ngValue]="0" disabled>Select</option>
+                  <option [ngValue]="null">Choose Option....</option>
                 </select>
               </div>
             </div>

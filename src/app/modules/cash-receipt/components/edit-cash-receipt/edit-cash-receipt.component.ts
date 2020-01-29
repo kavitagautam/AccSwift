@@ -50,18 +50,18 @@ export class EditCashReceiptComponent implements OnInit {
   buildCashReceiptForm(): void {
     this.editCashReceiptForm = this._fb.group({
       seriesId: [
-        this.cashReceiptDetails ? this.cashReceiptDetails.SeriesID : 0
+        this.cashReceiptDetails ? this.cashReceiptDetails.SeriesID : null
       ],
       projectId: [
-        this.cashReceiptDetails ? this.cashReceiptDetails.ProjectID : 0
+        this.cashReceiptDetails ? this.cashReceiptDetails.ProjectID : null
       ],
       voucherNo: [
         this.cashReceiptDetails ? this.cashReceiptDetails.VoucherNo : ""
       ],
       cashAccountId: [
-        this.cashReceiptDetails ? this.cashReceiptDetails.LedgerID : 0
+        this.cashReceiptDetails ? this.cashReceiptDetails.LedgerID : null
       ],
-      cashPartyId: [0],
+      cashPartyId: null,
       date: [
         this.cashReceiptDetails
           ? new Date(this.cashReceiptDetails.CreatedDate)

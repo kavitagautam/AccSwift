@@ -48,24 +48,16 @@ export class ListSalesReturnComponent implements OnInit {
 
   buildSalesReturnForm() {
     this.salesReturnForm = this._fb.group({
-      seriesId: [0],
-      cashPartyACId: [0],
-      salesACId: [0],
-      depotLocationId: [0],
-      projectId: [0],
+      seriesId: [null],
+      cashPartyACId: [null],
+      salesACId: [null],
+      depotLocationId: [null],
+      projectId: [null],
       date: [new Date()],
       orderNo: [""],
       remarks: [""]
     });
   }
-
-  //Date String Parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;

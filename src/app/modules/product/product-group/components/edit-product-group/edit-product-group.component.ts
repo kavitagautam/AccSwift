@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { ProductGroupService } from "../../services/product-group.service";
 import { ProductGroup } from "../../models/product-group.models";
@@ -11,6 +11,8 @@ import { ToastrService } from "ngx-toastr";
 })
 export class EditProductGroupComponent implements OnInit {
   @Input("selectedGroupId") selectedGroupId;
+  @Output() onCancel = new EventEmitter<boolean>();
+
   groupDetails: ProductGroup;
   editProductGroupForm: FormGroup;
   constructor(
@@ -25,8 +27,14 @@ export class EditProductGroupComponent implements OnInit {
 
   buildProductGroupForm(): void {
     this.editProductGroupForm = this._fb.group({
-      groupName: [this.groupDetails ? this.groupDetails.EngName : ""],
-      parentGroupId: [this.groupDetails ? this.groupDetails.ParentID : 0],
+      groupName: [
+        this.groupDetails ? this.groupDetails.Name : "",
+        Validators.required
+      ],
+      parentGroupId: [
+        this.groupDetails ? this.groupDetails.ParentGroupID : null,
+        Validators.required
+      ],
       remarks: [this.groupDetails ? this.groupDetails.Remarks : ""]
     });
   }
@@ -60,5 +68,8 @@ export class EditProductGroupComponent implements OnInit {
     );
   }
 
-  cancel(): void {}
+  cancel(): void {
+    //execute callback to the viewProductGroupComponent
+    this.onCancel.emit(true);
+  }
 }

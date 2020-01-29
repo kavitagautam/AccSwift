@@ -71,12 +71,12 @@ export class EditJournalComponent implements OnInit {
 
   buildJournalForm(): void {
     this.editJournalForm = this._fb.group({
-      seriesId: [this.journalDetail ? this.journalDetail.SeriesID : 0],
+      seriesId: [this.journalDetail ? this.journalDetail.SeriesID : null],
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
       date: [
         this.journalDetail ? new Date(this.journalDetail.CreatedDate) : ""
       ],
-      projectId: [this.journalDetail ? this.journalDetail.ProjectID : 0],
+      projectId: [this.journalDetail ? this.journalDetail.ProjectID : null],
       narration: [this.journalDetail ? this.journalDetail.Remarks : ""],
       journalEntryList: [this.addJournalEntryFormGroup()]
     });

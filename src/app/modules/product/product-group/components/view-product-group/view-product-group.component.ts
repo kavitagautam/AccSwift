@@ -27,7 +27,7 @@ export class ViewProductGroupComponent implements OnInit {
 
   buildProductGroupForm(): void {
     this.productGroupForm = this._fb.group({
-      groupName: [this.groupDetails ? this.groupDetails.EngName : ""],
+      groupName: [this.groupDetails ? this.groupDetails.Name : ""],
       parentGroup: [this.groupDetails ? this.groupDetails.ParentGroupName : ""],
       remarks: [this.groupDetails ? this.groupDetails.Remarks : ""]
     });
