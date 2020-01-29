@@ -48,13 +48,19 @@
               <div class="col-md-12">
                 <div class="grid-wrapper-listView">
                   <kendo-grid [data]="productListView" [height]="495">
-                    <kendo-grid-column field="EngName" title="Name">
+                    <kendo-grid-column field="Name" title="Name">
                     </kendo-grid-column>
-                    <kendo-grid-column field="GroupName" title="Group Name">
+                    <kendo-grid-column field="ProductCode" title="Product Code">
                     </kendo-grid-column>
-                    <kendo-grid-column field="Code" title="Code">
+                    <kendo-grid-column
+                      field="ProductColor"
+                      title="Product Color"
+                    >
                     </kendo-grid-column>
-                    <kendo-grid-column field="TotalValue" title="Total Value">
+                    <kendo-grid-column
+                      field="IsVatApplicable"
+                      title="Vat Applicable"
+                    >
                     </kendo-grid-column>
                   </kendo-grid>
                   <div *ngIf="listViewLoading" class="k-i-loading"></div>

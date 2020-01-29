@@ -21,7 +21,6 @@ import { Subject } from "rxjs";
 })
 export class AddProductGroupComponent implements OnInit {
   @Input("selectedGroupId") selectedGroupId;
-  @Output() onSave: Subject<boolean>;
   @Output() onCancel = new EventEmitter<boolean>();
 
   groupDetails: ProductGroup;
@@ -43,7 +42,7 @@ export class AddProductGroupComponent implements OnInit {
     this.addProductGroupForm = this._fb.group({
       groupName: ["", Validators.required],
       parentGroupId: [
-        this.groupDetails ? this.groupDetails.ParentGroupName : null,
+        this.groupDetails ? this.groupDetails.ParentGroupID : null,
         Validators.required
       ],
       remarks: [""]
@@ -62,15 +61,15 @@ export class AddProductGroupComponent implements OnInit {
   save(): void {
     if (this.addProductGroupForm.invalid) return;
     const obj = {
-      ParentID: this.addProductGroupForm.get("parentGroupId").value,
-      EngName: this.addProductGroupForm.get("groupName").value,
+      ParentGroupID: this.addProductGroupForm.get("parentGroupId").value,
+      Name: this.addProductGroupForm.get("groupName").value,
       Remarks: this.addProductGroupForm.get("remarks").value
     };
     this.productGroupService.addProductGroup(obj).subscribe(
       response => {
-        this.onSave.next(true);
-
-        // window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       },
       error => {
         this.toastr.error(JSON.stringify(error.error.Message));

@@ -63,11 +63,11 @@ export class ListProductComponent implements OnInit {
     );
   }
 
-  loadLedgerlistView(): void {
+  loadProductListView(): void {
     this.listViewLoading = true;
     this.productService.getProductList().subscribe(
-      res => {
-        this.productListView = res;
+      response => {
+        this.productListView = response.Entity;
       },
       error => {
         this.listViewLoading = false;
@@ -80,7 +80,7 @@ export class ListProductComponent implements OnInit {
 
   public onTabSelect(e) {
     if (e.index == 1) {
-      this.loadLedgerlistView();
+      this.loadProductListView();
     }
   }
 
