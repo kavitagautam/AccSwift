@@ -9,7 +9,7 @@ const routes: Routes = [
     loadChildren: "@modules/auth/login/login.module#LoginModule"
   },
   {
-    path: "signup",
+    path: "register",
     loadChildren: "@modules/auth/register/register.module#RegisterModule"
   },
   {
@@ -113,6 +113,12 @@ const routes: Routes = [
         data: {
           breadcrumb: "Ledger"
         }
+      },
+      {
+        path: "compound-unit",
+        loadChildren:
+          "@modules/compound-unit/compound-unit.module#CompoundUnitModule",
+        data: { breadcrumb: "Compound Unit" }
       },
       {
         path: "unit-maintenance",
