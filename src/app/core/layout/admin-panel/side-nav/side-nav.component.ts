@@ -95,6 +95,12 @@ export class SideNavComponent implements OnInit {
       route: "/depot"
     },
     {
+      id: 16,
+      displayName: "Stock Transfer",
+      iconName: "fas fa-repeat",
+      route: "/stock-transfer"
+    },
+    {
       id: 9,
       displayName: "Purchase",
       iconName: "fa fa-shopping-cart",

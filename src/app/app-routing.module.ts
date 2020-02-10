@@ -22,6 +22,15 @@ const routes: Routes = [
         path: "dashboard",
         loadChildren: "@modules/dashboard/dashboard.module#DashboardModule"
       },
+
+      {
+        path: "stock-transfer",
+        loadChildren:
+          "@modules/stock-transfer/stock-transfer.module#StockTransferModule",
+        data: {
+          breadcrumb: "Stock Transfer"
+        }
+      },
       {
         path: "journal",
         loadChildren:
