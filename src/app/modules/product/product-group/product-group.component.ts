@@ -14,6 +14,10 @@ import {
 import { AddProductGroupComponent } from "./components/add-product-group/add-product-group.component";
 import { ViewProductGroupComponent } from "./components/view-product-group/view-product-group.component";
 import { EditProductGroupComponent } from "./components/edit-product-group/edit-product-group.component";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ProductGroupService } from "./services/product-group.service";
+import { ToastrService } from "ngx-toastr";
 
 export function decoratorOfType<T>(
   decoratedType: Type<any>,
@@ -29,6 +33,7 @@ export function decoratorOfType<T>(
       annotation instanceof decoratorType
   );
 }
+
 @Component({
   selector: "accSwift-product-group",
   templateUrl: "./product-group.component.html",
@@ -42,8 +47,19 @@ export class ProductGroupComponent implements OnInit, OnChanges {
   @ViewChild("dynamicContentDiv", { read: ViewContainerRef })
   dynamicContentDiv: ViewContainerRef;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
+  constructor(
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private modalService: BsModalService,
+    private productGroupService: ProductGroupService,
+    private toastr: ToastrService
+  ) {}
 
+  modalRef: BsModalRef;
+  // modal config to unhide modal when clicked outside
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true
+  };
   ngOnInit() {
     // this.createComponent(ProductGroupModule, "accSwift-view-product-group");
     this.viewProductGroup();
@@ -83,6 +99,12 @@ export class ProductGroupComponent implements OnInit, OnChanges {
     );
     const componentRef = this.dynamicContentDiv.createComponent(factory);
     componentRef.instance.selectedGroupId = this.selectedGroupId;
+
+    componentRef.instance.onCancel.subscribe(data => {
+      if (data) {
+        this.viewProductGroup();
+      }
+    });
     // this.createComponent(ProductGroupModule, "accSwift-edit-product-group");
   }
 
@@ -93,11 +115,46 @@ export class ProductGroupComponent implements OnInit, OnChanges {
     );
     const componentRef = this.dynamicContentDiv.createComponent(factory);
     componentRef.instance.selectedGroupId = this.selectedGroupId;
+
+    componentRef.instance.onCancel.subscribe(data => {
+      if (data) {
+        this.viewProductGroup();
+      }
+    });
     //  this.createComponent(ProductGroupModule, "accSwift-add-product-group");
   }
 
-  deleteProductGroup(): void {}
+  public deleteProductGroupByID(id): void {
+    this.productGroupService.deleteProductGroupByID(id).subscribe(
+      response => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      },
+      error => {
+        this.toastr.success(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Product Group deleted successfully");
+      }
+    );
+  }
 
+  deleteProductGroup(): void {
+    this.modalRef = this.modalService.show(
+      ConfirmationDialogComponent,
+      this.config
+    );
+    this.modalRef.content.data = "product group";
+    this.modalRef.content.action = "delete";
+    this.modalRef.content.onClose.subscribe(confirm => {
+      if (confirm) {
+        this.deleteProductGroupByID(this.selectedGroupId);
+      }
+    });
+  }
+
+  // this section of code is for future  enhancement
   private createComponent(moduconstype: Type<any>, componentSelector: string) {
     // get the @NgModule decorator
     const ngModuleAnnotation = decoratorOfType(moduconstype, NgModule);

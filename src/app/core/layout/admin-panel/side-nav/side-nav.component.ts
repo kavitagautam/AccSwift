@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { environment } from "@env/environment.prod";
+import { IntlService } from "@progress/kendo-angular-intl";
+import { LocaleService } from "@app/core/services/locale/locale.services";
 
 @Component({
   selector: "accswift-side-nav",
@@ -7,6 +9,16 @@ import { environment } from "@env/environment.prod";
   styleUrls: ["./side-nav.component.scss"]
 })
 export class SideNavComponent implements OnInit {
+  userName: string;
+  userInfo: any;
+  constructor() {}
+
+  ngOnInit() {
+    this.userName = "Admin";
+    this.userInfo = {
+      email_address: "admin@bentraytech.com"
+    };
+  }
   defaultImagePath = environment.defaultImagePath;
   imageUrl = environment.defaultImagePath;
   navItems = [
@@ -28,27 +40,28 @@ export class SideNavComponent implements OnInit {
         },
         {
           displayName: "Cash Receipt",
-          iconName: "fas fa-money-bill",
+          iconName: "fa fa-money",
           route: "/cash-receipt"
         },
         {
           displayName: "Bank Receipt",
-          iconName: "fas fa-file-invoice",
+          iconName: "fas fa-money-check-alt",
           route: "/bank-receipt"
         },
         {
           displayName: "Cash Payment",
-          iconName: "fas fa-file-invoice-dollar",
+          iconName: "fas fa-rupee-sign",
           route: "/cash-payment"
         },
+
         {
           displayName: "Bank Payment",
-          iconName: "fas fa-file-invoice-dollar",
+          iconName: "fa fa-credit-card",
           route: "/bank-payment"
         },
         {
           displayName: "Bank Reconciliation",
-          iconName: "fas fa-file-invoice-dollar",
+          iconName: "fa fa-handshake-o",
           route: "/bank-reconciliation"
         },
         {
@@ -84,9 +97,20 @@ export class SideNavComponent implements OnInit {
     },
     {
       id: 15,
-      displayName: "Unit Maintenance",
-      iconName: "fas fa-file-invoice-dollar",
-      route: "/unit-maintenance"
+      displayName: "Unit",
+      iconName: "fa fa-balance-scale",
+      children: [
+        {
+          displayName: "Unit Maintenance",
+          iconName: "fa fa-cogs",
+          route: "/unit-maintenance"
+        },
+        {
+          displayName: "Compound Unit",
+          iconName: "fa fa-external-link",
+          route: "/compound-unit"
+        }
+      ]
     },
     {
       id: 11,
@@ -157,15 +181,4 @@ export class SideNavComponent implements OnInit {
       route: "/settings"
     }
   ];
-
-  userName: string;
-  userInfo: any;
-  constructor() {}
-
-  ngOnInit() {
-    this.userName = "Admin";
-    this.userInfo = {
-      email_address: "admin@bentraytech.com"
-    };
-  }
 }

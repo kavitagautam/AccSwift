@@ -44,18 +44,16 @@ export interface OpeningQuantities {
 
 export interface ProductGroup {
   ID: number;
-  ParentID: number;
+  ParentGroupID: number;
   ParentGroupName: string;
-  Level: number;
-  EngName: string;
-  NepName: string;
-  IsBuiltIn: boolean;
-  BackColor: number;
+  Name: string;
+  BackColor: string;
+  CompanyID: number;
   Remarks: string;
   CreatedBy: string;
-  CreatedDate: Date;
+  CreatedDate: string;
   ModifiedBy: string;
-  ModifiedDate?: any;
+  ModifiedDate: string;
 }
 
 export interface ProductGroupModel {

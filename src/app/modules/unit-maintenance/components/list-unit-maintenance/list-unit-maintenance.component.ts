@@ -64,7 +64,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   buildUnitMaintenanceForm(): void {
     this.unitSearchForm = this._fb.group({
-      unit: [""],
+      unitName: [""],
       symbol: [""],
       remarks: [""]
     });
@@ -73,28 +73,14 @@ export class ListUnitMaintenanceComponent implements OnInit {
   searchForm(): void {
     this.searchFilterList = [];
     if (this.unitSearchForm.invalid) return;
-    if (this.unitSearchForm.get("unit").value) {
-      this.searchFilterList.push({
-        Field: "UnitName",
-        Operator: "=",
-        Value: this.unitSearchForm.get("unit").value
-      });
-    }
-
-    if (this.unitSearchForm.get("symbol").value) {
-      this.searchFilterList.push({
-        Field: "Symbol",
-        Operator: "=",
-        Value: this.unitSearchForm.get("symbol").value
-      });
-    }
-
-    if (this.unitSearchForm.get("remarks").value) {
-      this.searchFilterList.push({
-        Field: "Remarks",
-        Operator: "=",
-        Value: this.unitSearchForm.get("remarks").value
-      });
+    for (const key in this.unitSearchForm.value) {
+      if (this.unitSearchForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "=",
+          value: this.unitSearchForm.value[key]
+        });
+      }
     }
     this.getUnits();
   }
@@ -193,7 +179,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
         this.getUnits();
       },
       error => {
-        this.toastr.error(JSON.stringify(error));
+        this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
         this.toastr.success("Units deleted successfully");
