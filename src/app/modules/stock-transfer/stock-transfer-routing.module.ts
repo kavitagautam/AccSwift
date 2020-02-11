@@ -16,7 +16,7 @@ const routes: Routes = [
     data: { breadcrumb: "Add Stock Transfer" }
   },
   {
-    path: "edit",
+    path: "edit/:id",
     component: EditStockTransferComponent,
     data: { breadcrumb: "Edit Stock Transfer" }
   }

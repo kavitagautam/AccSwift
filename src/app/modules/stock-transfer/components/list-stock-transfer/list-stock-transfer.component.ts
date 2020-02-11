@@ -20,6 +20,7 @@ import { SalesOrderService } from "@app/modules/sales-order/services/sales-order
 })
 export class ListStockTransferComponent implements OnInit {
   stockTransferForm: FormGroup;
+  stockTransferList: any;
   date: Date = new Date();
   listLoading: Boolean;
   public gridView: GridDataResult;
@@ -42,12 +43,10 @@ export class ListStockTransferComponent implements OnInit {
     ignoreBackdropClick: true
   };
   modalService: BsModalService;
-  salesOrderList: any;
 
   constructor(
     private fb: FormBuilder,
     public stockTransferService: StockTransferService,
-    public salesOrderService: SalesOrderService,
     private router: Router,
     private toastr: ToastrService
   ) {}
@@ -77,10 +76,10 @@ export class ListStockTransferComponent implements OnInit {
     //     OrderBy: "",
     //     Direction: "asc"
     //   };
-    //   this.salesOrderService.getSalesOrderMaster().subscribe(
+    //   this.stockTransferService.getSalesOrderMaster().subscribe(
     //     response => {
     //       this.listLoading = true;
-    //       this.salesOrderList = response;
+    //       this.stockTransferList = response;
     //       this.gridView = {
     //         data: this.salesOrderList.slice(this.skip, this.skip + this.pageSize),
     //         total: this.salesOrderList ? this.salesOrderList.length : 0
