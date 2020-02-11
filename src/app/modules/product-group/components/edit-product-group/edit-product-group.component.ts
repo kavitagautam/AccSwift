@@ -6,7 +6,7 @@ import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-edit-product-group",
-  templateUrl: "./edit-product-group.component.html",
+  templateUrl: "../common-template/product-group.component.html",
   styleUrls: ["./edit-product-group.component.scss"]
 })
 export class EditProductGroupComponent implements OnInit {
@@ -14,7 +14,7 @@ export class EditProductGroupComponent implements OnInit {
   @Output() onCancel = new EventEmitter<boolean>();
 
   groupDetails: ProductGroup;
-  editProductGroupForm: FormGroup;
+  productGroupForm: FormGroup;
   constructor(
     private _fb: FormBuilder,
     public productGroupService: ProductGroupService,
@@ -27,7 +27,7 @@ export class EditProductGroupComponent implements OnInit {
   }
 
   buildProductGroupForm(): void {
-    this.editProductGroupForm = this._fb.group({
+    this.productGroupForm = this._fb.group({
       groupName: [
         this.groupDetails ? this.groupDetails.Name : "",
         Validators.required
@@ -48,13 +48,14 @@ export class EditProductGroupComponent implements OnInit {
         this.buildProductGroupForm();
       });
   }
+
   save(): void {
-    if (this.editProductGroupForm.invalid) return;
+    if (this.productGroupForm.invalid) return;
     const obj = {
       ID: this.groupDetails.ID,
-      ParentGroupID: this.editProductGroupForm.get("parentGroupId").value,
-      Name: this.editProductGroupForm.get("groupName").value,
-      Remarks: this.editProductGroupForm.get("remarks").value
+      ParentGroupID: this.productGroupForm.get("parentGroupId").value,
+      Name: this.productGroupForm.get("groupName").value,
+      Remarks: this.productGroupForm.get("remarks").value
     };
     this.productGroupService.updateProductGroup(obj).subscribe(
       response => {
