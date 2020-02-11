@@ -99,3 +99,37 @@ export interface ProductGroupTree {
   Message: string;
   Entity: Entity;
 }
+
+export interface ProductGroup {
+  ID: number;
+  ParentGroupID: number;
+  ParentGroupName: string;
+  Name: string;
+  BackColor: string;
+  CompanyID: number;
+  Remarks: string;
+  CreatedBy: string;
+  CreatedDate: string;
+  ModifiedBy: string;
+  ModifiedDate: string;
+}
+
+export interface DepotList {
+  ID: number;
+  DepotName: string;
+  City: string;
+  Telephone: string;
+  ContactPerson: string;
+  LicenceNo: string;
+  DepotAddress: string;
+  PostalCode: string;
+  Mobile: string;
+  RegNo: string;
+  Remarks: string;
+}
+
+export interface DepotModel {
+  StatusCode: number;
+  Message: string;
+  Entity: DepotList[];
+}

@@ -14,7 +14,7 @@ export class ViewProductGroupComponent implements OnInit {
   productGroupForm: FormGroup;
   constructor(
     public _fb: FormBuilder,
-    private productGroupService: ProductGroupService
+    public productGroupService: ProductGroupService
   ) {}
 
   ngOnInit() {
@@ -26,9 +26,24 @@ export class ViewProductGroupComponent implements OnInit {
 
   buildProductGroupForm(): void {
     this.productGroupForm = this._fb.group({
-      groupName: [this.groupDetails ? this.groupDetails.Name : ""],
-      parentGroup: [this.groupDetails ? this.groupDetails.ParentGroupName : ""],
-      remarks: [this.groupDetails ? this.groupDetails.Remarks : ""]
+      groupName: [
+        {
+          value: this.groupDetails ? this.groupDetails.Name : "",
+          disabled: true
+        }
+      ],
+      parentGroupID: [
+        {
+          value: this.groupDetails ? this.groupDetails.ParentGroupID : null,
+          disabled: true
+        }
+      ],
+      remarks: [
+        {
+          value: this.groupDetails ? this.groupDetails.Remarks : "",
+          disabled: true
+        }
+      ]
     });
   }
 

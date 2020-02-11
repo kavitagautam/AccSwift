@@ -12,7 +12,9 @@ import { ViewProductComponent } from "./view-product/view-product.component";
 import { ToastrService } from "ngx-toastr";
 import { EditProductComponent } from "./edit-product/edit-product.component";
 import { AddProductComponent } from "./add-product/add-product.component";
-import { BsModalRef } from "ngx-bootstrap";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { ProductService } from "../../services/product.service";
+import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-product",
@@ -31,6 +33,7 @@ export class ProductComponent implements OnInit, OnChanges {
   dynamicProductContentDiv: ViewContainerRef;
 
   selectedProductId: number;
+
   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
@@ -39,7 +42,9 @@ export class ProductComponent implements OnInit, OnChanges {
   };
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private productService: ProductService,
+    private modalService: BsModalService
   ) {}
 
   ngOnInit() {
@@ -81,7 +86,6 @@ export class ProductComponent implements OnInit, OnChanges {
         this.viewProduct();
       }
     });
-    // this.createComponent(ProductGroupModule, "accSwift-edit-product-group");
   }
 
   addProduct(): void {
@@ -97,22 +101,35 @@ export class ProductComponent implements OnInit, OnChanges {
         this.viewProduct();
       }
     });
-    //  this.createComponent(ProductGroupModule, "accSwift-add-product-group");
+  }
+
+  deleteProductGroup(): void {
+    this.modalRef = this.modalService.show(
+      ConfirmationDialogComponent,
+      this.config
+    );
+    this.modalRef.content.data = "product";
+    this.modalRef.content.action = "delete";
+    this.modalRef.content.onClose.subscribe(confirm => {
+      if (confirm) {
+        this.deleteProductByID(this.selectedProductId);
+      }
+    });
   }
 
   public deleteProductByID(id): void {
-    // this.productGroupService.deleteProductGroupByID(id).subscribe(
-    //   response => {
-    //     setTimeout(() => {
-    //       window.location.reload();
-    //     }, 1000);
-    //   },
-    //   error => {
-    //     this.toastr.success(JSON.stringify(error.error.Message));
-    //   },
-    //   () => {
-    //     this.toastr.success("Product Group deleted successfully");
-    //   }
-    // );
+    this.productService.deleteProductByID(id).subscribe(
+      response => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      },
+      error => {
+        this.toastr.success(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Product deleted successfully");
+      }
+    );
   }
 }

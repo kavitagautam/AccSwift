@@ -11,13 +11,12 @@ export class ViewProductComponent implements OnInit {
   @Input("selectedProductId") selectedProductId;
   private editedRowIndex: number;
   submitted: boolean;
+  showActions = false;
+
   rowSubmitted: boolean;
   productDetails;
   productForm: FormGroup;
-  constructor(
-    public _fb: FormBuilder,
-    private productService: ProductService
-  ) {}
+  constructor(public _fb: FormBuilder, public productService: ProductService) {}
 
   ngOnInit() {
     this.getProductDetails();
@@ -27,23 +26,56 @@ export class ViewProductComponent implements OnInit {
   buildProductForm(): void {
     this.productForm = this._fb.group({
       productCode: [
-        this.productDetails ? this.productDetails.ProductCode : "",
+        {
+          value: this.productDetails ? this.productDetails.ProductCode : "",
+          disabled: true
+        },
         Validators.required
       ],
       productName: [
-        this.productDetails ? this.productDetails.Name : "",
+        {
+          value: this.productDetails ? this.productDetails.Name : "",
+          disabled: true
+        },
         Validators.required
       ],
-      productGroup: [
-        this.productDetails ? this.productDetails.GroupName : "",
+      productGroupId: [
+        {
+          value: this.productDetails ? this.productDetails.GroupID : null,
+          disabled: true
+        },
         Validators.required
       ],
-      departmentandLocation: [""],
-      baseUnit: [
-        this.productDetails ? this.productDetails.UnitMaintenanceID : "",
+      departmentandLocationId: [
+        {
+          value: this.productDetails ? this.productDetails.DepotID : null,
+          disabled: true
+        },
         Validators.required
       ],
-      remarks: [this.productDetails ? this.productDetails.Remarks : ""],
+      baseUnitId: [
+        {
+          value: this.productDetails ? this.productDetails.UnitID : null,
+          disabled: true
+        },
+        Validators.required
+      ],
+      isVatApplicable: [
+        this.productDetails ? this.productDetails.IsVatApplicable : false,
+        Validators.required
+      ],
+      isDecimalApplicable: [
+        this.productDetails ? this.productDetails.IsDecimalApplicable : false
+      ],
+      isInventoryApplicable: [
+        this.productDetails ? this.productDetails.IsInventoryApplicable : false
+      ],
+      remarks: [
+        {
+          value: this.productDetails ? this.productDetails.Remarks : "",
+          disabled: true
+        }
+      ],
       openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()])
     });
   }
@@ -54,14 +86,57 @@ export class ViewProductComponent implements OnInit {
       .subscribe(response => {
         this.productDetails = response.Entity;
         this.buildProductForm();
+        this.setOpeingQuantity();
       });
   }
 
+  setOpeingQuantity(): void {
+    this.productForm.setControl(
+      "openingBalanceList",
+      this.setOpeningBalanceFormArray(this.productDetails.OpeningQuantity)
+    );
+  }
+
+  setOpeningBalanceFormArray(openingQuantities): FormArray {
+    const openingQuantitiesFormArray = new FormArray([]);
+    if (openingQuantities && openingQuantities.length > 0) {
+      openingQuantities.forEach(element => {
+        openingQuantitiesFormArray.push(
+          this._fb.group({
+            ID: [element.ID],
+            productId: [element.ProductID],
+            accountClassId: [element.AccClassID, Validators.required],
+            quantity: element.OpenPurchaseQty,
+            purchaseRate: [element.OpenPurchaseRate],
+            salesRate: [element.OpenSalesRate],
+            date: [new Date(element.OpenQuantityDate)]
+          })
+        );
+      });
+    } else {
+      openingQuantitiesFormArray.push(
+        this._fb.group({
+          ID: [""],
+          productId: [""],
+          accountClassId: ["", Validators.required],
+          quantity: "",
+          purchaseRate: [""],
+          salesRate: [""],
+          date: [""]
+        })
+      );
+    }
+    return openingQuantitiesFormArray;
+  }
   addOpeningBalanceFormGroup(): FormGroup {
     return this._fb.group({
-      accountClass: [""],
-      openingBalance: [""],
-      balanceType: [""]
+      ID: [""],
+      productId: [""],
+      accountClassId: ["", Validators.required],
+      quantity: "",
+      purchaseRate: [""],
+      salesRate: [""],
+      date: [""]
     });
   }
 

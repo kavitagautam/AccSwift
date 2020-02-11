@@ -20,21 +20,37 @@
               </div>
               <div class="form-group">
                 <label>Product Group<sup>*</sup> </label>
-                <input
-                  type="text"
+                <select
                   class="form-control"
-                  formControlName="productGroup"
+                  id="productGroupId"
+                  formControlName="productGroupId"
                   accSwiftFormValidator
-                />
+                >
+                  <option [ngValue]="null">Choose Option....</option>
+                  <option
+                    *ngFor="let productGroup of productService.productGroupList"
+                    [ngValue]="productGroup.ID"
+                  >
+                    {{ productGroup.Name }}</option
+                  >
+                </select>
               </div>
               <div class="form-group">
                 <label>Base Unit<sup>*</sup></label>
-                <input
-                  type="text"
+                <select
                   class="form-control"
-                  formControlName="baseUnit"
+                  id="baseUnitId"
+                  formControlName="baseUnitId"
                   accSwiftFormValidator
-                />
+                >
+                  <option [ngValue]="null">Choose Option....</option>
+                  <option
+                    *ngFor="let unit of productService.unitList"
+                    [ngValue]="unit.ID"
+                  >
+                    {{ unit.UnitName }}</option
+                  >
+                </select>
               </div>
               <div class="form-group">
                 <label>Opening Balance <sup>*</sup></label>
@@ -60,12 +76,21 @@
                 />
               </div>
               <div class="form-group">
-                <label>Depot/Location </label>
-                <input
-                  type="text"
+                <label>Depot/Location <sup>*</sup></label>
+                <select
                   class="form-control"
-                  formControlName="departmentandLocation"
-                />
+                  id="departmentandLocationId"
+                  formControlName="departmentandLocationId"
+                  accSwiftFormValidator
+                >
+                  <option [ngValue]="null">Choose Option....</option>
+                  <option
+                    *ngFor="let depot of productService.depotList"
+                    [ngValue]="depot.ID"
+                  >
+                    {{ depot.DepotName }}</option
+                  >
+                </select>
               </div>
               <div class="form-group">
                 <label>Remarks</label>
@@ -78,14 +103,9 @@
 
               <div class="form-group">
                 <div class="checkbox">
-                  <label> <input type="checkbox" /> IsVat Applicable </label>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <div class="checkbox">
                   <label>
-                    <input type="checkbox" /> IsInventory Applicable
+                    <input type="checkbox" formControlName="isVatApplicable" />
+                    IsVat Applicable
                   </label>
                 </div>
               </div>
@@ -93,7 +113,23 @@
               <div class="form-group">
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" /> IsDecimal Applicable
+                    <input
+                      type="checkbox"
+                      formControlName="isInventoryApplicable"
+                    />
+                    IsInventory Applicable
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      formControlName="isDecimalApplicable"
+                    />
+                    IsDecimal Applicable
                   </label>
                 </div>
               </div>
@@ -101,7 +137,7 @@
           </div>
         </form>
 
-        <div class="col-md-12 m-2">
+        <div class="col-md-12 m-2" *ngIf="showActions">
           <button
             class="btn btn-primary"
             (click)="saveProduct()"
@@ -168,7 +204,7 @@
                 <button kendoGridAddCommand>Add new</button>
               </ng-template>
 
-              <kendo-grid-column field="accountClass" title="Account Class">
+              <kendo-grid-column field="productId" title="Product">
                 <ng-template
                   kendoGridCellTemplate
                   let-dataItem="dataItem"
@@ -181,34 +217,31 @@
                     #input
                     class="k-textbox"
                     [formControl]="
-                      getOpeningBalanceList.controls[rowIndex].get(
-                        'accountClass'
-                      )
+                      getOpeningBalanceList.controls[rowIndex].get('productId')
                     "
                   />
                   <kendo-popup
                     [anchor]="input"
                     *ngIf="
-                      getOpeningBalanceList.controls[rowIndex].get(
-                        'accountClass'
-                      ).invalid &&
+                      getOpeningBalanceList.controls[rowIndex].get('productId')
+                        .invalid &&
                       rowSubmitted &&
                       !(
                         isNew &&
                         getOpeningBalanceList.controls[rowIndex].get(
-                          'accountClass'
+                          'productId'
                         ).untouched
                       )
                     "
                     popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
                   >
                     <span class="k-icon k-i-warning"></span>
-                    Account Class is required
+                    Product is required
                   </kendo-popup>
                 </ng-template>
               </kendo-grid-column>
 
-              <kendo-grid-column field="openingBalance" title="Opening Balance">
+              <kendo-grid-column field="accountClassId" title="Account Class">
                 <ng-template
                   kendoGridCellTemplate
                   let-dataItem="dataItem"
@@ -227,7 +260,7 @@
                 </ng-template>
               </kendo-grid-column>
 
-              <kendo-grid-column field="balanceType" title="Balance Type">
+              <kendo-grid-column field="quantity" title="Quantity ">
                 <ng-template
                   kendoGridCellTemplate
                   let-dataItem="dataItem"
@@ -240,9 +273,44 @@
                     #ntb="popupAnchor"
                     popupAnchor
                     [formControl]="
-                      getOpeningBalanceList.controls[rowIndex].get(
-                        'balanceType'
-                      )
+                      getOpeningBalanceList.controls[rowIndex].get(column.field)
+                    "
+                  ></kendo-numerictextbox>
+                </ng-template>
+              </kendo-grid-column>
+              <kendo-grid-column field="purchaseRate" title="Purchase Rate">
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
+                >
+                  <kendo-numerictextbox
+                    #ntb="popupAnchor"
+                    popupAnchor
+                    [formControl]="
+                      getOpeningBalanceList.controls[rowIndex].get(column.field)
+                    "
+                  ></kendo-numerictextbox>
+                </ng-template>
+              </kendo-grid-column>
+
+              <kendo-grid-column field="salesRate" title="Sales Rate">
+                <ng-template
+                  kendoGridCellTemplate
+                  let-dataItem="dataItem"
+                  let-column="column"
+                  let-formGroup="formGroup"
+                  let-isNew="isNew"
+                  let-rowIndex="rowIndex"
+                >
+                  <kendo-numerictextbox
+                    #ntb="popupAnchor"
+                    popupAnchor
+                    [formControl]="
+                      getOpeningBalanceList.controls[rowIndex].get(column.field)
                     "
                   ></kendo-numerictextbox>
                 </ng-template>
@@ -250,7 +318,6 @@
               <kendo-grid-command-column title="Action">
                 <ng-template kendoGridCellTemplate let-isNew="isNew">
                   <button class="k-button" kendoGridAddCommand>Add</button>
-                  <!-- <button kendoGridEditCommand [primary]="true">Edit</button> -->
                   <button kendoGridRemoveCommand>Remove</button>
                   <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
                     {{ isNew ? "Add" : "Update" }}
