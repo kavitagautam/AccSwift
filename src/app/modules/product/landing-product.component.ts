@@ -1,15 +1,15 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { ProductService } from "../../services/product.service";
+import { FormGroup, FormBuilder } from "@angular/forms";
+import { ProductService } from "./services/product.service";
 const is = (fileName: string, ext: string) =>
   new RegExp(`.${ext}\$`).test(fileName);
 
 @Component({
-  selector: "accSwift-list-product",
-  templateUrl: "./list-product.component.html",
-  styleUrls: ["./list-product.component.scss"]
+  selector: "accSwift-landing-product",
+  templateUrl: "./landing-product.component.html",
+  styleUrls: ["./landing-product.component.scss"]
 })
-export class ListProductComponent implements OnInit {
+export class LandingProductComponent implements OnInit {
   @Output("selectedProductGroup") selectedProductGroup = new EventEmitter();
   @Output("selectedProduct") selectedProduct = new EventEmitter();
 

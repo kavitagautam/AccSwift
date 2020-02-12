@@ -1,30 +1,21 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
-  ViewContainerRef,
-  ComponentFactoryResolver
-} from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ProductGroup } from "../../models/product-group.models";
 import { ToastrService } from "ngx-toastr";
 import { ProductGroupService } from "../../services/product-group.service";
-import { Subject } from "rxjs";
 
 @Component({
   selector: "accSwift-add-product-group",
-  templateUrl: "./add-product-group.component.html",
+  templateUrl: "../common-template/product-group.component.html",
   styleUrls: ["./add-product-group.component.scss"]
 })
 export class AddProductGroupComponent implements OnInit {
   @Input("selectedGroupId") selectedGroupId;
   @Output() onCancel = new EventEmitter<boolean>();
+  showActions = true;
 
   groupDetails: ProductGroup;
-  addProductGroupForm: FormGroup;
+  productGroupForm: FormGroup;
   constructor(
     private _fb: FormBuilder,
     public productGroupService: ProductGroupService,
@@ -39,7 +30,7 @@ export class AddProductGroupComponent implements OnInit {
   }
 
   buildProductGroupForm(): void {
-    this.addProductGroupForm = this._fb.group({
+    this.productGroupForm = this._fb.group({
       groupName: ["", Validators.required],
       parentGroupId: [
         this.groupDetails ? this.groupDetails.ParentGroupID : null,
@@ -59,11 +50,11 @@ export class AddProductGroupComponent implements OnInit {
   }
 
   save(): void {
-    if (this.addProductGroupForm.invalid) return;
+    if (this.productGroupForm.invalid) return;
     const obj = {
-      ParentGroupID: this.addProductGroupForm.get("parentGroupId").value,
-      Name: this.addProductGroupForm.get("groupName").value,
-      Remarks: this.addProductGroupForm.get("remarks").value
+      ParentGroupID: this.productGroupForm.get("parentGroupId").value,
+      Name: this.productGroupForm.get("groupName").value,
+      Remarks: this.productGroupForm.get("remarks").value
     };
     this.productGroupService.addProductGroup(obj).subscribe(
       response => {
