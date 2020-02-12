@@ -48,9 +48,9 @@ export class AddCashReceiptComponent implements OnInit {
     this.addCashReceiptForm = this._fb.group({
       seriesId: [null],
       projectId: [null],
-      voucherNo: [""],
-      cashAccountId: [null],
-      cashPartyId: null,
+      voucherNo: ["", [Validators.required]],
+      cashAccountId: [null, [Validators.required]],
+      cashPartyId: [null, [Validators.required]],
       date: [new Date()],
       cashReceiptEntryList: this._fb.array([
         this.addCashReceiptEntryFormGroup()

@@ -1,7 +1,7 @@
 import { SalesInvoiceMaster } from "./../models/sales-invoice.model";
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
 import { ActivatedRoute } from "@angular/router";
-import { FormArray } from "@angular/forms";
+import { FormArray, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
@@ -35,13 +35,20 @@ export class EditSalesInvoiceComponent implements OnInit {
     this.editInvoiceForm = this._fb.group({
       seriesId: [this.salesDetails ? this.salesDetails.SeriesID : null],
       cashPartyACId: [
-        this.salesDetails ? this.salesDetails.CashPartyLedgerID : null
+        this.salesDetails ? this.salesDetails.CashPartyLedgerID : null,
+        [Validators.required]
       ],
-      salesACId: [this.salesDetails ? this.salesDetails.SalesLedgerID : null],
+      salesACId: [
+        this.salesDetails ? this.salesDetails.SalesLedgerID : null,
+        [Validators.required]
+      ],
       depotLocationId: [this.salesDetails ? this.salesDetails.DepotID : null],
       projectId: [this.salesDetails ? this.salesDetails.ProjectID : null],
       date: [this.salesDetails ? new Date(this.salesDetails.CreatedDate) : ""],
-      orderNo: [this.salesDetails ? this.salesDetails.OrderNo : ""],
+      orderNo: [
+        this.salesDetails ? this.salesDetails.OrderNo : "",
+        [Validators.required]
+      ],
       invoiceEntryList: this._fb.array([this.addInvoiceEntryList()])
     });
   }

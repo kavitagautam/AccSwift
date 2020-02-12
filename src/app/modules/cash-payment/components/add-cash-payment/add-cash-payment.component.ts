@@ -34,7 +34,7 @@ export class AddCashPaymentComponent implements OnInit {
       projectId: [null],
       voucherNo: ["", [Validators.required]],
       cashPartyId: [null, [Validators.required]],
-      cashAccountId: [null],
+      cashAccountId: [null, [Validators.required]],
       date: [new Date()],
       cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryList()])
     });
