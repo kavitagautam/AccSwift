@@ -15,6 +15,8 @@ export class EditProductGroupComponent implements OnInit {
 
   groupDetails: ProductGroup;
   productGroupForm: FormGroup;
+  showActions = true;
+
   constructor(
     private _fb: FormBuilder,
     public productGroupService: ProductGroupService,

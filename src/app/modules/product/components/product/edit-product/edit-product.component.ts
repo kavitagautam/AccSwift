@@ -80,20 +80,18 @@ export class EditProductComponent implements OnInit {
 
   setOpeningBalanceFormArray(openingQuantities): FormArray {
     const openingQuantitiesFormArray = new FormArray([]);
-    if (openingQuantities && openingQuantities.length > 0) {
-      openingQuantities.forEach(element => {
-        openingQuantitiesFormArray.push(
-          this._fb.group({
-            ID: [element.AccClassID],
-            productId: [element.ProductID],
-            accountClassId: [element.AccClassID, Validators.required],
-            quantity: element.OpenPurchaseQty,
-            purchaseRate: [element.OpenPurchaseRate],
-            salesRate: [element.OpenSalesRate],
-            date: [new Date(element.OpenQuantityDate)]
-          })
-        );
-      });
+    if (openingQuantities) {
+      openingQuantitiesFormArray.push(
+        this._fb.group({
+          ID: [openingQuantities.AccClassID],
+          productId: [openingQuantities.ProductID],
+          accountClassId: [openingQuantities.AccClassID, Validators.required],
+          quantity: openingQuantities.OpenPurchaseQty,
+          purchaseRate: [openingQuantities.OpenPurchaseRate],
+          salesRate: [openingQuantities.OpenSalesRate],
+          date: [new Date(openingQuantities.OpenQuantityDate)]
+        })
+      );
     } else {
       openingQuantitiesFormArray.push(
         this._fb.group({

@@ -23,6 +23,10 @@ export class ViewProductComponent implements OnInit {
     this.buildProductForm();
   }
 
+  //  console.log(
+  //   "dsadas Opening Balance" +
+  //     JSON.stringify(this.productForm.get("openingBalanceList").value)
+  // );
   buildProductForm(): void {
     this.productForm = this._fb.group({
       productCode: [
@@ -99,20 +103,18 @@ export class ViewProductComponent implements OnInit {
 
   setOpeningBalanceFormArray(openingQuantities): FormArray {
     const openingQuantitiesFormArray = new FormArray([]);
-    if (openingQuantities && openingQuantities.length > 0) {
-      openingQuantities.forEach(element => {
-        openingQuantitiesFormArray.push(
-          this._fb.group({
-            ID: [element.ID],
-            productId: [element.ProductID],
-            accountClassId: [element.AccClassID, Validators.required],
-            quantity: element.OpenPurchaseQty,
-            purchaseRate: [element.OpenPurchaseRate],
-            salesRate: [element.OpenSalesRate],
-            date: [new Date(element.OpenQuantityDate)]
-          })
-        );
-      });
+    if (openingQuantities) {
+      openingQuantitiesFormArray.push(
+        this._fb.group({
+          ID: [openingQuantities.ID],
+          productId: [openingQuantities.ProductID],
+          accountClassId: [openingQuantities.AccClassID, Validators.required],
+          quantity: openingQuantities.OpenPurchaseQty,
+          purchaseRate: [openingQuantities.OpenPurchaseRate],
+          salesRate: [openingQuantities.OpenSalesRate],
+          date: [new Date(openingQuantities.OpenQuantityDate)]
+        })
+      );
     } else {
       openingQuantitiesFormArray.push(
         this._fb.group({

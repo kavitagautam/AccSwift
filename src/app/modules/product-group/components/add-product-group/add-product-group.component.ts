@@ -12,6 +12,7 @@ import { ProductGroupService } from "../../services/product-group.service";
 export class AddProductGroupComponent implements OnInit {
   @Input("selectedGroupId") selectedGroupId;
   @Output() onCancel = new EventEmitter<boolean>();
+  showActions = true;
 
   groupDetails: ProductGroup;
   productGroupForm: FormGroup;

@@ -5,17 +5,22 @@
       <div class="col-md-12">
         <div class="col-md-6 col-sm-6 col-xs-6 p-0">
           <div class="form-group">
-            <label>Group Name </label>
-            <input class="form-control" formControlName="groupName" />
+            <label>Group Name <sup>*</sup> </label>
+            <input
+              class="form-control"
+              formControlName="groupName"
+              accSwiftFormValidator
+            />
           </div>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
           <div class="form-group">
-            <label>Parent Group</label>
+            <label>Parent Group <sup>*</sup></label>
             <select
               class="form-control"
               id="productGroupId"
-              formControlName="parentGroupID"
+              formControlName="parentGroupId"
+              accSwiftFormValidator
             >
               <option [ngValue]="null">Choose Option....</option>
               <option
@@ -40,4 +45,23 @@
       </div>
     </div>
   </form>
+  <div
+    class="box-footer"
+    style="display: table;margin:auto"
+    *ngIf="showActions"
+  >
+    <div class="mb-2">
+      <button
+        class="btn btn-primary"
+        (click)="save()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="productGroupForm"
+      >
+        Save
+      </button>
+      <button class="btn btn-secondary ml-2" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
 </div>

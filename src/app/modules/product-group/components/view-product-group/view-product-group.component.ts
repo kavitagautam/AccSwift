@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { ProductGroup } from "../../models/product-group.models";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ProductGroupService } from "../../services/product-group.service";
 
 @Component({
@@ -12,6 +12,7 @@ export class ViewProductGroupComponent implements OnInit {
   @Input("selectedGroupId") selectedGroupId;
   groupDetails: ProductGroup;
   productGroupForm: FormGroup;
+  showActions = false;
   constructor(
     public _fb: FormBuilder,
     public productGroupService: ProductGroupService
@@ -30,13 +31,15 @@ export class ViewProductGroupComponent implements OnInit {
         {
           value: this.groupDetails ? this.groupDetails.Name : "",
           disabled: true
-        }
+        },
+        Validators.required
       ],
-      parentGroupID: [
+      parentGroupId: [
         {
           value: this.groupDetails ? this.groupDetails.ParentGroupID : null,
           disabled: true
-        }
+        },
+        Validators.required
       ],
       remarks: [
         {
