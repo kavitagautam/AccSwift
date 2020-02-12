@@ -1,21 +1,21 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { ProductGroup } from "../../models/product-group.models";
-import { FormGroup, FormBuilder } from "@angular/forms";
-import { ProductService } from "@app/modules/product/services/product.service";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ProductGroupService } from "../../services/product-group.service";
 
 @Component({
   selector: "accSwift-view-product-group",
-  templateUrl: "./view-product-group.component.html",
+  templateUrl: "../common-template/product-group.component.html",
   styleUrls: ["./view-product-group.component.scss"]
 })
 export class ViewProductGroupComponent implements OnInit {
   @Input("selectedGroupId") selectedGroupId;
   groupDetails: ProductGroup;
   productGroupForm: FormGroup;
+  showActions = false;
   constructor(
     public _fb: FormBuilder,
-    private productGroupService: ProductGroupService
+    public productGroupService: ProductGroupService
   ) {}
 
   ngOnInit() {
@@ -27,9 +27,26 @@ export class ViewProductGroupComponent implements OnInit {
 
   buildProductGroupForm(): void {
     this.productGroupForm = this._fb.group({
-      groupName: [this.groupDetails ? this.groupDetails.Name : ""],
-      parentGroup: [this.groupDetails ? this.groupDetails.ParentGroupName : ""],
-      remarks: [this.groupDetails ? this.groupDetails.Remarks : ""]
+      groupName: [
+        {
+          value: this.groupDetails ? this.groupDetails.Name : "",
+          disabled: true
+        },
+        Validators.required
+      ],
+      parentGroupId: [
+        {
+          value: this.groupDetails ? this.groupDetails.ParentGroupID : null,
+          disabled: true
+        },
+        Validators.required
+      ],
+      remarks: [
+        {
+          value: this.groupDetails ? this.groupDetails.Remarks : "",
+          disabled: true
+        }
+      ]
     });
   }
 
