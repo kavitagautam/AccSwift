@@ -213,6 +213,7 @@ export class ListDepotComponent implements OnInit {
     this.submitButton = "Edit";
     dataItem["id"] = dataItem.dataItem_id;
     this.depotForm.patchValue(dataItem);
+    console.log(dataItem);
     this.modalRef = this.modalService.show(template, this.config);
   }
 

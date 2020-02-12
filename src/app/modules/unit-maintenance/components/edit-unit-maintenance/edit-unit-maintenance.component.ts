@@ -55,19 +55,23 @@ export class EditUnitMaintenanceComponent implements OnInit {
 
   public save(): void {
     if (this.editUnitForm.valid) {
-      this.unitService
-        .updateUnit(this.unitsId, this.editUnitForm.value)
-        .subscribe(
-          response => {
-            this.router.navigate(["/unit-maintenance"]);
-          },
-          error => {
-            this.toastr.error(JSON.stringify(error.error.Message));
-          },
-          () => {
-            this.toastr.success("Units edited successfully");
-          }
-        );
+      const obj = {
+        ID: this.unitsId,
+        UnitName: this.editUnitForm.get("unit").value,
+        Symbol: this.editUnitForm.get("symbol").value,
+        Remarks: this.editUnitForm.get("remarks").value
+      };
+      this.unitService.updateUnit(obj).subscribe(
+        response => {
+          this.router.navigate(["/unit-maintenance"]);
+        },
+        error => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Units edited successfully");
+        }
+      );
     } else {
     }
   }
