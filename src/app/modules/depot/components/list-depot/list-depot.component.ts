@@ -20,36 +20,42 @@ import {
 })
 export class ListDepotComponent implements OnInit {
   depotForm: FormGroup;
-  depotNameSearchKey = "";
+  editMode: boolean = false;
+  listLoading: boolean;
+  submitted: boolean;
+  public allowUnsort = true;
+
   submitButton: string;
-  submitted: Boolean;
+  modalTitle: string;
+
   depotList: DepotList[];
   searchFilterList: Array<any> = [];
   filterList: Array<any> = [];
-  listLoading: Boolean;
+
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
+
   orderByKey = "";
+  depotNameSearchKey = "";
   dirKey = "asc";
-  //sorting kendo data
-  public allowUnsort = true;
   public sort: SortDescriptor[] = [
     {
       field: "",
       dir: "asc"
     }
   ];
+
+  //sorting kendo data
+
   modalRef: BsModalRef;
   config = {
     // modal config to unhide modal when clicked outside
     backdrop: true,
     ignoreBackdropClick: true
   };
-  modalTitle: string;
-  editMode: any;
 
   constructor(
     private _fb: FormBuilder,
@@ -64,7 +70,7 @@ export class ListDepotComponent implements OnInit {
     this.getDepotList();
   }
 
-  buildDepotForm() {
+  buildDepotForm(): void {
     this.depotForm = this._fb.group({
       DepotName: ["", [Validators.required]],
       City: [""],
@@ -162,10 +168,6 @@ export class ListDepotComponent implements OnInit {
     );
   }
 
-  // public edit(item): void {
-  //   this.router.navigate(["/depot/edit", item.ID]);
-  // }
-
   openConfirmationDialogue(dataItem): void {
     const depotId = {
       id: dataItem.ID
@@ -174,8 +176,8 @@ export class ListDepotComponent implements OnInit {
       ConfirmationDialogComponent,
       this.config
     );
-    this.modalRef.content.data = "Depot" + dataItem.depotId;
-    this.modalRef.content.action = "delete";
+    this.modalRef.content.data = "Depot " + dataItem.depotId;
+    this.modalRef.content.action = "delete ";
     this.modalRef.content.onClose.subscribe(confirm => {
       if (confirm) {
         this.deleteDepotById(depotId.id);
@@ -200,24 +202,22 @@ export class ListDepotComponent implements OnInit {
   // Modal Part......//
 
   addDepotModal(template: TemplateRef<any>): void {
-    this.editMode = false;
     this.depotForm.reset();
-    this.submitButton = "Create";
-    this.modalTitle = "Add Depot";
+    this.submitButton = "Save ";
+    this.modalTitle = "Add Depot ";
     this.modalRef = this.modalService.show(template, this.config);
   }
 
-  editDepotModal(template, dataItem) {
+  editDepotModal(template, dataItem): void {
     this.editMode = true;
-    this.modalTitle = "Edit Depot";
-    this.submitButton = "Edit";
+    this.modalTitle = "Edit Depot ";
+    this.submitButton = "Save ";
     dataItem["id"] = dataItem.dataItem_id;
     this.depotForm.patchValue(dataItem);
-    console.log(dataItem);
     this.modalRef = this.modalService.show(template, this.config);
   }
 
-  onSubmitDepot() {
+  onSubmitDepot(): void {
     if (this.depotForm.invalid) return;
     if (this.editMode == true) {
       this.editDepotForm();
@@ -226,7 +226,7 @@ export class ListDepotComponent implements OnInit {
     }
   }
 
-  editDepotForm() {
+  editDepotForm(): void {
     this.depotService.updateDepot(this.depotForm.value).subscribe(
       response => {
         this.router.navigate(["/depot"]);
@@ -240,7 +240,7 @@ export class ListDepotComponent implements OnInit {
     );
   }
 
-  addDepotForm() {
+  addDepotForm(): void {
     this.depotService.saveDepot(this.depotForm.value).subscribe(
       response => {
         this.router.navigate(["/depot"]);

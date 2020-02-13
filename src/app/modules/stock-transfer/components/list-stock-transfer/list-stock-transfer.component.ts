@@ -29,6 +29,10 @@ export class ListStockTransferComponent implements OnInit {
   public skip = 0;
   public currentPage = 1;
   modalRef: BsModalRef;
+
+  orderByKey = "";
+  dirKey = "asc";
+
   //Sorting Kendo Data
   public allowUnsort = true;
   public sort: SortDescriptor[] = [
@@ -94,6 +98,29 @@ export class ListStockTransferComponent implements OnInit {
     //   );
   }
 
+  public sortChange(sort: SortDescriptor[]): void {
+    this.orderByKey = "";
+    this.dirKey = "";
+    this.sort = sort;
+    this.dirKey = this.sort[0].dir;
+    if (this.sort[0].field === "VoucherNo") {
+      this.orderByKey = "Voucher_No";
+    }
+    if (this.sort[0].field === "Date") {
+      this.orderByKey = "Journal_Date";
+    }
+    if (this.sort[0].field === "ProjectName") {
+      this.orderByKey = "Project";
+    }
+    if (this.sort[0].field === "SeriesName") {
+      this.orderByKey = "Series";
+    }
+    if (this.sort[0].field === "Remarks") {
+      this.orderByKey = "Remarks";
+    }
+    this.getStockTransferList();
+  }
+
   public filterChange(filter) {
     this.filter = filter;
     this.getStockTransferList();
@@ -128,8 +155,8 @@ export class ListStockTransferComponent implements OnInit {
       ConfirmationDialogComponent,
       this.config
     );
-    this.modalRef.content.data = "Payments No." + dataItem.VoucherNo;
-    this.modalRef.content.action = "delete";
+    this.modalRef.content.data = "Payments No. " + dataItem.VoucherNo;
+    this.modalRef.content.action = "delete ";
     this.modalRef.content.onClose.subscribe(confirm => {
       if (confirm) {
         this.deleteStockByID(stockTransferID.id);

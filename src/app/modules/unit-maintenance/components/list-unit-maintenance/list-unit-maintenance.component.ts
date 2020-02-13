@@ -11,7 +11,6 @@ import { Router } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
-import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "accSwift-list-unit-maintenance",
@@ -20,24 +19,28 @@ import { HttpErrorResponse } from "@angular/common/http";
 })
 export class ListUnitMaintenanceComponent implements OnInit {
   unitForm: FormGroup;
-  unitLists: Units[];
-  //For Add and Edit Modal
+  editableForm: boolean = false;
+  submitted: boolean;
+  listLoading: boolean;
+
   submitButton: string;
   modalTitle: string;
   unitsId: number;
+  unitLists: Units[];
   filterList: Array<any> = [];
   searchFilterList: Array<any> = [];
-
+  editMode: boolean = false;
   unitNameSearchKey = "";
   orderByKey = "";
   dirKey = "asc";
-  listLoading: boolean;
+
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
 
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
+
   //sorting kendo data
   public allowUnsort = true;
   public sort: SortDescriptor[] = [
@@ -53,8 +56,6 @@ export class ListUnitMaintenanceComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true
   };
-  submitted: boolean;
-  editMode: boolean;
 
   constructor(
     private _fb: FormBuilder,
@@ -71,8 +72,8 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   buildUnitMaintenanceForm(): void {
     this.unitForm = this._fb.group({
-      UnitName: ["", [Validators.required]],
-      Symbol: ["", [Validators.required]],
+      UnitName: this.editableForm ? ["", [Validators.required]] : [""],
+      Symbol: this.editableForm ? ["", [Validators.required]] : [""],
       Remarks: [""]
     });
   }
@@ -142,6 +143,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
       Direction: this.dirKey,
       FilterList: arrayFilter
     };
+
     this.unitService.getUnitList(obj).subscribe(
       response => {
         this.unitLists = response.Entity.Entity;
@@ -158,10 +160,6 @@ export class ListUnitMaintenanceComponent implements OnInit {
       }
     );
   }
-
-  // public editUnit(item): void {
-  //   this.router.navigate(["/unit-maintenance/edit", item.ID]);
-  // }
 
   openConfirmationDialogue(dataItem): void {
     const unitId = {
@@ -195,17 +193,20 @@ export class ListUnitMaintenanceComponent implements OnInit {
   }
 
   // Modal part is started from Here
-  openAddModal(template: TemplateRef<any>) {
-    this.editMode = false;
+  openAddModal(template: TemplateRef<any>): void {
+    this.editableForm = true;
+    this.buildUnitMaintenanceForm();
     this.unitForm.reset();
-    this.submitButton = "Add";
-    this.modalTitle = "Add  New Unit";
+    this.submitButton = "Save ";
+    this.modalTitle = "Add New Unit";
     this.modalRef = this.modalService.show(template, this.config);
   }
 
   openEditModal(template: TemplateRef<any>, dataItem): void {
+    this.editableForm = true;
     this.editMode = true;
-    this.submitButton = "Save";
+    this.buildUnitMaintenanceForm();
+    this.submitButton = "Save ";
     this.modalTitle = "Edit Unit  " + dataItem.UnitName;
     dataItem["id"] = dataItem.ID;
     this.unitsId = dataItem.ID;
@@ -213,7 +214,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.modalRef = this.modalService.show(template, this.config);
   }
 
-  onSubmitUnitMaintenance() {
+  onSubmitUnitMaintenance(): void {
     if (this.unitForm.invalid) return;
     if (this.editMode === true) {
       this.editUnitMaintenance();
@@ -222,7 +223,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     }
   }
 
-  editUnitMaintenance() {
+  editUnitMaintenance(): void {
     const obj = {
       ID: this.unitsId,
       UnitName: this.unitForm.get("UnitName").value,
@@ -237,6 +238,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
+        this.unitForm.reset();
         this.modalRef.hide();
         this.getUnits();
         this.toastr.success("Units edited successfully");
@@ -244,7 +246,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     );
   }
 
-  addUnitMaintenance() {
+  addUnitMaintenance(): void {
     const obj = {
       UnitName: this.unitForm.get("UnitName").value,
       Symbol: this.unitForm.get("Symbol").value,
@@ -263,5 +265,11 @@ export class ListUnitMaintenanceComponent implements OnInit {
         this.toastr.success("Units added successfully");
       }
     );
+  }
+
+  close(): void {
+    this.modalRef.hide();
+    this.editableForm = false;
+    this.buildUnitMaintenanceForm();
   }
 }
