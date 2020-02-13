@@ -34,9 +34,12 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          localStorage.setItem("access_token", data["access_token"]);
-          localStorage.setItem("token_type", data["token_type"]);
-          localStorage.setItem("expires_in", data["expires_in"]);
+          // Set LocalStorage
+          for (const key in data) {
+            if (data[key]) {
+              sessionStorage.setItem(key, data[key]);
+            }
+          }
           this.router.navigate([""]);
         },
         error => {

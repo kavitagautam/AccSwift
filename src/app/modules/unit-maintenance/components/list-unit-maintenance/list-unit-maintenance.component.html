@@ -118,7 +118,7 @@
         type="button"
         class="close pull-right"
         aria-label="Close"
-        (click)="modalRef.hide()"
+        (click)="close()"
       >
         <span aria-hidden="true">&times;</span>
       </button>
@@ -129,7 +129,7 @@
         <div class="col-md-12">
           <div class="col-md-6 col-sm-6 col-xs-6">
             <div class="form-group">
-              <label>Unit Name</label>
+              <label>Unit Name <sup>*</sup></label>
               <input
                 type="text"
                 class="form-control"
@@ -141,7 +141,7 @@
 
           <div class="col-md-6 col-sm-6 col-xs-6">
             <div class="form-group">
-              <label>Symbol</label>
+              <label>Symbol <sup>*</sup></label>
               <input
                 class="form-control"
                 formControlName="Symbol"
@@ -168,20 +168,16 @@
       </div>
     </div>
 
-    <div class="modal-footer" style="display: table;margin: auto;">
+    <div class="modal-footer">
       <button
-        class="btn  btn-primary"
+        class="btn btn-primary"
         (click)="onSubmitUnitMaintenance()"
         accSwiftFormSubmitValidationMsg
         [validationControl]="unitForm"
       >
         {{ submitButton }}
       </button>
-      <button
-        class="btn btn-secondary ml-2"
-        type="button"
-        (click)="modalRef.hide()"
-      >
+      <button class="btn btn-secondary ml-2" type="button" (click)="close()">
         Cancel
       </button>
     </div>

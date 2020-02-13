@@ -194,3 +194,27 @@ legend {
   font-size: 16px;
   text-align: center;
 }
+
+.modal-header .close {
+  font-size: 30px;
+  font-weight: 900;
+  color: #fff !important;
+  opacity: 1;
+}
+
+.modal-header {
+  border-bottom-color: #f4f4f4;
+  border: 1px solid #fff;
+  color: #fff;
+  background: #446e88;
+}
+
+.modal-footer {
+  background: #153142 !important;
+  padding: 15px;
+  text-align: right;
+  text-align: center;
+  width: 100%;
+  display: inline-block;
+  border-top: 1px solid #e5e5e5;
+}

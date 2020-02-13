@@ -301,7 +301,11 @@
         <button class="btn btn-primary" type="submit" (click)="onSubmitDepot()">
           {{ submitButton }}
         </button>
-        <button class="btn btn-secondory" type="button" (click)="onCancel()">
+        <button
+          class="btn btn-secondary ml-2"
+          type="button"
+          (click)="modalRef.hide()"
+        >
           Cancel
         </button>
       </div>
