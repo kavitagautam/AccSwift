@@ -20,19 +20,22 @@ import {
 })
 export class ListDepotComponent implements OnInit {
   depotForm: FormGroup;
+  orderByKey = "";
   depotNameSearchKey = "";
   submitButton: string;
-  submitted: Boolean;
+  modalTitle: string;
+  depotId: number;
+  submitted: boolean;
+  listLoading: boolean;
+  editMode: boolean;
   depotList: DepotList[];
   searchFilterList: Array<any> = [];
   filterList: Array<any> = [];
-  listLoading: Boolean;
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
-  orderByKey = "";
   dirKey = "asc";
   //sorting kendo data
   public allowUnsort = true;
@@ -48,8 +51,6 @@ export class ListDepotComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true
   };
-  modalTitle: string;
-  editMode: any;
 
   constructor(
     private _fb: FormBuilder,
@@ -97,7 +98,6 @@ export class ListDepotComponent implements OnInit {
   public filterChange(filter): void {
     this.depotNameSearchKey = "";
     this.filter = filter;
-    console.log(filter);
     if (filter.filters.length > 0) {
       const filtersArray = [];
       filter.filters.forEach(function(item) {
@@ -211,9 +211,9 @@ export class ListDepotComponent implements OnInit {
     this.editMode = true;
     this.modalTitle = "Edit Depot";
     this.submitButton = "Edit";
-    dataItem["id"] = dataItem.dataItem_id;
+    dataItem["id"] = dataItem.ID;
+    this.depotId = dataItem.ID;
     this.depotForm.patchValue(dataItem);
-    console.log(dataItem);
     this.modalRef = this.modalService.show(template, this.config);
   }
 
@@ -227,7 +227,20 @@ export class ListDepotComponent implements OnInit {
   }
 
   editDepotForm() {
-    this.depotService.updateDepot(this.depotForm.value).subscribe(
+    const obj = {
+      ID: this.depotId,
+      DepotName: this.depotForm.get("DepotName").value,
+      City: this.depotForm.get("City").value,
+      Telephone: this.depotForm.get("Telephone").value,
+      ContactPerson: this.depotForm.get("ContactPerson").value,
+      LicenceNo: this.depotForm.get("LicenceNo").value,
+      DepotAddress: this.depotForm.get("DepotAddress").value,
+      PostalCode: this.depotForm.get("PostalCode").value,
+      Mobile: this.depotForm.get("Mobile").value,
+      RegNo: this.depotForm.get("RegNo").value,
+      Remarks: this.depotForm.get("Remarks").value
+    };
+    this.depotService.updateDepot(obj).subscribe(
       response => {
         this.router.navigate(["/depot"]);
       },
@@ -235,13 +248,27 @@ export class ListDepotComponent implements OnInit {
         this.toastr.error(JSON.stringify(error.errorMessage));
       },
       () => {
+        this.modalRef.hide();
         this.toastr.success("Depot edited successfully");
+        this.getDepotList();
       }
     );
   }
 
   addDepotForm() {
-    this.depotService.saveDepot(this.depotForm.value).subscribe(
+    const obj = {
+      DepotName: this.depotForm.get("DepotName").value,
+      City: this.depotForm.get("City").value,
+      Telephone: this.depotForm.get("Telephone").value,
+      ContactPerson: this.depotForm.get("ContactPerson").value,
+      LicenceNo: this.depotForm.get("LicenceNo").value,
+      DepotAddress: this.depotForm.get("DepotAddress").value,
+      PostalCode: this.depotForm.get("PostalCode").value,
+      Mobile: this.depotForm.get("Mobile").value,
+      RegNo: this.depotForm.get("RegNo").value,
+      Remarks: this.depotForm.get("Remarks").value
+    };
+    this.depotService.saveDepot(obj).subscribe(
       response => {
         this.router.navigate(["/depot"]);
       },
@@ -249,8 +276,14 @@ export class ListDepotComponent implements OnInit {
         this.toastr.error(JSON.stringify(error.errorMessage));
       },
       () => {
+        this.modalRef.hide();
         this.toastr.success("Depot added successfully");
       }
     );
+  }
+
+  onCancel(): void {
+    this.modalRef.hide();
+    this.depotForm.reset();
   }
 }

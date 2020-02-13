@@ -238,7 +238,9 @@ export class ListUnitMaintenanceComponent implements OnInit {
       },
       () => {
         this.modalRef.hide();
+        this.unitForm.reset();
         this.getUnits();
+
         this.toastr.success("Units edited successfully");
       }
     );
