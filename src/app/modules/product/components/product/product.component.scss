@@ -1,0 +1,16 @@
+kendo-tabstrip .k-tabstrip > .k-content {
+  padding: 0px !important;
+  margin: -20px 0 0 -20px !important;
+  border-width: 1px;
+  border-style: solid;
+  border-color: inherit;
+  display: none;
+  overflow: auto;
+  -webkit-box-flex: 1;
+  flex: 1 1 auto;
+}
+
+#k-tabstrip-tabpanel-1 {
+  padding: 0px !important;
+  margin: -20px 0 0 -20px !important;
+}

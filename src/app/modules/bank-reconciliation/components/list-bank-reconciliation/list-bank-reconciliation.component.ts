@@ -67,14 +67,6 @@ export class ListBankReconciliationComponent implements OnInit {
     });
   }
 
-  // Date string parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
-
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     this.getBankReconciliationlList();
@@ -91,39 +83,7 @@ export class ListBankReconciliationComponent implements OnInit {
     this.reconciliationService.getBankReconciliationMaster().subscribe(
       response => {
         this.listLoading = true;
-
-        // mapping the data to change string date format to Date
-        const sampleData = response.map(
-          dataItem =>
-            <BankReconciliationMaster>{
-              IsPayByInvoice: dataItem.IsPayByInvoice,
-              TotalAmount: dataItem.TotalAmount,
-              BankReconciliationDetailsList:
-                dataItem.BankReconciliationDetailsList,
-              LedgerID: dataItem.LedgerID,
-              LedgerName: dataItem.LedgerName,
-              ID: dataItem.ID,
-              SeriesID: dataItem.SeriesID,
-              SeriesName: dataItem.SeriesName,
-              VoucherNo: dataItem.VoucherNo,
-              Date: this.parseAdjust(dataItem.Date),
-              ProjectID: dataItem.ProjectID,
-              ProjectName: dataItem.ProjectName,
-              Fields: {
-                Field1: dataItem.Fields.Field1,
-                Field2: dataItem.Fields.Field1,
-                Field3: dataItem.Fields.Field1,
-                Field4: dataItem.Fields.Field1,
-                Field5: dataItem.Fields.Field1
-              },
-              Remarks: dataItem.Remarks,
-              CreatedBy: dataItem.CreatedBy,
-              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
-              ModifiedBy: dataItem.ModifiedBy,
-              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
-            }
-        );
-        this.bankReconciliationList = sampleData;
+        this.bankReconciliationList = response;
         this.gridView = {
           data: this.bankReconciliationList.slice(
             this.skip,

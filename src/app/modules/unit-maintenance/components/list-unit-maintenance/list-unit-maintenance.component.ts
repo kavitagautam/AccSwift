@@ -1,5 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { Component, OnInit, TemplateRef } from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { UnitMaintenanceService } from "../../services/unit-maintenance.service";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import {
@@ -18,21 +18,29 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
   styleUrls: ["./list-unit-maintenance.component.scss"]
 })
 export class ListUnitMaintenanceComponent implements OnInit {
-  unitSearchForm: FormGroup;
+  unitForm: FormGroup;
+  editableForm: boolean = false;
+  submitted: boolean;
+  listLoading: boolean;
+
+  submitButton: string;
+  modalTitle: string;
+  unitsId: number;
   unitLists: Units[];
   filterList: Array<any> = [];
   searchFilterList: Array<any> = [];
-
+  editMode: boolean = false;
   unitNameSearchKey = "";
   orderByKey = "";
   dirKey = "asc";
-  listLoading: boolean;
+
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
 
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
+
   //sorting kendo data
   public allowUnsort = true;
   public sort: SortDescriptor[] = [
@@ -63,22 +71,22 @@ export class ListUnitMaintenanceComponent implements OnInit {
   }
 
   buildUnitMaintenanceForm(): void {
-    this.unitSearchForm = this._fb.group({
-      unitName: [""],
-      symbol: [""],
-      remarks: [""]
+    this.unitForm = this._fb.group({
+      UnitName: this.editableForm ? ["", [Validators.required]] : [""],
+      Symbol: this.editableForm ? ["", [Validators.required]] : [""],
+      Remarks: [""]
     });
   }
 
   searchForm(): void {
     this.searchFilterList = [];
-    if (this.unitSearchForm.invalid) return;
-    for (const key in this.unitSearchForm.value) {
-      if (this.unitSearchForm.value[key]) {
+    if (this.unitForm.invalid) return;
+    for (const key in this.unitForm.value) {
+      if (this.unitForm.value[key]) {
         this.searchFilterList.push({
           Field: key,
           Operator: "=",
-          value: this.unitSearchForm.value[key]
+          value: this.unitForm.value[key]
         });
       }
     }
@@ -97,15 +105,15 @@ export class ListUnitMaintenanceComponent implements OnInit {
   public filterChange(filter): void {
     this.unitNameSearchKey = "";
     if (filter.filters.length > 0) {
-      const filters = [];
+      const filterArray = [];
       filter.filters.forEach(function(item) {
-        filters.push({
+        filterArray.push({
           Field: item.field,
           Operator: item.operator,
           Value: item.value
         });
       });
-      this.filterList = filters;
+      this.filterList = filterArray;
     }
     this.getUnits();
   }
@@ -135,6 +143,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
       Direction: this.dirKey,
       FilterList: arrayFilter
     };
+
     this.unitService.getUnitList(obj).subscribe(
       response => {
         this.unitLists = response.Entity.Entity;
@@ -150,10 +159,6 @@ export class ListUnitMaintenanceComponent implements OnInit {
         this.listLoading = false;
       }
     );
-  }
-
-  public editUnit(item): void {
-    this.router.navigate(["/unit-maintenance/edit", item.ID]);
   }
 
   openConfirmationDialogue(dataItem): void {
@@ -185,5 +190,86 @@ export class ListUnitMaintenanceComponent implements OnInit {
         this.toastr.success("Units deleted successfully");
       }
     );
+  }
+
+  // Modal part is started from Here
+  openAddModal(template: TemplateRef<any>): void {
+    this.editableForm = true;
+    this.buildUnitMaintenanceForm();
+    this.unitForm.reset();
+    this.submitButton = "Save ";
+    this.modalTitle = "Add New Unit";
+    this.modalRef = this.modalService.show(template, this.config);
+  }
+
+  openEditModal(template: TemplateRef<any>, dataItem): void {
+    this.editableForm = true;
+    this.editMode = true;
+    this.buildUnitMaintenanceForm();
+    this.submitButton = "Save ";
+    this.modalTitle = "Edit Unit  " + dataItem.UnitName;
+    dataItem["id"] = dataItem.ID;
+    this.unitsId = dataItem.ID;
+    this.unitForm.patchValue(dataItem);
+    this.modalRef = this.modalService.show(template, this.config);
+  }
+
+  onSubmitUnitMaintenance(): void {
+    if (this.unitForm.invalid) return;
+    if (this.editMode === true) {
+      this.editUnitMaintenance();
+    } else {
+      this.addUnitMaintenance();
+    }
+  }
+
+  editUnitMaintenance(): void {
+    const obj = {
+      ID: this.unitsId,
+      UnitName: this.unitForm.get("UnitName").value,
+      Symbol: this.unitForm.get("Symbol").value,
+      Remarks: this.unitForm.get("Remarks").value
+    };
+    this.unitService.updateUnit(obj).subscribe(
+      response => {
+        this.router.navigate(["/unit-maintenance"]);
+      },
+      error => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.unitForm.reset();
+        this.modalRef.hide();
+        this.getUnits();
+        this.toastr.success("Units edited successfully");
+      }
+    );
+  }
+
+  addUnitMaintenance(): void {
+    const obj = {
+      UnitName: this.unitForm.get("UnitName").value,
+      Symbol: this.unitForm.get("Symbol").value,
+      Remarks: this.unitForm.get("Remarks").value
+    };
+
+    this.unitService.saveUnit(obj).subscribe(
+      response => {
+        this.router.navigate(["/unit-maintenance"]);
+      },
+      error => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.modalRef.hide();
+        this.toastr.success("Units added successfully");
+      }
+    );
+  }
+
+  close(): void {
+    this.modalRef.hide();
+    this.editableForm = false;
+    this.buildUnitMaintenanceForm();
   }
 }

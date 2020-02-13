@@ -50,22 +50,11 @@ export class UnitMaintenanceService {
     return this.httpService.get(`${this._api_URL}UnitMaintenance/${id}`);
   }
 
-  saveUnit(value): Observable<any> {
-    const obj = {
-      UnitName: value.unit,
-      Symbol: value.symbol,
-      Remarks: value.remarks
-    };
-    return this.httpService.post(`${this._api_URL}UnitMaintenance`, obj);
+  saveUnit(body): Observable<any> {
+    return this.httpService.post(`${this._api_URL}UnitMaintenance`, body);
   }
 
-  updateUnit(id, value): Observable<any> {
-    const obj = {
-      ID: id,
-      UnitName: value.unit,
-      Symbol: value.symbol,
-      Remarks: value.remarks
-    };
-    return this.httpService.put(`${this._api_URL}UnitMaintenance`, obj);
+  updateUnit(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}UnitMaintenance`, body);
   }
 }

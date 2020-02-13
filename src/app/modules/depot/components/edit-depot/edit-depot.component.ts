@@ -62,6 +62,7 @@ export class EditDepotComponent implements OnInit {
     if (this.editDepotForm.valid) {
       this.depotService.updateDepot(this.editDepotForm.value).subscribe(
         response => {
+          console.log(response);
           this.router.navigate(["/depot"]);
         },
         error => {

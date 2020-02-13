@@ -4,21 +4,29 @@
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Order No.</label>
-            <input class="form-control" formControlName="orderNo" />
+            <label>Order No. <sup>*</sup></label>
+            <input
+              class="form-control"
+              formControlName="orderNo"
+              accSwiftFormValidator
+            />
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label>Cash/ Party /A/C</label>
-            <select class="form-control" formControlName="cashPartyACId">
+            <label>Cash/ Party /A/C <sup>*</sup></label>
+            <select
+              class="form-control"
+              formControlName="cashPartyACId"
+              accSwiftFormValidator
+            >
               <option [ngValue]="null">Choose Option....</option>
             </select>
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label>Remarks</label>
+            <label>Remarks</label>
             <input class="form-control" formControlName="remarks" />
           </div>
         </div>
@@ -30,6 +38,11 @@
             </select>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Date</label>
@@ -38,6 +51,7 @@
               class="form-control"
               formControlName="date"
               bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
             />
           </div>
         </div>
@@ -434,7 +448,14 @@
   </form>
   <div class="box-footer">
     <div class="mb-2">
-      <button class="btn btn-primary" disabled (click)="save()">Save</button>
+      <button
+        class="btn btn-primary"
+        (click)="save()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="addSalesOrderForm"
+      >
+        Save
+      </button>
       <button class="btn btn-secondary ml-2" (click)="cancel()">
         Cancel
       </button>

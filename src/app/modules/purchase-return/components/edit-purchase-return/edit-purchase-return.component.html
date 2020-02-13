@@ -6,7 +6,7 @@
           <div class="form-group">
             <label>Series</label>
             <select class="form-control" formControlName="seriesId">
-              <option [ngValue]="0" disabled>Select</option>
+              <option [ngValue]="null">Choose Option...</option>
             </select>
           </div>
         </div>
@@ -14,7 +14,11 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <sup>*</sup><label>Voucher No.</label>
-            <input class="form-control" formControlName="voucher" />
+            <input
+              class="form-control"
+              formControlName="voucher"
+              accSwiftFormValidator
+            />
           </div>
         </div>
 
@@ -33,17 +37,29 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <sup>*</sup> <label>Cash/Party/A/C </label>
-            <select class="form-control" formControlName="cashPartyACId">
-              <option [ngValue]="0" disabled>Select</option>
+            <select
+              class="form-control"
+              formControlName="cashPartyACId"
+              accSwiftFormValidator
+            >
+              <option [ngValue]="null">Choose Option....</option>
             </select>
           </div>
         </div>
+      </div>
+    </div>
 
+    <div class="row mt-3">
+      <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Depot/Location </label>
-            <select class="form-control" formControlName="depotLocationId">
-              <option [ngValue]="0" disabled>Select</option>
+            <select
+              class="form-control"
+              formControlName="depotLocationId"
+              accSwiftFormValidator
+            >
+              <option [ngValue]="null">Choose Option...</option>
             </select>
           </div>
         </div>
@@ -51,7 +67,11 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <sup>*</sup> <label>Order No.</label>
-            <input class="form-control" formControlName="orderNo" />
+            <input
+              class="form-control"
+              formControlName="orderNo"
+              accSwiftFormValidator
+            />
           </div>
         </div>
 
@@ -59,7 +79,7 @@
           <div class="form-group">
             <label>Purchase A/C </label>
             <select class="form-control" formControlName="purchaseACId">
-              <option [ngValue]="0" disabled>Select</option>
+              <option [ngValue]="null">Choose Option...</option>
             </select>
           </div>
         </div>
@@ -72,11 +92,15 @@
               id="projectId"
               formControlName="projectId"
             >
-              <option [ngValue]="0">Select</option>
+              <option [ngValue]="null">Choose Option...</option>
             </select>
           </div>
         </div>
+      </div>
+    </div>
 
+    <div class="row mt-3">
+      <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <sup>*</sup><label>Remarks</label>
@@ -193,7 +217,12 @@
       </div>
       <div class="box-footer">
         <div class="mb-2">
-          <button class="btn btn-primary" disabled (click)="save()">
+          <button
+            class="btn btn-primary"
+            (click)="save()"
+            accSwiftFormSubmitValidationMsg
+            [validationControl]="editPurchaseReturnForm"
+          >
             Save
           </button>
           <button class="btn btn-secondary ml-2" (click)="cancel()">

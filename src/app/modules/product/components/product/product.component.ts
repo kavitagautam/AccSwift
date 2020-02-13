@@ -3,56 +3,52 @@ import {
   OnInit,
   Input,
   OnChanges,
-  SimpleChange
+  SimpleChange,
+  ViewChild,
+  ViewContainerRef,
+  ComponentFactoryResolver
 } from "@angular/core";
-import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
+import { ViewProductComponent } from "./view-product/view-product.component";
+import { ToastrService } from "ngx-toastr";
+import { EditProductComponent } from "./edit-product/edit-product.component";
+import { AddProductComponent } from "./add-product/add-product.component";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ProductService } from "../../services/product.service";
-import { Product } from "../../models/product.models";
+import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-product",
   templateUrl: "./product.component.html",
-  styleUrls: ["./product.component.scss"]
+  styleUrls: ["./product.component.scss"],
+  entryComponents: [
+    ViewProductComponent,
+    AddProductComponent,
+    EditProductComponent
+  ]
 })
 export class ProductComponent implements OnInit, OnChanges {
   @Input("selectedProduct") selectedProduct;
-  private editedRowIndex: number;
-  submitted: boolean;
-  rowSubmitted: boolean;
+
+  @ViewChild("dynamicProductContentDiv", { read: ViewContainerRef })
+  dynamicProductContentDiv: ViewContainerRef;
+
   selectedProductId: number;
-  productDetails: Product;
-  productForm: FormGroup;
+
+  modalRef: BsModalRef;
+  // modal config to unhide modal when clicked outside
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true
+  };
   constructor(
-    public _fb: FormBuilder,
-    private productService: ProductService
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private toastr: ToastrService,
+    private productService: ProductService,
+    private modalService: BsModalService
   ) {}
 
   ngOnInit() {
-    this.buildProductForm();
-  }
-
-  buildProductForm(): void {
-    this.productForm = this._fb.group({
-      productCode: [
-        this.productDetails ? this.productDetails.Code : "",
-        Validators.required
-      ],
-      productName: [
-        this.productDetails ? this.productDetails.EngName : "",
-        Validators.required
-      ],
-      productGroup: [
-        this.productDetails ? this.productDetails.GroupName : "",
-        Validators.required
-      ],
-      departmentandLocation: [""],
-      baseUnit: [
-        this.productDetails ? this.productDetails.UnitMaintenanceID : "",
-        Validators.required
-      ],
-      remarks: [this.productDetails ? this.productDetails.Remarks : ""],
-      openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()])
-    });
+    this.viewProduct();
   }
 
   //Detect the changes in tree selection of product with ngOnChanges
@@ -64,69 +60,76 @@ export class ProductComponent implements OnInit, OnChanges {
       this.selectedProductId = this.selectedProduct.ID;
     }
     if (this.selectedProductId) {
-      this.getProductDetails();
+      this.viewProduct();
     }
   }
 
-  getProductDetails(): void {
-    this.productService
-      .getProductDetails(this.selectedProductId)
-      .subscribe(response => {
-        this.productDetails = response;
-        this.buildProductForm();
-      });
+  viewProduct(): void {
+    this.dynamicProductContentDiv.clear();
+    const factory = this.componentFactoryResolver.resolveComponentFactory(
+      ViewProductComponent
+    );
+    const componentRef = this.dynamicProductContentDiv.createComponent(factory);
+    componentRef.instance.selectedProductId = this.selectedProductId;
   }
 
-  addOpeningBalanceFormGroup(): FormGroup {
-    return this._fb.group({
-      accountClass: [""],
-      openingBalance: [""],
-      balanceType: [""]
+  editProduct(): void {
+    this.dynamicProductContentDiv.clear();
+    const factory = this.componentFactoryResolver.resolveComponentFactory(
+      EditProductComponent
+    );
+    const componentRef = this.dynamicProductContentDiv.createComponent(factory);
+    componentRef.instance.selectedProductId = this.selectedProductId;
+
+    componentRef.instance.onCancel.subscribe(data => {
+      if (data) {
+        this.viewProduct();
+      }
     });
   }
 
-  get getOpeningBalanceList(): FormArray {
-    return <FormArray>this.productForm.get("openingBalanceList");
-  }
-
-  openModal(index: number): void {}
-
-  public addHandler({ sender }) {
-    this.closeEditor(sender);
-    this.submitted = true;
-    this.rowSubmitted = true;
-    if (this.productForm.get("openingBalanceList").invalid) return;
-    (<FormArray>this.productForm.get("openingBalanceList")).push(
-      this.addOpeningBalanceFormGroup()
+  addProduct(): void {
+    this.dynamicProductContentDiv.clear();
+    const factory = this.componentFactoryResolver.resolveComponentFactory(
+      AddProductComponent
     );
-    this.rowSubmitted = false;
-    this.submitted = false;
+    const componentRef = this.dynamicProductContentDiv.createComponent(factory);
+    componentRef.instance.selectedProductId = this.selectedProductId;
+
+    componentRef.instance.onCancel.subscribe(data => {
+      if (data) {
+        this.viewProduct();
+      }
+    });
   }
 
-  public editHandler({ sender, rowIndex, dataItem }) {
-    this.closeEditor(sender);
-    this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.productForm.get("openingBalanceList"));
+  deleteProductGroup(): void {
+    this.modalRef = this.modalService.show(
+      ConfirmationDialogComponent,
+      this.config
+    );
+    this.modalRef.content.data = "product";
+    this.modalRef.content.action = "delete";
+    this.modalRef.content.onClose.subscribe(confirm => {
+      if (confirm) {
+        this.deleteProductByID(this.selectedProductId);
+      }
+    });
   }
 
-  public cancelHandler({ sender, rowIndex }) {
-    this.closeEditor(sender, rowIndex);
-  }
-
-  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
-    const product = formGroup.value;
-    sender.closeRow(rowIndex);
-  }
-
-  public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.productForm.get("openingBalanceList")).removeAt(rowIndex);
-  }
-  private closeEditor(grid, rowIndex = 1) {
-    grid.closeRow(rowIndex);
-    this.editedRowIndex = undefined;
-  }
-
-  public saveProduct() {
-    if (this.productForm.invalid) return;
+  public deleteProductByID(id): void {
+    this.productService.deleteProductByID(id).subscribe(
+      response => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      },
+      error => {
+        this.toastr.success(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Product deleted successfully");
+      }
+    );
   }
 }

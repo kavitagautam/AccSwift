@@ -1,6 +1,6 @@
 import { Router } from "@angular/router";
 import { ActivatedRoute } from "@angular/router";
-import { FormArray } from "@angular/forms";
+import { FormArray, Validators } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { PurchaseReturnService } from "./../../services/purchase-return.service";
 import { FormBuilder } from "@angular/forms";
@@ -33,14 +33,14 @@ export class EditPurchaseReturnComponent implements OnInit {
 
   buildEditPurchaseReturnForm() {
     this.editPurchaseReturnForm = this.fb.group({
-      seriesId: [0],
-      voucher: [""],
+      seriesId: [null],
+      voucher: ["", [Validators.required]],
       date: [new Date()],
-      cashPartyACId: [0],
-      depotLocationId: [0],
-      orderNo: [""],
-      purchaseACId: [0],
-      projectId: [0],
+      cashPartyACId: [null, [Validators.required]],
+      depotLocationId: [null, [Validators.required]],
+      orderNo: ["", [Validators.required]],
+      purchaseACId: [null],
+      projectId: [null],
       remarks: [""],
       purchaseReturnEntryList: this.fb.array([
         this.addPurchaseReturnEntryList()
@@ -78,14 +78,6 @@ export class EditPurchaseReturnComponent implements OnInit {
       }
     });
   }
-
-  //Date String Parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
 
   public save(): void {
     if (this.editPurchaseReturnForm.valid) {

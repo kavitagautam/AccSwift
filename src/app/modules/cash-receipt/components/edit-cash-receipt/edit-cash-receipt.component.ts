@@ -56,12 +56,14 @@ export class EditCashReceiptComponent implements OnInit {
         this.cashReceiptDetails ? this.cashReceiptDetails.ProjectID : null
       ],
       voucherNo: [
-        this.cashReceiptDetails ? this.cashReceiptDetails.VoucherNo : ""
+        this.cashReceiptDetails ? this.cashReceiptDetails.VoucherNo : "",
+        [Validators.required]
       ],
       cashAccountId: [
-        this.cashReceiptDetails ? this.cashReceiptDetails.LedgerID : null
+        this.cashReceiptDetails ? this.cashReceiptDetails.LedgerID : null,
+        [Validators.required]
       ],
-      cashPartyId: null,
+      cashPartyId: [null, [Validators.required]],
       date: [
         this.cashReceiptDetails
           ? new Date(this.cashReceiptDetails.CreatedDate)

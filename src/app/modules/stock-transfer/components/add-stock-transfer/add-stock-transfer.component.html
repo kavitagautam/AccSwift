@@ -1,0 +1,131 @@
+<div class="box box-default">
+  <form [formGroup]="addStockTransferForm" novalidate>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Series</label>
+            <select class="form-control" formControlName="series">
+              <option [ngValue]="null">Choose Option...</option>
+              <option></option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Voucher No. <sup>*</sup></label>
+            <input
+              class="form-control"
+              type="number"
+              formControlName="voucherNo"
+              accSwiftFormValidator
+            />
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Date<sup>*</sup></label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="date"
+              bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              accSwiftFormValidator
+            />
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>From Depot/Location</label>
+            <select class="form-control" formControlName="fromDepotLoc">
+              <option [ngValue]="null">Choose Option...</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>To Depot/Location</label>
+            <select class="form-control" formControlName="toDepotLoc">
+              <option [ngValue]="null">Choose Option...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Remarks</label>
+            <input class="form-control" formControlName="remarks" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="box-body">
+        <kendo-grid
+          [data]=""
+          (edit)="editHandler($event)"
+          (cancel)="cancelHandler($event)"
+          (save)="saveHandler($event)"
+          (add)="addHandler($event)"
+          (remove)="removeHandler($event)"
+        >
+          <ng-template kendoGridToolbarTemplate>
+            <button kendoGridAddCommand>Add New</button>
+          </ng-template>
+          <kendo-grid-column field="code" title="Code" width="100">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-column="column"
+              let-rowIndex="rowIndex"
+            >
+              <input style="width: 120px;" />
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="productName"
+            title="Product Name"
+            width="150"
+          >
+          </kendo-grid-column>
+          <kendo-grid-column field="quantity" title="Quantity" width="150">
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="pruchaseRate"
+            title="Purchase Rate"
+            width="150"
+          >
+          </kendo-grid-column>
+          <kendo-grid-column field="amount" title="Amount" width="150">
+          </kendo-grid-column>
+        </kendo-grid>
+      </div>
+    </div>
+  </form>
+  <div class="box-footer">
+    <div class="mb-2">
+      <button
+        class="btn btn-primary"
+        (click)="save()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="addStockTransferForm"
+      >
+        Save
+      </button>
+      <button class="btn btn-secondory ml-2" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+</div>

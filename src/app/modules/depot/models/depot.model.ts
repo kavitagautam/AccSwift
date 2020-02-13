@@ -10,10 +10,6 @@ export interface DepotList {
   Mobile: number;
   RegNo: number;
   Remarks: string;
-  CreatedBy: string;
-  CreatedDate: string;
-  ModifiedBy: string;
-  ModifiedDate: string;
 }
 
 export interface Entity {
