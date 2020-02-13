@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddUnitMaintenanceComponent } from './add-unit-maintenance.component';
+import { ListStockTransferComponent } from './list-stock-transfer.component';
 
-describe('AddUnitMaintenanceComponent', () => {
-  let component: AddUnitMaintenanceComponent;
-  let fixture: ComponentFixture<AddUnitMaintenanceComponent>;
+describe('ListStockTransferComponent', () => {
+  let component: ListStockTransferComponent;
+  let fixture: ComponentFixture<ListStockTransferComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddUnitMaintenanceComponent ]
+      declarations: [ ListStockTransferComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddUnitMaintenanceComponent);
+    fixture = TestBed.createComponent(ListStockTransferComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

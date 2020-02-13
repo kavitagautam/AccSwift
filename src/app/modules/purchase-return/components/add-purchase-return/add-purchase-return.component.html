@@ -14,7 +14,11 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <sup>*</sup><label>Voucher No.</label>
-            <input class="form-control" formControlName="voucher" />
+            <input
+              class="form-control"
+              formControlName="voucher"
+              accSwiftFormValidator
+            />
           </div>
         </div>
 
@@ -33,16 +37,28 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <sup>*</sup> <label>Cash/Party/A/C </label>
-            <select class="form-control" formControlName="cashPartyACId">
+            <select
+              class="form-control"
+              formControlName="cashPartyACId"
+              accSwiftFormValidator
+            >
               <option [ngValue]="null">Choose Option....</option>
             </select>
           </div>
         </div>
+      </div>
+    </div>
 
+    <div class="row">
+      <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Depot/Location </label>
-            <select class="form-control" formControlName="depotLocationId">
+            <select
+              class="form-control"
+              formControlName="depotLocationId"
+              accSwiftFormValidator
+            >
               <option [ngValue]="null">Choose Option....</option>
             </select>
           </div>
@@ -51,7 +67,11 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <sup>*</sup> <label>Order No.</label>
-            <input class="form-control" formControlName="orderNo" />
+            <input
+              class="form-control"
+              formControlName="orderNo"
+              accSwiftFormValidator
+            />
           </div>
         </div>
 
@@ -76,7 +96,11 @@
             </select>
           </div>
         </div>
+      </div>
+    </div>
 
+    <div class="row">
+      <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <sup>*</sup><label>Remarks</label>
@@ -195,7 +219,12 @@
 
       <div class="box-footer">
         <div class="mb-2">
-          <button class="btn btn-primary" disabled (click)="save()">
+          <button
+            class="btn btn-primary"
+            (click)="save()"
+            accSwiftFormSubmitValidationMsg
+            [validationControl]="addPurchaseReturnForm"
+          >
             Save
           </button>
           <button class="btn btn-secondary ml-2" (click)="cancel()">

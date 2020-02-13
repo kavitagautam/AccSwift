@@ -35,7 +35,8 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     this.editPurchaseForm = this.fb.group({
       seriesId: [this.purchaseDetails ? this.purchaseDetails.SeriesID : null],
       cashPartyACId: [
-        this.purchaseDetails ? this.purchaseDetails.CashPartyLedgerID : null
+        this.purchaseDetails ? this.purchaseDetails.CashPartyLedgerID : null,
+        [Validators.required]
       ],
       purchaseAcId: [
         this.purchaseDetails ? this.purchaseDetails.PurchLedgerID : null
@@ -55,7 +56,10 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       date: [
         this.purchaseDetails ? new Date(this.purchaseDetails.CreatedDate) : ""
       ],
-      orderNo: [this.purchaseDetails ? this.purchaseDetails.OrderNo : ""],
+      orderNo: [
+        this.purchaseDetails ? this.purchaseDetails.OrderNo : "",
+        [Validators.required]
+      ],
       remarks: [this.purchaseDetails ? this.purchaseDetails.Remarks : ""],
       purchaseInvoiceEntryList: this.fb.array([
         this.addPurchaseInvoiceEntryList()

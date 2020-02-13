@@ -23,10 +23,6 @@ export class ViewProductComponent implements OnInit {
     this.buildProductForm();
   }
 
-  //  console.log(
-  //   "dsadas Opening Balance" +
-  //     JSON.stringify(this.productForm.get("openingBalanceList").value)
-  // );
   buildProductForm(): void {
     this.productForm = this._fb.group({
       productCode: [

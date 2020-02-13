@@ -17,8 +17,8 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
   styleUrls: ["./list-purchase-order.component.scss"]
 })
 export class ListPurchaseOrderComponent implements OnInit {
-  purchaseOrderList;
   purchaseOrderForm: FormGroup;
+  purchaseOrderList;
   listLoading: Boolean;
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
@@ -46,6 +46,7 @@ export class ListPurchaseOrderComponent implements OnInit {
     private toastr: ToastrService,
     private modalService: BsModalService
   ) {}
+
   ngOnInit() {
     this.buildPurchaseOrderForm();
     this.getPurchaseOrderList();
@@ -59,14 +60,6 @@ export class ListPurchaseOrderComponent implements OnInit {
       orderNo: [""]
     });
   }
-
-  //Date String Parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
@@ -83,9 +76,9 @@ export class ListPurchaseOrderComponent implements OnInit {
     };
 
     this.purchaseOrderService.getPurchaseOrderMaster().subscribe(
-      res => {
+      response => {
         this.listLoading = true;
-        this.purchaseOrderList = res;
+        this.purchaseOrderList = response;
         this.gridView = {
           data: this.purchaseOrderList.slice(
             this.skip,

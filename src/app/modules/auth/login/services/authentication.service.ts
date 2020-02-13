@@ -13,25 +13,17 @@ export class AuthenticationService {
     private httpService: HttpClientService
   ) {}
   login(username: string, password: string) {
-    let body = new URLSearchParams();
-    body.set("username", username);
-    body.set("password", password);
-    body.set("grant_type", "password");
-
-    const reqHeader = new HttpHeaders({
-      "Content-Type": "application/x-www-form-urlencoded",
-      "No-Auth": "True"
-    });
-
-    return this.httpService.post(
-      `${this._api_URL}token`,
-      body.toString(),
-      reqHeader
-    );
+    const obj = {
+      UserName: username,
+      Password: password
+    };
+    return this.httpService.post(`${this._api_URL}User/Login`, obj);
   }
+
   getToken() {
-    return localStorage.getItem("access_token");
+    return sessionStorage.getItem("access_token");
   }
+
   isLoggedIn() {
     return this.getToken() !== null;
   }
