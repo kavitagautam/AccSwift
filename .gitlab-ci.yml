@@ -1,5 +1,4 @@
-image: trion/ng-cli-karma
-
+image: node:latest
 cache:
   paths:
     - node_modules/
