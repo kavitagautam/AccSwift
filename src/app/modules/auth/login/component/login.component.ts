@@ -34,10 +34,11 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          localStorage.setItem("access_token", data["access_token"]);
-          localStorage.setItem("token_type", data["token_type"]);
-          localStorage.setItem("expires_in", data["expires_in"]);
-          this.router.navigate([""]);
+          for (const key in data) {
+            if (data[key]) {
+              sessionStorage.setItem(key, data[key]);
+            }
+          }
         },
         error => {
           this.errorMsg = JSON.stringify(error.error.error);
