@@ -34,13 +34,11 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          // Set LocalStorage
           for (const key in data) {
             if (data[key]) {
               sessionStorage.setItem(key, data[key]);
             }
           }
-          this.router.navigate([""]);
         },
         error => {
           this.errorMsg = JSON.stringify(error.error.error);
