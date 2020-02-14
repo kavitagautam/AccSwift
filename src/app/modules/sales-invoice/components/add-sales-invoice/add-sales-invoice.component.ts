@@ -1,5 +1,5 @@
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
-import { FormArray } from "@angular/forms";
+import { FormArray, Validators } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { FormBuilder } from "@angular/forms";
@@ -28,12 +28,12 @@ export class AddSalesInvoiceComponent implements OnInit {
   buildAddSalesInvoiceForm() {
     this.addInvoiceForm = this._fb.group({
       seriesId: [null],
-      cashPartyACId: [null],
-      salesACId: [null],
+      cashPartyACId: [null, [Validators.required]],
+      salesACId: [null, [Validators.required]],
       depotLocationId: [null],
       projectId: [null],
       date: [""],
-      orderNo: [""],
+      orderNo: ["", [Validators.required]],
       invoiceEntryList: this._fb.array([this.addInvoiceEntryList()])
     });
   }

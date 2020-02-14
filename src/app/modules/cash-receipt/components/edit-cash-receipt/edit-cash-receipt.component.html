@@ -28,6 +28,7 @@
               class="form-control"
               id="cashAccountNo"
               formControlName="cashAccountId"
+              accSwiftFormValidator
             >
               <option [ngValue]="null">Choose option... </option>
               <option
@@ -47,6 +48,7 @@
               class="form-control"
               id="cashPartyId"
               formControlName="cashPartyId"
+              accSwiftFormValidator
             >
               <option [ngValue]="null">Choose option... </option>
             </select>
@@ -56,10 +58,17 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Voucher #</label>
-            <input class="form-control" formControlName="voucherNo" />
+            <input
+              class="form-control"
+              formControlName="voucherNo"
+              accSwiftFormValidator
+            />
           </div>
         </div>
-
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Project</label>
@@ -330,7 +339,14 @@
   </form>
   <div class="box-footer">
     <div class="mb-2">
-      <button class="btn btn-primary" disabled (click)="save()">Save</button>
+      <button
+        class="btn btn-primary"
+        (click)="save()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="editCashReceiptForm"
+      >
+        Save
+      </button>
       <button class="btn btn-secondary ml-2" (click)="cancel()">
         Cancel
       </button>

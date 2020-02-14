@@ -13,8 +13,12 @@
 
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label>Cash/Party/A/C</label>
-            <select class="form-control" formControlName="cashPartyACId">
+            <label>Cash/Party/A/C <sup>*</sup></label>
+            <select
+              class="form-control"
+              formControlName="cashPartyACId"
+              accSwiftFormValidator
+            >
               <option [ngValue]="null">Choose Option....</option>
             </select>
           </div>
@@ -22,29 +26,42 @@
 
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label>Date</label>
+            <label>Date <sup>*</sup></label>
             <input
               class="form-control"
               type="text"
               formControlName="date"
               bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
             />
           </div>
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label for="">Sales A/C </label>
-            <select class="form-control" formControlName="salesACId">
+            <label>Sales A/C <sup>*</sup> </label>
+            <select
+              class="form-control"
+              formControlName="salesACId"
+              accSwiftFormValidator
+            >
               <option [ngValue]="null">Choose Option....</option>
             </select>
           </div>
         </div>
+      </div>
+    </div>
 
+    <div class="row">
+      <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Depot/Location </label>
-            <select class="form-control" formControlName="depotLocationId">
+            <label>Depot/Location <sup>*</sup> </label>
+            <select
+              class="form-control"
+              formControlName="depotLocationId"
+              accSwiftFormValidator
+            >
               <option [ngValue]="null">Choose Option....</option>
             </select>
           </div>
@@ -61,14 +78,18 @@
 
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label>Order No.</label>
-            <input class="form-control" formControlName="orderNo" />
+            <label>Order No. <sup>*</sup></label>
+            <input
+              class="form-control"
+              formControlName="orderNo"
+              accSwiftFormValidator
+            />
           </div>
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label>Remarks</label>
+            <label>Remarks</label>
             <input class="form-control" formControlName="remarks" />
           </div>
         </div>
@@ -467,7 +488,14 @@
   </form>
   <div class="box-footer">
     <div class="mb-2">
-      <button class="btn btn-primary" disabled (click)="save()">Save</button>
+      <button
+        class="btn btn-primary"
+        (click)="save()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="addSalesReturnForm"
+      >
+        Save
+      </button>
       <button class="btn btn-secondary ml-2" (click)="cancel()">
         Cancel
       </button>

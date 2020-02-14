@@ -1,5 +1,5 @@
 <div class="box-header">
-  <button [routerLink]="['add']" class="btn btn-primary">
+  <button class="btn btn-primary" (click)="addDepotModal(depotFormModal)">
     <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Depot
   </button>
 </div>
@@ -142,7 +142,7 @@
             >
               <button
                 kendoGridEditCommand
-                (click)="edit(dataItem)"
+                (click)="editDepotModal(depotFormModal, dataItem)"
                 data-toggle="modal"
                 data-target="#viewModal"
                 [primary]="true"
@@ -163,3 +163,153 @@
     </div>
   </div>
 </div>
+
+<!-- Add Modal starts here -->
+<form [formGroup]="depotForm">
+  <ng-template #depotFormModal>
+    <div class="modal-header">
+      <h3 class="modal-title pull-left">{{ modalTitle }}</h3>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="modalRef.hide()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-4 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Depot Name<sup>*</sup></label>
+              <input
+                class="form-control"
+                formControlName="DepotName"
+                id="depotName"
+                name="Depot name"
+                accSwiftFormValidator
+              />
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>City </label>
+              <input class="form-control" id="city" formControlName="City" />
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Telephone </label>
+              <input
+                class="form-control"
+                id="telephone"
+                formControlName="Telephone"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-4 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Contact Person</label>
+              <input
+                class="form-control"
+                type="text"
+                formControlName="ContactPerson"
+              />
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Licence No.</label>
+              <input
+                class="form-control"
+                type="text"
+                formControlName="LicenceNo"
+              />
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Depot Address</label>
+              <input
+                class="form-control"
+                type="text"
+                formControlName="DepotAddress"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-4 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Postal Code</label>
+              <input
+                class="form-control"
+                type="number"
+                formControlName="PostalCode"
+              />
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Mobile</label>
+              <input
+                class="form-control"
+                type="number"
+                formControlName="Mobile"
+              />
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Reg. No.</label>
+              <input
+                class="form-control"
+                type="number"
+                formControlName="RegNo"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-4 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Remarks</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="Remarks"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" (click)="onSubmitDepot()">
+          {{ submitButton }}
+        </button>
+        <button
+          class="btn btn-secondary ml-2"
+          type="button"
+          (click)="modalRef.hide()"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</form>

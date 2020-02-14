@@ -1,7 +1,7 @@
 import { ActivatedRoute } from "@angular/router";
 import { Router } from "@angular/router";
 import { SalesReturnService } from "./../../services/sales-return.service";
-import { FormBuilder, FormGroup, FormArray } from "@angular/forms";
+import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
@@ -31,12 +31,12 @@ export class EditSalesReturnComponent implements OnInit {
   buildEditSalesReturnForm() {
     this.editSalesReturnForm = this._fb.group({
       seriesId: [null],
-      cashPartyACId: [null],
-      salesACId: [null],
-      depotLocationId: [null],
+      cashPartyACId: [null, [Validators.required]],
+      salesACId: [null, [Validators.required]],
+      depotLocationId: [null, [Validators.required]],
       projectId: [null],
       date: [new Date()],
-      orderNo: [""],
+      orderNo: ["", [Validators.required]],
       remarks: [""],
       salesReturnEntryList: this._fb.array([this.addSalesReturnEntryList()])
     });

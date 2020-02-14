@@ -33,7 +33,7 @@ export class AddPurchaseOrderComponent implements OnInit {
 
   buildAddPurchaseOrderForm() {
     this.addPurchaseOrderForm = this.fb.group({
-      orderNo: [""],
+      orderNo: ["", [Validators.required]],
       date: [new Date()],
       cashPartyACId: [null, [Validators.required]],
       projectId: [null],

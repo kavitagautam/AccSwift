@@ -1,5 +1,4 @@
 image: trion/ng-cli-karma
-
 cache:
   paths:
     - node_modules/
@@ -21,7 +20,6 @@ deploy_stage:
     - master
   script:
     - rm ./package-lock.json
-    - ssh -o StrictHostKeyChecking=no -p 1157 accswiftbent@98.142.99.67 'rm -rf /home/accswiftbent/public_html/*'
     - npm install
     - npm rebuild node-sass
     - ./node_modules/@angular/cli/bin/ng build --progress false --prod

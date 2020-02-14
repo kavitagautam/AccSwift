@@ -65,7 +65,8 @@ export class EditContraVoucherComponent implements OnInit {
       cashPartyId: [
         this.contraVoucherDetail
           ? this.contraVoucherDetail.ContraVoucherDetails
-          : null
+          : null,
+        [Validators.required]
       ],
       date: [
         this.contraVoucherDetail
@@ -80,7 +81,7 @@ export class EditContraVoucherComponent implements OnInit {
     return this.fb.group({
       ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       particularsOraccountingHead: ["", Validators.required],
-      voucherNo: [""],
+      voucherNo: ["", [Validators.required]],
       amount: [""],
       currentBalance: [""],
       vType: [""],

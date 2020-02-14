@@ -19,9 +19,11 @@ export class AuthenticationService {
     };
     return this.httpService.post(`${this._api_URL}User/Login`, obj);
   }
+
   getToken() {
-    return localStorage.getItem("access_token");
+    return sessionStorage.getItem("access_token");
   }
+
   isLoggedIn() {
     return this.getToken() !== null;
   }

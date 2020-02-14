@@ -3,8 +3,6 @@ import { CommonModule } from "@angular/common";
 
 import { UnitMaintenanceRoutingModule } from "./unit-maintenance-routing.module";
 import { ListUnitMaintenanceComponent } from "./components/list-unit-maintenance/list-unit-maintenance.component";
-import { EditUnitMaintenanceComponent } from "./components/edit-unit-maintenance/edit-unit-maintenance.component";
-import { AddUnitMaintenanceComponent } from "./components/add-unit-maintenance/add-unit-maintenance.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { GridModule } from "@progress/kendo-angular-grid";
 import { PopupModule } from "@progress/kendo-angular-popup";
@@ -16,11 +14,7 @@ import {
 import { SharedModule } from "@app/shared/shared.module";
 
 @NgModule({
-  declarations: [
-    ListUnitMaintenanceComponent,
-    EditUnitMaintenanceComponent,
-    AddUnitMaintenanceComponent
-  ],
+  declarations: [ListUnitMaintenanceComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,

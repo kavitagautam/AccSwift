@@ -1,5 +1,5 @@
 <div class="box-header">
-  <button [routerLink]="['add']" class="btn btn-primary">
+  <button class="btn btn-success" (click)="openAddModal(openUnitModal)">
     <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add New Unit
   </button>
 </div>
@@ -15,17 +15,17 @@
     <div class="box-body collapse" id="collapseOne" data-parent="#accordion">
       <div class="row">
         <div class="col-md-12">
-          <form [formGroup]="unitSearchForm" novalidate>
+          <form [formGroup]="unitForm" novalidate>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="voucher#">Unit Name</label>
-                <input class="form-control" formControlName="unitName" />
+                <input class="form-control" formControlName="UnitName" />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="series">Symbol</label>
-                <input class="form-control" formControlName="symbol" />
+                <input class="form-control" formControlName="Symbol" />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
@@ -34,7 +34,7 @@
                 <textarea
                   row="2"
                   class="form-control"
-                  formControlName="remarks"
+                  formControlName="Remarks"
                 >
                 </textarea>
               </div>
@@ -89,7 +89,7 @@
             >
               <button
                 kendoGridEditCommand
-                (click)="editUnit(dataItem)"
+                (click)="openEditModal(openUnitModal, dataItem)"
                 [primary]="true"
               >
                 Edit
@@ -108,3 +108,78 @@
     </div>
   </div>
 </div>
+
+<!-- Add Unit Modal -->
+<form [formGroup]="unitForm">
+  <ng-template #openUnitModal>
+    <div class="modal-header">
+      <h3 class="modal-title pull-left">{{ modalTitle }}</h3>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Unit Name <sup>*</sup></label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="UnitName"
+                accSwiftFormValidator
+              />
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Symbol <sup>*</sup></label>
+              <input
+                class="form-control"
+                formControlName="Symbol"
+                id="symbol"
+                name="Symbol"
+                accSwiftFormValidator
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="form-group">
+                  <label>Remarks</label>
+                  <textarea
+                    class="form-control"
+                    formControlName="Remarks"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        class="btn btn-primary"
+        (click)="onSubmitUnitMaintenance()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="unitForm"
+      >
+        {{ submitButton }}
+      </button>
+      <button class="btn btn-secondary ml-2" type="button" (click)="close()">
+        Cancel
+      </button>
+    </div>
+  </ng-template>
+</form>
