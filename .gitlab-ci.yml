@@ -17,7 +17,7 @@ deploy_stage:
   only:
     - master
   script:
-    - npm cache clean
+    - npm install --cache /tmp/empty-cache
     - npm install
     - npm rebuild node-sass
     - ./node_modules/@angular/cli/bin/ng build --progress false --prod
