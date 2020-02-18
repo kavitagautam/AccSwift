@@ -2,10 +2,10 @@ import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { Router } from "@angular/router";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { BankPaymentService } from "./../../services/bank-payment.service";
 import { Component, OnInit } from "@angular/core";
-import { BankPaymentMaster } from "../../models/bank-payment.model";
+
 import {
   CompositeFilterDescriptor,
   SortDescriptor
@@ -54,35 +54,8 @@ export class ListBankPaymentComponent implements OnInit {
     this.bankPaymentService.getBankPaymentMaster().subscribe(
       response => {
         this.listLoading = true;
-        const sampleData = response.map(
-          dataItem =>
-            <BankPaymentMaster>{
-              IsPayByInvoice: dataItem.IsPayByInvoice,
-              TotalAmount: dataItem.TotalAmount,
-              BankPaymentDetailsList: dataItem.BankPaymentDetailsList,
-              LedgerID: dataItem.LedgerID,
-              ID: dataItem.ID,
-              SeriesID: dataItem.SeriesID,
-              SeriesName: dataItem.SeriesName,
-              VoucherNo: dataItem.VoucherNo,
-              Date: this.parseAdjust(dataItem.Date),
-              ProjectID: dataItem.ProjectID,
-              ProjectName: dataItem.ProjectName,
-              Fields: {
-                Field1: dataItem.Fields.Field1,
-                Field2: dataItem.Fields.Field1,
-                Field3: dataItem.Fields.Field1,
-                Field4: dataItem.Fields.Field1,
-                Field5: dataItem.Fields.Field1
-              },
-              Remarks: dataItem.Remarks,
-              CreatedBy: dataItem.CreatedBy,
-              CreatedDate: this.parseAdjust(dataItem.CreatedDate),
-              ModifiedBy: dataItem.ModifiedBy,
-              ModifiedDate: this.parseAdjust(dataItem.ModifiedDate)
-            }
-        );
-        this.bankPaymentList = sampleData;
+        this.bankPaymentList = response;
+        console.log(response);
         this.gridView = {
           data: this.bankPaymentList,
           total: this.bankPaymentList ? this.bankPaymentList.length : 0
@@ -108,14 +81,6 @@ export class ListBankPaymentComponent implements OnInit {
     this.sort = sort;
     this.getBankPaymentList();
   }
-  date: Date = new Date();
-  //Date string parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
 
   public filter: CompositeFilterDescriptor;
   public filterChange(filter) {
@@ -168,6 +133,7 @@ export class ListBankPaymentComponent implements OnInit {
   public searchForm() {
     this.getBankPaymentList();
   }
+
   private toastr: ToastrService;
   deletePaymentById(id): void {
     this.toastr.success("Bank deleted successfully");

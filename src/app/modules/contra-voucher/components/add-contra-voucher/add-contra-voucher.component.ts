@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormArray, FormGroup, FormBuilder } from "@angular/forms";
+import { FormArray, FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
@@ -44,9 +44,9 @@ export class AddContraVoucherComponent implements OnInit {
     this.addContraVoucherForm = this.fb.group({
       seriesId: [null],
       projectId: [null],
-      cashAccountId: [null],
-      voucherNo: [""],
-      cashPartyId: [null],
+      cashAccountId: [null, [Validators.required]],
+      voucherNo: ["", [Validators.required]],
+      cashPartyId: [null, [Validators.required]],
       date: [new Date()],
       contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryList()])
     });

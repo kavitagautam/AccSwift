@@ -1,5 +1,5 @@
 import { Router } from "@angular/router";
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, Validators } from "@angular/forms";
 import { FormArray } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
@@ -30,11 +30,11 @@ export class AddPurchaseReturnComponent implements OnInit {
   buildaddPurchaseReturnForm() {
     this.addPurchaseReturnForm = this.fb.group({
       seriesId: [null],
-      voucher: [""],
+      voucher: ["", [Validators.required]],
       date: [new Date()],
-      cashPartyACId: [null],
-      depotLocationId: [null],
-      orderNo: [""],
+      cashPartyACId: [null, [Validators.required]],
+      depotLocationId: [null, [Validators.required]],
+      orderNo: ["", [Validators.required]],
       purchaseACId: [null],
       projectId: [null],
       remarks: [""],

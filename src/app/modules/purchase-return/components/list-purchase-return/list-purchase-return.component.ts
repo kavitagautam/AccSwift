@@ -66,14 +66,6 @@ export class ListPurchaseReturnComponent implements OnInit {
     });
   }
 
-  //Date String Parse
-  public currentYear = new Date().getFullYear();
-  public parseAdjust = (eventDate: Date): Date => {
-    const date = new Date(eventDate);
-    date.setFullYear(this.currentYear);
-    return date;
-  };
-
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     this.getPurchaseReturnList();
@@ -89,9 +81,9 @@ export class ListPurchaseReturnComponent implements OnInit {
     };
 
     this.purchaseReturnService.getPurchaseOrderMaster().subscribe(
-      res => {
+      response => {
         this.listLoading = true;
-        this.purchaseReturnList = res;
+        this.purchaseReturnList = response;
         this.gridView = {
           data: this.purchaseReturnList.slice(
             this.skip,

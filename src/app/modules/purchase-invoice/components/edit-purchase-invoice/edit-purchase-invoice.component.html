@@ -10,7 +10,7 @@
               id="seriesNameId"
               formControlName="seriesId"
             >
-            <option [ngValue]="null">Choose Option....</option>
+              <option [ngValue]="null">Choose Option....</option>
               <option
                 *ngFor="let series of purchaseService.seriesList"
                 [ngValue]="series.ID"
@@ -26,6 +26,7 @@
               class="form-control"
               id="voucherNoId"
               formControlName="voucherNo"
+              accSwiftFormValidator
             />
           </div>
         </div>
@@ -47,11 +48,17 @@
               class="form-control"
               id="cashAccountNo"
               formControlName="cashPartyACId"
+              accSwiftFormValidator
             >
-            <option [ngValue]="null">Choose Option....</option>
+              <option [ngValue]="null">Choose Option....</option>
             </select>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Depot/ Location </label>
@@ -59,15 +66,20 @@
               class="form-control"
               id="depotId"
               formControlName="depotLocationId"
+              accSwiftFormValidator
             >
-            <option [ngValue]="null">Choose Option....</option>
+              <option [ngValue]="null">Choose Option....</option>
             </select>
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Order No.</label>
-            <input class="form-control" formControlName="orderNo" />
+            <input
+              class="form-control"
+              formControlName="orderNo"
+              accSwiftFormValidator
+            />
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -86,7 +98,7 @@
               id="projectId"
               formControlName="projectId"
             >
-            <option [ngValue]="null">Choose Option....</option>
+              <option [ngValue]="null">Choose Option....</option>
               <option
                 *ngFor="let project of purchaseService.projectList"
                 [ngValue]="project.ID"
@@ -95,6 +107,11 @@
             </select>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <sup>*</sup><label>Remarks</label>
@@ -502,7 +519,14 @@
   </form>
   <div class="box-footer">
     <div class="mb-2">
-      <button class="btn btn-primary" disabled (click)="save()">Save</button>
+      <button
+        class="btn btn-primary"
+        (click)="save()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="editPurchaseForm"
+      >
+        Save
+      </button>
       <button class="btn btn-secondary ml-2" (click)="cancel()">
         Cancel
       </button>

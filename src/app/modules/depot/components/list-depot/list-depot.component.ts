@@ -4,9 +4,9 @@ import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
-import { FormGroup } from "@angular/forms";
+import { FormGroup, Validators } from "@angular/forms";
 import { FormBuilder } from "@angular/forms";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import { DepotService } from "../../services/depot.service";
 import {
   CompositeFilterDescriptor,
@@ -20,29 +20,39 @@ import {
 })
 export class ListDepotComponent implements OnInit {
   depotForm: FormGroup;
-  depotNameSearchKey = "";
+  editMode: boolean = false;
+  listLoading: boolean;
+  submitted: boolean;
+  public allowUnsort = true;
+
+  submitButton: string;
+  modalTitle: string;
+
   depotList: DepotList[];
   searchFilterList: Array<any> = [];
   filterList: Array<any> = [];
-  listLoading: Boolean;
+
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
+
   orderByKey = "";
+  depotNameSearchKey = "";
   dirKey = "asc";
-  //sorting kendo data
-  public allowUnsort = true;
   public sort: SortDescriptor[] = [
     {
       field: "",
       dir: "asc"
     }
   ];
+
+  //sorting kendo data
+
   modalRef: BsModalRef;
-  //modal config to unhide when clicked outside
   config = {
+    // modal config to unhide modal when clicked outside
     backdrop: true,
     ignoreBackdropClick: true
   };
@@ -60,9 +70,9 @@ export class ListDepotComponent implements OnInit {
     this.getDepotList();
   }
 
-  buildDepotForm() {
+  buildDepotForm(): void {
     this.depotForm = this._fb.group({
-      DepotName: [""],
+      DepotName: ["", [Validators.required]],
       City: [""],
       Telephone: [""],
       ContactPerson: [""],
@@ -158,10 +168,6 @@ export class ListDepotComponent implements OnInit {
     );
   }
 
-  public edit(item): void {
-    this.router.navigate(["/depot/edit", item.ID]);
-  }
-
   openConfirmationDialogue(dataItem): void {
     const depotId = {
       id: dataItem.ID
@@ -170,8 +176,8 @@ export class ListDepotComponent implements OnInit {
       ConfirmationDialogComponent,
       this.config
     );
-    this.modalRef.content.data = "Depot" + dataItem.depotId;
-    this.modalRef.content.action = "delete";
+    this.modalRef.content.data = "Depot " + dataItem.depotId;
+    this.modalRef.content.action = "delete ";
     this.modalRef.content.onClose.subscribe(confirm => {
       if (confirm) {
         this.deleteDepotById(depotId.id);
@@ -189,6 +195,61 @@ export class ListDepotComponent implements OnInit {
       },
       () => {
         this.toastr.success("Depot deleted successfully");
+      }
+    );
+  }
+
+  // Modal Part......//
+
+  addDepotModal(template: TemplateRef<any>): void {
+    this.depotForm.reset();
+    this.submitButton = "Save ";
+    this.modalTitle = "Add Depot ";
+    this.modalRef = this.modalService.show(template, this.config);
+  }
+
+  editDepotModal(template, dataItem): void {
+    this.editMode = true;
+    this.modalTitle = "Edit Depot ";
+    this.submitButton = "Save ";
+    dataItem["id"] = dataItem.dataItem_id;
+    this.depotForm.patchValue(dataItem);
+    this.modalRef = this.modalService.show(template, this.config);
+  }
+
+  onSubmitDepot(): void {
+    if (this.depotForm.invalid) return;
+    if (this.editMode == true) {
+      this.editDepotForm();
+    } else {
+      this.addDepotForm();
+    }
+  }
+
+  editDepotForm(): void {
+    this.depotService.updateDepot(this.depotForm.value).subscribe(
+      response => {
+        this.router.navigate(["/depot"]);
+      },
+      error => {
+        this.toastr.error(JSON.stringify(error.errorMessage));
+      },
+      () => {
+        this.toastr.success("Depot edited successfully");
+      }
+    );
+  }
+
+  addDepotForm(): void {
+    this.depotService.saveDepot(this.depotForm.value).subscribe(
+      response => {
+        this.router.navigate(["/depot"]);
+      },
+      error => {
+        this.toastr.error(JSON.stringify(error.errorMessage));
+      },
+      () => {
+        this.toastr.success("Depot added successfully");
       }
     );
   }

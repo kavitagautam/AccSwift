@@ -1,6 +1,6 @@
 import { Router } from "@angular/router";
 import { PurchaseInvoiceService } from "./../../services/purchase-invoice.service";
-import { FormBuilder, FormArray } from "@angular/forms";
+import { FormBuilder, FormArray, Validators } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 
@@ -27,14 +27,14 @@ export class AddPurchaseInvoiceComponent implements OnInit {
   buildPurchaseInvoiceForm() {
     this.addPurchaseForm = this.fb.group({
       seriesId: [null],
-      cashPartyACId: [null],
+      cashPartyACId: [null, [Validators.required]],
       purchaseAcId: [null],
-      voucherNo: [""],
+      voucherNo: ["", [Validators.required]],
       partyBillNo: [""],
-      depotLocationId: [null],
+      depotLocationId: [null, [Validators.required]],
       projectId: [null],
       date: [new Date()],
-      orderNo: [""],
+      orderNo: ["", [Validators.required]],
       remarks: [""],
       purchaseInvoiceEntryList: this.fb.array([this.addPurchaseEntryList()])
     });
