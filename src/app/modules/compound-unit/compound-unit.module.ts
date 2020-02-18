@@ -1,3 +1,4 @@
+import { GridModule } from "@progress/kendo-angular-grid";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormsModule } from "@angular/forms";
 import { NgModule } from "@angular/core";
@@ -12,7 +13,8 @@ import { CompoundUnitComponent } from "./components/compound-unit/compound-unit.
     CommonModule,
     CompoundUnitRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    GridModule
   ]
 })
 export class CompoundUnitModule {}

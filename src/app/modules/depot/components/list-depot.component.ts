@@ -1,4 +1,4 @@
-import { DepotList } from "./../../models/depot.model";
+import { DepotList } from "../models/depot.model";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -7,7 +7,7 @@ import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { FormGroup, Validators } from "@angular/forms";
 import { FormBuilder } from "@angular/forms";
 import { Component, OnInit, TemplateRef } from "@angular/core";
-import { DepotService } from "../../services/depot.service";
+import { DepotService } from "../services/depot.service";
 import {
   CompositeFilterDescriptor,
   SortDescriptor
@@ -21,6 +21,7 @@ import {
 export class ListDepotComponent implements OnInit {
   depotForm: FormGroup;
   editMode: boolean = false;
+  depotMode: boolean = false;
   listLoading: boolean;
   submitted: boolean;
   public allowUnsort = true;
@@ -73,7 +74,7 @@ export class ListDepotComponent implements OnInit {
 
   buildDepotForm(): void {
     this.depotForm = this._fb.group({
-      DepotName: ["", [Validators.required]],
+      DepotName: this.depotMode ? ["", [Validators.required]] : [""],
       City: [""],
       Telephone: [""],
       ContactPerson: [""],
@@ -202,6 +203,7 @@ export class ListDepotComponent implements OnInit {
   // Modal Part......//
 
   addDepotModal(template: TemplateRef<any>): void {
+    this.depotMode = true;
     this.depotForm.reset();
     this.submitButton = "Save ";
     this.modalTitle = "Add Depot ";
@@ -210,10 +212,11 @@ export class ListDepotComponent implements OnInit {
 
   editDepotModal(template, dataItem): void {
     this.editMode = true;
+    this.depotMode = true;
     this.modalTitle = "Edit Depot ";
     this.submitButton = "Save ";
-    dataItem["id"] = dataItem.dataItem_id;
-    this.depotID = dataItem.dataItem_id;
+    dataItem["id"] = dataItem.ID;
+    this.depotID = dataItem.ID;
     this.depotForm.patchValue(dataItem);
     this.modalRef = this.modalService.show(template, this.config);
   }
@@ -250,6 +253,7 @@ export class ListDepotComponent implements OnInit {
       },
       () => {
         this.modalRef.hide();
+        this.depotForm.reset();
         this.toastr.success("Depot edited successfully");
         this.getDepotList();
       }
@@ -267,12 +271,14 @@ export class ListDepotComponent implements OnInit {
       () => {
         this.modalRef.hide();
         this.toastr.success("Depot added successfully");
+        this.getDepotList();
       }
     );
   }
 
   onCancel(): void {
     this.modalRef.hide();
-    this.depotForm.reset();
+    this.depotMode = false;
+    this.buildDepotForm();
   }
 }

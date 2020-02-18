@@ -1,38 +1,170 @@
-<div class="box  box-default">
+<div class="box box-default">
+  <button class="btn btn-primary mt-4">
+    <i
+      class="fa fa-plus"
+      aria-hidden="true"
+      (click)="openAddModal(openCompoundUnit)"
+      >Add New Unit</i
+    >
+  </button>
   <form [formGroup]="compoundUnitForm" novalidate>
-    <div class="row">
-      <div class="col-md-12 mt-3">
-        <div class="col-md-3 col-xs-6 col-sm-6">
-          <div class="form-group">
-            <label>Value of first unit</label>
-            <input
-              class="form-control"
-              formControlName="firstUnitValue"
-              type="number"
-            />
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <div class="col-md-5 ml-4">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="first-unit">Value of First Unit</label>
+              <input type="number" id="first-unit" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="first-unit">Name of First Unit</label>
+            <select class="form-control">
+              <option [ngValue]="null">Select option...</option>
+            </select>
           </div>
         </div>
-        <div class="col-md-3 col-xs-6 col-sm-6">
-          <div class="form-group">
-            <label>Name of first unit</label>
-            <input
-              class="form-control"
-              formControlName="firstUnitName"
-              type="text"
-            />
-          </div>
+        <div class="col-md-1 compound">
+          <h1>=</h1>
         </div>
-        <div class="col-md-3 col-xs-6 col-sm-6">
-          <div class="form-group">
-            <label> s</label>
-            <input
-              class="form-control"
-              formControlName="firstUnitName"
-              type="text"
-            />
+        <div class="col-md-5">
+          <div class="col-md-6">
+            <label for="second-unit">Value of Second Unit</label>
+            <input type="number" id="second-unit" class="form-control" />
+          </div>
+          <div class="col-md-6">
+            <label for="first-unit">Name of Second Unit</label>
+            <select class="form-control">
+              <option [ngValue]="null">Select option...</option>
+            </select>
           </div>
         </div>
       </div>
     </div>
   </form>
 </div>
+
+<div class="box box-default">
+  <div class="box-body">
+    <div class="col-md-12 p-0">
+      <div class="grid-wrapper">
+        <kendo-grid
+          [data]="gridView"
+          [filterable]="true"
+          [filter]="filter"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          scrollable="none"
+          (filterChange)="filterChange($event)"
+        >
+          <kendo-grid-column
+            field="ParentUnitID"
+            title="Value of First Unit"
+          ></kendo-grid-column>
+          <kendo-grid-column field="FirstUnitName" title="Name of First Unit">
+          </kendo-grid-column>
+          <kendo-grid-column field="RelationValue" title="Equals">
+          </kendo-grid-column>
+          <kendo-grid-column field="UnitID" title="Value of Second Unit">
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="SecondUnit"
+            title="Name of Second Unit"
+          ></kendo-grid-column>
+          <kendo-grid-column
+            field="Remarks"
+            title="Remarks"
+          ></kendo-grid-column>
+          <kendo-grid-command-column title="Action" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
+            >
+              <button
+                kendoGridEditCommand
+                (click)="openEditModal(openCompoundUnit, dataItem)"
+                [primary]="true"
+              >
+                Edit
+              </button>
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialogue(dataItem)"
+              >
+                Delete
+              </button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
+        <div *ngIf="listLoading" class="k-i-loading"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Pop up -->
+<form>
+  <ng-template #openCompoundUnit>
+    <div class="modal-header">
+      <h3 class="modal-title pull-left">{{ modalTitle }}</h3>
+      <button
+        type="button"
+        class="close pull-right"
+        arial-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-5 ml-2">
+            <div class="col-md-6">
+              <label for="first-unit">Value of 1st Unit</label>
+              <input type="number" id="first-unit" class="form-control" />
+            </div>
+            <div class="col-md-6">
+              <label for="first-unit">Name of 1st Unit</label>
+              <select class="form-control">
+                <option [ngValue]="null">Select option...</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-1 compound">
+            <h1>=</h1>
+          </div>
+          <div class="col-md-5">
+            <div class="col-md-6">
+              <label for="second-unit">Value of 2nd Unit</label>
+              <input type="number" id="second-unit" class="form-control" />
+            </div>
+            <div class="col-md-6">
+              <label for="first-unit">Name of 2nd Unit</label>
+              <select class="form-control">
+                <option [ngValue]="null">Select option...</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" (click)="onSubmitCompoundUnit()">
+        {{ submitButton }}
+      </button>
+      <button class="btn btn-secondory ml-2" type="button" (click)="close()">
+        Cancel
+      </button>
+    </div>
+  </ng-template>
+</form>

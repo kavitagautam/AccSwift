@@ -24,7 +24,6 @@ export class ListBankReconciliationComponent implements OnInit {
   listLoading: Boolean;
   bankReconciliationList;
   private toastr: ToastrService;
-  private modalService: BsModalService;
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
   public pageSize = 10;
@@ -49,7 +48,8 @@ export class ListBankReconciliationComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public reconciliationService: BankReconciliationService,
-    private router: Router
+    private router: Router,
+    private modalService: BsModalService
   ) {}
 
   ngOnInit() {
