@@ -12,7 +12,6 @@
               <div class="form-group">
                 <label>Product Code<sup>*</sup> </label>
                 <input
-                  type="text"
                   class="form-control"
                   formControlName="productCode"
                   accSwiftFormValidator
@@ -69,7 +68,6 @@
               <div class="form-group">
                 <label>Product Name<sup>*</sup> </label>
                 <input
-                  type="text"
                   class="form-control"
                   formControlName="productName"
                   accSwiftFormValidator
@@ -94,11 +92,7 @@
               </div>
               <div class="form-group">
                 <label>Remarks</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="remarks"
-                />
+                <input class="form-control" formControlName="remarks" />
               </div>
 
               <div class="form-group">
@@ -135,21 +129,20 @@
               </div>
             </div>
           </div>
+          <div class="col-md-12 m-2" *ngIf="showActions">
+            <button
+              class="btn btn-primary"
+              (click)="saveProduct()"
+              accSwiftFormSubmitValidationMsg
+              [validationControl]="productForm"
+            >
+              Save
+            </button>
+            <button class="btn btn-secondary ml-2" (click)="cancelProduct()">
+              Cancel
+            </button>
+          </div>
         </form>
-
-        <div class="col-md-12 m-2" *ngIf="showActions">
-          <button
-            class="btn btn-primary"
-            (click)="saveProduct()"
-            accSwiftFormSubmitValidationMsg
-            [validationControl]="productForm"
-          >
-            Save
-          </button>
-          <button class="btn btn-secondary ml-2" (click)="cancelProduct()">
-            Cancel
-          </button>
-        </div>
       </div>
     </ng-template>
   </kendo-tabstrip-tab>
@@ -198,13 +191,11 @@
               (save)="saveHandler($event)"
               (remove)="removeHandler($event)"
               (add)="addHandler($event)"
-              [height]="250"
             >
               <ng-template kendoGridToolbarTemplate>
                 <button kendoGridAddCommand>Add new</button>
               </ng-template>
-
-              <kendo-grid-column field="productId" title="Product">
+              <kendo-grid-column field="accountClassName" title="Account Class">
                 <ng-template
                   kendoGridCellTemplate
                   let-dataItem="dataItem"
@@ -216,32 +207,15 @@
                   <input
                     #input
                     class="k-textbox"
+                    style="width: 100px"
                     [formControl]="
-                      getOpeningBalanceList.controls[rowIndex].get('productId')
+                      getOpeningBalanceList.controls[rowIndex].get(column.field)
                     "
                   />
-                  <kendo-popup
-                    [anchor]="input"
-                    *ngIf="
-                      getOpeningBalanceList.controls[rowIndex].get('productId')
-                        .invalid &&
-                      rowSubmitted &&
-                      !(
-                        isNew &&
-                        getOpeningBalanceList.controls[rowIndex].get(
-                          'productId'
-                        ).untouched
-                      )
-                    "
-                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-                  >
-                    <span class="k-icon k-i-warning"></span>
-                    Product is required
-                  </kendo-popup>
                 </ng-template>
               </kendo-grid-column>
 
-              <kendo-grid-column field="accountClassId" title="Account Class">
+              <kendo-grid-column field="quantity" title="Opening Quantity">
                 <ng-template
                   kendoGridCellTemplate
                   let-dataItem="dataItem"
@@ -256,25 +230,7 @@
                     [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(column.field)
                     "
-                  ></kendo-numerictextbox>
-                </ng-template>
-              </kendo-grid-column>
-
-              <kendo-grid-column field="quantity" title="Quantity ">
-                <ng-template
-                  kendoGridCellTemplate
-                  let-dataItem="dataItem"
-                  let-column="column"
-                  let-formGroup="formGroup"
-                  let-isNew="isNew"
-                  let-rowIndex="rowIndex"
-                >
-                  <kendo-numerictextbox
-                    #ntb="popupAnchor"
-                    popupAnchor
-                    [formControl]="
-                      getOpeningBalanceList.controls[rowIndex].get(column.field)
-                    "
+                    style="width:130px;"
                   ></kendo-numerictextbox>
                 </ng-template>
               </kendo-grid-column>
@@ -293,6 +249,7 @@
                     [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(column.field)
                     "
+                    style="width:130px;"
                   ></kendo-numerictextbox>
                 </ng-template>
               </kendo-grid-column>
@@ -312,18 +269,14 @@
                     [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(column.field)
                     "
+                    style="width:130px;"
                   ></kendo-numerictextbox>
                 </ng-template>
               </kendo-grid-column>
               <kendo-grid-command-column title="Action">
                 <ng-template kendoGridCellTemplate let-isNew="isNew">
-                  <button class="k-button" kendoGridAddCommand>Add</button>
-                  <button kendoGridRemoveCommand>Remove</button>
-                  <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
-                    {{ isNew ? "Add" : "Update" }}
-                  </button>
-                  <button kendoGridCancelCommand>
-                    {{ isNew ? "Discard changes" : "Cancel" }}
+                  <button class="k-button" (click)="updateOpeningBalance()">
+                    Update
                   </button>
                 </ng-template>
               </kendo-grid-command-column>

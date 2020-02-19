@@ -6,7 +6,9 @@ import { Observable } from "rxjs";
 import {
   ProductGroupTree,
   ProductModel,
-  ProductGroup
+  ProductGroup,
+  AccountClassModel,
+  AccountClass
 } from "../models/product.models";
 import { DepotList } from "@app/modules/depot/models/depot.model";
 
@@ -16,6 +18,7 @@ import { DepotList } from "@app/modules/depot/models/depot.model";
 export class ProductService {
   _api_URL = environment.baseAPI;
   productGroupList: ProductGroup;
+  accountClass: AccountClass;
   depotList: DepotList;
   unitList;
   constructor(
@@ -25,6 +28,7 @@ export class ProductService {
     this.getProductGroup();
     this.getDepotList();
     this.getUnitList();
+    this.getAccountClass();
   }
 
   getProductTree(): Observable<ProductGroupTree> {
@@ -52,6 +56,12 @@ export class ProductService {
   getProductGroup(): void {
     this.httpService.get(`${this._api_URL}ProductGroup`).subscribe(response => {
       this.productGroupList = response.Entity;
+    });
+  }
+
+  getAccountClass(): void {
+    this.httpService.get(`${this._api_URL}AccountClass`).subscribe(response => {
+      this.accountClass = response.Entity;
     });
   }
 
