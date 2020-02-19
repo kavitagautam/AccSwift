@@ -43,20 +43,31 @@ export class AddProductComponent implements OnInit {
   }
 
   getProductDetails(): void {
-    this.productService
-      .getProductDetails(this.selectedProductId)
-      .subscribe(response => {
-        this.productDetails = response.Entity;
-        this.buildProductForm();
-      });
+    if (this.selectedProductId) {
+      this.productService
+        .getProductDetails(this.selectedProductId)
+        .subscribe(response => {
+          this.productDetails = response.Entity;
+          this.buildProductForm();
+        });
+    }
   }
 
   addOpeningBalanceFormGroup(): FormGroup {
     return this._fb.group({
       ID: [""],
       productId: [""],
-      accountClassId: ["", Validators.required],
-      quantity: "",
+      accountClassId: [
+        this.productService.accountClass
+          ? this.productService.accountClass[0].ID
+          : null
+      ],
+      accountClassName: [
+        this.productService.accountClass
+          ? this.productService.accountClass[0].Name
+          : ""
+      ],
+      quantity: [""],
       purchaseRate: [""],
       salesRate: [""],
       date: [""]
@@ -74,6 +85,7 @@ export class AddProductComponent implements OnInit {
     this.submitted = true;
     this.rowSubmitted = true;
     if (this.productForm.get("openingBalanceList").invalid) return;
+    if (sender.data.length > 0) return;
     (<FormArray>this.productForm.get("openingBalanceList")).push(
       this.addOpeningBalanceFormGroup()
     );
@@ -104,8 +116,16 @@ export class AddProductComponent implements OnInit {
     this.editedRowIndex = undefined;
   }
 
-  public saveProduct() {
+  updateOpeningBalance(): void {
+    const updateValue = this.productForm.get("openingBalanceList");
+  }
+
+  public saveProduct(): void {
     if (this.productForm.invalid) return;
+
+    const openingBalanceArray = <FormArray>(
+      this.productForm.get("openingBalanceList")
+    );
 
     const obj = {
       ProductCode: this.productForm.get("productCode").value,
@@ -116,7 +136,17 @@ export class AddProductComponent implements OnInit {
       sVatApplicable: this.productForm.get("isVatApplicable").value,
       IsInventoryApplicable: this.productForm.get("isInventoryApplicable")
         .value,
-      IsDecimalApplicable: this.productForm.get("isDecimalApplicable").value
+      IsDecimalApplicable: this.productForm.get("isDecimalApplicable").value,
+      OpeningQuantity: {
+        // ID: openingBalanceArray.controls[0].get("ID").value,
+        ProductID: this.productForm.get("productGroupId").value,
+        AccClassID: openingBalanceArray.controls[0].get("accountClassId").value,
+        OpenPurchaseQty: openingBalanceArray.controls[0].get("quantity").value,
+        OpenPurchaseRate: openingBalanceArray.controls[0].get("purchaseRate")
+          .value,
+        OpenSalesRate: openingBalanceArray.controls[0].get("salesRate").value,
+        OpenQuantityDate: openingBalanceArray.controls[0].get("date").value
+      }
     };
     this.productService.addProduct(obj).subscribe(
       response => {
@@ -133,7 +163,7 @@ export class AddProductComponent implements OnInit {
     );
   }
 
-  cancel(): void {
+  public cancelProduct(): void {
     //execute callback to the viewProductGroupComponent
     this.onCancel.emit(true);
   }

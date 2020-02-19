@@ -1,4 +1,10 @@
-import { Component, OnInit, Input } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  ComponentRef
+} from "@angular/core";
 import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { ProductService } from "@app/modules/product/services/product.service";
 
@@ -29,40 +35,34 @@ export class ViewProductComponent implements OnInit {
         {
           value: this.productDetails ? this.productDetails.ProductCode : "",
           disabled: true
-        },
-        Validators.required
+        }
       ],
       productName: [
         {
           value: this.productDetails ? this.productDetails.Name : "",
           disabled: true
-        },
-        Validators.required
+        }
       ],
       productGroupId: [
         {
           value: this.productDetails ? this.productDetails.GroupID : null,
           disabled: true
-        },
-        Validators.required
+        }
       ],
       departmentandLocationId: [
         {
           value: this.productDetails ? this.productDetails.DepotID : null,
           disabled: true
-        },
-        Validators.required
+        }
       ],
       baseUnitId: [
         {
           value: this.productDetails ? this.productDetails.UnitID : null,
           disabled: true
-        },
-        Validators.required
+        }
       ],
       isVatApplicable: [
-        this.productDetails ? this.productDetails.IsVatApplicable : false,
-        Validators.required
+        this.productDetails ? this.productDetails.IsVatApplicable : false
       ],
       isDecimalApplicable: [
         this.productDetails ? this.productDetails.IsDecimalApplicable : false
@@ -81,13 +81,15 @@ export class ViewProductComponent implements OnInit {
   }
 
   getProductDetails(): void {
-    this.productService
-      .getProductDetails(this.selectedProductId)
-      .subscribe(response => {
-        this.productDetails = response.Entity;
-        this.buildProductForm();
-        this.setOpeingQuantity();
-      });
+    if (this.selectedProductId) {
+      this.productService
+        .getProductDetails(this.selectedProductId)
+        .subscribe(response => {
+          this.productDetails = response.Entity;
+          this.buildProductForm();
+          this.setOpeingQuantity();
+        });
+    }
   }
 
   setOpeingQuantity(): void {
@@ -104,7 +106,12 @@ export class ViewProductComponent implements OnInit {
         this._fb.group({
           ID: [openingQuantities.ID],
           productId: [openingQuantities.ProductID],
-          accountClassId: [openingQuantities.AccClassID, Validators.required],
+          accountClassId: [openingQuantities.AccClassID],
+          accountClassName: [
+            this.productService.accountClass
+              ? this.productService.accountClass[0].Name
+              : ""
+          ],
           quantity: openingQuantities.OpenPurchaseQty,
           purchaseRate: [openingQuantities.OpenPurchaseRate],
           salesRate: [openingQuantities.OpenSalesRate],
@@ -117,6 +124,7 @@ export class ViewProductComponent implements OnInit {
           ID: [""],
           productId: [""],
           accountClassId: ["", Validators.required],
+          accountClassName: [""],
           quantity: "",
           purchaseRate: [""],
           salesRate: [""],
@@ -131,6 +139,7 @@ export class ViewProductComponent implements OnInit {
       ID: [""],
       productId: [""],
       accountClassId: ["", Validators.required],
+      accountClassName: [""],
       quantity: "",
       purchaseRate: [""],
       salesRate: [""],
@@ -179,7 +188,13 @@ export class ViewProductComponent implements OnInit {
     this.editedRowIndex = undefined;
   }
 
-  public saveProduct() {
+  public saveProduct(): void {
     if (this.productForm.invalid) return;
+  }
+
+  public cancelProduct(): void {}
+
+  updateOpeningBalance(): void {
+    const updateValue = this.productForm.get("openingBalanceList");
   }
 }
