@@ -14,13 +14,24 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="first-unit">Value of First Unit</label>
-              <input type="number" id="first-unit" class="form-control" />
+              <input
+                type="number"
+                id="first-unit"
+                class="form-control"
+                formControlName="FirstUnitID"
+              />
             </div>
           </div>
           <div class="col-md-6">
             <label for="first-unit">Name of First Unit</label>
-            <select class="form-control">
+            <select class="form-control" formControlName="FirstUnitName">
               <option [ngValue]="null">Select option...</option>
+              <option
+                *ngFor="let firstUnit of compoundUnitList"
+                [ngValue]="firstUnit.ID"
+              >
+                {{ firstUnit.FirstUnitName }}
+              </option>
             </select>
           </div>
         </div>
@@ -30,12 +41,23 @@
         <div class="col-md-5">
           <div class="col-md-6">
             <label for="second-unit">Value of Second Unit</label>
-            <input type="number" id="second-unit" class="form-control" />
+            <input
+              type="number"
+              id="second-unit"
+              class="form-control"
+              formControlName="SecondUnitID"
+            />
           </div>
           <div class="col-md-6">
             <label for="first-unit">Name of Second Unit</label>
-            <select class="form-control">
+            <select class="form-control" formControlName="SecondUnitName">
               <option [ngValue]="null">Select option...</option>
+              <option
+                *ngFor="let secondUnit of compoundUnitList"
+                [ngValue]="secondUnit.ID"
+              >
+                {{ secondUnit.SecondUnitName }}
+              </option>
             </select>
           </div>
         </div>
@@ -73,10 +95,10 @@
           </kendo-grid-column>
           <kendo-grid-column field="RelationValue" title="Equals">
           </kendo-grid-column>
-          <kendo-grid-column field="UnitID" title="Value of Second Unit">
+          <kendo-grid-column field="SecondUnitID" title="Value of Second Unit">
           </kendo-grid-column>
           <kendo-grid-column
-            field="SecondUnit"
+            field="SecondUnitName"
             title="Name of Second Unit"
           ></kendo-grid-column>
           <kendo-grid-column
@@ -112,7 +134,7 @@
 </div>
 
 <!-- Modal Pop up -->
-<form>
+<form [formGroup]="compoundUnitForm">
   <ng-template #openCompoundUnit>
     <div class="modal-header">
       <h3 class="modal-title pull-left">{{ modalTitle }}</h3>
@@ -131,26 +153,38 @@
           <div class="col-md-5 ml-2">
             <div class="col-md-6">
               <label for="first-unit">Value of 1st Unit</label>
-              <input type="number" id="first-unit" class="form-control" />
+              <input
+                type="number"
+                id="first-unit"
+                class="form-control"
+                formControlName="FirstUnitID"
+              />
             </div>
             <div class="col-md-6">
               <label for="first-unit">Name of 1st Unit</label>
-              <select class="form-control">
+              <select class="form-control" formControlName="FirstUnitName">
                 <option [ngValue]="null">Select option...</option>
               </select>
             </div>
           </div>
           <div class="col-md-1 compound">
-            <h1>=</h1>
+            <select class="form-control" formControlName="RelationValue"
+              >=</select
+            >
           </div>
           <div class="col-md-5">
             <div class="col-md-6">
               <label for="second-unit">Value of 2nd Unit</label>
-              <input type="number" id="second-unit" class="form-control" />
+              <input
+                type="number"
+                id="second-unit"
+                class="form-control"
+                formControlName="SecondUnitID"
+              />
             </div>
             <div class="col-md-6">
               <label for="first-unit">Name of 2nd Unit</label>
-              <select class="form-control">
+              <select class="form-control" formControlName="SecondUnitName">
                 <option [ngValue]="null">Select option...</option>
               </select>
             </div>

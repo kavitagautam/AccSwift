@@ -1,7 +1,9 @@
 export interface CompoundUnit {
   ID: number;
-  UnitID: number;
-  ParentUnitID: number;
+  FirstUnitID: number;
+  FirstUnitName: string;
+  SecondUnitID: number;
+  SecondUnitName: string;
   RelationValue: number;
   Remarks: string;
 }

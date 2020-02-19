@@ -12,6 +12,7 @@ import {
 } from "@progress/kendo-data-query";
 import { CompoundUnitService } from "../../services/compound-unit.service";
 import { CompoundUnit } from "../../models/compound.model";
+import { throwToolbarMixedModesError } from "@angular/material";
 
 @Component({
   selector: "accSwift-compound-unit",
@@ -56,7 +57,7 @@ export class CompoundUnitComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private modalService: BsModalService,
-    private compoundUnitService: CompoundUnitService,
+    public compoundUnitService: CompoundUnitService,
     private router: Router
   ) {}
 
@@ -67,10 +68,12 @@ export class CompoundUnitComponent implements OnInit {
 
   buildCompoundUnitForm() {
     this.compoundUnitForm = this._fb.group({
-      firstUnitValue: "",
-      firstUnitName: "",
-      secondUnitValue: "",
-      secondUnitName: ""
+      FirstUnitID: ["1"],
+      FirstUnitName: [null],
+      SecondUnitID: [""],
+      SecondUnitName: [null],
+      RelationValue: [""],
+      Remarks: [""]
     });
   }
 
@@ -86,6 +89,7 @@ export class CompoundUnitComponent implements OnInit {
     this.compoundUnitService.getCompoundUnitList(obj).subscribe(
       response => {
         this.compoundUnitList = response.Entity.Entity;
+        console.log(this.compoundUnitList);
         this.gridView = {
           data: this.compoundUnitList,
           total: response.Entity.TotalItemsAvailable
@@ -113,7 +117,8 @@ export class CompoundUnitComponent implements OnInit {
     this.compoundNameSearchKey = "";
     if (filter.filters.length > 0) {
       const filterArray = [];
-      filter.filters.forEach(item => {
+      filter.filters.forEach(function(item) {
+        console.log(filter);
         filterArray.push({
           Field: item.field,
           Operator: item.operator,
@@ -189,7 +194,7 @@ export class CompoundUnitComponent implements OnInit {
 
   onSubmitCompoundUnit(): void {
     if (this.compoundUnitForm.invalid) return;
-    if (this.editMode == true) {
+    if (this.editMode === true) {
       this.editCompoundUnit();
     } else {
       this.addCompoundUnit();
@@ -199,8 +204,12 @@ export class CompoundUnitComponent implements OnInit {
   editCompoundUnit(): void {
     const obj = {
       ID: this.compoundUnitId,
-      UnitID: this.compoundUnitForm.get("secondUnitValue").value,
-      ParentUnitID: this.compoundUnitForm.get("firstUnitValue").value
+      FirstUnitID: this.compoundUnitForm.get("FirstUnitID").value,
+      FirstUnitName: this.compoundUnitForm.get("FirstUnitName").value,
+      SecondUnitID: this.compoundUnitForm.get("SecondUnitID").value,
+      SecondUnitName: this.compoundUnitForm.get("SecondUnitName").value,
+      RelationValue: this.compoundUnitForm.get("RelationValue").value,
+      Remarks: this.compoundUnitForm.get("Remarks").value
     };
     this.compoundUnitService.updateCompoundUnit(obj).subscribe(
       response => {
@@ -211,9 +220,6 @@ export class CompoundUnitComponent implements OnInit {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
-        this.modalRef.hide();
-        this.compoundUnitForm.reset();
-        this.getCompoundUnits();
         this.toastr.success("Compound Unit edited successfully");
       }
     );
@@ -221,8 +227,12 @@ export class CompoundUnitComponent implements OnInit {
 
   addCompoundUnit(): void {
     const obj = {
-      UnitID: this.compoundUnitForm.get("secondUnitValue").value,
-      ParentUnitID: this.compoundUnitForm.get("firstUnitValue").value
+      FirstUnitID: this.compoundUnitForm.get("FirstUnitID").value,
+      FirstUnitName: this.compoundUnitForm.get("FirstUnitName").value,
+      SecondUnitID: this.compoundUnitForm.get("SecondUnitID").value,
+      SecondUnitName: this.compoundUnitForm.get("SecondUnitName").value,
+      RelationValue: this.compoundUnitForm.get("RelationValue").value,
+      Remarks: this.compoundUnitForm.get("Remarks").value
     };
     this.compoundUnitService.saveCompoundUnit(obj).subscribe(
       response => {
@@ -239,7 +249,7 @@ export class CompoundUnitComponent implements OnInit {
 
   close(): void {
     this.modalRef.hide();
-    this.editableForm = false;
+
     this.buildCompoundUnitForm();
   }
 }
