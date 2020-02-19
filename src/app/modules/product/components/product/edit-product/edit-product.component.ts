@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { ProductService } from "@app/modules/product/services/product.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-edit-product",
@@ -17,7 +18,11 @@ export class EditProductComponent implements OnInit {
   showActions = true;
   productDetails;
   productForm: FormGroup;
-  constructor(public _fb: FormBuilder, public productService: ProductService) {}
+  constructor(
+    public _fb: FormBuilder,
+    public productService: ProductService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.buildProductForm();
@@ -62,13 +67,15 @@ export class EditProductComponent implements OnInit {
   }
 
   getProductDetails(): void {
-    this.productService
-      .getProductDetails(this.selectedProductId)
-      .subscribe(response => {
-        this.productDetails = response.Entity;
-        this.buildProductForm();
-        this.setOpeingQuantity();
-      });
+    if (this.selectedProductId) {
+      this.productService
+        .getProductDetails(this.selectedProductId)
+        .subscribe(response => {
+          this.productDetails = response.Entity;
+          this.buildProductForm();
+          this.setOpeingQuantity();
+        });
+    }
   }
 
   setOpeingQuantity(): void {
@@ -85,7 +92,16 @@ export class EditProductComponent implements OnInit {
         this._fb.group({
           ID: [openingQuantities.AccClassID],
           productId: [openingQuantities.ProductID],
-          accountClassId: [openingQuantities.AccClassID, Validators.required],
+          accountClassId: [
+            this.productService.accountClass
+              ? this.productService.accountClass[0].ID
+              : null
+          ],
+          accountClassName: [
+            this.productService.accountClass
+              ? this.productService.accountClass[0].Name
+              : ""
+          ],
           quantity: openingQuantities.OpenPurchaseQty,
           purchaseRate: [openingQuantities.OpenPurchaseRate],
           salesRate: [openingQuantities.OpenSalesRate],
@@ -97,7 +113,16 @@ export class EditProductComponent implements OnInit {
         this._fb.group({
           ID: [""],
           productId: [""],
-          accountClassId: ["", Validators.required],
+          accountClassId: [
+            this.productService.accountClass
+              ? this.productService.accountClass[0].ID
+              : null
+          ],
+          accountClassName: [
+            this.productService.accountClass
+              ? this.productService.accountClass[0].Name
+              : ""
+          ],
           quantity: "",
           purchaseRate: [""],
           salesRate: [""],
@@ -112,7 +137,16 @@ export class EditProductComponent implements OnInit {
     return this._fb.group({
       ID: [""],
       productId: [""],
-      accountClassId: ["", Validators.required],
+      accountClassId: [
+        this.productService.accountClass
+          ? this.productService.accountClass[0].ID
+          : null
+      ],
+      accountClassName: [
+        this.productService.accountClass
+          ? this.productService.accountClass[0].Name
+          : ""
+      ],
       quantity: "",
       purchaseRate: [""],
       salesRate: [""],
@@ -131,6 +165,7 @@ export class EditProductComponent implements OnInit {
     this.submitted = true;
     this.rowSubmitted = true;
     if (this.productForm.get("openingBalanceList").invalid) return;
+    if (sender.data.length > 0) return;
     (<FormArray>this.productForm.get("openingBalanceList")).push(
       this.addOpeningBalanceFormGroup()
     );
@@ -161,11 +196,53 @@ export class EditProductComponent implements OnInit {
     this.editedRowIndex = undefined;
   }
 
-  public saveProduct() {
+  updateOpeningBalance(): void {
+    const updateValue = this.productForm.get("openingBalanceList");
+  }
+  public saveProduct(): void {
     if (this.productForm.invalid) return;
+
+    const openingBalanceArray = <FormArray>(
+      this.productForm.get("openingBalanceList")
+    );
+    const obj = {
+      ID: this.selectedProductId,
+      ProductCode: this.productForm.get("productCode").value,
+      Name: this.productForm.get("productName").value,
+      GroupID: this.productForm.get("productGroupId").value,
+      DepotID: this.productForm.get("departmentandLocationId").value,
+      UnitID: this.productForm.get("baseUnitId").value,
+      sVatApplicable: this.productForm.get("isVatApplicable").value,
+      IsInventoryApplicable: this.productForm.get("isInventoryApplicable")
+        .value,
+      IsDecimalApplicable: this.productForm.get("isDecimalApplicable").value,
+      OpeningQuantity: {
+        ID: openingBalanceArray.controls[0].get("ID").value,
+        ProductID: openingBalanceArray.controls[0].get("productId").value,
+        AccClassID: openingBalanceArray.controls[0].get("accountClassId").value,
+        OpenPurchaseQty: openingBalanceArray.controls[0].get("quantity").value,
+        OpenPurchaseRate: openingBalanceArray.controls[0].get("purchaseRate")
+          .value,
+        OpenSalesRate: openingBalanceArray.controls[0].get("salesRate").value,
+        OpenQuantityDate: openingBalanceArray.controls[0].get("date").value
+      }
+    };
+    this.productService.updateProduct(obj).subscribe(
+      response => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      },
+      error => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Product added successfully");
+      }
+    );
   }
 
-  cancel(): void {
+  public cancelProduct(): void {
     //execute callback to the viewProductGroupComponent
     this.onCancel.emit(true);
   }
