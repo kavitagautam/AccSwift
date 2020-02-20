@@ -102,18 +102,20 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.getUnits();
   }
 
-  public filterChange(filter): void {
+  public filterChange(filter: CompositeFilterDescriptor): void {
     this.unitNameSearchKey = "";
     if (filter.filters.length > 0) {
       const filterArray = [];
       filter.filters.forEach(function(item) {
         filterArray.push({
-          Field: item.field,
-          Operator: item.operator,
-          Value: item.value
+          Field: item["field"],
+          Operator: item["operator"],
+          Value: item["value"]
         });
       });
       this.filterList = filterArray;
+    } else {
+      this.filterList = [];
     }
     this.getUnits();
   }
