@@ -31,15 +31,13 @@ export class ViewProductGroupComponent implements OnInit {
         {
           value: this.groupDetails ? this.groupDetails.Name : "",
           disabled: true
-        },
-        Validators.required
+        }
       ],
       parentGroupId: [
         {
           value: this.groupDetails ? this.groupDetails.ParentGroupID : null,
           disabled: true
-        },
-        Validators.required
+        }
       ],
       remarks: [
         {

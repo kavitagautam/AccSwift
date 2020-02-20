@@ -8,7 +8,8 @@ import { FormGroup } from "@angular/forms";
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
+  FilterDescriptor
 } from "@progress/kendo-data-query";
 import { CompoundUnitService } from "../../services/compound-unit.service";
 import { CompoundUnit } from "../../models/compound.model";
@@ -28,7 +29,7 @@ export class CompoundUnitComponent implements OnInit {
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
-  public filter: CompositeFilterDescriptor;
+  public filter;
   filterList: Array<any> = [];
   compoundNameSearchKey = "";
   orderByKey = "";
@@ -68,7 +69,7 @@ export class CompoundUnitComponent implements OnInit {
 
   buildCompoundUnitForm() {
     this.compoundUnitForm = this._fb.group({
-      FirstUnitID: ["1"],
+      FirstUnitID: [""],
       FirstUnitName: [null],
       SecondUnitID: [""],
       SecondUnitName: [null],
@@ -89,7 +90,6 @@ export class CompoundUnitComponent implements OnInit {
     this.compoundUnitService.getCompoundUnitList(obj).subscribe(
       response => {
         this.compoundUnitList = response.Entity.Entity;
-        console.log(this.compoundUnitList);
         this.gridView = {
           data: this.compoundUnitList,
           total: response.Entity.TotalItemsAvailable
@@ -118,7 +118,6 @@ export class CompoundUnitComponent implements OnInit {
     if (filter.filters.length > 0) {
       const filterArray = [];
       filter.filters.forEach(function(item) {
-        console.log(filter);
         filterArray.push({
           Field: item.field,
           Operator: item.operator,
@@ -205,9 +204,7 @@ export class CompoundUnitComponent implements OnInit {
     const obj = {
       ID: this.compoundUnitId,
       FirstUnitID: this.compoundUnitForm.get("FirstUnitID").value,
-      FirstUnitName: this.compoundUnitForm.get("FirstUnitName").value,
       SecondUnitID: this.compoundUnitForm.get("SecondUnitID").value,
-      SecondUnitName: this.compoundUnitForm.get("SecondUnitName").value,
       RelationValue: this.compoundUnitForm.get("RelationValue").value,
       Remarks: this.compoundUnitForm.get("Remarks").value
     };
@@ -249,7 +246,6 @@ export class CompoundUnitComponent implements OnInit {
 
   close(): void {
     this.modalRef.hide();
-
     this.buildCompoundUnitForm();
   }
 }
