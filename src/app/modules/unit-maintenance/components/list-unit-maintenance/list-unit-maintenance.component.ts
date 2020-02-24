@@ -4,7 +4,8 @@ import { UnitMaintenanceService } from "../../services/unit-maintenance.service"
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
+  State
 } from "@progress/kendo-data-query";
 import { Units } from "../../models/unit-maintenance.model";
 import { Router } from "@angular/router";
@@ -36,6 +37,21 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
+  // public filter: State = {
+  //   filter: {
+  //     logic: "and",
+  //     filters: []
+  //   }
+  // };
+
+  public state: State = {
+    skip: 0,
+    take: 10,
+    filter: {
+      logic: "and",
+      filters: []
+    }
+  };
 
   public pageSize = 10;
   public skip = 0;
@@ -102,8 +118,29 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.getUnits();
   }
 
+  dataStateChange(event): void {
+    console.log("Filter " + JSON.stringify(event));
+
+    if (event.filter.filters.length > 0) {
+      const filterArray = [];
+      event.filter.filters.forEach(function(item) {
+        filterArray.push({
+          Field: item["field"],
+          Operator: item["operator"],
+          Value: item["value"]
+        });
+      });
+      this.filterList = filterArray;
+    } else {
+      this.filterList = [];
+    }
+    this.getUnits();
+  }
+
   public filterChange(filter: CompositeFilterDescriptor): void {
     this.unitNameSearchKey = "";
+
+    console.log("Filter " + JSON.stringify(filter));
     if (filter.filters.length > 0) {
       const filterArray = [];
       filter.filters.forEach(function(item) {
