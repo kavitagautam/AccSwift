@@ -86,7 +86,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
       if (this.unitForm.value[key]) {
         this.searchFilterList.push({
           Field: key,
-          Operator: "=",
+          Operator: "contains",
           value: this.unitForm.value[key]
         });
       }
