@@ -37,21 +37,6 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
-  // public filter: State = {
-  //   filter: {
-  //     logic: "and",
-  //     filters: []
-  //   }
-  // };
-
-  public state: State = {
-    skip: 0,
-    take: 10,
-    filter: {
-      logic: "and",
-      filters: []
-    }
-  };
 
   public pageSize = 10;
   public skip = 0;
@@ -118,29 +103,9 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.getUnits();
   }
 
-  dataStateChange(event): void {
-    console.log("Filter " + JSON.stringify(event));
-
-    if (event.filter.filters.length > 0) {
-      const filterArray = [];
-      event.filter.filters.forEach(function(item) {
-        filterArray.push({
-          Field: item["field"],
-          Operator: item["operator"],
-          Value: item["value"]
-        });
-      });
-      this.filterList = filterArray;
-    } else {
-      this.filterList = [];
-    }
-    this.getUnits();
-  }
-
   public filterChange(filter: CompositeFilterDescriptor): void {
     this.unitNameSearchKey = "";
-
-    console.log("Filter " + JSON.stringify(filter));
+    this.filter = filter; // To push each filter object to the filter list
     if (filter.filters.length > 0) {
       const filterArray = [];
       filter.filters.forEach(function(item) {
