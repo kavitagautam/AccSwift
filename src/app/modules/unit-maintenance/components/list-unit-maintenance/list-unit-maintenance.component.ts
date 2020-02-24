@@ -4,7 +4,8 @@ import { UnitMaintenanceService } from "../../services/unit-maintenance.service"
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
+  State
 } from "@progress/kendo-data-query";
 import { Units } from "../../models/unit-maintenance.model";
 import { Router } from "@angular/router";
@@ -85,7 +86,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
       if (this.unitForm.value[key]) {
         this.searchFilterList.push({
           Field: key,
-          Operator: "=",
+          Operator: "contains",
           value: this.unitForm.value[key]
         });
       }
@@ -104,6 +105,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   public filterChange(filter: CompositeFilterDescriptor): void {
     this.unitNameSearchKey = "";
+    this.filter = filter; // To push each filter object to the filter list
     if (filter.filters.length > 0) {
       const filterArray = [];
       filter.filters.forEach(function(item) {

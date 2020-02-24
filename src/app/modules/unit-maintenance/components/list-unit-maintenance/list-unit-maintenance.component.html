@@ -70,10 +70,10 @@
           [pageable]="true"
           scrollable="none"
           [filter]="filter"
-          [filterable]="true"
-          (filterChange)="filterChange($event)"
+          [filterable]="false"
           (pageChange)="pageChange($event)"
           (sortChange)="sortChange($event)"
+          (filterChange)="filterChange($event)"
           style="width: 800px"
         >
           <kendo-grid-column field="UnitName" title="Unit Name" width="200">
