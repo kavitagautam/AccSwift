@@ -73,6 +73,13 @@
           [pageable]="true"
           (pageChange)="pageChange($event)"
           scrollable="none"
+<<<<<<< HEAD:src/app/modules/unit-maintenance/components/list-unit-maintenance.component.html
+=======
+          [filter]="filter"
+          [filterable]="false"
+          (pageChange)="pageChange($event)"
+          (sortChange)="sortChange($event)"
+>>>>>>> 4cd05dadcdd910cf3100befc9bfeb2779bbfdab6:src/app/modules/unit-maintenance/components/list-unit-maintenance/list-unit-maintenance.component.html
           (filterChange)="filterChange($event)"
           style="width: 800px"
         >

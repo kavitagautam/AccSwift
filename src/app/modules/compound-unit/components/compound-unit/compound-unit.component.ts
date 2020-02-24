@@ -13,7 +13,6 @@ import {
 } from "@progress/kendo-data-query";
 import { CompoundUnitService } from "../../services/compound-unit.service";
 import { CompoundUnit } from "../../models/compound.model";
-import { throwToolbarMixedModesError } from "@angular/material";
 
 @Component({
   selector: "accSwift-compound-unit",
@@ -29,8 +28,9 @@ export class CompoundUnitComponent implements OnInit {
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
-  public filter;
+  public filter: CompositeFilterDescriptor;
   filterList: Array<any> = [];
+  filterArraySearch: Array<any> = [];
   compoundNameSearchKey = "";
   orderByKey = "";
   dirKey = "asc";
@@ -80,12 +80,13 @@ export class CompoundUnitComponent implements OnInit {
 
   getCompoundUnits(): void {
     this.listLoading = true;
+    const arrayFilter = this.filterArraySearch.concat(this.filterList);
     const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: this.orderByKey,
       Direction: this.dirKey,
-      FilterList: this.filterList
+      FilterList: arrayFilter
     };
     this.compoundUnitService.getCompoundUnitList(obj).subscribe(
       response => {
@@ -113,8 +114,24 @@ export class CompoundUnitComponent implements OnInit {
     this.getCompoundUnits();
   }
 
+  searchForm(): void {
+    this.filterArraySearch = [];
+    if (this.compoundUnitForm.invalid) return;
+    for (const key in this.compoundUnitForm.value) {
+      if (this.compoundUnitForm.value[key]) {
+        this.filterArraySearch.push({
+          Field: key,
+          Operator: "contains",
+          Value: this.compoundUnitForm.value[key]
+        });
+      }
+    }
+    this.getCompoundUnits();
+  }
+
   public filterChange(filter): void {
     this.compoundNameSearchKey = "";
+    this.filter = filter;
     if (filter.filters.length > 0) {
       const filterArray = [];
       filter.filters.forEach(function(item) {
@@ -125,6 +142,8 @@ export class CompoundUnitComponent implements OnInit {
         });
       });
       this.filterList = filterArray;
+    } else {
+      this.filterList = [];
     }
     this.getCompoundUnits();
   }
@@ -217,6 +236,9 @@ export class CompoundUnitComponent implements OnInit {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
+        this.modalRef.hide();
+        this.getCompoundUnits();
+        this.compoundUnitForm.reset();
         this.toastr.success("Compound Unit edited successfully");
       }
     );
