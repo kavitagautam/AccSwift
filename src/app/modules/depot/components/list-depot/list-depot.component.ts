@@ -92,7 +92,7 @@ export class ListDepotComponent implements OnInit {
       if (this.depotForm.value[key]) {
         this.searchFilterList.push({
           Field: key,
-          Operator: "=",
+          Operator: "contains",
           value: this.depotForm.value[key]
         });
       }
