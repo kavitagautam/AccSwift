@@ -59,19 +59,20 @@
       <div class="grid-wrapper">
         <kendo-grid
           [data]="gridView"
-          [filterable]="true"
-          [filter]="filter"
           [pageSize]="pageSize"
+          [resizable]="true"
           [skip]="skip"
           [sortable]="{
             allowUnsort: allowUnsort,
             mode: 'single'
           }"
           [sort]="sort"
-          (sortChange)="sortChange($event)"
           [pageable]="true"
-          (pageChange)="pageChange($event)"
           scrollable="none"
+          [filter]="filter"
+          [filterable]="false"
+          (pageChange)="pageChange($event)"
+          (sortChange)="sortChange($event)"
           (filterChange)="filterChange($event)"
           style="width: 800px"
         >
