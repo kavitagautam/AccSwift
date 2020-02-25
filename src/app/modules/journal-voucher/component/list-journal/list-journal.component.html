@@ -26,7 +26,7 @@
               <div class="form-group">
                 <label for="series">Series</label>
                 <select class="form-control" formControlName="seriesId">
-                 <option [ngValue]="null">Choose Option....</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let series of journalService.journalSeriesList"
                     [value]="series.ID"
@@ -43,7 +43,7 @@
                   id="projectId"
                   formControlName="projectId"
                 >
-                 <option [ngValue]="null">Choose Option....</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let project of journalService.projectLists"
                     [value]="project.ID"
@@ -102,7 +102,7 @@
       <div class="grid-wrapper">
         <kendo-grid
           [data]="gridView"
-          [filterable]="true"
+          [filterable]="false"
           [filter]="filter"
           [pageSize]="pageSize"
           [skip]="skip"
