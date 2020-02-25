@@ -30,7 +30,7 @@ deploy_stage:
     - ls
     - scp -o StrictHostKeyChecking=no -P 1157 -r *  accswiftbent@98.142.99.67:/home/accswiftbent/public_html/
 
-deploy_stage:
+deploy_production:
   stage: deploy
   environment: production
   only:
