@@ -12,13 +12,15 @@ $background_color_2: #fff;
 sup {
   color: $color_1;
 }
+
 // input box red when validation fails.
 .form-control.ng-touched.ng-invalid {
-  border-color: red;
+  border-color: red !important;
 }
 
 .error-msg {
-  color: $color_1;
+  color: red;
+  font-size: 13px;
 }
 
 .edit_button {

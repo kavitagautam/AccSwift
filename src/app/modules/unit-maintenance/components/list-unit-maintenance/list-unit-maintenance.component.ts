@@ -81,6 +81,8 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   searchForm(): void {
     this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
     if (this.unitForm.invalid) return;
     for (const key in this.unitForm.value) {
       if (this.unitForm.value[key]) {
@@ -202,7 +204,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.buildUnitMaintenanceForm();
     this.unitForm.reset();
     this.submitButton = "Save ";
-    this.modalTitle = "Add New Unit";
+    this.modalTitle = "New Unit";
     this.modalRef = this.modalService.show(template, this.config);
   }
 
@@ -211,7 +213,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.editMode = true;
     this.buildUnitMaintenanceForm();
     this.submitButton = "Save ";
-    this.modalTitle = "Edit Unit  " + dataItem.UnitName;
+    this.modalTitle = "Edit " + dataItem.UnitName;
     dataItem["id"] = dataItem.ID;
     this.unitsId = dataItem.ID;
     this.unitForm.patchValue(dataItem);
@@ -236,7 +238,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     };
     this.unitService.updateUnit(obj).subscribe(
       response => {
-        this.router.navigate(["/unit-maintenance"]);
+        this.getUnits();
       },
       error => {
         this.toastr.error(JSON.stringify(error.error.Message));
@@ -244,7 +246,6 @@ export class ListUnitMaintenanceComponent implements OnInit {
       () => {
         this.unitForm.reset();
         this.modalRef.hide();
-        this.getUnits();
         this.toastr.success("Units edited successfully");
       }
     );
@@ -259,7 +260,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
     this.unitService.saveUnit(obj).subscribe(
       response => {
-        this.router.navigate(["/unit-maintenance"]);
+        this.getUnits();
       },
       error => {
         this.toastr.error(JSON.stringify(error.error.Message));
