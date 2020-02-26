@@ -10,10 +10,13 @@ import { CompoundModel } from "../models/compound.model";
 })
 export class CompoundUnitService {
   _api_URL = environment.baseAPI;
+  compoundUnitList;
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {}
+  ) {
+    this.getUnitDropDown();
+  }
 
   getCompoundUnitList(body): Observable<CompoundModel> {
     return this.httpService.post(`${this._api_URL}CompoundUnit/navigate`, body);
@@ -21,6 +24,14 @@ export class CompoundUnitService {
 
   saveCompoundUnit(body): Observable<any> {
     return this.httpService.post(`${this._api_URL}CompoundUnit`, body);
+  }
+
+  getUnitDropDown(): void {
+    this.httpService
+      .get(`${this._api_URL}UnitMaintenance`)
+      .subscribe(response => {
+        this.compoundUnitList = response.Entity;
+      });
   }
 
   updateCompoundUnit(body): Observable<any> {

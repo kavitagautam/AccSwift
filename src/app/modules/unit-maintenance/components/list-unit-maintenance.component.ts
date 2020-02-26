@@ -269,6 +269,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
         this.toastr.success("Units added successfully");
       }
     );
+    this.getUnits();
   }
 
   close(): void {

@@ -3,13 +3,12 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, Validators } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor,
-  FilterDescriptor
+  SortDescriptor
 } from "@progress/kendo-data-query";
 import { CompoundUnitService } from "../../services/compound-unit.service";
 import { CompoundUnit } from "../../models/compound.model";
@@ -23,23 +22,32 @@ export class CompoundUnitComponent implements OnInit {
   compoundUnitForm: FormGroup;
   compoundUnitList: CompoundUnit[];
   listLoading: boolean;
-  private toastr: ToastrService;
+  modalTitle: string;
+  submitButton: string;
+
+  compoundUnitId: number;
+  editableForm: boolean = false;
+  editMode: boolean = false;
   public gridView: GridDataResult;
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
+
   public filter: CompositeFilterDescriptor;
   filterList: Array<any> = [];
   filterArraySearch: Array<any> = [];
   compoundNameSearchKey = "";
   orderByKey = "";
   dirKey = "asc";
+
   modalRef: BsModalRef;
   //modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
+    class: "modal-lg"
   };
+
   //sorting kendo data
   public allowUnsort = true;
   public sort: SortDescriptor[] = [
@@ -48,18 +56,13 @@ export class CompoundUnitComponent implements OnInit {
       dir: "asc"
     }
   ];
-  //For Modal Part
-  modalTitle: string;
-  submitButton: string;
-  editableForm: boolean = false;
-  editMode: boolean = false;
-  compoundUnitId: number;
 
   constructor(
     private _fb: FormBuilder,
     private modalService: BsModalService,
     public compoundUnitService: CompoundUnitService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -69,10 +72,9 @@ export class CompoundUnitComponent implements OnInit {
 
   buildCompoundUnitForm() {
     this.compoundUnitForm = this._fb.group({
+      firstUnitValue: [{ value: 1, disabled: true }],
       FirstUnitID: [""],
-      FirstUnitName: [null],
-      SecondUnitID: [""],
-      SecondUnitName: [null],
+      SecondUnitID: [this.editableForm ? ["", [Validators.required]] : [null]],
       RelationValue: [""],
       Remarks: [""]
     });
@@ -116,6 +118,8 @@ export class CompoundUnitComponent implements OnInit {
 
   searchForm(): void {
     this.filterArraySearch = [];
+    this.currentPage = 1;
+    this.skip = 0;
     if (this.compoundUnitForm.invalid) return;
     for (const key in this.compoundUnitForm.value) {
       if (this.compoundUnitForm.value[key]) {
@@ -136,9 +140,9 @@ export class CompoundUnitComponent implements OnInit {
       const filterArray = [];
       filter.filters.forEach(function(item) {
         filterArray.push({
-          Field: item.field,
-          Operator: item.operator,
-          Value: item.value
+          Field: item["field"],
+          Operator: item["operator"],
+          Value: item["value"]
         });
       });
       this.filterList = filterArray;
@@ -194,19 +198,24 @@ export class CompoundUnitComponent implements OnInit {
 
   // Modal part started here
   openAddModal(template: TemplateRef<any>): void {
+    this.editableForm = true;
     this.compoundUnitForm.reset();
-    this.modalTitle = "Add New Compound Unit";
+    this.modalTitle = "New Unit";
     this.submitButton = "Save";
     this.modalRef = this.modalService.show(template, this.config);
   }
 
   openEditModal(template: TemplateRef<any>, dataItem): void {
     this.editMode = true;
-    this.modalTitle = "Edit Compound Unit";
+    this.editableForm = true;
+    this.modalTitle = "Edit " + dataItem.FirstUnitName;
     this.submitButton = "Save";
-    dataItem["id"] = dataItem.ID;
+    // dataItem["id"] = dataItem.ID;
     this.compoundUnitId = dataItem.ID;
+    console.log(dataItem);
     this.compoundUnitForm.patchValue(dataItem);
+    this.compoundUnitForm.get("FirstUnitID").patchValue(dataItem.FirstUnitID);
+    this.compoundUnitForm.get("SecondUnitID").patchValue(dataItem.SecondUnitID);
     this.modalRef = this.modalService.show(template, this.config);
   }
 
@@ -229,15 +238,13 @@ export class CompoundUnitComponent implements OnInit {
     };
     this.compoundUnitService.updateCompoundUnit(obj).subscribe(
       response => {
-        console.log(response);
-        this.router.navigate(["/compound-unit"]);
+        this.getCompoundUnits();
       },
       error => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
         this.modalRef.hide();
-        this.getCompoundUnits();
         this.compoundUnitForm.reset();
         this.toastr.success("Compound Unit edited successfully");
       }
@@ -247,20 +254,19 @@ export class CompoundUnitComponent implements OnInit {
   addCompoundUnit(): void {
     const obj = {
       FirstUnitID: this.compoundUnitForm.get("FirstUnitID").value,
-      FirstUnitName: this.compoundUnitForm.get("FirstUnitName").value,
       SecondUnitID: this.compoundUnitForm.get("SecondUnitID").value,
-      SecondUnitName: this.compoundUnitForm.get("SecondUnitName").value,
       RelationValue: this.compoundUnitForm.get("RelationValue").value,
       Remarks: this.compoundUnitForm.get("Remarks").value
     };
     this.compoundUnitService.saveCompoundUnit(obj).subscribe(
       response => {
-        this.router.navigate(["/compound-unit"]);
+        this.getCompoundUnits();
       },
       error => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
+        this.modalRef.hide();
         this.toastr.success("Compound unit added successfully");
       }
     );
@@ -268,6 +274,7 @@ export class CompoundUnitComponent implements OnInit {
 
   close(): void {
     this.modalRef.hide();
+    this.editableForm = false;
     this.buildCompoundUnitForm();
   }
 }

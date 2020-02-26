@@ -1,10 +1,11 @@
 <div class="box box-header">
-  <button class="btn btn-primary mt-4">
+  <button class="btn btn-primary">
     <i
-      class="fa fa-plus"
+      class="fa fa-plus pull-left"
       aria-hidden="true"
       (click)="openAddModal(openCompoundUnit)"
-      >Add New Unit</i
+    >
+      &nbsp; Add Unit</i
     >
   </button>
 </div>
@@ -18,24 +19,22 @@
             <label for="first-unit">Value of First Unit</label>
             <input
               type="number"
-              placeholder="1"
-              [attr.disabled]="true"
               min="0"
               id="first-unit"
               class="form-control"
-              formControlName="FirstUnitID"
+              formControlName="firstUnitValue"
             />
           </div>
         </div>
         <div class="col-md-7 pr-0 ">
           <label for="first-unit">Name of First Unit</label>
-          <select class="form-control" formControlName="FirstUnitName">
+          <select class="form-control" formControlName="FirstUnitID">
             <option [ngValue]="null">Select option...</option>
             <option
-              *ngFor="let firstUnit of compoundUnitList"
+              *ngFor="let firstUnit of compoundUnitService.compoundUnitList"
               [ngValue]="firstUnit.ID"
             >
-              {{ firstUnit.FirstUnitName }}
+              {{ firstUnit.UnitName }}
             </option>
           </select>
         </div>
@@ -51,18 +50,18 @@
             min="0"
             id="second-unit"
             class="form-control"
-            formControlName="SecondUnitID"
+            formControlName="RelationValue"
           />
         </div>
         <div class="col-md-7 pr-0">
           <label for="first-unit">Name of Second Unit</label>
-          <select class="form-control" formControlName="SecondUnitName">
+          <select class="form-control" formControlName="SecondUnitID">
             <option [ngValue]="null">Select option...</option>
             <option
-              *ngFor="let secondUnit of compoundUnitList"
+              *ngFor="let secondUnit of compoundUnitService.compoundUnitList"
               [ngValue]="secondUnit.ID"
             >
-              {{ secondUnit.SecondUnitName }}
+              {{ secondUnit.UnitName }}
             </option>
           </select>
         </div>
@@ -83,7 +82,7 @@
       <div class="grid-wrapper">
         <kendo-grid
           [data]="gridView"
-          [filterable]="true"
+          [filterable]="false"
           [filter]="filter"
           [pageSize]="pageSize"
           [skip]="skip"
@@ -98,20 +97,28 @@
           scrollable="none"
           (filterChange)="filterChange($event)"
         >
-          <kendo-grid-column
-            field="FirstUnitID"
-            title="Value of First Unit"
-          ></kendo-grid-column>
-          <kendo-grid-column field="FirstUnitName" title="Name of First Unit">
+          <kendo-grid-column field="FirstUnitName" title="First Unit">
           </kendo-grid-column>
-          <kendo-grid-column field="RelationValue" title="Equals">
-          </kendo-grid-column>
-          <kendo-grid-column field="SecondUnitID" title="Value of Second Unit">
+          <kendo-grid-column title="Value" width="2">
+            <ng-template kendoGridCellTemplate>
+              <span>1</span>
+            </ng-template></kendo-grid-column
+          >
+          <kendo-grid-column title="Equals" width="2">
+            <ng-template kendoGridCellTemplate>
+              <span
+                style="display: table;
+              margin: auto;"
+                >=</span
+              >
+            </ng-template>
           </kendo-grid-column>
           <kendo-grid-column
             field="SecondUnitName"
-            title="Name of Second Unit"
+            title="Second Unit"
           ></kendo-grid-column>
+          <kendo-grid-column field="RelationValue" title="Value">
+          </kendo-grid-column>
           <kendo-grid-column
             field="Remarks"
             title="Remarks"
@@ -145,36 +152,50 @@
 </div>
 
 <!-- Modal Pop up -->
-<form [formGroup]="compoundUnitForm">
-  <ng-template #openCompoundUnit>
-    <div class="modal-dialog modal-lg" <div class="modal-header">
-      <h3 class="modal-title pull-left">{{ modalTitle }}</h3>
-      <button
-        type="button"
-        class="close pull-right"
-        arial-label="Close"
-        (click)="close()"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="row">
+<ng-template #openCompoundUnit>
+  <div class="modal-header">
+    <h3 class="modal-title pull-left">{{ modalTitle }}</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      arial-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="compoundUnitForm" novalidate>
+      <div class="row mt-5">
         <div class="col-md-12">
-          <div class="col-md-5 ml-2">
-            <div class="col-md-6">
-              <label for="first-unit">Value of 1st Unit</label>
-              <input
-                type="number"
-                id="first-unit"
+          <div class="col-md-5">
+            <div class="col-md-5 p-0">
+              <div class="form-group">
+                <label for="first-unit">Value of First Unit</label>
+                <input
+                  type="number"
+                  min="0"
+                  placeholder="1"
+                  id="first-unit"
+                  class="form-control"
+                  formControlName="firstUnitValue"
+                />
+              </div>
+            </div>
+            <div class="col-md-7 pr-0 ">
+              <label for="first-unit">Name of First Unit</label>
+              <select
                 class="form-control"
                 formControlName="FirstUnitID"
-              />
-            </div>
-            <div class="col-md-6">
-              <label for="first-unit">Name of 1st Unit</label>
-              <select class="form-control" formControlName="FirstUnitName">
-                <option [ngValue]="null">Select option...</option>
+                accSwiftFormValidator
+              >
+                <option value="null">Select option...</option>
+                <option
+                  *ngFor="let firstUnit of compoundUnitService.compoundUnitList"
+                  value="{{ firstUnit.ID }}"
+                >
+                  {{ firstUnit.UnitName }}
+                </option>
               </select>
             </div>
           </div>
@@ -182,32 +203,41 @@
             <h1>=</h1>
           </div>
           <div class="col-md-5">
-            <div class="col-md-6">
-              <label for="second-unit">Value of 2nd Unit</label>
+            <div class="col-md-5 p-0">
+              <label for="second-unit">Value of Second Unit</label>
               <input
                 type="number"
+                min="0"
                 id="second-unit"
                 class="form-control"
-                formControlName="SecondUnitID"
+                formControlName="RelationValue"
               />
             </div>
-            <div class="col-md-6">
-              <label for="first-unit">Name of 2nd Unit</label>
-              <select class="form-control" formControlName="SecondUnitName">
+            <div class="col-md-7 pr-0">
+              <label for="first-unit">Name of Second Unit</label>
+              <select class="form-control" formControlName="SecondUnitID">
                 <option [ngValue]="null">Select option...</option>
+                <option
+                  *ngFor="
+                    let secondUnit of compoundUnitService.compoundUnitList
+                  "
+                  [ngValue]="secondUnit.ID"
+                >
+                  {{ secondUnit.UnitName }}
+                </option>
               </select>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" (click)="onSubmitCompoundUnit()">
-        {{ submitButton }}
-      </button>
-      <button class="btn btn-secondory ml-2" type="button" (click)="close()">
-        Cancel
-      </button>
-    </div>
-  </ng-template>
-</form>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="onSubmitCompoundUnit()">
+      {{ submitButton }}
+    </button>
+    <button class="btn btn-secondory ml-2" type="button" (click)="close()">
+      Cancel
+    </button>
+  </div>
+</ng-template>
