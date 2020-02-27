@@ -1,4 +1,4 @@
-image: trion/ng-cli-karma
+image: node:10.18.0
 
 cache:
   paths:
@@ -21,9 +21,27 @@ deploy_stage:
     - master
   script:
     - rm ./package-lock.json
+    - rm -rf node_modules
+    - node -v
     - npm install
     - npm rebuild node-sass
     - ./node_modules/@angular/cli/bin/ng build --progress false --prod
     - cd dist/accswift/
     - ls
     - scp -o StrictHostKeyChecking=no -P 1157 -r *  accswiftbent@98.142.99.67:/home/accswiftbent/public_html/
+
+deploy_production:
+  stage: deploy
+  environment: production
+  only:
+    - tags
+  script:
+    - rm ./package-lock.json
+    - rm -rf node_modules
+    - node -v
+    - npm install
+    - npm rebuild node-sass
+    - ./node_modules/@angular/cli/bin/ng build --progress false --prod
+    - cd dist/accswift/
+    - ls
+    - scp -o StrictHostKeyChecking=no -P 1157 -r *  devswiftbentray@98.142.99.67:/home/devswiftbentray/public_html/

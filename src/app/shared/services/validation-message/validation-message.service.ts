@@ -5,6 +5,8 @@ import { FormGroup } from "@angular/forms";
   providedIn: "root"
 })
 export class ValidationMessageService {
+  formSubmitted: boolean;
+
   constructor() {}
 
   /**
@@ -18,21 +20,40 @@ export class ValidationMessageService {
     group: FormGroup,
     formErrors,
     validationMessages,
-    language = "en-US"
+    language = "en-US",
+    touchedOrDirty = null
   ): any {
     // Loop through each control key in the FormGroup
     Object.keys(group.controls).forEach((key: string) => {
       // Get the control. The control can be a nested form group
       const abstractControl = group.get(key);
+
       // If the control is nested form group, recursively call
       // this same method
       if (abstractControl instanceof FormGroup) {
-        this.getFormErrors(abstractControl, formErrors, validationMessages);
+        this.getFormErrors(
+          abstractControl,
+          formErrors,
+          validationMessages,
+          language,
+          touchedOrDirty
+        );
         // If the control is a FormControl
       } else {
         // Clear the existing validation errors
         formErrors[key] = "";
-        if (abstractControl && !abstractControl.valid) {
+
+        let condition;
+        if (touchedOrDirty) {
+          condition =
+            abstractControl &&
+            !abstractControl.valid &&
+            (abstractControl.touched || abstractControl.dirty);
+        } else {
+          condition = abstractControl && !abstractControl.valid;
+        }
+
+        if (condition) {
           // Get all the validation messages of the form control according to the language selected
           // that has failed the validation
           let messages;
