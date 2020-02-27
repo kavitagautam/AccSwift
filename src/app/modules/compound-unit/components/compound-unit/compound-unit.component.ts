@@ -72,8 +72,7 @@ export class CompoundUnitComponent implements OnInit {
 
   buildCompoundUnitForm() {
     this.compoundUnitForm = this._fb.group({
-      firstUnitValue: [{ value: 1, disabled: true }],
-      FirstUnitID: [""],
+      FirstUnitID: [this.editableForm ? ["", [Validators.required]] : [null]],
       SecondUnitID: [this.editableForm ? ["", [Validators.required]] : [null]],
       RelationValue: [""],
       Remarks: [""]
@@ -118,8 +117,8 @@ export class CompoundUnitComponent implements OnInit {
 
   searchForm(): void {
     this.filterArraySearch = [];
-    this.currentPage = 1;
-    this.skip = 0;
+    // this.currentPage = 1;
+    // this.skip = 0;
     if (this.compoundUnitForm.invalid) return;
     for (const key in this.compoundUnitForm.value) {
       if (this.compoundUnitForm.value[key]) {
@@ -210,7 +209,6 @@ export class CompoundUnitComponent implements OnInit {
     this.editableForm = true;
     this.modalTitle = "Edit " + dataItem.FirstUnitName;
     this.submitButton = "Save";
-    // dataItem["id"] = dataItem.ID;
     this.compoundUnitId = dataItem.ID;
     console.log(dataItem);
     this.compoundUnitForm.patchValue(dataItem);

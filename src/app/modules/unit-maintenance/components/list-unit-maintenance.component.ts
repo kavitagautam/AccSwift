@@ -244,12 +244,6 @@ export class ListUnitMaintenanceComponent implements OnInit {
       },
       () => {
         this.modalRef.hide();
-<<<<<<< HEAD:src/app/modules/unit-maintenance/components/list-unit-maintenance.component.ts
-        this.unitForm.reset();
-        this.getUnits();
-
-=======
->>>>>>> journal:src/app/modules/unit-maintenance/components/list-unit-maintenance/list-unit-maintenance.component.ts
         this.toastr.success("Units edited successfully");
       }
     );

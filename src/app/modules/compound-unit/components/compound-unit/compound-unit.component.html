@@ -20,6 +20,8 @@
             <input
               type="number"
               min="0"
+              [attr.disabled]="true"
+              placeholder="1"
               id="first-unit"
               class="form-control"
               formControlName="firstUnitValue"
@@ -176,6 +178,7 @@
                   type="number"
                   min="0"
                   placeholder="1"
+                  [attr.disabled]="true"
                   id="first-unit"
                   class="form-control"
                   formControlName="firstUnitValue"
