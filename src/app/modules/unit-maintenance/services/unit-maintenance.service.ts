@@ -24,18 +24,6 @@ export class UnitMaintenanceService {
   // }
 
   getUnitList(body): Observable<UnitsModel> {
-    const obj = {
-      PageNo: body.unit,
-      DisplayRow: body.symbol,
-      Direction: body.remarks,
-      FilterList: [
-        {
-          Attribute: "string",
-          Operator: "string",
-          Value: "string"
-        }
-      ]
-    };
     return this.httpService.post(
       `${this._api_URL}UnitMaintenance/navigate`,
       body
