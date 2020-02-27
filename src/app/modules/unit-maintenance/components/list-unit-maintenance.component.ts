@@ -85,10 +85,9 @@ export class ListUnitMaintenanceComponent implements OnInit {
     if (this.unitForm.invalid) return;
     for (const key in this.unitForm.value) {
       if (this.unitForm.value[key]) {
-        console.log(this.unitForm.value[key]);
         this.searchFilterList.push({
           Field: key,
-          Operator: "=",
+          Operator: "contains",
           value: this.unitForm.value[key]
         });
       }

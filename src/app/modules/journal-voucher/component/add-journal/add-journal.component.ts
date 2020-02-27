@@ -33,7 +33,8 @@ export class AddJournalComponent implements OnInit {
   modalRef: BsModalRef;
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
+    class: "modal-lg"
   };
 
   constructor(

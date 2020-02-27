@@ -1,8 +1,8 @@
 <div class="modal-header">
-  <h3 class="modal-title">Select Ledger</h3>
+  <h3 class="modal-title pull-left">Select Ledger</h3>
   <button
     type="button"
-    class="close"
+    class="close pull-right"
     aria-label="Close"
     (click)="bsModalRef.hide()"
   >
@@ -69,7 +69,9 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" type="button" (click)="onCancel()">Ok</button>
+  <button class="btn btn-primary" type="button" (click)="onCancel()">
+    Ok
+  </button>
   <button class="btn btn-secondary ml-2 " type="button" (click)="onCancel()">
     Cancel
   </button>
