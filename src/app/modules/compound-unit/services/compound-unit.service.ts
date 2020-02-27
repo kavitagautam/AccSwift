@@ -3,8 +3,7 @@ import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "@env/environment";
 import { Injectable } from "@angular/core";
-import { CompoundModel } from "../models/compound.model";
-
+import { CompoundUnitModel } from "./../models/compound.model";
 @Injectable({
   providedIn: "root"
 })
@@ -18,7 +17,7 @@ export class CompoundUnitService {
     this.getUnitDropDown();
   }
 
-  getCompoundUnitList(body): Observable<CompoundModel> {
+  getCompoundUnitList(body): Observable<CompoundUnitModel> {
     return this.httpService.post(`${this._api_URL}CompoundUnit/navigate`, body);
   }
 
@@ -38,7 +37,7 @@ export class CompoundUnitService {
     return this.httpService.put(`${this._api_URL}CompoundUnit`, body);
   }
 
-  deleteCompoundUnitByID(id) {
+  deleteCompoundUnitByID(id): Observable<any> {
     return this.http.delete(`${this._api_URL}CompoundUnit/${id}`);
   }
 }

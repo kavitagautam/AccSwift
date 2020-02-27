@@ -8,13 +8,13 @@ export interface CompoundUnit {
   Remarks: string;
 }
 
-export interface CompoundModel {
+export interface CompoundUnitModel {
   StatusCode: number;
   Message: string;
-  Entity: Entity;
+  Entity: CompoundEntity;
 }
 
-export interface Entity {
+export interface CompoundEntity {
   Entity: CompoundUnit[];
   ItemsPerPage: number;
   ItemsReturned: number;

@@ -22,8 +22,7 @@ export class ListBankReconciliationComponent implements OnInit {
   bankReconciliationForm: FormGroup;
   date: Date = new Date();
   listLoading: Boolean;
-  bankReconciliationList;
-  private toastr: ToastrService;
+  bankReconciliationList: BankReconciliationMaster[];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
   public pageSize = 10;
@@ -49,7 +48,8 @@ export class ListBankReconciliationComponent implements OnInit {
     private fb: FormBuilder,
     public reconciliationService: BankReconciliationService,
     private router: Router,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -57,7 +57,7 @@ export class ListBankReconciliationComponent implements OnInit {
     this.getBankReconciliationlList();
   }
 
-  buildBankReconciliationForm() {
+  buildBankReconciliationForm(): void {
     this.bankReconciliationForm = this.fb.group({
       seriesId: [null],
       projectId: [null],
@@ -109,7 +109,7 @@ export class ListBankReconciliationComponent implements OnInit {
     this.getBankReconciliationlList();
   }
 
-  public searchForm() {
+  public searchForm(): void {
     this.getBankReconciliationlList();
   }
 
@@ -130,7 +130,7 @@ export class ListBankReconciliationComponent implements OnInit {
     this.router.navigate(["/bank-reconciliation/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const bankId = {
       id: dataItem.ID
     };

@@ -70,7 +70,7 @@ export class CompoundUnitComponent implements OnInit {
     this.getCompoundUnits();
   }
 
-  buildCompoundUnitForm() {
+  buildCompoundUnitForm(): void {
     this.compoundUnitForm = this._fb.group({
       FirstUnitID: [this.editableForm ? ["", [Validators.required]] : [null]],
       SecondUnitID: [this.editableForm ? ["", [Validators.required]] : [null]],
@@ -117,8 +117,8 @@ export class CompoundUnitComponent implements OnInit {
 
   searchForm(): void {
     this.filterArraySearch = [];
-    // this.currentPage = 1;
-    // this.skip = 0;
+    this.currentPage = 1;
+    this.skip = 0;
     if (this.compoundUnitForm.invalid) return;
     for (const key in this.compoundUnitForm.value) {
       if (this.compoundUnitForm.value[key]) {
@@ -164,7 +164,7 @@ export class CompoundUnitComponent implements OnInit {
     this.getCompoundUnits();
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const compoundUnitId = {
       id: dataItem.ID
     };
@@ -210,8 +210,9 @@ export class CompoundUnitComponent implements OnInit {
     this.modalTitle = "Edit " + dataItem.FirstUnitName;
     this.submitButton = "Save";
     this.compoundUnitId = dataItem.ID;
-    console.log(dataItem);
-    this.compoundUnitForm.patchValue(dataItem);
+    this.compoundUnitForm
+      .get("RelationValue")
+      .patchValue(dataItem.RelationValue);
     this.compoundUnitForm.get("FirstUnitID").patchValue(dataItem.FirstUnitID);
     this.compoundUnitForm.get("SecondUnitID").patchValue(dataItem.SecondUnitID);
     this.modalRef = this.modalService.show(template, this.config);

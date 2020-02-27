@@ -21,7 +21,7 @@ import {
 export class ListDepotComponent implements OnInit {
   depotForm: FormGroup;
   editMode: boolean = false;
-  depotMode: boolean = false;
+  editableMode: boolean = false;
   listLoading: boolean;
   submitted: boolean;
   public allowUnsort = true;
@@ -74,7 +74,7 @@ export class ListDepotComponent implements OnInit {
 
   buildDepotForm(): void {
     this.depotForm = this._fb.group({
-      DepotName: this.depotMode ? ["", [Validators.required]] : [""],
+      DepotName: this.editableMode ? ["", [Validators.required]] : [""],
       City: [""],
       Telephone: [""],
       ContactPerson: [""],
@@ -203,17 +203,17 @@ export class ListDepotComponent implements OnInit {
   // Modal Part......//
 
   addDepotModal(template: TemplateRef<any>): void {
-    this.depotMode = true;
+    this.editableMode = true;
     this.depotForm.reset();
     this.submitButton = "Save ";
-    this.modalTitle = "Add Depot ";
+    this.modalTitle = "New Depot ";
     this.modalRef = this.modalService.show(template, this.config);
   }
 
   editDepotModal(template, dataItem): void {
     this.editMode = true;
-    this.depotMode = true;
-    this.modalTitle = "Edit Depot ";
+    this.editableMode = true;
+    this.modalTitle = "Edit Depot " + dataItem.DepotName;
     this.submitButton = "Save ";
     dataItem["id"] = dataItem.ID;
     this.depotID = dataItem.ID;
@@ -246,7 +246,7 @@ export class ListDepotComponent implements OnInit {
     };
     this.depotService.updateDepot(obj).subscribe(
       response => {
-        this.router.navigate(["/depot"]);
+        this.getDepotList();
       },
       error => {
         this.toastr.error(JSON.stringify(error.errorMessage));
@@ -255,7 +255,6 @@ export class ListDepotComponent implements OnInit {
         this.modalRef.hide();
         this.depotForm.reset();
         this.toastr.success("Depot edited successfully");
-        this.getDepotList();
       }
     );
   }
@@ -263,7 +262,7 @@ export class ListDepotComponent implements OnInit {
   addDepotForm(): void {
     this.depotService.saveDepot(this.depotForm.value).subscribe(
       response => {
-        this.router.navigate(["/depot"]);
+        this.getDepotList();
       },
       error => {
         this.toastr.error(JSON.stringify(error.errorMessage));
@@ -271,14 +270,13 @@ export class ListDepotComponent implements OnInit {
       () => {
         this.modalRef.hide();
         this.toastr.success("Depot added successfully");
-        this.getDepotList();
       }
     );
   }
 
   onCancel(): void {
     this.modalRef.hide();
-    this.depotMode = false;
+    this.editableMode = false;
     this.buildDepotForm();
   }
 }
