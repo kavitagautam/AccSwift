@@ -1,3 +1,4 @@
+import { BankPaymentMaster } from "./../../models/bank-payment.model";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
@@ -18,9 +19,23 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
   styleUrls: ["./list-bank-payment.component.scss"]
 })
 export class ListBankPaymentComponent implements OnInit {
-  bankPaymentList: any;
-  listLoading: boolean;
+  bankPaymentForm: FormGroup;
   public gridView: GridDataResult;
+  bankPaymentList: BankPaymentMaster[];
+  private toastr: ToastrService;
+  modalRef: BsModalRef;
+  private modalService: BsModalService;
+  listLoading: boolean;
+  public skip = 0;
+  public pageSize = 10;
+  public currentPage = 1;
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [
+    {
+      field: "",
+      dir: "asc"
+    }
+  ];
 
   constructor(
     public bankPaymentService: BankPaymentService,
@@ -33,7 +48,6 @@ export class ListBankPaymentComponent implements OnInit {
     this.getBankPaymentList();
   }
 
-  bankPaymentForm: FormGroup;
   buildListBankPaymentForm() {
     this.bankPaymentForm = this.fb.group({
       seriesId: [null],
@@ -70,13 +84,6 @@ export class ListBankPaymentComponent implements OnInit {
     );
   }
 
-  public allowUnsort = true;
-  public sort: SortDescriptor[] = [
-    {
-      field: "",
-      dir: "asc"
-    }
-  ];
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
     this.getBankPaymentList();
@@ -88,9 +95,6 @@ export class ListBankPaymentComponent implements OnInit {
     this.getBankPaymentList();
   }
 
-  public skip = 0;
-  public pageSize = 10;
-  public currentPage = 1;
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
     if (event.skip == 0) {
@@ -107,8 +111,6 @@ export class ListBankPaymentComponent implements OnInit {
     this.router.navigate(["/bank-payment/edit", item.ID]);
   }
 
-  modalRef: BsModalRef;
-  private modalService: BsModalService;
   config = {
     backdrop: true,
     ignoreBackDrop: true
@@ -134,8 +136,7 @@ export class ListBankPaymentComponent implements OnInit {
     this.getBankPaymentList();
   }
 
-  private toastr: ToastrService;
   deletePaymentById(id): void {
-    this.toastr.success("Bank deleted successfully");
+    this.toastr.success("Bank Payment deleted successfully");
   }
 }
