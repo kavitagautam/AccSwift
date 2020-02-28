@@ -7,7 +7,7 @@ const routes: Routes = [
     path: "",
     component: LandingProductComponent,
     data: {
-      breadcrumb: "Landing Product"
+      breadcrumb: "Landing Product Page"
     }
   }
 ];
