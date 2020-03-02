@@ -1,3 +1,8 @@
+import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
+import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
+import { InputsModule } from "@progress/kendo-angular-inputs";
+import { PopupModule } from "@progress/kendo-angular-popup";
+import { SharedModule } from "@app/shared/shared.module";
 import { GridModule } from "@progress/kendo-angular-grid";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormsModule } from "@angular/forms";
@@ -14,7 +19,15 @@ import { CompoundUnitComponent } from "./components/compound-unit/compound-unit.
     CompoundUnitRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    GridModule
+    GridModule,
+    ReactiveFormsModule,
+    CommonModule,
+    SharedModule,
+    GridModule,
+    PopupModule,
+    InputsModule,
+    DropDownListModule,
+    DropDownsModule
   ]
 })
 export class CompoundUnitModule {}
