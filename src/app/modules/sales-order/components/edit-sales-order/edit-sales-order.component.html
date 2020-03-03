@@ -10,15 +10,19 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label>Cash/ Party /A/C</label>
-            <select class="form-control" formControlName="cashPartyACId">
+            <label>Cash/ Party /A/C<sup>*</sup></label>
+            <select
+              class="form-control"
+              formControlName="cashPartyACId"
+              accSwiftFormValidator
+            >
               <option [ngValue]="null">Choose Option....</option>
             </select>
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label>Remarks</label>
+            <label>Remarks<sup>*</sup></label>
             <input class="form-control" formControlName="remarks" />
           </div>
         </div>

@@ -2,7 +2,7 @@ import { SharedModule } from "@app/shared/shared.module";
 import { GridModule } from "@progress/kendo-angular-grid";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormsModule } from "@angular/forms";
-import { NgModule } from "@angular/core";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
 import { BankReconciliationRoutingModule } from "./bank-reconciliation-routing.module";
@@ -15,6 +15,7 @@ import {
   DropDownListModule,
   DropDownsModule
 } from "@progress/kendo-angular-dropdowns";
+import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,8 @@ import {
     InputsModule,
     DropDownListModule,
     DropDownsModule
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents: [LedgerModelPopupComponent]
 })
 export class BankReconciliationModule {}

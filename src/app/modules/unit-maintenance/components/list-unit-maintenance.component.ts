@@ -106,6 +106,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   public filterChange(filter: CompositeFilterDescriptor): void {
     this.unitNameSearchKey = "";
+    this.filter = filter;
     if (filter.filters.length > 0) {
       const filterArray = [];
       filter.filters.forEach(function(item) {

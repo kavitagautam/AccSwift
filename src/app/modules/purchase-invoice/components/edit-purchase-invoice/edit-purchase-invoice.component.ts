@@ -32,35 +32,23 @@ export class EditPurchaseInvoiceComponent implements OnInit {
   }
 
   buildEditInvoiceForm() {
+    const purchase = this.purchaseDetails;
     this.editPurchaseForm = this.fb.group({
-      seriesId: [this.purchaseDetails ? this.purchaseDetails.SeriesID : null],
-      cashPartyACId: [
-        this.purchaseDetails ? this.purchaseDetails.CashPartyLedgerID : null,
-        [Validators.required]
-      ],
-      purchaseAcId: [
-        this.purchaseDetails ? this.purchaseDetails.PurchLedgerID : null
-      ],
-      voucherNo: [
-        this.purchaseDetails ? this.purchaseDetails.VoucherNo : "",
-        [Validators.required]
-      ],
-      partyBillNo: [
-        this.purchaseDetails ? this.purchaseDetails.PartyBillNumber : ""
-      ],
+      seriesId: purchase ? purchase.SeriesID : null,
+      cashPartyACId: purchase
+        ? [purchase.CashPartyLedgerID, [Validators.required]]
+        : null,
+      purchaseAcId: [purchase ? purchase.PurchLedgerID : null],
+      voucherNo: [purchase ? purchase.VoucherNo : "", [Validators.required]],
+      partyBillNo: [purchase ? purchase.PartyBillNumber : ""],
       depotLocationId: [
-        this.purchaseDetails ? this.purchaseDetails.DepotID : null,
+        purchase ? purchase.DepotID : null,
         [Validators.required]
       ],
-      projectId: [this.purchaseDetails ? this.purchaseDetails.ProjectID : null],
-      date: [
-        this.purchaseDetails ? new Date(this.purchaseDetails.CreatedDate) : ""
-      ],
-      orderNo: [
-        this.purchaseDetails ? this.purchaseDetails.OrderNo : "",
-        [Validators.required]
-      ],
-      remarks: [this.purchaseDetails ? this.purchaseDetails.Remarks : ""],
+      projectId: [purchase ? purchase.ProjectID : null],
+      date: [purchase ? new Date(purchase.CreatedDate) : ""],
+      orderNo: [purchase ? purchase.OrderNo : "", [Validators.required]],
+      remarks: [purchase ? purchase.Remarks : ""],
       purchaseInvoiceEntryList: this.fb.array([
         this.addPurchaseInvoiceEntryList()
       ]) // Form Array..

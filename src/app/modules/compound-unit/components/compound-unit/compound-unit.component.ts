@@ -139,9 +139,9 @@ export class CompoundUnitComponent implements OnInit {
       const filterArray = [];
       filter.filters.forEach(function(item) {
         filterArray.push({
-          Field: item["field"],
-          Operator: item["operator"],
-          Value: item["value"]
+          Field: item.field,
+          Operator: item.operator,
+          Value: item.value
         });
       });
       this.filterList = filterArray;

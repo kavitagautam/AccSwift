@@ -21,7 +21,7 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label>VoucherNo.</label>
+            <label>VoucherNo.<sup>*</sup></label>
             <input
               class="form-control"
               id="voucherNoId"
@@ -32,7 +32,7 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label>Date</label>
+            <label>Date<sup>*</sup> </label>
             <input
               type="text"
               class="form-control"
@@ -43,7 +43,7 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label>Cash/Party/A/C </label>
+            <label>Cash/Party/A/C<sup>*</sup> </label>
             <select
               class="form-control"
               id="cashAccountNo"
@@ -84,8 +84,12 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup> <label>Purchase A/C </label>
-            <select class="form-control" formControlName="purchaseAcId">
+            <label>Purchase A/C </label> <sup>*</sup>
+            <select
+              class="form-control"
+              formControlName="purchaseAcId"
+              accSwiftFormValidator
+            >
               <option [ngValue]="null">Choose Option....</option>
             </select>
           </div>
@@ -114,7 +118,7 @@
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <sup>*</sup><label>Remarks</label>
+            <label>Remarks <sup>*</sup></label>
             <input class="form-control" formControlName="remarks" />
           </div>
         </div>
@@ -134,6 +138,7 @@
       <div class="box-body">
         <kendo-grid
           [data]="getPurchaseEntryList.value"
+          [resizable]="true"
           (edit)="editHandler($event)"
           (cancel)="cancelHandler($event)"
           (save)="saveHandler($event)"
@@ -240,7 +245,6 @@
               <kendo-numerictextbox
                 popupAnchor
                 style="width: 120px;"
-                [value]="value"
                 [readonly]="true"
                 [decimals]="decimals"
                 [format]="c0"

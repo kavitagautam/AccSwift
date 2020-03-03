@@ -1,5 +1,5 @@
 import { InputsModule } from "@progress/kendo-angular-inputs";
-import { NgModule } from "@angular/core";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
 import { ContraVoucherRoutingModule } from "./contra-voucher-routing.module";
@@ -14,6 +14,7 @@ import {
   DropDownListModule,
   DropDownsModule
 } from "@progress/kendo-angular-dropdowns";
+import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 
 @NgModule({
   declarations: [
@@ -32,6 +33,8 @@ import {
     DropDownsModule,
     DropDownListModule,
     SharedModule
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents: [LedgerModelPopupComponent]
 })
 export class ContraVoucherModule {}
