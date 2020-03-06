@@ -13,6 +13,7 @@ import { ProductComponent } from "./components/product/product.component";
 import { SharedModule } from "@app/shared/shared.module";
 import { LandingProductComponent } from "./landing-product.component";
 import { ProductGroupComponent } from "./components/product-group/product-group.component";
+import { ImageCropperModule } from "ngx-image-cropper";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { ProductGroupComponent } from "./components/product-group/product-group.
     PopupModule,
     InputsModule,
     LayoutModule,
+    ImageCropperModule,
     DropDownListModule,
     DropDownsModule,
     TreeViewModule

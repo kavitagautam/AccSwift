@@ -10,6 +10,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ProductService } from "../../services/product.service";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
 import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
+import { Product } from "../../models/product.models";
 
 @Component({
   selector: "accSwift-product",
@@ -29,7 +30,7 @@ export class ProductComponent implements OnInit, OnChanges {
   showActions = false;
 
   rowSubmitted: boolean;
-  productDetails;
+  productDetails: Product;
   productForm: FormGroup;
   selectedProductId: number;
 
@@ -112,6 +113,7 @@ export class ProductComponent implements OnInit, OnChanges {
       this.productService
         .getProductDetails(this.selectedProductId)
         .subscribe(response => {
+          console.log(response.Entity);
           this.productDetails = response.Entity;
           this.buildProductForm();
           this.setOpeingQuantity();
@@ -334,7 +336,7 @@ export class ProductComponent implements OnInit, OnChanges {
   }
 
   addProduct(): void {
-    this.productDetails = [];
+    this.productDetails = null;
     this.editMode = false;
     this.addMode = true;
     this.title = "Add Product ";

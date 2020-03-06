@@ -101,7 +101,7 @@
                 </kendo-tabstrip-tab>
                 <kendo-tabstrip-tab [title]="'More Details'">
                   <ng-template kendoTabContent>
-                    <p>More Details</p>
+                    <h5 class="form_heading">More Details</h5>
                   </ng-template>
                 </kendo-tabstrip-tab>
                 <kendo-tabstrip-tab [title]="'Image'">
@@ -117,8 +117,25 @@
                         <br />
                         <input
                           type="file"
-                          (change)="onSelectFile($event)"
+                          (change)="fileChangeEvent($event)"
                           multiple
+                        />
+                        <image-cropper
+                          [imageChangedEvent]="imageChangedEvent"
+                          [maintainAspectRatio]="true"
+                          [aspectRatio]="4 / 3"
+                          format="png"
+                          (imageCropped)="imageCropped($event)"
+                          (imageLoaded)="imageLoaded()"
+                          (cropperReady)="cropperReady()"
+                          (loadImageFailed)="loadImageFailed()"
+                          style="width: 400px;height:200px ;object-fit: cover;"
+                        ></image-cropper>
+
+                        <img
+                          *ngIf="croppedImage"
+                          [src]="croppedImage"
+                          style="width: 400px;height:200px ;object-fit: cover;"
                         />
                       </div>
                     </div>
