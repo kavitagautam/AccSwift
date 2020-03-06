@@ -98,4 +98,22 @@ export class LandingProductComponent implements OnInit {
   collapseAllNode(): void {
     this.expandedKeys = [];
   }
+
+  //File Select
+  urls = [];
+  onSelectFile(event) {
+    if (event.target.files && event.target.files[0]) {
+      var filesAmount = event.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        var reader = new FileReader();
+
+        reader.onload = (event: any) => {
+          console.log(event.target.result);
+          this.urls.push(event.target.result);
+        };
+
+        reader.readAsDataURL(event.target.files[i]);
+      }
+    }
+  }
 }

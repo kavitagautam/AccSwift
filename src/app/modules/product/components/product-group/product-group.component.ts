@@ -91,7 +91,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
   addProductGroup(): void {
     this.editMode = false;
     this.addMode = true;
-    this.title = "Add Group ";
+    this.title = "Add Product Group ";
     this.buildProductGroupForm();
   }
 
