@@ -71,10 +71,9 @@ export class CompoundUnitComponent implements OnInit {
 
   buildCompoundUnitForm(): void {
     this.compoundUnitForm = this._fb.group({
-      FirstUnitID: [this.editableForm ? [null, [Validators.required]] : [null]],
-      SecondUnitID: [
-        this.editableForm ? [null, [Validators.required]] : [null]
-      ],
+      firstUnitValue: [1],
+      FirstUnitID: [this.editableForm ? ["", [Validators.required]] : [null]],
+      SecondUnitID: [this.editableForm ? ["", [Validators.required]] : [null]],
       RelationValue: [""],
       Remarks: [""]
     });
