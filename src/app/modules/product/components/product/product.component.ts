@@ -108,6 +108,10 @@ export class ProductComponent implements OnInit, OnChanges {
     });
   }
 
+  formInitialized(name: string, form: FormGroup) {
+    this.productForm.setControl(name, form);
+  }
+
   getProductDetails(): void {
     if (this.selectedProductId) {
       this.productService

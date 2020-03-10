@@ -91,7 +91,10 @@
             [selected]="selectedProductTab ? true : false"
           >
             <ng-template kendoTabContent>
-              <kendo-tabstrip>
+              <accSwift-product
+                [selectedProduct]="selectedProduct"
+              ></accSwift-product>
+              <!-- <kendo-tabstrip>
                 <kendo-tabstrip-tab [title]="'Product Details'" selected="true">
                   <ng-template kendoTabContent>
                     <accSwift-product
@@ -101,7 +104,7 @@
                 </kendo-tabstrip-tab>
                 <kendo-tabstrip-tab [title]="'More Details'">
                   <ng-template kendoTabContent>
-                    <h5 class="form_heading">More Details</h5>
+                    <accSwift-product-more-detail></accSwift-product-more-detail>
                   </ng-template>
                 </kendo-tabstrip-tab>
                 <kendo-tabstrip-tab [title]="'Image'">
@@ -141,7 +144,7 @@
                     </div>
                   </ng-template>
                 </kendo-tabstrip-tab>
-              </kendo-tabstrip>
+              </kendo-tabstrip> -->
             </ng-template>
           </kendo-tabstrip-tab>
         </kendo-tabstrip>
