@@ -20,6 +20,7 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
 export class ListUnitMaintenanceComponent implements OnInit {
   unitForm: FormGroup;
   editableForm: boolean = false;
+  editMode: boolean = false;
   submitted: boolean;
   listLoading: boolean;
 
@@ -29,7 +30,6 @@ export class ListUnitMaintenanceComponent implements OnInit {
   unitLists: Units[];
   filterList: Array<any> = [];
   searchFilterList: Array<any> = [];
-  editMode: boolean = false;
   unitNameSearchKey = "";
   orderByKey = "";
   dirKey = "asc";
@@ -106,6 +106,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   public filterChange(filter: CompositeFilterDescriptor): void {
     this.unitNameSearchKey = "";
+    this.filter = filter;
     if (filter.filters.length > 0) {
       const filterArray = [];
       filter.filters.forEach(function(item) {
@@ -200,7 +201,6 @@ export class ListUnitMaintenanceComponent implements OnInit {
   openAddModal(template: TemplateRef<any>): void {
     this.editableForm = true;
     this.buildUnitMaintenanceForm();
-    this.unitForm.reset();
     this.submitButton = "Save ";
     this.modalTitle = "New Unit";
     this.modalRef = this.modalService.show(template, this.config);
@@ -212,7 +212,6 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.buildUnitMaintenanceForm();
     this.submitButton = "Save ";
     this.modalTitle = "Edit " + dataItem.UnitName;
-    dataItem["id"] = dataItem.ID;
     this.unitsId = dataItem.ID;
     this.unitForm.patchValue(dataItem);
     this.modalRef = this.modalService.show(template, this.config);
@@ -243,6 +242,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
       },
       () => {
         this.modalRef.hide();
+        this.buildUnitMaintenanceForm();
         this.toastr.success("Units edited successfully");
       }
     );

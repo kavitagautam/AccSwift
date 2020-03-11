@@ -33,11 +33,10 @@ export class EditPurchaseInvoiceComponent implements OnInit {
 
   buildEditInvoiceForm() {
     this.editPurchaseForm = this.fb.group({
-      seriesId: [this.purchaseDetails ? this.purchaseDetails.SeriesID : null],
-      cashPartyACId: [
-        this.purchaseDetails ? this.purchaseDetails.CashPartyLedgerID : null,
-        [Validators.required]
-      ],
+      seriesId: this.purchaseDetails ? this.purchaseDetails.SeriesID : null,
+      cashPartyACId: this.purchaseDetails
+        ? [this.purchaseDetails.CashPartyLedgerID, [Validators.required]]
+        : null,
       purchaseAcId: [
         this.purchaseDetails ? this.purchaseDetails.PurchLedgerID : null
       ],

@@ -1,12 +1,6 @@
 <div class="box box-header">
-  <button class="btn btn-primary">
-    <i
-      class="fa fa-plus pull-left"
-      aria-hidden="true"
-      (click)="openAddModal(openCompoundUnit)"
-    >
-      &nbsp; Add Unit</i
-    >
+  <button class="btn btn-primary" (click)="openAddModal(openCompoundUnit)">
+    <i class="fa fa-plus pull-left" aria-hidden="true"> &nbsp; Add Unit</i>
   </button>
 </div>
 
@@ -21,7 +15,6 @@
               type="number"
               min="0"
               [attr.disabled]="true"
-              placeholder="1"
               id="first-unit"
               class="form-control"
               formControlName="firstUnitValue"
@@ -214,11 +207,16 @@
                 id="second-unit"
                 class="form-control"
                 formControlName="RelationValue"
+                accSwiftFormValidator
               />
             </div>
             <div class="col-md-7 pr-0">
               <label for="first-unit">Name of Second Unit</label>
-              <select class="form-control" formControlName="SecondUnitID">
+              <select
+                class="form-control"
+                formControlName="SecondUnitID"
+                accSwiftFormValidator
+              >
                 <option [ngValue]="null">Select option...</option>
                 <option
                   *ngFor="
@@ -236,7 +234,12 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" (click)="onSubmitCompoundUnit()">
+    <button
+      class="btn btn-primary"
+      (click)="onSubmitCompoundUnit()"
+      accSwiftFormSubmitValidationMsg
+      [validationControl]="compoundUnitForm"
+    >
       {{ submitButton }}
     </button>
     <button class="btn btn-secondory ml-2" type="button" (click)="close()">
