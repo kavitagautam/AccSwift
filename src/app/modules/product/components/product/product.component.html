@@ -1,16 +1,17 @@
-<kendo-tabstrip>
-  <kendo-tabstrip-tab [title]="'Product Details'" selected="true">
-    <ng-template kendoTabContent>
-      <div class="box box-default">
-        <h5 class="form_heading">
-          {{ title }}
-          <span *ngIf="productDetails">{{ productDetails.Name }}</span>
-        </h5>
-        <h2 class="mat-h2">Form Value</h2>
-        <pre>
+<form [formGroup]="productForm" novalidate>
+  <kendo-tabstrip>
+    <kendo-tabstrip-tab [title]="'Product Details'" selected="true">
+      <ng-template kendoTabContent>
+        <div class="box box-default">
+          <h5 class="form_heading">
+            {{ title }}
+            <span *ngIf="productDetails">{{ productDetails.Name }}</span>
+          </h5>
+          <h2 class="mat-h2">Form Value</h2>
+          <pre>
     {{ productForm.value | json }}
-        </pre>
-        <form [formGroup]="productForm" novalidate>
+        </pre
+          >
           <div class="row clearfix mt-3">
             <div class="col-md-6">
               <div class="form-group">
@@ -148,48 +149,52 @@
               </button>
             </div>
           </div>
-        </form>
-      </div>
-    </ng-template>
-  </kendo-tabstrip-tab>
-  <kendo-tabstrip-tab [title]="'More Details'">
-    <ng-template kendoTabContent>
-      <accSwift-product-more-detail
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab [title]="'More Details'">
+      <ng-template kendoTabContent>
+        <!-- <accSwift-product-more-detail
         (formReady)="formInitialized('moreDetails', $event)"
         [productForm]="productForm"
-      ></accSwift-product-more-detail>
-    </ng-template>
-  </kendo-tabstrip-tab>
-  <kendo-tabstrip-tab [title]="'Image'">
-    <ng-template kendoTabContent>
-      <h5 class="form_heading">Upload Image</h5>
-      <div class="row">
-        <div class="col-md-12">
-          <img *ngFor="let url of urls" [src]="url" height="200" />
-          <br />
-          <input type="file" (change)="fileChangeEvent($event)" multiple />
-          <image-cropper
-            [imageChangedEvent]="imageChangedEvent"
-            [maintainAspectRatio]="true"
-            [aspectRatio]="4 / 3"
-            format="png"
-            (imageCropped)="imageCropped($event)"
-            (imageLoaded)="imageLoaded()"
-            (cropperReady)="cropperReady()"
-            (loadImageFailed)="loadImageFailed()"
-            style="width: 400px;height:200px ;object-fit: cover;"
-          ></image-cropper>
+      ></accSwift-product-more-detail> -->
+        <accSwift-product-more-detail
+          formControlName="moreDetails"
+        ></accSwift-product-more-detail>
+      </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab [title]="'Image'">
+      <ng-template kendoTabContent>
+        <h5 class="form_heading">Upload Image</h5>
+        <div class="row">
+          <div class="col-md-12">
+            <img *ngFor="let url of urls" [src]="url" height="200" />
+            <br />
+            <input type="file" (change)="fileChangeEvent($event)" multiple />
+            <image-cropper
+              [imageChangedEvent]="imageChangedEvent"
+              [maintainAspectRatio]="true"
+              [aspectRatio]="4 / 3"
+              format="png"
+              (imageCropped)="imageCropped($event)"
+              (imageLoaded)="imageLoaded()"
+              (cropperReady)="cropperReady()"
+              (loadImageFailed)="loadImageFailed()"
+              style="width: 400px;height:200px ;object-fit: cover;"
+            ></image-cropper>
 
-          <img
-            *ngIf="croppedImage"
-            [src]="croppedImage"
-            style="width: 400px;height:200px ;object-fit: cover;"
-          />
+            <img
+              *ngIf="croppedImage"
+              [src]="croppedImage"
+              style="width: 400px;height:200px ;object-fit: cover;"
+            />
+          </div>
         </div>
-      </div>
-    </ng-template>
-  </kendo-tabstrip-tab>
-</kendo-tabstrip>
+      </ng-template>
+    </kendo-tabstrip-tab>
+  </kendo-tabstrip>
+</form>
+
 <!--Modal PopUp Opening Balance Modal-->
 <div
   class="modal fade bd-example-modal"

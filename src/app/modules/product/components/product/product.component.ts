@@ -9,7 +9,13 @@ import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ProductService } from "../../services/product.service";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
-import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
+import {
+  FormGroup,
+  FormBuilder,
+  FormArray,
+  Validators,
+  FormControl
+} from "@angular/forms";
 import { Product } from "../../models/product.models";
 
 @Component({
@@ -104,7 +110,8 @@ export class ProductComponent implements OnInit, OnChanges {
         this.productDetails ? this.productDetails.IsInventoryApplicable : false
       ],
       remarks: [this.productDetails ? this.productDetails.Remarks : ""],
-      openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()])
+      openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
+      moreDetails: new FormControl("")
     });
   }
 
