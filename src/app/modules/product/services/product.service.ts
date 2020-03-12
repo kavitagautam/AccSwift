@@ -5,9 +5,9 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import {
   ProductGroupTree,
-  ProductModel,
+  ProductDetailModel,
   ProductGroup,
-  AccountClassModel,
+  ProductModel,
   AccountClass
 } from "../models/product.models";
 import { DepotList } from "@app/modules/depot/models/depot.model";
@@ -39,7 +39,7 @@ export class ProductService {
     return this.httpService.get(`${this._api_URL}Product`);
   }
 
-  getProductDetails(id): Observable<ProductModel> {
+  getProductDetails(id): Observable<ProductDetailModel> {
     return this.httpService.get(`${this._api_URL}Product/${id}`);
   }
 

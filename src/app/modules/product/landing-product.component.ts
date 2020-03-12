@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { ProductService } from "./services/product.service";
+import { ImageCroppedEvent } from "ngx-image-cropper";
+
 const is = (fileName: string, ext: string) =>
   new RegExp(`.${ext}\$`).test(fileName);
 
@@ -46,6 +48,25 @@ export class LandingProductComponent implements OnInit {
     }
   }
 
+  imageChangedEvent: Array<any> = [];
+  croppedImage: any = "";
+
+  fileChangeEvent(event: any): void {
+    console.log("Event " + event);
+    this.imageChangedEvent = event;
+  }
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+  imageLoaded() {
+    // show cropper
+  }
+  cropperReady() {
+    // cropper ready
+  }
+  loadImageFailed() {
+    // show message
+  }
   getProductTreeView(): void {
     this.treeViewLoading = true;
     this.productService.getProductTree().subscribe(
@@ -97,5 +118,23 @@ export class LandingProductComponent implements OnInit {
 
   collapseAllNode(): void {
     this.expandedKeys = [];
+  }
+
+  //File Select
+  urls = [];
+  onSelectFile(event) {
+    if (event.target.files && event.target.files[0]) {
+      var filesAmount = event.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        var reader = new FileReader();
+
+        reader.onload = (event: any) => {
+          console.log(event.target.result);
+          this.urls.push(event.target.result);
+        };
+
+        reader.readAsDataURL(event.target.files[i]);
+      }
+    }
   }
 }

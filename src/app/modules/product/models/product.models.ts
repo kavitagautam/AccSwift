@@ -20,9 +20,23 @@ export interface Entity {
   IsInventoryApplicable: boolean;
   IsDecimalApplicable: boolean;
   IsActive: boolean;
+  ContactPerson: string;
+  Address1: string;
+  Address2: string;
+  City: string;
+  Telephone: string;
+  Email: string;
+  Company: string;
+  Website: string;
   BackColor: number;
   OpeningQuantity: OpeningQuantity;
   Remarks: string;
+}
+
+export interface ProductDetailModel {
+  StatusCode: number;
+  Message: string;
+  Entity: Entity;
 }
 
 export interface ProductModel {
@@ -33,34 +47,27 @@ export interface ProductModel {
 
 export interface Product {
   ID: number;
-  EngName: string;
-  NepName: string;
+  Name: string;
   GroupID: number;
-  GroupName: string;
-  Code: string;
+  ProductCode: string;
   ProductColor: string;
   DepotID: number;
-  UnitMaintenanceID: number;
-  SalesRate: number;
-  PurchaseRate: number;
-  PurchaseDiscount: number;
-  TotalValue: number;
-  ProductImage: string;
-  IsBuiltIn: boolean;
-  IsActive: boolean;
-  BackColor: number;
+  UnitID: number;
   IsVatApplicable: boolean;
   IsInventoryApplicable: boolean;
-  DebtorsID: number;
-  RentDate: string;
-  Quantity: number;
   IsDecimalApplicable: boolean;
-  OpeningQuantities: OpeningQuantities[];
+  IsActive: boolean;
+  ContactPerson?: any;
+  Address1?: any;
+  Address2?: any;
+  City?: any;
+  Telephone?: any;
+  Email?: any;
+  Company?: any;
+  Website?: any;
+  BackColor: number;
+  OpeningQuantity: OpeningQuantity;
   Remarks: string;
-  CreatedBy: string;
-  CreatedDate: string;
-  ModifiedBy: string;
-  ModifiedDate: string;
 }
 
 export interface OpeningQuantities {
@@ -70,9 +77,7 @@ export interface OpeningQuantities {
   OpenPurchaseQty: number;
   OpenPurchaseRate: number;
   OpenSalesRate: number;
-  OpenQuantityDate: string;
-  SquareFeet: number;
-  RentRate: number;
+  OpenQuantityDate: Date;
 }
 
 export interface Child {
