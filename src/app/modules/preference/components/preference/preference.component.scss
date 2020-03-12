@@ -3,10 +3,15 @@ ul,
   list-style-type: none;
 }
 
+.border {
+  background-color: aliceblue;
+  padding-bottom: 30px;
+}
+
 #myUL {
   margin: 0;
   padding: 0;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .boxes {
@@ -36,4 +41,10 @@ ul,
 
 .active {
   display: block;
+}
+
+.checkbox,
+.radio {
+  margin: 0px;
+  padding: 0px;
 }
