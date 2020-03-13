@@ -1,3 +1,25 @@
-<p>
-  product-image works!
-</p>
+<h5 class="form_heading">Upload Image</h5>
+<div class="row">
+  <div class="col-md-12">
+    <img *ngFor="let url of urls" [src]="url" height="200" />
+    <br />
+    <input type="file" (change)="fileChangeEvent($event)" multiple />
+    <image-cropper
+      [imageChangedEvent]="imageChangedEvent"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="4 / 3"
+      format="png"
+      (imageCropped)="imageCropped($event)"
+      (imageLoaded)="imageLoaded()"
+      (cropperReady)="cropperReady()"
+      (loadImageFailed)="loadImageFailed()"
+      style="width: 400px;height:200px ;object-fit: cover;"
+    ></image-cropper>
+
+    <img
+      *ngIf="croppedImage"
+      [src]="croppedImage"
+      style="width: 400px;height:200px ;object-fit: cover;"
+    />
+  </div>
+</div>

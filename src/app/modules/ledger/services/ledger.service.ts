@@ -4,8 +4,8 @@ import { HttpClientService } from "@app/core/services/http-client/http-client.se
 import { HttpClient } from "@angular/common/http";
 import {
   GroupDetails,
-  LedgerDetails,
-  LedgerList
+  LedgerDetailsModel,
+  LedgerListModel
 } from "../models/ledger.models";
 import { Observable } from "rxjs";
 
@@ -24,9 +24,9 @@ export class LedgerService {
     this.getGroup();
   }
   getLedgerTreeView(): any {
-    return this.httpService.get(`${this._api_URL}Group/Tree`);
+    return this.httpService.get(`${this._api_URL}LedgerGroup/Tree`);
   }
-  getLedgerListView(): Observable<LedgerList> {
+  getLedgerListView(): Observable<LedgerListModel> {
     return this.httpService.get(`${this._api_URL}Ledger/ListView`);
   }
 
@@ -40,7 +40,11 @@ export class LedgerService {
     return this.httpService.get(`${this._api_URL}Group/${groupId}`);
   }
 
-  getLedgerDetails(ledgerId): Observable<LedgerDetails> {
+  getLedgerDetails(ledgerId): Observable<LedgerDetailsModel> {
     return this.httpService.get(`${this._api_URL}Ledger/${ledgerId}`);
+  }
+
+  deleteLedgerById(ledgerId): Observable<any> {
+    return this.httpService.delete(`${this._api_URL}Legder/${ledgerId}`);
   }
 }
