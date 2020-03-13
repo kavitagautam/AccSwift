@@ -39,7 +39,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
     }
 
     if (this.selectedGroupId) {
-      this.getGroupDetails();
+      // this.getGroupDetails();
     }
   }
 
@@ -52,10 +52,10 @@ export class AccountGroupComponent implements OnInit, OnChanges {
 
   buildAccountGroupForm(): void {
     this.accountGroupForm = this._fb.group({
-      groupCode: [this.groupDetails ? this.groupDetails.LedgerCode : ""],
-      groupName: [this.groupDetails ? this.groupDetails.EngName : ""],
-      parentGroup: [this.groupDetails ? this.groupDetails.ParentGroup : ""],
-      description: [this.groupDetails ? this.groupDetails.Remarks : ""]
+      groupCode: [""],
+      groupNameId: [[null]],
+      parentGroupId: [""],
+      description: [""]
     });
   }
 

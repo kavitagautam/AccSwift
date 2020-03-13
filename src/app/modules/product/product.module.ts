@@ -14,8 +14,8 @@ import { SharedModule } from "@app/shared/shared.module";
 import { LandingProductComponent } from "./landing-product.component";
 import { ProductGroupComponent } from "./components/product-group/product-group.component";
 import { ImageCropperModule } from "ngx-image-cropper";
-import { ProductMoreDetailComponent } from './components/product-more-detail/product-more-detail.component';
-import { ProductImageComponent } from './components/product-image/product-image.component';
+import { ProductMoreDetailComponent } from "./components/product-more-detail/product-more-detail.component";
+import { ProductImageComponent } from "./components/product-image/product-image.component";
 
 @NgModule({
   declarations: [
