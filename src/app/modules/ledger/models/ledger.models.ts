@@ -1,19 +1,22 @@
-export interface GroupDetails {
+export interface LedgerGroup {
   ID: number;
   LedgerCode: string;
-  GroupNumber: number;
-  ParentGroup: number;
-  Level: number;
-  EngName: string;
-  NepName: string;
-  DebitCredit: string;
-  IsBuiltIn: boolean;
-  AccountType: string;
+  ParentGroupID?: number;
+  Name: string;
+  DrCr: string;
   Remarks: string;
-  CreatedBy: string;
-  CreatedDate: string;
-  ModifiedBy: string;
-  ModifiedDate: string;
+}
+
+export interface LedgerGroupDetailsModel {
+  StatusCode: number;
+  Message: string;
+  Entity: LedgerGroup;
+}
+
+export interface LedgerGroupModel {
+  StatusCode: number;
+  Message: string;
+  Entity: LedgerGroup[];
 }
 
 export interface LedgerDetails {

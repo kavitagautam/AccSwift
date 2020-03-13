@@ -13,12 +13,14 @@ import { SharedModule } from "@app/shared/shared.module";
 import { AccountGroupComponent } from "./components/account-group/account-group.component";
 import { AccountLedgerComponent } from "./components/account-ledger/account-ledger.component";
 import { LandingLedgerComponent } from "./components/landing-ledger/landing-ledger.component";
+import { AccountLedgerMoreDetailsComponent } from './components/account-ledger-more-details/account-ledger-more-details.component';
 
 @NgModule({
   declarations: [
     LandingLedgerComponent,
     AccountGroupComponent,
-    AccountLedgerComponent
+    AccountLedgerComponent,
+    AccountLedgerMoreDetailsComponent
   ],
   imports: [
     FormsModule,

@@ -38,7 +38,6 @@ export class LandingLedgerComponent implements OnInit {
   ngOnInit() {
     this.selectedGroupTab = true;
     this.loadLedgerTreeView();
-    this.ledgerService.init();
   }
 
   loadLedgerTreeView(): void {

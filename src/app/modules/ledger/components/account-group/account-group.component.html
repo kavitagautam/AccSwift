@@ -1,6 +1,7 @@
 <div class="box box-default">
   <h5 class="form_heading">
-    Add Account
+    {{ title }}
+    <span *ngIf="ledgerGroupDetails">{{ ledgerGroupDetails.Name }}</span>
   </h5>
   <form [formGroup]="accountGroupForm" novalidate>
     <div class="row mt-3">
@@ -18,15 +19,11 @@
         <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
           <div class="form-group">
             <label>Group Name <sup>*</sup></label>
-            <select
+            <input
               class="form-control"
-              id="productGroupId"
-              formControlName="groupNameId"
+              formControlName="groupName"
               accSwiftFormValidator
-            >
-              <option [ngValue]="null">Choose Option....</option>
-              <option> </option>
-            </select>
+            />
           </div>
         </div>
       </div>
@@ -43,7 +40,12 @@
               accSwiftFormValidator
             >
               <option [ngValue]="null">Choose Option....</option>
-              <option> </option>
+              <option
+                *ngFor="let ledgerGroup of ledgerService.ledgerGroupLists"
+                [ngValue]="ledgerGroup.ID"
+              >
+                {{ ledgerGroup.Name }}</option
+              >
             </select>
           </div>
         </div>
@@ -67,11 +69,25 @@
         accSwiftFormSubmitValidationMsg
         [validationControl]="accountGroupForm"
       >
-        <span>Save</span>
+        <span *ngIf="editMode">Update</span>
+        <span *ngIf="addMode">Save</span>
       </button>
       <button class="btn btn-secondary ml-2" (click)="cancelAccountGroup()">
         Cancel
       </button>
     </div>
+  </div>
+
+  <div class="col-md-12 m-2">
+    <button class="btn btn-primary mr-3" (click)="addLedgerGroup()">
+      <i class="fa fa-plus" aria-hidden="true"></i> Add
+    </button>
+    <button
+      class="btn btn-danger mr-3"
+      [disabled]="!selectedLedgerGroupId"
+      (click)="deleteLedgerGroup()"
+    >
+      <i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;Delete
+    </button>
   </div>
 </div>

@@ -7,7 +7,13 @@ import {
   OnChanges,
   SimpleChange
 } from "@angular/core";
-import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormArray,
+  FormControl
+} from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
 import { LedgerDetails } from "../../models/ledger.models";
@@ -60,11 +66,17 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     for (let p in changes) {
       let c = changes[p];
       this.selectedItem = c.currentValue;
-      this.selectedLedgerId = this.selectedItem.ID;
-    }
-
-    if (this.selectedLedgerId) {
-      this.getLedgerDetails();
+      if (this.selectedItem) {
+        this.selectedLedgerId = this.selectedItem.ID;
+        if (this.selectedLedgerId) {
+          this.editMode = true;
+          this.addMode = false;
+          this.title = "Edit ";
+          this.getLedgerDetails();
+        } else {
+          this.addAccountLedger();
+        }
+      }
     }
   }
 
@@ -94,7 +106,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
       previousYearBalanceList: this._fb.array([
         this.addPreviousYearBalanceFormGroup()
-      ])
+      ]),
+      moreDetails: new FormControl("")
     });
   }
 
@@ -173,15 +186,15 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     this.router.navigate(["/ledger"]);
   }
 
-  addProduct(): void {
+  addAccountLedger(): void {
     this.ledgerDetails = null;
     this.editMode = false;
     this.addMode = true;
-    this.title = "Add Product ";
+    this.title = "Add Account Ledger ";
     this.buildAccountLedgerForm();
   }
 
-  deleteProductGroup(): void {
+  deleteAccountLedger(): void {
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
       this.config

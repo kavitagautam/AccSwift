@@ -3,9 +3,10 @@ import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
 import {
-  GroupDetails,
+  LedgerGroupDetailsModel,
   LedgerDetailsModel,
-  LedgerListModel
+  LedgerListModel,
+  LedgerGroup
 } from "../models/ledger.models";
 import { Observable } from "rxjs";
 
@@ -14,15 +15,14 @@ import { Observable } from "rxjs";
 })
 export class LedgerService {
   _api_URL = environment.baseAPI;
-  groupList: any = [];
+  ledgerGroupLists: LedgerGroup[] = [];
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {}
-
-  init() {
-    this.getGroup();
+  ) {
+    this.getLedgerGroupDropDown();
   }
+
   getLedgerTreeView(): any {
     return this.httpService.get(`${this._api_URL}LedgerGroup/Tree`);
   }
@@ -30,14 +30,14 @@ export class LedgerService {
     return this.httpService.get(`${this._api_URL}Ledger/ListView`);
   }
 
-  getGroup() {
-    this.httpService.get(`${this._api_URL}Group`).subscribe(res => {
-      this.groupList = res;
-    });
+  getLedgerGroupDetails(groupId): Observable<LedgerGroupDetailsModel> {
+    return this.httpService.get(`${this._api_URL}LedgerGroup/${groupId}`);
   }
 
-  getGroupDetails(groupId): Observable<GroupDetails> {
-    return this.httpService.get(`${this._api_URL}Group/${groupId}`);
+  deleteLedgerGroupByID(ledgerGroupId): Observable<any> {
+    return this.httpService.delete(
+      `${this._api_URL}LegderGroup/${ledgerGroupId}`
+    );
   }
 
   getLedgerDetails(ledgerId): Observable<LedgerDetailsModel> {
@@ -46,5 +46,11 @@ export class LedgerService {
 
   deleteLedgerById(ledgerId): Observable<any> {
     return this.httpService.delete(`${this._api_URL}Legder/${ledgerId}`);
+  }
+
+  getLedgerGroupDropDown(): void {
+    this.httpService.get(`${this._api_URL}LedgerGroup`).subscribe(response => {
+      this.ledgerGroupLists = response.Entity;
+    });
   }
 }

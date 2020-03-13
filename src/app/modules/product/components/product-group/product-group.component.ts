@@ -89,6 +89,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
   }
 
   addProductGroup(): void {
+    this.groupDetails = null;
     this.editMode = false;
     this.addMode = true;
     this.title = "Add Product Group ";
@@ -141,6 +142,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
   }
 
   cancel(event): void {
+    this.groupDetails = null;
     this.buildProductGroupForm();
   }
 
