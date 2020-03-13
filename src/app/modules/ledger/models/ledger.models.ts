@@ -18,17 +18,15 @@ export interface GroupDetails {
 
 export interface LedgerDetails {
   ID: number;
-  Code: string;
-  LedgerNumber: number;
-  EngName: number;
-  NepName: number;
+  LedgerCode: string;
+  Name: string;
   PreviousYearBalance: number;
   PreviousYearBalanceDebitCredit: string;
   OpCCYID: number;
   Currency: string;
   OpCCR: number;
-  OpCCRDate: string;
-  DebitCredit: string;
+  OpCCRDate?: any;
+  DrCr: string;
   GroupID: number;
   GroupName: string;
   PersonName: string;
@@ -41,24 +39,27 @@ export interface LedgerDetails {
   Website: string;
   VatPanNo: string;
   CreditLimit: number;
-  IsBuiltIn: boolean;
   IsActive: boolean;
-  IsCalculated: boolean;
-  CalculateRate: number;
-  LF: number;
-  IsBillReference: boolean;
   Remarks: string;
-  CreatedBy: string;
-  CreatedDate: string;
-  ModifiedBy: number;
-  ModifiedDate: string;
+}
+
+export interface LedgerDetailsModel {
+  StatusCode: number;
+  Message: string;
+  Entity: LedgerDetails;
 }
 
 export interface LedgerList {
-  GroupID: string;
+  GroupID: number;
   AccGroup: string;
-  ParentGroupID: number;
+  ParentGroupID?: number;
   ParentGroup: string;
   Ledger: string;
   Type: string;
+}
+
+export interface LedgerListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: LedgerList[];
 }

@@ -11,6 +11,9 @@ import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
 import { LedgerDetails } from "../../models/ledger.models";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-account-ledger",
@@ -26,13 +29,26 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   accoutLedgerForm: FormGroup;
   ledgerDetails: LedgerDetails;
 
+  editMode: boolean;
+  addMode: boolean;
+  title: string;
   rowSubmitted: boolean;
   submitted: boolean;
   private editedRowIndex: number;
+
+  modalRef: BsModalRef;
+  // modal config to unhide modal when clicked outside
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true
+  };
+
   constructor(
     public _fb: FormBuilder,
     public ledgerService: LedgerService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService,
+    private modalService: BsModalService
   ) {}
 
   ngOnInit() {
@@ -56,27 +72,25 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     this.ledgerService
       .getLedgerDetails(this.selectedLedgerId)
       .subscribe(res => {
-        this.ledgerDetails = res;
+        this.ledgerDetails = res.Entity;
         this.buildAccountLedgerForm();
       });
   }
 
   buildAccountLedgerForm(): void {
     this.accoutLedgerForm = this._fb.group({
-      ledgerCode: [this.ledgerDetails ? this.ledgerDetails.Code : ""],
+      ledgerCode: [
+        this.ledgerDetails ? this.ledgerDetails.LedgerCode : "",
+        Validators.required
+      ],
       ledgerName: [
-        this.ledgerDetails ? this.ledgerDetails.EngName : "",
+        this.ledgerDetails ? this.ledgerDetails.Name : "",
         Validators.required
       ],
-      accountHead: [""],
+      accountHead: [null],
       remarks: [this.ledgerDetails ? this.ledgerDetails.Remarks : ""],
-      currency: [
-        this.ledgerDetails ? this.ledgerDetails.Currency : "",
-        Validators.required
-      ],
-      date: [
-        this.ledgerDetails ? new Date(this.ledgerDetails.CreatedDate) : ""
-      ],
+      currency: [this.ledgerDetails ? this.ledgerDetails.Currency : ""],
+      date: [this.ledgerDetails ? new Date() : ""],
       openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
       previousYearBalanceList: this._fb.array([
         this.addPreviousYearBalanceFormGroup()
@@ -91,6 +105,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       balanceType: [""]
     });
   }
+
   addPreviousYearBalanceFormGroup(): FormGroup {
     return this._fb.group({
       accountClass: [""],
@@ -156,5 +171,43 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   public cancelAccountLedger(): void {
     this.accoutLedgerForm.reset();
     this.router.navigate(["/ledger"]);
+  }
+
+  addProduct(): void {
+    this.ledgerDetails = null;
+    this.editMode = false;
+    this.addMode = true;
+    this.title = "Add Product ";
+    this.buildAccountLedgerForm();
+  }
+
+  deleteProductGroup(): void {
+    this.modalRef = this.modalService.show(
+      ConfirmationDialogComponent,
+      this.config
+    );
+    this.modalRef.content.data = "product";
+    this.modalRef.content.action = "delete";
+    this.modalRef.content.onClose.subscribe(confirm => {
+      if (confirm) {
+        this.deleteAccountLedgertByID(this.selectedLedgerId);
+      }
+    });
+  }
+
+  public deleteAccountLedgertByID(id): void {
+    this.ledgerService.deleteLedgerById(id).subscribe(
+      response => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      },
+      error => {
+        this.toastr.success(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Product deleted successfully");
+      }
+    );
   }
 }
