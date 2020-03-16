@@ -124,7 +124,6 @@ export class ProductComponent implements OnInit, OnChanges {
       this.productService
         .getProductDetails(this.selectedProductId)
         .subscribe(response => {
-          console.log(response.Entity);
           this.productDetails = response.Entity;
           this.buildProductForm();
           this.setOpeingQuantity();

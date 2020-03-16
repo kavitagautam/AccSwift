@@ -113,7 +113,19 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   addOpeningBalanceFormGroup(): FormGroup {
     return this._fb.group({
-      accountClass: [""],
+      accountClassId: [
+        this.ledgerService.accountClass
+          ? this.ledgerService.accountClass[0].ID
+          : null
+      ],
+      accountClassName: [
+        {
+          value: this.ledgerService.accountClass
+            ? this.ledgerService.accountClass[0].Name
+            : "",
+          disabled: true
+        }
+      ],
       openingBalance: [""],
       balanceType: [""]
     });
@@ -121,7 +133,19 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   addPreviousYearBalanceFormGroup(): FormGroup {
     return this._fb.group({
-      accountClass: [""],
+      accountClassId: [
+        this.ledgerService.accountClass
+          ? this.ledgerService.accountClass[0].ID
+          : null
+      ],
+      accountClassName: [
+        {
+          value: this.ledgerService.accountClass
+            ? this.ledgerService.accountClass[0].Name
+            : "",
+          disabled: true
+        }
+      ],
       openingBalance: [""],
       balanceType: [""]
     });

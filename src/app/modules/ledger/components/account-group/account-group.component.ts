@@ -77,11 +77,11 @@ export class AccountGroupComponent implements OnInit, OnChanges {
 
   buildAccountGroupForm(): void {
     this.accountGroupForm = this._fb.group({
-      groupCode: [
+      ledgerGroupCode: [
         this.ledgerGroupDetails ? this.ledgerGroupDetails.LedgerCode : "",
         Validators.required
       ],
-      groupName: [
+      ledgerGroupName: [
         this.ledgerGroupDetails ? this.ledgerGroupDetails.Name : "",
         Validators.required
       ],
@@ -89,22 +89,62 @@ export class AccountGroupComponent implements OnInit, OnChanges {
         this.ledgerGroupDetails ? this.ledgerGroupDetails.ParentGroupID : null,
         Validators.required
       ],
-      description: [
-        this.ledgerGroupDetails ? this.ledgerGroupDetails.Remarks : ""
-      ]
+      remarks: [this.ledgerGroupDetails ? this.ledgerGroupDetails.Remarks : ""]
     });
   }
 
   public saveAccountGroup(): void {
-    if (this.accountGroupForm.valid) {
-      this.router.navigate(["/ledger"]);
+    if (this.addMode) {
+      if (this.accountGroupForm.invalid) return;
+      const obj = {
+        LedgerCode: this.accountGroupForm.get("ledgerGroupCode").value,
+        Name: this.accountGroupForm.get("ledgerGroupName").value,
+        ParentGroupID: this.accountGroupForm.get("parentGroupId").value,
+        DrCr: "DR",
+        Remarks: this.accountGroupForm.get("remarks").value
+      };
+      this.ledgerService.addLedgerGroup(obj).subscribe(
+        response => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        },
+        error => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Ledger Group added successfully");
+        }
+      );
     } else {
+      if (this.accountGroupForm.invalid) return;
+      const obj = {
+        ID: this.ledgerGroupDetails.ID,
+        LedgerCode: this.accountGroupForm.get("ledgerGroupCode").value,
+        Name: this.accountGroupForm.get("ledgerGroupName").value,
+        ParentGroupID: this.accountGroupForm.get("parentGroupId").value,
+        DrCr: "DR",
+        Remarks: this.accountGroupForm.get("remarks").value
+      };
+      this.ledgerService.updateLedgerGroup(obj).subscribe(
+        response => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        },
+        error => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Ledger Group edited successfully");
+        }
+      );
     }
   }
 
   public cancelAccountGroup(): void {
-    this.accountGroupForm.reset();
-    this.router.navigate(["/ledger"]);
+    this.ledgerGroupDetails = null;
+    this.buildAccountGroupForm();
   }
 
   addLedgerGroup(): void {

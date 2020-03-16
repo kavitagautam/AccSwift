@@ -38,12 +38,17 @@
             accSwiftFormValidator
           />
         </div>
+        <div class="form-group">
+          <label>Company</label>
+          <input class="form-control" formControlName="company" />
+        </div>
       </div>
       <div class="col-md-6">
         <div class="form-group">
           <label>Telephone <sup>*</sup></label>
           <input
             class="form-control"
+            type="number"
             formControlName="telephone"
             accSwiftFormValidator
           />
@@ -52,10 +57,6 @@
           <label>E-mail</label>
           <input class="form-control" formControlName="email" />
         </div>
-        <div class="form-group">
-          <label>Company</label>
-          <input class="form-control" formControlName="company" />
-        </div>
 
         <div class="form-group">
           <label>WebSite</label>
@@ -63,7 +64,11 @@
         </div>
         <div class="form-group">
           <label>VAT/PAN No</label>
-          <input class="form-control" formControlName="VATPANNo" />
+          <input
+            class="form-control"
+            type="number"
+            formControlName="VATPANNo"
+          />
         </div>
 
         <div class="form-group">

@@ -98,22 +98,6 @@
             </div>
           </div>
         </div>
-
-        <div class="col-md-12 m-2">
-          <button
-            class="btn btn-primary"
-            disabled
-            (click)="saveAccountLedger()"
-          >
-            Save
-          </button>
-          <button
-            class="btn btn-secondary ml-2"
-            (click)="cancelAccountLedger()"
-          >
-            Cancel
-          </button>
-        </div>
       </ng-template>
     </kendo-tabstrip-tab>
     <kendo-tabstrip-tab [title]="'More Details'">
@@ -172,13 +156,8 @@
               (save)="saveHandler($event)"
               (remove)="removeHandler($event)"
               (add)="addHandler($event)"
-              [height]="250"
             >
-              <ng-template kendoGridToolbarTemplate>
-                <button kendoGridAddCommand>Add new</button>
-              </ng-template>
-
-              <kendo-grid-column field="accountClass" title="Account Class">
+              <kendo-grid-column field="accountClassName" title="Account Class">
                 <ng-template
                   kendoGridCellTemplate
                   let-dataItem="dataItem"
@@ -192,7 +171,7 @@
                     class="k-textbox"
                     [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(
-                        'accountClass'
+                        'accountClassName'
                       )
                     "
                   />
@@ -200,13 +179,13 @@
                     [anchor]="input"
                     *ngIf="
                       getOpeningBalanceList.controls[rowIndex].get(
-                        'accountClass'
+                        'accountClassName'
                       ).invalid &&
                       rowSubmitted &&
                       !(
                         isNew &&
                         getOpeningBalanceList.controls[rowIndex].get(
-                          'accountClass'
+                          'accountClassName'
                         ).untouched
                       )
                     "
@@ -259,15 +238,7 @@
               </kendo-grid-column>
               <kendo-grid-command-column title="Action">
                 <ng-template kendoGridCellTemplate let-isNew="isNew">
-                  <button class="k-button" kendoGridAddCommand>Add</button>
-                  <!-- <button kendoGridEditCommand [primary]="true">Edit</button> -->
-                  <button kendoGridRemoveCommand>Remove</button>
-                  <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
-                    {{ isNew ? "Add" : "Update" }}
-                  </button>
-                  <button kendoGridCancelCommand>
-                    {{ isNew ? "Discard changes" : "Cancel" }}
-                  </button>
+                  <button class="k-button" data-dismiss="modal">Save</button>
                 </ng-template>
               </kendo-grid-command-column>
             </kendo-grid>
@@ -320,13 +291,8 @@
               (save)="saveHandler($event)"
               (remove)="removeHandler($event)"
               (add)="addHandler($event)"
-              [height]="250"
             >
-              <ng-template kendoGridToolbarTemplate>
-                <button kendoGridAddCommand>Add new</button>
-              </ng-template>
-
-              <kendo-grid-column field="accountClass" title="Account Class">
+              <kendo-grid-column field="accountClassName" title="Account Class">
                 <ng-template
                   kendoGridCellTemplate
                   let-dataItem="dataItem"
@@ -340,7 +306,7 @@
                     class="k-textbox"
                     [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(
-                        'accountClass'
+                        'accountClassName'
                       )
                     "
                   />
@@ -348,13 +314,13 @@
                     [anchor]="input"
                     *ngIf="
                       getPreviousYearBalanceList.controls[rowIndex].get(
-                        'accountClass'
+                        'accountClassName'
                       ).invalid &&
                       rowSubmitted &&
                       !(
                         isNew &&
                         getPreviousYearBalanceList.controls[rowIndex].get(
-                          'accountClass'
+                          'accountClassName'
                         ).untouched
                       )
                     "
@@ -407,15 +373,7 @@
               </kendo-grid-column>
               <kendo-grid-command-column title="Action">
                 <ng-template kendoGridCellTemplate let-isNew="isNew">
-                  <button class="k-button" kendoGridAddCommand>Add</button>
-                  <!-- <button kendoGridEditCommand [primary]="true">Edit</button> -->
-                  <button kendoGridRemoveCommand>Remove</button>
-                  <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
-                    {{ isNew ? "Add" : "Update" }}
-                  </button>
-                  <button kendoGridCancelCommand>
-                    {{ isNew ? "Discard changes" : "Cancel" }}
-                  </button>
+                  <button class="k-button" data-dismiss="modal">Save</button>
                 </ng-template>
               </kendo-grid-command-column>
             </kendo-grid>

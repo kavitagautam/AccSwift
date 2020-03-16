@@ -6,7 +6,8 @@ import {
   LedgerGroupDetailsModel,
   LedgerDetailsModel,
   LedgerListModel,
-  LedgerGroup
+  LedgerGroup,
+  AccountClass
 } from "../models/ledger.models";
 import { Observable } from "rxjs";
 
@@ -16,11 +17,19 @@ import { Observable } from "rxjs";
 export class LedgerService {
   _api_URL = environment.baseAPI;
   ledgerGroupLists: LedgerGroup[] = [];
+  accountClass: AccountClass;
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
   ) {
     this.getLedgerGroupDropDown();
+    this.getAccountClass();
+  }
+
+  getAccountClass(): void {
+    this.httpService.get(`${this._api_URL}AccountClass`).subscribe(response => {
+      this.accountClass = response.Entity;
+    });
   }
 
   getLedgerTreeView(): any {
@@ -32,6 +41,14 @@ export class LedgerService {
 
   getLedgerGroupDetails(groupId): Observable<LedgerGroupDetailsModel> {
     return this.httpService.get(`${this._api_URL}LedgerGroup/${groupId}`);
+  }
+
+  addLedgerGroup(value): Observable<any> {
+    return this.httpService.post(`${this._api_URL}LedgerGroup`, value);
+  }
+
+  updateLedgerGroup(value): Observable<any> {
+    return this.httpService.put(`${this._api_URL}LedgerGroup`, value);
   }
 
   deleteLedgerGroupByID(ledgerGroupId): Observable<any> {

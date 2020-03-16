@@ -3,7 +3,8 @@ import {
   OnInit,
   EventEmitter,
   Output,
-  forwardRef
+  forwardRef,
+  Input
 } from "@angular/core";
 import {
   ControlValueAccessor,
@@ -58,12 +59,10 @@ export class AccountLedgerMoreDetailsComponent
   }
 
   registerOnChange(fn: any): void {
-    console.log("on change");
     this.ledgerMoreDetailsForm.valueChanges.subscribe(fn);
   }
 
   registerOnTouched(fn: any): void {
-    console.log("on blur");
     this.onTouched = fn;
   }
 
@@ -72,8 +71,10 @@ export class AccountLedgerMoreDetailsComponent
       ? this.ledgerMoreDetailsForm.disable()
       : this.ledgerMoreDetailsForm.enable();
   }
+
   save(): void {
     //this.formReady.emit(this.ledgerMoreDetailsForm);
   }
+
   cancel(event): void {}
 }
