@@ -6,26 +6,11 @@
     <div class="row">
       <div class="col-md-12">
         <div class="col-md-2">
-          <label>Default date: </label>
+          <label>Default Date: </label>
         </div>
-        <div class="col-md-3 ">
+        <div class="col-md-2 ">
           <div class="form-group ">
             <div class="radio  ">
-              <label>
-                <input
-                  type="radio"
-                  name="date"
-                  value="english"
-                  formControlName="date"
-                />
-                English
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-1">
-          <div class="form-group">
-            <div class="radio ">
               <label>
                 <input
                   type="radio"
@@ -38,6 +23,21 @@
             </div>
           </div>
         </div>
+        <div class="col-md-1">
+          <div class="form-group">
+            <div class="radio ">
+              <label>
+                <input
+                  type="radio"
+                  name="date"
+                  value="english"
+                  formControlName="date"
+                />
+                English
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -45,19 +45,22 @@
         <div class="col-md-6">
           <div class="form-group">
             <label>Format</label>
-            <select class="form-control" formControlName="dateFormat">
-              <option></option>
+            <select
+              class="form-control"
+              formControlName="dateFormat"
+              (change)="dateFormatChange(optionForm.get('dateFormat').value)"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option *ngFor="let format of sampleFormat">{{
+                format.format
+              }}</option>
             </select>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label>Sample</label>
-            <input
-              class="form-control"
-              placeholder="2020-03-11"
-              formControlName="sample"
-            />
+            <input class="form-control" formControlName="sample" />
           </div>
         </div>
       </div>
@@ -69,9 +72,10 @@
     <div class="col-md-6">
       <div class="row">
         <div class="col-md-12">
-          <div class="form-group">
+          <div class="form-group ">
             <label>Number of Decimal Places</label>
             <select class="form-control" formControlName="decimalPlace">
+              <option [ngValue]="null">Choose Option...</option>
               <option>2</option>
             </select>
           </div>

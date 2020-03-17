@@ -13,13 +13,13 @@ export class SettingsComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.treeView();
+    this.buildMenuItem();
   }
   selectedNode(item): void {
     this.nodeName = item;
   }
 
-  treeView(): void {
+  buildMenuItem(): void {
     for (this.i = 0; this.i < this.toggler.length; this.i++) {
       this.toggler[this.i].addEventListener("click", function() {
         this.parentElement.querySelector(".nested").classList.toggle("active");

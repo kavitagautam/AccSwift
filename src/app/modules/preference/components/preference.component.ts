@@ -8,21 +8,20 @@ import { Component, OnInit } from "@angular/core";
 export class PreferenceComponent implements OnInit {
   private toggler = document.getElementsByClassName("boxes");
   nodeName: string;
-  public i: any;
 
   constructor() {}
 
   ngOnInit() {
-    this.treeView();
+    this.buildMenuItem();
   }
 
   selectedNode(item): void {
     this.nodeName = item;
   }
 
-  treeView(): void {
-    for (this.i = 0; this.i < this.toggler.length; this.i++) {
-      this.toggler[this.i].addEventListener("click", function() {
+  buildMenuItem(): void {
+    for (let i = 0; i < this.toggler.length; i++) {
+      this.toggler[i].addEventListener("click", function() {
         this.parentElement.querySelector(".nested").classList.toggle("active");
         this.classList.toggle("check-boxes");
       });

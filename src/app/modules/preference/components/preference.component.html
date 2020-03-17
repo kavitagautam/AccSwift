@@ -52,26 +52,24 @@
   </div>
 
   <div class="col-md-9">
-    <form>
-      <div *ngIf="nodeName === 'options'">
-        <accSwift-options></accSwift-options>
-      </div>
+    <div *ngIf="nodeName === 'options'">
+      <accSwift-options></accSwift-options>
+    </div>
 
-      <div *ngIf="nodeName === 'companyInfos'">
-        <accSwift-company-info></accSwift-company-info>
-      </div>
+    <div *ngIf="nodeName === 'companyInfos'">
+      <accSwift-company-info></accSwift-company-info>
+    </div>
 
-      <div *ngIf="nodeName === 'sales'">
-        <accSwift-sales></accSwift-sales>
-      </div>
+    <div *ngIf="nodeName === 'sales'">
+      <accSwift-sales></accSwift-sales>
+    </div>
 
-      <div *ngIf="nodeName === 'accounts'">
-        <accSwift-accounts></accSwift-accounts>
-      </div>
+    <div *ngIf="nodeName === 'accounts'">
+      <accSwift-accounts></accSwift-accounts>
+    </div>
 
-      <div *ngIf="nodeName === 'settings'">
-        <accSwift-settings></accSwift-settings>
-      </div>
-    </form>
+    <div *ngIf="nodeName === 'settings'">
+      <accSwift-settings></accSwift-settings>
+    </div>
   </div>
 </div>

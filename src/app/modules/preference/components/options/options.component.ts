@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: "accSwift-options",
@@ -14,12 +15,18 @@ export class OptionsComponent implements OnInit {
     this.buildOptionForm();
   }
 
+  public sampleFormat = [
+    { id: 1, format: "yyyy-MM-dd" },
+    { id: 2, format: "dd-MM-yyyy" },
+    { id: 3, format: "MM-dd-yyyy" }
+  ];
+
   buildOptionForm() {
     this.optionForm = this._fb.group({
       date: [""],
-      dateFormat: [""],
+      dateFormat: [null],
       sample: [""],
-      decimalPlace: [""],
+      decimalPlace: [null],
       comma: [""],
       decimal: [""],
       mailServer: [""],
@@ -27,5 +34,12 @@ export class OptionsComponent implements OnInit {
       email: [""],
       password: [""]
     });
+  }
+
+  dateFormatChange(value): void {
+    console.log(value);
+    this.optionForm
+      .get("sample")
+      .setValue(formatDate("2020-02-20", value, "en_US"));
   }
 }

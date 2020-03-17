@@ -1,57 +1,59 @@
 <h3>Company Informations</h3>
-<fieldset>
-  <legend>Add the Company Informations:</legend>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Company Name</label>
-          <input class="form-control" type="text" />
+<form [formGroup]="companyForm">
+  <fieldset>
+    <legend>Add the Company Informations:</legend>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Company Name</label>
+            <input class="form-control" type="text" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Company Address</label>
+            <input class="form-control" type="text" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Company City</label>
+            <input class="form-control" type="text" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Company PAN</label>
+            <input class="form-control" type="number" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Company Phone</label>
+            <input class="form-control" type="tel" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Company Slogan</label>
+            <input class="form-control" type="text" />
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Company Address</label>
-          <input class="form-control" type="text" />
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Company City</label>
-          <input class="form-control" type="text" />
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Company PAN</label>
-          <input class="form-control" type="number" />
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Company Phone</label>
-          <input class="form-control" type="tel" />
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Company Slogan</label>
-          <input class="form-control" type="text" />
-        </div>
-      </div>
-    </div>
-  </div>
-</fieldset>
+  </fieldset>
+</form>
 <div class="row">
   <div class="col-md-12">
     <button type="button" class="btn btn-danger  pull-right ml-3">
