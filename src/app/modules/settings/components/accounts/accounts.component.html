@@ -1,0 +1,302 @@
+<h3>Accounts</h3>
+<form [formGroup]="accountsForm" novalidate>
+  <fieldset>
+    <legend>Cash Account</legend>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Default Cash Account</label>
+          <select class="form-control" formControlName="defaultCash">
+            <option [ngValue]="null">Choose option...</option>
+            <option>Cash in Hand</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Negative Cash</label>
+          <div class="row mt-3">
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="negativeCash"
+                      value="allow"
+                      formControlName="negativeCash"
+                    />
+                    Allow
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="negativeCash"
+                      value="warn"
+                      formControlName="negativeCash"
+                    />
+                    Warn
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="negativeCash"
+                      value="deny"
+                      formControlName="negativeCash"
+                    />
+                    Deny
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Bank Account</legend>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Default Bank Account</label>
+          <select class="form-control" formControlName="defaultBank">
+            <option [ngValue]="null">Choose option...</option>
+            <option>Cash in Hand</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Negative Bank</label>
+          <div class="row mt-3">
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="negativeBank"
+                      value="allow"
+                      formControlName="negativeBank"
+                    />
+                    Allow
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="negativeBank"
+                      value="warn"
+                      formControlName="negativeBank"
+                    />
+                    Warn
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="negativeBank"
+                      value="deny"
+                      formControlName="negativeBank"
+                    />
+                    Deny
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Credit Limits</legend>
+    <div class="row">
+      <div class="col-md-5">
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" formControlName="creditLimit" />
+              Enable Credit Limit on Creditors
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="creditors"
+                value="warn"
+                formControlName="creditors"
+              />
+              Warn Only
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="creditors"
+                value="deny"
+                formControlName="creditors"
+              />
+              Deny
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Budget Limits</legend>
+    <div class="row">
+      <div class="col-md-3">
+        <label>Budget Limits:</label>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="budgetLimit"
+                value="allow"
+                formControlName="budgetLimit"
+              />
+              Allow
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="budgetLimit"
+                value="warn"
+                formControlName="budgetLimit"
+              />
+              Warn Only
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="budgetLimit"
+                formControlName="budgetLimit"
+                value="deny"
+              />
+              Deny
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Transactions</legend>
+    <div class="row">
+      <div class="col-md-3">
+        <label>Post Date Transactions:</label>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="transaction"
+                formControlName="transaction"
+                value="allow"
+              />
+              Allow
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="transaction"
+                formControlName="transaction"
+                value="warn"
+              />
+              Warn Only
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="transaction"
+                formControlName="transaction"
+                value="deny"
+              />
+              Deny
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-danger  pull-right ml-3">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-primary pull-right ml-3">
+        Apply
+      </button>
+      <button type="button" class="btn btn-success pull-right ">
+        Ok
+      </button>
+    </div>
+  </div>
+</form>

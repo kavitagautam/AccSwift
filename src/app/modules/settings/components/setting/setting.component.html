@@ -1,0 +1,101 @@
+<h3>Settings</h3>
+<form [formGroup]="settingsForm" novalidate>
+  <div class="col-md-6">
+    <fieldset>
+      <legend>Purchase Account</legend>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Default Purchase Account</label>
+            <select class="form-control" formControlName="purchase">
+              <option [ngValue]="null">Choose option...</option>
+              <option>Purchase A/C</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <div class="col-md-6">
+    <fieldset>
+      <legend>Sales Receipt</legend>
+
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Sales Report Preference: </label>
+          <select class="form-control" formControlName="salesReceipt">
+            <option [ngValue]="null">Choose option....</option>
+            <option>General</option>
+          </select>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <div class="col-md-12">
+    <fieldset>
+      <legend>Sales Account</legend>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Default Sales Account</label>
+            <select class="form-control" formControlName="salesAccount">
+              <option [ngValue]="null">Choose option...</option>
+              <option>Sales A/C</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Negative Stock</label>
+            <div class="row mt-3">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="negativeStock" value="allow" />
+                      Allow
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="negativeStock" value="warn" />
+                      Warn
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="negativeStock" value="deny" />
+                      Deny
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</form>
+
+<div class="row ">
+  <div class="col-md-12">
+    <button type="button" class="btn btn-success  ">
+      Ok
+    </button>
+    <button type="button" class="btn btn-primary  ml-3">
+      Apply
+    </button>
+    <button type="button" class="btn btn-danger   ml-3">
+      Cancel
+    </button>
+  </div>
+</div>

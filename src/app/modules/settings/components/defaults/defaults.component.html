@@ -1,0 +1,92 @@
+<h3>Defaults</h3>
+<form [formGroup]="defaultsForm">
+  <fieldset>
+    <legend>Email Settings</legend>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Mail Server</label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="mailServer"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Server Port</label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="serverPort"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>User Email</label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="userEmail"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Password</label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="password"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Prepared By</label>
+            <input class="form-control" formControlName="prepared" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Checked By</label>
+            <input class="form-control" formControlName="checked" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Approved By</label>
+            <input class="form-control" formControlName="approved" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label> Authorised Capital</label>
+            <input class="form-control" formControlName="capital" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label> Issued Capital</label>
+            <input class="form-control" formControlName="issuedCapital" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</form>

@@ -1,0 +1,228 @@
+<body>
+  <h3>Options</h3>
+  <form [formGroup]="settingsForm" novalidate>
+    <fieldset>
+      <legend>Date</legend>
+      <div class="row">
+        <div class="col-md-2">
+          <label>Default Date: </label>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input
+                  type="radio"
+                  name="date"
+                  formControlName="date"
+                  value="english"
+                />
+                English
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input
+                  type="radio"
+                  name="date"
+                  formControlName="date"
+                  value="nepali"
+                />
+                Nepali
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Format</label>
+            <select
+              class="form-control"
+              formControlName="format"
+              (change)="changeFormat(settingsForm.get('format').value)"
+            >
+              <option *ngFor="let date of dateFormat">{{ date.format }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Sample</label>
+            <input class="form-control" formControlName="sample" />
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Decimal Preference</legend>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Number of Decimal Places</label>
+              <select class="form-control" formControlName="decimalPlace">
+                <option>2</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="flex-item">
+            <div class="col-md-12">
+              <div class="form-group">
+                <div class="checkbox ">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="comma"
+                      formControlName="comma"
+                    />
+                    <label>Comma Seperated numbers</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="flex-item">
+            <div class="col-md-12">
+              <div class="form-group">
+                <div class="radio ">
+                  <label>
+                    <input
+                      type="radio"
+                      name="decimal"
+                      value="number"
+                      formControlName="decimal"
+                    />
+                    <label>(422.30) </label>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="flex-item">
+            <div class="col-md-12">
+              <div class="form-group">
+                <div class="radio ">
+                  <label>
+                    <input
+                      type="radio"
+                      name="decimal"
+                      value="numbers"
+                      formControlName="decimal"
+                    />
+                    <label>(-422.30)</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Currency</legend>
+      <div class="row">
+        <div class="col-md-3">
+          <label>Default Language: </label>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input
+                  type="radio"
+                  name="defaultLanguage"
+                  value="english"
+                  formControlName="defaultLanguage"
+                />
+                English
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input
+                  type="radio"
+                  name="defaultLanguage"
+                  value="nepali"
+                  formControlName="defaultLanguage"
+                />
+                Nepali
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" formControlName="multiCurrency" />
+                Multi Currency
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" formControlName="VAT" />
+                VAT Applicable
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Previous Year P/L</legend>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="amount"
+            />
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <div class="row">
+      <div class="col-md-12">
+        <button type="button" class="btn btn-danger  pull-right ml-3">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary pull-right ml-3">
+          Apply
+        </button>
+        <button type="button" class="btn btn-success pull-right ">
+          Ok
+        </button>
+      </div>
+    </div>
+  </form>
+</body>
