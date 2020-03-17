@@ -14,6 +14,11 @@ import { environment } from "@env/environment";
   providedIn: "root"
 })
 export class BankPaymentService {
+  _api_URL = environment.baseAPI;
+  projectList: ProjectList;
+  seriesList: SeriesList;
+  bankAccountList;
+
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
@@ -23,8 +28,6 @@ export class BankPaymentService {
     this.getBankPaymentAccounts();
   }
 
-  projectList: ProjectList;
-  _api_URL = environment.baseAPI;
   getProjectList(): void {
     this.httpService
       .get(`${this._api_URL}project`)
@@ -33,7 +36,6 @@ export class BankPaymentService {
       });
   }
 
-  seriesList: SeriesList;
   getSeriesList(): void {
     const params = new HttpParams().set("VoucherType", "BANK_PMNT"); // Series List for Bank Payment Voucher Type
     this.httpService
@@ -42,7 +44,6 @@ export class BankPaymentService {
         this.seriesList = res;
       });
   }
-  bankAccountList;
   getBankPaymentAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/BankAccounts`)

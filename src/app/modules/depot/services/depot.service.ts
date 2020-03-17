@@ -20,37 +20,12 @@ export class DepotService {
     return this.httpService.post(`${this.api_URL}Depot/navigate`, body);
   }
 
-  saveDepot(value): Observable<any> {
-    const obj = {
-      DepotName: value.depot,
-      City: value.city,
-      Telephone: value.telephone,
-      ContactPerson: value.contact,
-      LicenceNo: value.license,
-      DepotAddress: value.address,
-      PostalCode: value.postalCode,
-      Mobile: value.mobile,
-      RegNo: value.regNo,
-      Remarks: value.remarks
-    };
-    return this.httpService.post(`${this.api_URL}Depot`, obj);
+  saveDepot(body): Observable<any> {
+    return this.httpService.post(`${this.api_URL}Depot`, body);
   }
 
-  updateDepot(value): Observable<any> {
-    const obj = {
-      ID: value.depotId,
-      DepotName: value.depot,
-      City: value.city,
-      Telephone: value.telephone,
-      ContactPerson: value.contact,
-      LicenceNo: value.license,
-      DepotAddress: value.address,
-      PostalCode: value.postalCode,
-      Mobile: value.mobile,
-      RegNo: value.regNo,
-      Remarks: value.remarks
-    };
-    return this.httpService.put(`${this.api_URL}Depot`, obj);
+  updateDepot(body): Observable<any> {
+    return this.httpService.put(`${this.api_URL}Depot`, body);
   }
 
   deleteDepotById(id): Observable<any> {

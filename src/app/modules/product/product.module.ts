@@ -14,8 +14,8 @@ import { SharedModule } from "@app/shared/shared.module";
 import { ViewProductComponent } from "./components/product/view-product/view-product.component";
 import { AddProductComponent } from "./components/product/add-product/add-product.component";
 import { EditProductComponent } from "./components/product/edit-product/edit-product.component";
-import { ProductGroupModule } from "../product-group/product-group.module";
 import { LandingProductComponent } from "./landing-product.component";
+import { ProductGroupComponent } from "./components/product-group/product-group.component";
 
 @NgModule({
   declarations: [
@@ -23,6 +23,7 @@ import { LandingProductComponent } from "./landing-product.component";
     EditProductComponent,
     LandingProductComponent,
     ProductComponent,
+    ProductGroupComponent,
     ViewProductComponent
   ],
   imports: [
@@ -30,7 +31,6 @@ import { LandingProductComponent } from "./landing-product.component";
     FormsModule,
     ReactiveFormsModule,
     ProductRoutingModule,
-    ProductGroupModule,
     SharedModule,
     GridModule,
     PopupModule,

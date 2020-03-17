@@ -1,13 +1,12 @@
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { UnitMaintenanceService } from "../../services/unit-maintenance.service";
+import { UnitMaintenanceService } from "../services/unit-maintenance.service";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor,
-  State
+  SortDescriptor
 } from "@progress/kendo-data-query";
-import { Units } from "../../models/unit-maintenance.model";
+import { Units } from "../models/unit-maintenance.model";
 import { Router } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
@@ -81,6 +80,8 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   searchForm(): void {
     this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
     if (this.unitForm.invalid) return;
     for (const key in this.unitForm.value) {
       if (this.unitForm.value[key]) {
@@ -105,7 +106,6 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   public filterChange(filter: CompositeFilterDescriptor): void {
     this.unitNameSearchKey = "";
-    this.filter = filter; // To push each filter object to the filter list
     if (filter.filters.length > 0) {
       const filterArray = [];
       filter.filters.forEach(function(item) {
@@ -202,7 +202,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.buildUnitMaintenanceForm();
     this.unitForm.reset();
     this.submitButton = "Save ";
-    this.modalTitle = "Add New Unit";
+    this.modalTitle = "New Unit";
     this.modalRef = this.modalService.show(template, this.config);
   }
 
@@ -211,7 +211,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.editMode = true;
     this.buildUnitMaintenanceForm();
     this.submitButton = "Save ";
-    this.modalTitle = "Edit Unit  " + dataItem.UnitName;
+    this.modalTitle = "Edit " + dataItem.UnitName;
     dataItem["id"] = dataItem.ID;
     this.unitsId = dataItem.ID;
     this.unitForm.patchValue(dataItem);
@@ -236,15 +236,13 @@ export class ListUnitMaintenanceComponent implements OnInit {
     };
     this.unitService.updateUnit(obj).subscribe(
       response => {
-        this.router.navigate(["/unit-maintenance"]);
+        this.getUnits();
       },
       error => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
-        this.unitForm.reset();
         this.modalRef.hide();
-        this.getUnits();
         this.toastr.success("Units edited successfully");
       }
     );
@@ -259,7 +257,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
     this.unitService.saveUnit(obj).subscribe(
       response => {
-        this.router.navigate(["/unit-maintenance"]);
+        this.getUnits();
       },
       error => {
         this.toastr.error(JSON.stringify(error.error.Message));
@@ -269,6 +267,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
         this.toastr.success("Units added successfully");
       }
     );
+    this.getUnits();
   }
 
   close(): void {
