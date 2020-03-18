@@ -50,7 +50,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   };
 
   constructor(
-    public _fb: FormBuilder,
+    private _fb: FormBuilder,
     public ledgerService: LedgerService,
     private router: Router,
     private toastr: ToastrService,
@@ -80,6 +80,11 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     }
   }
 
+  public balanceType: Array<{ type: string; id: number }> = [
+    { type: "DEBIT", id: 1 },
+    { type: "CREDIT", id: 2 }
+  ];
+
   getLedgerDetails(): void {
     this.ledgerService
       .getLedgerDetails(this.selectedLedgerId)
@@ -99,7 +104,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         this.ledgerDetails ? this.ledgerDetails.Name : "",
         Validators.required
       ],
-      accountHead: [null],
+      groupID: [this.ledgerDetails ? this.ledgerDetails.GroupID : null],
       remarks: [this.ledgerDetails ? this.ledgerDetails.Remarks : ""],
       currency: [this.ledgerDetails ? this.ledgerDetails.Currency : ""],
       date: [this.ledgerDetails ? new Date() : ""],
@@ -113,6 +118,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   addOpeningBalanceFormGroup(): FormGroup {
     return this._fb.group({
+      ID: [""],
       accountClassId: [
         this.ledgerService.accountClass
           ? this.ledgerService.accountClass[0].ID
@@ -126,28 +132,25 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
           disabled: true
         }
       ],
-      openingBalance: [""],
-      balanceType: [""]
+      openingBalance: [
+        this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBal : ""
+      ],
+      balanceType: [
+        this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBalDrCr : ""
+      ]
     });
   }
 
   addPreviousYearBalanceFormGroup(): FormGroup {
     return this._fb.group({
-      accountClassId: [
-        this.ledgerService.accountClass
-          ? this.ledgerService.accountClass[0].ID
-          : null
+      PreviousYearBalanceDebitCredit: [
+        this.ledgerDetails
+          ? this.ledgerDetails.PreviousYearBalanceDebitCredit
+          : ""
       ],
-      accountClassName: [
-        {
-          value: this.ledgerService.accountClass
-            ? this.ledgerService.accountClass[0].Name
-            : "",
-          disabled: true
-        }
-      ],
-      openingBalance: [""],
-      balanceType: [""]
+      PreviousYearBalance: [
+        this.ledgerDetails ? this.ledgerDetails.PreviousYearBalance : ""
+      ]
     });
   }
 
@@ -161,54 +164,114 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   openModal(index: number): void {}
 
-  public addHandler({ sender }) {
-    this.closeEditor(sender);
-    this.submitted = true;
-    this.rowSubmitted = true;
-    if (this.accoutLedgerForm.get("openingBalanceList").invalid) return;
-    (<FormArray>this.accoutLedgerForm.get("openingBalanceList")).push(
-      this.addOpeningBalanceFormGroup()
+  save(): void {
+    const openingBalanceArray = <FormArray>(
+      this.accoutLedgerForm.get("openingBalanceList")
     );
-    this.rowSubmitted = false;
-    this.submitted = false;
-  }
-
-  public editHandler({ sender, rowIndex, dataItem }) {
-    this.closeEditor(sender);
-    this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.accoutLedgerForm.get("openingBalanceList"));
-  }
-
-  public cancelHandler({ sender, rowIndex }) {
-    this.closeEditor(sender, rowIndex);
-  }
-
-  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
-    const product = formGroup.value;
-    sender.closeRow(rowIndex);
-  }
-
-  public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.accoutLedgerForm.get("openingBalanceList")).removeAt(
-      rowIndex
+    const previousYearBalanceArray = <FormArray>(
+      this.accoutLedgerForm.get("previousYearBalanceList")
     );
-  }
-  private closeEditor(grid, rowIndex = 1) {
-    grid.closeRow(rowIndex);
-    this.editedRowIndex = undefined;
-  }
+    const moreDetails = <FormArray>this.accoutLedgerForm.get("moreDetails");
 
-  public saveAccountLedger(): void {
-    if (this.accoutLedgerForm.valid) {
-      this.router.navigate(["/ledger"]);
+    if (this.addMode) {
+      if (this.accoutLedgerForm.invalid) return;
+
+      const obj = {
+        LedgerCode: this.accoutLedgerForm.get("ledgerCode").value,
+        Name: this.accoutLedgerForm.get("ledgerName").value,
+        PreviousYearBalance: previousYearBalanceArray.controls[0].get(
+          "PreviousYearBalance"
+        ).value,
+        PreviousYearBalanceDebitCredit: previousYearBalanceArray.controls[0].get(
+          "PreviousYearBalanceDebitCredit"
+        ).value,
+        DrCr: "DR",
+        GroupID: this.accoutLedgerForm.get("groupID").value,
+        OpCCYID: 1,
+        PersonName: moreDetails ? moreDetails.get("PersonName") : "",
+        Address1: moreDetails ? moreDetails.get("Address1") : "",
+        Address2: moreDetails ? moreDetails.get("Address2") : "",
+        City: moreDetails ? moreDetails.get("City") : "",
+        Phone: moreDetails ? moreDetails.get("Phone") : "",
+        Email: moreDetails ? moreDetails.get("Email") : "",
+        Company: moreDetails ? moreDetails.get("Company") : "",
+        Website: moreDetails ? moreDetails.get("Website") : "",
+        VatPanNo: moreDetails ? moreDetails.get("VatPanNo") : "",
+        CreditLimit: moreDetails ? moreDetails.get("CreditLimit") : 0,
+        IsActive: moreDetails ? moreDetails.get("IsActive") : false,
+        OpeningBalance: {
+          ID: openingBalanceArray.controls[0].get("ID").value,
+          AccClassID: openingBalanceArray.controls[0].get("accountClassId")
+            .value,
+          OpenBal: openingBalanceArray.controls[0].get("openingBalance").value,
+          OpenBalDrCr: openingBalanceArray.controls[0].get("balanceType").value
+        },
+        Remarks: this.accoutLedgerForm.get("remarks").value
+      };
+      this.ledgerService.addLedgerAccount(obj).subscribe(
+        response => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        },
+        error => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Ledger Account added successfully");
+        }
+      );
     } else {
+      const obj = {
+        ID: this.ledgerDetails.ID,
+        LedgerCode: this.accoutLedgerForm.get("ledgerCode").value,
+        Name: this.accoutLedgerForm.get("ledgerName").value,
+        PreviousYearBalance: previousYearBalanceArray.controls[0].get(
+          "PreviousYearBalance"
+        ).value,
+        PreviousYearBalanceDebitCredit: previousYearBalanceArray.controls[0].get(
+          "PreviousYearBalanceDebitCredit"
+        ).value,
+        DrCr: "DR",
+        GroupID: 1,
+        OpCCYID: 1,
+        PersonName: moreDetails ? moreDetails.get("PersonName") : "",
+        Address1: moreDetails ? moreDetails.get("Address1") : "",
+        Address2: moreDetails ? moreDetails.get("Address2") : "",
+        City: moreDetails ? moreDetails.get("City") : "",
+        Phone: moreDetails ? moreDetails.get("Phone") : "",
+        Email: moreDetails ? moreDetails.get("Email") : "",
+        Company: moreDetails ? moreDetails.get("Company") : "",
+        Website: moreDetails ? moreDetails.get("Website") : "",
+        VatPanNo: moreDetails ? moreDetails.get("VatPanNo") : "",
+        CreditLimit: moreDetails ? moreDetails.get("CreditLimit") : 0,
+        IsActive: moreDetails ? moreDetails.get("IsActive") : false,
+        OpeningBalance: {
+          ID: openingBalanceArray.controls[0].get("ID").value,
+          AccClassID: openingBalanceArray.controls[0].get("accountClassId")
+            .value,
+          OpenBal: openingBalanceArray.controls[0].get("openingBalance").value,
+          OpenBalDrCr: openingBalanceArray.controls[0].get("balanceType").value
+        },
+        Remarks: this.accoutLedgerForm.get("remarks").value
+      };
+      this.ledgerService.updateLedgerAccount(obj).subscribe(
+        response => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        },
+        error => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Ledger Account edited successfully");
+        }
+      );
     }
   }
 
-  public cancelAccountLedger(): void {
-    this.accoutLedgerForm.reset();
-    this.router.navigate(["/ledger"]);
-  }
+  cancel(event): void {}
 
   addAccountLedger(): void {
     this.ledgerDetails = null;
@@ -223,7 +286,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       ConfirmationDialogComponent,
       this.config
     );
-    this.modalRef.content.data = "product";
+    this.modalRef.content.data = "ledger Account";
     this.modalRef.content.action = "delete";
     this.modalRef.content.onClose.subscribe(confirm => {
       if (confirm) {

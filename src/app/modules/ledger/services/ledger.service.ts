@@ -57,6 +57,14 @@ export class LedgerService {
     );
   }
 
+  addLedgerAccount(value): Observable<any> {
+    return this.httpService.post(`${this._api_URL}Ledger`, value);
+  }
+
+  updateLedgerAccount(value): Observable<any> {
+    return this.httpService.put(`${this._api_URL}Ledger`, value);
+  }
+
   getLedgerDetails(ledgerId): Observable<LedgerDetailsModel> {
     return this.httpService.get(`${this._api_URL}Ledger/${ledgerId}`);
   }

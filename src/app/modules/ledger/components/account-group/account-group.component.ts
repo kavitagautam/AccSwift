@@ -38,7 +38,6 @@ export class AccountGroupComponent implements OnInit, OnChanges {
   constructor(
     public _fb: FormBuilder,
     public ledgerService: LedgerService,
-    private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService
   ) {}
@@ -71,6 +70,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
       .getLedgerGroupDetails(this.selectedLedgerGroupId)
       .subscribe(res => {
         this.ledgerGroupDetails = res.Entity;
+
         this.buildAccountGroupForm();
       });
   }

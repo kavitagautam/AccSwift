@@ -13,6 +13,7 @@ import {
   Validators,
   NG_VALUE_ACCESSOR
 } from "@angular/forms";
+import { LedgerDetails } from "../../models/ledger.models";
 
 @Component({
   selector: "accSwift-account-ledger-more-details",
@@ -30,7 +31,7 @@ export class AccountLedgerMoreDetailsComponent
   implements OnInit, ControlValueAccessor {
   @Output() formReady = new EventEmitter<FormGroup>();
   ledgerMoreDetailsForm: FormGroup;
-
+  @Input("ledgerDetails") ledgerDetails: LedgerDetails;
   constructor(private _fb: FormBuilder) {}
 
   ngOnInit() {
@@ -39,16 +40,16 @@ export class AccountLedgerMoreDetailsComponent
 
   buildLedgerMoreDetailsForm(): void {
     this.ledgerMoreDetailsForm = this._fb.group({
-      contactPerson: [""],
-      address1: [""],
-      address2: [""],
-      city: ["", Validators.required],
-      telephone: ["", Validators.required],
-      email: [""],
-      company: [""],
-      webSite: [""],
-      VATPANNo: [""],
-      autoCalculate: [false]
+      contactPerson: [this.ledgerDetails ? this.ledgerDetails.PersonName : ""],
+      address1: [this.ledgerDetails ? this.ledgerDetails.Address1 : ""],
+      address2: [this.ledgerDetails ? this.ledgerDetails.Address2 : ""],
+      city: [this.ledgerDetails ? this.ledgerDetails.City : ""],
+      telephone: [this.ledgerDetails ? this.ledgerDetails.Phone : ""],
+      email: [this.ledgerDetails ? this.ledgerDetails.Email : ""],
+      company: [this.ledgerDetails ? this.ledgerDetails.Company : ""],
+      webSite: [this.ledgerDetails ? this.ledgerDetails.Website : ""],
+      VATPANNo: [this.ledgerDetails ? this.ledgerDetails.VatPanNo : ""],
+      autoCalculate: [this.ledgerDetails ? this.ledgerDetails.IsActive : false]
     });
   }
 
@@ -71,10 +72,4 @@ export class AccountLedgerMoreDetailsComponent
       ? this.ledgerMoreDetailsForm.disable()
       : this.ledgerMoreDetailsForm.enable();
   }
-
-  save(): void {
-    //this.formReady.emit(this.ledgerMoreDetailsForm);
-  }
-
-  cancel(event): void {}
 }

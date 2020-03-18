@@ -38,6 +38,11 @@
               id="parentGroup"
               formControlName="parentGroupId"
               accSwiftFormValidator
+              [attr.disabled]="
+                ledgerGroupDetails && ledgerGroupDetails.IsBuiltIn
+                  ? true
+                  : false
+              "
             >
               <option [ngValue]="null">Choose Option....</option>
               <option
