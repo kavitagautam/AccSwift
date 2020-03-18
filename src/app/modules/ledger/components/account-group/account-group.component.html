@@ -38,12 +38,13 @@
               id="parentGroup"
               formControlName="parentGroupId"
               accSwiftFormValidator
-              [attr.disabled]="
-                ledgerGroupDetails && ledgerGroupDetails.IsBuiltIn
+            >
+              <!-- 
+             [attr.disabled]="
+                ledgerGroupDetails && ledgerGroupDetails.IsBuiltIn && editMode
                   ? true
                   : false
-              "
-            >
+              " -->
               <option [ngValue]="null">Choose Option....</option>
               <option
                 *ngFor="let ledgerGroup of ledgerService.ledgerGroupLists"
