@@ -1,3 +1,5 @@
+import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
@@ -13,15 +15,26 @@ export class AddCashPaymentComponent implements OnInit {
   addCashPaymentForm: FormGroup;
   cashPaymentDetail: CashPaymentMaster;
   allCash;
+
   submitted: boolean;
   rowSubmitted: boolean;
   date: Date = new Date();
   editedRowIndex: any;
 
+  modalRef: BsModalRef;
+  //  modal config to unhide modal when clicked outside
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+    centered: true,
+    class: "modal-lg"
+  };
+
   constructor(
     public cashPaymentService: CashPaymentService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private modalService: BsModalService
   ) {}
 
   ngOnInit() {
@@ -68,6 +81,31 @@ export class AddCashPaymentComponent implements OnInit {
   public cancel(): void {
     this.addCashPaymentForm.reset();
     this.router.navigate(["/cash-payment"]);
+  }
+
+  openModal(index: number): void {
+    this.modalRef = this.modalService.show(
+      LedgerModelPopupComponent,
+      this.config
+    );
+    this.modalRef.content = index;
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe(data => {
+      if (data) {
+        const cashPaymentFormArray = <FormArray>(
+          this.addCashPaymentForm.get("cashPaymentEntryList")
+        );
+        cashPaymentFormArray.controls[index]
+          .get("currentBalance")
+          .setValue(data.ActualBalance);
+        cashPaymentFormArray.controls[index]
+          .get("particularsOraccountingHead")
+          .setValue(data.LedgerName);
+      }
+    });
+    this.modalRef.content.onClose.subscribe(data => {
+      //Do after Close the Modal
+    });
   }
 
   public addHandler({ sender }) {

@@ -33,11 +33,10 @@ export class EditSalesInvoiceComponent implements OnInit {
 
   buildEditInvoiceForm() {
     this.editInvoiceForm = this._fb.group({
-      seriesId: [this.salesDetails ? this.salesDetails.SeriesID : null],
-      cashPartyACId: [
-        this.salesDetails ? this.salesDetails.CashPartyLedgerID : null,
-        [Validators.required]
-      ],
+      seriesId: this.salesDetails ? this.salesDetails.SeriesID : null,
+      cashPartyACId: this.salesDetails
+        ? [this.salesDetails.CashPartyLedgerID, [Validators.required]]
+        : null,
       salesACId: [
         this.salesDetails ? this.salesDetails.SalesLedgerID : null,
         [Validators.required]
@@ -45,10 +44,9 @@ export class EditSalesInvoiceComponent implements OnInit {
       depotLocationId: [this.salesDetails ? this.salesDetails.DepotID : null],
       projectId: [this.salesDetails ? this.salesDetails.ProjectID : null],
       date: [this.salesDetails ? new Date(this.salesDetails.CreatedDate) : ""],
-      orderNo: [
-        this.salesDetails ? this.salesDetails.OrderNo : "",
-        [Validators.required]
-      ],
+      orderNo: this.salesDetails
+        ? this.salesDetails.OrderNo
+        : ["", [Validators.required]],
       invoiceEntryList: this._fb.array([this.addInvoiceEntryList()])
     });
   }

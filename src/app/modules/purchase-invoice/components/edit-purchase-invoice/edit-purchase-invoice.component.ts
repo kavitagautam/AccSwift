@@ -20,7 +20,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
   rowSubmitted: boolean;
   editedRowIndex: any;
   constructor(
-    private fb: FormBuilder,
+    private _fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     public purchaseService: PurchaseInvoiceService
@@ -31,13 +31,12 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     this.getIdFromRoute();
   }
 
-  buildEditInvoiceForm() {
-    this.editPurchaseForm = this.fb.group({
-      seriesId: [this.purchaseDetails ? this.purchaseDetails.SeriesID : null],
-      cashPartyACId: [
-        this.purchaseDetails ? this.purchaseDetails.CashPartyLedgerID : null,
-        [Validators.required]
-      ],
+  buildEditInvoiceForm(): void {
+    this.editPurchaseForm = this._fb.group({
+      seriesId: this.purchaseDetails ? this.purchaseDetails.SeriesID : null,
+      cashPartyACId: this.purchaseDetails
+        ? [this.purchaseDetails.CashPartyLedgerID, [Validators.required]]
+        : null,
       purchaseAcId: [
         this.purchaseDetails ? this.purchaseDetails.PurchLedgerID : null
       ],
@@ -61,14 +60,14 @@ export class EditPurchaseInvoiceComponent implements OnInit {
         [Validators.required]
       ],
       remarks: [this.purchaseDetails ? this.purchaseDetails.Remarks : ""],
-      purchaseInvoiceEntryList: this.fb.array([
+      purchaseInvoiceEntryList: this._fb.array([
         this.addPurchaseInvoiceEntryList()
-      ]) // Form Array..
+      ])
     });
   }
 
   addPurchaseInvoiceEntryList(): FormGroup {
-    return this.fb.group({
+    return this._fb.group({
       code: [" "],
       productName: [" "],
       quantity: [" "],
@@ -87,7 +86,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     });
   }
 
-  getIdFromRoute() {
+  getIdFromRoute(): void {
     this.route.paramMap.subscribe(params => {
       const param = +params.get("id");
       if (param) {
@@ -114,13 +113,12 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     return <FormArray>this.editPurchaseForm.get("purchaseInvoiceEntryList");
   }
 
-  private closeEditor(grid, rowIndex = 1) {
+  private closeEditor(grid, rowIndex = 1): void {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
-    // this.FormGroup = undefined
   }
 
-  public addHandler({ sender }) {
+  public addHandler({ sender }): void {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
@@ -135,7 +133,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     this.rowSubmitted = false;
   }
 
-  public editHandler({ sender, rowIndex, dataItem }) {
+  public editHandler({ sender, rowIndex, dataItem }): void {
     this.closeEditor(sender);
     const purchaseInvoiceEntry = <FormArray>(
       this.editPurchaseForm.get("purchaseInvoiceEntryList")
@@ -184,7 +182,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     );
   }
 
-  public cancelHandler({ sender, rowIndex }) {
+  public cancelHandler({ sender, rowIndex }): void {
     this.closeEditor(sender, rowIndex);
   }
 

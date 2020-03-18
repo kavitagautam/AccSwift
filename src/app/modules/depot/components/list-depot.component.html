@@ -191,6 +191,7 @@
                 formControlName="DepotName"
                 id="depotName"
                 name="Depot name"
+                accSwiftFormValidator
               />
             </div>
           </div>
@@ -299,7 +300,13 @@
       </div>
     </div>
     <div class="modal-footer ">
-      <button class="btn btn-primary" type="submit" (click)="onSubmitDepot()">
+      <button
+        class="btn btn-primary"
+        type="submit"
+        (click)="onSubmitDepot()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="depotForm"
+      >
         {{ submitButton }}
       </button>
       <button class="btn btn-secondary ml-2" type="button" (click)="onCancel()">

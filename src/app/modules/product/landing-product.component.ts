@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { ProductService } from "./services/product.service";
+
 const is = (fileName: string, ext: string) =>
   new RegExp(`.${ext}\$`).test(fileName);
 
@@ -78,7 +79,7 @@ export class LandingProductComponent implements OnInit {
     );
   }
 
-  public onTabSelect(e) {
+  public onTabSelect(e): void {
     if (e.index == 1) {
       this.loadProductListView();
     }

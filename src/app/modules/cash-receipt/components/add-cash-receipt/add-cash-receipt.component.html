@@ -10,9 +10,8 @@
               id="seriesId"
               formControlName="seriesId"
             >
-              <option [ngValue]="null">Choose option.... </option
-              ><option> </option
-              ><option
+              <option [ngValue]="null">Choose option.... </option>
+              <option
                 *ngFor="let series of cashReceiptService.seriesLists"
                 [ngValue]="series.ID"
               >

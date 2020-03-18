@@ -61,7 +61,6 @@ export class CompoundUnitComponent implements OnInit {
     private _fb: FormBuilder,
     private modalService: BsModalService,
     public compoundUnitService: CompoundUnitService,
-    private router: Router,
     private toastr: ToastrService
   ) {}
 
@@ -72,6 +71,7 @@ export class CompoundUnitComponent implements OnInit {
 
   buildCompoundUnitForm(): void {
     this.compoundUnitForm = this._fb.group({
+      firstUnitValue: [1],
       FirstUnitID: [this.editableForm ? ["", [Validators.required]] : [null]],
       SecondUnitID: [this.editableForm ? ["", [Validators.required]] : [null]],
       RelationValue: [""],
@@ -139,9 +139,9 @@ export class CompoundUnitComponent implements OnInit {
       const filterArray = [];
       filter.filters.forEach(function(item) {
         filterArray.push({
-          Field: item["field"],
-          Operator: item["operator"],
-          Value: item["value"]
+          Field: item.field,
+          Operator: item.operator,
+          Value: item.value
         });
       });
       this.filterList = filterArray;
@@ -198,7 +198,7 @@ export class CompoundUnitComponent implements OnInit {
   // Modal part started here
   openAddModal(template: TemplateRef<any>): void {
     this.editableForm = true;
-    this.compoundUnitForm.reset();
+    this.buildCompoundUnitForm();
     this.modalTitle = "New Unit";
     this.submitButton = "Save";
     this.modalRef = this.modalService.show(template, this.config);
@@ -207,6 +207,7 @@ export class CompoundUnitComponent implements OnInit {
   openEditModal(template: TemplateRef<any>, dataItem): void {
     this.editMode = true;
     this.editableForm = true;
+    this.buildCompoundUnitForm();
     this.modalTitle = "Edit " + dataItem.FirstUnitName;
     this.submitButton = "Save";
     this.compoundUnitId = dataItem.ID;
@@ -244,7 +245,7 @@ export class CompoundUnitComponent implements OnInit {
       },
       () => {
         this.modalRef.hide();
-        this.compoundUnitForm.reset();
+        this.buildCompoundUnitForm();
         this.toastr.success("Compound Unit edited successfully");
       }
     );

@@ -204,7 +204,7 @@ export class ListDepotComponent implements OnInit {
 
   addDepotModal(template: TemplateRef<any>): void {
     this.editableMode = true;
-    this.depotForm.reset();
+    this.buildDepotForm();
     this.submitButton = "Save ";
     this.modalTitle = "New Depot ";
     this.modalRef = this.modalService.show(template, this.config);
@@ -213,9 +213,9 @@ export class ListDepotComponent implements OnInit {
   editDepotModal(template, dataItem): void {
     this.editMode = true;
     this.editableMode = true;
+    this.buildDepotForm(); // initializing the form to make the validation work
     this.modalTitle = "Edit Depot " + dataItem.DepotName;
     this.submitButton = "Save ";
-    dataItem["id"] = dataItem.ID;
     this.depotID = dataItem.ID;
     this.depotForm.patchValue(dataItem);
     this.modalRef = this.modalService.show(template, this.config);
@@ -253,7 +253,7 @@ export class ListDepotComponent implements OnInit {
       },
       () => {
         this.modalRef.hide();
-        this.depotForm.reset();
+        this.buildDepotForm();
         this.toastr.success("Depot edited successfully");
       }
     );
