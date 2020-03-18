@@ -44,8 +44,8 @@ export class LandingLedgerComponent implements OnInit {
     this.treeViewLoading = true;
     this.ledgerService.getLedgerTreeView().subscribe(
       response => {
-        this.ledgerTreeNode = response.Node;
-        this.ledgerTreeList = response.Tree;
+        this.ledgerTreeNode = response.Entity.Node;
+        this.ledgerTreeList = response.Entity.Tree;
         this.treeViewLoading = false;
       },
       error => {
