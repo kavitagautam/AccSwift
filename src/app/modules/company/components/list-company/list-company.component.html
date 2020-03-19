@@ -1,59 +1,110 @@
-<div class="mb-2">
+<div class="box-header">
   <button [routerLink]="['add']" class="btn btn-primary">
-    <i class="fa fa-plus" aria-hidden="true"></i>Add Company
+    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Company
   </button>
 </div>
+<div class="accordion" id="accordion">
+  <div class="box box-default">
+    <div
+      class="box-header with-border collapsed"
+      data-toggle="collapse"
+      href="#collapseOne"
+    >
+      <h3 class="box-title">Search Terms</h3>
+    </div>
+    <div class="box-body collapse" id="collapseOne" data-parent="#accordion">
+      <div class="row">
+        <div class="col-md-12">
+          <form [formGroup]="companySearchForm" novalidate>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Company Name</label>
+                <input class="form-control" formControlName="companyName" />
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label for="voucher#">Company Name</label>
+                <input class="form-control" formControlName="code" />
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label for="voucher#">Address1</label>
+                <input class="form-control" formControlName="address1" />
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label for="voucher#">Address2</label>
+                <input class="form-control" formControlName="address2" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="box-footer">
+        <div class="mb-2">
+          <button class="btn btn-primary btn-flat" (click)="searchForm()">
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="box box-default">
-  <div class="col-md-12 mt-5 mr-2">
-    <div class="grid-wrapper">
-      <kendo-grid
-        [data]="gridView"
-        [filterable]="false"
-        [filter]="filter"
-        [pageSize]="pageSize"
-        [skip]="skip"
-        [sortable]="{
-          allowUnsort: allowUnsort,
-          mode: 'single'
-        }"
-        [sort]="sort"
-        (sortChange)="sortChange($event)"
-        [pageable]="true"
-        [height]="400"
-        (pageChange)="pageChange($event)"
-        scrollable="none"
-        (filterChange)="filterChange($event)"
-      >
-        <kendo-grid-column field="Name" title="Name"> </kendo-grid-column>
-        <kendo-grid-column field="Telephone" title="Telephone">
-        </kendo-grid-column>
-        <kendo-grid-column field="Address1" title="Address1">
-        </kendo-grid-column>
-        <kendo-grid-column field="Email" title="Email"> </kendo-grid-column>
-        <kendo-grid-command-column title="Action" width="220">
-          <ng-template
-            kendoGridCellTemplate
-            let-isNew="isNew"
-            let-dataItem="dataItem"
-          >
-            <button
-              kendoGridEditCommand
-              (click)="editCompany(dataItem)"
-              [primary]="true"
+  <div class="box-body">
+    <div class="col-md-12 p-0">
+      <div class="grid-wrapper">
+        <kendo-grid
+          [data]="gridView"
+          [filterable]="false"
+          [filter]="filter"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          [pageable]="true"
+          [height]="400"
+          (pageChange)="pageChange($event)"
+          scrollable="none"
+          (filterChange)="filterChange($event)"
+        >
+          <kendo-grid-column field="Name" title="Name"> </kendo-grid-column>
+          <kendo-grid-column field="Telephone" title="Telephone">
+          </kendo-grid-column>
+          <kendo-grid-column field="Address1" title="Address1">
+          </kendo-grid-column>
+          <kendo-grid-column field="Email" title="Email"> </kendo-grid-column>
+          <kendo-grid-command-column title="Action" width="220">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
             >
-              Edit
-            </button>
-            <button
-              kendoGridRemoveCommand
-              (click)="openConfirmationDialogue(dataItem)"
-            >
-              Delete
-            </button>
-          </ng-template>
-        </kendo-grid-command-column>
-      </kendo-grid>
-
-      <div *ngIf="companyListLoading" class="k-i-loading"></div>
+              <button
+                kendoGridEditCommand
+                (click)="editCompany(dataItem)"
+                [primary]="true"
+              >
+                Edit
+              </button>
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialogue(dataItem)"
+              >
+                Delete
+              </button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
+        <div *ngIf="listLoading" class="k-i-loading"></div>
+      </div>
     </div>
   </div>
 </div>

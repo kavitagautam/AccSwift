@@ -1,16 +1,20 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CompanyService } from "../../services/company.service";
 import { CompanyList } from "../../models/company.model";
+import { RegexConst } from "@app/shared/constants/regex.constant";
+
 @Component({
   selector: "accSwift-edit-company",
-  templateUrl: "./edit-company.component.html",
+  templateUrl: "../common-template/company-form.html",
   styleUrls: ["./edit-company.component.scss"]
 })
 export class EditCompanyComponent implements OnInit {
   companyDetails: CompanyList;
-  editComponyForm: FormGroup;
+  companyForm: FormGroup;
+  regexConst = RegexConst;
+
   constructor(
     public _fb: FormBuilder,
     private router: Router,
@@ -18,7 +22,7 @@ export class EditCompanyComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildCompanyForm();
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
@@ -33,9 +37,15 @@ export class EditCompanyComponent implements OnInit {
   }
 
   buildCompanyForm(): void {
-    this.editComponyForm = this._fb.group({
-      name: [this.companyDetails ? this.companyDetails.Name : ""],
-      code: [this.companyDetails ? this.companyDetails.Code : ""],
+    this.companyForm = this._fb.group({
+      companyName: [
+        this.companyDetails ? this.companyDetails.Name : "",
+        Validators.required
+      ],
+      code: [
+        this.companyDetails ? this.companyDetails.Code : "",
+        Validators.required
+      ],
       address1: [this.companyDetails ? this.companyDetails.Address1 : ""],
       address2: [this.companyDetails ? this.companyDetails.Address2 : ""],
       city: [this.companyDetails ? this.companyDetails.City : ""],
@@ -45,19 +55,22 @@ export class EditCompanyComponent implements OnInit {
       email: [this.companyDetails ? this.companyDetails.Email : ""],
       website: [this.companyDetails ? this.companyDetails.Website : ""],
       POBoxNo: [this.companyDetails ? this.companyDetails.POBox : ""],
-      PANNo: [this.companyDetails ? this.companyDetails.PAN : ""]
+      PANNo: [this.companyDetails ? this.companyDetails.PAN : ""],
+      fiscalYear: ["", Validators.pattern(this.regexConst.DATE)],
+      fiscalStyle: [""],
+      booksBegin: ["", Validators.pattern(this.regexConst.DATE)]
     });
   }
 
   public save(): void {
-    if (this.editComponyForm.valid) {
+    if (this.companyForm.valid) {
       this.router.navigate(["/company"]);
     } else {
     }
   }
 
   public cancel(): void {
-    this.editComponyForm.reset();
+    this.companyForm.reset();
     this.router.navigate(["/company"]);
   }
 }

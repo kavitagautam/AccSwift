@@ -3,12 +3,8 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import {
-  process,
-  State,
   SortDescriptor,
-  orderBy,
-  CompositeFilterDescriptor,
-  filterBy
+  CompositeFilterDescriptor
 } from "@progress/kendo-data-query";
 
 import { ToastrService } from "ngx-toastr";
@@ -22,8 +18,9 @@ import { CompanyList } from "../../models/company.model";
   styleUrls: ["./list-company.component.scss"]
 })
 export class ListCompanyComponent implements OnInit {
-  companyListLoading: boolean;
   companyList: CompanyList[];
+  companySearchForm: FormGroup;
+  listLoading: boolean;
 
   public pageSize = 10;
   public skip = 0;
@@ -40,9 +37,28 @@ export class ListCompanyComponent implements OnInit {
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
 
-  constructor(private companyService: CompanyService, private router: Router) {}
+  modalRef: BsModalRef;
+  // modal config to unhide modal when clicked outside
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true
+  };
+
+  constructor(
+    public _fb: FormBuilder,
+    private companyService: CompanyService,
+    private router: Router,
+    private modalService: BsModalService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
+    this.companySearchForm = this._fb.group({
+      companyName: [null],
+      code: [null],
+      address1: [""],
+      address2: [""]
+    });
     this.getCompanyList();
   }
 
@@ -51,13 +67,22 @@ export class ListCompanyComponent implements OnInit {
   }
 
   getCompanyList(): void {
-    this.companyService.getCompanyList().subscribe(res => {
-      this.companyList = res;
-      this.gridView = {
-        data: this.companyList,
-        total: this.companyList.length
-      };
-    });
+    this.listLoading = true;
+    this.companyService.getCompanyList().subscribe(
+      res => {
+        this.companyList = res;
+        this.gridView = {
+          data: this.companyList,
+          total: this.companyList.length
+        };
+      },
+      error => {
+        this.listLoading = false;
+      },
+      () => {
+        this.listLoading = false;
+      }
+    );
   }
 
   public sortChange(sort: SortDescriptor[]): void {
@@ -91,5 +116,33 @@ export class ListCompanyComponent implements OnInit {
       this.currentPage = pageNo;
     }
     this.getCompanyList();
+  }
+
+  public searchForm(): void {
+    this.getCompanyList();
+  }
+
+  openConfirmationDialogue(dataItem): void {
+    const companyId = {
+      id: dataItem.ID
+    };
+    this.modalRef = this.modalService.show(
+      ConfirmationDialogComponent,
+      this.config
+    );
+    this.modalRef.content.data = "Company " + dataItem.Name;
+    this.modalRef.content.action = "delete";
+    this.modalRef.content.onClose.subscribe(confirm => {
+      if (confirm) {
+        this.deleteCompanyByID(companyId.id);
+      }
+    });
+  }
+
+  public deleteCompanyByID(id): void {
+    this.companyService.deleteCompanyById(id).subscribe(response => {
+      this.toastr.success("Company deleted successfully");
+      this.getCompanyList();
+    });
   }
 }

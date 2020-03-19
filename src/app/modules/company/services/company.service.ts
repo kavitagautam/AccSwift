@@ -26,4 +26,8 @@ export class CompanyService {
   addCompany(body): Observable<any> {
     return this.httpService.post(`${this._api_URL}Company`, body);
   }
+
+  deleteCompanyById(id): Observable<any> {
+    return this.http.delete(`${this._api_URL}Company/${id}`);
+  }
 }

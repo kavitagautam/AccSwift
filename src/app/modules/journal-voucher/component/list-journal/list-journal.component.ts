@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
+import { RegexConst } from "@app/shared/constants/regex.constant";
 import {
   SortDescriptor,
   CompositeFilterDescriptor
@@ -22,6 +23,9 @@ export class ListJournalComponent implements OnInit {
   journalList: JournalMaster[] = [];
   journalListLoading: boolean;
   date: Date = new Date();
+
+  regexConst = RegexConst;
+
   //kendo Grid
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
@@ -51,6 +55,14 @@ export class ListJournalComponent implements OnInit {
       dir: "asc"
     }
   ];
+
+  modalRef: BsModalRef;
+  // modal config to unhide modal when clicked outside
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true
+  };
+
   constructor(
     public _fb: FormBuilder,
     private router: Router,
@@ -63,18 +75,11 @@ export class ListJournalComponent implements OnInit {
       seriesId: [null],
       projectId: [null],
       voucherNo: [""],
-      toDate: [""],
-      fromDate: [""]
+      toDate: ["", [Validators.pattern(this.regexConst.DATE)]],
+      fromDate: ["", [Validators.pattern(this.regexConst.DATE)]]
     });
     this.getJournalList();
   }
-
-  modalRef: BsModalRef;
-  // modal config to unhide modal when clicked outside
-  config = {
-    backdrop: true,
-    ignoreBackdropClick: true
-  };
 
   public sortChange(sort: SortDescriptor[]): void {
     this.orderByKey = "";
