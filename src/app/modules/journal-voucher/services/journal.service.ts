@@ -42,8 +42,8 @@ export class JournalService {
   getSeriesList(): void {
     this.httpService
       .get(`${this._api_URL}series/journal`)
-      .subscribe((res: SeriesList) => {
-        this.journalSeriesList = res;
+      .subscribe((res: any) => {
+        this.journalSeriesList = res.Entity;
       });
   }
 

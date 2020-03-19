@@ -16,7 +16,7 @@ import { environment } from "@env/environment";
 export class BankPaymentService {
   _api_URL = environment.baseAPI;
   projectList: ProjectList;
-  seriesList: SeriesList;
+  seriesList;
   bankAccountList;
 
   constructor(
@@ -41,7 +41,7 @@ export class BankPaymentService {
     this.httpService
       .get(`${this._api_URL}series`, null, params)
       .subscribe((res: SeriesList) => {
-        this.seriesList = res;
+        this.seriesList = res.Entity;
       });
   }
   getBankPaymentAccounts(): void {

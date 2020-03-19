@@ -12,12 +12,25 @@ export interface ProjectList {
 }
 
 export interface SeriesList {
+  Status: number;
+  Entity: SeriesEntity[];
+}
+
+export interface SeriesEntity {
   ID: number;
-  EngName: string;
-  NepName: string;
-  VoucherType: string;
-  AutoNumber: number;
-  BuiltIn: boolean;
+  Name: string;
+}
+
+export interface CashParty {
+  Status: number;
+  Entity: CashPartyEntity[];
+}
+
+export interface CashPartyEntity {
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  GroupID: number;
 }
 
 export interface CashReceiptMaster {

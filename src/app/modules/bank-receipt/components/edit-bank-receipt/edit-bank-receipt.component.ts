@@ -54,7 +54,8 @@ export class EditBankReceiptComponent implements OnInit {
         this.bankReceiptDetails ? this.bankReceiptDetails.SeriesID : null
       ],
       projectId: [
-        this.bankReceiptDetails ? this.bankReceiptDetails.ProjectID : null
+        this.bankReceiptDetails ? this.bankReceiptDetails.ProjectID : null,
+        [Validators.required]
       ],
       voucherNo: [
         this.bankReceiptDetails ? this.bankReceiptDetails.VoucherNo : "",

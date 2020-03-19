@@ -16,7 +16,6 @@ export class EditCashPaymentComponent implements OnInit {
   private editedRowIndex: number;
   editCashPaymentForm: FormGroup;
   cashPaymentDetail: CashPaymentMaster;
-  allCash;
   submitted: boolean;
   rowSubmitted: boolean;
   date: Date = new Date();
@@ -40,7 +39,6 @@ export class EditCashPaymentComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.allCash = this.cashPaymentService.getCashPayment();
     this.buildEditCashPaymentForm(); // initialize the form
     this.getIdFromRoute();
   }

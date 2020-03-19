@@ -12,12 +12,14 @@ export interface ProjectList {
 }
 
 export interface SeriesList {
+  Status: number;
+  Entity: SeriesEntity[];
+}
+
+export interface SeriesEntity {
   ID: number;
-  EngName: string;
-  NepName: string;
+  Name: string;
   VoucherType: string;
-  AutoNumber: number;
-  BuiltIn: boolean;
 }
 
 export interface BankReceiptMaster {
