@@ -16,26 +16,11 @@
       <div class="row">
         <div class="col-md-12">
           <form [formGroup]="journalSearchForm" novalidate>
-            <div class="col-md-2 col-sm-6 col-xs-6">
+            <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="voucher#">Voucher #</label>
                 <input class="form-control" formControlName="voucherNo" />
               </div>
-            </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label for="series">Series</label>
-                <select class="form-control" formControlName="seriesId">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let series of journalService.journalSeriesList"
-                    [value]="series.ID"
-                    >{{ series.EngName }}</option
-                  >
-                </select>
-              </div>
-            </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project</label>
                 <select
@@ -53,7 +38,20 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label for="series">Series</label>
+                <select class="form-control" formControlName="seriesId">
+                  <option [ngValue]="null">Choose Option....</option>
+                  <option
+                    *ngFor="let series of journalService.journalSeriesList"
+                    [value]="series.ID"
+                    >{{ series.EngName }}</option
+                  >
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="date">To Date</label>
                 <input
@@ -61,17 +59,12 @@
                   placeholder="To Date"
                   class="form-control"
                   formControlName="toDate"
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                   bsDatepicker
                 />
               </div>
-
-              <!-- <np-datepicker formControlName="date"  class="form-group" inputClass="form-control"
-            ></np-datepicker> 
-          
-                            [value]="date | date: 'MM/dd/yyyy'"
--->
             </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">
+            <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="date">From Date</label>
                 <input
@@ -79,6 +72,7 @@
                   placeholder="From Date"
                   class="form-control"
                   formControlName="fromDate"
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                   bsDatepicker
                 />
               </div>

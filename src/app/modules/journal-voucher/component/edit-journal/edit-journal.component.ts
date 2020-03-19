@@ -10,6 +10,7 @@ import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validato
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { IntlService } from "@progress/kendo-angular-intl";
 import { LocaleService } from "@app/core/services/locale/locale.services";
+import { RegexConst } from "@app/shared/constants/regex.constant";
 
 @Component({
   selector: "accSwift-edit-journal",
@@ -20,6 +21,9 @@ import { LocaleService } from "@app/core/services/locale/locale.services";
 export class EditJournalComponent implements OnInit {
   private editedRowIndex: number;
   //Input Field Property
+
+  regexConst = RegexConst;
+
   numericFormat: string = "n2";
   public decimals: number = 2;
   editJournalForm: FormGroup;
@@ -74,7 +78,8 @@ export class EditJournalComponent implements OnInit {
       seriesId: [this.journalDetail ? this.journalDetail.SeriesID : null],
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
       date: [
-        this.journalDetail ? new Date(this.journalDetail.CreatedDate) : ""
+        this.journalDetail ? new Date(this.journalDetail.CreatedDate) : "",
+        [Validators.pattern(this.regexConst.DATE)]
       ],
       projectId: [this.journalDetail ? this.journalDetail.ProjectID : null],
       narration: [this.journalDetail ? this.journalDetail.Remarks : ""],
