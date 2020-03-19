@@ -9,13 +9,14 @@ import {
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
+import { LedgerList } from "@app/shared/services/ledger-list.service";
 
 @Component({
-  selector: "accSwift-list-ledger",
-  templateUrl: "./list-ledger.component.html",
-  styleUrls: ["./list-ledger.component.scss"]
+  selector: "accSwift-landing-ledger",
+  templateUrl: "./landing-ledger.component.html",
+  styleUrls: ["./landing-ledger.component.scss"]
 })
-export class ListLedgerComponent implements OnInit {
+export class LandingLedgerComponent implements OnInit {
   @Output("selectedItem") selectedItem = new EventEmitter();
   selectedGroupTab: boolean;
   selectedLedgerTab: boolean;
@@ -37,15 +38,14 @@ export class ListLedgerComponent implements OnInit {
   ngOnInit() {
     this.selectedGroupTab = true;
     this.loadLedgerTreeView();
-    this.ledgerService.init();
   }
 
   loadLedgerTreeView(): void {
     this.treeViewLoading = true;
     this.ledgerService.getLedgerTreeView().subscribe(
-      res => {
-        this.ledgerTreeNode = res.Node;
-        this.ledgerTreeList = res.Tree;
+      response => {
+        this.ledgerTreeNode = response.Entity.Node;
+        this.ledgerTreeList = response.Entity.Tree;
         this.treeViewLoading = false;
       },
       error => {
@@ -60,8 +60,8 @@ export class ListLedgerComponent implements OnInit {
   loadLedgerlistView(): void {
     this.listViewLoading = true;
     this.ledgerService.getLedgerListView().subscribe(
-      res => {
-        this.ledgerListView = res;
+      response => {
+        this.ledgerListView = response.Entity;
       },
       error => {
         this.listViewLoading = false;

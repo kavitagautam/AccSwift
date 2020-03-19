@@ -50,7 +50,7 @@ export class LedgerModelPopupComponent implements OnInit {
     this.ledgerListLoading = true;
     this.ledgerService.getLedgerList().subscribe(
       res => {
-        this.ledgerList = res;
+        this.ledgerList = res.Entity;
       },
       error => {
         this.ledgerListLoading = false;
