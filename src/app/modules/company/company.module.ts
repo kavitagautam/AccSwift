@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ListCompanyComponent } from "./components/list-company/list-company.component";
 import { AddCompanyComponent } from "./components/add-company/add-company.component";
 import { EditCompanyComponent } from "./components/edit-company/edit-company.component";
+import { SharedModule } from "@app/shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { EditCompanyComponent } from "./components/edit-company/edit-company.com
     FormsModule,
     ReactiveFormsModule,
     CompanyRoutingModule,
+    SharedModule,
     GridModule,
     PopupModule,
     InputsModule,

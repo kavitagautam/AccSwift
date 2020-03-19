@@ -13,12 +13,25 @@ export interface CompanyList {
   POBox: string;
   PAN: string;
   Logo: string;
-  FYFrom: string;
-  BookBeginFrom: string;
+  FYFrom: Date;
+  BookBeginFrom: Date;
   FiscalYear: string;
+  CompanyID: number;
   Remarks: string;
-  CreatedBy: string;
-  CreatedDate: string;
+  CreatedBy?: any;
+  CreatedDate?: any;
   ModifiedBy: string;
-  ModifiedDate: string;
+  ModifiedDate: Date;
+}
+
+export interface CompanyListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: CompanyList[];
+}
+
+export interface CompanyDetailsModel {
+  StatusCode: number;
+  Message: string;
+  Entity: CompanyList;
 }
