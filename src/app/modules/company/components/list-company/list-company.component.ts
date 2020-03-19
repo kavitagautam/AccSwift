@@ -70,7 +70,7 @@ export class ListCompanyComponent implements OnInit {
     this.listLoading = true;
     this.companyService.getCompanyList().subscribe(
       res => {
-        this.companyList = res;
+        this.companyList = res.Entity;
         this.gridView = {
           data: this.companyList,
           total: this.companyList.length

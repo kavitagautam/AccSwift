@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CompanyService } from "../../services/company.service";
 import { CompanyList } from "../../models/company.model";
 import { RegexConst } from "@app/shared/constants/regex.constant";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-edit-company",
@@ -19,7 +20,8 @@ export class EditCompanyComponent implements OnInit {
     public _fb: FormBuilder,
     private router: Router,
     public companyService: CompanyService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -29,7 +31,7 @@ export class EditCompanyComponent implements OnInit {
         this.companyService
           .getCompanyDetails(params.get("id"))
           .subscribe(res => {
-            this.companyDetails = res;
+            this.companyDetails = res.Entity;
             this.buildCompanyForm();
           });
       }
@@ -56,17 +58,62 @@ export class EditCompanyComponent implements OnInit {
       website: [this.companyDetails ? this.companyDetails.Website : ""],
       POBoxNo: [this.companyDetails ? this.companyDetails.POBox : ""],
       PANNo: [this.companyDetails ? this.companyDetails.PAN : ""],
-      fiscalYear: ["", Validators.pattern(this.regexConst.DATE)],
-      fiscalStyle: [""],
-      booksBegin: ["", Validators.pattern(this.regexConst.DATE)]
+      logo: [
+        this.dataURItoBlob(this.companyDetails ? this.companyDetails.Logo : "")
+      ],
+      fiscalYear: [this.companyDetails ? this.companyDetails.FYFrom : ""],
+      fiscalStyle: ["075/76"],
+      booksBegin: [this.companyDetails ? this.companyDetails.BookBeginFrom : ""]
     });
   }
 
-  public save(): void {
-    if (this.companyForm.valid) {
-      this.router.navigate(["/company"]);
-    } else {
+  imageURL = this.dataURItoBlob(
+    this.companyDetails ? this.companyDetails.Logo : ""
+  );
+
+  dataURItoBlob(dataURI) {
+    const byteString = window.atob(dataURI);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
     }
+    const blob = new Blob([int8Array], { type: "image/jpeg" });
+    return blob;
+  }
+
+  public save(): void {
+    if (this.companyForm.invalid) return;
+    const obj = {
+      ID: this.companyDetails.ID,
+      Name: this.companyForm.get("companyName").value,
+      Code: this.companyForm.get("code").value,
+      Address1: this.companyForm.get("address1").value,
+      Address2: this.companyForm.get("address2").value,
+      City: this.companyForm.get("city").value,
+      District: this.companyForm.get("district").value,
+      Zone: this.companyForm.get("zone").value,
+      Telephone: this.companyForm.get("telephone").value,
+      Email: this.companyForm.get("email").value,
+      Website: this.companyForm.get("website").value,
+      POBox: this.companyForm.get("POBoxNo").value,
+      PAN: this.companyForm.get("PANNo").value,
+      Logo: "",
+      FYFrom: this.companyForm.get("fiscalYear").value,
+      BookBeginFrom: this.companyForm.get("booksBegin").value,
+      FiscalYear: this.companyForm.get("fiscalStyle").value
+    };
+    this.companyService.updateCompany(obj).subscribe(
+      response => {
+        this.router.navigate(["/company"]);
+      },
+      error => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Company edited successfully");
+      }
+    );
   }
 
   public cancel(): void {
