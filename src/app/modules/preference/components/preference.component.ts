@@ -13,6 +13,7 @@ export class PreferenceComponent implements OnInit {
 
   ngOnInit() {
     this.buildMenuItem();
+    this.nodeName = "options";
   }
 
   selectedNode(item): void {

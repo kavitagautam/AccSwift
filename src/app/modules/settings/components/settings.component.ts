@@ -14,6 +14,7 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.buildMenuItem();
+    this.nodeName = "options";
   }
   selectedNode(item): void {
     this.nodeName = item;
