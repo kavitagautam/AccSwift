@@ -5,6 +5,8 @@ import { CompanyService } from "../../services/company.service";
 import { CompanyList } from "../../models/company.model";
 import { RegexConst } from "@app/shared/constants/regex.constant";
 import { ToastrService } from "ngx-toastr";
+import { ImageCroppedEvent } from "ngx-image-cropper";
+import { SelectEvent } from "@progress/kendo-angular-upload";
 
 @Component({
   selector: "accSwift-edit-company",
@@ -12,6 +14,8 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./edit-company.component.scss"]
 })
 export class EditCompanyComponent implements OnInit {
+  companyLogo: any = "";
+
   companyDetails: CompanyList;
   companyForm: FormGroup;
   regexConst = RegexConst;
@@ -32,6 +36,7 @@ export class EditCompanyComponent implements OnInit {
           .getCompanyDetails(params.get("id"))
           .subscribe(res => {
             this.companyDetails = res.Entity;
+            this.companyLogo = this.companyDetails.Logo;
             this.buildCompanyForm();
           });
       }
@@ -58,28 +63,28 @@ export class EditCompanyComponent implements OnInit {
       website: [this.companyDetails ? this.companyDetails.Website : ""],
       POBoxNo: [this.companyDetails ? this.companyDetails.POBox : ""],
       PANNo: [this.companyDetails ? this.companyDetails.PAN : ""],
-      logo: [
-        this.dataURItoBlob(this.companyDetails ? this.companyDetails.Logo : "")
-      ],
+      logo: [this.companyLogo ? this.companyLogo : ""],
       fiscalYear: [this.companyDetails ? this.companyDetails.FYFrom : ""],
       fiscalStyle: ["075/76"],
       booksBegin: [this.companyDetails ? this.companyDetails.BookBeginFrom : ""]
     });
   }
 
-  imageURL = this.dataURItoBlob(
-    this.companyDetails ? this.companyDetails.Logo : ""
-  );
+  public selectEventHandler(e: SelectEvent): void {
+    const that = this;
+    e.files.forEach(file => {
+      if (!file.validationErrors) {
+        var reader = new FileReader();
 
-  dataURItoBlob(dataURI) {
-    const byteString = window.atob(dataURI);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const int8Array = new Uint8Array(arrayBuffer);
-    for (let i = 0; i < byteString.length; i++) {
-      int8Array[i] = byteString.charCodeAt(i);
-    }
-    const blob = new Blob([int8Array], { type: "image/jpeg" });
-    return blob;
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          console.log(event.target.result);
+          this.companyLogo = event.target.result;
+        };
+
+        reader.readAsDataURL(file.rawFile);
+      }
+    });
   }
 
   public save(): void {
@@ -98,7 +103,7 @@ export class EditCompanyComponent implements OnInit {
       Website: this.companyForm.get("website").value,
       POBox: this.companyForm.get("POBoxNo").value,
       PAN: this.companyForm.get("PANNo").value,
-      Logo: "",
+      Logo: this.companyLogo ? this.companyLogo : "",
       FYFrom: this.companyForm.get("fiscalYear").value,
       BookBeginFrom: this.companyForm.get("booksBegin").value,
       FiscalYear: this.companyForm.get("fiscalStyle").value
