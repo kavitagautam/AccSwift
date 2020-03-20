@@ -4,6 +4,10 @@ import { Router } from "@angular/router";
 import { CompanyService } from "../../services/company.service";
 import { RegexConst } from "@app/shared/constants/regex.constant";
 import { ToastrService } from "ngx-toastr";
+import { ImageCroppedEvent } from "ngx-image-cropper";
+import { Observable, fromEvent } from "rxjs";
+import { pluck } from "rxjs/operators";
+import { SelectEvent } from "@progress/kendo-angular-upload";
 
 @Component({
   selector: "accSwift-add-company",
@@ -11,6 +15,8 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./add-company.component.scss"]
 })
 export class AddCompanyComponent implements OnInit {
+  companyLogo: any = "";
+
   companyForm: FormGroup;
   regexConst = RegexConst;
 
@@ -46,18 +52,25 @@ export class AddCompanyComponent implements OnInit {
     });
   }
 
-  imageURL = this.dataURItoBlob("");
+  public selectEventHandler(e: SelectEvent): void {
+    const that = this;
+    e.files.forEach(file => {
+      if (!file.validationErrors) {
+        var reader = new FileReader();
 
-  dataURItoBlob(dataURI) {
-    const byteString = window.atob(dataURI);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const int8Array = new Uint8Array(arrayBuffer);
-    for (let i = 0; i < byteString.length; i++) {
-      int8Array[i] = byteString.charCodeAt(i);
-    }
-    const blob = new Blob([int8Array], { type: "image/jpeg" });
-    return blob;
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          // console.log(event.target.result);
+          this.companyLogo = event.target.result;
+
+          console.log(this.companyLogo);
+        };
+
+        reader.readAsDataURL(file.rawFile);
+      }
+    });
   }
+
   public save(): void {
     if (this.companyForm.invalid) return;
     const obj = {
@@ -73,7 +86,7 @@ export class AddCompanyComponent implements OnInit {
       Website: this.companyForm.get("website").value,
       POBox: this.companyForm.get("POBoxNo").value,
       PAN: this.companyForm.get("PANNo").value,
-      Logo: this.companyForm.get("logo").value,
+      Logo: this.companyLogo ? this.companyLogo : "",
       FYFrom: this.companyForm.get("fiscalYear").value,
       BookBeginFrom: this.companyForm.get("booksBegin").value,
       FiscalYear: this.companyForm.get("fiscalStyle").value

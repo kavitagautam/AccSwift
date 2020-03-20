@@ -11,6 +11,7 @@ import { ListCompanyComponent } from "./components/list-company/list-company.com
 import { AddCompanyComponent } from "./components/add-company/add-company.component";
 import { EditCompanyComponent } from "./components/edit-company/edit-company.component";
 import { SharedModule } from "@app/shared/shared.module";
+import { UploadsModule } from "@progress/kendo-angular-upload";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { SharedModule } from "@app/shared/shared.module";
     GridModule,
     PopupModule,
     InputsModule,
+    UploadsModule,
     DropDownListModule,
     DropDownsModule
   ]
