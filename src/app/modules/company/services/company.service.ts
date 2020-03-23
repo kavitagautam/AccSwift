@@ -3,7 +3,10 @@ import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { environment } from "@env/environment";
 import { Observable } from "rxjs";
-import { CompanyListModel, CompanyDetailsModel } from "../models/company.model";
+import {
+  CompanyDetailsModel,
+  CompanyNavigateModel
+} from "../models/company.model";
 
 @Injectable({
   providedIn: "root"
@@ -16,8 +19,8 @@ export class CompanyService {
     private httpService: HttpClientService
   ) {}
 
-  getCompanyList(): Observable<CompanyListModel> {
-    return this.httpService.get(`${this._api_URL}Company`);
+  getCompanyList(body): Observable<CompanyNavigateModel> {
+    return this.httpService.post(`${this._api_URL}Company/navigate`, body);
   }
 
   getCompanyDetails(id): Observable<CompanyDetailsModel> {
