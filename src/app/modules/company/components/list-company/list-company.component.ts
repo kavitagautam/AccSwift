@@ -2,10 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
-import {
-  SortDescriptor,
-  CompositeFilterDescriptor
-} from "@progress/kendo-data-query";
+import { SortDescriptor } from "@progress/kendo-data-query";
 
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
@@ -25,17 +22,21 @@ export class ListCompanyComponent implements OnInit {
   public pageSize = 10;
   public skip = 0;
   public currentPage = 1;
+
+  searchFilterList: Array<any> = [];
+  unitNameSearchKey = "";
+  orderByKey = "";
+  dirKey = "asc";
   //sorting kendo data
   public allowUnsort = true;
   public sort: SortDescriptor[] = [
     {
-      field: "Name" || "Code",
+      field: "",
       dir: "asc"
     }
   ];
 
   public gridView: GridDataResult;
-  public filter: CompositeFilterDescriptor; //Muliti Column Filter
 
   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
@@ -54,10 +55,11 @@ export class ListCompanyComponent implements OnInit {
 
   ngOnInit() {
     this.companySearchForm = this._fb.group({
-      companyName: [null],
-      code: [null],
-      address1: [""],
-      address2: [""]
+      Name: [""],
+      Code: [""],
+      Email: [""],
+      Address1: [""],
+      Address2: [""]
     });
     this.getCompanyList();
   }
@@ -68,12 +70,20 @@ export class ListCompanyComponent implements OnInit {
 
   getCompanyList(): void {
     this.listLoading = true;
-    this.companyService.getCompanyList().subscribe(
-      res => {
-        this.companyList = res.Entity;
+
+    const obj = {
+      PageNo: this.currentPage,
+      DisplayRow: this.pageSize,
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey,
+      FilterList: this.searchFilterList
+    };
+    this.companyService.getCompanyList(obj).subscribe(
+      response => {
+        this.companyList = response.Entity.Entity;
         this.gridView = {
           data: this.companyList,
-          total: this.companyList.length
+          total: response.Entity.TotalItemsAvailable
         };
       },
       error => {
@@ -86,20 +96,11 @@ export class ListCompanyComponent implements OnInit {
   }
 
   public sortChange(sort: SortDescriptor[]): void {
+    this.orderByKey = "";
+    this.dirKey = "";
     this.sort = sort;
-    this.getCompanyList();
-  }
-
-  public filterChange(filter): void {
-    this.filter = filter;
-    for (let i = 0; i < filter.filters.length; i++) {
-      if (filter.filters[i].field == "VoucherNo") {
-      }
-      if (filter.filters[i].field == "ProjectName") {
-      }
-      if (filter.filters[i].field == "SeriesName") {
-      }
-    }
+    this.dirKey = this.sort[0].dir;
+    this.orderByKey = this.sort[0].field;
     this.getCompanyList();
   }
 
@@ -119,6 +120,19 @@ export class ListCompanyComponent implements OnInit {
   }
 
   public searchForm(): void {
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.companySearchForm.invalid) return;
+    for (const key in this.companySearchForm.value) {
+      if (this.companySearchForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.companySearchForm.value[key]
+        });
+      }
+    }
     this.getCompanyList();
   }
 

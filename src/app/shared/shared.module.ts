@@ -29,6 +29,7 @@ import { DateFormatPipe } from "./pipes/dateFormat/date-format.pipe";
 import { FormSubmitValidationMsgDirective } from "./directives/form-validators/submit-validation-msg.directive";
 import { FormControlValidationMsgDirective } from "./directives/form-validators/validation-message.directive";
 import { ValidationMsgService } from "./services/form-validators/validation-message.service";
+import { PhoneMaskDirective } from "./directives/phone-mask/phone-mask.directive";
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ValidationMsgService } from "./services/form-validators/validation-mess
     LedgerModelPopupComponent,
     DateFormatPipe,
     FormSubmitValidationMsgDirective,
-    FormControlValidationMsgDirective
+    FormControlValidationMsgDirective,
+    PhoneMaskDirective
   ],
   imports: [
     CommonModule,
@@ -80,7 +82,8 @@ import { ValidationMsgService } from "./services/form-validators/validation-mess
     CurrencyDirective,
     DateFormatPipe,
     FormSubmitValidationMsgDirective,
-    FormControlValidationMsgDirective
+    FormControlValidationMsgDirective,
+    PhoneMaskDirective
   ],
   providers: [ValidationMsgService]
 })

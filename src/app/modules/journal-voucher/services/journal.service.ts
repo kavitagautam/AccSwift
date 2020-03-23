@@ -4,10 +4,10 @@ import { Observable } from "rxjs";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import {
-  JournalMaster,
   ProjectList,
   SeriesList,
-  JournalLists
+  JournalNavigateModel,
+  JournalDetailsModel
 } from "../models/journal.model";
 
 @Injectable({
@@ -25,10 +25,10 @@ export class JournalService {
     this.getSeriesList();
   }
 
-  getMasterJournal(): Observable<JournalMaster[]> {
+  getMasterJournal(): Observable<JournalNavigateModel[]> {
     return this.httpService.get(`${this._api_URL}journalmaster`);
   }
-  getJournalDetails(id): Observable<JournalMaster> {
+  getJournalDetails(id): Observable<JournalDetailsModel> {
     return this.httpService.get(`${this._api_URL}journalmaster/${id}`);
   }
   getProjectLists(): void {
@@ -47,25 +47,10 @@ export class JournalService {
       });
   }
 
-  getJournalList(paramsData): Observable<JournalLists> {
-    const params = new HttpParams()
-      .set("PageNo", paramsData.PageNo)
-      .set("DisplayRow", paramsData.DisplayRow)
-      .set("Direction", paramsData.Direction)
-      .set("OrderBy", paramsData.OrderBy ? paramsData.OrderBy : null)
-      .set("SeriesID", paramsData.SeriesId ? paramsData.SeriesId : -1)
-      .set("SeriesName", paramsData.SeriesNameSearchTerm)
-      .set("ProjectID", paramsData.ProjectId ? paramsData.ProjectId : -1)
-      .set("ProjectName", paramsData.ProjectNameSearchTerm)
-      .set("VoucherNo", paramsData.VoucherNo)
-      .set("VoucherNoSearchTerm", paramsData.VoucherNoSearchTerm)
-      .set("JournalDateTo", paramsData.JournalDateTo)
-      .set("JournalDateFrom", paramsData.JournalDateFrom)
-      .set("Remarks", paramsData.Remarks);
-    return this.httpService.get(
+  getJournalList(body): Observable<JournalNavigateModel> {
+    return this.httpService.post(
       `${this._api_URL}JournalMaster/Navigate`,
-      null,
-      params
+      body
     );
   }
 

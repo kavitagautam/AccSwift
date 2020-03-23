@@ -53,7 +53,10 @@ export class EditCompanyComponent implements OnInit {
         this.companyDetails ? this.companyDetails.Code : "",
         Validators.required
       ],
-      address1: [this.companyDetails ? this.companyDetails.Address1 : ""],
+      address1: [
+        this.companyDetails ? this.companyDetails.Address1 : "",
+        Validators.required
+      ],
       address2: [this.companyDetails ? this.companyDetails.Address2 : ""],
       city: [this.companyDetails ? this.companyDetails.City : ""],
       district: [this.companyDetails ? this.companyDetails.District : ""],
