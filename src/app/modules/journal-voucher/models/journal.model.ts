@@ -1,31 +1,42 @@
-export interface JournalLists {
-  Entity: JournalMaster[];
-  ItemsPerPage: number;
-  ItemsReturned: number;
-  TotalItemsAvailable: number;
-  CurrentPage: number;
-  TotalPage: number;
-}
-
-export interface JournalMaster {
-  ID: number;
-  VoucherNo: number;
-  Date: string;
-  SeriesID: number;
-  SeriesName: string;
-  ProjectID: number;
-  ProjectName: string;
+export interface Fields {
   Field1: string;
   Field2: string;
   Field3: string;
   Field4: string;
   Field5: string;
-  Journaldetails: JournalDetails[];
+}
+
+export interface JournalMasterList {
+  ID: number;
+  Date: Date;
+  Journaldetails?: any;
+  SeriesID: number;
+  SeriesName: string;
+  VoucherNo: string;
+  ProjectID: number;
+  ProjectName: string;
+  Fields: Fields;
+  CompanyID: number;
   Remarks: string;
   CreatedBy: string;
-  CreatedDate: string;
+  CreatedDate: Date;
   ModifiedBy: string;
-  ModifiedDate: string;
+  ModifiedDate: Date;
+}
+
+export interface JournalNavigate {
+  Entity: JournalMasterList[];
+  ItemsPerPage: number;
+  ItemsReturned: number;
+  TotalItemsAvailable: number;
+  CurrentPage: number;
+  TotalPages: number;
+}
+
+export interface JournalNavigateModel {
+  StatusCode: number;
+  Message: string;
+  Entity: JournalNavigate;
 }
 
 export interface JournalDetails {
@@ -95,4 +106,48 @@ export interface SeriesList {
   VoucherType: string;
   AutoNumber: number;
   BuiltIn: boolean;
+}
+
+export interface Journaldetail {
+  DebitCredit: string;
+  ID: number;
+  MasterID: number;
+  LedgerID: number;
+  LedgerName: string;
+  LedgerCode: string;
+  LedgerBalance: string;
+  Amount: number;
+  Remarks: string;
+}
+
+export interface Fields {
+  Field1: string;
+  Field2: string;
+  Field3: string;
+  Field4: string;
+  Field5: string;
+}
+
+export interface JournalDetails {
+  ID: number;
+  Date: Date;
+  Journaldetails: Journaldetail[];
+  SeriesID: number;
+  SeriesName: string;
+  VoucherNo: string;
+  ProjectID: number;
+  ProjectName: string;
+  Fields: Fields;
+  CompanyID: number;
+  Remarks: string;
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedBy: string;
+  ModifiedDate: Date;
+}
+
+export interface JournalDetailsModel {
+  StatusCode: number;
+  Message: string;
+  Entity: JournalDetails;
 }

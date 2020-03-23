@@ -35,7 +35,7 @@ export class AddCompanyComponent implements OnInit {
     this.companyForm = this._fb.group({
       companyName: ["", Validators.required],
       code: ["", Validators.required],
-      address1: [""],
+      address1: ["", Validators.required],
       address2: [""],
       city: [""],
       district: [""],

@@ -9,10 +9,10 @@ import {
 } from "@progress/kendo-data-query";
 
 import { JournalService } from "../../services/journal.service";
-import { JournalMaster } from "../../models/journal.model";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { JournalMasterList } from "../../models/journal.model";
 @Component({
   selector: "accSwift-list-journal",
   templateUrl: "./list-journal.component.html",
@@ -20,7 +20,7 @@ import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-
 })
 export class ListJournalComponent implements OnInit {
   journalSearchForm: FormGroup;
-  journalList: JournalMaster[] = [];
+  journalList: JournalMasterList[] = [];
   journalListLoading: boolean;
   date: Date = new Date();
 
@@ -56,6 +56,8 @@ export class ListJournalComponent implements OnInit {
     }
   ];
 
+  searchFilterList: Array<any> = [];
+
   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
@@ -72,10 +74,10 @@ export class ListJournalComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.journalSearchForm = this._fb.group({
-      seriesId: [null],
-      projectId: [null],
-      voucherNo: [""],
-      toDate: ["", [Validators.pattern(this.regexConst.DATE)]],
+      SeriesID: [null],
+      ProjectID: [null],
+      VoucherNo: [""],
+      Date: ["", [Validators.pattern(this.regexConst.DATE)]],
       fromDate: ["", [Validators.pattern(this.regexConst.DATE)]]
     });
     this.getJournalList();
@@ -106,27 +108,21 @@ export class ListJournalComponent implements OnInit {
 
   getJournalList(): void {
     this.journalListLoading = true;
-    const params = {
+
+    const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
-      OrderBy: this.orderByKey, // string[] OrderByList = new string[] { "Voucher_No", "Journal_Date", "Remarks", "Series", "Project" };
-      Direction: this.dirKey, // "asc" or "desc"
-      SeriesId: this.seriesIdSearch,
-      ProjectId: this.projectIdSearch,
-      VoucherNo: this.voucherNoSearch,
-      JournalDateTo: this.journalDateToSearch,
-      JournalDateFrom: this.journalDateFromSearch,
-      VoucherNoSearchTerm: this.voucherNoSearchKey,
-      ProjectNameSearchTerm: this.projectNameSerachKey,
-      SeriesNameSearchTerm: this.seriesNameSearchKey,
-      Remarks: this.remarkSearchKey
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey,
+      FilterList: this.searchFilterList
     };
-    this.journalService.getJournalList(params).subscribe(
-      res => {
-        this.journalList = res.Entity;
+
+    this.journalService.getJournalList(obj).subscribe(
+      response => {
+        this.journalList = response.Entity.Entity;
         this.gridView = {
           data: this.journalList,
-          total: res.TotalItemsAvailable
+          total: response.Entity.TotalItemsAvailable
         };
       },
       error => {
@@ -158,11 +154,25 @@ export class ListJournalComponent implements OnInit {
   }
 
   public searchForm() {
-    this.voucherNoSearch = this.journalSearchForm.controls.voucherNo.value;
-    this.journalDateToSearch = this.journalSearchForm.controls.toDate.value;
-    this.journalDateFromSearch = this.journalSearchForm.controls.fromDate.value;
-    this.projectIdSearch = this.journalSearchForm.controls.projectId.value;
-    this.seriesIdSearch = this.journalSearchForm.controls.seriesId.value;
+    // this.voucherNoSearch = this.journalSearchForm.controls.voucherNo.value;
+    // this.journalDateToSearch = this.journalSearchForm.controls.toDate.value;
+    // this.journalDateFromSearch = this.journalSearchForm.controls.fromDate.value;
+    // this.projectIdSearch = this.journalSearchForm.controls.projectId.value;
+    // this.seriesIdSearch = this.journalSearchForm.controls.seriesId.value;
+
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.journalSearchForm.invalid) return;
+    for (const key in this.journalSearchForm.value) {
+      if (this.journalSearchForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.journalSearchForm.value[key]
+        });
+      }
+    }
     this.getJournalList();
   }
 

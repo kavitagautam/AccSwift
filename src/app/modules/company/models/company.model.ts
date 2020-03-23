@@ -18,16 +18,25 @@ export interface CompanyList {
   FiscalYear: string;
   CompanyID: number;
   Remarks: string;
-  CreatedBy?: any;
-  CreatedDate?: any;
+  CreatedBy: string;
+  CreatedDate?: Date;
   ModifiedBy: string;
-  ModifiedDate: Date;
+  ModifiedDate?: Date;
 }
 
-export interface CompanyListModel {
+export interface CompanyModel {
+  Entity: CompanyList[];
+  ItemsPerPage: number;
+  ItemsReturned: number;
+  TotalItemsAvailable: number;
+  CurrentPage: number;
+  TotalPages: number;
+}
+
+export interface CompanyNavigateModel {
   StatusCode: number;
   Message: string;
-  Entity: CompanyList[];
+  Entity: CompanyModel;
 }
 
 export interface CompanyDetailsModel {

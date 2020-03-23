@@ -14,38 +14,50 @@
     </div>
     <div class="box-body collapse" id="collapseOne" data-parent="#accordion">
       <div class="row">
-        <div class="col-md-12">
-          <form [formGroup]="companySearchForm" novalidate>
+        <form [formGroup]="companySearchForm" novalidate>
+          <div class="col-md-12">
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Company Name</label>
-                <input class="form-control" formControlName="companyName" />
+                <input class="form-control" formControlName="Name" />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label for="voucher#">Company Name</label>
-                <input class="form-control" formControlName="code" />
+                <label for="voucher#">Code</label>
+                <input class="form-control" formControlName="Code" />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="voucher#">Address1</label>
-                <input class="form-control" formControlName="address1" />
+                <input class="form-control" formControlName="Address1" />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="voucher#">Address2</label>
-                <input class="form-control" formControlName="address2" />
+                <input class="form-control" formControlName="Address2" />
               </div>
             </div>
-          </form>
-        </div>
+          </div>
+          <div class="col-md-12">
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Company Email</label>
+                <input class="form-control" formControlName="Email" />
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
       <div class="box-footer">
         <div class="mb-2">
-          <button class="btn btn-primary btn-flat" (click)="searchForm()">
+          <button
+            class="btn btn-primary btn-flat"
+            (keyup.enter)="searchForm()"
+            (click)="searchForm()"
+          >
             Search
           </button>
         </div>
@@ -59,8 +71,6 @@
       <div class="grid-wrapper">
         <kendo-grid
           [data]="gridView"
-          [filterable]="false"
-          [filter]="filter"
           [pageSize]="pageSize"
           [skip]="skip"
           [sortable]="{
@@ -73,11 +83,11 @@
           [height]="400"
           (pageChange)="pageChange($event)"
           scrollable="none"
-          (filterChange)="filterChange($event)"
         >
           <kendo-grid-column field="Name" title="Name"> </kendo-grid-column>
           <kendo-grid-column field="Telephone" title="Telephone">
           </kendo-grid-column>
+          <kendo-grid-column field="Code" title="Code"> </kendo-grid-column>
           <kendo-grid-column field="Address1" title="Address1">
           </kendo-grid-column>
           <kendo-grid-column field="Email" title="Email"> </kendo-grid-column>

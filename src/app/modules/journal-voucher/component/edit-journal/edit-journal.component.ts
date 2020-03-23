@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe } from "@angular/common";
-import { JournalMaster } from "../../models/journal.model";
+import { JournalDetails } from "../../models/journal.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
@@ -27,7 +27,7 @@ export class EditJournalComponent implements OnInit {
   numericFormat: string = "n2";
   public decimals: number = 2;
   editJournalForm: FormGroup;
-  journalDetail: JournalMaster;
+  journalDetail: JournalDetails;
   submitted: boolean;
   rowSubmitted: boolean;
   debitTotal: number = 0;
@@ -64,8 +64,8 @@ export class EditJournalComponent implements OnInit {
       if (params.get("id")) {
         this.journalService
           .getJournalDetails(params.get("id"))
-          .subscribe(res => {
-            this.journalDetail = res;
+          .subscribe(response => {
+            this.journalDetail = response.Entity;
             this.buildJournalForm();
             this.setJournalList();
           });
