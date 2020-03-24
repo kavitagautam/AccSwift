@@ -31,6 +31,15 @@ export class JournalService {
   getJournalDetails(id): Observable<JournalDetailsModel> {
     return this.httpService.get(`${this._api_URL}journalmaster/${id}`);
   }
+
+  addJournalVoucher(body): Observable<any> {
+    return this.httpService.post(`${this._api_URL}JournalMaster`, body);
+  }
+
+  updateJournalVoucher(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}JournalMaster`, body);
+  }
+
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)

@@ -66,10 +66,6 @@ export class EditJournalComponent implements OnInit {
           .getJournalDetails(params.get("id"))
           .subscribe(response => {
             this.journalDetail = response.Entity;
-
-            console.log(
-              "Journal Details " + JSON.stringify(this.journalDetail)
-            );
             this.buildJournalForm();
             this.setJournalList();
           });

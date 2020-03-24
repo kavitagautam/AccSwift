@@ -109,7 +109,7 @@ export class ListJournalComponent implements OnInit {
     );
   }
 
-  public searchForm() {
+  public searchForm() : void{
     this.searchFilterList = [];
     this.currentPage = 1;
     this.skip = 0;

@@ -1,15 +1,16 @@
 export interface LedgerMatch {
-  Status: number;
-  Entity: LedgerDetails[];
-}
-
-export interface LedgerDetails {
-  LedgerCode: string;
-  LedgerName: string;
-  LedgerID: number;
-  GroupID: number;
   GroupName: string;
   Balance: string;
   ActualBalance: number;
   LedgerType: string;
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  GroupID: number;
+}
+
+export interface LedgerMatchModel {
+  StatusCode: number;
+  Message: string;
+  Entity: LedgerMatch[];
 }
