@@ -1,11 +1,3 @@
-export interface Fields {
-  Field1: string;
-  Field2: string;
-  Field3: string;
-  Field4: string;
-  Field5: string;
-}
-
 export interface JournalMasterList {
   ID: number;
   Date: Date;

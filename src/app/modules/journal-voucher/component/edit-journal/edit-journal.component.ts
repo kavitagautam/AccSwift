@@ -66,6 +66,10 @@ export class EditJournalComponent implements OnInit {
           .getJournalDetails(params.get("id"))
           .subscribe(response => {
             this.journalDetail = response.Entity;
+
+            console.log(
+              "Journal Details " + JSON.stringify(this.journalDetail)
+            );
             this.buildJournalForm();
             this.setJournalList();
           });
@@ -117,7 +121,7 @@ export class EditJournalComponent implements OnInit {
       journaldetails.forEach(element => {
         journalFormArray.push(
           this._fb.group({
-            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
+            ledgerCode: [element.LedgerCode ? element.LedgerCode : ""],
             particularsOraccountingHead: [
               element.LedgerName,
               Validators.required

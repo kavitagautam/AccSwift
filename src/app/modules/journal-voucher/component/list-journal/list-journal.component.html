@@ -14,8 +14,8 @@
     </div>
     <div class="box-body collapse" id="collapseOne" data-parent="#accordion">
       <div class="row">
-        <div class="col-md-12">
-          <form [formGroup]="journalSearchForm" novalidate>
+        <form [formGroup]="journalSearchForm" novalidate>
+          <div class="col-md-12">
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="voucher#">Voucher #</label>
@@ -53,19 +53,6 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label for="date">To Date</label>
-                <input
-                  type="text"
-                  placeholder="To Date"
-                  class="form-control"
-                  formControlName="Date"
-                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
-                  bsDatepicker
-                />
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
                 <label for="date">From Date</label>
                 <input
                   type="text"
@@ -77,8 +64,21 @@
                 />
               </div>
             </div>
-          </form>
-        </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label for="date">To Date</label>
+                <input
+                  type="text"
+                  placeholder="To Date"
+                  class="form-control"
+                  formControlName="toDate"
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                  bsDatepicker
+                />
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
       <div class="box-footer">
         <div class="mb-2">
@@ -109,7 +109,6 @@
           [pageable]="true"
           (pageChange)="pageChange($event)"
           scrollable="none"
-          (filterChange)="filterChange($event)"
         >
           <kendo-grid-column field="VoucherNo" title="Voucher No.">
           </kendo-grid-column>
