@@ -1,0 +1,3 @@
+[submodule "src/app/modules/accswift-angular-submodule"]
+	path = src/app/modules/accswift-angular-submodule
+	url = git@gitlab.com:bent_ray_tech/accswift-angular-submodule.git
