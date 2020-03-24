@@ -99,12 +99,12 @@ export interface ProjectList {
   ModifiedDate: string;
 }
 
-export interface SeriesList {
+export interface SeriesListModel {
   Status: number;
-  Entity: SeriesEntity[];
+  Entity: SeriesList[];
 }
 
-export interface SeriesEntity {
+export interface SeriesList {
   ID: number;
   Name: string;
 }

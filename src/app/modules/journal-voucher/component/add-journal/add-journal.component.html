@@ -10,11 +10,11 @@
               id="seriesId"
               formControlName="seriesId"
             >
-            <option [ngValue]="null">Choose Option....</option>
+              <option [ngValue]="null">Choose Option....</option>
               <option
                 *ngFor="let series of journalService.journalSeriesList"
                 [value]="series.ID"
-                >{{ series.EngName }}
+                >{{ series.Name }}
               </option>
             </select>
           </div>

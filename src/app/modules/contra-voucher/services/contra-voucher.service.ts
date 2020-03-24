@@ -1,9 +1,9 @@
 import {
   SeriesList,
   ProjectList,
-  CashAccounts,
+  CashAccountsList,
   ContraVoucherMaster,
-  CashParty
+  CashPartyList
 } from "./../models/contraVoucher.model";
 import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
@@ -50,17 +50,15 @@ export class ContraVoucherService {
   getCashReceiptAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/CashAccounts`)
-      .subscribe((res: CashAccounts) => {
+      .subscribe(res => {
         this.cashAccountLists = res.Entity;
       });
   }
 
   getCashPartyList(): void {
-    this.httpService
-      .get(`${this._api_URL}Ledger/cashparty`)
-      .subscribe((res: CashParty) => {
-        this.cashPartyLists = res.Entity;
-      });
+    this.httpService.get(`${this._api_URL}Ledger/cashparty`).subscribe(res => {
+      this.cashPartyLists = res.Entity;
+    });
   }
 
   getCashReceiptMaster(): Observable<ContraVoucherMaster[]> {
@@ -71,7 +69,7 @@ export class ContraVoucherService {
     return this.httpService.get(`${this._api_URL}CashReceiptMaster/${id}`);
   }
 
-  getCashParty(): Observable<CashAccounts[]> {
+  getCashParty(): Observable<CashAccountsList[]> {
     return this.httpService.get(`${this._api_URL} /Ledger/cashparty`);
   }
 }

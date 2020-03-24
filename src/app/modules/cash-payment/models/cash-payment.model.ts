@@ -23,24 +23,24 @@ export interface Entity {
   GroupID: number;
 }
 
-export interface SeriesList {
+export interface SeriesListModel {
   StatusCode: number;
   Message: string;
-  Entity: SeriesEntity[];
+  Entity: SeriesList[];
 }
 
-export interface SeriesEntity {
+export interface SeriesList {
   ID: number;
   Name: string;
   VoucherType: string;
 }
 
-export interface CashParty {
+export interface CashPartyListModel {
   StatusCode: number;
-  Entity: CashEntity[];
+  Entity: CashParty[];
 }
 
-export interface CashEntity {
+export interface CashParty {
   LedgerID: number;
   LedgerCode: number;
   LedgerName: string;

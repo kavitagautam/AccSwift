@@ -6,8 +6,9 @@ import {
   ProjectList,
   SeriesList,
   CashReceiptMaster,
-  CashAccounts,
-  CashParty
+  CashAccountList,
+  CashPartyList,
+  CashAccountsModel
 } from "../models/cash-receipt.model";
 import { Observable } from "rxjs";
 @Injectable({
@@ -16,8 +17,8 @@ import { Observable } from "rxjs";
 export class CashReceiptService {
   seriesLists: SeriesList;
   projectLists: ProjectList;
-  cashAccountLists;
-  cashPartyLists: CashParty[];
+  cashAccountLists: CashAccountList;
+  cashPartyLists: CashPartyList;
   _api_URL = environment.baseAPI;
 
   constructor(
@@ -41,7 +42,7 @@ export class CashReceiptService {
     const params = new HttpParams().set("VoucherType", "CASH_RCPT"); // Series List for Cash Receipt Voucher Type
     this.httpService
       .get(`${this._api_URL}Series`, null, params)
-      .subscribe((res: any) => {
+      .subscribe(res => {
         this.seriesLists = res.Entity;
       });
   }
@@ -49,7 +50,7 @@ export class CashReceiptService {
   getCashReceiptAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/CashAccounts`)
-      .subscribe((res: CashAccounts) => {
+      .subscribe(res => {
         this.cashAccountLists = res.Entity;
       });
   }
@@ -70,7 +71,7 @@ export class CashReceiptService {
     return this.httpService.get(`${this._api_URL}CashReceiptMaster/${id}`);
   }
 
-  getCashParty(): Observable<CashAccounts[]> {
+  getCashParty(): Observable<CashPartyList[]> {
     return this.httpService.get(`${this._api_URL} /Ledger/cashparty`);
   }
 }

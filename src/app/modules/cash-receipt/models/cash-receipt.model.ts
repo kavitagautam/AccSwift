@@ -11,22 +11,22 @@ export interface ProjectList {
   ModifiedDate: string;
 }
 
-export interface SeriesList {
+export interface SeriesListModel {
   Status: number;
-  Entity: SeriesEntity[];
+  Entity: SeriesList[];
 }
 
-export interface SeriesEntity {
+export interface SeriesList {
   ID: number;
   Name: string;
 }
 
-export interface CashParty {
+export interface CashPartyListModel {
   Status: number;
-  Entity: CashPartyEntity[];
+  Entity: CashPartyList[];
 }
 
-export interface CashPartyEntity {
+export interface CashPartyList {
   LedgerID: number;
   LedgerCode: string;
   LedgerName: string;
@@ -110,12 +110,11 @@ export interface CashReceiptDetails {
   Remarks: string;
 }
 
-export interface CashAccounts {
-  Status: number;
-  Entity: Entity[];
+export interface CashAccountsModel {
+  Entity: CashAccountList[];
 }
 
-export interface Entity {
+export interface CashAccountList {
   LedgerID: number;
   LedgerCode: string;
   LedgerName: string;

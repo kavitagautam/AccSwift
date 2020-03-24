@@ -45,6 +45,7 @@ export class CashPaymentService {
       .get(`${this._api_URL}series`, null, params)
       .subscribe((res: any) => {
         this.seriesLists = res.Entity;
+        console.log(this.seriesLists);
       });
   }
 

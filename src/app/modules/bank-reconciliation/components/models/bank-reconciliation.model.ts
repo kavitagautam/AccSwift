@@ -11,13 +11,13 @@ export interface ProjectList {
   ModifiedDate: string;
 }
 
-export interface SeriesList {
+export interface SeriesListModel {
   StatusCode: number;
   Message: string;
-  Entity: SeriesEntity[];
+  Entity: SeriesList[];
 }
 
-export interface SeriesEntity {
+export interface SeriesList {
   ID: number;
   Name: string;
   VoucherType: string;

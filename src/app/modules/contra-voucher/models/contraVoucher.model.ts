@@ -11,13 +11,13 @@ export interface ProjectList {
   ModifiedDate: string;
 }
 
-export interface SeriesList {
+export interface SeriesListModel {
   StatusCode: number;
   Message: string;
-  Entity: SeriesEntity[];
+  Entity: SeriesList[];
 }
 
-export interface SeriesEntity {
+export interface SeriesList {
   ID: number;
   Name: string;
   VoucherType: string;
@@ -100,24 +100,24 @@ export interface ContraVoucherDetails {
   Remarks: string;
 }
 
-export interface CashParty {
+export interface CashPartyListModel {
   Status: number;
-  Entity: CashPartyEntity[];
+  Entity: CashPartyList[];
 }
 
-export interface CashPartyEntity {
+export interface CashPartyList {
   LedgerID: number;
   LedgerCode: string;
   LedgerName: string;
   GroupID: number;
 }
 
-export interface CashAccounts {
+export interface CashAccountsModel {
   Status: number;
-  Entity: Entity[];
+  Entity: CashAccountsList[];
 }
 
-export interface Entity {
+export interface CashAccountsList {
   LedgerID: number;
   LedgerCode: string;
   LedgerName: string;

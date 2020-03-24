@@ -16,8 +16,8 @@ import { environment } from "@env/environment";
 export class BankPaymentService {
   _api_URL = environment.baseAPI;
   projectList: ProjectList;
-  seriesList;
-  bankAccountList;
+  seriesList: SeriesList;
+  bankAccountList: BankAccounts;
 
   constructor(
     private http: HttpClient,
@@ -40,14 +40,14 @@ export class BankPaymentService {
     const params = new HttpParams().set("VoucherType", "BANK_PMNT"); // Series List for Bank Payment Voucher Type
     this.httpService
       .get(`${this._api_URL}series`, null, params)
-      .subscribe((res: SeriesList) => {
+      .subscribe(res => {
         this.seriesList = res.Entity;
       });
   }
   getBankPaymentAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/BankAccounts`)
-      .subscribe((res: BankAccounts) => {
+      .subscribe(res => {
         this.bankAccountList = res.Entity;
       });
   }

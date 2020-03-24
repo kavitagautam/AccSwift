@@ -79,7 +79,6 @@ export class ListCashReceiptComponent implements OnInit {
 
     this.cashReceiptService.getCashReceiptMaster().subscribe(
       response => {
-        this.listLoading = true;
         this.cashList = response;
         this.gridView = {
           data: this.cashList.slice(this.skip, this.skip + this.pageSize),

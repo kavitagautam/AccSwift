@@ -41,6 +41,7 @@ export class BankReceiptService {
     this.httpService
       .get(`${this._api_URL}Ledger/BankAccounts`)
       .subscribe((res: BankAccounts) => {
+        console.log(res);
         this.bankAccountLists = res.Entity;
       });
   }
@@ -49,7 +50,7 @@ export class BankReceiptService {
     const params = new HttpParams().set("VoucherType", "BANK_RCPT"); // Series List for bank Receipt V.Type
     this.httpService
       .get(`${this._api_URL}Series`, null, params)
-      .subscribe((res: any) => {
+      .subscribe(res => {
         this.seriesLists = res.Entity;
       });
   }

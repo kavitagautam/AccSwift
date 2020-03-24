@@ -39,11 +39,22 @@ export class JournalService {
       });
   }
 
+  // getSeriesList(): void {
+  //   const params = new HttpParams().set("VoucherType", "CASH_RCPT"); // Series List for Cash Receipt Voucher Type
+  //   this.httpService
+  //     .get(`${this._api_URL}series`, null, params)
+  //     .subscribe((res: any) => {
+  //       this.seriesLists = res.Entity;
+  //       console.log(this.seriesLists);
+  //     });
+
   getSeriesList(): void {
+    const params = new HttpParams().set("VouchetType", "JRNL");
     this.httpService
-      .get(`${this._api_URL}series/journal`)
+      .get(`${this._api_URL}series/journal`, null, params)
       .subscribe((res: any) => {
         this.journalSeriesList = res.Entity;
+        console.log(res);
       });
   }
 
