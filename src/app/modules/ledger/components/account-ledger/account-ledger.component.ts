@@ -171,8 +171,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     const previousYearBalanceArray = <FormArray>(
       this.accoutLedgerForm.get("previousYearBalanceList")
     );
-    const moreDetails = <FormArray>this.accoutLedgerForm.get("moreDetails");
-
+    const moreDetails = this.accoutLedgerForm.get("moreDetails");
     if (this.addMode) {
       if (this.accoutLedgerForm.invalid) return;
 
@@ -188,23 +187,22 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         DrCr: "DR",
         GroupID: this.accoutLedgerForm.get("groupID").value,
         OpCCYID: 1,
-        PersonName: moreDetails ? moreDetails.get("PersonName") : "",
-        Address1: moreDetails ? moreDetails.get("Address1") : "",
-        Address2: moreDetails ? moreDetails.get("Address2") : "",
-        City: moreDetails ? moreDetails.get("City") : "",
-        Phone: moreDetails ? moreDetails.get("Phone") : "",
-        Email: moreDetails ? moreDetails.get("Email") : "",
-        Company: moreDetails ? moreDetails.get("Company") : "",
-        Website: moreDetails ? moreDetails.get("Website") : "",
-        VatPanNo: moreDetails ? moreDetails.get("VatPanNo") : "",
-        CreditLimit: moreDetails ? moreDetails.get("CreditLimit") : 0,
-        IsActive: moreDetails ? moreDetails.get("IsActive") : false,
+        PersonName: moreDetails ? moreDetails.value.contactPerson : "",
+        Address1: moreDetails ? moreDetails.value.address1 : "",
+        Address2: moreDetails ? moreDetails.value.address2 : "",
+        City: moreDetails ? moreDetails.value.city : "",
+        Phone: moreDetails ? moreDetails.value.phone : "",
+        Email: moreDetails ? moreDetails.value.email : "",
+        Company: moreDetails ? moreDetails.value.company : "",
+        Website: moreDetails ? moreDetails.value.website : "",
+        VatPanNo: moreDetails ? moreDetails.value.VATPANNo : "",
+        IsActive: moreDetails ? moreDetails.value.autoCalculate : false,
         OpeningBalance: {
-          ID: openingBalanceArray.controls[0].get("ID").value,
           AccClassID: openingBalanceArray.controls[0].get("accountClassId")
             .value,
           OpenBal: openingBalanceArray.controls[0].get("openingBalance").value,
-          OpenBalDrCr: openingBalanceArray.controls[0].get("balanceType").value
+          OpenBalDrCr: openingBalanceArray.controls[0].get("balanceType").value,
+          OpenBalCCYID: 1
         },
         Remarks: this.accoutLedgerForm.get("remarks").value
       };
@@ -235,23 +233,22 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         DrCr: "DR",
         GroupID: 1,
         OpCCYID: 1,
-        PersonName: moreDetails ? moreDetails.get("PersonName") : "",
-        Address1: moreDetails ? moreDetails.get("Address1") : "",
-        Address2: moreDetails ? moreDetails.get("Address2") : "",
-        City: moreDetails ? moreDetails.get("City") : "",
-        Phone: moreDetails ? moreDetails.get("Phone") : "",
-        Email: moreDetails ? moreDetails.get("Email") : "",
-        Company: moreDetails ? moreDetails.get("Company") : "",
-        Website: moreDetails ? moreDetails.get("Website") : "",
-        VatPanNo: moreDetails ? moreDetails.get("VatPanNo") : "",
-        CreditLimit: moreDetails ? moreDetails.get("CreditLimit") : 0,
-        IsActive: moreDetails ? moreDetails.get("IsActive") : false,
+        PersonName: moreDetails ? moreDetails.value.contactPerson : "",
+        Address1: moreDetails ? moreDetails.value.address1 : "",
+        Address2: moreDetails ? moreDetails.value.address2 : "",
+        City: moreDetails ? moreDetails.value.city : "",
+        Phone: moreDetails ? moreDetails.value.phone : "",
+        Email: moreDetails ? moreDetails.value.email : "",
+        Company: moreDetails ? moreDetails.value.company : "",
+        Website: moreDetails ? moreDetails.value.website : "",
+        VatPanNo: moreDetails ? moreDetails.value.VATPANNo : "",
+        IsActive: moreDetails ? moreDetails.value.autoCalculate : false,
         OpeningBalance: {
-          ID: openingBalanceArray.controls[0].get("ID").value,
           AccClassID: openingBalanceArray.controls[0].get("accountClassId")
             .value,
           OpenBal: openingBalanceArray.controls[0].get("openingBalance").value,
-          OpenBalDrCr: openingBalanceArray.controls[0].get("balanceType").value
+          OpenBalDrCr: openingBalanceArray.controls[0].get("balanceType").value,
+          OpenBalCCYID: 1
         },
         Remarks: this.accoutLedgerForm.get("remarks").value
       };

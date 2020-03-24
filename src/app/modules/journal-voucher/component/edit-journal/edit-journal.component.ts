@@ -3,13 +3,14 @@ import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe } from "@angular/common";
-import { JournalMaster } from "../../models/journal.model";
+import { JournalDetails } from "../../models/journal.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { IntlService } from "@progress/kendo-angular-intl";
 import { LocaleService } from "@app/core/services/locale/locale.services";
+import { RegexConst } from "@app/shared/constants/regex.constant";
 
 @Component({
   selector: "accSwift-edit-journal",
@@ -20,10 +21,13 @@ import { LocaleService } from "@app/core/services/locale/locale.services";
 export class EditJournalComponent implements OnInit {
   private editedRowIndex: number;
   //Input Field Property
+
+  regexConst = RegexConst;
+
   numericFormat: string = "n2";
   public decimals: number = 2;
   editJournalForm: FormGroup;
-  journalDetail: JournalMaster;
+  journalDetail: JournalDetails;
   submitted: boolean;
   rowSubmitted: boolean;
   debitTotal: number = 0;
@@ -61,8 +65,8 @@ export class EditJournalComponent implements OnInit {
       if (params.get("id")) {
         this.journalService
           .getJournalDetails(params.get("id"))
-          .subscribe(res => {
-            this.journalDetail = res;
+          .subscribe(response => {
+            this.journalDetail = response.Entity;
             this.buildJournalForm();
             this.setJournalList();
           });
@@ -75,7 +79,8 @@ export class EditJournalComponent implements OnInit {
       seriesId: [this.journalDetail ? this.journalDetail.SeriesID : null],
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
       date: [
-        this.journalDetail ? new Date(this.journalDetail.CreatedDate) : ""
+        this.journalDetail ? new Date(this.journalDetail.CreatedDate) : "",
+        [Validators.pattern(this.regexConst.DATE)]
       ],
       projectId: [this.journalDetail ? this.journalDetail.ProjectID : null],
       narration: [this.journalDetail ? this.journalDetail.Remarks : ""],

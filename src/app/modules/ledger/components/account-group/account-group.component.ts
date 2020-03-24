@@ -86,7 +86,14 @@ export class AccountGroupComponent implements OnInit, OnChanges {
         Validators.required
       ],
       parentGroupId: [
-        this.ledgerGroupDetails ? this.ledgerGroupDetails.ParentGroupID : null,
+        {
+          value: this.ledgerGroupDetails
+            ? this.ledgerGroupDetails.ParentGroupID
+            : null,
+          disabled: this.ledgerGroupDetails
+            ? this.ledgerGroupDetails.IsBuiltIn
+            : false
+        },
         Validators.required
       ],
       remarks: [this.ledgerGroupDetails ? this.ledgerGroupDetails.Remarks : ""]
