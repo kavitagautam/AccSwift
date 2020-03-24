@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { RegexConst } from "@app/shared/constants/regex.constant";
@@ -31,17 +31,7 @@ export class ListJournalComponent implements OnInit {
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
 
   //Filter Serach Key
-  voucherNoSearch = "";
-  journalDateToSearch = "";
-  journalDateFromSearch = "";
-  projectIdSearch = "";
-  seriesIdSearch = "";
-  voucherNoSearchKey = "";
-  journalDateToSerchKey = "";
-  journalDateFromSerchKey = "";
-  projectNameSerachKey = "";
-  seriesNameSearchKey = "";
-  remarkSearchKey = "";
+
   orderByKey = "";
   dirKey = "asc";
   public pageSize = 10;
@@ -77,8 +67,8 @@ export class ListJournalComponent implements OnInit {
       SeriesID: [null],
       ProjectID: [null],
       VoucherNo: [""],
-      Date: ["", [Validators.pattern(this.regexConst.DATE)]],
-      fromDate: ["", [Validators.pattern(this.regexConst.DATE)]]
+      toDate: [""],
+      fromDate: [""]
     });
     this.getJournalList();
   }
@@ -88,27 +78,12 @@ export class ListJournalComponent implements OnInit {
     this.dirKey = "";
     this.sort = sort;
     this.dirKey = this.sort[0].dir;
-    if (this.sort[0].field === "VoucherNo") {
-      this.orderByKey = "Voucher_No";
-    }
-    if (this.sort[0].field === "Date") {
-      this.orderByKey = "Journal_Date";
-    }
-    if (this.sort[0].field === "ProjectName") {
-      this.orderByKey = "Project";
-    }
-    if (this.sort[0].field === "SeriesName") {
-      this.orderByKey = "Series";
-    }
-    if (this.sort[0].field === "Remarks") {
-      this.orderByKey = "Remarks";
-    }
+    this.orderByKey = this.sort[0].field;
     this.getJournalList();
   }
 
   getJournalList(): void {
     this.journalListLoading = true;
-
     const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
@@ -134,43 +109,38 @@ export class ListJournalComponent implements OnInit {
     );
   }
 
-  public filterChange(filter): void {
-    this.voucherNoSearchKey = "";
-    this.projectNameSerachKey = "";
-    this.seriesNameSearchKey = "";
-    this.filter = filter;
-    for (let i = 0; i < filter.filters.length; i++) {
-      if (filter.filters[i].field == "VoucherNo") {
-        this.voucherNoSearchKey = filter.filters[i].value;
-      }
-      if (filter.filters[i].field == "ProjectName") {
-        this.projectNameSerachKey = filter.filters[i].value;
-      }
-      if (filter.filters[i].field == "SeriesName") {
-        this.seriesNameSearchKey = filter.filters[i].value;
-      }
-    }
-    this.getJournalList();
-  }
-
   public searchForm() {
-    // this.voucherNoSearch = this.journalSearchForm.controls.voucherNo.value;
-    // this.journalDateToSearch = this.journalSearchForm.controls.toDate.value;
-    // this.journalDateFromSearch = this.journalSearchForm.controls.fromDate.value;
-    // this.projectIdSearch = this.journalSearchForm.controls.projectId.value;
-    // this.seriesIdSearch = this.journalSearchForm.controls.seriesId.value;
-
     this.searchFilterList = [];
     this.currentPage = 1;
     this.skip = 0;
     if (this.journalSearchForm.invalid) return;
     for (const key in this.journalSearchForm.value) {
       if (this.journalSearchForm.value[key]) {
-        this.searchFilterList.push({
-          Field: key,
-          Operator: "contains",
-          value: this.journalSearchForm.value[key]
-        });
+        if (
+          this.journalSearchForm.value[key] !== "toDate" &&
+          this.journalSearchForm.value[key] !== "fromDate"
+        ) {
+          this.searchFilterList.push({
+            Field: key,
+            Operator: "contains",
+            value: this.journalSearchForm.value[key]
+          });
+        } else {
+          if (this.journalSearchForm.value[key] == "toDate") {
+            this.searchFilterList.push({
+              Field: "Date",
+              Operator: "<=",
+              value: this.journalSearchForm.value[key]
+            });
+          }
+          if (this.journalSearchForm.value[key] == "fromDate") {
+            this.searchFilterList.push({
+              Field: "Date",
+              Operator: ">=",
+              value: this.journalSearchForm.value[key]
+            });
+          }
+        }
       }
     }
     this.getJournalList();

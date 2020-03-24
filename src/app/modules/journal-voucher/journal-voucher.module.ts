@@ -2,7 +2,6 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { JournalVoucherRoutingModule } from "./journal-voucher.routing";
-import { NgxPaginationModule } from "ngx-pagination";
 import { SharedModule } from "@app/shared/shared.module";
 import { HttpClient } from "@angular/common/http";
 import { GridModule } from "@progress/kendo-angular-grid";
@@ -45,7 +44,6 @@ export function createTranslateLoader(http: HttpClient) {
     DropDownsModule,
     NepaliDatepickerModule,
     JournalVoucherRoutingModule,
-    NgxPaginationModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
