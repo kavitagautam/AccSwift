@@ -2,11 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { CompanyService } from "../../services/company.service";
-import { RegexConst } from "@app/shared/constants/regex.constant";
 import { ToastrService } from "ngx-toastr";
-import { ImageCroppedEvent } from "ngx-image-cropper";
-import { Observable, fromEvent } from "rxjs";
-import { pluck } from "rxjs/operators";
 import { SelectEvent } from "@progress/kendo-angular-upload";
 
 @Component({
@@ -18,7 +14,6 @@ export class AddCompanyComponent implements OnInit {
   companyLogo: any = "";
 
   companyForm: FormGroup;
-  regexConst = RegexConst;
 
   constructor(
     private _fb: FormBuilder,

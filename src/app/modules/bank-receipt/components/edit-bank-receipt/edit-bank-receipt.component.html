@@ -11,7 +11,7 @@
                 *ngFor="let series of bankReceiptService.seriesLists"
                 [ngValue]="series.ID"
               >
-                {{ series.EngName }}
+                {{ series.Name }}
               </option>
             </select>
           </div>
@@ -50,7 +50,11 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Project</label>
-            <select class="form-control" formControlName="projectId">
+            <select
+              class="form-control"
+              formControlName="projectId"
+              accSwiftFormValidator
+            >
               <option [ngValue]="null">Choose Option....</option>
               <option
                 *ngFor="let project of bankReceiptService.projectLists"

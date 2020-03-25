@@ -10,7 +10,7 @@ import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validato
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { IntlService } from "@progress/kendo-angular-intl";
 import { LocaleService } from "@app/core/services/locale/locale.services";
-import { RegexConst } from "@app/shared/constants/regex.constant";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-edit-journal",
@@ -21,8 +21,6 @@ import { RegexConst } from "@app/shared/constants/regex.constant";
 export class EditJournalComponent implements OnInit {
   private editedRowIndex: number;
   //Input Field Property
-
-  regexConst = RegexConst;
 
   numericFormat: string = "n2";
   public decimals: number = 2;
@@ -40,7 +38,8 @@ export class EditJournalComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
-    centered: true
+    centered: true,
+    class: "modal-lg"
   };
 
   constructor(
@@ -52,7 +51,8 @@ export class EditJournalComponent implements OnInit {
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     public intlService: IntlService,
-    private localeService: LocaleService
+    private localeService: LocaleService,
+    private toastr: ToastrService
   ) {
     this.localeService.set("en-US");
   }
@@ -78,8 +78,7 @@ export class EditJournalComponent implements OnInit {
       seriesId: [this.journalDetail ? this.journalDetail.SeriesID : null],
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
       date: [
-        this.journalDetail ? new Date(this.journalDetail.CreatedDate) : "",
-        [Validators.pattern(this.regexConst.DATE)]
+        this.journalDetail ? new Date(this.journalDetail.CreatedDate) : ""
       ],
       projectId: [this.journalDetail ? this.journalDetail.ProjectID : null],
       narration: [this.journalDetail ? this.journalDetail.Remarks : ""],
@@ -117,7 +116,7 @@ export class EditJournalComponent implements OnInit {
       journaldetails.forEach(element => {
         journalFormArray.push(
           this._fb.group({
-            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
+            ledgerCode: [element.LedgerCode ? element.LedgerCode : ""],
             particularsOraccountingHead: [
               element.LedgerName,
               Validators.required
@@ -247,11 +246,58 @@ export class EditJournalComponent implements OnInit {
     this.submitted = false;
   }
 
+  journalEntryList = [];
   public save(): void {
-    if (this.editJournalForm.valid) {
-      this.router.navigate(["/journal"]);
-    } else {
+    this.journalEntryList = [];
+    const journalEntryFormArray = <FormArray>(
+      this.editJournalForm.get("journalEntryList")
+    );
+
+    for (const key in journalEntryFormArray.value) {
+      if (journalEntryFormArray.value[key]) {
+        this.journalEntryList.push({
+          DebitCredit: journalEntryFormArray.value[key].debit
+            ? "Debit"
+            : "Credit",
+          LedgerID: journalEntryFormArray.value[key].ledgerID,
+          LedgerCode: journalEntryFormArray.value[key].ledgerCode,
+          LedgerBalance: journalEntryFormArray.value[key].balance,
+          Amount: journalEntryFormArray.value[key].debit
+            ? journalEntryFormArray.value[key].debit
+            : journalEntryFormArray.value[key].credit,
+          Remarks: journalEntryFormArray.value[key].remarks
+        });
+      }
     }
+
+    if (this.editJournalForm.invalid) return;
+    const obj = {
+      ID: this.journalDetail.ID,
+      Date: this.editJournalForm.get("date").value,
+      Journaldetails: this.journalEntryList,
+      SeriesID: this.editJournalForm.get("seriesId").value,
+      Fields: {
+        Field1: "",
+        Field2: "",
+        Field3: "",
+        Field4: "",
+        Field5: ""
+      },
+      VoucherNo: this.editJournalForm.get("voucherNo").value,
+      ProjectID: this.editJournalForm.get("projectId").value,
+      Remarks: this.editJournalForm.get("narration").value
+    };
+    this.journalService.updateJournalVoucher(obj).subscribe(
+      response => {
+        this.router.navigate(["/journal"]);
+      },
+      error => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Journal edited successfully");
+      }
+    );
   }
 
   public cancel(): void {
@@ -363,6 +409,5 @@ export class EditJournalComponent implements OnInit {
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
-    // this.formGroup = undefined;
   }
 }

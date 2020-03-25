@@ -84,6 +84,7 @@ export class ListBankReconciliationComponent implements OnInit {
       response => {
         this.listLoading = true;
         this.bankReconciliationList = response;
+        console.log(this.bankReconciliationList);
         this.gridView = {
           data: this.bankReconciliationList.slice(
             this.skip,

@@ -20,7 +20,7 @@ export class LedgerCodeAsyncValidators {
         map(
           res => {
             if (control.value) {
-              if (res.Status == 1) {
+              if (res.StatusCode == 200) {
                 return null;
               } else {
                 return {

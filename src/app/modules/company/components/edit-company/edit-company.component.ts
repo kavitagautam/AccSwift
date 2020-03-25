@@ -3,9 +3,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CompanyService } from "../../services/company.service";
 import { CompanyList } from "../../models/company.model";
-import { RegexConst } from "@app/shared/constants/regex.constant";
 import { ToastrService } from "ngx-toastr";
-import { ImageCroppedEvent } from "ngx-image-cropper";
 import { SelectEvent } from "@progress/kendo-angular-upload";
 
 @Component({
@@ -15,10 +13,8 @@ import { SelectEvent } from "@progress/kendo-angular-upload";
 })
 export class EditCompanyComponent implements OnInit {
   companyLogo: any = "";
-
   companyDetails: CompanyList;
   companyForm: FormGroup;
-  regexConst = RegexConst;
 
   constructor(
     public _fb: FormBuilder,
@@ -30,6 +26,10 @@ export class EditCompanyComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildCompanyForm();
+    this.getIdFromRoute();
+  }
+
+  getIdFromRoute(): void {
     this.route.paramMap.subscribe(params => {
       if (params.get("id")) {
         this.companyService

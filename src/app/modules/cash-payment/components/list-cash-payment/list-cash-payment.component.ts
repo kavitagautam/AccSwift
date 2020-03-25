@@ -72,17 +72,15 @@ export class ListCashPaymentComponent implements OnInit {
 
   getCashPaymentList(): void {
     this.listLoading = true;
-    const params = {
-      PageNo: this.currentPage,
-      DisplayRow: this.pageSize,
-      OrderBy: "",
-      Direction: "asc" // "asc" or "desc"
-    };
+    // const params = {
+    //   PageNo: this.currentPage,
+    //   DisplayRow: this.pageSize,
+    //   OrderBy: "",
+    //   Direction: "asc" // "asc" or "desc"
+    // };
 
     this.cashPaymentService.getCashPaymentMaster().subscribe(
       response => {
-        this.listLoading = true;
-        //mapping the data to change string date format to Date
         this.cashPaymentList = response;
         this.gridView = {
           data: this.cashPaymentList.slice(

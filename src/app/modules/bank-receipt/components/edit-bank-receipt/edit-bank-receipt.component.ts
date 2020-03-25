@@ -29,7 +29,8 @@ export class EditBankReceiptComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
-    centered: true
+    centered: true,
+    class: "modal-lg"
   };
   constructor(
     public _fb: FormBuilder,
@@ -53,7 +54,8 @@ export class EditBankReceiptComponent implements OnInit {
         this.bankReceiptDetails ? this.bankReceiptDetails.SeriesID : null
       ],
       projectId: [
-        this.bankReceiptDetails ? this.bankReceiptDetails.ProjectID : null
+        this.bankReceiptDetails ? this.bankReceiptDetails.ProjectID : null,
+        [Validators.required]
       ],
       voucherNo: [
         this.bankReceiptDetails ? this.bankReceiptDetails.VoucherNo : "",

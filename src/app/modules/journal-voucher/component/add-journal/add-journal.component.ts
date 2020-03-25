@@ -7,6 +7,7 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-add-journal",
@@ -43,7 +44,8 @@ export class AddJournalComponent implements OnInit {
     public journalService: JournalService,
     private modalService: BsModalService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
-    public ledgerCodeService: LedgerCodeMatchService
+    public ledgerCodeService: LedgerCodeMatchService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -177,11 +179,58 @@ export class AddJournalComponent implements OnInit {
     }
   }
 
+  journalEntryList = [];
+
   public save(): void {
-    if (this.addJournalForm.valid) {
-      this.router.navigate(["/journal"]);
-    } else {
+    this.journalEntryList = [];
+    const journalEntryFormArray = <FormArray>(
+      this.addJournalForm.get("journalEntryList")
+    );
+
+    for (const key in journalEntryFormArray.value) {
+      if (journalEntryFormArray.value[key]) {
+        this.journalEntryList.push({
+          DebitCredit: journalEntryFormArray.value[key].debit
+            ? "Debit"
+            : "Credit",
+          LedgerID: journalEntryFormArray.value[key].ledgerID,
+          LedgerCode: journalEntryFormArray.value[key].ledgerCode,
+          LedgerBalance: journalEntryFormArray.value[key].balance,
+          Amount: journalEntryFormArray.value[key].debit
+            ? journalEntryFormArray.value[key].debit
+            : journalEntryFormArray.value[key].credit,
+          Remarks: journalEntryFormArray.value[key].remarks
+        });
+      }
     }
+
+    if (this.addJournalForm.invalid) return;
+    const obj = {
+      Date: this.addJournalForm.get("date").value,
+      Journaldetails: this.journalEntryList,
+      SeriesID: this.addJournalForm.get("seriesId").value,
+      Fields: {
+        Field1: "",
+        Field2: "",
+        Field3: "",
+        Field4: "",
+        Field5: ""
+      },
+      VoucherNo: this.addJournalForm.get("voucherNo").value,
+      ProjectID: this.addJournalForm.get("projectId").value,
+      Remarks: this.addJournalForm.get("narration").value
+    };
+    this.journalService.addJournalVoucher(obj).subscribe(
+      response => {
+        this.router.navigate(["/journal"]);
+      },
+      error => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Journal added successfully");
+      }
+    );
   }
 
   public cancel(): void {

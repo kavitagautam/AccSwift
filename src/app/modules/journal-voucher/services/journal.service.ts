@@ -31,6 +31,15 @@ export class JournalService {
   getJournalDetails(id): Observable<JournalDetailsModel> {
     return this.httpService.get(`${this._api_URL}journalmaster/${id}`);
   }
+
+  addJournalVoucher(body): Observable<any> {
+    return this.httpService.post(`${this._api_URL}JournalMaster`, body);
+  }
+
+  updateJournalVoucher(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}JournalMaster`, body);
+  }
+
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
@@ -40,10 +49,11 @@ export class JournalService {
   }
 
   getSeriesList(): void {
+    const params = new HttpParams().set("VouchetType", "JRNL");
     this.httpService
-      .get(`${this._api_URL}series/journal`)
-      .subscribe((res: SeriesList) => {
-        this.journalSeriesList = res;
+      .get(`${this._api_URL}series/journal`, null, params)
+      .subscribe((res: any) => {
+        this.journalSeriesList = res.Entity;
       });
   }
 

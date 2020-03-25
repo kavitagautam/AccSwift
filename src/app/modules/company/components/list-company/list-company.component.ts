@@ -70,7 +70,6 @@ export class ListCompanyComponent implements OnInit {
 
   getCompanyList(): void {
     this.listLoading = true;
-
     const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,

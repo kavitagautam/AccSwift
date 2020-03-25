@@ -11,13 +11,15 @@ export interface ProjectList {
   ModifiedDate: string;
 }
 
+export interface SeriesListModel {
+  Status: number;
+  Entity: SeriesList[];
+}
+
 export interface SeriesList {
   ID: number;
-  EngName: string;
-  NepName: string;
+  Name: string;
   VoucherType: string;
-  AutoNumber: number;
-  BuiltIn: boolean;
 }
 
 export interface BankReceiptMaster {
