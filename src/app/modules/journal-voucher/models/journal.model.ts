@@ -91,13 +91,14 @@ export interface ProjectList {
   ModifiedDate: string;
 }
 
+export interface SeriesListModel {
+  Status: number;
+  Entity: SeriesList[];
+}
+
 export interface SeriesList {
   ID: number;
-  EngName: string;
-  NepName: string;
-  VoucherType: string;
-  AutoNumber: number;
-  BuiltIn: boolean;
+  Name: string;
 }
 
 export interface Journaldetail {

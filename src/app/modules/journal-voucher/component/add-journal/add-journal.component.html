@@ -14,12 +14,12 @@
               <option
                 *ngFor="let series of journalService.journalSeriesList"
                 [value]="series.ID"
-                >{{ series.EngName }}
+                >{{ series.Name }}
               </option>
             </select>
           </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
+        <div class="col-md-3 col-sm-6 col-xs-5">
           <div class="form-group">
             <label>Project</label>
             <select

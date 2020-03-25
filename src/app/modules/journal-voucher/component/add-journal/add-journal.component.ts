@@ -182,6 +182,7 @@ export class AddJournalComponent implements OnInit {
   journalEntryList = [];
 
   public save(): void {
+    this.journalEntryList = [];
     const journalEntryFormArray = <FormArray>(
       this.addJournalForm.get("journalEntryList")
     );
@@ -195,7 +196,9 @@ export class AddJournalComponent implements OnInit {
           LedgerID: journalEntryFormArray.value[key].ledgerID,
           LedgerCode: journalEntryFormArray.value[key].ledgerCode,
           LedgerBalance: journalEntryFormArray.value[key].balance,
-          Amount: journalEntryFormArray.value[key].balance,
+          Amount: journalEntryFormArray.value[key].debit
+            ? journalEntryFormArray.value[key].debit
+            : journalEntryFormArray.value[key].credit,
           Remarks: journalEntryFormArray.value[key].remarks
         });
       }
@@ -205,7 +208,7 @@ export class AddJournalComponent implements OnInit {
     const obj = {
       Date: this.addJournalForm.get("date").value,
       Journaldetails: this.journalEntryList,
-      SeriesID: 1,
+      SeriesID: this.addJournalForm.get("seriesId").value,
       Fields: {
         Field1: "",
         Field2: "",

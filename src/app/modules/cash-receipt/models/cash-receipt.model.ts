@@ -11,13 +11,26 @@ export interface ProjectList {
   ModifiedDate: string;
 }
 
+export interface SeriesListModel {
+  Status: number;
+  Entity: SeriesList[];
+}
+
 export interface SeriesList {
   ID: number;
-  EngName: string;
-  NepName: string;
-  VoucherType: string;
-  AutoNumber: number;
-  BuiltIn: boolean;
+  Name: string;
+}
+
+export interface CashPartyListModel {
+  Status: number;
+  Entity: CashPartyList[];
+}
+
+export interface CashPartyList {
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  GroupID: number;
 }
 
 export interface CashReceiptMaster {
@@ -97,12 +110,11 @@ export interface CashReceiptDetails {
   Remarks: string;
 }
 
-export interface CashAccounts {
-  Status: number;
-  Entity: Entity[];
+export interface CashAccountsModel {
+  Entity: CashAccountList[];
 }
 
-export interface Entity {
+export interface CashAccountList {
   LedgerID: number;
   LedgerCode: string;
   LedgerName: string;

@@ -29,7 +29,8 @@ export class EditCashReceiptComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
-    centered: true
+    centered: true,
+    class: "modal-lg"
   };
 
   constructor(

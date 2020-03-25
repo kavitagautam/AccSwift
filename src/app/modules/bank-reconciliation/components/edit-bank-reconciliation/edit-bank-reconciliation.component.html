@@ -7,9 +7,12 @@
             <label>Series </label>
             <select class="form-control" formControlName="seriesId">
               <option [ngValue]="null">Choose Option....</option>
-              <!-- <option *ngFor="let series of bankReceiptService.seriesLists" [ngValue]="series.ID">
-                {{ series.EngName }}
-              </option> -->
+              <option
+                *ngFor="let series of reconciliationService.seriesLists"
+                [ngValue]="series.ID"
+              >
+                {{ series.Name }}
+              </option>
             </select>
           </div>
         </div>
@@ -23,9 +26,12 @@
               accSwiftFormValidator
             >
               <option [ngValue]="null">Choose Option....</option>
-              <!-- <option *ngFor="let account of bankReceiptService.bankAccountLists" [ngValue]="account.LedgerID">
+              <option
+                *ngFor="let account of reconciliationService.bankAccountLists"
+                [ngValue]="account.LedgerID"
+              >
                 {{ account.LedgerName }}
-              </option> -->
+              </option>
             </select>
           </div>
         </div>
@@ -46,8 +52,12 @@
             <label>Project</label>
             <select class="form-control" formControlName="projectId">
               <option [ngValue]="null">Choose Option....</option>
-              <!-- <option *ngFor="let project of bankReceiptService.projectLists" [ngValue]="project.ID">
-                {{ project.EngName }}</option> -->
+              <option
+                *ngFor="let project of reconciliationService.projectLists"
+                [ngValue]="project.ID"
+              >
+                {{ project.EngName }}</option
+              >
             </select>
           </div>
         </div>

@@ -49,10 +49,11 @@ export class JournalService {
   }
 
   getSeriesList(): void {
+    const params = new HttpParams().set("VouchetType", "JRNL");
     this.httpService
-      .get(`${this._api_URL}series/journal`)
-      .subscribe((res: SeriesList) => {
-        this.journalSeriesList = res;
+      .get(`${this._api_URL}series/journal`, null, params)
+      .subscribe((res: any) => {
+        this.journalSeriesList = res.Entity;
       });
   }
 

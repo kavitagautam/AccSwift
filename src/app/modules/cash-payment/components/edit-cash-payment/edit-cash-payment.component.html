@@ -15,7 +15,7 @@
                 *ngFor="let series of cashPaymentService.seriesLists"
                 [ngValue]="series.ID"
               >
-                {{ series.EngName }}</option
+                {{ series.Name }}</option
               >
             </select>
           </div>
@@ -49,6 +49,11 @@
               accSwiftFormValidator
             >
               <option [ngValue]="null">Choose Option....</option>
+              <option
+                *ngFor="let cash of cashPaymentService.cashPartyLists"
+                [ngValue]="cash.LedgerID"
+                >{{ cash.LedgerName }}</option
+              >
             </select>
           </div>
         </div>

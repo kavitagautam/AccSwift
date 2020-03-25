@@ -1,4 +1,10 @@
-import { SeriesList, ProjectList, CashAccounts, ContraVoucherMaster } from './../models/contraVoucher.model';
+import {
+  SeriesList,
+  ProjectList,
+  CashAccountsList,
+  ContraVoucherMaster,
+  CashPartyList
+} from "./../models/contraVoucher.model";
 import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClient, HttpParams } from "@angular/common/http";
@@ -12,6 +18,7 @@ export class ContraVoucherService {
   seriesLists: SeriesList;
   projectLists: ProjectList;
   cashAccountLists;
+  cashPartyLists;
   _api_URL = environment.baseAPI;
   constructor(
     private http: HttpClient,
@@ -20,6 +27,7 @@ export class ContraVoucherService {
     this.getProjectLists();
     this.getSeriesList();
     this.getCashReceiptAccounts();
+    this.getCashPartyList();
   }
 
   getProjectLists(): void {
@@ -33,17 +41,24 @@ export class ContraVoucherService {
     const params = new HttpParams().set("VoucherType", "CASH_RCPT"); // Series List for Cash Receipt Voucher Type
     this.httpService
       .get(`${this._api_URL}series`, null, params)
-      .subscribe((res: SeriesList) => {
-        this.seriesLists = res;
+      .subscribe((res: any) => {
+        this.seriesLists = res.Entity;
+        console.log(this.seriesLists);
       });
   }
 
   getCashReceiptAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/CashAccounts`)
-      .subscribe((res: CashAccounts) => {
+      .subscribe(res => {
         this.cashAccountLists = res.Entity;
       });
+  }
+
+  getCashPartyList(): void {
+    this.httpService.get(`${this._api_URL}Ledger/cashparty`).subscribe(res => {
+      this.cashPartyLists = res.Entity;
+    });
   }
 
   getCashReceiptMaster(): Observable<ContraVoucherMaster[]> {
@@ -54,7 +69,7 @@ export class ContraVoucherService {
     return this.httpService.get(`${this._api_URL}CashReceiptMaster/${id}`);
   }
 
-  getCashParty(): Observable<CashAccounts[]> {
+  getCashParty(): Observable<CashAccountsList[]> {
     return this.httpService.get(`${this._api_URL} /Ledger/cashparty`);
   }
 }
