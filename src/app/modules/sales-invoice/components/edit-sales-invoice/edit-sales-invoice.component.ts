@@ -1,4 +1,4 @@
-import { SalesInvoiceMaster } from "./../models/sales-invoice.model";
+import { SalseInvoice } from "./../models/sales-invoice.model";
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
 import { ActivatedRoute } from "@angular/router";
 import { FormArray, Validators } from "@angular/forms";
@@ -14,7 +14,7 @@ import { Component, OnInit } from "@angular/core";
 })
 export class EditSalesInvoiceComponent implements OnInit {
   editInvoiceForm: FormGroup;
-  salesDetails: SalesInvoiceMaster;
+  salesDetails: SalseInvoice;
   editedRowIndex: any;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -33,57 +33,102 @@ export class EditSalesInvoiceComponent implements OnInit {
 
   buildEditInvoiceForm() {
     this.editInvoiceForm = this._fb.group({
-      seriesId: this.salesDetails ? this.salesDetails.SeriesID : null,
-      cashPartyACId: this.salesDetails
+      SeriesID: this.salesDetails ? this.salesDetails.SeriesID : null,
+      CashPartyLedgerID: this.salesDetails
         ? [this.salesDetails.CashPartyLedgerID, [Validators.required]]
         : null,
-      salesACId: [
+      SalesLedgerID: [
         this.salesDetails ? this.salesDetails.SalesLedgerID : null,
         [Validators.required]
       ],
-      depotLocationId: [this.salesDetails ? this.salesDetails.DepotID : null],
-      projectId: [this.salesDetails ? this.salesDetails.ProjectID : null],
-      date: [this.salesDetails ? new Date(this.salesDetails.CreatedDate) : ""],
-      orderNo: this.salesDetails
+      DepotID: [this.salesDetails ? this.salesDetails.DepotID : null],
+      ProjectID: [this.salesDetails ? this.salesDetails.ProjectID : null],
+      Date: [this.salesDetails ? new Date(this.salesDetails.CreatedDate) : ""],
+      OrderNo: this.salesDetails
         ? this.salesDetails.OrderNo
         : ["", [Validators.required]],
-      invoiceEntryList: this._fb.array([this.addInvoiceEntryList()])
-    });
-  }
-
-  addInvoiceEntryList(): FormGroup {
-    return this._fb.group({
-      code: [""],
-      productName: [""],
-      quantity: [""],
-      unit: [""],
-      purchaseRate: [""],
-      amount: [""],
-      specialDiscount: [""],
-      specialDiscounts: [""],
-      netAmount: [""],
-      vat: [""],
-      customDuty: [""],
-      customDutyAmt: [""],
-      freight: [""],
-      tc: [""],
-      tcAmount: [""]
+      InvoiceDetails: this._fb.array([this.addInvoiceEntryList()])
     });
   }
 
   // Get id from route
-  getIdFromRoute() {
+  getIdFromRoute(): void {
     this.route.paramMap.subscribe(params => {
       const param = params.get("id");
       if (param) {
         this.salesInvoiceService
           .getSalesInvoiceDetails(param)
-          .subscribe(res => {
-            this.salesDetails = res;
+          .subscribe(response => {
+            this.salesDetails = response.Entity;
             this.buildEditInvoiceForm();
+            this.setInvoiceList();
           });
       }
     });
+  }
+
+  addInvoiceEntryList(): FormGroup {
+    return this._fb.group({
+      ProductCode: [""],
+      ProductName: [""],
+      Quantity: [""],
+      QtyUnitID: [""],
+      SalesRate: [""],
+      Amount: [""],
+      DiscPercentage: [""],
+      DiscountAmount: [""],
+      NetAmount: [""],
+      TaxID: [""],
+      TaxAmount: [""]
+    });
+  }
+
+  setInvoiceList(): void {
+    this.editInvoiceForm.setControl(
+      "InvoiceDetails",
+      this.setInvoiceDetailsFormArray(this.salesDetails.InvoiceDetails)
+    );
+  }
+
+  // this block of code is used to show form array data in the template.....
+  setInvoiceDetailsFormArray(invoiceDetails): FormArray {
+    const journalFormArray = new FormArray([]);
+    if (invoiceDetails && invoiceDetails.length > 0) {
+      invoiceDetails.forEach(element => {
+        journalFormArray.push(
+          this._fb.group({
+            ProductCode: [element.ProductCode],
+            ProductName: [element.ProductName],
+            Quantity: [element.Quantity],
+            QtyUnitID: [element.QtyUnitID],
+            SalesRate: [element.SalesRate],
+            Amount: [element.Amount],
+            DiscPercentage: [element.DiscPercentage],
+            DiscountAmount: [element.DiscountAmount],
+            NetAmount: [element.NetAmount],
+            TaxID: [element.TaxID],
+            TaxAmount: [element.TaxAmount]
+          })
+        );
+      });
+    } else {
+      journalFormArray.push(
+        this._fb.group({
+          ProductCode: [""],
+          ProductName: [""],
+          Quantity: [""],
+          QtyUnitID: [""],
+          SalesRate: [""],
+          Amount: [""],
+          DiscPercentage: [""],
+          DiscountAmount: [""],
+          NetAmount: [""],
+          TaxID: [""],
+          TaxAmount: [""]
+        })
+      );
+    }
+    return journalFormArray;
   }
 
   public save(): void {
@@ -98,7 +143,7 @@ export class EditSalesInvoiceComponent implements OnInit {
   }
 
   get getInvoiceEntryList(): FormArray {
-    return <FormArray>this.editInvoiceForm.get("invoiceEntryList");
+    return <FormArray>this.editInvoiceForm.get("InvoiceDetails");
   }
 
   private closeEditor(grid, rowIndex = 1) {
@@ -123,32 +168,32 @@ export class EditSalesInvoiceComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    const invoiceEntry = <FormArray>(
-      this.editInvoiceForm.get("invoiceEntryList")
-    );
-    invoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
-    invoiceEntry.controls[rowIndex]
-      .get("productName")
-      .setValue(dataItem.productName);
-    invoiceEntry.controls[rowIndex].get("quantity").setValue(dataItem.quantity);
-    invoiceEntry.controls[rowIndex].get("unit").setValue(dataItem.unit);
-    invoiceEntry.controls[rowIndex]
-      .get("purchaseRate")
-      .setValue(dataItem.purchaseRate);
-    invoiceEntry.controls[rowIndex].get("amount").setValue(dataItem.amount);
-    invoiceEntry.controls[rowIndex]
-      .get("specialDiscount")
-      .setValue(dataItem.specialDiscount);
-    invoiceEntry.controls[rowIndex]
-      .get("specialDiscounts")
-      .setValue(dataItem.specialDiscounts);
-    invoiceEntry.controls[rowIndex].get("vat").setValue(dataItem.vat);
-    invoiceEntry.controls[rowIndex]
-      .get("customDuty")
-      .setValue(dataItem.customDuty);
-    invoiceEntry.controls[rowIndex].get("freight").setValue(dataItem.freight);
-    invoiceEntry.controls[rowIndex].get("tc").setValue(dataItem.tc);
-    invoiceEntry.controls[rowIndex].get("tcAmount").setValue(dataItem.tcAmount);
+    // const invoiceEntry = <FormArray>(
+    //   this.editInvoiceForm.get("invoiceEntryList")
+    // );
+    // invoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
+    // invoiceEntry.controls[rowIndex]
+    //   .get("productName")
+    //   .setValue(dataItem.productName);
+    // invoiceEntry.controls[rowIndex].get("quantity").setValue(dataItem.quantity);
+    // invoiceEntry.controls[rowIndex].get("unit").setValue(dataItem.unit);
+    // invoiceEntry.controls[rowIndex]
+    //   .get("purchaseRate")
+    //   .setValue(dataItem.purchaseRate);
+    // invoiceEntry.controls[rowIndex].get("amount").setValue(dataItem.amount);
+    // invoiceEntry.controls[rowIndex]
+    //   .get("specialDiscount")
+    //   .setValue(dataItem.specialDiscount);
+    // invoiceEntry.controls[rowIndex]
+    //   .get("specialDiscounts")
+    //   .setValue(dataItem.specialDiscounts);
+    // invoiceEntry.controls[rowIndex].get("vat").setValue(dataItem.vat);
+    // invoiceEntry.controls[rowIndex]
+    //   .get("customDuty")
+    //   .setValue(dataItem.customDuty);
+    // invoiceEntry.controls[rowIndex].get("freight").setValue(dataItem.freight);
+    // invoiceEntry.controls[rowIndex].get("tc").setValue(dataItem.tc);
+    // invoiceEntry.controls[rowIndex].get("tcAmount").setValue(dataItem.tcAmount);
     this.editedRowIndex = rowIndex;
     sender.editRow(rowIndex, this.editInvoiceForm.get("invoiceEntryList"));
   }
