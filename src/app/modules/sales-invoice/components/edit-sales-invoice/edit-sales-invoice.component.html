@@ -4,6 +4,26 @@
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
+            <label>Voucher No. <sup>*</sup></label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="VoucherNo"
+              accSwiftFormValidator
+            />
+          </div>
+          <div class="form-group">
+            <label>Order No.</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="OrderNo"
+              accSwiftFormValidator
+            />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
             <label>Series<sup>*</sup></label>
             <select class="form-control" formControlName="SeriesID">
               <option [ngValue]="null">Choose Option....</option>
@@ -15,8 +35,6 @@
               </option>
             </select>
           </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Cash/ Party /A/C </label>
             <select
@@ -35,6 +53,18 @@
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Project<sup>*</sup></label>
+            <select class="form-control" formControlName="ProjectID">
+              <option [ngValue]="null">Choose Option....</option>
+              <option
+                *ngFor="let project of salesInvoiceService.projectList"
+                [ngValue]="project.ID"
+              >
+                {{ project.EngName }}
+              </option></select
+            >
+          </div>
           <div class="form-group">
             <label>Sales /A/C </label>
             <select
@@ -67,27 +97,6 @@
               </option>
             </select>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Project<sup>*</sup></label>
-            <select class="form-control" formControlName="ProjectID">
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let project of salesInvoiceService.projectList"
-                [ngValue]="project.LedgerID"
-              >
-                {{ project.EngName }}
-              </option></select
-            >
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Date </label>
             <input
@@ -98,19 +107,9 @@
             />
           </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Order No.</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="OrderNo"
-              accSwiftFormValidator
-            />
-          </div>
-        </div>
       </div>
     </div>
+
     <div class="col-md-12">
       <div class="box-body">
         <kendo-grid
@@ -125,7 +124,77 @@
             <button kendoGridAddCommand>Add New</button>
           </ng-template>
 
-          <kendo-grid-column
+          <kendo-grid-column field="ProductName" title="Product" width="300">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-xs-12 col-md-12 p-0">
+                <div class="col-md-4 pl-0">
+                  <input
+                    #input
+                    class="k-textbox"
+                    style="width: 100px"
+                    placeholder="Product Code"
+                    [formControl]="
+                      getInvoiceEntryList.controls[rowIndex].get('ProductCode')
+                    "
+                  />
+                  <kendo-popup
+                    [anchor]="input"
+                    *ngIf="
+                      getInvoiceEntryList.controls[rowIndex].get('ProductCode')
+                        .invalid
+                    "
+                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                  >
+                    <span class="k-icon k-i-warning"></span>
+                    Product Code is invalid
+                  </kendo-popup>
+                </div>
+                <div class="col-md-8 pr-0">
+                  <input
+                    #input
+                    class="k-textbox"
+                    [readonly]="true"
+                    [formControl]="
+                      getInvoiceEntryList.controls[rowIndex].get('ProductName')
+                    "
+                  />
+                  <a (click)="openModal(rowIndex)"
+                    ><i
+                      class="fa fa-eye pull-right ledgerSelectIcon"
+                      aria-hidden="true"
+                    ></i>
+                  </a>
+                  <!-- <kendo-popup
+                    [anchor]="input"
+                    *ngIf="
+                      getInvoiceEntryList.controls[rowIndex].get('ProductName')
+                        .invalid &&
+                      rowSubmitted &&
+                      !(
+                        isNew &&
+                        getInvoiceEntryList.controls[rowIndex].get(
+                          'ProductName'
+                        ).untouched
+                      ) &&
+                      !getInvoiceEntryList.controls[rowIndex].get('ProductCode')
+                    "
+                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                  >
+                    <span class="k-icon k-i-warning"></span>
+                    Prodcut Name is required
+                  </kendo-popup> -->
+                </div>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+          <!-- <kendo-grid-column
             field="ProductCode"
             title="Product Code"
             width="140"
@@ -139,6 +208,8 @@
               let-rowIndex="rowIndex"
             >
               <input
+                class="k-textbox"
+                type="text"
                 style="width: 120px"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
@@ -147,11 +218,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column
-            field="ProductName"
-            title="Product Name"
-            width="140"
-          >
+          <kendo-grid-column field="ProductID" title="Product" width="200">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -161,13 +228,21 @@
               let-rowIndex="rowIndex"
             >
               <input
-                style="width: 120px"
+                #input
+                class="k-textbox"
+                [readonly]="true"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
               />
+              <a (click)="openModal(rowIndex)"
+                ><i
+                  class="fa fa-eye pull-right ledgerSelectIcon"
+                  aria-hidden="true"
+                ></i>
+              </a>
             </ng-template>
-          </kendo-grid-column>
+          </kendo-grid-column> -->
 
           <kendo-grid-column field="Quantity" title="Quantity" width="140">
             <ng-template
@@ -179,12 +254,14 @@
               let-column="column"
               let-rowIndex="rowIndex"
             >
-              <input
-                style="width: 120px"
+              <kendo-numerictextbox
+                popupAnchor
+                style="width: 120px;"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
-              />
+              >
+              </kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
 
@@ -198,14 +275,14 @@
               let-column="column"
               let-rowIndex="rowIndex"
             >
-              <input
-                #input
-                class="k-textbox"
-                style="width: 130px"
+              <kendo-numerictextbox
+                popupAnchor
+                style="width: 120px;"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
-              />
+              >
+              </kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
 
@@ -221,7 +298,6 @@
               <kendo-numerictextbox
                 popupAnchor
                 style="width: 120px;"
-                [readonly]="true"
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
@@ -244,6 +320,8 @@
               <kendo-numerictextbox
                 popupAnchor
                 style="width: 120px;"
+                [decimals]="decimals"
+                [format]="c0"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
@@ -271,7 +349,8 @@
                 [value]="percentage"
                 [format]="'p'"
                 [min]="0"
-                [max]="1"
+                [max]="100"
+                [step]="1"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
@@ -337,14 +416,14 @@
               let-formGroup="formGroup"
               let-column="column"
             >
-              <input
-                #input
+              <kendo-numerictextbox
+                popupAnchor
                 style="width: 120px;"
-                class="k-textbox"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
-              />
+              >
+              </kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
 

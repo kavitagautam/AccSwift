@@ -30,6 +30,7 @@ import { FormSubmitValidationMsgDirective } from "./directives/form-validators/s
 import { FormControlValidationMsgDirective } from "./directives/form-validators/validation-message.directive";
 import { ValidationMsgService } from "./services/form-validators/validation-message.service";
 import { PhoneMaskDirective } from "./directives/phone-mask/phone-mask.directive";
+import { ProductModelPopupComponent } from "./component/product-model-popup/product-model-popup.component";
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { PhoneMaskDirective } from "./directives/phone-mask/phone-mask.directive
     DateFormatPipe,
     FormSubmitValidationMsgDirective,
     FormControlValidationMsgDirective,
-    PhoneMaskDirective
+    PhoneMaskDirective,
+    ProductModelPopupComponent
   ],
   imports: [
     CommonModule,
@@ -83,7 +85,8 @@ import { PhoneMaskDirective } from "./directives/phone-mask/phone-mask.directive
     DateFormatPipe,
     FormSubmitValidationMsgDirective,
     FormControlValidationMsgDirective,
-    PhoneMaskDirective
+    PhoneMaskDirective,
+    ProductModelPopupComponent
   ],
   providers: [ValidationMsgService]
 })

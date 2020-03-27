@@ -15,6 +15,7 @@ import { SalesInvoiceRoutingModule } from "./sales-invoice-routing.module";
 import { ListSalesInvoiceComponent } from "./components/list-sales-invoice/list-sales-invoice.component";
 import { AddSalesInvoiceComponent } from "./components/add-sales-invoice/add-sales-invoice.component";
 import { EditSalesInvoiceComponent } from "./components/edit-sales-invoice/edit-sales-invoice.component";
+import { ProductModelPopupComponent } from "@app/shared/component/product-model-popup/product-model-popup.component";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { EditSalesInvoiceComponent } from "./components/edit-sales-invoice/edit-
     InputsModule,
     DropDownListModule,
     DropDownsModule
-  ]
+  ],
+  entryComponents: [ProductModelPopupComponent]
 })
 export class SalesInvoiceModule {}
