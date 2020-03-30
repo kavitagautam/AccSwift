@@ -27,6 +27,9 @@ export class ListSalesInvoiceComponent implements OnInit {
   public currentPage = 1;
   modalRef: BsModalRef;
   //sorting Kendo Data
+  orderByKey = "";
+  dirKey = "asc";
+  //sorting kendo data
   public allowUnsort = true;
   public sort: SortDescriptor[] = [
     {
@@ -34,6 +37,8 @@ export class ListSalesInvoiceComponent implements OnInit {
       dir: "asc"
     }
   ];
+
+  searchFilterList = [];
   //modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -49,46 +54,51 @@ export class ListSalesInvoiceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.buildListSalesForm();
+    this.buildSalesInvoiceSearchForm();
     this.getSalesInvoiceList();
   }
 
-  buildListSalesForm() {
+  buildSalesInvoiceSearchForm() {
     this.salesInvoiceForm = this.fb.group({
-      seriesId: [null],
-      cashPartyACId: [null],
-      salesACId: [null],
-      depotLocationId: [null],
-      projectId: [null],
-      date: [new Date()],
-      orderNo: [""]
+      SeriesID: [null],
+      CashPartyLedgerID: [null],
+      SalesLedgerID: [null],
+      DepotID: [null],
+      ProjectID: [null],
+      Date: [new Date()],
+      OrderNo: [""]
     });
   }
 
+  resetForm(): void {
+    this.buildSalesInvoiceSearchForm();
+    this.getSalesInvoiceList();
+  }
+
   public sortChange(sort: SortDescriptor[]): void {
+    this.orderByKey = "";
+    this.dirKey = "";
     this.sort = sort;
+    this.dirKey = this.sort[0].dir;
+    this.orderByKey = this.sort[0].field;
     this.getSalesInvoiceList();
   }
 
   getSalesInvoiceList(): void {
     this.listLoading = true;
-    const params = {
+    const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
-      OrderBy: "",
-      Direction: "asc"
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey,
+      FilterList: this.searchFilterList
     };
-
-    this.salesInvoiceService.getSalesInvoiceMaster().subscribe(
-      res => {
-        this.listLoading = true;
-        this.salesInvoiceList = res;
+    this.salesInvoiceService.getSalesInvoiceMaster(obj).subscribe(
+      response => {
+        this.salesInvoiceList = response.Entity.Entity;
         this.gridView = {
-          data: this.salesInvoiceList.slice(
-            this.skip,
-            this.skip + this.pageSize
-          ),
-          total: this.salesInvoiceList ? this.salesInvoiceList.length : 0
+          data: this.salesInvoiceList,
+          total: response.Entity.TotalItemsAvailable
         };
       },
       error => {
@@ -100,12 +110,20 @@ export class ListSalesInvoiceComponent implements OnInit {
     );
   }
 
-  public filterChange(filter) {
-    this.filter = filter;
-    this.getSalesInvoiceList();
-  }
-
-  public searchForm() {
+  public searchForm(): void {
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.salesInvoiceForm.invalid) return;
+    for (const key in this.salesInvoiceForm.value) {
+      if (this.salesInvoiceForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.salesInvoiceForm.value[key]
+        });
+      }
+    }
     this.getSalesInvoiceList();
   }
 
@@ -134,7 +152,7 @@ export class ListSalesInvoiceComponent implements OnInit {
       ConfirmationDialogComponent,
       this.config
     );
-    this.modalRef.content.data = "Payments No." + dataItem.VoucherNo;
+    this.modalRef.content.data = "Voucher No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
     this.modalRef.content.onClose.subscribe(confirm => {
       if (confirm) {
