@@ -19,6 +19,14 @@ export class AddSalesInvoiceComponent implements OnInit {
   rowSubmitted: boolean;
   private editedRowIndex: number;
 
+  //Total Calculation
+  myFormValueChanges$;
+  totalQty: number = 0;
+  totalGrossAmount: number = 0;
+  totalNetAmount: number = 0;
+  totalDiscountAmount: number = 0;
+  totalDiscountPercentage: number = 0;
+
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -36,8 +44,43 @@ export class AddSalesInvoiceComponent implements OnInit {
     private modalService: BsModalService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildAddSalesInvoiceForm();
+
+    this.myFormValueChanges$ = this.addInvoiceForm.controls[
+      "InvoiceDetails"
+    ].valueChanges;
+
+    this.myFormValueChanges$.subscribe(invoices => {
+      let sumQty = 0;
+      let sumNetAmount = 0;
+      let sumGrossAmount = 0;
+      let sumDiscountAmount = 0;
+      let sumTotalDiscountPer = 0;
+      for (let i = 0; i < invoices.length; i++) {
+        if (invoices && invoices[i].Quantity) {
+          sumQty = sumQty + invoices[i].Quantity;
+        }
+        if (invoices && invoices[i].Amount) {
+          sumGrossAmount = sumGrossAmount + invoices[i].Amount;
+        }
+        if (invoices && invoices[i].NetAmount) {
+          sumNetAmount = sumNetAmount + invoices[i].NetAmount;
+        }
+        if (invoices && invoices[i].DiscountAmount) {
+          sumDiscountAmount = sumNetAmount + invoices[i].DiscountAmount;
+        }
+        if (invoices && invoices[i].DiscPercentage) {
+          sumTotalDiscountPer = sumNetAmount + invoices[i].DiscPercentage;
+        }
+      }
+
+      this.totalQty = sumQty;
+      this.totalGrossAmount = sumGrossAmount;
+      this.totalNetAmount = sumNetAmount;
+      this.totalDiscountAmount = sumDiscountAmount;
+      this.totalDiscountPercentage = sumTotalDiscountPer;
+    });
   }
 
   buildAddSalesInvoiceForm(): void {
@@ -50,6 +93,7 @@ export class AddSalesInvoiceComponent implements OnInit {
       ProjectID: [null, Validators.required],
       Date: [new Date()],
       OrderNo: [""],
+      Remarks: [""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()])
     });
   }
@@ -67,7 +111,8 @@ export class AddSalesInvoiceComponent implements OnInit {
       DiscountAmount: ["", Validators.required],
       NetAmount: ["", Validators.required],
       TaxID: [null],
-      TaxAmount: [""]
+      TaxAmount: [""],
+      Remarks: [""]
     });
   }
 

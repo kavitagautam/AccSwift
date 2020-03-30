@@ -20,6 +20,15 @@ export class EditSalesInvoiceComponent implements OnInit {
   editedRowIndex: any;
   submitted: boolean;
   rowSubmitted: boolean;
+
+  //Total Calculation
+  myFormValueChanges$;
+  totalQty: number = 0;
+  totalGrossAmount: number = 0;
+  totalNetAmount: number = 0;
+  totalDiscountAmount: number = 0;
+  totalDiscountPercentage: number = 0;
+
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -37,9 +46,44 @@ export class EditSalesInvoiceComponent implements OnInit {
     private modalService: BsModalService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildEditInvoiceForm();
     this.getIdFromRoute();
+
+    this.myFormValueChanges$ = this.editInvoiceForm.controls[
+      "InvoiceDetails"
+    ].valueChanges;
+
+    this.myFormValueChanges$.subscribe(invoices => {
+      let sumQty = 0;
+      let sumNetAmount = 0;
+      let sumGrossAmount = 0;
+      let sumDiscountAmount = 0;
+      let sumTotalDiscountPer = 0;
+      for (let i = 0; i < invoices.length; i++) {
+        if (invoices && invoices[i].Quantity) {
+          sumQty = sumQty + invoices[i].Quantity;
+        }
+        if (invoices && invoices[i].Amount) {
+          sumGrossAmount = sumGrossAmount + invoices[i].Amount;
+        }
+        if (invoices && invoices[i].NetAmount) {
+          sumNetAmount = sumNetAmount + invoices[i].NetAmount;
+        }
+        if (invoices && invoices[i].DiscountAmount) {
+          sumDiscountAmount = sumNetAmount + invoices[i].DiscountAmount;
+        }
+        if (invoices && invoices[i].DiscPercentage) {
+          sumTotalDiscountPer = sumNetAmount + invoices[i].DiscPercentage;
+        }
+      }
+
+      this.totalQty = sumQty;
+      this.totalGrossAmount = sumGrossAmount;
+      this.totalNetAmount = sumNetAmount;
+      this.totalDiscountAmount = sumDiscountAmount;
+      this.totalDiscountPercentage = sumTotalDiscountPer;
+    });
   }
 
   buildEditInvoiceForm() {
@@ -60,6 +104,7 @@ export class EditSalesInvoiceComponent implements OnInit {
       ProjectID: [this.salesDetails ? this.salesDetails.ProjectID : null],
       Date: [this.salesDetails ? new Date(this.salesDetails.CreatedDate) : ""],
       OrderNo: [this.salesDetails ? this.salesDetails.OrderNo : ""],
+      Remarks: [this.salesDetails ? this.salesDetails.Remarks : ""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()])
     });
   }
@@ -93,7 +138,8 @@ export class EditSalesInvoiceComponent implements OnInit {
       DiscountAmount: [0, Validators.required],
       NetAmount: [0, Validators.required],
       TaxID: [""],
-      TaxAmount: [""]
+      TaxAmount: [""],
+      Remarks: [""]
     });
   }
 

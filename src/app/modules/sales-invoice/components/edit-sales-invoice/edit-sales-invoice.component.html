@@ -449,6 +449,25 @@
             </ng-template>
           </kendo-grid-column>
 
+          <kendo-grid-column field="Remarks" title="Remarks" width="140">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-rowIndex="rowIndex"
+              let-isNew="isNew"
+              let-formGroup="formGroup"
+            >
+              <input
+                class="k-textbox"
+                popupAnchor
+                style="width: 120px;"
+                [formControl]="
+                  getInvoiceEntryList.controls[rowIndex].get(column.field)
+                "
+              />
+            </ng-template>
+          </kendo-grid-column>
           <kendo-grid-command-column title="Action" width="100">
             <ng-template kendoGridCellTemplate let-isNew="isNew">
               <button class="k-button" kendoGridAddCommand>
@@ -473,6 +492,83 @@
             </ng-template>
           </kendo-grid-command-column>
         </kendo-grid>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <table
+        class="table"
+        width="60%"
+        style="float: right;  width: 45%;  text-align: right;"
+      >
+        <tbody>
+          <tr>
+            <td>
+              Adjustment (Rs):
+            </td>
+            <td>0. 00</td>
+            <td>Tax 1</td>
+            <td>0.00</td>
+            <td>Gross(Rs)</td>
+            <td>{{ totalGrossAmount }}</td>
+          </tr>
+          <tr>
+            <td>
+              Tender:
+            </td>
+            <td>0. 00</td>
+            <td>Tax 2</td>
+            <td>0.00</td>
+            <td>Total Discount Amount (Rs)</td>
+            <td>{{ totalDiscountAmount }}</td>
+          </tr>
+          <tr>
+            <td>
+              Change:
+            </td>
+            <td>0. 00</td>
+            <td>Tax 2</td>
+            <td>0.00</td>
+            <td>VAT(13%)</td>
+            <td>{{ totalNetAmount }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Grand Total</td>
+            <td>
+              {{ totalGrossAmount + totalNetAmount - totalDiscountAmount }}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="col-md-12">
+      <div class="col-md-3 col-sm-6 col-xs-6">
+        <div class="form-group">
+          <label>Remarks</label>
+          <input formControlName="Remarks" type="text" class="form-control" />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="col-sm-2">
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input type="checkbox" />Do not close </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input type="checkbox" />Print while saving </label>
+          </div>
+        </div>
       </div>
     </div>
   </form>
