@@ -190,56 +190,6 @@
             </ng-template>
           </kendo-grid-column>
 
-          <!-- <kendo-grid-column
-            field="ProductCode"
-            title="Product Code"
-            width="140"
-          >
-            <ng-template
-              kendoGridCellTemplate
-              let-dataItem="dataItem"
-              let-column="column"
-              let-formGroup="formGroup"
-              let-isNew="isNew"
-              let-rowIndex="rowIndex"
-            >
-              <input
-                class="k-textbox"
-                type="text"
-                style="width: 120px"
-                [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get(column.field)
-                "
-              />
-            </ng-template>
-          </kendo-grid-column>
-
-          <kendo-grid-column field="ProductID" title="Product" width="200">
-            <ng-template
-              kendoGridCellTemplate
-              let-dataItem="dataItem"
-              let-column="column"
-              let-formGroup="formGroup"
-              let-isNew="isNew"
-              let-rowIndex="rowIndex"
-            >
-              <input
-                #input
-                class="k-textbox"
-                [readonly]="true"
-                [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get(column.field)
-                "
-              />
-              <a (click)="openModal(rowIndex)"
-                ><i
-                  class="fa fa-eye pull-right ledgerSelectIcon"
-                  aria-hidden="true"
-                ></i>
-              </a>
-            </ng-template>
-          </kendo-grid-column> -->
-
           <kendo-grid-column field="Quantity" title="Quantity" width="140">
             <ng-template
               kendoGridCellTemplate
@@ -278,14 +228,27 @@
               let-column="column"
               let-rowIndex="rowIndex"
             >
-              <kendo-numerictextbox
+              <!-- <kendo-numerictextbox
                 popupAnchor
                 style="width: 120px;"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
               >
-              </kendo-numerictextbox>
+              </kendo-numerictextbox> -->
+
+              <kendo-dropdownlist
+                style="width: 120px;"
+                [data]="relatedUnits"
+                textField="Name"
+                valueField="ID"
+                [valuePrimitive]="true"
+                value="selectedUnits"
+              >
+              </kendo-dropdownlist>
+              <!-- [formControl]="
+                getInvoiceEntryList.controls[rowIndex].get(column.field)
+              " -->
             </ng-template>
           </kendo-grid-column>
 
@@ -479,8 +442,9 @@
               let-formGroup="formGroup"
             >
               <input
-                class="k-textbox"
+                #ntb="popupAnchor"
                 popupAnchor
+                class="k-textbox"
                 style="width: 120px;"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)

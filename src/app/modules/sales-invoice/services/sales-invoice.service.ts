@@ -11,7 +11,8 @@ import {
   CashParty,
   SalesAccounts,
   DepotListModel,
-  DepotList
+  DepotList,
+  RelatedUnitModel
 } from "./../components/models/sales-invoice.model";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "./../../../core/services/http-client/http-client.service";
@@ -80,6 +81,12 @@ export class SalesInvoiceService {
       .subscribe((response: ProjectList) => {
         this.projectList = response;
       });
+  }
+
+  getRelatedUnits(id: any): Observable<RelatedUnitModel> {
+    return this.httpService.get(
+      `${this._api_URL}CompoundUnit/RelatedUnits/${id}`
+    );
   }
 
   getSalesInvoiceMaster(body): Observable<SalseInvoiceNavigateModel> {
