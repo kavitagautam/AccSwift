@@ -7,6 +7,7 @@ import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ProductModelPopupComponent } from "@app/shared/component/product-model-popup/product-model-popup.component";
+import { RelatedUnits } from "../models/sales-invoice.model";
 
 @Component({
   selector: "accSwift-add-sales-invoice",
@@ -18,6 +19,8 @@ export class AddSalesInvoiceComponent implements OnInit {
   submitted: boolean;
   rowSubmitted: boolean;
   private editedRowIndex: number;
+  relatedUnits: RelatedUnits[] = [];
+  selectedUnits: number = 0;
 
   //Total Calculation
   myFormValueChanges$;
@@ -167,6 +170,15 @@ export class AddSalesInvoiceComponent implements OnInit {
         invoiceEntryArray.controls[index]
           .get("SalesRate")
           .setValue(data.SalesRate);
+        this.salesInvoiceService
+          .getRelatedUnits(data.ID)
+          .subscribe(response => {
+            this.relatedUnits = response.Entity;
+
+            console.log("Related Units" + JSON.stringify(this.relatedUnits));
+          });
+
+        this.selectedUnits = data.ID;
       }
     });
     this.modalRef.content.onClose.subscribe(data => {
