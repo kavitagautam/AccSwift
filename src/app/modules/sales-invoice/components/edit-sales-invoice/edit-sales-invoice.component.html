@@ -227,27 +227,17 @@
               let-column="column"
               let-rowIndex="rowIndex"
             >
-              <!-- <kendo-numerictextbox
-              popupAnchor
-              style="width: 120px;"
-              [formControl]="
-                getInvoiceEntryList.controls[rowIndex].get(column.field)
-              "
-            >
-            </kendo-numerictextbox> -->
-
               <kendo-dropdownlist
                 style="width: 120px;"
                 [data]="relatedUnits"
                 textField="Name"
                 valueField="ID"
                 [valuePrimitive]="true"
-                value="selectedUnits"
+                [formControl]="
+                  getInvoiceEntryList.controls[rowIndex].get(column.field)
+                "
               >
               </kendo-dropdownlist>
-              <!-- [formControl]="
-              getInvoiceEntryList.controls[rowIndex].get(column.field)
-            " -->
             </ng-template>
           </kendo-grid-column>
 
@@ -480,56 +470,73 @@
     </div>
 
     <div class="col-md-12">
-      <table
-        class="table"
-        width="60%"
-        style="float: right;  width: 45%;  text-align: right;"
-      >
-        <tbody>
-          <tr>
-            <td>
-              Adjustment (Rs):
-            </td>
-            <td>0. 00</td>
-            <td>Tax 1</td>
-            <td>0.00</td>
-            <td>Gross(Rs)</td>
-            <td>{{ totalGrossAmount }}</td>
-          </tr>
-          <tr>
-            <td>
-              Tender:
-            </td>
-            <td>0. 00</td>
-            <td>Tax 2</td>
-            <td>0.00</td>
-            <td>Total Discount Amount (Rs)</td>
-            <td>{{ totalDiscountAmount }}</td>
-          </tr>
-          <tr>
-            <td>
-              Change:
-            </td>
-            <td>0. 00</td>
-            <td>Tax 2</td>
-            <td>0.00</td>
-            <td>VAT(13%)</td>
-            <td>{{ totalNetAmount }}</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Grand Total</td>
-            <td>
-              {{ totalGrossAmount + totalNetAmount - totalDiscountAmount }}
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+      <div class="col-md-6-offset-4">
+        <table
+          class="table"
+          width="60%"
+          style="float: right;  width: 45%;  text-align: right;"
+        >
+          <tbody>
+            <tr>
+              <td>
+                Adjustment (Rs):
+              </td>
+              <td>{{ adjustmentAmount }}</td>
+              <td>Tax 1</td>
+              <td>0.00</td>
+              <td>Gross(Rs)</td>
+              <td>{{ totalGrossAmount }}</td>
+            </tr>
+            <tr>
+              <td>
+                Tender:
+              </td>
+              <td>{{ tenderAmount }}</td>
+              <td>Tax 2</td>
+              <td>0.00</td>
+              <td>Total Discount Amount (Rs)</td>
+              <td>{{ totalDiscountAmount }}</td>
+            </tr>
+            <tr>
+              <td>
+                Change:
+              </td>
+              <td>{{ changeAmount }}</td>
+              <td>Tax 2</td>
+              <td>0.00</td>
+              <td>VAT(13%)</td>
+              <td>
+                {{
+                  totalNetAmount *
+                    (salesDetails ? salesDetails.VAT / 100 : 0.13)
+                }}
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>Grand Total</td>
+              <td>
+                {{
+                  totalGrossAmount +
+                    totalNetAmount +
+                    totalNetAmount *
+                      (salesDetails ? salesDetails.VAT / 100 : 0.13) +
+                    totalTaxAmount -
+                    totalDiscountAmount
+                }}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="col-md-2-offset-10">
+        <button (click)="openTender(tenderModal)">Tender Amount</button>
+      </div>
     </div>
     <div class="col-md-12">
       <div class="col-md-3 col-sm-6 col-xs-6">
@@ -572,3 +579,71 @@
     </div>
   </div>
 </div>
+
+<ng-template #tenderModal>
+  <div class="modal-header">
+    <h3 class="modal-title pull-left">Tender Amount</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <form [formGroup]="tenderForm" novalidate>
+          <div class="form-group">
+            <label>Temder Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="tenderAmount"
+            />
+          </div>
+          <div class="form-group">
+            <label>Adjust/Round Off Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="adjustAmount"
+            />
+          </div>
+          <div class="form-group">
+            <label>Paid Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="paidAmount"
+            />
+          </div>
+          <div class="form-group">
+            <label>Return Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="returnAmount"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="modalRef.hide()">
+      OK
+    </button>
+    <button
+      class="btn btn-secondary ml-2"
+      type="button"
+      (click)="modalRef.hide()"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>

@@ -6,9 +6,8 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
 import { PopupModule } from "@progress/kendo-angular-popup";
 import { GridModule } from "@progress/kendo-angular-grid";
 import { SharedModule } from "./../../shared/shared.module";
-import { ReactiveFormsModule } from "@angular/forms";
-import { FormsModule } from "@angular/forms";
-import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
 import { SalesInvoiceRoutingModule } from "./sales-invoice-routing.module";
@@ -35,6 +34,7 @@ import { ProductModelPopupComponent } from "@app/shared/component/product-model-
     DropDownListModule,
     DropDownsModule
   ],
-  entryComponents: [ProductModelPopupComponent]
+  entryComponents: [ProductModelPopupComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SalesInvoiceModule {}

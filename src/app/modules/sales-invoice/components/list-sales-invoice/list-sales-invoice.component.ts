@@ -9,7 +9,8 @@ import {
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
 import { FormBuilder } from "@angular/forms";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
+import { InvoiceDetail } from "../models/sales-invoice.model";
 
 @Component({
   selector: "accSwift-list-sales-invoice",
@@ -159,6 +160,13 @@ export class ListSalesInvoiceComponent implements OnInit {
         this.deletePaymentsByID(salesInvoiceID.id);
       }
     });
+  }
+
+  productList: InvoiceDetail[] = [];
+
+  openProductModal(template: TemplateRef<any>, dataItem): void {
+    this.productList = dataItem.InvoiceDetails;
+    this.modalRef = this.modalService.show(template, this.config);
   }
 
   public deletePaymentsByID(id): void {
