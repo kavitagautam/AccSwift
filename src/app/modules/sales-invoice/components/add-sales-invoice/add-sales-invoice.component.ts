@@ -3,7 +3,7 @@ import { FormArray, Validators } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { FormBuilder } from "@angular/forms";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ProductModelPopupComponent } from "@app/shared/component/product-model-popup/product-model-popup.component";
@@ -14,13 +14,12 @@ import { RelatedUnits } from "../models/sales-invoice.model";
   templateUrl: "./add-sales-invoice.component.html",
   styleUrls: ["./add-sales-invoice.component.scss"]
 })
-export class AddSalesInvoiceComponent implements OnInit {
+export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   addInvoiceForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
   private editedRowIndex: number;
   relatedUnits: RelatedUnits[] = [];
-  selectedUnits: number = 0;
 
   //Total Calculation
   myFormValueChanges$;
@@ -29,6 +28,10 @@ export class AddSalesInvoiceComponent implements OnInit {
   totalNetAmount: number = 0;
   totalDiscountAmount: number = 0;
   totalDiscountPercentage: number = 0;
+  totalTaxAmount: number = 0;
+  tenderAmount: number = 0;
+  changeAmount: number = 0;
+  adjustmentAmount: number = 0;
 
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
@@ -60,6 +63,7 @@ export class AddSalesInvoiceComponent implements OnInit {
       let sumGrossAmount = 0;
       let sumDiscountAmount = 0;
       let sumTotalDiscountPer = 0;
+      let sumTaxAmount = 0;
       for (let i = 0; i < invoices.length; i++) {
         if (invoices && invoices[i].Quantity) {
           sumQty = sumQty + invoices[i].Quantity;
@@ -76,6 +80,10 @@ export class AddSalesInvoiceComponent implements OnInit {
         if (invoices && invoices[i].DiscPercentage) {
           sumTotalDiscountPer = sumNetAmount + invoices[i].DiscPercentage;
         }
+
+        if (invoices && invoices[i].TaxAmount) {
+          sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
+        }
       }
 
       this.totalQty = sumQty;
@@ -83,7 +91,12 @@ export class AddSalesInvoiceComponent implements OnInit {
       this.totalNetAmount = sumNetAmount;
       this.totalDiscountAmount = sumDiscountAmount;
       this.totalDiscountPercentage = sumTotalDiscountPer;
+      this.totalTaxAmount = sumTaxAmount;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.myFormValueChanges$.unsubscribe();
   }
 
   buildAddSalesInvoiceForm(): void {
@@ -116,6 +129,16 @@ export class AddSalesInvoiceComponent implements OnInit {
       TaxID: [null],
       TaxAmount: [""],
       Remarks: [""]
+    });
+  }
+
+  tenderForm: FormGroup;
+  buildTenderForm(): void {
+    this.tenderForm = this._fb.group({
+      tenderAmount: [""],
+      adjustAmount: [""],
+      paidAmount: [""],
+      returnAmount: [""]
     });
   }
 
@@ -174,16 +197,24 @@ export class AddSalesInvoiceComponent implements OnInit {
           .getRelatedUnits(data.ID)
           .subscribe(response => {
             this.relatedUnits = response.Entity;
-
             console.log("Related Units" + JSON.stringify(this.relatedUnits));
           });
-
-        this.selectedUnits = data.ID;
       }
     });
     this.modalRef.content.onClose.subscribe(data => {
       //Do after Close the Modal
     });
+  }
+
+  openTender(template: TemplateRef<any>): void {
+    this.buildTenderForm();
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      centered: true,
+      class: "modal-sm"
+    };
+    this.modalRef = this.modalService.show(template, config);
   }
 
   private closeEditor(grid, rowIndex = 1) {
@@ -207,30 +238,7 @@ export class AddSalesInvoiceComponent implements OnInit {
 
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
-    // const invoiceEntry = <FormArray>this.addInvoiceForm.get("InvoiceDetails");
-    // invoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
-    // invoiceEntry.controls[rowIndex]
-    //   .get("productName")
-    //   .setValue(dataItem.productName);
-    // invoiceEntry.controls[rowIndex].get("quantity").setValue(dataItem.quantity);
-    // invoiceEntry.controls[rowIndex].get("unit").setValue(dataItem.unit);
-    // invoiceEntry.controls[rowIndex]
-    //   .get("purchaseRate")
-    //   .setValue(dataItem.purchaseRate);
-    // invoiceEntry.controls[rowIndex].get("amount").setValue(dataItem.amount);
-    // invoiceEntry.controls[rowIndex]
-    //   .get("specialDiscount")
-    //   .setValue(dataItem.specialDiscount);
-    // invoiceEntry.controls[rowIndex]
-    //   .get("specialDiscounts")
-    //   .setValue(dataItem.specialDiscounts);
-    // invoiceEntry.controls[rowIndex].get("vat").setValue(dataItem.vat);
-    // invoiceEntry.controls[rowIndex]
-    //   .get("customDuty")
-    //   .setValue(dataItem.customDuty);
-    // invoiceEntry.controls[rowIndex].get("freight").setValue(dataItem.freight);
-    // invoiceEntry.controls[rowIndex].get("tc").setValue(dataItem.tc);
-    // invoiceEntry.controls[rowIndex].get("tcAmount").setValue(dataItem.tcAmount);
+
     this.editedRowIndex = rowIndex;
     sender.editRow(rowIndex, this.addInvoiceForm.get("InvoiceDetails"));
   }

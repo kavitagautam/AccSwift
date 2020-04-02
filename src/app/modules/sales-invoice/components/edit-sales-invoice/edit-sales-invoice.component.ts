@@ -5,11 +5,12 @@ import { FormArray, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ProductModelPopupComponent } from "@app/shared/component/product-model-popup/product-model-popup.component";
 import { ToastrService } from "ngx-toastr";
 import { Subject } from "rxjs";
+import { takeUntil, debounceTime } from "rxjs/operators";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
@@ -34,7 +35,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   totalNetAmount: number = 0;
   totalDiscountAmount: number = 0;
   totalDiscountPercentage: number = 0;
-
+  totalTaxAmount: number = 0;
+  tenderAmount: number = 0;
+  changeAmount: number = 0;
+  adjustmentAmount: number = 0;
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -56,44 +60,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.buildEditInvoiceForm();
     this.getIdFromRoute();
-
-    this.myFormValueChanges$ = this.editInvoiceForm.controls[
-      "InvoiceDetails"
-    ].valueChanges;
-    // this.myFormValueChanges$ = this.editInvoiceForm.controls[
-    //   "InvoiceDetails"
-    // ].value;
-    this.myFormValueChanges$.subscribe(invoices => {
-      console.log("Invvoices " + JSON.stringify(invoices));
-      let sumQty = 0;
-      let sumNetAmount = 0;
-      let sumGrossAmount = 0;
-      let sumDiscountAmount = 0;
-      let sumTotalDiscountPer = 0;
-      for (let i = 0; i < invoices.length; i++) {
-        if (invoices && invoices[i].Quantity) {
-          sumQty = sumQty + invoices[i].Quantity;
-        }
-        if (invoices && invoices[i].Amount) {
-          sumGrossAmount = sumGrossAmount + invoices[i].Amount;
-        }
-        if (invoices && invoices[i].NetAmount) {
-          sumNetAmount = sumNetAmount + invoices[i].NetAmount;
-        }
-        if (invoices && invoices[i].DiscountAmount) {
-          sumDiscountAmount = sumNetAmount + invoices[i].DiscountAmount;
-        }
-        if (invoices && invoices[i].DiscPercentage) {
-          sumTotalDiscountPer = sumNetAmount + invoices[i].DiscPercentage;
-        }
-      }
-
-      this.totalQty = sumQty;
-      this.totalGrossAmount = sumGrossAmount;
-      this.totalNetAmount = sumNetAmount;
-      this.totalDiscountAmount = sumDiscountAmount;
-      this.totalDiscountPercentage = sumTotalDiscountPer;
-    });
   }
 
   ngOnDestroy() {
@@ -123,6 +89,47 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       Remarks: [this.salesDetails ? this.salesDetails.Remarks : ""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()])
     });
+    // this.editInvoiceForm.valueChanges
+    //   .pipe(takeUntil(this.destroyed$), debounceTime(20))
+    this.editInvoiceForm.controls["InvoiceDetails"].valueChanges
+      .pipe(takeUntil(this.destroyed$), debounceTime(20))
+      .subscribe(invoices => {
+        console.log("dsdasdas : " + JSON.stringify(invoices));
+        let sumQty = 0;
+        let sumNetAmount = 0;
+        let sumGrossAmount = 0;
+        let sumDiscountAmount = 0;
+        let sumTotalDiscountPer = 0;
+        let sumTaxAmount = 0;
+        for (let i = 0; i < invoices.length; i++) {
+          if (invoices && invoices[i].Quantity) {
+            sumQty = sumQty + invoices[i].Quantity;
+          }
+          if (invoices && invoices[i].Amount) {
+            sumGrossAmount = sumGrossAmount + invoices[i].Amount;
+          }
+          if (invoices && invoices[i].NetAmount) {
+            sumNetAmount = sumNetAmount + invoices[i].NetAmount;
+          }
+          if (invoices && invoices[i].DiscountAmount) {
+            sumDiscountAmount = sumDiscountAmount + invoices[i].DiscountAmount;
+          }
+          if (invoices && invoices[i].DiscPercentage) {
+            sumTotalDiscountPer =
+              sumTotalDiscountPer + invoices[i].DiscPercentage;
+          }
+          if (invoices && invoices[i].TaxAmount) {
+            sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
+          }
+        }
+
+        this.totalQty = sumQty;
+        this.totalGrossAmount = sumGrossAmount;
+        this.totalNetAmount = sumNetAmount;
+        this.totalDiscountAmount = sumDiscountAmount;
+        this.totalDiscountPercentage = sumTotalDiscountPer;
+        this.totalTaxAmount = sumTaxAmount;
+      });
   }
 
   // Get id from route
@@ -134,10 +141,28 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
           .getSalesInvoiceDetails(param)
           .subscribe(response => {
             this.salesDetails = response.Entity;
+            if (this.salesDetails) {
+              this.totalGrossAmount = this.salesDetails.GrossAmount;
+              this.totalNetAmount = this.salesDetails.NetAmount;
+              this.totalQty = this.salesDetails.TotalQty;
+              this.totalDiscountPercentage = this.salesDetails.SpecialDiscount;
+              this.tenderAmount = this.salesDetails.TenderAmount;
+              this.changeAmount = this.salesDetails.ChangeAmount;
+              this.adjustmentAmount = this.salesDetails.AdjustmentAmount;
+            }
             this.buildEditInvoiceForm();
             this.setInvoiceList();
           });
       }
+    });
+  }
+  tenderForm: FormGroup;
+  buildTenderForm(): void {
+    this.tenderForm = this._fb.group({
+      tenderAmount: [""],
+      adjustAmount: [""],
+      paidAmount: [""],
+      returnAmount: [""]
     });
   }
 
@@ -268,6 +293,17 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.modalRef.content.onClose.subscribe(data => {
       //Do after Close the Modal
     });
+  }
+
+  openTender(template: TemplateRef<any>): void {
+    this.buildTenderForm();
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      centered: true,
+      class: "modal-sm"
+    };
+    this.modalRef = this.modalService.show(template, config);
   }
 
   getRelatedUnitList(id): void {

@@ -94,7 +94,7 @@ export interface SalseInvoice {
   TableNumber: string;
   PrintCount: number;
   IRDSync: boolean;
-  InvoiceDetails?: any;
+  InvoiceDetails: InvoiceDetail[];
   VoucherNo: string;
   SeriesID: number;
   SeriesName: string;

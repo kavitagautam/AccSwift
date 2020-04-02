@@ -149,26 +149,67 @@
           [pageable]="true"
           (pageChange)="pageChange($event)"
         >
-          <kendo-grid-column field="VoucherNo" title="Voucher No" width="150">
+          <kendo-grid-column field="VoucherNo" title="Voucher No" width="120">
           </kendo-grid-column>
-          <kendo-grid-column field="CashPartName" title="Cash Party" width="80">
+          <kendo-grid-column title="Product Name" width="130">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-sm-12">
+                <span>{{ dataItem.InvoiceDetails[0].ProductName }}</span>
+                <a
+                  class=" pull-right"
+                  title="More Products..."
+                  (click)="openProductModal(openProductModalPopup, dataItem)"
+                  ><i
+                    class="fa fa-eye pull-right ledgerSelectIcon"
+                    aria-hidden="true"
+                  ></i>
+                </a>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column title="Product Code" width="120">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-sm-12">
+                <span>{{ dataItem.InvoiceDetails[0].ProductCode }}</span>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column
+            field="CashPartName"
+            title="Cash Party"
+            width="130"
+          >
           </kendo-grid-column>
           <kendo-grid-column
             field="TotalAmount"
             title="Total Amount"
-            width="150"
+            width="100"
           >
           </kendo-grid-column>
           <kendo-grid-column
             field="SpecialDiscount"
             title="Special Discount"
-            width="150"
+            width="80"
           >
           </kendo-grid-column>
 
           <kendo-grid-column field="Remarks" title="Remarks" width="80">
           </kendo-grid-column>
-          <kendo-grid-command-column title="Action" width="100">
+          <kendo-grid-command-column title="Action" width="120">
             <ng-template
               kendoGridCellTemplate
               let-isNew="isNew"
@@ -198,3 +239,64 @@
     </div>
   </div>
 </div>
+
+<ng-template #openProductModalPopup>
+  <div class="modal-header">
+    <h3 class="modal-title pull-left">Product List</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <kendo-grid
+          [data]="productList"
+          [filterable]="false"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+        >
+          <kendo-grid-column
+            field="ProductName"
+            title="Product Name"
+            width="130"
+          >
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="ProductCode"
+            title="Product Code"
+            width="120"
+          >
+          </kendo-grid-column>
+          <kendo-grid-column field="Quantity" title="Quantity" width="120">
+          </kendo-grid-column>
+          <kendo-grid-column field="Amount" title="Amount" width="130">
+          </kendo-grid-column>
+        </kendo-grid>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="modalRef.hide()">
+      OK
+    </button>
+    <button
+      class="btn btn-secondary ml-2"
+      type="button"
+      (click)="modalRef.hide()"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>
