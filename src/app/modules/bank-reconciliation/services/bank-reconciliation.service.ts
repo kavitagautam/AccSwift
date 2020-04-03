@@ -7,7 +7,8 @@ import {
   SeriesList,
   ProjectList,
   BankReconciliationMaster,
-  BankAccounts
+  BankAccounts,
+  ProjectListModel
 } from "./../components/models/bank-reconciliation.model";
 import { Injectable } from "@angular/core";
 
@@ -16,7 +17,7 @@ import { Injectable } from "@angular/core";
 })
 export class BankReconciliationService {
   seriesLists: SeriesList;
-  projectLists: ProjectList;
+  projectLists: ProjectList[] = [];
   _api_URL = environment.baseAPI;
   bankAccountLists;
   constructor(
@@ -31,8 +32,8 @@ export class BankReconciliationService {
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectList) => {
-        this.projectLists = res;
+      .subscribe((res: ProjectListModel) => {
+        this.projectLists = res.Entity;
       });
   }
 

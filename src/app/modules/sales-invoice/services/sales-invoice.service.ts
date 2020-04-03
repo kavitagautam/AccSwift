@@ -12,8 +12,11 @@ import {
   SalesAccounts,
   DepotListModel,
   DepotList,
-  RelatedUnitModel
-} from "./../components/models/sales-invoice.model";
+  RelatedUnitModel,
+  ProjectListModel,
+  TaxListModel,
+  TaxList
+} from "../models/sales-invoice.model";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "./../../../core/services/http-client/http-client.service";
 import { Observable } from "rxjs";
@@ -27,10 +30,11 @@ import { CashAccountsModel } from "@app/modules/cash-receipt/models/cash-receipt
 export class SalesInvoiceService {
   _api_URL = environment.baseAPI;
   seriesList: SeriesList[] = [];
-  projectList: ProjectList;
+  projectList: ProjectList[] = [];
   cashPartyList: CashParty[] = [];
   salesAccountList: SalesAccounts[] = [];
   depotList: DepotList[] = [];
+  taxList: TaxList[] = [];
   constructor(
     private httpService: HttpClientService,
     private http: HttpClient
@@ -40,6 +44,7 @@ export class SalesInvoiceService {
     this.getSalesAccount();
     this.getCashPartyAccount();
     this.getDepotList();
+    this.getTaxList();
   }
 
   getSeriesList(): void {
@@ -75,11 +80,19 @@ export class SalesInvoiceService {
       });
   }
 
+  getTaxList(): void {
+    this.httpService
+      .get(`${this._api_URL}Tax/min`)
+      .subscribe((response: TaxListModel) => {
+        this.taxList = response.Entity;
+      });
+  }
+
   getProjectList(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((response: ProjectList) => {
-        this.projectList = response;
+      .subscribe((response: ProjectListModel) => {
+        this.projectList = response.Entity;
       });
   }
 

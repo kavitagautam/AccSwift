@@ -1,14 +1,20 @@
 export interface ProjectList {
   ID: number;
   ProjectNumber: number;
-  ParentProjectID: number;
+  ParentProjectID?: number;
   EngName: string;
   NepName: string;
   Description: string;
   CreatedBy: string;
-  CreatedDate: string;
+  CreatedDate?: Date;
   ModifiedBy: string;
-  ModifiedDate: string;
+  ModifiedDate?: Date;
+}
+
+export interface ProjectListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: ProjectList[];
 }
 
 export interface SeriesListModel {

@@ -206,6 +206,7 @@
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
+                (change)="changeQuantity(dataItem, rowIndex)"
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -320,6 +321,7 @@
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
+                (change)="changeQuantity(dataItem, rowIndex)"
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -346,6 +348,7 @@
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
+                (change)="changeQuantity(dataItem, rowIndex)"
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -389,14 +392,30 @@
               let-formGroup="formGroup"
               let-column="column"
             >
-              <kendo-numerictextbox
+              <kendo-dropdownlist
+                style="width: 120px;"
+                [data]="salesInvoiceService.taxList"
+                textField="Name"
+                valueField="ID"
+                [valuePrimitive]="true"
+                [formControl]="
+                  getInvoiceEntryList.controls[rowIndex].get(column.field)
+                "
+                (valueChange)="handleTaxChange($event, rowIndex)"
+              >
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <span class="template">{{ dataItem.Name }}</span
+                  >({{ dataItem.Rate }} %)
+                </ng-template>
+              </kendo-dropdownlist>
+              <!-- <kendo-numerictextbox
                 popupAnchor
                 style="width: 120px;"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
               >
-              </kendo-numerictextbox>
+              </kendo-numerictextbox> -->
             </ng-template>
           </kendo-grid-column>
 
@@ -506,10 +525,7 @@
               <td>0.00</td>
               <td>VAT(13%)</td>
               <td>
-                {{
-                  totalNetAmount *
-                    (salesDetails ? salesDetails.VAT / 100 : 0.13)
-                }}
+                {{ vatTotalAmount }}
               </td>
             </tr>
           </tbody>
@@ -521,7 +537,7 @@
               <td></td>
               <td>Grand Total</td>
               <td>
-                {{ totalGrossAmount + totalNetAmount - totalDiscountAmount }}
+                {{ grandTotalAmount }}
               </td>
             </tr>
           </tfoot>

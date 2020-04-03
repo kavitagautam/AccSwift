@@ -1,13 +1,20 @@
 export interface ProjectList {
   ID: number;
   ProjectNumber: number;
-  ParentProjectID: number;
+  ParentProjectID?: number;
   EngName: string;
   NepName: string;
   Description: string;
   CreatedBy: string;
-  CreatedDate: Date;
-  ModifiedDate: Date;
+  CreatedDate?: Date;
+  ModifiedBy: string;
+  ModifiedDate?: Date;
+}
+
+export interface ProjectListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: ProjectList[];
 }
 
 export interface SeriesListModel {
@@ -258,4 +265,16 @@ export interface RelatedUnitModel {
   StatusCode: number;
   Message: string;
   Entity: RelatedUnits[];
+}
+
+export interface TaxList {
+  ID: number;
+  Name: string;
+  Rate: number;
+}
+
+export interface TaxListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: TaxList[];
 }

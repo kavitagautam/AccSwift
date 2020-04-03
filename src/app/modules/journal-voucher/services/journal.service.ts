@@ -5,6 +5,7 @@ import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import {
   ProjectList,
+  ProjectListModel,
   SeriesList,
   JournalNavigateModel,
   JournalDetailsModel
@@ -15,7 +16,7 @@ import {
 })
 export class JournalService {
   journalSeriesList: SeriesList;
-  projectLists: ProjectList;
+  projectLists: ProjectList[] = [];
   _api_URL = environment.baseAPI;
   constructor(
     private http: HttpClient,
@@ -43,8 +44,8 @@ export class JournalService {
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectList) => {
-        this.projectLists = res;
+      .subscribe((response: ProjectListModel) => {
+        this.projectLists = response.Entity;
       });
   }
 
