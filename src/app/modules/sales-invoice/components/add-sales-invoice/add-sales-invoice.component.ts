@@ -7,7 +7,7 @@ import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ProductModelPopupComponent } from "@app/shared/component/product-model-popup/product-model-popup.component";
-import { RelatedUnits } from "../models/sales-invoice.model";
+import { RelatedUnits } from "../../models/sales-invoice.model";
 
 @Component({
   selector: "accSwift-add-sales-invoice",
@@ -32,6 +32,8 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   tenderAmount: number = 0;
   changeAmount: number = 0;
   adjustmentAmount: number = 0;
+  vatTotalAmount: number = 0;
+  grandTotalAmount: number = 0;
 
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
@@ -58,12 +60,14 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     ].valueChanges;
 
     this.myFormValueChanges$.subscribe(invoices => {
+      // console.log("Value change " + JSON.stringify(invoices));
       let sumQty = 0;
       let sumNetAmount = 0;
       let sumGrossAmount = 0;
       let sumDiscountAmount = 0;
       let sumTotalDiscountPer = 0;
       let sumTaxAmount = 0;
+
       for (let i = 0; i < invoices.length; i++) {
         if (invoices && invoices[i].Quantity) {
           sumQty = sumQty + invoices[i].Quantity;
@@ -135,10 +139,35 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   tenderForm: FormGroup;
   buildTenderForm(): void {
     this.tenderForm = this._fb.group({
-      tenderAmount: [""],
+      tenderAmount: [{ value: this.grandTotalAmount, disabled: true }],
       adjustAmount: [""],
+      payableAmount: [
+        {
+          value: "",
+
+          disabled: true
+        }
+      ],
       paidAmount: [""],
-      returnAmount: [""]
+      returnAmount: [
+        {
+          value: "",
+
+          disabled: true
+        }
+      ]
+    });
+    this.tenderForm.get("adjustAmount").valueChanges.subscribe(value => {
+      const payableA =
+        this.tenderForm.get("tenderAmount").value -
+        this.tenderForm.get("adjustAmount").value;
+      this.tenderForm.get("payableAmount").setValue(payableA);
+    });
+    this.tenderForm.get("paidAmount").valueChanges.subscribe(value => {
+      const paidA =
+        this.tenderForm.get("paidAmount").value -
+        this.tenderForm.get("tenderAmount").value;
+      this.tenderForm.get("returnAmount").setValue(paidA);
     });
   }
 
@@ -168,6 +197,62 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     return <FormArray>this.addInvoiceForm.get("InvoiceDetails");
   }
 
+  changeQuantity(dataItem, index): void {
+    const invoiceEntryArray = <FormArray>(
+      this.addInvoiceForm.get("InvoiceDetails")
+    );
+
+    let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
+
+    let salesRateValue = invoiceEntryArray.controls[index].get("SalesRate")
+      .value;
+    let discountPer = invoiceEntryArray.controls[index].get("DiscPercentage")
+      .value;
+    let discountAmountValue = invoiceEntryArray.controls[index].get(
+      "DiscountAmount"
+    ).value;
+    let amountC = qunatityValue * salesRateValue;
+    let discountAmountC = discountPer * amountC;
+
+    invoiceEntryArray.controls[index].get("Amount").setValue(amountC);
+
+    // discount Amount Input
+    if (discountAmountValue) {
+      let calculatePercentage = discountAmountValue / amountC;
+      invoiceEntryArray.controls[index]
+        .get("DiscPercentage")
+        .setValue(calculatePercentage);
+      discountPer = calculatePercentage;
+      discountAmountC = amountC * discountPer;
+    }
+    invoiceEntryArray.controls[index]
+      .get("DiscountAmount")
+      .setValue(discountAmountC);
+    invoiceEntryArray.controls[index]
+      .get("NetAmount")
+      .setValue(amountC - discountAmountC);
+
+    this.vatTotalAmount = discountAmountC * 0.13;
+    this.grandTotalAmount =
+      this.totalGrossAmount -
+      this.totalDiscountAmount +
+      this.vatTotalAmount +
+      this.totalTaxAmount;
+  }
+
+  handleTaxChange(value, index): void {
+    const selectedTaxValue = this.salesInvoiceService.taxList.filter(
+      s => s.ID === value
+    );
+    const invoiceEntryArray = <FormArray>(
+      this.addInvoiceForm.get("InvoiceDetails")
+    );
+    let netAmountV = invoiceEntryArray.controls[index].get("NetAmount").value;
+    invoiceEntryArray.controls[index]
+      .get("TaxAmount")
+      .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
+  }
+
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
       ProductModelPopupComponent,
@@ -187,23 +272,57 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         invoiceEntryArray.controls[index]
           .get("ProductName")
           .setValue(data.Name);
+        invoiceEntryArray.controls[index].get("Quantity").setValue(1);
         invoiceEntryArray.controls[index]
           .get("QtyUnitID")
           .setValue(data.UnitID);
         invoiceEntryArray.controls[index]
           .get("SalesRate")
           .setValue(data.SalesRate);
-        this.salesInvoiceService
-          .getRelatedUnits(data.ID)
-          .subscribe(response => {
-            this.relatedUnits = response.Entity;
-            console.log("Related Units" + JSON.stringify(this.relatedUnits));
-          });
+        invoiceEntryArray.controls[index]
+          .get("Amount")
+          .setValue(
+            data.SalesRate *
+              invoiceEntryArray.controls[index].get("Quantity").value
+          );
+        invoiceEntryArray.controls[index].get("DiscPercentage").setValue(0);
+        invoiceEntryArray.controls[index]
+          .get("DiscountAmount")
+          .setValue(
+            invoiceEntryArray.controls[index].get("DiscPercentage").value *
+              invoiceEntryArray.controls[index].get("Amount").value
+          );
+        invoiceEntryArray.controls[index]
+          .get("NetAmount")
+          .setValue(
+            invoiceEntryArray.controls[index].get("Amount").value -
+              invoiceEntryArray.controls[index].get("DiscountAmount").value
+          );
+
+        invoiceEntryArray.controls[index].get("TaxID").setValue("");
+        invoiceEntryArray.controls[index].get("TaxAmount").setValue("");
+        invoiceEntryArray.controls[index].get("Remarks").setValue("");
+
+        this.grandTotalAmount =
+          this.totalGrossAmount -
+          this.totalDiscountAmount +
+          this.vatTotalAmount +
+          this.totalTaxAmount;
+        this.getRelatedUnits(data.ID);
       }
     });
     this.modalRef.content.onClose.subscribe(data => {
       //Do after Close the Modal
     });
+  }
+
+  getRelatedUnits(productCode): void {
+    this.salesInvoiceService
+      .getRelatedUnits(productCode)
+      .subscribe(response => {
+        this.relatedUnits = response.Entity;
+        console.log("Related Units" + JSON.stringify(this.relatedUnits));
+      });
   }
 
   openTender(template: TemplateRef<any>): void {
@@ -227,7 +346,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.submitted = true;
     this.rowSubmitted = true;
     const invoiceEntry = <FormArray>this.addInvoiceForm.get("InvoiceDetails");
-    console.log("From Control " + this.addInvoiceForm.value);
     if (invoiceEntry.invalid) return;
     (<FormArray>this.addInvoiceForm.get("InvoiceDetails")).push(
       this.addInvoiceEntryList()

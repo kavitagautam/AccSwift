@@ -5,7 +5,8 @@ import {
   SeriesList,
   ProjectList,
   BankReceiptMaster,
-  BankAccounts
+  BankAccounts,
+  ProjectListModel
 } from "../models/bank-receipt.model";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
@@ -15,7 +16,7 @@ import { Observable } from "rxjs";
 })
 export class BankReceiptService {
   seriesLists: SeriesList;
-  projectLists: ProjectList;
+  projectLists: ProjectList[] = [];
   _api_URL = environment.baseAPI;
   bankAccountLists;
   constructor(
@@ -32,8 +33,8 @@ export class BankReceiptService {
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectList) => {
-        this.projectLists = res;
+      .subscribe((res: ProjectListModel) => {
+        this.projectLists = res.Entity;
       });
   }
 

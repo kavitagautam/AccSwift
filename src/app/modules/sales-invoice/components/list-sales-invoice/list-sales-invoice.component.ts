@@ -10,7 +10,7 @@ import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
 import { FormBuilder } from "@angular/forms";
 import { Component, OnInit, TemplateRef } from "@angular/core";
-import { InvoiceDetail } from "../models/sales-invoice.model";
+import { InvoiceDetail } from "../../models/sales-invoice.model";
 
 @Component({
   selector: "accSwift-list-sales-invoice",

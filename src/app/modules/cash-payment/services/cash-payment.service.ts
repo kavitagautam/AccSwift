@@ -11,6 +11,7 @@ import {
   CashAccounts,
   CashParty
 } from "../models/cash-payment.model";
+import { ProjectListModel } from "@app/modules/journal-voucher/models/journal.model";
 
 @Injectable({
   providedIn: "root"
@@ -19,7 +20,7 @@ export class CashPaymentService {
   seriesLists: SeriesList;
   cashAccountLists: CashAccounts;
   cashPartyLists: CashParty;
-  projectLists: ProjectList;
+  projectLists: ProjectList[] = [];
   _api_URL = environment.baseAPI;
 
   constructor(
@@ -35,8 +36,8 @@ export class CashPaymentService {
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectList) => {
-        this.projectLists = res;
+      .subscribe((res: ProjectListModel) => {
+        this.projectLists = res.Entity;
       });
   }
   getSeriesList(): void {

@@ -6,7 +6,8 @@ import { Observable } from "rxjs";
 import {
   BankPaymentMaster,
   SeriesList,
-  BankAccounts
+  BankAccounts,
+  ProjectListModel
 } from "../models/bank-payment.model";
 import { environment } from "@env/environment";
 
@@ -15,7 +16,7 @@ import { environment } from "@env/environment";
 })
 export class BankPaymentService {
   _api_URL = environment.baseAPI;
-  projectList: ProjectList;
+  projectList: ProjectList[] = [];
   seriesList: SeriesList;
   bankAccountList: BankAccounts;
 
@@ -31,8 +32,8 @@ export class BankPaymentService {
   getProjectList(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectList) => {
-        this.projectList = res;
+      .subscribe((res: ProjectListModel) => {
+        this.projectList = res.Entity;
       });
   }
 
