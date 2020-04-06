@@ -1,4 +1,3 @@
-import { LedgerCodeAsyncValidators } from "./../../../../shared/validators/async-validators/ledger-code-validators.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ContraVoucherService } from "./../../services/contra-voucher.service";
@@ -7,6 +6,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { ContraVoucherMaster } from "../../models/contraVoucher.model";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 
 @Component({
   selector: "accSwift-edit-contra-voucher",

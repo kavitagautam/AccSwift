@@ -5,8 +5,8 @@ import { CashReceiptService } from "../../services/cash-receipt.service";
 import { CashReceiptMaster } from "../../models/cash-receipt.model";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
-import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 
 @Component({
   selector: "accSwift-edit-cash-receipt",

@@ -11,11 +11,12 @@ import { ProductModelPopupComponent } from "@app/shared/component/product-model-
 import { ToastrService } from "ngx-toastr";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
+import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
   templateUrl: "./edit-sales-invoice.component.html",
-  styleUrls: ["./edit-sales-invoice.component.scss"]
+  styleUrls: ["./edit-sales-invoice.component.scss"],
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   editInvoiceForm: FormGroup;
@@ -48,7 +49,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     backdrop: true,
     ignoreBackdropClick: true,
     centered: true,
-    class: "modal-lg"
+    class: "modal-lg",
   };
   constructor(
     private _fb: FormBuilder,
@@ -56,7 +57,8 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public salesInvoiceService: SalesInvoiceService,
     private modalService: BsModalService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public productCodeMatch: ProductCodeValidatorsService
   ) {}
 
   ngOnInit(): void {
@@ -75,28 +77,95 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       SeriesID: this.salesDetails ? this.salesDetails.SeriesID : "",
       VoucherNo: [
         this.salesDetails ? this.salesDetails.VoucherNo : null,
-        Validators.required
+        Validators.required,
       ],
       CashPartyLedgerID: this.salesDetails
         ? [this.salesDetails.CashPartyLedgerID, [Validators.required]]
         : null,
       SalesLedgerID: [
         this.salesDetails ? this.salesDetails.SalesLedgerID : null,
-        [Validators.required]
+        [Validators.required],
       ],
       DepotID: [this.salesDetails ? this.salesDetails.DepotID : null],
       ProjectID: [this.salesDetails ? this.salesDetails.ProjectID : null],
       Date: [this.salesDetails ? new Date(this.salesDetails.CreatedDate) : ""],
       OrderNo: [this.salesDetails ? this.salesDetails.OrderNo : ""],
       Remarks: [this.salesDetails ? this.salesDetails.Remarks : ""],
-      InvoiceDetails: this._fb.array([this.addInvoiceEntryList()])
+      InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
-    // this.editInvoiceForm.valueChanges
-    //   .pipe(takeUntil(this.destroyed$), debounceTime(20))
+    this.myFormValueChanges$ = this.editInvoiceForm.controls[
+      "InvoiceDetails"
+    ].valueChanges;
+
+    this.myFormValueChanges$.subscribe((changes) =>
+      this.invoiceValueChange(changes)
+    );
+  }
+
+  // Get id from route
+  getIdFromRoute(): void {
+    this.route.paramMap.subscribe((params) => {
+      const param = params.get("id");
+      if (param) {
+        this.salesInvoiceService
+          .getSalesInvoiceDetails(param)
+          .subscribe((response) => {
+            this.salesDetails = response.Entity;
+            if (this.salesDetails) {
+              this.totalGrossAmount = this.salesDetails.GrossAmount;
+              this.totalNetAmount = this.salesDetails.NetAmount;
+              this.totalQty = this.salesDetails.TotalQty;
+              this.totalDiscountPercentage = this.salesDetails.SpecialDiscount;
+              this.tenderAmount = this.salesDetails.TenderAmount;
+              this.changeAmount = this.salesDetails.ChangeAmount;
+              this.adjustmentAmount = this.salesDetails.AdjustmentAmount;
+            }
+            this.buildEditInvoiceForm();
+            this.setInvoiceList();
+          });
+      }
+    });
+  }
+
+  tenderForm: FormGroup;
+  buildTenderForm(): void {
+    this.tenderForm = this._fb.group({
+      tenderAmount: [{ value: this.grandTotalAmount, disabled: true }],
+      adjustAmount: [""],
+      payableAmount: [
+        {
+          value: "",
+          disabled: true,
+        },
+      ],
+      paidAmount: [""],
+      returnAmount: [
+        {
+          value: "",
+          disabled: true,
+        },
+      ],
+    });
+    this.tenderForm.get("adjustAmount").valueChanges.subscribe((value) => {
+      const payableA =
+        this.tenderForm.get("tenderAmount").value -
+        this.tenderForm.get("adjustAmount").value;
+      this.tenderForm.get("payableAmount").setValue(payableA);
+    });
+    this.tenderForm.get("paidAmount").valueChanges.subscribe((value) => {
+      const paidA =
+        this.tenderForm.get("paidAmount").value -
+        this.tenderForm.get("tenderAmount").value;
+      this.tenderForm.get("returnAmount").setValue(paidA);
+    });
+  }
+
+  private invoiceValueChange(value): void {
     this.editInvoiceForm.controls["InvoiceDetails"].valueChanges
       .pipe(takeUntil(this.destroyed$), debounceTime(20))
-      .subscribe(invoices => {
+      .subscribe((invoices) => {
         console.log("dsdasdas : " + JSON.stringify(invoices));
+
         let sumQty = 0;
         let sumNetAmount = 0;
         let sumGrossAmount = 0;
@@ -134,67 +203,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       });
   }
 
-  // Get id from route
-  getIdFromRoute(): void {
-    this.route.paramMap.subscribe(params => {
-      const param = params.get("id");
-      if (param) {
-        this.salesInvoiceService
-          .getSalesInvoiceDetails(param)
-          .subscribe(response => {
-            this.salesDetails = response.Entity;
-            if (this.salesDetails) {
-              this.totalGrossAmount = this.salesDetails.GrossAmount;
-              this.totalNetAmount = this.salesDetails.NetAmount;
-              this.totalQty = this.salesDetails.TotalQty;
-              this.totalDiscountPercentage = this.salesDetails.SpecialDiscount;
-              this.tenderAmount = this.salesDetails.TenderAmount;
-              this.changeAmount = this.salesDetails.ChangeAmount;
-              this.adjustmentAmount = this.salesDetails.AdjustmentAmount;
-            }
-            this.buildEditInvoiceForm();
-            this.setInvoiceList();
-          });
-      }
-    });
-  }
-  tenderForm: FormGroup;
-  buildTenderForm(): void {
-    this.tenderForm = this._fb.group({
-      tenderAmount: [{ value: this.grandTotalAmount, disabled: true }],
-      adjustAmount: [""],
-      payableAmount: [
-        {
-          value: "",
-          disabled: true
-        }
-      ],
-      paidAmount: [""],
-      returnAmount: [
-        {
-          value: "",
-          disabled: true
-        }
-      ]
-    });
-    this.tenderForm.get("adjustAmount").valueChanges.subscribe(value => {
-      const payableA =
-        this.tenderForm.get("tenderAmount").value -
-        this.tenderForm.get("adjustAmount").value;
-      this.tenderForm.get("payableAmount").setValue(payableA);
-    });
-    this.tenderForm.get("paidAmount").valueChanges.subscribe(value => {
-      const paidA =
-        this.tenderForm.get("paidAmount").value -
-        this.tenderForm.get("tenderAmount").value;
-      this.tenderForm.get("returnAmount").setValue(paidA);
-    });
-  }
-
   addInvoiceEntryList(): FormGroup {
     return this._fb.group({
       ID: [0],
-      ProductCode: [""],
+      ProductCode: ["", null, this.productCodeMatch.productCodeMatch()],
       ProductID: ["", Validators.required],
       ProductName: ["", Validators.required],
       Quantity: ["", Validators.required],
@@ -206,7 +218,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       NetAmount: [0, Validators.required],
       TaxID: [""],
       TaxAmount: [""],
-      Remarks: [""]
+      Remarks: [""],
     });
   }
 
@@ -221,11 +233,15 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   setInvoiceDetailsFormArray(invoiceDetails): FormArray {
     const invoiceFormArray = new FormArray([]);
     if (invoiceDetails && invoiceDetails.length > 0) {
-      invoiceDetails.forEach(element => {
+      invoiceDetails.forEach((element) => {
         invoiceFormArray.push(
           this._fb.group({
             ID: [element.ID],
-            ProductCode: [element.ProductCode],
+            ProductCode: [
+              element.ProductCode,
+              null,
+              this.productCodeMatch.productCodeMatch(),
+            ],
             ProductName: [element.ProductName, Validators.required],
             ProductID: [element.ProductID, Validators.required],
             Quantity: [element.Quantity, Validators.required],
@@ -237,7 +253,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
             NetAmount: [element.NetAmount, Validators.required],
             TaxID: [element.TaxID],
             TaxAmount: [element.TaxAmount],
-            Remarks: [element.Remarks]
+            Remarks: [element.Remarks],
           })
         );
         this.getRelatedUnitList(element.ProductID);
@@ -246,7 +262,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       invoiceFormArray.push(
         this._fb.group({
           ID: [0],
-          ProductCode: [""],
+          ProductCode: ["", null, this.productCodeMatch.productCodeMatch()],
           ProductName: ["", Validators.required],
           ProductID: [null, Validators.required],
           Quantity: ["", Validators.required],
@@ -258,7 +274,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
           NetAmount: [0, Validators.required],
           TaxID: [null],
           TaxAmount: [""],
-          Remarks: [""]
+          Remarks: [""],
         })
       );
     }
@@ -270,10 +286,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceService
       .updateSalesInvoice(this.editInvoiceForm.value)
       .subscribe(
-        response => {
+        (response) => {
           this.router.navigate(["/sales-invoice"]);
         },
-        error => {
+        (error) => {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
@@ -287,11 +303,18 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.router.navigate(["/sales-invoice"]);
   }
 
-  changeQuantity(dataItem, index): void {
+  changeInvoiceValues(dataItem, index): void {
+    this.myFormValueChanges$ = this.editInvoiceForm.controls[
+      "InvoiceDetails"
+    ].valueChanges;
+
+    this.myFormValueChanges$.subscribe((changes) =>
+      this.invoiceValueChange(changes)
+    );
+
     const invoiceEntryArray = <FormArray>(
       this.editInvoiceForm.get("InvoiceDetails")
     );
-
     let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
 
     let salesRateValue = invoiceEntryArray.controls[index].get("SalesRate")
@@ -332,7 +355,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
 
   handleTaxChange(value, index): void {
     const selectedTaxValue = this.salesInvoiceService.taxList.filter(
-      s => s.ID === value
+      (s) => s.ID === value
     );
     const invoiceEntryArray = <FormArray>(
       this.editInvoiceForm.get("InvoiceDetails")
@@ -343,6 +366,77 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
   }
 
+  handelProductCode(dataItem, index): void {
+    const invoiceEntryArray = <FormArray>(
+      this.editInvoiceForm.get("InvoiceDetails")
+    );
+
+    const productCode = invoiceEntryArray.controls[index].get("ProductCode")
+      .value;
+    if (
+      invoiceEntryArray.controls[index].get("ProductCode").status === "VALID"
+    ) {
+      this.productCodeMatch.checkProductCode(productCode).subscribe((res) => {
+        const selectedItem = res.Entity;
+        if (selectedItem && selectedItem.length > 0) {
+          invoiceEntryArray.controls[index]
+            .get("ProductCode")
+            .setValue(selectedItem[0].Code);
+          invoiceEntryArray.controls[index]
+            .get("ProductID")
+            .setValue(selectedItem[0].ID);
+          invoiceEntryArray.controls[index]
+            .get("ProductName")
+            .setValue(selectedItem[0].Name);
+          invoiceEntryArray.controls[index].get("Quantity").setValue(1);
+          invoiceEntryArray.controls[index]
+            .get("QtyUnitID")
+            .setValue(selectedItem[0].UnitID);
+          invoiceEntryArray.controls[index]
+            .get("SalesRate")
+            .setValue(selectedItem[0].SalesRate);
+
+          invoiceEntryArray.controls[index]
+            .get("Amount")
+            .setValue(
+              selectedItem[0].SalesRate *
+                invoiceEntryArray.controls[index].get("Quantity").value
+            );
+          invoiceEntryArray.controls[index].get("DiscPercentage").setValue(0);
+          invoiceEntryArray.controls[index]
+            .get("DiscountAmount")
+            .setValue(
+              invoiceEntryArray.controls[index].get("DiscPercentage").value *
+                invoiceEntryArray.controls[index].get("Amount").value
+            );
+          invoiceEntryArray.controls[index]
+            .get("NetAmount")
+            .setValue(
+              invoiceEntryArray.controls[index].get("Amount").value -
+                invoiceEntryArray.controls[index].get("DiscountAmount").value
+            );
+
+          invoiceEntryArray.controls[index].get("TaxID").setValue("");
+          invoiceEntryArray.controls[index].get("TaxAmount").setValue("");
+          invoiceEntryArray.controls[index].get("Remarks").setValue("");
+
+          this.getRelatedUnitList(selectedItem[0].ID);
+        }
+
+        (<FormArray>this.editInvoiceForm.get("InvoiceDetails")).push(
+          this.addInvoiceEntryList()
+        );
+      });
+    }
+  }
+
+  handleFilter(value) {
+    console.log("value" + JSON.stringify(value));
+    this.salesInvoiceService.cashPartyList = this.salesInvoiceService.cashPartyList.filter(
+      (s) => s.LedgerID == value
+    );
+  }
+
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
       ProductModelPopupComponent,
@@ -350,7 +444,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const invoiceEntryArray = <FormArray>(
           this.editInvoiceForm.get("InvoiceDetails")
@@ -397,7 +491,11 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         this.getRelatedUnitList(data.ID);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+
+    (<FormArray>this.editInvoiceForm.get("InvoiceDetails")).push(
+      this.addInvoiceEntryList()
+    );
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }
@@ -408,13 +506,13 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       backdrop: true,
       ignoreBackdropClick: true,
       centered: true,
-      class: "modal-sm"
+      class: "modal-sm",
     };
     this.modalRef = this.modalService.show(template, config);
   }
 
   getRelatedUnitList(id): void {
-    this.salesInvoiceService.getRelatedUnits(id).subscribe(response => {
+    this.salesInvoiceService.getRelatedUnits(id).subscribe((response) => {
       this.relatedUnits = response.Entity;
     });
   }

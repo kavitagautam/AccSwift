@@ -37,6 +37,17 @@
           </div>
           <div class="form-group">
             <label>Cash/ Party /A/C </label>
+            <!-- 
+            <kendo-dropdownlist
+              [data]="salesInvoiceService.cashPartyList"
+              [filterable]="true"
+              [textField]="'LedgerName'"
+              [valueField]="LedgerID"
+              [formControl]="CashPartyLedgerID"
+              [valuePrimitive]="true"
+              (filterChange)="handleFilter($event)"
+            >
+            </kendo-dropdownlist> -->
             <select
               class="form-control"
               formControlName="CashPartyLedgerID"
@@ -110,7 +121,7 @@
       </div>
     </div>
 
-    <div class="col-md-12">
+    <div class="col-md-12 p-0">
       <div class="box-body">
         <kendo-grid
           [data]="getInvoiceEntryList.value"
@@ -124,7 +135,7 @@
             <button kendoGridAddCommand>Add New</button>
           </ng-template>
 
-          <kendo-grid-column field="ProductName" title="Product" width="300">
+          <kendo-grid-column field="ProductName" title="Product" width="250">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -138,11 +149,12 @@
                   <input
                     #input
                     class="k-textbox"
-                    style="width: 100px"
-                    placeholder="Product Code"
+                    style="width: 80px;"
+                    placeholder="Code"
                     [formControl]="
                       getInvoiceEntryList.controls[rowIndex].get('ProductCode')
                     "
+                    (change)="handelProductCode(dataItem, rowIndex)"
                   />
                   <kendo-popup
                     [anchor]="input"
@@ -161,6 +173,7 @@
                     #input
                     class="k-textbox"
                     [readonly]="true"
+                    style="width: 150px;"
                     [formControl]="
                       getInvoiceEntryList.controls[rowIndex].get('ProductName')
                     "
@@ -189,7 +202,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="Quantity" title="Quantity" width="140">
+          <kendo-grid-column field="Quantity" title="Quantity" width="100">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -201,11 +214,11 @@
             >
               <kendo-numerictextbox
                 popupAnchor
-                style="width: 120px;"
+                style="width: 90px; margin: -5px !important;"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
-                (change)="changeQuantity(dataItem, rowIndex)"
+                (change)="changeInvoiceValues(dataItem, rowIndex)"
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -218,7 +231,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="QtyUnitID" title="Unit" width="150">
+          <kendo-grid-column field="QtyUnitID" title="Unit" width="120">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -229,7 +242,7 @@
               let-rowIndex="rowIndex"
             >
               <kendo-dropdownlist
-                style="width: 120px;"
+                style="width: 100px;"
                 [data]="relatedUnits"
                 textField="Name"
                 valueField="ID"
@@ -242,7 +255,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="SalesRate" title="Sales Rate" width="140">
+          <kendo-grid-column field="SalesRate" title="Sales Rate" width="100">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -253,7 +266,7 @@
             >
               <kendo-numerictextbox
                 popupAnchor
-                style="width: 120px;"
+                style="width: 90px; margin: -5px !important;"
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
@@ -264,7 +277,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="Amount" title="Amount" width="140">
+          <kendo-grid-column field="Amount" title="Amount" width="100">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -275,7 +288,7 @@
             >
               <kendo-numerictextbox
                 popupAnchor
-                style="width: 120px;"
+                style="width: 90px; margin: -5px !important;"
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
@@ -299,7 +312,7 @@
           <kendo-grid-column
             field="DiscPercentage"
             title="Discount %"
-            width="140"
+            width="100"
           >
             <ng-template
               kendoGridCellTemplate
@@ -311,7 +324,7 @@
             >
               <kendo-numerictextbox
                 popupAnchor
-                style="width: 120px;"
+                style="width: 90px; margin: -5px !important;"
                 [value]="percentage"
                 [format]="'p'"
                 [min]="0"
@@ -320,7 +333,7 @@
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
-                (change)="changeQuantity(dataItem, rowIndex)"
+                (change)="changeInvoiceValues(dataItem, rowIndex)"
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -329,7 +342,7 @@
           <kendo-grid-column
             field="DiscountAmount"
             title="Discount Amount"
-            width="140"
+            width="100"
           >
             <ng-template
               kendoGridCellTemplate
@@ -341,19 +354,19 @@
             >
               <kendo-numerictextbox
                 popupAnchor
-                style="width: 120px;"
+                style="width: 90px; margin: -5px !important;"
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
-                (change)="changeQuantity(dataItem, rowIndex)"
+                (change)="changeInvoiceValues(dataItem, rowIndex)"
               >
               </kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="NetAmount" title="Net Amount" width="140">
+          <kendo-grid-column field="NetAmount" title="Net Amount" width="110">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -364,7 +377,7 @@
             >
               <kendo-numerictextbox
                 popupAnchor
-                style="width: 120px;"
+                style="width: 100px; margin: -5px !important;"
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
@@ -382,7 +395,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="TaxID" title="(Select Tax)" width="140">
+          <kendo-grid-column field="TaxID" title="(Select Tax)" width="120">
             <ng-template
               kendoGridCellTemplate
               let-isNew="isNew"
@@ -392,7 +405,7 @@
               let-column="column"
             >
               <kendo-dropdownlist
-                style="width: 120px;"
+                style="width: 110px; margin: -5px !important;"
                 [data]="salesInvoiceService.taxList"
                 textField="Name"
                 valueField="ID"
@@ -418,7 +431,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="TaxAmount" title="Tax Amount" width="140">
+          <kendo-grid-column field="TaxAmount" title="Tax Amount" width="100">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -429,7 +442,7 @@
             >
               <kendo-numerictextbox
                 popupAnchor
-                style="width: 120px;"
+                style="width: 90px; margin: -5px !important;"
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
@@ -440,7 +453,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="Remarks" title="Remarks" width="140">
+          <kendo-grid-column field="Remarks" title="Remarks" width="150">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -489,43 +502,43 @@
     </div>
 
     <div class="col-md-12">
-      <div class="col-md-6-offset-4">
+      <div class="col-md-10 offset-md-3">
         <table
           class="table"
           width="60%"
-          style="float: right;  width: 45%;  text-align: right;"
+          style="float: right; width: 45%; text-align: right;"
         >
           <tbody>
             <tr>
               <td>
                 Adjustment (Rs):
               </td>
-              <td>{{ adjustmentAmount }}</td>
+              <td>{{ adjustmentAmount | number: "1.1-2" }}</td>
               <td>Tax 1</td>
               <td>0.00</td>
               <td>Gross(Rs)</td>
-              <td>{{ totalGrossAmount }}</td>
+              <td>{{ totalGrossAmount | number: "1.1-2" }}</td>
             </tr>
             <tr>
               <td>
                 Tender:
               </td>
-              <td>{{ tenderAmount }}</td>
+              <td>{{ tenderAmount | number: "1.1-2" }}</td>
               <td>Tax 2</td>
               <td>0.00</td>
               <td>Total Discount Amount (Rs)</td>
-              <td>{{ totalDiscountAmount }}</td>
+              <td>{{ totalDiscountAmount | number: "1.1-2" }}</td>
             </tr>
             <tr>
               <td>
                 Change:
               </td>
-              <td>{{ changeAmount }}</td>
+              <td>{{ changeAmount | number: "1.1-2" }}</td>
               <td>Tax 2</td>
               <td>0.00</td>
               <td>VAT(13%)</td>
               <td>
-                {{ vatTotalAmount }}
+                {{ vatTotalAmount | number: "1.1-2" }}
               </td>
             </tr>
           </tbody>
@@ -537,18 +550,20 @@
               <td></td>
               <td>Grand Total</td>
               <td>
-                {{ grandTotalAmount }}
+                {{ grandTotalAmount | number: "1.1-2" }}
               </td>
             </tr>
           </tfoot>
         </table>
       </div>
-      <div class="col-md-2-offset-10">
-        <button (click)="openTender(tenderModal)">Tender Amount</button>
+      <div class="col-md-2 offset-md-10">
+        <button (click)="openTender(tenderModal)" class="btn-primary">
+          Tender Amount
+        </button>
       </div>
     </div>
     <div class="col-md-12">
-      <div class="col-md-3 col-sm-6 col-xs-6">
+      <div class="col-md-12">
         <div class="form-group">
           <label>Remarks</label>
           <input formControlName="Remarks" type="text" class="form-control" />
@@ -607,7 +622,7 @@
       <div class="col-md-12">
         <form [formGroup]="tenderForm" novalidate>
           <div class="form-group">
-            <label>Temder Amount</label>
+            <label>Tender Amount</label>
             <input
               type="number"
               class="form-control"
@@ -620,6 +635,14 @@
               type="number"
               class="form-control"
               formControlName="adjustAmount"
+            />
+          </div>
+          <div class="form-group">
+            <label>Payable Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="payableAmount"
             />
           </div>
           <div class="form-group">
