@@ -1,12 +1,12 @@
 import { Router } from "@angular/router";
 import { LedgerCodeMatchService } from "./../../../../shared/services/ledger-code-match/ledger-code-match.service";
-import { LedgerCodeAsyncValidators } from "./../../../../shared/validators/async-validators/ledger-code-validators.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { FormBuilder, Validators, FormArray } from "@angular/forms";
 import { BankPaymentService } from "./../../services/bank-payment.service";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 
 @Component({
   selector: "accSwift-add-bank-payment",
