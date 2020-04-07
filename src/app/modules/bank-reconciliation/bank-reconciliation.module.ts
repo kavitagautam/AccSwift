@@ -13,15 +13,15 @@ import { PopupModule } from "@progress/kendo-angular-popup";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import {
   DropDownListModule,
-  DropDownsModule
+  DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
 
 @NgModule({
   declarations: [
     ListBankReconciliationComponent,
     AddBankReconciliationComponent,
-    EditBankReconciliationComponent
+    EditBankReconciliationComponent,
   ],
   imports: [
     CommonModule,
@@ -33,9 +33,9 @@ import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-po
     PopupModule,
     InputsModule,
     DropDownListModule,
-    DropDownsModule
+    DropDownsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [LedgerModelPopupComponent]
+  entryComponents: [LedgerModalPopupComponent],
 })
 export class BankReconciliationModule {}

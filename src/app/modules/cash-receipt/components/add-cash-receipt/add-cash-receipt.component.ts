@@ -4,14 +4,14 @@ import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { CashReceiptService } from "../../services/cash-receipt.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-add-cash-receipt",
   templateUrl: "./add-cash-receipt.component.html",
-  styleUrls: ["./add-cash-receipt.component.scss"]
+  styleUrls: ["./add-cash-receipt.component.scss"],
 })
 export class AddCashReceiptComponent implements OnInit {
   addCashReceiptForm: FormGroup;
@@ -29,7 +29,7 @@ export class AddCashReceiptComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true,
     centered: true,
-    class: "modal-lg"
+    class: "modal-lg",
   };
 
   constructor(
@@ -54,8 +54,8 @@ export class AddCashReceiptComponent implements OnInit {
       cashPartyId: [null, [Validators.required]],
       date: [new Date()],
       cashReceiptEntryList: this._fb.array([
-        this.addCashReceiptEntryFormGroup()
-      ])
+        this.addCashReceiptEntryFormGroup(),
+      ]),
     });
   }
 
@@ -71,7 +71,7 @@ export class AddCashReceiptComponent implements OnInit {
       amount: [""],
       currentBalance: [""],
       vType: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
@@ -97,7 +97,7 @@ export class AddCashReceiptComponent implements OnInit {
       cashReceiptFormArray.controls[selectedRow].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           cashReceiptFormArray.controls[selectedRow]
@@ -164,12 +164,12 @@ export class AddCashReceiptComponent implements OnInit {
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const cashReceiptFormArray = <FormArray>(
           this.addCashReceiptForm.get("cashReceiptEntryList")
@@ -182,7 +182,7 @@ export class AddCashReceiptComponent implements OnInit {
           .setValue(data.LedgerName);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }

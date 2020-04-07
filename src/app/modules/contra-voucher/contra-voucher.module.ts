@@ -12,15 +12,15 @@ import { SharedModule } from "@app/shared/shared.module";
 import { PopupModule } from "@progress/kendo-angular-popup";
 import {
   DropDownListModule,
-  DropDownsModule
+  DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
 
 @NgModule({
   declarations: [
     ListContraVoucherComponent,
     EditContraVoucherComponent,
-    AddContraVoucherComponent
+    AddContraVoucherComponent,
   ],
   imports: [
     CommonModule,
@@ -32,9 +32,9 @@ import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-po
     InputsModule,
     DropDownsModule,
     DropDownListModule,
-    SharedModule
+    SharedModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [LedgerModelPopupComponent]
+  entryComponents: [LedgerModalPopupComponent],
 })
 export class ContraVoucherModule {}

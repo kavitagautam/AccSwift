@@ -6,7 +6,7 @@
           <div class="form-group">
             <label>Voucher No. <sup>*</sup></label>
             <input
-              type="number"
+              type="text"
               class="form-control"
               formControlName="VoucherNo"
               accSwiftFormValidator
@@ -36,31 +36,32 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Cash/ Party /A/C </label>
-            <!-- 
-            <kendo-dropdownlist
-              [data]="salesInvoiceService.cashPartyList"
-              [filterable]="true"
-              [textField]="'LedgerName'"
-              [valueField]="LedgerID"
-              [formControl]="CashPartyLedgerID"
-              [valuePrimitive]="true"
-              (filterChange)="handleFilter($event)"
-            >
-            </kendo-dropdownlist> -->
-            <select
-              class="form-control"
-              formControlName="CashPartyLedgerID"
-              accSwiftFormValidator
-            >
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let cashParty of salesInvoiceService.cashPartyList"
-                [ngValue]="cashParty.LedgerID"
-              >
-                {{ cashParty.LedgerName }}
-              </option>
-            </select>
+            <div class="col-md-12 p-0">
+              <div class="col-md-11 pl-0">
+                <label>Cash/ Party /A/C </label>
+
+                <kendo-dropdownlist
+                  class="form-control"
+                  [data]="cashPartyList"
+                  [filterable]="true"
+                  [textField]="'LedgerName'"
+                  [valueField]="'LedgerID'"
+                  [valuePrimitive]="true"
+                  [formControl]="editInvoiceForm.get('CashPartyLedgerID')"
+                  (filterChange)="cashPartyDDFilter($event)"
+                >
+                </kendo-dropdownlist>
+              </div>
+              <div class="col-md-1 p-0">
+                <a (click)="openCashPartyModel()"
+                  ><i
+                    class="fa fa-eye pull-right ledgerSelectIcon"
+                    style="margin-top: 25px; font-size: 24px;"
+                    aria-hidden="true"
+                  ></i>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -651,6 +652,7 @@
               type="number"
               class="form-control"
               formControlName="paidAmount"
+              step="0.01"
             />
           </div>
           <div class="form-group">
@@ -668,7 +670,7 @@
 
   <div class="modal-footer">
     <button class="btn btn-primary" (click)="modalRef.hide()">
-      OK
+      Pay
     </button>
     <button
       class="btn btn-secondary ml-2"

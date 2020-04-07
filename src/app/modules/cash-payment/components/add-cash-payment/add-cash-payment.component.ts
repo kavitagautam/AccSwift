@@ -1,15 +1,15 @@
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { CashPaymentService } from "../../services/cash-payment.service";
 import { CashPaymentMaster } from "../../models/cash-payment.model";
+import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-add-cash-payment",
   templateUrl: "./add-cash-payment.component.html",
-  styleUrls: ["./add-cash-payment.component.scss"]
+  styleUrls: ["./add-cash-payment.component.scss"],
 })
 export class AddCashPaymentComponent implements OnInit {
   addCashPaymentForm: FormGroup;
@@ -27,7 +27,7 @@ export class AddCashPaymentComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true,
     centered: true,
-    class: "modal-lg"
+    class: "modal-lg",
   };
 
   constructor(
@@ -49,7 +49,7 @@ export class AddCashPaymentComponent implements OnInit {
       cashPartyId: [null, [Validators.required]],
       cashAccountId: [null, [Validators.required]],
       date: [new Date()],
-      cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryList()])
+      cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryList()]),
     });
   }
 
@@ -61,7 +61,7 @@ export class AddCashPaymentComponent implements OnInit {
       amount: "",
       currentBalance: "",
       vType: "",
-      remarks: ""
+      remarks: "",
     });
   }
 
@@ -85,12 +85,12 @@ export class AddCashPaymentComponent implements OnInit {
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const cashPaymentFormArray = <FormArray>(
           this.addCashPaymentForm.get("cashPaymentEntryList")
@@ -103,7 +103,7 @@ export class AddCashPaymentComponent implements OnInit {
           .setValue(data.LedgerName);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }

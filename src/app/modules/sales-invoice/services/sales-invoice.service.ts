@@ -1,6 +1,6 @@
 import {
   SeriesList,
-  SeriesListModel
+  SeriesListModel,
 } from "./../../bank-payment/models/bank-payment.model";
 import { HttpParams } from "@angular/common/http";
 import {
@@ -15,7 +15,7 @@ import {
   RelatedUnitModel,
   ProjectListModel,
   TaxListModel,
-  TaxList
+  TaxList,
 } from "../models/sales-invoice.model";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "./../../../core/services/http-client/http-client.service";
@@ -25,7 +25,7 @@ import { Injectable } from "@angular/core";
 import { CashAccountsModel } from "@app/modules/cash-receipt/models/cash-receipt.model";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class SalesInvoiceService {
   _api_URL = environment.baseAPI;
@@ -94,6 +94,10 @@ export class SalesInvoiceService {
       .subscribe((response: ProjectListModel) => {
         this.projectList = response.Entity;
       });
+  }
+
+  getCashPartyAccountDD(): Observable<CashAccountsModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/cashparty`);
   }
 
   getRelatedUnits(id: any): Observable<RelatedUnitModel> {

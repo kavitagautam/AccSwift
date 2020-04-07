@@ -1,6 +1,6 @@
 import {
   DropDownListModule,
-  DropDownsModule
+  DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import { PopupModule } from "@progress/kendo-angular-popup";
@@ -14,13 +14,14 @@ import { SalesInvoiceRoutingModule } from "./sales-invoice-routing.module";
 import { ListSalesInvoiceComponent } from "./components/list-sales-invoice/list-sales-invoice.component";
 import { AddSalesInvoiceComponent } from "./components/add-sales-invoice/add-sales-invoice.component";
 import { EditSalesInvoiceComponent } from "./components/edit-sales-invoice/edit-sales-invoice.component";
-import { ProductModelPopupComponent } from "@app/shared/component/product-model-popup/product-model-popup.component";
+import { ProductModalPopupComponent } from "@app/shared/component/product-modal-popup/product-modal-popup.component";
+import { CashPartyModalPopupComponent } from "@app/shared/component/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @NgModule({
   declarations: [
     ListSalesInvoiceComponent,
     AddSalesInvoiceComponent,
-    EditSalesInvoiceComponent
+    EditSalesInvoiceComponent,
   ],
   imports: [
     CommonModule,
@@ -32,9 +33,9 @@ import { ProductModelPopupComponent } from "@app/shared/component/product-model-
     PopupModule,
     InputsModule,
     DropDownListModule,
-    DropDownsModule
+    DropDownsModule,
   ],
-  entryComponents: [ProductModelPopupComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  entryComponents: [ProductModalPopupComponent, CashPartyModalPopupComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SalesInvoiceModule {}

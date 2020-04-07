@@ -5,13 +5,13 @@ import { FormBuilder, Validators, FormArray } from "@angular/forms";
 import { BankPaymentService } from "./../../services/bank-payment.service";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-add-bank-payment",
   templateUrl: "./add-bank-payment.component.html",
-  styleUrls: ["./add-bank-payment.component.scss"]
+  styleUrls: ["./add-bank-payment.component.scss"],
 })
 export class AddBankPaymentComponent implements OnInit {
   addBankPaymentForm: FormGroup;
@@ -26,7 +26,7 @@ export class AddBankPaymentComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true,
     centered: true,
-    class: "modal-lg"
+    class: "modal-lg",
   };
 
   constructor(
@@ -49,7 +49,7 @@ export class AddBankPaymentComponent implements OnInit {
       voucherNo: ["", [Validators.required]],
       bankAccountId: [null, [Validators.required]],
       date: [new Date()],
-      bankPaymentEntryList: this.fb.array([this.addBankPaymentEntryList()])
+      bankPaymentEntryList: this.fb.array([this.addBankPaymentEntryList()]),
     });
   }
 
@@ -64,7 +64,7 @@ export class AddBankPaymentComponent implements OnInit {
       amount: [""],
       currentBalance: [""],
       vType: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
@@ -91,7 +91,7 @@ export class AddBankPaymentComponent implements OnInit {
       bankPaymentFormArray.controls[rowIndex].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           bankPaymentFormArray.controls[rowIndex]
@@ -164,12 +164,12 @@ export class AddBankPaymentComponent implements OnInit {
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const bankPaymentFormArray = <FormArray>(
           this.addBankPaymentForm.get("bankPaymentEntryList")
@@ -182,7 +182,7 @@ export class AddBankPaymentComponent implements OnInit {
           .setValue(data.LedgerName);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }

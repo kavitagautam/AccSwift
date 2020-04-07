@@ -10,7 +10,7 @@ import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validato
 @Component({
   selector: "accSwift-edit-cash-payment",
   templateUrl: "./edit-cash-payment.component.html",
-  styleUrls: ["./edit-cash-payment.component.scss"]
+  styleUrls: ["./edit-cash-payment.component.scss"],
 })
 export class EditCashPaymentComponent implements OnInit {
   private editedRowIndex: number;
@@ -26,7 +26,7 @@ export class EditCashPaymentComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
-    centered: true
+    centered: true,
   };
 
   constructor(
@@ -46,26 +46,26 @@ export class EditCashPaymentComponent implements OnInit {
   buildEditCashPaymentForm() {
     this.editCashPaymentForm = this.fb.group({
       seriesId: [
-        this.cashPaymentDetail ? this.cashPaymentDetail.SeriesID : null
+        this.cashPaymentDetail ? this.cashPaymentDetail.SeriesID : null,
       ],
       projectId: [
-        this.cashPaymentDetail ? this.cashPaymentDetail.ProjectID : null
+        this.cashPaymentDetail ? this.cashPaymentDetail.ProjectID : null,
       ],
       voucherNo: [
         this.cashPaymentDetail ? this.cashPaymentDetail.VoucherNo : "",
-        [Validators.required]
+        [Validators.required],
       ],
       cashAccountId: [
         this.cashPaymentDetail ? this.cashPaymentDetail.LedgerID : null,
-        [Validators.required]
+        [Validators.required],
       ],
       cashPartyId: [null, [Validators.required]],
       date: [
         this.cashPaymentDetail
           ? new Date(this.cashPaymentDetail.CreatedDate)
-          : ""
+          : "",
       ],
-      cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryList()])
+      cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryList()]),
     });
   }
 
@@ -77,19 +77,21 @@ export class EditCashPaymentComponent implements OnInit {
       amount: "",
       currentBalance: "",
       vType: "",
-      remarks: ""
+      remarks: "",
     });
   }
 
   getIdFromRoute() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const param = +params.get("id");
       if (param) {
-        this.cashPaymentService.getCashPaymentDetails(param).subscribe(res => {
-          this.cashPaymentDetail = res;
-          this.buildEditCashPaymentForm;
-          this.setCashPaymentList();
-        });
+        this.cashPaymentService
+          .getCashPaymentDetails(param)
+          .subscribe((res) => {
+            this.cashPaymentDetail = res;
+            this.buildEditCashPaymentForm;
+            this.setCashPaymentList();
+          });
       }
     });
   }
@@ -106,19 +108,19 @@ export class EditCashPaymentComponent implements OnInit {
   setCashPaymentFormArray(cashPaymentDetails): FormArray {
     const cashPaymentFormArray = new FormArray([]);
     if (cashPaymentDetails && cashPaymentDetails.length > 0) {
-      cashPaymentDetails.forEach(element => {
+      cashPaymentDetails.forEach((element) => {
         cashPaymentFormArray.push(
           this.fb.group({
             ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
             particularsOraccountingHead: [
               element.Ledger.EngName,
-              Validators.required
+              Validators.required,
             ],
             voucherNo: element.VoucherNumber,
             amount: element.Amount,
             currentBalance: element.Amount,
             vType: element.VoucherType,
-            remarks: element.Remarks
+            remarks: element.Remarks,
           })
         );
       });
@@ -130,7 +132,7 @@ export class EditCashPaymentComponent implements OnInit {
           amount: [""],
           currentBalance: [""],
           vType: [""],
-          remarks: [""]
+          remarks: [""],
         })
       );
     }
