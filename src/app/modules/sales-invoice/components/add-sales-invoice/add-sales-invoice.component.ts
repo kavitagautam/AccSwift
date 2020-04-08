@@ -6,9 +6,10 @@ import { FormBuilder } from "@angular/forms";
 import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { ProductModelPopupComponent } from "@app/shared/component/product-model-popup/product-model-popup.component";
-import { RelatedUnits } from "../../models/sales-invoice.model";
+import { ProductModalPopupComponent } from "@app/shared/component/product-modal-popup/product-modal-popup.component";
+import { RelatedUnits, CashParty } from "../../models/sales-invoice.model";
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { CashPartyModalPopupComponent } from "@app/shared/component/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-add-sales-invoice",
@@ -21,6 +22,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   rowSubmitted: boolean;
   private editedRowIndex: number;
   relatedUnits: RelatedUnits[] = [];
+  cashPartyList: CashParty[] = [];
 
   //Total Calculation
   myFormValueChanges$;
@@ -52,7 +54,11 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private modalService: BsModalService,
     public productCodeMatch: ProductCodeValidatorsService
-  ) {}
+  ) {
+    this.salesInvoiceService.getCashPartyAccountDD().subscribe((response) => {
+      this.cashPartyList = response.Entity;
+    });
+  }
 
   ngOnInit(): void {
     this.buildAddSalesInvoiceForm();
@@ -163,13 +169,13 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       const payableA =
         this.tenderForm.get("tenderAmount").value -
         this.tenderForm.get("adjustAmount").value;
-      this.tenderForm.get("payableAmount").setValue(payableA);
+      this.tenderForm.get("payableAmount").setValue(payableA.toFixed(2));
     });
     this.tenderForm.get("paidAmount").valueChanges.subscribe((value) => {
       const paidA =
         this.tenderForm.get("paidAmount").value -
         this.tenderForm.get("tenderAmount").value;
-      this.tenderForm.get("returnAmount").setValue(paidA);
+      this.tenderForm.get("returnAmount").setValue(paidA.toFixed(2));
     });
   }
 
@@ -199,6 +205,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     return <FormArray>this.addInvoiceForm.get("InvoiceDetails");
   }
 
+  //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
     const invoiceEntryArray = <FormArray>(
       this.addInvoiceForm.get("InvoiceDetails")
@@ -242,6 +249,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       this.totalTaxAmount;
   }
 
+  //tax Change value calculation
   handleTaxChange(value, index): void {
     const selectedTaxValue = this.salesInvoiceService.taxList.filter(
       (s) => s.ID === value
@@ -253,6 +261,13 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     invoiceEntryArray.controls[index]
       .get("TaxAmount")
       .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
+  }
+
+  // Filterable Cash Party Drop-down
+  cashPartyDDFilter(value): void {
+    this.cashPartyList = this.salesInvoiceService.cashPartyList.filter(
+      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
   }
 
   handelProductCode(dataItem, index): void {
@@ -317,9 +332,25 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     }
   }
 
+  openCashPartyModel(): void {
+    this.modalRef = this.modalService.show(
+      CashPartyModalPopupComponent,
+      this.config
+    );
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe((data) => {
+      if (data) {
+        // Do After the the sucess
+      }
+    });
+    this.modalRef.content.onClose.subscribe((data) => {
+      //Do after Close the Modal
+    });
+  }
+
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      ProductModelPopupComponent,
+      ProductModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;

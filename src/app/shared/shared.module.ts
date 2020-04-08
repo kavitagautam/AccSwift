@@ -7,13 +7,12 @@ import { CommonModalComponent } from "./component/common-modal/common-modal.comp
 import { PopupAnchorDirective } from "./directives/popup-anchor/popup.anchor-target.directive";
 import { CurrencyFormatPipe } from "./pipes/currency-format.pipe";
 import { CurrencyDirective } from "./directives/localCurrency/currency.directive";
-import { LedgerModelPopupComponent } from "./component/ledger-model-popup/ledger-model-popup.component";
 import { GridModule } from "@progress/kendo-angular-grid";
 import { PopupModule } from "@progress/kendo-angular-popup";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import {
   DropDownListModule,
-  DropDownsModule
+  DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
 import { LedgerFilterPipe } from "./pipes/ledger-filter/ledger-filter.pipe";
 import {
@@ -23,14 +22,17 @@ import {
   ModalModule,
   TimepickerModule,
   BsDatepickerModule,
-  BsDropdownModule
+  BsDropdownModule,
 } from "ngx-bootstrap";
 import { DateFormatPipe } from "./pipes/dateFormat/date-format.pipe";
 import { FormSubmitValidationMsgDirective } from "./directives/form-validators/submit-validation-msg.directive";
 import { FormControlValidationMsgDirective } from "./directives/form-validators/validation-message.directive";
 import { ValidationMsgService } from "./services/form-validators/validation-message.service";
 import { PhoneMaskDirective } from "./directives/phone-mask/phone-mask.directive";
-import { ProductModelPopupComponent } from "./component/product-model-popup/product-model-popup.component";
+import { CashPartyModalPopupComponent } from "./component/cash-party-modal-popup/cash-party-modal-popup.component";
+import { ProductModalPopupComponent } from "./component/product-modal-popup/product-modal-popup.component";
+import { LedgerModalPopupComponent } from "./component/ledger-modal-popup/ledger-modal-popup.component";
+import { DecimalPlaceDirective } from "./directives/decimal-place/decimal-place.directive";
 
 @NgModule({
   declarations: [
@@ -41,12 +43,14 @@ import { ProductModelPopupComponent } from "./component/product-model-popup/prod
     PopupAnchorDirective,
     CurrencyDirective,
     LedgerFilterPipe,
-    LedgerModelPopupComponent,
+    LedgerModalPopupComponent,
     DateFormatPipe,
     FormSubmitValidationMsgDirective,
     FormControlValidationMsgDirective,
     PhoneMaskDirective,
-    ProductModelPopupComponent
+    ProductModalPopupComponent,
+    CashPartyModalPopupComponent,
+    DecimalPlaceDirective,
   ],
   imports: [
     CommonModule,
@@ -63,7 +67,7 @@ import { ProductModelPopupComponent } from "./component/product-model-popup/prod
     PopupModule,
     InputsModule,
     DropDownListModule,
-    DropDownsModule
+    DropDownsModule,
   ],
   exports: [
     CollapseModule,
@@ -86,8 +90,10 @@ import { ProductModelPopupComponent } from "./component/product-model-popup/prod
     FormSubmitValidationMsgDirective,
     FormControlValidationMsgDirective,
     PhoneMaskDirective,
-    ProductModelPopupComponent
+    ProductModalPopupComponent,
+    CashPartyModalPopupComponent,
+    DecimalPlaceDirective,
   ],
-  providers: [ValidationMsgService]
+  providers: [ValidationMsgService],
 })
 export class SharedModule {}

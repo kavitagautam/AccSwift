@@ -1,17 +1,17 @@
 import { Component, OnInit } from "@angular/core";
 import { FormArray, FormGroup, Validators, FormBuilder } from "@angular/forms";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { BankReceiptService } from "../../services/bank-receipt.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { BankReceiptMaster } from "../../models/bank-receipt.model";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accswift-add-bank-receipt",
   templateUrl: "./add-bank-receipt.component.html",
-  styleUrls: ["./add-bank-receipt.component.scss"]
+  styleUrls: ["./add-bank-receipt.component.scss"],
 })
 export class AddBankReceiptComponent implements OnInit {
   private editedRowIndex: number;
@@ -29,7 +29,7 @@ export class AddBankReceiptComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true,
     centered: true,
-    class: "modal-lg"
+    class: "modal-lg",
   };
 
   constructor(
@@ -53,7 +53,7 @@ export class AddBankReceiptComponent implements OnInit {
       voucherNo: ["", [Validators.required]],
       bankAccountId: [null, [Validators.required]],
       date: [new Date()],
-      bankReceiptEntryList: this._fb.array([this.addBankReceiptEntryList()])
+      bankReceiptEntryList: this._fb.array([this.addBankReceiptEntryList()]),
     });
   }
 
@@ -72,7 +72,7 @@ export class AddBankReceiptComponent implements OnInit {
       amount: [""],
       currentBalance: [""],
       vType: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
@@ -98,7 +98,7 @@ export class AddBankReceiptComponent implements OnInit {
       bankReceiptFormArray.controls[selectedRow].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           bankReceiptFormArray.controls[selectedRow]
@@ -166,12 +166,12 @@ export class AddBankReceiptComponent implements OnInit {
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const bankReceiptFormArray = <FormArray>(
           this.addBankReceiptForm.get("bankReceiptEntryList")
@@ -184,7 +184,7 @@ export class AddBankReceiptComponent implements OnInit {
           .setValue(data.LedgerName);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }

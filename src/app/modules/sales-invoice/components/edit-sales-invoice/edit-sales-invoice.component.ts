@@ -1,4 +1,8 @@
-import { SalseInvoice, RelatedUnits } from "../../models/sales-invoice.model";
+import {
+  SalseInvoice,
+  RelatedUnits,
+  CashParty,
+} from "../../models/sales-invoice.model";
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
 import { ActivatedRoute } from "@angular/router";
 import { FormArray, Validators } from "@angular/forms";
@@ -7,11 +11,12 @@ import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ProductModelPopupComponent } from "@app/shared/component/product-model-popup/product-model-popup.component";
+import { ProductModalPopupComponent } from "@app/shared/component/product-modal-popup/product-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { CashPartyModalPopupComponent } from "@app/shared/component/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
@@ -42,6 +47,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   adjustmentAmount: number = 0;
   vatTotalAmount: number = 0;
   grandTotalAmount: number = 0;
+  public cashPartyList: CashParty[] = [];
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -59,7 +65,11 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     private modalService: BsModalService,
     private toastr: ToastrService,
     public productCodeMatch: ProductCodeValidatorsService
-  ) {}
+  ) {
+    this.salesInvoiceService.getCashPartyAccountDD().subscribe((response) => {
+      this.cashPartyList = response.Entity;
+    });
+  }
 
   ngOnInit(): void {
     this.buildEditInvoiceForm();
@@ -119,6 +129,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
               this.tenderAmount = this.salesDetails.TenderAmount;
               this.changeAmount = this.salesDetails.ChangeAmount;
               this.adjustmentAmount = this.salesDetails.AdjustmentAmount;
+              this.vatTotalAmount = this.salesDetails.VAT;
+              this.totalDiscountAmount =
+                this.salesDetails.GrossAmount - this.salesDetails.NetAmount;
+              this.grandTotalAmount = this.salesDetails.TotalAmount;
             }
             this.buildEditInvoiceForm();
             this.setInvoiceList();
@@ -150,13 +164,13 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       const payableA =
         this.tenderForm.get("tenderAmount").value -
         this.tenderForm.get("adjustAmount").value;
-      this.tenderForm.get("payableAmount").setValue(payableA);
+      this.tenderForm.get("payableAmount").setValue(payableA.toFixed(2));
     });
     this.tenderForm.get("paidAmount").valueChanges.subscribe((value) => {
       const paidA =
         this.tenderForm.get("paidAmount").value -
         this.tenderForm.get("tenderAmount").value;
-      this.tenderForm.get("returnAmount").setValue(paidA);
+      this.tenderForm.get("returnAmount").setValue(paidA.toFixed(2));
     });
   }
 
@@ -164,8 +178,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.editInvoiceForm.controls["InvoiceDetails"].valueChanges
       .pipe(takeUntil(this.destroyed$), debounceTime(20))
       .subscribe((invoices) => {
-        console.log("dsdasdas : " + JSON.stringify(invoices));
-
         let sumQty = 0;
         let sumNetAmount = 0;
         let sumGrossAmount = 0;
@@ -200,6 +212,25 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         this.totalDiscountAmount = sumDiscountAmount;
         this.totalDiscountPercentage = sumTotalDiscountPer;
         this.totalTaxAmount = sumTaxAmount;
+
+        this.vatTotalAmount = this.totalNetAmount * 0.13;
+        this.grandTotalAmount =
+          this.totalGrossAmount -
+          this.totalDiscountAmount +
+          this.vatTotalAmount +
+          this.totalTaxAmount;
+        console.log(
+          "total Qty : " +
+            this.totalQty +
+            "totalGrossAmount :" +
+            this.totalGrossAmount +
+            " Total NetAmount" +
+            this.totalNetAmount +
+            "total discountAmount " +
+            this.totalDiscountAmount +
+            " total vatTotalAmount" +
+            this.vatTotalAmount
+        );
       });
   }
 
@@ -226,6 +257,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.editInvoiceForm.setControl(
       "InvoiceDetails",
       this.setInvoiceDetailsFormArray(this.salesDetails.InvoiceDetails)
+    );
+
+    (<FormArray>this.editInvoiceForm.get("InvoiceDetails")).push(
+      this.addInvoiceEntryList()
     );
   }
 
@@ -430,16 +465,31 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleFilter(value) {
-    console.log("value" + JSON.stringify(value));
-    this.salesInvoiceService.cashPartyList = this.salesInvoiceService.cashPartyList.filter(
-      (s) => s.LedgerID == value
+  cashPartyDDFilter(value): void {
+    this.cashPartyList = this.salesInvoiceService.cashPartyList.filter(
+      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
+  }
+
+  openCashPartyModel(): void {
+    this.modalRef = this.modalService.show(
+      CashPartyModalPopupComponent,
+      this.config
+    );
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe((data) => {
+      if (data) {
+        // Do After the the sucess
+      }
+    });
+    this.modalRef.content.onClose.subscribe((data) => {
+      //Do after Close the Modal
+    });
   }
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      ProductModelPopupComponent,
+      ProductModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;

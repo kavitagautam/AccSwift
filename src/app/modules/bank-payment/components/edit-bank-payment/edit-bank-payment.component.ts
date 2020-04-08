@@ -5,13 +5,13 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { BankPaymentService } from "../../services/bank-payment.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-edit-bank-payment",
   templateUrl: "./edit-bank-payment.component.html",
-  styleUrls: ["./edit-bank-payment.component.scss"]
+  styleUrls: ["./edit-bank-payment.component.scss"],
 })
 export class EditBankPaymentComponent implements OnInit {
   editBankPaymentForm: FormGroup;
@@ -26,7 +26,7 @@ export class EditBankPaymentComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
-    centered: true
+    centered: true,
   };
   constructor(
     public bankPaymentService: BankPaymentService,
@@ -45,26 +45,26 @@ export class EditBankPaymentComponent implements OnInit {
   buildEditBankPaymentForm() {
     this.editBankPaymentForm = this.fb.group({
       seriesId: [
-        this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : null
+        this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : null,
       ],
       projectId: [
-        this.bankPaymentDetails ? this.bankPaymentDetails.ProjectID : null
+        this.bankPaymentDetails ? this.bankPaymentDetails.ProjectID : null,
       ],
       voucherNo: [
         this.bankPaymentDetails ? this.bankPaymentDetails.VoucherNo : "",
-        [Validators.required]
+        [Validators.required],
       ],
       bankAccountId: [
         this.bankPaymentDetails ? this.bankPaymentDetails.LedgerID : null,
-        [Validators.required]
+        [Validators.required],
       ],
       cashParty: ["", [Validators.required]],
       date: [
         this.bankPaymentDetails
           ? new Date(this.bankPaymentDetails.CreatedDate)
-          : ""
+          : "",
       ],
-      bankPaymentEntryList: this.fb.array([this.addBankPaymentEntryList()])
+      bankPaymentEntryList: this.fb.array([this.addBankPaymentEntryList()]),
     });
   }
 
@@ -79,16 +79,16 @@ export class EditBankPaymentComponent implements OnInit {
       amount: [""],
       currentBalance: [""],
       vType: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
   getIdFromRoute() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       if (params.get("id")) {
         this.bankPaymentService
           .getBankPaymentDetails(params.get("id"))
-          .subscribe(res => {
+          .subscribe((res) => {
             this.bankPaymentDetails = res;
             this.buildEditBankPaymentForm();
             this.setBankPaymentList();
@@ -109,19 +109,19 @@ export class EditBankPaymentComponent implements OnInit {
   setBankPaymentFormArray(bankPaymentDetails): FormArray {
     const bankPaymentFormArray = new FormArray([]);
     if (bankPaymentDetails && bankPaymentDetails.length > 0) {
-      bankPaymentDetails.forEach(element => {
+      bankPaymentDetails.forEach((element) => {
         bankPaymentFormArray.push(
           this.fb.group({
             ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
             particularsOraccountingHead: [
               element.Ledger.EngName,
-              Validators.required
+              Validators.required,
             ],
             voucherNo: element.VoucherNumber,
             amount: element.Amount,
             currentBalance: element.Amount,
             vType: element.VoucherType,
-            remarks: element.Remarks
+            remarks: element.Remarks,
           })
         );
       });
@@ -133,7 +133,7 @@ export class EditBankPaymentComponent implements OnInit {
           amount: [""],
           currentBalance: [""],
           vType: [""],
-          remarks: [""]
+          remarks: [""],
         })
       );
     }
@@ -163,7 +163,7 @@ export class EditBankPaymentComponent implements OnInit {
       bankPaymentFormArray.controls[rowIndex].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           bankPaymentFormArray.controls[rowIndex]
@@ -236,12 +236,12 @@ export class EditBankPaymentComponent implements OnInit {
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const bankPaymentFormArray = <FormArray>(
           this.editBankPaymentForm.get("bankPaymentEntryList")
@@ -254,7 +254,7 @@ export class EditBankPaymentComponent implements OnInit {
           .setValue(data.LedgerName);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }

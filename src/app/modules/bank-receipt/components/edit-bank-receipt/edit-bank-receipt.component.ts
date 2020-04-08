@@ -5,13 +5,13 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { BankReceiptService } from "../../services/bank-receipt.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { BankReceiptMaster } from "../../models/bank-receipt.model";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accswift-edit-bank-receipt",
   templateUrl: "./edit-bank-receipt.component.html",
-  styleUrls: ["./edit-bank-receipt.component.scss"]
+  styleUrls: ["./edit-bank-receipt.component.scss"],
 })
 export class EditBankReceiptComponent implements OnInit {
   private editedRowIndex: number;
@@ -30,7 +30,7 @@ export class EditBankReceiptComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true,
     centered: true,
-    class: "modal-lg"
+    class: "modal-lg",
   };
   constructor(
     public _fb: FormBuilder,
@@ -51,27 +51,27 @@ export class EditBankReceiptComponent implements OnInit {
   buildBankReceiptForm(): void {
     this.editBankReceiptForm = this._fb.group({
       seriesId: [
-        this.bankReceiptDetails ? this.bankReceiptDetails.SeriesID : null
+        this.bankReceiptDetails ? this.bankReceiptDetails.SeriesID : null,
       ],
       projectId: [
         this.bankReceiptDetails ? this.bankReceiptDetails.ProjectID : null,
-        [Validators.required]
+        [Validators.required],
       ],
       voucherNo: [
         this.bankReceiptDetails ? this.bankReceiptDetails.VoucherNo : "",
-        [Validators.required]
+        [Validators.required],
       ],
       bankAccountId: [
         this.bankReceiptDetails ? this.bankReceiptDetails.LedgerID : null,
-        [Validators.required]
+        [Validators.required],
       ],
       cashParty: [""],
       date: [
         this.bankReceiptDetails
           ? new Date(this.bankReceiptDetails.CreatedDate)
-          : ""
+          : "",
       ],
-      bankReceiptEntryList: this._fb.array([this.addBankReceiptEntryList()])
+      bankReceiptEntryList: this._fb.array([this.addBankReceiptEntryList()]),
     });
   }
 
@@ -86,16 +86,16 @@ export class EditBankReceiptComponent implements OnInit {
       amount: [""],
       currentBalance: [""],
       vType: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
   getIdFromRoute() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       if (params.get("id")) {
         this.bankReceiptService
           .getBankReceiptDetails(params.get("id"))
-          .subscribe(res => {
+          .subscribe((res) => {
             this.bankReceiptDetails = res;
             this.buildBankReceiptForm();
             this.setBankReceiptList();
@@ -120,13 +120,13 @@ export class EditBankReceiptComponent implements OnInit {
   setBankReceiptFormArray(bankReceiptDetails): FormArray {
     const bankReceiptFormArray = new FormArray([]);
     if (bankReceiptDetails && bankReceiptDetails.length > 0) {
-      bankReceiptDetails.forEach(element => {
+      bankReceiptDetails.forEach((element) => {
         bankReceiptFormArray.push(
           this._fb.group({
             ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
             particularsOraccountingHead: [
               element.Ledger.EngName,
-              Validators.required
+              Validators.required,
             ],
             voucherNo: element.VoucherNumber,
             chequeNo: element.ChequeNumber,
@@ -135,7 +135,7 @@ export class EditBankReceiptComponent implements OnInit {
             amount: element.Amount,
             currentBalance: element.Amount,
             vType: element.VoucherType,
-            remarks: element.Remarks
+            remarks: element.Remarks,
           })
         );
       });
@@ -150,7 +150,7 @@ export class EditBankReceiptComponent implements OnInit {
           amount: [""],
           currentBalance: [""],
           vType: [""],
-          remarks: [""]
+          remarks: [""],
         })
       );
     }
@@ -179,7 +179,7 @@ export class EditBankReceiptComponent implements OnInit {
       bankReceiptFormArray.controls[selectedRow].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           bankReceiptFormArray.controls[selectedRow]
@@ -247,12 +247,12 @@ export class EditBankReceiptComponent implements OnInit {
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const cashReceiptFormArray = <FormArray>(
           this.editBankReceiptForm.get("bankReceiptEntryList")
@@ -268,7 +268,7 @@ export class EditBankReceiptComponent implements OnInit {
           .setValue(data.LedgerCode);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }

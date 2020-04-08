@@ -4,16 +4,16 @@ import { Router } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe } from "@angular/common";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { ToastrService } from "ngx-toastr";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-add-journal",
   templateUrl: "./add-journal.component.html",
   styleUrls: ["./add-journal.component.scss"],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class AddJournalComponent implements OnInit {
   private editedRowIndex: number;
@@ -35,7 +35,7 @@ export class AddJournalComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
-    class: "modal-lg"
+    class: "modal-lg",
   };
 
   constructor(
@@ -59,7 +59,7 @@ export class AddJournalComponent implements OnInit {
       date: [new Date()],
       projectId: [null],
       narration: [""],
-      journalEntryList: this._fb.array([this.addJournalEntryFormGroup()])
+      journalEntryList: this._fb.array([this.addJournalEntryFormGroup()]),
     });
   }
 
@@ -71,7 +71,7 @@ export class AddJournalComponent implements OnInit {
       debit: ["", Validators.required],
       credit: [""],
       balance: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
   get getjournalEntryList(): FormArray {
@@ -161,7 +161,7 @@ export class AddJournalComponent implements OnInit {
       journalEntryFormArray.controls[selectedRow].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           journalEntryFormArray.controls[selectedRow]
@@ -199,7 +199,7 @@ export class AddJournalComponent implements OnInit {
           Amount: journalEntryFormArray.value[key].debit
             ? journalEntryFormArray.value[key].debit
             : journalEntryFormArray.value[key].credit,
-          Remarks: journalEntryFormArray.value[key].remarks
+          Remarks: journalEntryFormArray.value[key].remarks,
         });
       }
     }
@@ -214,17 +214,17 @@ export class AddJournalComponent implements OnInit {
         Field2: "",
         Field3: "",
         Field4: "",
-        Field5: ""
+        Field5: "",
       },
       VoucherNo: this.addJournalForm.get("voucherNo").value,
       ProjectID: this.addJournalForm.get("projectId").value,
-      Remarks: this.addJournalForm.get("narration").value
+      Remarks: this.addJournalForm.get("narration").value,
     };
     this.journalService.addJournalVoucher(obj).subscribe(
-      response => {
+      (response) => {
         this.router.navigate(["/journal"]);
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
@@ -240,12 +240,12 @@ export class AddJournalComponent implements OnInit {
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const journalEntryFormArray = <FormArray>(
           this.addJournalForm.get("journalEntryList")
@@ -264,7 +264,7 @@ export class AddJournalComponent implements OnInit {
           .setValue(data.LedgerCode);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }

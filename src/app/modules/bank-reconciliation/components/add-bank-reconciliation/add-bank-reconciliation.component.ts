@@ -7,13 +7,13 @@ import { BankReconciliationService } from "./../../services/bank-reconciliation.
 import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-add-bank-reconciliation",
   templateUrl: "./add-bank-reconciliation.component.html",
-  styleUrls: ["./add-bank-reconciliation.component.scss"]
+  styleUrls: ["./add-bank-reconciliation.component.scss"],
 })
 export class AddBankReconciliationComponent implements OnInit {
   addReconciliationForm: FormGroup;
@@ -26,7 +26,7 @@ export class AddBankReconciliationComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true,
     centered: true,
-    class: "modal-lg"
+    class: "modal-lg",
   };
 
   constructor(
@@ -50,8 +50,8 @@ export class AddBankReconciliationComponent implements OnInit {
       bankAccountId: [null, [Validators.required]],
       date: [new Date()],
       reconciliationEntryList: this._fb.array([
-        this.addReconciliationEntryList()
-      ])
+        this.addReconciliationEntryList(),
+      ]),
     });
   }
 
@@ -66,7 +66,7 @@ export class AddBankReconciliationComponent implements OnInit {
       amount: [""],
       currentBalance: [""],
       vType: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
@@ -97,7 +97,7 @@ export class AddBankReconciliationComponent implements OnInit {
       reconciliationFormArray.controls[selectedRow].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           reconciliationFormArray.controls[selectedRow]
@@ -167,12 +167,12 @@ export class AddBankReconciliationComponent implements OnInit {
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const reconciliationFormArray = <FormArray>(
           this.addReconciliationForm.get("reconciliationEntryList")
@@ -185,7 +185,7 @@ export class AddBankReconciliationComponent implements OnInit {
           .setValue(data.LedgerName);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }

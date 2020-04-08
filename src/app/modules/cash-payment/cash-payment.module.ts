@@ -14,13 +14,13 @@ import { EditCashPaymentComponent } from "./components/edit-cash-payment/edit-ca
 
 import { ListCashPaymentComponent } from "./components/list-cash-payment/list-cash-payment.component";
 import { AddCashPaymentComponent } from "./components/add-cash-payment/add-cash-payment.component";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
 
 @NgModule({
   declarations: [
     EditCashPaymentComponent,
     AddCashPaymentComponent,
-    ListCashPaymentComponent
+    ListCashPaymentComponent,
   ],
   imports: [
     CommonModule,
@@ -32,9 +32,9 @@ import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-po
     InputsModule,
     DropDownListModule,
     DropDownsModule,
-    SharedModule
+    SharedModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [LedgerModelPopupComponent]
+  entryComponents: [LedgerModalPopupComponent],
 })
 export class CashPaymentModule {}

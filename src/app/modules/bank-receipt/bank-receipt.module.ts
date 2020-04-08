@@ -7,19 +7,19 @@ import { EditBankReceiptComponent } from "./components/edit-bank-receipt/edit-ba
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { GridModule } from "@progress/kendo-angular-grid";
 import { SharedModule } from "@app/shared/shared.module";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { PopupModule } from "@progress/kendo-angular-popup";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import {
   DropDownListModule,
-  DropDownsModule
+  DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
+import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
 
 @NgModule({
   declarations: [
     ListBankReceiptComponent,
     AddBankReceiptComponent,
-    EditBankReceiptComponent
+    EditBankReceiptComponent,
   ],
   imports: [
     CommonModule,
@@ -35,10 +35,10 @@ import {
     DropDownListModule,
     DropDownsModule,
     SharedModule,
-    BankReceiptRoutingModule
+    BankReceiptRoutingModule,
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [LedgerModelPopupComponent]
+  entryComponents: [LedgerModalPopupComponent],
 })
 export class BankReceiptModule {}
