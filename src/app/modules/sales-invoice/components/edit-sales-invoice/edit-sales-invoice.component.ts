@@ -480,6 +480,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         // Do After the the sucess
+        this.editInvoiceForm.get("CashPartyLedgerID").setValue(data.LedgerID);
       }
     });
     this.modalRef.content.onClose.subscribe((data) => {

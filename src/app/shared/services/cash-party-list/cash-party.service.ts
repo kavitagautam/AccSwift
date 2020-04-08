@@ -3,23 +3,26 @@ import { environment } from "@env/environment";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { Observable } from "rxjs";
-export interface CashPartyList {
+export interface CashParty {
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
   GroupID: number;
-  GroupName: string;
-  PurchaseRate: number;
-  SalesRate: number;
-  ClosingQty: number;
-  UnitID: number;
-  IsInventory: boolean;
-  ID: number;
-  Name: string;
-  Code: string;
+}
+
+export interface CashPartyList {
+  Entity: CashParty[];
+  ItemsPerPage: number;
+  ItemsReturned: number;
+  TotalItemsAvailable: number;
+  CurrentPage: number;
+  TotalPages: number;
 }
 
 export interface CashPartyListModel {
   StatusCode: number;
   Message: string;
-  Entity: CashPartyList[];
+  Entity: CashPartyList;
 }
 @Injectable({
   providedIn: "root",
@@ -31,7 +34,10 @@ export class CashPartyService {
     private httpService: HttpClientService
   ) {}
 
-  getCashPartyList(): Observable<CashPartyListModel> {
-    return this.httpService.get(`${this._api_URL}Product/LOP`);
+  getCashPartyList(body): Observable<CashPartyListModel> {
+    return this.httpService.post(
+      `${this._api_URL}Ledger/navigate/cashparty`,
+      body
+    );
   }
 }

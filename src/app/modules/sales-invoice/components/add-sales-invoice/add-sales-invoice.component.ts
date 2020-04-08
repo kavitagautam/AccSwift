@@ -338,9 +338,11 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       this.config
     );
     this.modalRef.content.action = "Select";
+
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         // Do After the the sucess
+        this.addInvoiceForm.get("CashPartyLedgerID").setValue(data.LedgerID);
       }
     });
     this.modalRef.content.onClose.subscribe((data) => {
