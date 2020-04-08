@@ -14,7 +14,7 @@
     <div class="row mt-2">
       <div class="grid-wrapper">
         <kendo-grid
-          [kendoGridBinding]="cashPartyList"
+          [data]="gridView"
           [filterable]="true"
           [pageSize]="pageSize"
           [skip]="skip"
@@ -30,10 +30,11 @@
           (selectedKeysChange)="
             onSelectedKeysChange($event, bsModalRef.content?.data)
           "
-          [kendoGridSelectBy]="'ID'"
+          (filterChange)="filterChange($event)"
+          [kendoGridSelectBy]="'LedgerID'"
           [selectedKeys]="mySelection"
         >
-          <kendo-grid-column field="Name" title="Prdouct Name" width="350">
+          <kendo-grid-column field="LedgerName" title="Ledger Name" width="150">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -42,26 +43,12 @@
               <a
                 class="a_link"
                 (click)="selectedProduct(dataItem, bsModalRef.content?.data)"
-                >{{ dataItem.Name }}</a
+                >{{ dataItem.LedgerName }}</a
               >
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="Code" title="Product Code" width="180">
+          <kendo-grid-column field="LedgerCode" title="LedgerCode" width="150">
           </kendo-grid-column>
-          <kendo-grid-column
-            field="PurchaseRate"
-            title="PurchaseRate"
-            width="180"
-          >
-            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
-              <span class="float-right">{{ dataItem.PurchaseRate }}</span>
-            </ng-template>
-          </kendo-grid-column>
-          <kendo-grid-column
-            field="SalesRate"
-            title="Sales Rate"
-            width="150"
-          ></kendo-grid-column>
         </kendo-grid>
         <div *ngIf="listLoading" class="k-i-loading"></div>
       </div>
