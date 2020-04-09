@@ -1,5 +1,5 @@
 import { Router } from "@angular/router";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
@@ -8,7 +8,7 @@ import { FormGroup } from "@angular/forms";
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
 } from "@progress/kendo-data-query";
 import { CompoundUnitService } from "../../services/compound-unit.service";
 import { CompoundUnit } from "../../models/compound.model";
@@ -16,7 +16,7 @@ import { CompoundUnit } from "../../models/compound.model";
 @Component({
   selector: "accSwift-compound-unit",
   templateUrl: "./compound-unit.component.html",
-  styleUrls: ["./compound-unit.component.scss"]
+  styleUrls: ["./compound-unit.component.scss"],
 })
 export class CompoundUnitComponent implements OnInit {
   compoundUnitForm: FormGroup;
@@ -45,7 +45,7 @@ export class CompoundUnitComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
-    class: "modal-lg"
+    class: "modal-lg",
   };
 
   //sorting kendo data
@@ -53,8 +53,8 @@ export class CompoundUnitComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
 
   constructor(
@@ -75,7 +75,7 @@ export class CompoundUnitComponent implements OnInit {
       FirstUnitID: [this.editableForm ? ["", [Validators.required]] : [null]],
       SecondUnitID: [this.editableForm ? ["", [Validators.required]] : [null]],
       RelationValue: [""],
-      Remarks: [""]
+      Remarks: [""],
     });
   }
 
@@ -87,17 +87,17 @@ export class CompoundUnitComponent implements OnInit {
       DisplayRow: this.pageSize,
       OrderBy: this.orderByKey,
       Direction: this.dirKey,
-      FilterList: arrayFilter
+      FilterList: arrayFilter,
     };
     this.compoundUnitService.getCompoundUnitList(obj).subscribe(
-      response => {
+      (response) => {
         this.compoundUnitList = response.Entity.Entity;
         this.gridView = {
           data: this.compoundUnitList,
-          total: response.Entity.TotalItemsAvailable
+          total: response.Entity.TotalItemsAvailable,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -125,7 +125,7 @@ export class CompoundUnitComponent implements OnInit {
         this.filterArraySearch.push({
           Field: key,
           Operator: "contains",
-          Value: this.compoundUnitForm.value[key]
+          Value: this.compoundUnitForm.value[key],
         });
       }
     }
@@ -137,11 +137,11 @@ export class CompoundUnitComponent implements OnInit {
     this.filter = filter;
     if (filter.filters.length > 0) {
       const filterArray = [];
-      filter.filters.forEach(function(item) {
+      filter.filters.forEach(function (item) {
         filterArray.push({
           Field: item.field,
           Operator: item.operator,
-          Value: item.value
+          Value: item.value,
         });
       });
       this.filterList = filterArray;
@@ -166,7 +166,7 @@ export class CompoundUnitComponent implements OnInit {
 
   openConfirmationDialogue(dataItem): void {
     const compoundUnitId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -174,7 +174,7 @@ export class CompoundUnitComponent implements OnInit {
     );
     this.modalRef.content.data = "Compound Unit";
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteCompoundUnitById(compoundUnitId.id);
       }
@@ -183,10 +183,10 @@ export class CompoundUnitComponent implements OnInit {
 
   deleteCompoundUnitById(id): void {
     this.compoundUnitService.deleteCompoundUnitByID(id).subscribe(
-      response => {
+      (response) => {
         this.getCompoundUnits();
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
@@ -234,13 +234,13 @@ export class CompoundUnitComponent implements OnInit {
       FirstUnitID: this.compoundUnitForm.get("FirstUnitID").value,
       SecondUnitID: this.compoundUnitForm.get("SecondUnitID").value,
       RelationValue: this.compoundUnitForm.get("RelationValue").value,
-      Remarks: this.compoundUnitForm.get("Remarks").value
+      Remarks: this.compoundUnitForm.get("Remarks").value,
     };
     this.compoundUnitService.updateCompoundUnit(obj).subscribe(
-      response => {
+      (response) => {
         this.getCompoundUnits();
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
@@ -256,13 +256,13 @@ export class CompoundUnitComponent implements OnInit {
       FirstUnitID: this.compoundUnitForm.get("FirstUnitID").value,
       SecondUnitID: this.compoundUnitForm.get("SecondUnitID").value,
       RelationValue: this.compoundUnitForm.get("RelationValue").value,
-      Remarks: this.compoundUnitForm.get("Remarks").value
+      Remarks: this.compoundUnitForm.get("Remarks").value,
     };
     this.compoundUnitService.saveCompoundUnit(obj).subscribe(
-      response => {
+      (response) => {
         this.getCompoundUnits();
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {

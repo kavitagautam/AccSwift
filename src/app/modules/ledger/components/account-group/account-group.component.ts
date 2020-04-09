@@ -3,7 +3,7 @@ import {
   OnInit,
   Input,
   OnChanges,
-  SimpleChange
+  SimpleChange,
 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
@@ -11,12 +11,12 @@ import { Router } from "@angular/router";
 import { LedgerGroup } from "../../models/ledger.models";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-account-group",
   templateUrl: "./account-group.component.html",
-  styleUrls: ["./account-group.component.scss"]
+  styleUrls: ["./account-group.component.scss"],
 })
 export class AccountGroupComponent implements OnInit, OnChanges {
   @Input("selectedItem") selectedItem;
@@ -32,7 +32,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
 
   constructor(
@@ -68,7 +68,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
   getLedgerGroupDetails(): void {
     this.ledgerService
       .getLedgerGroupDetails(this.selectedLedgerGroupId)
-      .subscribe(res => {
+      .subscribe((res) => {
         this.ledgerGroupDetails = res.Entity;
 
         this.buildAccountGroupForm();
@@ -79,11 +79,11 @@ export class AccountGroupComponent implements OnInit, OnChanges {
     this.accountGroupForm = this._fb.group({
       ledgerGroupCode: [
         this.ledgerGroupDetails ? this.ledgerGroupDetails.LedgerCode : "",
-        Validators.required
+        Validators.required,
       ],
       ledgerGroupName: [
         this.ledgerGroupDetails ? this.ledgerGroupDetails.Name : "",
-        Validators.required
+        Validators.required,
       ],
       parentGroupId: [
         {
@@ -92,11 +92,11 @@ export class AccountGroupComponent implements OnInit, OnChanges {
             : null,
           disabled: this.ledgerGroupDetails
             ? this.ledgerGroupDetails.IsBuiltIn
-            : false
+            : false,
         },
-        Validators.required
+        Validators.required,
       ],
-      remarks: [this.ledgerGroupDetails ? this.ledgerGroupDetails.Remarks : ""]
+      remarks: [this.ledgerGroupDetails ? this.ledgerGroupDetails.Remarks : ""],
     });
   }
 
@@ -108,15 +108,15 @@ export class AccountGroupComponent implements OnInit, OnChanges {
         Name: this.accountGroupForm.get("ledgerGroupName").value,
         ParentGroupID: this.accountGroupForm.get("parentGroupId").value,
         DrCr: "DR",
-        Remarks: this.accountGroupForm.get("remarks").value
+        Remarks: this.accountGroupForm.get("remarks").value,
       };
       this.ledgerService.addLedgerGroup(obj).subscribe(
-        response => {
+        (response) => {
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         },
-        error => {
+        (error) => {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
@@ -131,15 +131,15 @@ export class AccountGroupComponent implements OnInit, OnChanges {
         Name: this.accountGroupForm.get("ledgerGroupName").value,
         ParentGroupID: this.accountGroupForm.get("parentGroupId").value,
         DrCr: "DR",
-        Remarks: this.accountGroupForm.get("remarks").value
+        Remarks: this.accountGroupForm.get("remarks").value,
       };
       this.ledgerService.updateLedgerGroup(obj).subscribe(
-        response => {
+        (response) => {
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         },
-        error => {
+        (error) => {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
@@ -164,12 +164,12 @@ export class AccountGroupComponent implements OnInit, OnChanges {
 
   public deleteLedgerGroupByID(id): void {
     this.ledgerService.deleteLedgerGroupByID(id).subscribe(
-      response => {
+      (response) => {
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       },
-      error => {
+      (error) => {
         this.toastr.success(JSON.stringify(error.error.Message));
       },
       () => {
@@ -185,7 +185,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
     );
     this.modalRef.content.data = "Ledger group";
     this.modalRef.content.action = "delete ";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteLedgerGroupByID(this.selectedLedgerGroupId);
       }

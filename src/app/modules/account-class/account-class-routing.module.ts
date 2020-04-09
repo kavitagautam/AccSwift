@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-
+//Acount Class route
 const routes: Routes = [];
 
 @NgModule({

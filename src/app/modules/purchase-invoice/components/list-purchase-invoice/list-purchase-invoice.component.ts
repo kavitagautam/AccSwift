@@ -4,17 +4,17 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import {
   SortDescriptor,
-  CompositeFilterDescriptor
+  CompositeFilterDescriptor,
 } from "@progress/kendo-data-query";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { PurchaseInvoiceService } from "./../../services/purchase-invoice.service";
 import { Component, OnInit } from "@angular/core";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-list-purchase-invoice",
   templateUrl: "./list-purchase-invoice.component.html",
-  styleUrls: ["./list-purchase-invoice.component.scss"]
+  styleUrls: ["./list-purchase-invoice.component.scss"],
 })
 export class ListPurchaseInvoiceComponent implements OnInit {
   purchaseForm: FormGroup;
@@ -31,14 +31,14 @@ export class ListPurchaseInvoiceComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
   modalRef: BsModalRef;
   //modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
   constructor(
     public purchaseService: PurchaseInvoiceService,
@@ -64,7 +64,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
       projectId: [null],
       date: [new Date()],
       orderNo: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
@@ -79,11 +79,11 @@ export class ListPurchaseInvoiceComponent implements OnInit {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
-      Direction: "asc"
+      Direction: "asc",
     };
 
     this.purchaseService.getPurchaseInvoiceMaster().subscribe(
-      response => {
+      (response) => {
         this.listLoading = true;
         this.purchaseInvoiceList = response;
         this.gridView = {
@@ -91,10 +91,10 @@ export class ListPurchaseInvoiceComponent implements OnInit {
             this.skip,
             this.skip + this.pageSize
           ),
-          total: this.purchaseInvoiceList ? this.purchaseInvoiceList.length : 0
+          total: this.purchaseInvoiceList ? this.purchaseInvoiceList.length : 0,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -130,7 +130,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
 
   openConfirmationDialogue(dataItem): void {
     const purchaseInvoiceID = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -138,7 +138,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
     );
     this.modalRef.content.data = "Payments No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deletePaymentsByID(purchaseInvoiceID.id);
       }
@@ -147,10 +147,10 @@ export class ListPurchaseInvoiceComponent implements OnInit {
 
   public deletePaymentsByID(id): void {
     this.purchaseService.deleteInvoiceById(id).subscribe(
-      response => {
+      (response) => {
         this.getPurchaseInvoiceList();
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error));
       },
       () => {

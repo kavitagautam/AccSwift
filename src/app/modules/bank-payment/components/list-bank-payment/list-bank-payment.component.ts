@@ -9,14 +9,14 @@ import { Component, OnInit } from "@angular/core";
 
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
 } from "@progress/kendo-data-query";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-list-bank-payment",
   templateUrl: "./list-bank-payment.component.html",
-  styleUrls: ["./list-bank-payment.component.scss"]
+  styleUrls: ["./list-bank-payment.component.scss"],
 })
 export class ListBankPaymentComponent implements OnInit {
   bankPaymentForm: FormGroup;
@@ -33,8 +33,8 @@ export class ListBankPaymentComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
 
   constructor(
@@ -54,7 +54,7 @@ export class ListBankPaymentComponent implements OnInit {
       projectId: [null],
       voucherNo: [""],
       bankAccountId: [null],
-      date: new Date()
+      date: new Date(),
     });
   }
 
@@ -64,18 +64,18 @@ export class ListBankPaymentComponent implements OnInit {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
-      Direction: "asc" // "asc" or "desc"
+      Direction: "asc", // "asc" or "desc"
     };
     this.bankPaymentService.getBankPaymentMaster().subscribe(
-      response => {
+      (response) => {
         this.bankPaymentList = response;
         console.log(response);
         this.gridView = {
           data: this.bankPaymentList,
-          total: this.bankPaymentList ? this.bankPaymentList.length : 0
+          total: this.bankPaymentList ? this.bankPaymentList.length : 0,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -113,11 +113,11 @@ export class ListBankPaymentComponent implements OnInit {
 
   config = {
     backdrop: true,
-    ignoreBackDrop: true
+    ignoreBackDrop: true,
   };
   openConfirmationDialogue(dataItem) {
     const journalId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -125,7 +125,7 @@ export class ListBankPaymentComponent implements OnInit {
     );
     this.modalRef.content.data = "Receipt No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deletePaymentById(journalId.id);
       }

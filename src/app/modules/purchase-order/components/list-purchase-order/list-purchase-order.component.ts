@@ -6,15 +6,15 @@ import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import {
   SortDescriptor,
-  CompositeFilterDescriptor
+  CompositeFilterDescriptor,
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-list-purchase-order",
   templateUrl: "./list-purchase-order.component.html",
-  styleUrls: ["./list-purchase-order.component.scss"]
+  styleUrls: ["./list-purchase-order.component.scss"],
 })
 export class ListPurchaseOrderComponent implements OnInit {
   purchaseOrderForm: FormGroup;
@@ -30,14 +30,14 @@ export class ListPurchaseOrderComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
   modalRef: BsModalRef;
   //modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
   constructor(
     private _fb: FormBuilder,
@@ -57,7 +57,7 @@ export class ListPurchaseOrderComponent implements OnInit {
       cashPartyACId: [null],
       projectId: [null],
       date: [new Date()],
-      orderNo: [""]
+      orderNo: [""],
     });
   }
 
@@ -72,11 +72,11 @@ export class ListPurchaseOrderComponent implements OnInit {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
-      Direction: "asc"
+      Direction: "asc",
     };
 
     this.purchaseOrderService.getPurchaseOrderMaster().subscribe(
-      response => {
+      (response) => {
         this.listLoading = true;
         this.purchaseOrderList = response;
         this.gridView = {
@@ -84,10 +84,10 @@ export class ListPurchaseOrderComponent implements OnInit {
             this.skip,
             this.skip + this.pageSize
           ),
-          total: this.purchaseOrderList ? this.purchaseOrderList.length : 0
+          total: this.purchaseOrderList ? this.purchaseOrderList.length : 0,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -123,7 +123,7 @@ export class ListPurchaseOrderComponent implements OnInit {
 
   openConfirmationDialogue(dataItem) {
     const purchaseInvoiceID = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -131,7 +131,7 @@ export class ListPurchaseOrderComponent implements OnInit {
     );
     this.modalRef.content.data = "Payments No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deletePaymentsByID(purchaseInvoiceID.id);
       }

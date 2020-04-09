@@ -3,7 +3,7 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  forwardRef
+  forwardRef,
 } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import {
@@ -15,7 +15,7 @@ import {
   Validator,
   Validators,
   AbstractControl,
-  ValidationErrors
+  ValidationErrors,
 } from "@angular/forms";
 
 @Component({
@@ -26,9 +26,9 @@ import {
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => ProductMoreDetailComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class ProductMoreDetailComponent
   implements OnInit, ControlValueAccessor {
@@ -50,7 +50,7 @@ export class ProductMoreDetailComponent
       telephone: ["", Validators.required],
       email: [""],
       company: [""],
-      webSite: [""]
+      webSite: [""],
     });
   }
 

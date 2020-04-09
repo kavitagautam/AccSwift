@@ -4,18 +4,18 @@ import { UnitMaintenanceService } from "../services/unit-maintenance.service";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
 } from "@progress/kendo-data-query";
 import { Units } from "../models/unit-maintenance.model";
 import { Router } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-list-unit-maintenance",
   templateUrl: "./list-unit-maintenance.component.html",
-  styleUrls: ["./list-unit-maintenance.component.scss"]
+  styleUrls: ["./list-unit-maintenance.component.scss"],
 })
 export class ListUnitMaintenanceComponent implements OnInit {
   unitForm: FormGroup;
@@ -46,15 +46,15 @@ export class ListUnitMaintenanceComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
 
   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
 
   constructor(
@@ -74,7 +74,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.unitForm = this._fb.group({
       UnitName: this.editableForm ? ["", [Validators.required]] : [""],
       Symbol: this.editableForm ? ["", [Validators.required]] : [""],
-      Remarks: [""]
+      Remarks: [""],
     });
   }
 
@@ -88,7 +88,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
         this.searchFilterList.push({
           Field: key,
           Operator: "contains",
-          value: this.unitForm.value[key]
+          value: this.unitForm.value[key],
         });
       }
     }
@@ -109,11 +109,11 @@ export class ListUnitMaintenanceComponent implements OnInit {
     this.filter = filter;
     if (filter.filters.length > 0) {
       const filterArray = [];
-      filter.filters.forEach(function(item) {
+      filter.filters.forEach(function (item) {
         filterArray.push({
           Field: item["field"],
           Operator: item["operator"],
-          Value: item["value"]
+          Value: item["value"],
         });
       });
       this.filterList = filterArray;
@@ -146,18 +146,18 @@ export class ListUnitMaintenanceComponent implements OnInit {
       DisplayRow: this.pageSize,
       OrderBy: this.orderByKey,
       Direction: this.dirKey,
-      FilterList: arrayFilter
+      FilterList: arrayFilter,
     };
 
     this.unitService.getUnitList(obj).subscribe(
-      response => {
+      (response) => {
         this.unitLists = response.Entity.Entity;
         this.gridView = {
           data: this.unitLists,
-          total: response.Entity.TotalItemsAvailable
+          total: response.Entity.TotalItemsAvailable,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -168,7 +168,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   openConfirmationDialogue(dataItem): void {
     const unitId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -176,7 +176,7 @@ export class ListUnitMaintenanceComponent implements OnInit {
     );
     this.modalRef.content.data = "Unit" + dataItem.UnitName;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteJournalByID(unitId.id);
       }
@@ -185,10 +185,10 @@ export class ListUnitMaintenanceComponent implements OnInit {
 
   public deleteJournalByID(id): void {
     this.unitService.deleteUnitById(id).subscribe(
-      response => {
+      (response) => {
         this.getUnits();
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
@@ -231,13 +231,13 @@ export class ListUnitMaintenanceComponent implements OnInit {
       ID: this.unitsId,
       UnitName: this.unitForm.get("UnitName").value,
       Symbol: this.unitForm.get("Symbol").value,
-      Remarks: this.unitForm.get("Remarks").value
+      Remarks: this.unitForm.get("Remarks").value,
     };
     this.unitService.updateUnit(obj).subscribe(
-      response => {
+      (response) => {
         this.getUnits();
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
@@ -252,14 +252,14 @@ export class ListUnitMaintenanceComponent implements OnInit {
     const obj = {
       UnitName: this.unitForm.get("UnitName").value,
       Symbol: this.unitForm.get("Symbol").value,
-      Remarks: this.unitForm.get("Remarks").value
+      Remarks: this.unitForm.get("Remarks").value,
     };
 
     this.unitService.saveUnit(obj).subscribe(
-      response => {
+      (response) => {
         this.getUnits();
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {

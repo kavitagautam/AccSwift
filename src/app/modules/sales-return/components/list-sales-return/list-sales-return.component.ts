@@ -1,8 +1,7 @@
-import { ConfirmationDialogComponent } from "./../../../../shared/component/confirmation-dialog/confirmation-dialog.component";
 import { SalesReturnService } from "./../../services/sales-return.service";
 import {
   SortDescriptor,
-  CompositeFilterDescriptor
+  CompositeFilterDescriptor,
 } from "@progress/kendo-data-query";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
@@ -11,11 +10,12 @@ import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-list-sales-return",
   templateUrl: "./list-sales-return.component.html",
-  styleUrls: ["./list-sales-return.component.scss"]
+  styleUrls: ["./list-sales-return.component.scss"],
 })
 export class ListSalesReturnComponent implements OnInit {
   salesReturnForm: FormGroup;
@@ -55,7 +55,7 @@ export class ListSalesReturnComponent implements OnInit {
       projectId: [null],
       date: [new Date()],
       orderNo: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
@@ -70,11 +70,11 @@ export class ListSalesReturnComponent implements OnInit {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
-      Direction: "asc"
+      Direction: "asc",
     };
 
     this.salesReturnService.getSalesReturnMaster().subscribe(
-      response => {
+      (response) => {
         this.listLoading = true;
         this.salesReturnList = response;
         this.gridView = {
@@ -82,10 +82,10 @@ export class ListSalesReturnComponent implements OnInit {
             this.skip,
             this.skip + this.pageSize
           ),
-          total: this.salesReturnList ? this.salesReturnList.length : 0
+          total: this.salesReturnList ? this.salesReturnList.length : 0,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -121,7 +121,7 @@ export class ListSalesReturnComponent implements OnInit {
 
   openConfirmationDialogue(dataItem) {
     const salesReturnID = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -129,7 +129,7 @@ export class ListSalesReturnComponent implements OnInit {
     );
     this.modalRef.content.data = "Payments No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deletePaymentsByID(salesReturnID.id);
       }

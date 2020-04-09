@@ -6,13 +6,13 @@ import { SortDescriptor } from "@progress/kendo-data-query";
 
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { CompanyService } from "../../services/company.service";
 import { CompanyList } from "../../models/company.model";
 @Component({
   selector: "accSwift-list-company",
   templateUrl: "./list-company.component.html",
-  styleUrls: ["./list-company.component.scss"]
+  styleUrls: ["./list-company.component.scss"],
 })
 export class ListCompanyComponent implements OnInit {
   companyList: CompanyList[];
@@ -32,8 +32,8 @@ export class ListCompanyComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
 
   public gridView: GridDataResult;
@@ -42,7 +42,7 @@ export class ListCompanyComponent implements OnInit {
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
 
   constructor(
@@ -59,7 +59,7 @@ export class ListCompanyComponent implements OnInit {
       Code: [""],
       Email: [""],
       Address1: [""],
-      Address2: [""]
+      Address2: [""],
     });
     this.getCompanyList();
   }
@@ -75,17 +75,17 @@ export class ListCompanyComponent implements OnInit {
       DisplayRow: this.pageSize,
       OrderBy: this.orderByKey,
       Direction: this.dirKey,
-      FilterList: this.searchFilterList
+      FilterList: this.searchFilterList,
     };
     this.companyService.getCompanyList(obj).subscribe(
-      response => {
+      (response) => {
         this.companyList = response.Entity.Entity;
         this.gridView = {
           data: this.companyList,
-          total: response.Entity.TotalItemsAvailable
+          total: response.Entity.TotalItemsAvailable,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -128,7 +128,7 @@ export class ListCompanyComponent implements OnInit {
         this.searchFilterList.push({
           Field: key,
           Operator: "contains",
-          value: this.companySearchForm.value[key]
+          value: this.companySearchForm.value[key],
         });
       }
     }
@@ -137,7 +137,7 @@ export class ListCompanyComponent implements OnInit {
 
   openConfirmationDialogue(dataItem): void {
     const companyId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -145,7 +145,7 @@ export class ListCompanyComponent implements OnInit {
     );
     this.modalRef.content.data = "Company " + dataItem.Name;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteCompanyByID(companyId.id);
       }
@@ -153,7 +153,7 @@ export class ListCompanyComponent implements OnInit {
   }
 
   public deleteCompanyByID(id): void {
-    this.companyService.deleteCompanyById(id).subscribe(response => {
+    this.companyService.deleteCompanyById(id).subscribe((response) => {
       this.toastr.success("Company deleted successfully");
       this.getCompanyList();
     });

@@ -1,4 +1,3 @@
-import { LedgerCodeMatchService } from "./../../../../shared/services/ledger-code-match/ledger-code-match.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
@@ -6,6 +5,7 @@ import { BsModalRef } from "ngx-bootstrap";
 import { CashPaymentMaster } from "../../models/cash-payment.model";
 import { CashPaymentService } from "../../services/cash-payment.service";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 
 @Component({
   selector: "accSwift-edit-cash-payment",

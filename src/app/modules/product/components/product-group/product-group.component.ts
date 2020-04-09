@@ -3,11 +3,11 @@ import {
   OnInit,
   Input,
   OnChanges,
-  SimpleChange
+  SimpleChange,
 } from "@angular/core";
 
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { ProductGroupService } from "../../services/product-group.service";
 import { ProductGroup } from "../../models/product.models";
@@ -16,7 +16,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 @Component({
   selector: "accSwift-product-group",
   templateUrl: "./product-group.component.html",
-  styleUrls: ["./product-group.component.scss"]
+  styleUrls: ["./product-group.component.scss"],
 })
 export class ProductGroupComponent implements OnInit, OnChanges {
   @Input("selectedProductGroup") selectedProductGroup;
@@ -38,7 +38,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
 
   ngOnInit() {
@@ -49,13 +49,13 @@ export class ProductGroupComponent implements OnInit, OnChanges {
     this.productGroupForm = this._fb.group({
       groupName: [
         this.groupDetails ? this.groupDetails.Name : "",
-        Validators.required
+        Validators.required,
       ],
       parentGroupId: [
         this.groupDetails ? this.groupDetails.ParentGroupID : null,
-        Validators.required
+        Validators.required,
       ],
-      remarks: [this.groupDetails ? this.groupDetails.Remarks : ""]
+      remarks: [this.groupDetails ? this.groupDetails.Remarks : ""],
     });
   }
 
@@ -81,7 +81,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
     if (this.selectedGroupId) {
       this.productGroupService
         .getProductGroupDetails(this.selectedGroupId)
-        .subscribe(res => {
+        .subscribe((res) => {
           this.groupDetails = res.Entity;
           this.buildProductGroupForm();
         });
@@ -102,15 +102,15 @@ export class ProductGroupComponent implements OnInit, OnChanges {
       const obj = {
         ParentGroupID: this.productGroupForm.get("parentGroupId").value,
         Name: this.productGroupForm.get("groupName").value,
-        Remarks: this.productGroupForm.get("remarks").value
+        Remarks: this.productGroupForm.get("remarks").value,
       };
       this.productGroupService.addProductGroup(obj).subscribe(
-        response => {
+        (response) => {
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         },
-        error => {
+        (error) => {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
@@ -123,15 +123,15 @@ export class ProductGroupComponent implements OnInit, OnChanges {
         ID: this.groupDetails.ID,
         ParentGroupID: this.productGroupForm.get("parentGroupId").value,
         Name: this.productGroupForm.get("groupName").value,
-        Remarks: this.productGroupForm.get("remarks").value
+        Remarks: this.productGroupForm.get("remarks").value,
       };
       this.productGroupService.updateProductGroup(obj).subscribe(
-        response => {
+        (response) => {
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         },
-        error => {
+        (error) => {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
@@ -148,12 +148,12 @@ export class ProductGroupComponent implements OnInit, OnChanges {
 
   public deleteProductGroupByID(id): void {
     this.productGroupService.deleteProductGroupByID(id).subscribe(
-      response => {
+      (response) => {
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       },
-      error => {
+      (error) => {
         this.toastr.success(JSON.stringify(error.error.Message));
       },
       () => {
@@ -169,7 +169,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
     );
     this.modalRef.content.data = "product group";
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteProductGroupByID(this.selectedGroupId);
       }

@@ -1,0 +1,66 @@
+<div class="box box-default">
+  <div class="col-md-12">
+    <div class="grid-wrapper">
+      <table class="table table-striped">
+        <thead>
+          <th>Account Code</th>
+          <th>
+            <tr style="text-align: center; font-size: 14px;">
+              Account Name
+            </tr>
+            <tr style="text-align: left;">
+              Opening Stock
+            </tr>
+          </th>
+          <th>Debit Amount</th>
+          <th>
+            Credit Amount
+          </th>
+        </thead>
+        <tbody *ngFor="let group of groupBalanceList.Entity; let i = index">
+          <tr>
+            <td>
+              {{ group.GroupCode }}
+            </td>
+            <td style="font-size: 18px; font-weight: 700;">
+              {{ group.GroupName }}
+            </td>
+            <td style="text-align: right;">
+              {{ group.TotalDrBal }}
+            </td>
+            <td style="text-align: right;">
+              {{ group.TotalCrBal }}
+            </td>
+          </tr>
+          <tr *ngFor="let l of group.Ledgers">
+            <td>{{ l.LedgerCode }}</td>
+            <td style="padding-left: 50px;">{{ l.LedgerName }}</td>
+            <td style="text-align: right;">{{ l.DrBal }}</td>
+            <td style="text-align: right;">{{ l.CrBal }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="1"></td>
+            <td>Previous Year P/L(Profit)</td>
+            <td colspan="1">{{ groupBalanceList.DiffInOpeningDr }}</td>
+            <td colspan="1">{{ groupBalanceList.DiffInOpeningDr }}</td>
+          </tr>
+          <tr>
+            <td colspan="1"></td>
+            <td>DIFFERENCE IN OPENING BALANCE</td>
+            <td colspan="1">{{ groupBalanceList.DiffInOpeningDr }}</td>
+            <td colspan="1">{{ groupBalanceList.DiffInOpeningCr }}</td>
+          </tr>
+          <tr>
+            <td colspan="1"></td>
+            <td>TRIAL TOTAL</td>
+            <td colspan="1">{{ groupBalanceList.GrandTotalDr }}</td>
+            <td colspan="1">{{ groupBalanceList.GrandTotalCr }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div *ngIf="listLoading" class="k-i-loading"></div>
+  </div>
+</div>

@@ -5,26 +5,26 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  SimpleChange
+  SimpleChange,
 } from "@angular/core";
 import {
   FormGroup,
   FormBuilder,
   Validators,
   FormArray,
-  FormControl
+  FormControl,
 } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
 import { LedgerDetails } from "../../models/ledger.models";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-account-ledger",
   templateUrl: "./account-ledger.component.html",
-  styleUrls: ["./account-ledger.component.scss"]
+  styleUrls: ["./account-ledger.component.scss"],
 })
 export class AccountLedgerComponent implements OnInit, OnChanges {
   @ViewChild("openingBalanceModal") openingBalanceModal: ElementRef;
@@ -46,7 +46,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
 
   constructor(
@@ -82,13 +82,13 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   public balanceType: Array<{ type: string; id: number }> = [
     { type: "DEBIT", id: 1 },
-    { type: "CREDIT", id: 2 }
+    { type: "CREDIT", id: 2 },
   ];
 
   getLedgerDetails(): void {
     this.ledgerService
       .getLedgerDetails(this.selectedLedgerId)
-      .subscribe(res => {
+      .subscribe((res) => {
         this.ledgerDetails = res.Entity;
         this.buildAccountLedgerForm();
       });
@@ -98,11 +98,11 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     this.accoutLedgerForm = this._fb.group({
       ledgerCode: [
         this.ledgerDetails ? this.ledgerDetails.LedgerCode : "",
-        Validators.required
+        Validators.required,
       ],
       ledgerName: [
         this.ledgerDetails ? this.ledgerDetails.Name : "",
-        Validators.required
+        Validators.required,
       ],
       groupID: [this.ledgerDetails ? this.ledgerDetails.GroupID : null],
       remarks: [this.ledgerDetails ? this.ledgerDetails.Remarks : ""],
@@ -110,9 +110,9 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       date: [this.ledgerDetails ? new Date() : ""],
       openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
       previousYearBalanceList: this._fb.array([
-        this.addPreviousYearBalanceFormGroup()
+        this.addPreviousYearBalanceFormGroup(),
       ]),
-      moreDetails: new FormControl("")
+      moreDetails: new FormControl(""),
     });
   }
 
@@ -122,22 +122,22 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       accountClassId: [
         this.ledgerService.accountClass
           ? this.ledgerService.accountClass[0].ID
-          : null
+          : null,
       ],
       accountClassName: [
         {
           value: this.ledgerService.accountClass
             ? this.ledgerService.accountClass[0].Name
             : "",
-          disabled: true
-        }
+          disabled: true,
+        },
       ],
       openingBalance: [
-        this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBal : ""
+        this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBal : "",
       ],
       balanceType: [
-        this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBalDrCr : ""
-      ]
+        this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBalDrCr : "",
+      ],
     });
   }
 
@@ -146,11 +146,11 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       PreviousYearBalanceDebitCredit: [
         this.ledgerDetails
           ? this.ledgerDetails.PreviousYearBalanceDebitCredit
-          : ""
+          : "",
       ],
       PreviousYearBalance: [
-        this.ledgerDetails ? this.ledgerDetails.PreviousYearBalance : ""
-      ]
+        this.ledgerDetails ? this.ledgerDetails.PreviousYearBalance : "",
+      ],
     });
   }
 
@@ -202,17 +202,17 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
             .value,
           OpenBal: openingBalanceArray.controls[0].get("openingBalance").value,
           OpenBalDrCr: openingBalanceArray.controls[0].get("balanceType").value,
-          OpenBalCCYID: 1
+          OpenBalCCYID: 1,
         },
-        Remarks: this.accoutLedgerForm.get("remarks").value
+        Remarks: this.accoutLedgerForm.get("remarks").value,
       };
       this.ledgerService.addLedgerAccount(obj).subscribe(
-        response => {
+        (response) => {
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         },
-        error => {
+        (error) => {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
@@ -248,17 +248,17 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
             .value,
           OpenBal: openingBalanceArray.controls[0].get("openingBalance").value,
           OpenBalDrCr: openingBalanceArray.controls[0].get("balanceType").value,
-          OpenBalCCYID: 1
+          OpenBalCCYID: 1,
         },
-        Remarks: this.accoutLedgerForm.get("remarks").value
+        Remarks: this.accoutLedgerForm.get("remarks").value,
       };
       this.ledgerService.updateLedgerAccount(obj).subscribe(
-        response => {
+        (response) => {
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         },
-        error => {
+        (error) => {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
@@ -285,7 +285,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     );
     this.modalRef.content.data = "ledger Account";
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteAccountLedgertByID(this.selectedLedgerId);
       }
@@ -294,12 +294,12 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   public deleteAccountLedgertByID(id): void {
     this.ledgerService.deleteLedgerById(id).subscribe(
-      response => {
+      (response) => {
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       },
-      error => {
+      (error) => {
         this.toastr.success(JSON.stringify(error.error.Message));
       },
       () => {

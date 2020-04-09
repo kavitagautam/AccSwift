@@ -4,18 +4,18 @@ import { PurchaseReturnService } from "./../../services/purchase-return.service"
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
 } from "@progress/kendo-data-query";
 import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-list-purchase-return",
   templateUrl: "./list-purchase-return.component.html",
-  styleUrls: ["./list-purchase-return.component.scss"]
+  styleUrls: ["./list-purchase-return.component.scss"],
 })
 export class ListPurchaseReturnComponent implements OnInit {
   purchaseReturnForm: FormGroup;
@@ -30,14 +30,14 @@ export class ListPurchaseReturnComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
   modalRef: BsModalRef;
   //modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
   listLoading: boolean;
   constructor(
@@ -62,7 +62,7 @@ export class ListPurchaseReturnComponent implements OnInit {
       orderNo: [""],
       purchaseACId: [null],
       projectId: [null],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
@@ -77,11 +77,11 @@ export class ListPurchaseReturnComponent implements OnInit {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
-      Direction: "asc"
+      Direction: "asc",
     };
 
     this.purchaseReturnService.getPurchaseOrderMaster().subscribe(
-      response => {
+      (response) => {
         this.listLoading = true;
         this.purchaseReturnList = response;
         this.gridView = {
@@ -89,10 +89,10 @@ export class ListPurchaseReturnComponent implements OnInit {
             this.skip,
             this.skip + this.pageSize
           ),
-          total: this.purchaseReturnList ? this.purchaseReturnList.length : 0
+          total: this.purchaseReturnList ? this.purchaseReturnList.length : 0,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -128,7 +128,7 @@ export class ListPurchaseReturnComponent implements OnInit {
 
   openConfirmationDialogue(dataItem) {
     const purchaseReturnID = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -136,7 +136,7 @@ export class ListPurchaseReturnComponent implements OnInit {
     );
     this.modalRef.content.data = "Payments No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deletePaymentsByID(purchaseReturnID.id);
       }

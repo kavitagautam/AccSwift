@@ -10,7 +10,7 @@ import { IntlService } from "@progress/kendo-angular-intl";
 import { LocaleService } from "@app/core/services/locale/locale.services";
 import { ToastrService } from "ngx-toastr";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-edit-journal",

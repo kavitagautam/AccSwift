@@ -5,18 +5,18 @@ import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { RegexConst } from "@app/shared/constants/regex.constant";
 import {
   SortDescriptor,
-  CompositeFilterDescriptor
+  CompositeFilterDescriptor,
 } from "@progress/kendo-data-query";
 
 import { JournalService } from "../../services/journal.service";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { JournalMasterList } from "../../models/journal.model";
 @Component({
   selector: "accSwift-list-journal",
   templateUrl: "./list-journal.component.html",
-  styleUrls: ["./list-journal.component.css"]
+  styleUrls: ["./list-journal.component.css"],
 })
 export class ListJournalComponent implements OnInit {
   journalSearchForm: FormGroup;
@@ -42,8 +42,8 @@ export class ListJournalComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
 
   searchFilterList: Array<any> = [];
@@ -52,7 +52,7 @@ export class ListJournalComponent implements OnInit {
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
 
   constructor(
@@ -68,7 +68,7 @@ export class ListJournalComponent implements OnInit {
       ProjectID: [null],
       VoucherNo: [""],
       toDate: [""],
-      fromDate: [""]
+      fromDate: [""],
     });
     this.getJournalList();
   }
@@ -89,18 +89,18 @@ export class ListJournalComponent implements OnInit {
       DisplayRow: this.pageSize,
       OrderBy: this.orderByKey,
       Direction: this.dirKey,
-      FilterList: this.searchFilterList
+      FilterList: this.searchFilterList,
     };
 
     this.journalService.getJournalList(obj).subscribe(
-      response => {
+      (response) => {
         this.journalList = response.Entity.Entity;
         this.gridView = {
           data: this.journalList,
-          total: response.Entity.TotalItemsAvailable
+          total: response.Entity.TotalItemsAvailable,
         };
       },
-      error => {
+      (error) => {
         this.journalListLoading = false;
       },
       () => {
@@ -109,7 +109,7 @@ export class ListJournalComponent implements OnInit {
     );
   }
 
-  public searchForm() : void{
+  public searchForm(): void {
     this.searchFilterList = [];
     this.currentPage = 1;
     this.skip = 0;
@@ -123,21 +123,21 @@ export class ListJournalComponent implements OnInit {
           this.searchFilterList.push({
             Field: key,
             Operator: "contains",
-            value: this.journalSearchForm.value[key]
+            value: this.journalSearchForm.value[key],
           });
         } else {
           if (this.journalSearchForm.value[key] == "toDate") {
             this.searchFilterList.push({
               Field: "Date",
               Operator: "<=",
-              value: this.journalSearchForm.value[key]
+              value: this.journalSearchForm.value[key],
             });
           }
           if (this.journalSearchForm.value[key] == "fromDate") {
             this.searchFilterList.push({
               Field: "Date",
               Operator: ">=",
-              value: this.journalSearchForm.value[key]
+              value: this.journalSearchForm.value[key],
             });
           }
         }
@@ -166,7 +166,7 @@ export class ListJournalComponent implements OnInit {
 
   openConfirmationDialogue(dataItem): void {
     const journalId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -174,7 +174,7 @@ export class ListJournalComponent implements OnInit {
     );
     this.modalRef.content.data = "Voucher No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteJournalByID(journalId.id);
       }
@@ -182,7 +182,7 @@ export class ListJournalComponent implements OnInit {
   }
 
   public deleteJournalByID(id): void {
-    this.journalService.deleteJournal(id).subscribe(response => {
+    this.journalService.deleteJournal(id).subscribe((response) => {
       this.toastr.success("Journal deleted successfully");
       this.getJournalList();
     });

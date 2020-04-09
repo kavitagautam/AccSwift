@@ -20,7 +20,7 @@ import {
   TranslateService,
 } from "@ngx-translate/core";
 import { JournalService } from "./services/journal.service";
-import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { NepaliDatepickerModule } from "../../../../lib/nepali-datepicker/src/public-api";
 
 export function createTranslateLoader(http: HttpClient) {

@@ -1,9 +1,9 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { NgxPaginationModule } from "ngx-pagination";
-import { PaginationComponent } from "./component/pagination/pagination.component";
-import { LanguageSwitcherComponent } from "./component/language-switcher/language-switcher.component";
-import { CommonModalComponent } from "./component/common-modal/common-modal.component";
+import { PaginationComponent } from "./components/pagination/pagination.component";
+import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component";
+import { CommonModalComponent } from "./components/common-modal/common-modal.component";
 import { PopupAnchorDirective } from "./directives/popup-anchor/popup.anchor-target.directive";
 import { CurrencyFormatPipe } from "./pipes/currency-format.pipe";
 import { CurrencyDirective } from "./directives/localCurrency/currency.directive";
@@ -29,9 +29,9 @@ import { FormSubmitValidationMsgDirective } from "./directives/form-validators/s
 import { FormControlValidationMsgDirective } from "./directives/form-validators/validation-message.directive";
 import { ValidationMsgService } from "./services/form-validators/validation-message.service";
 import { PhoneMaskDirective } from "./directives/phone-mask/phone-mask.directive";
-import { CashPartyModalPopupComponent } from "./component/cash-party-modal-popup/cash-party-modal-popup.component";
-import { ProductModalPopupComponent } from "./component/product-modal-popup/product-modal-popup.component";
-import { LedgerModalPopupComponent } from "./component/ledger-modal-popup/ledger-modal-popup.component";
+import { CashPartyModalPopupComponent } from "./components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { ProductModalPopupComponent } from "./components/product-modal-popup/product-modal-popup.component";
+import { LedgerModalPopupComponent } from "./components/ledger-modal-popup/ledger-modal-popup.component";
 import { DecimalPlaceDirective } from "./directives/decimal-place/decimal-place.directive";
 
 @NgModule({

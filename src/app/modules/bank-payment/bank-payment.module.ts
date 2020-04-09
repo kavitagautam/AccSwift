@@ -15,7 +15,7 @@ import { BankPaymentRoutingModule } from "./bank-payment-routing.module";
 import { ListBankPaymentComponent } from "./components/list-bank-payment/list-bank-payment.component";
 import { EditBankPaymentComponent } from "./components/edit-bank-payment/edit-bank-payment.component";
 import { AddBankPaymentComponent } from "./components/add-bank-payment/add-bank-payment.component";
-import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 
 @NgModule({
   declarations: [
