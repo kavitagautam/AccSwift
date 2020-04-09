@@ -10,7 +10,7 @@ import { ReportsService } from "../../services/reports.service";
   styleUrls: ["./trial-balance.component.scss"],
 })
 export class TrialBalanceComponent implements OnInit {
-  groupBalanceList: TrailBalance[] = [];
+  groupBalanceList: TrailBalance;
   listLoading: boolean;
   constructor(private reportService: ReportsService) {}
 
