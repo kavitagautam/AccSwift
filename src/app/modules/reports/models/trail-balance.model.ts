@@ -275,6 +275,27 @@ export const trailBalanceData = {
   ],
 };
 
+// export interface Ledger {
+//   LedgerID: number;
+//   LedgerCode: string;
+//   LedgerName: string;
+//   DrBal: number;
+//   CrBal: number;
+// }
+
+// export interface TrailBalance {
+//   GroupID: number;
+//   GroupName: string;
+//   GroupCode: string;
+//   Ledgers: Ledger[];
+// }
+
+// export interface TrailBalanceModel {
+//   StatusCode: number;
+//   Message: string;
+//   Entity: TrailBalance[];
+// }
+
 export interface Ledger {
   LedgerID: number;
   LedgerCode: string;
@@ -283,15 +304,25 @@ export interface Ledger {
   CrBal: number;
 }
 
-export interface TrailBalance {
+export interface Group {
   GroupID: number;
   GroupName: string;
   GroupCode: string;
+  TotalDrBal: number;
+  TotalCrBal: number;
   Ledgers: Ledger[];
+}
+
+export interface TrailBalance {
+  Entity: Group[];
+  GrandTotalDr: number;
+  DiffInOpeningDr: number;
+  GrandTotalCr: number;
+  DiffInOpeningCr: number;
 }
 
 export interface TrailBalanceModel {
   StatusCode: number;
   Message: string;
-  Entity: TrailBalance[];
+  Entity: TrailBalance;
 }

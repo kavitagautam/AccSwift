@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { PageChangeEvent, GridDataResult } from "@progress/kendo-angular-grid";
 import {
   SortDescriptor,
-  CompositeFilterDescriptor
+  CompositeFilterDescriptor,
 } from "@progress/kendo-data-query";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { BankReceiptService } from "../../services/bank-receipt.service";
@@ -15,7 +15,7 @@ import { BankReceiptMaster } from "../../models/bank-receipt.model";
 @Component({
   selector: "accswift-list-bank-receipt",
   templateUrl: "./list-bank-receipt.component.html",
-  styleUrls: ["./list-bank-receipt.component.scss"]
+  styleUrls: ["./list-bank-receipt.component.scss"],
 })
 export class ListBankReceiptComponent implements OnInit {
   bankReceiptForm: FormGroup;
@@ -32,15 +32,15 @@ export class ListBankReceiptComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
 
   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
 
   constructor(
@@ -57,7 +57,7 @@ export class ListBankReceiptComponent implements OnInit {
       projectId: [null],
       voucherNo: [""],
       bankAccountId: [null],
-      date: [new Date()]
+      date: [new Date()],
     });
     this.getBankReceiptlList();
     this.bankReceiptService.init();
@@ -73,10 +73,10 @@ export class ListBankReceiptComponent implements OnInit {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
-      Direction: "asc" // "asc" or "desc"
+      Direction: "asc", // "asc" or "desc"
     };
     this.bankReceiptService.getBankReceiptMaster().subscribe(
-      response => {
+      (response) => {
         this.listLoading = true;
         this.bankReceiptList = response;
         this.gridView = {
@@ -84,10 +84,10 @@ export class ListBankReceiptComponent implements OnInit {
             this.skip,
             this.skip + this.pageSize
           ),
-          total: this.bankReceiptList ? this.bankReceiptList.length : 0
+          total: this.bankReceiptList ? this.bankReceiptList.length : 0,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -124,7 +124,7 @@ export class ListBankReceiptComponent implements OnInit {
 
   openConfirmationDialogue(dataItem) {
     const journalId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -132,7 +132,7 @@ export class ListBankReceiptComponent implements OnInit {
     );
     this.modalRef.content.data = "Receipt No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteReceiptByID(journalId.id);
       }

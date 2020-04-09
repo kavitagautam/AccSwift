@@ -4,17 +4,16 @@ import {
   ViewChild,
   ElementRef,
   Output,
-  EventEmitter
+  EventEmitter,
 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
-import { LedgerList } from "@app/shared/services/ledger-list.service";
 
 @Component({
   selector: "accSwift-landing-ledger",
   templateUrl: "./landing-ledger.component.html",
-  styleUrls: ["./landing-ledger.component.scss"]
+  styleUrls: ["./landing-ledger.component.scss"],
 })
 export class LandingLedgerComponent implements OnInit {
   @Output("selectedItem") selectedItem = new EventEmitter();
@@ -43,12 +42,12 @@ export class LandingLedgerComponent implements OnInit {
   loadLedgerTreeView(): void {
     this.treeViewLoading = true;
     this.ledgerService.getLedgerTreeView().subscribe(
-      response => {
+      (response) => {
         this.ledgerTreeNode = response.Entity.Node;
         this.ledgerTreeList = response.Entity.Tree;
         this.treeViewLoading = false;
       },
-      error => {
+      (error) => {
         this.treeViewLoading = false;
       },
       () => {
@@ -60,10 +59,10 @@ export class LandingLedgerComponent implements OnInit {
   loadLedgerlistView(): void {
     this.listViewLoading = true;
     this.ledgerService.getLedgerListView().subscribe(
-      response => {
+      (response) => {
         this.ledgerListView = response.Entity;
       },
-      error => {
+      (error) => {
         this.listViewLoading = false;
       },
       () => {
@@ -75,7 +74,7 @@ export class LandingLedgerComponent implements OnInit {
   public colorGroupOrLedger({ Title, TypeOf }: any): any {
     return {
       "tree-node": TypeOf == 1,
-      "tree-child": TypeOf == 0
+      "tree-child": TypeOf == 0,
     };
   }
 

@@ -3,25 +3,25 @@ import {
   OnInit,
   Input,
   OnChanges,
-  SimpleChange
+  SimpleChange,
 } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ProductService } from "../../services/product.service";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import {
   FormGroup,
   FormBuilder,
   FormArray,
   Validators,
-  FormControl
+  FormControl,
 } from "@angular/forms";
 import { Product } from "../../models/product.models";
 
 @Component({
   selector: "accSwift-product",
   templateUrl: "./product.component.html",
-  styleUrls: ["./product.component.scss"]
+  styleUrls: ["./product.component.scss"],
 })
 export class ProductComponent implements OnInit, OnChanges {
   @Input("selectedProduct") selectedProduct;
@@ -44,7 +44,7 @@ export class ProductComponent implements OnInit, OnChanges {
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
   constructor(
     private toastr: ToastrService,
@@ -81,37 +81,37 @@ export class ProductComponent implements OnInit, OnChanges {
     this.productForm = this._fb.group({
       productCode: [
         this.productDetails ? this.productDetails.ProductCode : "",
-        Validators.required
+        Validators.required,
       ],
       productName: [
         this.productDetails ? this.productDetails.Name : "",
-        Validators.required
+        Validators.required,
       ],
       productGroupId: [
         this.productDetails ? this.productDetails.GroupID : null,
-        Validators.required
+        Validators.required,
       ],
       departmentandLocationId: [
         this.productDetails ? this.productDetails.DepotID : null,
-        Validators.required
+        Validators.required,
       ],
       baseUnitId: [
         this.productDetails ? this.productDetails.UnitID : null,
-        Validators.required
+        Validators.required,
       ],
       isVatApplicable: [
         this.productDetails ? this.productDetails.IsVatApplicable : false,
-        Validators.required
+        Validators.required,
       ],
       isDecimalApplicable: [
-        this.productDetails ? this.productDetails.IsDecimalApplicable : false
+        this.productDetails ? this.productDetails.IsDecimalApplicable : false,
       ],
       isInventoryApplicable: [
-        this.productDetails ? this.productDetails.IsInventoryApplicable : false
+        this.productDetails ? this.productDetails.IsInventoryApplicable : false,
       ],
       remarks: [this.productDetails ? this.productDetails.Remarks : ""],
       openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
-      moreDetails: new FormControl("")
+      moreDetails: new FormControl(""),
     });
   }
 
@@ -123,7 +123,7 @@ export class ProductComponent implements OnInit, OnChanges {
     if (this.selectedProductId) {
       this.productService
         .getProductDetails(this.selectedProductId)
-        .subscribe(response => {
+        .subscribe((response) => {
           this.productDetails = response.Entity;
           this.buildProductForm();
           this.setOpeingQuantity();
@@ -149,12 +149,12 @@ export class ProductComponent implements OnInit, OnChanges {
           accountClassName: [
             this.productService.accountClass
               ? this.productService.accountClass[0].Name
-              : ""
+              : "",
           ],
           quantity: openingQuantities.OpenPurchaseQty,
           purchaseRate: [openingQuantities.OpenPurchaseRate],
           salesRate: [openingQuantities.OpenSalesRate],
-          date: [new Date(openingQuantities.OpenQuantityDate)]
+          date: [new Date(openingQuantities.OpenQuantityDate)],
         })
       );
     } else {
@@ -165,17 +165,17 @@ export class ProductComponent implements OnInit, OnChanges {
           accountClassId: [
             this.productService.accountClass
               ? this.productService.accountClass[0].ID
-              : null
+              : null,
           ],
           accountClassName: [
             this.productService.accountClass
               ? this.productService.accountClass[0].Name
-              : ""
+              : "",
           ],
           quantity: "",
           purchaseRate: [""],
           salesRate: [""],
-          date: [""]
+          date: [""],
         })
       );
     }
@@ -188,17 +188,17 @@ export class ProductComponent implements OnInit, OnChanges {
       accountClassId: [
         this.productService.accountClass
           ? this.productService.accountClass[0].ID
-          : null
+          : null,
       ],
       accountClassName: [
         this.productService.accountClass
           ? this.productService.accountClass[0].Name
-          : ""
+          : "",
       ],
       quantity: [""],
       purchaseRate: [""],
       salesRate: [""],
-      date: [""]
+      date: [""],
     });
   }
 
@@ -272,16 +272,16 @@ export class ProductComponent implements OnInit, OnChanges {
           OpenPurchaseRate: openingBalanceArray.controls[0].get("purchaseRate")
             .value,
           OpenSalesRate: openingBalanceArray.controls[0].get("salesRate").value,
-          OpenQuantityDate: openingBalanceArray.controls[0].get("date").value
-        }
+          OpenQuantityDate: openingBalanceArray.controls[0].get("date").value,
+        },
       };
       this.productService.addProduct(obj).subscribe(
-        response => {
+        (response) => {
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         },
-        error => {
+        (error) => {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
@@ -322,16 +322,16 @@ export class ProductComponent implements OnInit, OnChanges {
           OpenPurchaseRate: openingBalanceArray.controls[0].get("purchaseRate")
             .value,
           OpenSalesRate: openingBalanceArray.controls[0].get("salesRate").value,
-          OpenQuantityDate: openingBalanceArray.controls[0].get("date").value
-        }
+          OpenQuantityDate: openingBalanceArray.controls[0].get("date").value,
+        },
       };
       this.productService.updateProduct(obj).subscribe(
-        response => {
+        (response) => {
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         },
-        error => {
+        (error) => {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
@@ -360,7 +360,7 @@ export class ProductComponent implements OnInit, OnChanges {
     );
     this.modalRef.content.data = "product";
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteProductByID(this.selectedProductId);
       }
@@ -369,12 +369,12 @@ export class ProductComponent implements OnInit, OnChanges {
 
   public deleteProductByID(id): void {
     this.productService.deleteProductByID(id).subscribe(
-      response => {
+      (response) => {
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       },
-      error => {
+      (error) => {
         this.toastr.success(JSON.stringify(error.error.Message));
       },
       () => {

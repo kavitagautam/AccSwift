@@ -4,19 +4,19 @@ import { Router } from "@angular/router";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
 } from "@progress/kendo-data-query";
 import { FormGroup } from "@angular/forms";
 import { SalesOrderService } from "./../../services/sales-order.service";
 import { FormBuilder } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-list-sales-order",
   templateUrl: "./list-sales-order.component.html",
-  styleUrls: ["./list-sales-order.component.scss"]
+  styleUrls: ["./list-sales-order.component.scss"],
 })
 export class ListSalesOrderComponent implements OnInit {
   salesOrderForm: FormGroup;
@@ -33,13 +33,13 @@ export class ListSalesOrderComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
   //modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
   salesOrderList: SalesOrderMaster[];
   modalService: BsModalService;
@@ -61,7 +61,7 @@ export class ListSalesOrderComponent implements OnInit {
       cashPartyACId: [null],
       remarks: [""],
       projectId: [null],
-      date: [new Date()]
+      date: [new Date()],
     });
   }
 
@@ -75,19 +75,19 @@ export class ListSalesOrderComponent implements OnInit {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
-      Direction: "asc"
+      Direction: "asc",
     };
 
     this.salesOrderService.getSalesOrderMaster().subscribe(
-      response => {
+      (response) => {
         this.listLoading = true;
         this.salesOrderList = response;
         this.gridView = {
           data: this.salesOrderList.slice(this.skip, this.skip + this.pageSize),
-          total: this.salesOrderList ? this.salesOrderList.length : 0
+          total: this.salesOrderList ? this.salesOrderList.length : 0,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -124,7 +124,7 @@ export class ListSalesOrderComponent implements OnInit {
 
   openConfirmationDialogue(dataItem) {
     const salesOrderID = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -132,7 +132,7 @@ export class ListSalesOrderComponent implements OnInit {
     );
     this.modalRef.content.data = "Payments No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deletePaymentsByID(salesOrderID.id);
       }

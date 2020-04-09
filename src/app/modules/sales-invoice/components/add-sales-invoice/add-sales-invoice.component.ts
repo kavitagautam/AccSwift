@@ -6,10 +6,10 @@ import { FormBuilder } from "@angular/forms";
 import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { ProductModalPopupComponent } from "@app/shared/component/product-modal-popup/product-modal-popup.component";
+import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
 import { RelatedUnits, CashParty } from "../../models/sales-invoice.model";
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
-import { CashPartyModalPopupComponent } from "@app/shared/component/cash-party-modal-popup/cash-party-modal-popup.component";
+import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-add-sales-invoice",

@@ -6,16 +6,16 @@ import { ToastrService } from "ngx-toastr";
 import { CashReceiptService } from "../../services/cash-receipt.service";
 import {
   SortDescriptor,
-  CompositeFilterDescriptor
+  CompositeFilterDescriptor,
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { CashReceiptMaster } from "../../models/cash-receipt.model";
 
 @Component({
   selector: "accSwift-list-cash-receipt",
   templateUrl: "./list-cash-receipt.component.html",
-  styleUrls: ["./list-cash-receipt.component.scss"]
+  styleUrls: ["./list-cash-receipt.component.scss"],
 })
 export class ListCashReceiptComponent implements OnInit {
   cashReceiptForm: FormGroup;
@@ -32,15 +32,15 @@ export class ListCashReceiptComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
 
   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
 
   constructor(
@@ -58,7 +58,7 @@ export class ListCashReceiptComponent implements OnInit {
       voucherNo: [""],
       cashAccountId: [null],
       cashPartyId: [null],
-      date: [new Date()]
+      date: [new Date()],
     });
     this.getCashReceiptlList();
   }
@@ -74,18 +74,18 @@ export class ListCashReceiptComponent implements OnInit {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
-      Direction: "asc" // "asc" or "desc"
+      Direction: "asc", // "asc" or "desc"
     };
 
     this.cashReceiptService.getCashReceiptMaster().subscribe(
-      response => {
+      (response) => {
         this.cashList = response;
         this.gridView = {
           data: this.cashList.slice(this.skip, this.skip + this.pageSize),
-          total: this.cashList ? this.cashList.length : 0
+          total: this.cashList ? this.cashList.length : 0,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -122,7 +122,7 @@ export class ListCashReceiptComponent implements OnInit {
 
   openConfirmationDialogue(dataItem): void {
     const cashReceiptId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -130,7 +130,7 @@ export class ListCashReceiptComponent implements OnInit {
     );
     this.modalRef.content.data = "Receipt No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteReceiptByID(cashReceiptId.id);
       }

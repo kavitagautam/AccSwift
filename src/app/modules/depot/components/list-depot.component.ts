@@ -1,5 +1,5 @@
 import { DepotList } from "../models/depot.model";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
@@ -10,13 +10,13 @@ import { Component, OnInit, TemplateRef } from "@angular/core";
 import { DepotService } from "../services/depot.service";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
 } from "@progress/kendo-data-query";
 
 @Component({
   selector: "accSwift-list-depot",
   templateUrl: "./list-depot.component.html",
-  styleUrls: ["./list-depot.component.scss"]
+  styleUrls: ["./list-depot.component.scss"],
 })
 export class ListDepotComponent implements OnInit {
   depotForm: FormGroup;
@@ -45,8 +45,8 @@ export class ListDepotComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
 
   //sorting kendo data
@@ -55,7 +55,7 @@ export class ListDepotComponent implements OnInit {
   config = {
     // modal config to unhide modal when clicked outside
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
   depotID: any;
 
@@ -83,7 +83,7 @@ export class ListDepotComponent implements OnInit {
       PostalCode: [""],
       Mobile: [""],
       RegNo: [""],
-      Remarks: [""]
+      Remarks: [""],
     });
   }
 
@@ -95,7 +95,7 @@ export class ListDepotComponent implements OnInit {
         this.searchFilterList.push({
           Field: key,
           Operator: "contains",
-          value: this.depotForm.value[key]
+          value: this.depotForm.value[key],
         });
       }
     }
@@ -107,11 +107,11 @@ export class ListDepotComponent implements OnInit {
     this.filter = filter;
     if (filter.filters.length > 0) {
       const filtersArray = [];
-      filter.filters.forEach(function(item) {
+      filter.filters.forEach(function (item) {
         filtersArray.push({
           Field: item.field,
           Operator: item.operator,
-          Value: item.value
+          Value: item.value,
         });
       });
       this.filterList = filtersArray;
@@ -149,18 +149,18 @@ export class ListDepotComponent implements OnInit {
       DisplayRow: this.pageSize,
       OrderBy: this.orderByKey,
       Direction: this.dirKey,
-      FilterList: filterArray
+      FilterList: filterArray,
     };
 
     this.depotService.getDepotList(obj).subscribe(
-      response => {
+      (response) => {
         this.depotList = response.Entity.Entity;
         this.gridView = {
           data: this.depotList,
-          total: response.Entity.TotalItemsAvailable
+          total: response.Entity.TotalItemsAvailable,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -171,7 +171,7 @@ export class ListDepotComponent implements OnInit {
 
   openConfirmationDialogue(dataItem): void {
     const depotId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -179,7 +179,7 @@ export class ListDepotComponent implements OnInit {
     );
     this.modalRef.content.data = "Depot " + dataItem.depotId;
     this.modalRef.content.action = "delete ";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteDepotById(depotId.id);
       }
@@ -188,10 +188,10 @@ export class ListDepotComponent implements OnInit {
 
   public deleteDepotById(id): void {
     this.depotService.deleteDepotById(id).subscribe(
-      response => {
+      (response) => {
         this.getDepotList();
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error));
       },
       () => {
@@ -242,13 +242,13 @@ export class ListDepotComponent implements OnInit {
       PostalCode: this.depotForm.get("PostalCode").value,
       Mobile: this.depotForm.get("Mobile").value,
       RegNo: this.depotForm.get("RegNo").value,
-      Remarks: this.depotForm.get("Remarks").value
+      Remarks: this.depotForm.get("Remarks").value,
     };
     this.depotService.updateDepot(obj).subscribe(
-      response => {
+      (response) => {
         this.getDepotList();
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error.errorMessage));
       },
       () => {
@@ -261,10 +261,10 @@ export class ListDepotComponent implements OnInit {
 
   addDepotForm(): void {
     this.depotService.saveDepot(this.depotForm.value).subscribe(
-      response => {
+      (response) => {
         this.getDepotList();
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error.errorMessage));
       },
       () => {

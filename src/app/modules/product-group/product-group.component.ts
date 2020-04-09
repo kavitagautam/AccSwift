@@ -8,14 +8,14 @@ import {
   Type,
   Input,
   OnChanges,
-  SimpleChange
+  SimpleChange,
 } from "@angular/core";
 
 import { AddProductGroupComponent } from "./components/add-product-group/add-product-group.component";
 import { ViewProductGroupComponent } from "./components/view-product-group/view-product-group.component";
 import { EditProductGroupComponent } from "./components/edit-product-group/edit-product-group.component";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ProductGroupService } from "./services/product-group.service";
 import { ToastrService } from "ngx-toastr";
 
@@ -37,7 +37,7 @@ export function decoratorOfType<T>(
 @Component({
   selector: "accSwift-product-group",
   templateUrl: "./product-group.component.html",
-  styleUrls: ["./product-group.component.scss"]
+  styleUrls: ["./product-group.component.scss"],
 })
 export class ProductGroupComponent implements OnInit, OnChanges {
   @Input("selectedProductGroup") selectedProductGroup;
@@ -58,7 +58,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
   ngOnInit() {
     // this.createComponent(ProductGroupModule, "accSwift-view-product-group");
@@ -100,7 +100,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
     const componentRef = this.dynamicContentDiv.createComponent(factory);
     componentRef.instance.selectedGroupId = this.selectedGroupId;
 
-    componentRef.instance.onCancel.subscribe(data => {
+    componentRef.instance.onCancel.subscribe((data) => {
       if (data) {
         this.viewProductGroup();
       }
@@ -116,7 +116,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
     const componentRef = this.dynamicContentDiv.createComponent(factory);
     componentRef.instance.selectedGroupId = this.selectedGroupId;
 
-    componentRef.instance.onCancel.subscribe(data => {
+    componentRef.instance.onCancel.subscribe((data) => {
       if (data) {
         this.viewProductGroup();
       }
@@ -126,12 +126,12 @@ export class ProductGroupComponent implements OnInit, OnChanges {
 
   public deleteProductGroupByID(id): void {
     this.productGroupService.deleteProductGroupByID(id).subscribe(
-      response => {
+      (response) => {
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       },
-      error => {
+      (error) => {
         this.toastr.success(JSON.stringify(error.error.Message));
       },
       () => {
@@ -147,7 +147,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
     );
     this.modalRef.content.data = "product group";
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteProductGroupByID(this.selectedGroupId);
       }

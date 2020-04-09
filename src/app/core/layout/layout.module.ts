@@ -8,7 +8,7 @@ import { BreadcrumbsModule } from "ng6-breadcrumbs";
 import { MatIconModule } from "@angular/material";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { SharedModule } from "@app/shared/shared.module";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { NavBarComponent } from "./admin-panel/nav-bar/nav-bar.component";
 import { SideNavComponent } from "./admin-panel/side-nav/side-nav.component";
 
@@ -20,7 +20,7 @@ import { SideNavComponent } from "./admin-panel/side-nav/side-nav.component";
     MenuItemComponent,
     ConfirmationDialogComponent,
     NavBarComponent,
-    SideNavComponent
+    SideNavComponent,
   ],
   imports: [
     CommonModule,
@@ -28,9 +28,9 @@ import { SideNavComponent } from "./admin-panel/side-nav/side-nav.component";
     MatIconModule,
     BrowserAnimationsModule,
     SharedModule,
-    BreadcrumbsModule
+    BreadcrumbsModule,
   ],
   entryComponents: [ConfirmationDialogComponent, FooterComponent],
-  exports: [ConfirmationDialogComponent, FooterComponent]
+  exports: [ConfirmationDialogComponent, FooterComponent],
 })
 export class LayoutModule {}

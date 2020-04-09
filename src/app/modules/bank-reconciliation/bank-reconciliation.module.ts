@@ -15,7 +15,7 @@ import {
   DropDownListModule,
   DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
-import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 
 @NgModule({
   declarations: [

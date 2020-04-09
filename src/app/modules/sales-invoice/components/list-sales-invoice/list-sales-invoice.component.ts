@@ -1,21 +1,21 @@
-import { ConfirmationDialogComponent } from "./../../../../shared/component/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
 import { FormBuilder } from "@angular/forms";
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { InvoiceDetail } from "../../models/sales-invoice.model";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-list-sales-invoice",
   templateUrl: "./list-sales-invoice.component.html",
-  styleUrls: ["./list-sales-invoice.component.scss"]
+  styleUrls: ["./list-sales-invoice.component.scss"],
 })
 export class ListSalesInvoiceComponent implements OnInit {
   salesInvoiceForm;
@@ -35,15 +35,15 @@ export class ListSalesInvoiceComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
 
   searchFilterList = [];
   //modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
 
   constructor(
@@ -67,7 +67,7 @@ export class ListSalesInvoiceComponent implements OnInit {
       DepotID: [null],
       ProjectID: [null],
       Date: [new Date()],
-      OrderNo: [""]
+      OrderNo: [""],
     });
   }
 
@@ -92,17 +92,17 @@ export class ListSalesInvoiceComponent implements OnInit {
       DisplayRow: this.pageSize,
       OrderBy: this.orderByKey,
       Direction: this.dirKey,
-      FilterList: this.searchFilterList
+      FilterList: this.searchFilterList,
     };
     this.salesInvoiceService.getSalesInvoiceMaster(obj).subscribe(
-      response => {
+      (response) => {
         this.salesInvoiceList = response.Entity.Entity;
         this.gridView = {
           data: this.salesInvoiceList,
-          total: response.Entity.TotalItemsAvailable
+          total: response.Entity.TotalItemsAvailable,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -121,7 +121,7 @@ export class ListSalesInvoiceComponent implements OnInit {
         this.searchFilterList.push({
           Field: key,
           Operator: "contains",
-          value: this.salesInvoiceForm.value[key]
+          value: this.salesInvoiceForm.value[key],
         });
       }
     }
@@ -147,7 +147,7 @@ export class ListSalesInvoiceComponent implements OnInit {
 
   openConfirmationDialogue(dataItem) {
     const salesInvoiceID = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -155,7 +155,7 @@ export class ListSalesInvoiceComponent implements OnInit {
     );
     this.modalRef.content.data = "Voucher No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deletePaymentsByID(salesInvoiceID.id);
       }
@@ -171,10 +171,10 @@ export class ListSalesInvoiceComponent implements OnInit {
 
   public deletePaymentsByID(id): void {
     this.salesInvoiceService.deleteSalesById(id).subscribe(
-      response => {
+      (response) => {
         this.getSalesInvoiceList();
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error));
       },
       () => {

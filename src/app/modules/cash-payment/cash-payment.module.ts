@@ -14,7 +14,7 @@ import { EditCashPaymentComponent } from "./components/edit-cash-payment/edit-ca
 
 import { ListCashPaymentComponent } from "./components/list-cash-payment/list-cash-payment.component";
 import { AddCashPaymentComponent } from "./components/add-cash-payment/add-cash-payment.component";
-import { LedgerModalPopupComponent } from "@app/shared/component/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 
 @NgModule({
   declarations: [
