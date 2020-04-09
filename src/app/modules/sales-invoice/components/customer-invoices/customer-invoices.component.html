@@ -1,0 +1,706 @@
+<div class="row">
+  <div class="col-sm-4 col-xs-12">
+    <div class="form-group">
+      <label>Payroll Invoice No</label>
+      <select class="form-control" [value]="">
+        <option value="" selected disabled>Select </option>
+        <option
+          *ngFor="let payrollInvoice of payrollInvoiceList"
+          [value]="payrollInvoice.id"
+        >
+          {{ payrollInvoice.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-sm-4 col-xs-12" style="padding-left: 0px;">
+    <button class="btn btn-primary" style="margin-top: 23px;">Submit</button>
+  </div>
+
+  <div class="col-sm-4 col-xs-12" style="margin-top: 18px;">
+    <div class="move-right">
+      <button
+        class="btn btn-default mr-2 mt-2"
+        tooltip="Generate Pdf"
+        (click)="pdf.saveAs('customer-invoice.pdf')"
+      >
+        <i class="{{ iconConst.EXPORT_TO_PDF }}"></i>
+      </button>
+      <button
+        class="btn btn-default mr-2 mt-2"
+        tooltip="CSV Export"
+        (click)="exportToCSV()"
+      >
+        <i class="{{ iconConst.EXPORT_TO_CSV }}"></i>
+      </button>
+      <button
+        class="btn btn-default mr-2 mt-2"
+        tooltip="Print"
+        printSectionId="print-section"
+        ngxPrint
+        [useExistingCss]="true"
+      >
+        <i class="{{ iconConst.PRINT }}"></i>
+      </button>
+      <button class="btn btn-default mr-2 mt-2" tooltip="Email">
+        <i class="{{ iconConst.EMAIL }}"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<kendo-pdf-export
+  #pdf
+  paperSize="A4"
+  margin="1cm"
+  [scale]="0.8"
+  [repeatHeaders]="true"
+>
+  <div id="print-section">
+    <table
+      width="100%"
+      border="0"
+      style="
+        border-collapse: collapse;
+        border: 0;
+        font-size: 12px;
+        margin-top: 10px;
+        color: #000000;
+        font-family: Arial, Verdana;
+      "
+    >
+      <tr>
+        <td width="57%" style="border: none;" valign="top">
+          <table
+            borde="0"
+            style="
+              border: none;
+              font-size: 13px;
+              margin-top: 40px;
+              margin-left: 40px;
+            "
+          >
+            <tr>
+              <td style="border: none;">
+                <img
+                  src="{{ defaultImageUrl }}/logo.png"
+                  style="max-width: 200px; max-height: 80px;"
+                /><br /><br /><br />
+                <b>
+                  SIMPLIFLY STAFFING TECHNOLOGY<br />
+                  800 N HAVEN AVE<br />
+                  SUITE 240<br />
+                  ONTARIO, CALIFORNIA 91764<br />
+                </b>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td width="43%" style="border: none;" valign="top">
+          <table
+            width="100%"
+            border="0"
+            style="
+              border: none;
+              border-collapse: collapse;
+              font-size: 12px;
+              margin-top: 10px;
+              color: #000000;
+              font-family: Arial, Verdana;
+            "
+          >
+            <tr>
+              <td
+                width="100%"
+                align="center"
+                style="
+                  border: none;
+                  font-size: 30px;
+                  font-weight: bold;
+                  text-align: right;
+                "
+              >
+                INVOICE
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="border: none;">
+                <table
+                  width="100%"
+                  border="0"
+                  style="
+                    border-collapse: collapse;
+                    border: 0;
+                    font-size: 12px;
+                    margin-top: 4px;
+                    color: #000000;
+                    font-family: Arial, Verdana;
+                  "
+                >
+                  <tr>
+                    <td
+                      align="center"
+                      bgcolor="#000000"
+                      style="
+                        font-weight: bold;
+                        border: #000000 1px solid;
+                        color: #fff;
+                      "
+                      class="header"
+                    >
+                      Payment Terms
+                    </td>
+                    <td
+                      align="center"
+                      bgcolor="#000000"
+                      style="
+                        font-weight: bold;
+                        border: #000000 1px solid;
+                        color: #fff;
+                      "
+                      class="header"
+                    >
+                      Invoice Date
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" style="border: #000000 1px solid;"></td>
+                    <td align="center" style="border: #000000 1px solid;">
+                      10/02/2019
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      colspan="2"
+                      bgcolor="#000000"
+                      style="
+                        border: #000000 1px solid;
+                        font-weight: bold;
+                        color: #fff;
+                      "
+                      align="center"
+                      class="header"
+                    >
+                      Invoice No.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      colspan="2"
+                      style="border: #000000 1px solid;"
+                      align="center"
+                    >
+                      <a>3443</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      colspan="2"
+                      style="border: #000000 1px solid;"
+                      align="center"
+                    >
+                      Purchase Order Number
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      colspan="2"
+                      style="height: 30px; border: #000000 1px solid;"
+                      align="center"
+                    >
+                      123
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <table
+      style="border: none; font-size: 12px; margin-top: 20px;"
+      border="0"
+      width="100%"
+    >
+      <tr>
+        <td width="57%" valign="top" style="border: none; padding-left: 45px;">
+          <b> Bill To:</b> <br /><br />
+          TEST COMPANY ONE<br />
+          253 ANYWHERE 3<br />
+          ONTARIO, CALIFORNIA 91761
+        </td>
+        <td width="43%" valign="top" style="border: none;">
+          <b>Remit To: </b> <br /><br />
+          Remit To:<br />
+          <br />
+          The Funding Company
+        </td>
+      </tr>
+    </table>
+
+    <br />
+    <div style="font-size: 11px; font-weight: bold;"></div>
+
+    <table
+      width="100%"
+      border="0"
+      style="
+        border: #000000 1px solid;
+        border-collapse: collapse;
+        font-size: 12px;
+        margin-top: 10px;
+        color: #000000;
+        font-family: Arial, Verdana;
+      "
+    >
+      <tr>
+        <td
+          width="40%"
+          align="center"
+          style="border: #000000 1px solid; font-weight: bold;"
+        >
+          Customer Name
+        </td>
+        <td
+          width="20%"
+          align="center"
+          style="border: #000000 1px solid; font-weight: bold;"
+        >
+          Week Ending
+        </td>
+        <td
+          width="20%"
+          align="center"
+          style="border: #000000 1px solid; font-weight: bold;"
+        >
+          Customer No.
+        </td>
+        <td
+          width="20%"
+          align="center"
+          style="border: #000000 1px solid; font-weight: bold;"
+        >
+          Payment Terms
+        </td>
+      </tr>
+      <tr>
+        <td align="center" style="border: #000000 1px solid; font-size: 11px;">
+          TEST COMPANY ONE
+        </td>
+        <td align="center" style="border: #000000 1px solid; font-size: 11px;">
+          10/07/2019
+        </td>
+        <td
+          align="center"
+          style="border: #000000 1px solid; font-size: 11px;"
+        ></td>
+        <td
+          align="center"
+          style="border: #000000 1px solid; font-size: 11px;"
+        ></td>
+      </tr>
+    </table>
+
+    <table
+      width="100%"
+      border="0"
+      style="
+        border: #000000 1px solid;
+        border-collapse: collapse;
+        font-size: 11px;
+        margin-top: 10px;
+        color: #000000;
+        font-family: Arial, Verdana;
+      "
+      cellpadding="4"
+      cellspacing="4"
+    >
+      <tr>
+        <td
+          width="30%"
+          align="center"
+          style="border: #000000 1px solid; font-weight: bold; font-size: 12px;"
+        >
+          Description
+        </td>
+        <td
+          width="8%"
+          align="center"
+          style="border: #000000 1px solid; font-weight: bold; font-size: 12px;"
+        >
+          Date
+        </td>
+        <td
+          width="14%"
+          align="center"
+          style="border: #000000 1px solid; font-weight: bold; font-size: 12px;"
+        >
+          Type
+        </td>
+        <td
+          width="12%"
+          align="center"
+          style="border: #000000 1px solid; font-weight: bold; font-size: 12px;"
+        >
+          EE Pay Rate
+        </td>
+        <td
+          width="11%"
+          align="center"
+          style="border: #000000 1px solid; font-weight: bold; font-size: 12px;"
+        >
+          Units
+        </td>
+        <td
+          width="11%"
+          align="center"
+          style="border: #000000 1px solid; font-weight: bold; font-size: 12px;"
+        >
+          Rate
+        </td>
+        <td
+          width="12%"
+          align="center"
+          style="border: #000000 1px solid; font-weight: bold; font-size: 12px;"
+        >
+          Amount
+        </td>
+      </tr>
+
+      <tr>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: #000000 1px solid;
+            border-right: none;
+            border-top: none;
+            border-bottom: none;
+          "
+        >
+          DOE, JANE<br />
+          <table border="0" style="border: none;">
+            <tr>
+              <td width="90px" style="border: none;">[Classification]:</td>
+              <td style="border: none;">FORKLIFT</td>
+            </tr>
+            <tr>
+              <td style="border: none;">[Location]:</td>
+              <td style="border: none;">dfdf</td>
+            </tr>
+          </table>
+        </td>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: none;
+            border-top: none;
+            border-bottom: none;
+          "
+          align="center"
+        ></td>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: #000000 1px solid;
+            border-top: none;
+            border-bottom: none;
+          "
+          align="center"
+        >
+          REG
+        </td>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: #000000 1px solid;
+            border-top: none;
+            border-bottom: none;
+          "
+          align="right"
+        >
+          0.00
+        </td>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: #000000 1px solid;
+            border-top: none;
+            border-bottom: none;
+          "
+          align="right"
+        >
+          0.00
+        </td>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: #000000 1px solid;
+            border-top: none;
+            border-bottom: none;
+          "
+          align="right"
+        >
+          $0.00
+        </td>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: #000000 1px solid;
+            border-right: #000000 1px solid;
+            border-top: none;
+            border-bottom: none;
+          "
+          align="right"
+        >
+          $0.00
+        </td>
+      </tr>
+
+      <tr>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: #000000 1px solid;
+            border-right: none;
+            border-top: none;
+            border-bottom: none;
+          "
+        >
+          KAZAMA, KATHY<br />
+          <table border="0" style="border: none;">
+            <tr>
+              <td width="90px" style="border: none;">[Classification]:</td>
+              <td style="border: none;">FORKLIFT</td>
+            </tr>
+            <tr>
+              <td style="border: none;">[Location]:</td>
+              <td style="border: none;">dfdf</td>
+            </tr>
+          </table>
+        </td>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: none;
+            border-top: none;
+            border-bottom: none;
+          "
+          align="center"
+        >
+          10/16/2019
+        </td>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: #000000 1px solid;
+            border-top: none;
+            border-bottom: none;
+          "
+          align="center"
+        >
+          REG
+        </td>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: #000000 1px solid;
+            border-top: none;
+            border-bottom: none;
+          "
+          align="right"
+        >
+          7.00
+        </td>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: #000000 1px solid;
+            border-top: none;
+            border-bottom: none;
+          "
+          align="right"
+        >
+          5.00
+        </td>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: #000000 1px solid;
+            border-top: none;
+            border-bottom: none;
+          "
+          align="right"
+        >
+          $7.35
+        </td>
+        <td
+          valign="top"
+          style="
+            padding: 6px 4px;
+            border-left: #000000 1px solid;
+            border-right: #000000 1px solid;
+            border-top: none;
+            border-bottom: none;
+          "
+          align="right"
+        >
+          $36.75
+        </td>
+      </tr>
+
+      <tr>
+        <td
+          colspan="2"
+          style="border: #000000 1px solid; border-top: none;"
+        ></td>
+        <td
+          colspan="4"
+          align="center"
+          style="
+            border: #000000 1px solid;
+            font-weight: bold;
+            border-right: none;
+          "
+        >
+          Total This Week Ending:
+        </td>
+        <td
+          align="right"
+          style="
+            border: #000000 1px solid;
+            font-weight: bold;
+            border-left: none;
+          "
+        >
+          $36.75
+        </td>
+      </tr>
+    </table>
+    <table
+      width="100%"
+      border="0"
+      style="
+        border: none;
+        border-collapse: collapse;
+        font-size: 11px;
+        margin-top: 6px;
+        color: #000000;
+        font-family: Arial, Verdana;
+      "
+    >
+      <tr>
+        <td width="50%" style="border: none;" valign="top" valign="bottom">
+          <table
+            width="80%"
+            border="1"
+            style="
+              border: #000000 1px solid;
+              border-collapse: collapse;
+              font-size: 11px;
+              color: #000000;
+              font-family: Arial, Verdana;
+            "
+          >
+            <tr>
+              <td style="border: #000000 1px solid; border-right: none;">
+                REG
+              </td>
+              <td
+                align="right"
+                style="border: #000000 1px solid; border-left: none;"
+              >
+                5.00
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                  border: #000000 1px solid;
+                  font-weight: bold;
+                  border-right: none;
+                "
+              >
+                Total Hours
+              </td>
+              <td
+                align="right"
+                style="
+                  border: #000000 1px solid;
+                  border-left: none;
+                  font-weight: bold;
+                "
+              >
+                5.00
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td width="10%" style="border: none;"></td>
+        <td width="40%" style="border: none;" valign="bottom">
+          <table
+            width="100%"
+            border="0"
+            style="
+              border: none;
+              border-collapse: collapse;
+              font-size: 12px;
+              margin-top: 10px;
+              color: #000000;
+              font-family: Arial, Verdana;
+            "
+          >
+            <tr>
+              <td width="50%" style="border: none;">
+                <table
+                  width="100%"
+                  border="1"
+                  style="
+                    border: #000000 1px solid;
+                    border-collapse: collapse;
+                    font-size: 12px;
+                    font-family: Arial, Verdana;
+                  "
+                >
+                  <tr>
+                    <td
+                      align="center"
+                      style="
+                        border: #000000 1px solid;
+                        font-weight: bold;
+                        color: #fff;
+                      "
+                      bgcolor="#000000"
+                      class="header"
+                    >
+                      Invoice Amount
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" style="border: #000000 1px solid;">
+                      $36.75
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</kendo-pdf-export>

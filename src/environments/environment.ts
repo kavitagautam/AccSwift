@@ -7,7 +7,7 @@ export const environment = {
   // baseAPI: "http://accswift.bentrayhosting.com/", <!--Without jwt Token authencation-->
   baseAPI: "http://api.accswift.com/",
   defaultImagePath: "./assets/dist/img",
-  defaultImageUrl: "./assets/images/user.jpg"
+  defaultImageUrl: "./assets/images/user.jpg",
 };
 
 /*

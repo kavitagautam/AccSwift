@@ -16,12 +16,16 @@ import { AddSalesInvoiceComponent } from "./components/add-sales-invoice/add-sal
 import { EditSalesInvoiceComponent } from "./components/edit-sales-invoice/edit-sales-invoice.component";
 import { ProductModalPopupComponent } from "@app/shared/component/product-modal-popup/product-modal-popup.component";
 import { CashPartyModalPopupComponent } from "@app/shared/component/cash-party-modal-popup/cash-party-modal-popup.component";
+import { CustomerInvoicesComponent } from "./components/customer-invoices/customer-invoices.component";
+import { NgxPrintModule } from "ngx-print";
+import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 
 @NgModule({
   declarations: [
     ListSalesInvoiceComponent,
     AddSalesInvoiceComponent,
     EditSalesInvoiceComponent,
+    CustomerInvoicesComponent,
   ],
   imports: [
     CommonModule,
@@ -29,8 +33,10 @@ import { CashPartyModalPopupComponent } from "@app/shared/component/cash-party-m
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    NgxPrintModule,
     GridModule,
     PopupModule,
+    PDFExportModule,
     InputsModule,
     DropDownListModule,
     DropDownsModule,
