@@ -153,6 +153,13 @@ const routes: Routes = [
         },
       },
       {
+        path: "day-book",
+        loadChildren: "@modules/reports/day-book/day-book.module#DayBookModule",
+        data: {
+          breadcrumb: "Day Book",
+        },
+      },
+      {
         path: "purchase-invoice",
         loadChildren:
           "@modules/purchase-invoice/purchase-invoice.module#PurchaseInvoiceModule",

@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import {
   trailBalanceData,
   TrailBalance,
+  Group,
 } from "../../models/trail-balance.model";
 import { ReportsService } from "../../services/reports.service";
 @Component({
@@ -10,8 +11,15 @@ import { ReportsService } from "../../services/reports.service";
   styleUrls: ["./trial-balance.component.scss"],
 })
 export class TrialBalanceComponent implements OnInit {
-  groupBalanceList: TrailBalance;
+  groupBalanceList: Group[] = [];
   listLoading: boolean;
+
+  previousYearPLDR: number;
+  previousYearPLCR: number;
+  openingDR: number;
+  openingCR: number;
+  trialTotalDR: number;
+  trialTotalCR: number;
   constructor(private reportService: ReportsService) {}
 
   ngOnInit() {
@@ -21,8 +29,14 @@ export class TrialBalanceComponent implements OnInit {
     this.listLoading = true;
     this.reportService.getGroupBalanceData().subscribe(
       (response) => {
-        this.groupBalanceList = response.Entity;
-        console.log("Group Balance " + this.groupBalanceList);
+        this.groupBalanceList = response.Entity.Entity;
+
+        this.previousYearPLDR = 0;
+        this.previousYearPLCR = 0;
+        this.openingDR = response.Entity.DiffInOpeningDr;
+        this.openingCR = response.Entity.DiffInOpeningCr;
+        this.trialTotalDR = response.Entity.GrandTotalDr;
+        this.trialTotalCR = response.Entity.GrandTotalCr;
       },
       (error) => {
         this.listLoading = false;
