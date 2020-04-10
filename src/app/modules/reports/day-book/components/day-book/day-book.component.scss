@@ -35,11 +35,12 @@ tfoot > tr > td {
 }
 
 .ledger_name {
-  padding-left: 50px;
   color: blue;
   font-weight: 700;
-  max-width: fit-content;
+  min-width: 250px;
+  text-overflow: break-word;
 }
+
 .balance {
   text-align: right;
 }

@@ -10,7 +10,7 @@ import { ButtonsModule } from "@progress/kendo-angular-buttons";
 
 import { ReportsRoutingModule } from "./reports-routing.module";
 import { ReportPdfComponent } from "./components/report-pdf/report-pdf.component";
-import { TrialBalanceComponent } from './components/trial-balance/trial-balance.component';
+import { TrialBalanceComponent } from "./components/trial-balance/trial-balance.component";
 
 @NgModule({
   declarations: [ReportPdfComponent, TrialBalanceComponent],
@@ -21,7 +21,7 @@ import { TrialBalanceComponent } from './components/trial-balance/trial-balance.
     IntlModule,
     FormsModule,
     NumericTextBoxModule,
-    PDFExportModule
-  ]
+    PDFExportModule,
+  ],
 })
 export class ReportsModule {}
