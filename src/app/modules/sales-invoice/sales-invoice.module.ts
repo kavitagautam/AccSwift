@@ -4,7 +4,7 @@ import {
 } from "@progress/kendo-angular-dropdowns";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import { PopupModule } from "@progress/kendo-angular-popup";
-import { GridModule, SharedModule } from "@progress/kendo-angular-grid";
+import { GridModule } from "@progress/kendo-angular-grid";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule } from "@angular/common";
@@ -18,6 +18,7 @@ import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-
 import { CustomerInvoicesComponent } from "./components/customer-invoices/customer-invoices.component";
 import { NgxPrintModule } from "ngx-print";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
+import { SharedModule } from "@app/shared/shared.module";
 
 @NgModule({
   declarations: [

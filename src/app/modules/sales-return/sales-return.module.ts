@@ -1,7 +1,7 @@
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import {
   DropDownListModule,
-  DropDownsModule
+  DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
 import { PopupModule } from "@progress/kendo-angular-popup";
 import { GridModule } from "@progress/kendo-angular-grid";
@@ -9,7 +9,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { FormsModule } from "@angular/forms";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { SharedModule } from "./../../shared/shared.module";
+import { SharedModule } from "@shared/shared.module";
 
 import { SalesReturnRoutingModule } from "./sales-return-routing.module";
 import { ListSalesReturnComponent } from "./components/list-sales-return/list-sales-return.component";
@@ -20,7 +20,7 @@ import { EditSalesReturnComponent } from "./components/edit-sales-return/edit-sa
   declarations: [
     ListSalesReturnComponent,
     AddSalesReturnComponent,
-    EditSalesReturnComponent
+    EditSalesReturnComponent,
   ],
   imports: [
     CommonModule,
@@ -32,7 +32,7 @@ import { EditSalesReturnComponent } from "./components/edit-sales-return/edit-sa
     DropDownListModule,
     DropDownsModule,
     InputsModule,
-    SharedModule
-  ]
+    SharedModule,
+  ],
 })
 export class SalesReturnModule {}

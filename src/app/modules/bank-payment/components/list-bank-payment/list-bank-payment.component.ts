@@ -37,6 +37,8 @@ export class ListBankPaymentComponent implements OnInit {
     },
   ];
 
+  searchFilterList: Array<any> = [];
+
   constructor(
     public bankPaymentService: BankPaymentService,
     private fb: FormBuilder,
@@ -65,6 +67,7 @@ export class ListBankPaymentComponent implements OnInit {
       DisplayRow: this.pageSize,
       OrderBy: "",
       Direction: "asc", // "asc" or "desc"
+      FilterList: this.searchFilterList,
     };
     this.bankPaymentService.getBankPaymentMaster(obj).subscribe(
       (response) => {
@@ -85,12 +88,6 @@ export class ListBankPaymentComponent implements OnInit {
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
-    this.getBankPaymentList();
-  }
-
-  public filter: CompositeFilterDescriptor;
-  public filterChange(filter) {
-    this.filter = filter;
     this.getBankPaymentList();
   }
 
@@ -132,6 +129,19 @@ export class ListBankPaymentComponent implements OnInit {
   }
 
   public searchForm() {
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.bankPaymentForm.invalid) return;
+    for (const key in this.bankPaymentForm.value) {
+      if (this.bankPaymentForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.bankPaymentForm.value[key],
+        });
+      }
+    }
     this.getBankPaymentList();
   }
 

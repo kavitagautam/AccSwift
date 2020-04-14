@@ -1,5 +1,5 @@
 import { Router } from "@angular/router";
-import { LedgerCodeMatchService } from "./../../../../shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerCodeMatchService } from "@shared/services/ledger-code-match/ledger-code-match.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { FormBuilder, Validators, FormArray } from "@angular/forms";
 import { BankPaymentService } from "./../../services/bank-payment.service";
@@ -7,6 +7,7 @@ import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-add-bank-payment",
@@ -35,36 +36,37 @@ export class AddBankPaymentComponent implements OnInit {
     private modalService: BsModalService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildAddBankPaymentForm(); //Initialize the Form....
   }
 
-  buildAddBankPaymentForm() {
+  buildAddBankPaymentForm(): void {
     this.addBankPaymentForm = this.fb.group({
-      seriesId: [null],
-      projectId: [null],
-      voucherNo: ["", [Validators.required]],
-      bankAccountId: [null, [Validators.required]],
-      date: [new Date()],
+      SeriesID: [null],
+      ProjectID: [null],
+      VoucherNo: ["", [Validators.required]],
+      LedgerID: [null, [Validators.required]],
+      Date: [new Date()],
       bankPaymentEntryList: this.fb.array([this.addBankPaymentEntryList()]),
     });
   }
 
   addBankPaymentEntryList(): FormGroup {
     return this.fb.group({
-      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
-      particularsOrAccountingHead: ["", Validators.required],
-      voucherNo: [""],
-      chequeNo: [""],
-      chequeBank: [""],
-      chequeDate: [""],
-      amount: [""],
-      currentBalance: [""],
-      vType: [""],
-      remarks: [""],
+      ID: [0],
+      MasterID: [0],
+      LedgerID: [0],
+      LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+      LedgerName: ["", Validators.required],
+      ChequeNumber: [""],
+      ChequeDate: [""],
+      LedgerBalance: [""],
+      Amount: [""],
+      Remarks: [""],
     });
   }
 
@@ -85,23 +87,23 @@ export class AddBankPaymentComponent implements OnInit {
     const bankPaymentFormArray = <FormArray>(
       this.addBankPaymentForm.get("bankPaymentEntryList")
     );
-    const ledgerCode = bankPaymentFormArray.controls[rowIndex].get("ledgerCode")
+    const ledgerCode = bankPaymentFormArray.controls[rowIndex].get("LedgerCode")
       .value;
     if (
-      bankPaymentFormArray.controls[rowIndex].get("ledgerCode").status ===
+      bankPaymentFormArray.controls[rowIndex].get("LedgerCode").status ===
       "VALID"
     ) {
       this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           bankPaymentFormArray.controls[rowIndex]
-            .get("currentBalance")
+            .get("LedgerBalance")
             .setValue(selectedItem[0].ActualBalance);
           bankPaymentFormArray.controls[rowIndex]
-            .get("particularsOraccountinHead")
+            .get("LedgerName")
             .setValue(selectedItem[0].LedgerName);
           bankPaymentFormArray.controls[rowIndex]
-            .get("currentBalance")
+            .get("LedgerCode")
             .setValue(selectedItem[0].LedgerCode);
         }
       });
@@ -110,6 +112,19 @@ export class AddBankPaymentComponent implements OnInit {
 
   public save(): void {
     if (this.addBankPaymentForm.valid) {
+      this.bankPaymentService
+        .addBankPayment(this.addBankPaymentForm.value)
+        .subscribe(
+          (response) => {
+            this.router.navigate(["/bank-payment"]);
+          },
+          (error) => {
+            this.toastr.error(JSON.stringify(error.error.Message));
+          },
+          () => {
+            this.toastr.success("Banl Payment added successfully");
+          }
+        );
       this.router.navigate(["/bank-payment"]);
     } else {
     }
@@ -175,10 +190,13 @@ export class AddBankPaymentComponent implements OnInit {
           this.addBankPaymentForm.get("bankPaymentEntryList")
         );
         bankPaymentFormArray.controls[index]
-          .get("currentBalance")
+          .get("LedgerCode")
+          .setValue(data.LedgerCode);
+        bankPaymentFormArray.controls[index]
+          .get("LedgerBalance")
           .setValue(data.ActualBalance);
         bankPaymentFormArray.controls[index]
-          .get("particularsOrAccountingHead")
+          .get("LedgerName")
           .setValue(data.LedgerName);
       }
     });

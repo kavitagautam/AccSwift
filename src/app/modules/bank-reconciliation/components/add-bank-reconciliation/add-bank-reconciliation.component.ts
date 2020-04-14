@@ -1,6 +1,6 @@
 import { FormArray } from "@angular/forms";
 import { Validators } from "@angular/forms";
-import { LedgerCodeMatchService } from "./../../../../shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerCodeMatchService } from "@shared/services/ledger-code-match/ledger-code-match.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { BankReconciliationService } from "./../../services/bank-reconciliation.service";

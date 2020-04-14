@@ -97,7 +97,6 @@
         <kendo-grid
           [data]="gridView"
           [filterable]="false"
-          [filter]="filter"
           [pageSize]="pageSize"
           [skip]="skip"
           [sortable]="{
@@ -110,7 +109,6 @@
           [resizable]="true"
           (pageChange)="pageChange($event)"
           scrollable="none"
-          (filterChange)="filterChange($event)"
         >
           <kendo-grid-column field="VoucherNo" title="VoucherNo." width="100">
           </kendo-grid-column>

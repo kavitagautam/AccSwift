@@ -1,7 +1,3 @@
-import {
-  SeriesList,
-  SeriesListModel,
-} from "./../../bank-payment/models/bank-payment.model";
 import { HttpParams } from "@angular/common/http";
 import {
   ProjectList,
@@ -16,13 +12,14 @@ import {
   ProjectListModel,
   TaxListModel,
   TaxList,
+  SeriesList,
+  SeriesListModel,
 } from "../models/sales-invoice.model";
 import { HttpClient } from "@angular/common/http";
-import { HttpClientService } from "./../../../core/services/http-client/http-client.service";
+import { HttpClientService } from "@core/services/http-client/http-client.service";
 import { Observable } from "rxjs";
 import { environment } from "@env/environment";
 import { Injectable } from "@angular/core";
-import { CashAccountsModel } from "@app/modules/cash-receipt/models/cash-receipt.model";
 
 @Injectable({
   providedIn: "root",
@@ -67,7 +64,7 @@ export class SalesInvoiceService {
   getCashPartyAccount(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/cashparty`)
-      .subscribe((response: CashAccountsModel) => {
+      .subscribe((response: any) => {
         this.cashPartyList = response.Entity;
       });
   }
@@ -96,7 +93,7 @@ export class SalesInvoiceService {
       });
   }
 
-  getCashPartyAccountDD(): Observable<CashAccountsModel> {
+  getCashPartyAccountDD(): Observable<any> {
     return this.httpService.get(`${this._api_URL}Ledger/cashparty`);
   }
 

@@ -1,5 +1,3 @@
-import { ProjectList } from "./../../journal-voucher/models/journal.model";
-import { HttpClientService } from "./../../../core/services/http-client/http-client.service";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
@@ -9,8 +7,10 @@ import {
   ProjectListModel,
   BankPaymentNavigateModel,
   BankPaymentDetailModel,
+  ProjectList,
 } from "../models/bank-payment.model";
 import { environment } from "@env/environment";
+import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 
 @Injectable({
   providedIn: "root",
@@ -63,5 +63,13 @@ export class BankPaymentService {
 
   getBankPaymentDetails(id): Observable<BankPaymentDetailModel> {
     return this.httpService.get(`${this._api_URL}BankPaymentMaster/${id}`);
+  }
+
+  updateBankPayment(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}BankPaymentMaster`, body);
+  }
+
+  addBankPayment(body): Observable<any> {
+    return this.httpService.post(`${this._api_URL}BankPaymentMaster`, body);
   }
 }
