@@ -1,13 +1,12 @@
 import {
   DropDownListModule,
-  DropDownsModule
+  DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import { PopupModule } from "@progress/kendo-angular-popup";
-import { ReactiveFormsModule } from "@angular/forms";
-import { FormsModule } from "@angular/forms";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { GridModule } from "@progress/kendo-angular-grid";
-import { SharedModule } from "./../../shared/shared.module";
+import { SharedModule } from "@shared/shared.module";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
@@ -20,7 +19,7 @@ import { EditSalesOrderComponent } from "./components/edit-sales-order/edit-sale
   declarations: [
     ListSalesOrderComponent,
     AddSalesOrderComponent,
-    EditSalesOrderComponent
+    EditSalesOrderComponent,
   ],
   imports: [
     CommonModule,
@@ -32,7 +31,7 @@ import { EditSalesOrderComponent } from "./components/edit-sales-order/edit-sale
     PopupModule,
     InputsModule,
     DropDownListModule,
-    DropDownsModule
-  ]
+    DropDownsModule,
+  ],
 })
 export class SalesOrderModule {}

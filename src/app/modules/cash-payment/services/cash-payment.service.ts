@@ -9,12 +9,11 @@ import {
   CashPaymentMaster,
   LedgerList,
   CashAccounts,
-  CashParty
+  CashParty,
 } from "../models/cash-payment.model";
-import { ProjectListModel } from "@app/modules/journal-voucher/models/journal.model";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class CashPaymentService {
   seriesLists: SeriesList;
@@ -34,11 +33,9 @@ export class CashPaymentService {
   }
 
   getProjectLists(): void {
-    this.httpService
-      .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectListModel) => {
-        this.projectLists = res.Entity;
-      });
+    this.httpService.get(`${this._api_URL}project`).subscribe((res: any) => {
+      this.projectLists = res.Entity;
+    });
   }
   getSeriesList(): void {
     const params = new HttpParams().set("VoucherType", "CASH_PMNT"); // Series List for Cash Receipt Voucher Type

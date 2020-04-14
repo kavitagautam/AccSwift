@@ -1,16 +1,16 @@
-import { HttpClientService } from "./../../../core/services/http-client/http-client.service";
+import { HttpClientService } from "@core/services/http-client/http-client.service";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import {
   PurchaseInvoiceMaster,
   SeriesList,
-  ProjectList
+  ProjectList,
 } from "./../models/purchase-invoice.model";
 import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class PurchaseInvoiceService {
   _api_URL = environment.baseAPI;

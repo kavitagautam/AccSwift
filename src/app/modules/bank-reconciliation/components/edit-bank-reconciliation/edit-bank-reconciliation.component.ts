@@ -2,7 +2,7 @@ import {
   BankReconciliationMaster,
   BankAccounts,
 } from "./../models/bank-reconciliation.model";
-import { LedgerCodeMatchService } from "./../../../../shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerCodeMatchService } from "@shared/services/ledger-code-match/ledger-code-match.service";
 import { Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { BankReconciliationService } from "./../../services/bank-reconciliation.service";

@@ -1,18 +1,19 @@
-import { ProjectList } from "./../../journal-voucher/models/journal.model";
-import { HttpClientService } from "./../../../core/services/http-client/http-client.service";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import {
-  BankPaymentMaster,
   SeriesList,
   BankAccounts,
-  ProjectListModel
+  ProjectListModel,
+  BankPaymentNavigateModel,
+  BankPaymentDetailModel,
+  ProjectList,
 } from "../models/bank-payment.model";
 import { environment } from "@env/environment";
+import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class BankPaymentService {
   _api_URL = environment.baseAPI;
@@ -41,23 +42,34 @@ export class BankPaymentService {
     const params = new HttpParams().set("VoucherType", "BANK_PMNT"); // Series List for Bank Payment Voucher Type
     this.httpService
       .get(`${this._api_URL}series`, null, params)
-      .subscribe(res => {
+      .subscribe((res) => {
         this.seriesList = res.Entity;
       });
   }
   getBankPaymentAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/BankAccounts`)
-      .subscribe(res => {
+      .subscribe((res) => {
         this.bankAccountList = res.Entity;
       });
   }
 
-  getBankPaymentMaster(): Observable<BankPaymentMaster[]> {
-    return this.httpService.get(`${this._api_URL}BankPaymentMaster`);
+  getBankPaymentMaster(body): Observable<BankPaymentNavigateModel> {
+    return this.httpService.post(
+      `${this._api_URL}BankPaymentMaster/navigate`,
+      body
+    );
   }
 
-  getBankPaymentDetails(id): Observable<BankPaymentMaster> {
+  getBankPaymentDetails(id): Observable<BankPaymentDetailModel> {
     return this.httpService.get(`${this._api_URL}BankPaymentMaster/${id}`);
+  }
+
+  updateBankPayment(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}BankPaymentMaster`, body);
+  }
+
+  addBankPayment(body): Observable<any> {
+    return this.httpService.post(`${this._api_URL}BankPaymentMaster`, body);
   }
 }

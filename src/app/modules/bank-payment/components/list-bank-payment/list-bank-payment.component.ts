@@ -1,4 +1,4 @@
-import { BankPaymentMaster } from "./../../models/bank-payment.model";
+import { BankPaymentList } from "./../../models/bank-payment.model";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
@@ -21,7 +21,7 @@ import { ConfirmationDialogComponent } from "@app/shared/components/confirmation
 export class ListBankPaymentComponent implements OnInit {
   bankPaymentForm: FormGroup;
   public gridView: GridDataResult;
-  bankPaymentList: BankPaymentMaster[];
+  bankPaymentList: BankPaymentList[];
   private toastr: ToastrService;
   modalRef: BsModalRef;
   private modalService: BsModalService;
@@ -36,6 +36,8 @@ export class ListBankPaymentComponent implements OnInit {
       dir: "asc",
     },
   ];
+
+  searchFilterList: Array<any> = [];
 
   constructor(
     public bankPaymentService: BankPaymentService,
@@ -60,19 +62,19 @@ export class ListBankPaymentComponent implements OnInit {
 
   getBankPaymentList(): void {
     this.listLoading = true;
-    const params = {
+    const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
       Direction: "asc", // "asc" or "desc"
+      FilterList: this.searchFilterList,
     };
-    this.bankPaymentService.getBankPaymentMaster().subscribe(
+    this.bankPaymentService.getBankPaymentMaster(obj).subscribe(
       (response) => {
-        this.bankPaymentList = response;
-        console.log(response);
+        this.bankPaymentList = response.Entity.Entity;
         this.gridView = {
           data: this.bankPaymentList,
-          total: this.bankPaymentList ? this.bankPaymentList.length : 0,
+          total: response.Entity.TotalItemsAvailable,
         };
       },
       (error) => {
@@ -86,12 +88,6 @@ export class ListBankPaymentComponent implements OnInit {
 
   public sortChange(sort: SortDescriptor[]): void {
     this.sort = sort;
-    this.getBankPaymentList();
-  }
-
-  public filter: CompositeFilterDescriptor;
-  public filterChange(filter) {
-    this.filter = filter;
     this.getBankPaymentList();
   }
 
@@ -133,6 +129,19 @@ export class ListBankPaymentComponent implements OnInit {
   }
 
   public searchForm() {
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.bankPaymentForm.invalid) return;
+    for (const key in this.bankPaymentForm.value) {
+      if (this.bankPaymentForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.bankPaymentForm.value[key],
+        });
+      }
+    }
     this.getBankPaymentList();
   }
 

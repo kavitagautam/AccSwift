@@ -79,9 +79,9 @@ export class ListCashReceiptComponent implements OnInit {
 
     this.cashReceiptService.getCashReceiptMaster().subscribe(
       (response) => {
-        this.cashList = response;
+        this.cashList = response.Entity;
         this.gridView = {
-          data: this.cashList.slice(this.skip, this.skip + this.pageSize),
+          data: this.cashList,
           total: this.cashList ? this.cashList.length : 0,
         };
       },

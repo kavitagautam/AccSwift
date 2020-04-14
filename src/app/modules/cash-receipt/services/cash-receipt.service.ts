@@ -6,13 +6,14 @@ import {
   ProjectList,
   SeriesList,
   CashReceiptMaster,
+  CashReceiptMasterModel,
   CashAccountList,
   CashPartyList,
-  CashAccountsModel
+  CashAccountsModel,
 } from "../models/cash-receipt.model";
 import { Observable } from "rxjs";
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class CashReceiptService {
   seriesLists: SeriesList;
@@ -42,7 +43,7 @@ export class CashReceiptService {
     const params = new HttpParams().set("VoucherType", "CASH_RCPT"); // Series List for Cash Receipt Voucher Type
     this.httpService
       .get(`${this._api_URL}Series`, null, params)
-      .subscribe(res => {
+      .subscribe((res) => {
         this.seriesLists = res.Entity;
       });
   }
@@ -50,7 +51,7 @@ export class CashReceiptService {
   getCashReceiptAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/CashAccounts`)
-      .subscribe(res => {
+      .subscribe((res) => {
         this.cashAccountLists = res.Entity;
       });
   }
@@ -63,7 +64,7 @@ export class CashReceiptService {
       });
   }
 
-  getCashReceiptMaster(): Observable<CashReceiptMaster[]> {
+  getCashReceiptMaster(): Observable<CashReceiptMasterModel> {
     return this.httpService.get(`${this._api_URL}CashReceiptMaster`);
   }
 

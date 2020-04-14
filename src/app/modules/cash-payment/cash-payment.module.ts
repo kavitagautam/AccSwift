@@ -2,7 +2,7 @@ import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import { PopupModule } from "@progress/kendo-angular-popup";
-import { SharedModule } from "../../shared/shared.module";
+import { SharedModule } from "@shared/shared.module";
 import { GridModule } from "@progress/kendo-angular-grid";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormsModule } from "@angular/forms";

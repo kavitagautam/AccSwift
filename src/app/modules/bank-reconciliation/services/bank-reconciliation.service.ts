@@ -1,19 +1,19 @@
 import { Observable } from "rxjs";
 import { HttpParams } from "@angular/common/http";
-import { HttpClientService } from "./../../../core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
-import { environment } from "./../../../../environments/environment";
+import { environment } from "@env/environment";
 import {
   SeriesList,
   ProjectList,
   BankReconciliationMaster,
   BankAccounts,
-  ProjectListModel
+  ProjectListModel,
 } from "./../components/models/bank-reconciliation.model";
 import { Injectable } from "@angular/core";
+import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class BankReconciliationService {
   seriesLists: SeriesList;

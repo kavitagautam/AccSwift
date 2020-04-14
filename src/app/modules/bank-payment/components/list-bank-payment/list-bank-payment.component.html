@@ -97,7 +97,6 @@
         <kendo-grid
           [data]="gridView"
           [filterable]="false"
-          [filter]="filter"
           [pageSize]="pageSize"
           [skip]="skip"
           [sortable]="{
@@ -107,22 +106,23 @@
           [sort]="sort"
           (sortChange)="sortChange($event)"
           [pageable]="true"
+          [resizable]="true"
           (pageChange)="pageChange($event)"
           scrollable="none"
-          (filterChange)="filterChange($event)"
         >
-          <kendo-grid-column field="VoucherNo" title="VoucherNo.">
+          <kendo-grid-column field="VoucherNo" title="VoucherNo." width="100">
           </kendo-grid-column>
           <kendo-grid-column
             field="LedgerName"
             title="Particular/Accounting Head"
+            width="200"
           >
           </kendo-grid-column>
-          <kendo-grid-column field="TotalAmount" title="Amount">
+          <kendo-grid-column field="TotalAmount" title="Amount" width="100">
           </kendo-grid-column>
-          <kendo-grid-column field="SeriesName" title="Series">
+          <kendo-grid-column field="SeriesName" title="Series" width="100">
           </kendo-grid-column>
-          <kendo-grid-column field="ProjectName" title="Project">
+          <kendo-grid-column field="ProjectName" title="Project" width="100">
           </kendo-grid-column>
           <kendo-grid-column
             field="CreatedDate"
@@ -134,7 +134,7 @@
           </kendo-grid-column>
           <kendo-grid-column field="Remarks" title="Remarks">
           </kendo-grid-column>
-          <kendo-grid-command-column title="Action" width="220">
+          <kendo-grid-command-column title="Action" width="150">
             <ng-template
               kendoGridCellTemplate
               let-isNew="isNew"

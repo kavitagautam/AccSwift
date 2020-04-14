@@ -1,4 +1,4 @@
-import { BankPaymentMaster } from "./../../models/bank-payment.model";
+import { BankPaymentList } from "./../../models/bank-payment.model";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
@@ -7,6 +7,7 @@ import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/l
 import { Router, ActivatedRoute } from "@angular/router";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-edit-bank-payment",
@@ -18,7 +19,7 @@ export class EditBankPaymentComponent implements OnInit {
   private editedRowIndex: number;
   numericFormat: string = "n2";
   public decimals: number = 2;
-  bankPaymentDetails: BankPaymentMaster;
+  bankPaymentDetails: BankPaymentList;
   date: Date = new Date();
   submitted: boolean;
   rowSubmitted: boolean;
@@ -35,31 +36,33 @@ export class EditBankPaymentComponent implements OnInit {
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     private router: Router,
+    private toastr: ToastrService,
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildEditBankPaymentForm();
+    this.getIdFromRoute();
   }
 
-  buildEditBankPaymentForm() {
+  buildEditBankPaymentForm(): void {
     this.editBankPaymentForm = this.fb.group({
-      seriesId: [
+      ID: this.bankPaymentDetails ? this.bankPaymentDetails.ID : 0,
+      SeriesID: [
         this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : null,
       ],
-      projectId: [
+      ProjectID: [
         this.bankPaymentDetails ? this.bankPaymentDetails.ProjectID : null,
       ],
-      voucherNo: [
+      VoucherNo: [
         this.bankPaymentDetails ? this.bankPaymentDetails.VoucherNo : "",
         [Validators.required],
       ],
-      bankAccountId: [
+      LedgerID: [
         this.bankPaymentDetails ? this.bankPaymentDetails.LedgerID : null,
         [Validators.required],
       ],
-      cashParty: ["", [Validators.required]],
-      date: [
+      Date: [
         this.bankPaymentDetails
           ? new Date(this.bankPaymentDetails.CreatedDate)
           : "",
@@ -70,26 +73,27 @@ export class EditBankPaymentComponent implements OnInit {
 
   addBankPaymentEntryList(): FormGroup {
     return this.fb.group({
-      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
-      particularsOraccountingHead: ["", Validators.required],
-      voucherNo: [""],
-      chequeNo: [""],
-      chequeBank: [""],
-      chequeDate: [""],
-      amount: [""],
-      currentBalance: [""],
-      vType: [""],
-      remarks: [""],
+      ID: [""],
+      MasterID: [""],
+      LedgerID: [""],
+      LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+      LedgerName: ["", Validators.required],
+      ChequeNumber: [""],
+      ChequeDate: [""],
+      LedgerBalance: [""],
+      Amount: [""],
+      Remarks: [""],
     });
   }
 
-  getIdFromRoute() {
+  getIdFromRoute(): void {
     this.route.paramMap.subscribe((params) => {
       if (params.get("id")) {
         this.bankPaymentService
           .getBankPaymentDetails(params.get("id"))
-          .subscribe((res) => {
-            this.bankPaymentDetails = res;
+          .subscribe((response) => {
+            this.bankPaymentDetails = response.Entity;
+            console.log("dsda :" + JSON.stringify(response.Entity));
             this.buildEditBankPaymentForm();
             this.setBankPaymentList();
           });
@@ -112,28 +116,40 @@ export class EditBankPaymentComponent implements OnInit {
       bankPaymentDetails.forEach((element) => {
         bankPaymentFormArray.push(
           this.fb.group({
-            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
-            particularsOraccountingHead: [
-              element.Ledger.EngName,
-              Validators.required,
+            ID: [element.ID],
+            MasterID: [element.MasterID],
+            LedgerID: [element.LedgerID],
+            LedgerCode: [
+              element.LedgerCode ? element.LedgerCode : "",
+              null,
+              this.ledgerCodeMatchValidators.ledgerCodeMatch(),
             ],
-            voucherNo: element.VoucherNumber,
-            amount: element.Amount,
-            currentBalance: element.Amount,
-            vType: element.VoucherType,
-            remarks: element.Remarks,
+            LedgerName: [element.LedgerName, Validators.required],
+            ChequeNumber: [element.ChequeNumber],
+            ChequeDate: [element.ChequeNumber],
+            LedgerBalance: [element.LedgerBalance],
+            Amount: [element.Amount],
+            Remarks: [element.Remarks],
           })
         );
       });
     } else {
       bankPaymentFormArray.push(
         this.fb.group({
-          particularsOraccountingHead: ["", Validators.required],
-          voucherNo: [""],
-          amount: [""],
-          currentBalance: [""],
-          vType: [""],
-          remarks: [""],
+          ID: [""],
+          MasterID: [""],
+          LedgerID: [""],
+          LedgerCode: [
+            "",
+            null,
+            this.ledgerCodeMatchValidators.ledgerCodeMatch(),
+          ],
+          LedgerName: ["", Validators.required],
+          ChequeNumber: [""],
+          ChequeDate: [""],
+          LedgerBalance: [""],
+          Amount: [""],
+          Remarks: [""],
         })
       );
     }
@@ -157,23 +173,24 @@ export class EditBankPaymentComponent implements OnInit {
     const bankPaymentFormArray = <FormArray>(
       this.editBankPaymentForm.get("bankPaymentEntryList")
     );
-    const ledgerCode = bankPaymentFormArray.controls[rowIndex].get("ledgerCode")
+
+    const ledgerCode = bankPaymentFormArray.controls[rowIndex].get("LedgerCode")
       .value;
     if (
-      bankPaymentFormArray.controls[rowIndex].get("ledgerCode").status ===
+      bankPaymentFormArray.controls[rowIndex].get("LedgerCode").status ===
       "VALID"
     ) {
       this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           bankPaymentFormArray.controls[rowIndex]
-            .get("currentBalance")
+            .get("LedgerBalance")
             .setValue(selectedItem[0].ActualBalance);
           bankPaymentFormArray.controls[rowIndex]
-            .get("particularsOraccountinHead")
+            .get("LedgerName")
             .setValue(selectedItem[0].LedgerName);
           bankPaymentFormArray.controls[rowIndex]
-            .get("currentBalance")
+            .get("LedgerCode")
             .setValue(selectedItem[0].LedgerCode);
         }
       });
@@ -182,8 +199,19 @@ export class EditBankPaymentComponent implements OnInit {
 
   public save(): void {
     if (this.editBankPaymentForm.valid) {
-      this.router.navigate(["/bank-payment"]);
-    } else {
+      this.bankPaymentService
+        .updateBankPayment(this.editBankPaymentForm.value)
+        .subscribe(
+          (response) => {
+            this.router.navigate(["/bank-payment"]);
+          },
+          (error) => {
+            this.toastr.error(JSON.stringify(error.error.Message));
+          },
+          () => {
+            this.toastr.success("Bank Payment edited successfully");
+          }
+        );
     }
   }
 
@@ -215,17 +243,14 @@ export class EditBankPaymentComponent implements OnInit {
       this.editBankPaymentForm.get("bankPaymentEntryList")
     );
     bankPaymentEntry.controls[rowIndex]
-      .get("particularsOraccountinHead")
+      .get("LedgerName")
       .setValue(dataItem.particularsOraccountingHead);
+
     bankPaymentEntry.controls[rowIndex]
-      .get("voucherNo")
-      .setValue(dataItem.voucherNo);
-    bankPaymentEntry.controls[rowIndex]
-      .get("currentAmount")
+      .get("LedgerBalance")
       .setValue(dataItem.currentAmount);
-    bankPaymentEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
     bankPaymentEntry.controls[rowIndex]
-      .get("remarks")
+      .get("Remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
     sender.editRow(
@@ -247,11 +272,14 @@ export class EditBankPaymentComponent implements OnInit {
           this.editBankPaymentForm.get("bankPaymentEntryList")
         );
         bankPaymentFormArray.controls[index]
-          .get("currentBalance")
+          .get("LedgerBalance")
           .setValue(data.ActualBalance);
         bankPaymentFormArray.controls[index]
-          .get("particularsOraccountingHead")
+          .get("LedgerName")
           .setValue(data.LedgerName);
+        bankPaymentFormArray.controls[index]
+          .get("LedgerCode")
+          .setValue(data.LedgerCode);
       }
     });
     this.modalRef.content.onClose.subscribe((data) => {

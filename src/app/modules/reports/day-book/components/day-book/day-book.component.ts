@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { DayBookService } from "../../services/day-book.service";
-import { Ledger } from "@app/modules/reports/models/trail-balance.model";
 
 @Component({
   selector: "accSwift-day-book",
@@ -8,7 +7,7 @@ import { Ledger } from "@app/modules/reports/models/trail-balance.model";
   styleUrls: ["./day-book.component.scss"],
 })
 export class DayBookComponent implements OnInit {
-  dayBookList: Ledger[] = [];
+  dayBookList: any[] = [];
   listLoading: boolean;
 
   debitTotal: number;

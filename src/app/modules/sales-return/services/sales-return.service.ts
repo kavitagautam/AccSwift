@@ -1,10 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
-import { environment } from "./../../../../environments/environment";
+import { environment } from "@env/environment";
 import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class SalesReturnService {
   api = environment.baseAPI;

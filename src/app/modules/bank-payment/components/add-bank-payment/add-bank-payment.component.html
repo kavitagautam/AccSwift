@@ -5,7 +5,7 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Series</label>
-            <select class="form-control" formControlName="seriesId">
+            <select class="form-control" formControlName="SeriesID">
               <option [ngValue]="null">Choose Option....</option>
               <option
                 *ngFor="let series of bankPaymentService.seriesList"
@@ -21,7 +21,7 @@
             <label>Bank Account </label>
             <select
               class="form-control"
-              formControlName="bankAccountId"
+              formControlName="LedgerID"
               accSwiftFormValidator
             >
               <option [ngValue]="null">Choose Option....</option>
@@ -39,7 +39,7 @@
             <label>Voucher</label>
             <input
               class="form-control"
-              formControlName="voucherNo"
+              formControlName="VoucherNo"
               accSwiftFormValidator
             />
           </div>
@@ -47,7 +47,7 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Project</label>
-            <select class="form-control" formControlName="projectId">
+            <select class="form-control" formControlName="ProjectID">
               <option [ngValue]="null">Choose Option....</option>
               <option
                 *ngFor="let project of bankPaymentService.projectList"
@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    <div class="col-md-12 ">
+    <div class="col-md-12">
       <div class="box-body">
         <kendo-grid
           [data]="getBankPaymentEntryList.value"
@@ -101,7 +101,7 @@
           </ng-template>
 
           <kendo-grid-column
-            field="particularsOrAccountingHead"
+            field="LedgerName"
             title="Particulars Or Accounting Head"
             width="300"
           >
@@ -118,11 +118,11 @@
                   <input
                     #input
                     class="k-textbox"
-                    style="width: 100px"
+                    style="width: 100px;"
                     placeholder="Ledger Code"
                     [formControl]="
                       getBankPaymentEntryList.controls[rowIndex].get(
-                        'ledgerCode'
+                        'LedgerCode'
                       )
                     "
                     (change)="changeLedgerValue(dataItem, rowIndex)"
@@ -131,7 +131,7 @@
                     [anchor]="input"
                     *ngIf="
                       getBankPaymentEntryList.controls[rowIndex].get(
-                        'ledgerCode'
+                        'LedgerCode'
                       ).invalid
                     "
                     popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
@@ -147,7 +147,7 @@
                     [readonly]="true"
                     [formControl]="
                       getBankPaymentEntryList.controls[rowIndex].get(
-                        'particularsOrAccountingHead'
+                        'LedgerName'
                       )
                     "
                   />
@@ -161,17 +161,17 @@
                     [anchor]="input"
                     *ngIf="
                       getBankPaymentEntryList.controls[rowIndex].get(
-                        'particularsOrAccountingHead'
+                        'LedgerName'
                       ).invalid &&
                       rowSubmitted &&
                       !(
                         isNew &&
                         getBankPaymentEntryList.controls[rowIndex].get(
-                          'particularsOrAccountingHead'
+                          'LedgerName'
                         ).untouched
                       ) &&
                       !getBankPaymentEntryList.controls[rowIndex].get(
-                        'ledgerCode'
+                        'LedgerCode'
                       )
                     "
                     popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
@@ -184,27 +184,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="voucherNo" title="Voucher No" width="150">
-            <ng-template
-              kendoGridCellTemplate
-              let-dataItem="dataItem"
-              let-column="column"
-              let-formGroup="formGroup"
-              let-isNew="isNew"
-              let-rowIndex="rowIndex"
-            >
-              <input
-                #ntb="popupAnchor"
-                popupAnchor
-                style="width:130px"
-                [formControl]="
-                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
-                "
-              />
-            </ng-template>
-          </kendo-grid-column>
-
-          <kendo-grid-column field="amount" title="Amount" width="150">
+          <kendo-grid-column field="Amount" title="Amount" width="150">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -216,21 +196,19 @@
               <kendo-numerictextbox
                 #ntb="popupAnchor"
                 popupAnchor
-                style="width:130px"
+                style="width: 130px;"
                 [readonly]="true"
                 [decimals]="decimals"
                 [format]="'c0'"
                 [formControl]="
-                  getBankPaymentEntryList.controls[rowIndex].get(
-                    'currentBalance'
-                  )
+                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
                 "
               ></kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
 
           <kendo-grid-column
-            field="currentBalance"
+            field="LedgerBalance"
             title="Current Balance"
             width="150"
           >
@@ -242,22 +220,33 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-              <kendo-numerictextbox
+              <input
+                #input
+                class="k-textbox"
+                style="width: 130px;"
+                [readonly]="true"
+                [formControl]="
+                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
+                "
+              />
+              <!-- <kendo-numerictextbox
                 #ntb="popupAnchor"
                 popupAnchor
-                style="width:130px"
+                style="width: 130px;"
                 [decimals]="decimals"
                 [format]="'c0'"
                 [formControl]="
-                  getBankPaymentEntryList.controls[rowIndex].get(
-                    'currentBalance'
-                  )
+                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
                 "
-              ></kendo-numerictextbox>
+              ></kendo-numerictextbox> -->
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="chequeNo" title="Cheque Number" width="150">
+          <kendo-grid-column
+            field="ChequeNumber"
+            title="Cheque Number"
+            width="150"
+          >
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -269,7 +258,7 @@
               <input
                 #input
                 class="k-textbox"
-                style="width:130px"
+                style="width: 130px;"
                 [readonly]="true"
                 [formControl]="
                   getBankPaymentEntryList.controls[rowIndex].get(column.field)
@@ -277,7 +266,7 @@
               />
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="chequeBank" title="Cheque Bank" width="150">
+          <kendo-grid-column field="ChequeDate" title="Cheque Date" width="150">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -289,14 +278,18 @@
               <input
                 #input
                 class="k-textbox"
-                style="width:130px"
+                style="width: 130px;"
                 [formControl]="
                   getBankPaymentEntryList.controls[rowIndex].get(column.field)
                 "
               />
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="vType" title="V. Type" width="150">
+          <kendo-grid-column
+            field="LedgerBalance"
+            title="Ledger Balance"
+            width="150"
+          >
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -315,7 +308,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="remarks" title="Remarks" width="150">
+          <kendo-grid-column field="Remarks" title="Remarks" width="150">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -328,7 +321,7 @@
                 #input
                 class="k-textbox"
                 [formControl]="
-                  getBankPaymentEntryList.controls[rowIndex].get('remarks')
+                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
                 "
               />
             </ng-template>
