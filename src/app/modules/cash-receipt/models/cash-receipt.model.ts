@@ -33,34 +33,43 @@ export interface CashPartyList {
   GroupID: number;
 }
 
+export interface Fields {
+  Field1: string;
+  Field2: string;
+  Field3: string;
+  Field4: string;
+  Field5: string;
+}
+
 export interface CashReceiptMaster {
+  ID: number;
+  Date: Date;
   IsPayByInvoice: boolean;
   TotalAmount: number;
-  CashReceiptDetails: CashReceiptDetails[];
+  CashReceiptDetails?: any;
   LedgerID: number;
   LedgerName: string;
-  ID: number;
   SeriesID: number;
   SeriesName: string;
   VoucherNo: string;
-  Date: string;
   ProjectID: number;
   ProjectName: string;
-  Fields: {
-    Field1: string;
-    Field2: string;
-    Field3: string;
-    Field4: string;
-    Field5: string;
-  };
+  Fields: Fields;
+  CompanyID: number;
   Remarks: string;
   CreatedBy: string;
-  CreatedDate: string;
+  CreatedDate: Date;
   ModifiedBy: string;
-  ModifiedDate: string;
+  ModifiedDate: Date;
 }
 
-export interface CashReceiptDetails {
+export interface CashReceiptMasterModel {
+  StatusCode: number;
+  Message: string;
+  Entity: CashReceiptMaster[];
+}
+
+export interface CashReceiptDetail {
   VoucherType: string;
   VoucherNumber: string;
   DiscountAmount: number;
@@ -69,47 +78,40 @@ export interface CashReceiptDetails {
   ID: number;
   MasterID: number;
   LedgerID: number;
-  Ledger: {
-    ID: number;
-    Code: string;
-    LedgerNumber: number;
-    EngName: string;
-    NepName: string;
-    PreviousYearBalance: number;
-    PreviousYearBalanceDebitCredit: string;
-    OpCCYID: number;
-    Currency: string;
-    OpCCR: number;
-    OpCCRDate: string;
-    DebitCredit: string;
-    GroupID: number;
-    GroupName: string;
-    PersonName: string;
-    Address1: string;
-    Address2: string;
-    City: string;
-    Phone: string;
-    Email: string;
-    Company: string;
-    Website: string;
-    VatPanNo: string;
-    CreditLimit: number;
-    IsBuiltIn: boolean;
-    IsActive: boolean;
-    IsCalculated: boolean;
-    CalculateRate: number;
-    LF: number;
-    IsBillReference: boolean;
-    Remarks: string;
-    CreatedBy: string;
-    CreatedDate: string;
-    ModifiedBy: string;
-    ModifiedDate: string;
-  };
+  LedgerName: string;
+  LedgerCode: string;
+  LedgerBalance: string;
   Amount: number;
   Remarks: string;
 }
 
+export interface CashReceiptDetail {
+  ID: number;
+  Date: Date;
+  IsPayByInvoice: boolean;
+  TotalAmount: number;
+  CashReceiptDetails: CashReceiptDetail[];
+  LedgerID: number;
+  LedgerName: string;
+  SeriesID: number;
+  SeriesName: string;
+  VoucherNo: string;
+  ProjectID: number;
+  ProjectName: string;
+  Fields: Fields;
+  CompanyID: number;
+  Remarks: string;
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedBy: string;
+  ModifiedDate: Date;
+}
+
+export interface CashReceiptDetailModel {
+  StatusCode: number;
+  Message: string;
+  Entity: CashReceiptDetail;
+}
 export interface CashAccountsModel {
   Entity: CashAccountList[];
 }

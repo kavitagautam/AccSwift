@@ -4,8 +4,7 @@ import {
 } from "@progress/kendo-angular-dropdowns";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import { PopupModule } from "@progress/kendo-angular-popup";
-import { GridModule } from "@progress/kendo-angular-grid";
-import { SharedModule } from "./../../shared/shared.module";
+import { GridModule, SharedModule } from "@progress/kendo-angular-grid";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule } from "@angular/common";

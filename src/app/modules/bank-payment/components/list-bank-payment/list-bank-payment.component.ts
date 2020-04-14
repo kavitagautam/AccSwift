@@ -1,4 +1,4 @@
-import { BankPaymentMaster } from "./../../models/bank-payment.model";
+import { BankPaymentList } from "./../../models/bank-payment.model";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
@@ -21,7 +21,7 @@ import { ConfirmationDialogComponent } from "@app/shared/components/confirmation
 export class ListBankPaymentComponent implements OnInit {
   bankPaymentForm: FormGroup;
   public gridView: GridDataResult;
-  bankPaymentList: BankPaymentMaster[];
+  bankPaymentList: BankPaymentList[];
   private toastr: ToastrService;
   modalRef: BsModalRef;
   private modalService: BsModalService;
@@ -60,19 +60,18 @@ export class ListBankPaymentComponent implements OnInit {
 
   getBankPaymentList(): void {
     this.listLoading = true;
-    const params = {
+    const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
       Direction: "asc", // "asc" or "desc"
     };
-    this.bankPaymentService.getBankPaymentMaster().subscribe(
+    this.bankPaymentService.getBankPaymentMaster(obj).subscribe(
       (response) => {
-        this.bankPaymentList = response;
-        console.log(response);
+        this.bankPaymentList = response.Entity.Entity;
         this.gridView = {
           data: this.bankPaymentList,
-          total: this.bankPaymentList ? this.bankPaymentList.length : 0,
+          total: response.Entity.TotalItemsAvailable,
         };
       },
       (error) => {

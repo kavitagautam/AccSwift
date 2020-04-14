@@ -1,4 +1,4 @@
-import { BankPaymentMaster } from "./../../models/bank-payment.model";
+import { BankPaymentList } from "./../../models/bank-payment.model";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
@@ -18,7 +18,7 @@ export class EditBankPaymentComponent implements OnInit {
   private editedRowIndex: number;
   numericFormat: string = "n2";
   public decimals: number = 2;
-  bankPaymentDetails: BankPaymentMaster;
+  bankPaymentDetails: BankPaymentList;
   date: Date = new Date();
   submitted: boolean;
   rowSubmitted: boolean;
@@ -42,7 +42,7 @@ export class EditBankPaymentComponent implements OnInit {
     this.buildEditBankPaymentForm();
   }
 
-  buildEditBankPaymentForm() {
+  buildEditBankPaymentForm(): void {
     this.editBankPaymentForm = this.fb.group({
       seriesId: [
         this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : null,
@@ -88,8 +88,8 @@ export class EditBankPaymentComponent implements OnInit {
       if (params.get("id")) {
         this.bankPaymentService
           .getBankPaymentDetails(params.get("id"))
-          .subscribe((res) => {
-            this.bankPaymentDetails = res;
+          .subscribe((response) => {
+            this.bankPaymentDetails = response.Entity;
             this.buildEditBankPaymentForm();
             this.setBankPaymentList();
           });
