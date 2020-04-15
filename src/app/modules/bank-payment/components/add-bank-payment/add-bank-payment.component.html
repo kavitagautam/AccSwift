@@ -69,7 +69,7 @@
             <input
               type="text"
               class="form-control"
-              formControlName="date"
+              formControlName="Date"
               bsDatepicker
             />
           </div>
@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    <div class="col-md-12">
+    <div class="col-md-12 p-0">
       <div class="box-body">
         <kendo-grid
           [data]="getBankPaymentEntryList.value"
@@ -184,7 +184,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="Amount" title="Amount" width="150">
+          <kendo-grid-column field="Amount" title="Amount" width="120">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -196,8 +196,7 @@
               <kendo-numerictextbox
                 #ntb="popupAnchor"
                 popupAnchor
-                style="width: 130px;"
-                [readonly]="true"
+                style="width: 100px;"
                 [decimals]="decimals"
                 [format]="'c0'"
                 [formControl]="
@@ -210,7 +209,7 @@
           <kendo-grid-column
             field="LedgerBalance"
             title="Current Balance"
-            width="150"
+            width="120"
           >
             <ng-template
               kendoGridCellTemplate
@@ -220,32 +219,31 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-              <input
+              <!-- <input
                 #input
                 class="k-textbox"
-                style="width: 130px;"
-                [readonly]="true"
+                style="width: 100px;"
                 [formControl]="
                   getBankPaymentEntryList.controls[rowIndex].get(column.field)
                 "
-              />
-              <!-- <kendo-numerictextbox
+              /> -->
+              <kendo-numerictextbox
                 #ntb="popupAnchor"
                 popupAnchor
-                style="width: 130px;"
+                style="width: 100px;"
                 [decimals]="decimals"
                 [format]="'c0'"
                 [formControl]="
                   getBankPaymentEntryList.controls[rowIndex].get(column.field)
                 "
-              ></kendo-numerictextbox> -->
+              ></kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
 
           <kendo-grid-column
             field="ChequeNumber"
             title="Cheque Number"
-            width="150"
+            width="120"
           >
             <ng-template
               kendoGridCellTemplate
@@ -255,15 +253,14 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-              <input
-                #input
-                class="k-textbox"
-                style="width: 130px;"
-                [readonly]="true"
+              <kendo-numerictextbox
+                #ntb="popupAnchor"
+                popupAnchor
+                style="width: 100px;"
                 [formControl]="
                   getBankPaymentEntryList.controls[rowIndex].get(column.field)
                 "
-              />
+              ></kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="ChequeDate" title="Cheque Date" width="150">
@@ -275,20 +272,21 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-              <input
-                #input
-                class="k-textbox"
-                style="width: 130px;"
+              <kendo-datepicker
+                [valuePrimitive]="true"
                 [formControl]="
                   getBankPaymentEntryList.controls[rowIndex].get(column.field)
                 "
-              />
+                [min]="min"
+                [max]="max"
+                style="width: 130px;"
+              ></kendo-datepicker>
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column
             field="LedgerBalance"
             title="Ledger Balance"
-            width="150"
+            width="120"
           >
             <ng-template
               kendoGridCellTemplate
@@ -298,17 +296,28 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-              <input
-                #input
-                class="k-textbox"
+              <kendo-numerictextbox
+                #ntb="popupAnchor"
+                popupAnchor
+                style="width: 100px;"
+                [decimals]="decimals"
+                [format]="'c0'"
                 [formControl]="
                   getBankPaymentEntryList.controls[rowIndex].get(column.field)
                 "
-              />
+              ></kendo-numerictextbox>
+              <!-- <input
+                #input
+                class="k-textbox"
+                style="width: 100px;"
+                [formControl]="
+                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
+                "
+              /> -->
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="Remarks" title="Remarks" width="150">
+          <kendo-grid-column field="Remarks" title="Remarks" width="120">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -320,6 +329,7 @@
               <input
                 #input
                 class="k-textbox"
+                style="width: 100px;"
                 [formControl]="
                   getBankPaymentEntryList.controls[rowIndex].get(column.field)
                 "
@@ -352,6 +362,31 @@
             </ng-template>
           </kendo-grid-command-column>
         </kendo-grid>
+      </div>
+    </div>
+    
+    <div class="col-md-12">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Remarks</label>
+          <input formControlName="Remarks" type="text" class="form-control" />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="col-sm-2">
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input type="checkbox" />Do not close </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input type="checkbox" />Print while saving </label>
+          </div>
+        </div>
       </div>
     </div>
   </form>

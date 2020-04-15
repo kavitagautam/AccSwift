@@ -9,8 +9,8 @@ import {
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
-import { CashPaymentMaster } from "../../models/cash-payment.model";
 import { CashPaymentService } from "../../services/cash-payment.service";
+import { CashPaymentList } from "../../models/cash-payment.model";
 
 @Component({
   selector: "accSwift-list-cash-payment",
@@ -19,32 +19,11 @@ import { CashPaymentService } from "../../services/cash-payment.service";
 })
 export class ListCashPaymentComponent implements OnInit {
   cashPaymentsForm: FormGroup;
-  cashPaymentDetail: CashPaymentMaster;
   listLoading: boolean;
-  cashPaymentList = [];
+  cashPaymentList: CashPaymentList[] = [];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
   date: Date = new Date();
-  public gridData;
-
-  constructor(
-    public _fb: FormBuilder,
-    private router: Router,
-    private modalService: BsModalService,
-    private toastr: ToastrService,
-    public cashPaymentService: CashPaymentService
-  ) {}
-  ngOnInit() {
-    this.cashPaymentsForm = this._fb.group({
-      seriesId: [null],
-      projectId: [null],
-      voucherNo: [""],
-      cashPartyId: [null],
-      cashAccountId: [null],
-      date: [new Date()],
-    });
-    this.getCashPaymentList();
-  }
 
   public pageSize = 10;
   public skip = 0;
@@ -58,6 +37,9 @@ export class ListCashPaymentComponent implements OnInit {
     },
   ];
 
+  orderByKey = "";
+  dirKey = "asc";
+
   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
@@ -65,29 +47,55 @@ export class ListCashPaymentComponent implements OnInit {
     ignoreBackdropClick: true,
   };
 
+  searchFilterList: Array<any> = [];
+
+  constructor(
+    public _fb: FormBuilder,
+    private router: Router,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
+    public cashPaymentService: CashPaymentService
+  ) {}
+
+  ngOnInit(): void {
+    this.cashPaymentsForm = this._fb.group({
+      seriesId: [null],
+      projectId: [null],
+      voucherNo: [""],
+      cashPartyId: [null],
+      cashAccountId: [null],
+      date: [""],
+    });
+    this.getCashPaymentList();
+  }
+
   public sortChange(sort: SortDescriptor[]): void {
+    this.currentPage = 1;
+    this.skip = 0;
+    this.orderByKey = "";
+    this.dirKey = "";
     this.sort = sort;
+    this.dirKey = this.sort[0].dir;
+    this.orderByKey = this.sort[0].field;
     this.getCashPaymentList();
   }
 
   getCashPaymentList(): void {
     this.listLoading = true;
-    // const params = {
-    //   PageNo: this.currentPage,
-    //   DisplayRow: this.pageSize,
-    //   OrderBy: "",
-    //   Direction: "asc" // "asc" or "desc"
-    // };
+    const obj = {
+      PageNo: this.currentPage,
+      DisplayRow: this.pageSize,
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey, // "asc" or "desc"
+      FilterList: this.searchFilterList,
+    };
 
-    this.cashPaymentService.getCashPaymentMaster().subscribe(
+    this.cashPaymentService.getCashPaymentMaster(obj).subscribe(
       (response) => {
-        this.cashPaymentList = response;
+        this.cashPaymentList = response.Entity.Entity;
         this.gridView = {
-          data: this.cashPaymentList.slice(
-            this.skip,
-            this.skip + this.pageSize
-          ),
-          total: this.cashPaymentList ? this.cashPaymentList.length : 0,
+          data: this.cashPaymentList,
+          total: response.Entity.TotalItemsAvailable,
         };
       },
       (error) => {
@@ -99,12 +107,20 @@ export class ListCashPaymentComponent implements OnInit {
     );
   }
 
-  public filterChange(filter): void {
-    this.filter = filter;
-    this.getCashPaymentList();
-  }
-
-  public searchForm() {
+  public searchForm(): void {
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.cashPaymentsForm.invalid) return;
+    for (const key in this.cashPaymentsForm.value) {
+      if (this.cashPaymentsForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.cashPaymentsForm.value[key],
+        });
+      }
+    }
     this.getCashPaymentList();
   }
 
@@ -125,7 +141,7 @@ export class ListCashPaymentComponent implements OnInit {
     this.router.navigate(["/cash-payment/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const cashPaymentID = {
       id: dataItem.ID,
     };
@@ -143,7 +159,16 @@ export class ListCashPaymentComponent implements OnInit {
   }
 
   public deletePaymentsByID(id): void {
-    this.toastr.success("Cash deleted successfully");
-    //call Delete Api
+    this.cashPaymentService.deleteCashPaymentByID(id).subscribe(
+      (response) => {
+        this.getCashPaymentList();
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error));
+      },
+      () => {
+        this.toastr.success("Cash deleted successfully");
+      }
+    );
   }
 }

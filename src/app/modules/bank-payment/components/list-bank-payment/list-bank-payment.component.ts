@@ -6,11 +6,7 @@ import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { BankPaymentService } from "./../../services/bank-payment.service";
 import { Component, OnInit } from "@angular/core";
-
-import {
-  CompositeFilterDescriptor,
-  SortDescriptor,
-} from "@progress/kendo-data-query";
+import { SortDescriptor } from "@progress/kendo-data-query";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
@@ -37,26 +33,35 @@ export class ListBankPaymentComponent implements OnInit {
     },
   ];
 
+  orderByKey = "";
+  dirKey = "asc";
+  //sorting kendo data
+
+  config = {
+    backdrop: true,
+    ignoreBackDrop: true,
+  };
+
   searchFilterList: Array<any> = [];
 
   constructor(
     public bankPaymentService: BankPaymentService,
-    private fb: FormBuilder,
+    private _fb: FormBuilder,
     private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildListBankPaymentForm();
     this.getBankPaymentList();
   }
 
-  buildListBankPaymentForm() {
-    this.bankPaymentForm = this.fb.group({
+  buildListBankPaymentForm(): void {
+    this.bankPaymentForm = this._fb.group({
       seriesId: [null],
       projectId: [null],
       voucherNo: [""],
       bankAccountId: [null],
-      date: new Date(),
+      date: [""],
     });
   }
 
@@ -65,8 +70,8 @@ export class ListBankPaymentComponent implements OnInit {
     const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
-      OrderBy: "",
-      Direction: "asc", // "asc" or "desc"
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey,
       FilterList: this.searchFilterList,
     };
     this.bankPaymentService.getBankPaymentMaster(obj).subscribe(
@@ -87,7 +92,13 @@ export class ListBankPaymentComponent implements OnInit {
   }
 
   public sortChange(sort: SortDescriptor[]): void {
+    this.orderByKey = "";
+    this.currentPage = 1;
+    this.skip = 0;
+    this.dirKey = "";
     this.sort = sort;
+    this.dirKey = this.sort[0].dir;
+    this.orderByKey = this.sort[0].field;
     this.getBankPaymentList();
   }
 
@@ -107,11 +118,7 @@ export class ListBankPaymentComponent implements OnInit {
     this.router.navigate(["/bank-payment/edit", item.ID]);
   }
 
-  config = {
-    backdrop: true,
-    ignoreBackDrop: true,
-  };
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const journalId = {
       id: dataItem.ID,
     };
@@ -128,7 +135,7 @@ export class ListBankPaymentComponent implements OnInit {
     });
   }
 
-  public searchForm() {
+  public searchForm(): void {
     this.searchFilterList = [];
     this.currentPage = 1;
     this.skip = 0;
@@ -146,6 +153,16 @@ export class ListBankPaymentComponent implements OnInit {
   }
 
   deletePaymentById(id): void {
-    this.toastr.success("Bank Payment deleted successfully");
+    this.bankPaymentService.deleteBankPaymentByID(id).subscribe(
+      (response) => {
+        this.getBankPaymentList();
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error));
+      },
+      () => {
+        this.toastr.success("Bank Payment deleted successfully");
+      }
+    );
   }
 }
