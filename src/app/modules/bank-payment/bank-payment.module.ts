@@ -14,6 +14,7 @@ import { EditBankPaymentComponent } from "./components/edit-bank-payment/edit-ba
 import { AddBankPaymentComponent } from "./components/add-bank-payment/add-bank-payment.component";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { SharedModule } from "@app/shared/shared.module";
+import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { SharedModule } from "@app/shared/shared.module";
     DropDownListModule,
     DropDownsModule,
     SharedModule,
+    DateInputsModule,
     BankPaymentRoutingModule,
   ],
   entryComponents: [LedgerModalPopupComponent],

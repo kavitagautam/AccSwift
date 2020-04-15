@@ -72,4 +72,8 @@ export class BankPaymentService {
   addBankPayment(body): Observable<any> {
     return this.httpService.post(`${this._api_URL}BankPaymentMaster`, body);
   }
+
+  deleteBankPaymentByID(id): Observable<any> {
+    return this.http.delete(`${this._api_URL}BankPaymentMaster/${id}`);
+  }
 }

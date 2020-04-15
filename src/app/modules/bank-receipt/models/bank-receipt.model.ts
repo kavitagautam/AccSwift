@@ -28,26 +28,29 @@ export interface SeriesList {
   VoucherType: string;
 }
 
-export interface BankReceiptMaster {
+export interface Fields {
+  Field1: string;
+  Field2: string;
+  Field3: string;
+  Field4: string;
+  Field5: string;
+}
+
+export interface BankReceiptList {
+  ID: number;
+  Date: Date;
   IsPayByInvoice: boolean;
   TotalAmount: number;
-  BankReceiptDetailsList: BankReceiptDetailsLists[];
+  BankReceiptDetailsList?: any;
   LedgerID: number;
   LedgerName: string;
-  ID: number;
   SeriesID: number;
   SeriesName: string;
   VoucherNo: string;
-  Date: Date;
   ProjectID: number;
   ProjectName: string;
-  Fields: {
-    Field1: string;
-    Field2: string;
-    Field3: string;
-    Field4: string;
-    Field5: string;
-  };
+  Fields: Fields;
+  CompanyID: number;
   Remarks: string;
   CreatedBy: string;
   CreatedDate: Date;
@@ -55,10 +58,25 @@ export interface BankReceiptMaster {
   ModifiedDate: Date;
 }
 
-export interface BankReceiptDetailsLists {
+export interface BankReceiptNavigate {
+  Entity: BankReceiptList[];
+  ItemsPerPage: number;
+  ItemsReturned: number;
+  TotalItemsAvailable: number;
+  CurrentPage: number;
+  TotalPages: number;
+}
+
+export interface BankReceiptNavigateModel {
+  StatusCode: number;
+  Message: string;
+  Entity: BankReceiptNavigate;
+} 
+
+export interface BankReceiptDetailsList {
   ChequeNumber: string;
   ChequeBank: string;
-  ChequeDate: Date;
+  ChequeDate?: any;
   VoucherNumber: string;
   VoucherType: string;
   InvoiceID: number;
@@ -67,47 +85,48 @@ export interface BankReceiptDetailsLists {
   ID: number;
   MasterID: number;
   LedgerID: number;
-  Ledger: {
-    ID: number;
-    Code: string;
-    LedgerNumber: number;
-    EngName: string;
-    NepName: string;
-    PreviousYearBalance: number;
-    PreviousYearBalanceDebitCredit: string;
-    OpCCYID: number;
-    Currency: string;
-    OpCCR: number;
-    OpCCRDate: Date;
-    DebitCredit: string;
-    GroupID: number;
-    GroupName: string;
-    PersonName: string;
-    Address1: string;
-    Address2: string;
-    City: string;
-    Phone: string;
-    Email: string;
-    Company: string;
-    Website: string;
-    VatPanNo: string;
-    CreditLimit: number;
-    IsBuiltIn: boolean;
-    IsActive: boolean;
-    IsCalculated: boolean;
-    CalculateRate: number;
-    LF: number;
-    IsBillReference: boolean;
-    Remarks: string;
-    CreatedBy: string;
-    CreatedDate: Date;
-    ModifiedBy: string;
-    ModifiedDate: Date;
-  };
+  LedgerName: string;
+  LedgerCode: string;
+  LedgerBalance: string;
   Amount: number;
   Remarks: string;
 }
 
+export interface Fields {
+  Field1: string;
+  Field2: string;
+  Field3: string;
+  Field4: string;
+  Field5: string;
+}
+
+export interface BankReceiptDetail {
+  ID: number;
+  Date: Date;
+  IsPayByInvoice: boolean;
+  TotalAmount: number;
+  BankReceiptDetailsList: BankReceiptDetailsList[];
+  LedgerID: number;
+  LedgerName: string;
+  SeriesID: number;
+  SeriesName: string;
+  VoucherNo: string;
+  ProjectID: number;
+  ProjectName: string;
+  Fields: Fields;
+  CompanyID: number;
+  Remarks: string;
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedBy: string;
+  ModifiedDate: Date;
+}
+
+export interface BankReceiptDetailModel {
+  StatusCode: number;
+  Message: string;
+  Entity: BankReceiptDetail;
+}
 export interface BankAccounts {
   Status: number;
   Entity: Entity[];

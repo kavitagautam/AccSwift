@@ -2,10 +2,10 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { BsModalRef } from "ngx-bootstrap";
-import { CashPaymentMaster } from "../../models/cash-payment.model";
 import { CashPaymentService } from "../../services/cash-payment.service";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
+import { CashPaymentDetail } from "../../models/cash-payment.model";
 
 @Component({
   selector: "accSwift-edit-cash-payment",
@@ -15,7 +15,7 @@ import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/l
 export class EditCashPaymentComponent implements OnInit {
   private editedRowIndex: number;
   editCashPaymentForm: FormGroup;
-  cashPaymentDetail: CashPaymentMaster;
+  cashPaymentDetail: CashPaymentDetail;
   submitted: boolean;
   rowSubmitted: boolean;
   date: Date = new Date();
@@ -38,12 +38,12 @@ export class EditCashPaymentComponent implements OnInit {
     public ledgerCodeService: LedgerCodeMatchService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildEditCashPaymentForm(); // initialize the form
     this.getIdFromRoute();
   }
 
-  buildEditCashPaymentForm() {
+  buildEditCashPaymentForm(): void {
     this.editCashPaymentForm = this.fb.group({
       seriesId: [
         this.cashPaymentDetail ? this.cashPaymentDetail.SeriesID : null,
@@ -81,14 +81,14 @@ export class EditCashPaymentComponent implements OnInit {
     });
   }
 
-  getIdFromRoute() {
+  getIdFromRoute(): void {
     this.route.paramMap.subscribe((params) => {
       const param = +params.get("id");
       if (param) {
         this.cashPaymentService
           .getCashPaymentDetails(param)
-          .subscribe((res) => {
-            this.cashPaymentDetail = res;
+          .subscribe((response) => {
+            this.cashPaymentDetail = response.Entity;
             this.buildEditCashPaymentForm;
             this.setCashPaymentList();
           });

@@ -4,7 +4,6 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { BankReceiptService } from "../../services/bank-receipt.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
-import { BankReceiptMaster } from "../../models/bank-receipt.model";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 
@@ -18,7 +17,6 @@ export class AddBankReceiptComponent implements OnInit {
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
-  BankRecieptDetail: BankReceiptMaster;
   addBankReceiptForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;

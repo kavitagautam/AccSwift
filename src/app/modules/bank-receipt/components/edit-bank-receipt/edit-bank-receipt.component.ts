@@ -4,9 +4,9 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { BankReceiptService } from "../../services/bank-receipt.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
-import { BankReceiptMaster } from "../../models/bank-receipt.model";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { BankReceiptDetail } from "../../models/bank-receipt.model";
 
 @Component({
   selector: "accswift-edit-bank-receipt",
@@ -15,7 +15,7 @@ import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-p
 })
 export class EditBankReceiptComponent implements OnInit {
   private editedRowIndex: number;
-  bankReceiptDetails: BankReceiptMaster;
+  bankReceiptDetails: BankReceiptDetail;
   editBankReceiptForm: FormGroup;
   numericFormat: string = "n2";
   public decimals: number = 2;
@@ -42,7 +42,7 @@ export class EditBankReceiptComponent implements OnInit {
     public ledgerCodeService: LedgerCodeMatchService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildBankReceiptForm();
     this.bankReceiptService.init();
     this.getIdFromRoute(); // Get Id From the Route URL and get the Details
@@ -90,13 +90,13 @@ export class EditBankReceiptComponent implements OnInit {
     });
   }
 
-  getIdFromRoute() {
+  getIdFromRoute(): void {
     this.route.paramMap.subscribe((params) => {
       if (params.get("id")) {
         this.bankReceiptService
           .getBankReceiptDetails(params.get("id"))
-          .subscribe((res) => {
-            this.bankReceiptDetails = res;
+          .subscribe((response) => {
+            this.bankReceiptDetails = response.Entity;
             this.buildBankReceiptForm();
             this.setBankReceiptList();
           });

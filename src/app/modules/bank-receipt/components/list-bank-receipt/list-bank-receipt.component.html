@@ -104,6 +104,7 @@
           [filterable]="false"
           [filter]="filter"
           [pageSize]="pageSize"
+          [resizable]="true"
           [skip]="skip"
           [sortable]="{
             allowUnsort: allowUnsort,
@@ -113,8 +114,7 @@
           (sortChange)="sortChange($event)"
           [pageable]="true"
           (pageChange)="pageChange($event)"
-          scrollable="none"
-          (filterChange)="filterChange($event)"
+          scrollable="true"
         >
           <kendo-grid-column field="VoucherNo" title="VoucherNo.">
           </kendo-grid-column>

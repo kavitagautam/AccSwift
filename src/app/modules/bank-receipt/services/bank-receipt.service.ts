@@ -4,15 +4,16 @@ import { HttpClientService } from "@app/core/services/http-client/http-client.se
 import {
   SeriesList,
   ProjectList,
-  BankReceiptMaster,
   BankAccounts,
-  ProjectListModel
+  ProjectListModel,
+  BankReceiptNavigateModel,
+  BankReceiptDetailModel,
 } from "../models/bank-receipt.model";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class BankReceiptService {
   seriesLists: SeriesList;
@@ -51,16 +52,31 @@ export class BankReceiptService {
     const params = new HttpParams().set("VoucherType", "BANK_RCPT"); // Series List for bank Receipt V.Type
     this.httpService
       .get(`${this._api_URL}Series`, null, params)
-      .subscribe(res => {
+      .subscribe((res) => {
         this.seriesLists = res.Entity;
       });
   }
 
-  getBankReceiptMaster(): Observable<BankReceiptMaster[]> {
-    return this.httpService.get(`${this._api_URL}BankReceiptMaster`);
+  getBankReceiptMaster(body): Observable<BankReceiptNavigateModel> {
+    return this.httpService.post(
+      `${this._api_URL}BankReceiptMaster/navigate`,
+      body
+    );
   }
 
-  getBankReceiptDetails(id): Observable<BankReceiptMaster> {
+  getBankReceiptDetails(id): Observable<BankReceiptDetailModel> {
     return this.httpService.get(`${this._api_URL}BankReceiptMaster/${id}`);
+  }
+
+  addBankReceipt(body): Observable<any> {
+    return this.httpService.post(`${this._api_URL}BankReceiptMaster`, body);
+  }
+
+  updateBankReceipt(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}BankReceiptMaster`, body);
+  }
+
+  deleteBankReceiptByID(id): Observable<any> {
+    return this.httpService.delete(`${this._api_URL}BankReceiptMaster/${id}`);
   }
 }

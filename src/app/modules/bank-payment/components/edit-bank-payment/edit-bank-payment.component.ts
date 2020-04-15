@@ -67,7 +67,8 @@ export class EditBankPaymentComponent implements OnInit {
           ? new Date(this.bankPaymentDetails.CreatedDate)
           : "",
       ],
-      bankPaymentEntryList: this.fb.array([this.addBankPaymentEntryList()]),
+      Remarks: [""],
+      BankPaymentDetailsList: this.fb.array([this.addBankPaymentEntryList()]),
     });
   }
 
@@ -93,7 +94,6 @@ export class EditBankPaymentComponent implements OnInit {
           .getBankPaymentDetails(params.get("id"))
           .subscribe((response) => {
             this.bankPaymentDetails = response.Entity;
-            console.log("dsda :" + JSON.stringify(response.Entity));
             this.buildEditBankPaymentForm();
             this.setBankPaymentList();
           });
@@ -103,7 +103,7 @@ export class EditBankPaymentComponent implements OnInit {
 
   setBankPaymentList(): void {
     this.editBankPaymentForm.setControl(
-      "bankPaymentEntryList",
+      "BankPaymentDetailsList",
       this.setBankPaymentFormArray(
         this.bankPaymentDetails.BankPaymentDetailsList
       )
@@ -157,13 +157,13 @@ export class EditBankPaymentComponent implements OnInit {
   }
 
   get getBankPaymentEntryList(): FormArray {
-    return <FormArray>this.editBankPaymentForm.get("bankPaymentEntryList");
+    return <FormArray>this.editBankPaymentForm.get("BankPaymentDetailsList");
   }
 
   editBankPaymentEntry(): void {
     this.submitted = true;
-    if (this.editBankPaymentForm.get("bankPaymentEntryList").invalid) return;
-    (<FormArray>this.editBankPaymentForm.get("bankPaymentEntryList")).push(
+    if (this.editBankPaymentForm.get("BankPaymentDetailsList").invalid) return;
+    (<FormArray>this.editBankPaymentForm.get("BankPaymentDetailsList")).push(
       this.addBankPaymentEntryList()
     );
     this.submitted = false;
@@ -171,7 +171,7 @@ export class EditBankPaymentComponent implements OnInit {
 
   changeLedgerValue(dataItem, rowIndex): void {
     const bankPaymentFormArray = <FormArray>(
-      this.editBankPaymentForm.get("bankPaymentEntryList")
+      this.editBankPaymentForm.get("BankPaymentDetailsList")
     );
 
     const ledgerCode = bankPaymentFormArray.controls[rowIndex].get("LedgerCode")
@@ -198,21 +198,20 @@ export class EditBankPaymentComponent implements OnInit {
   }
 
   public save(): void {
-    if (this.editBankPaymentForm.valid) {
-      this.bankPaymentService
-        .updateBankPayment(this.editBankPaymentForm.value)
-        .subscribe(
-          (response) => {
-            this.router.navigate(["/bank-payment"]);
-          },
-          (error) => {
-            this.toastr.error(JSON.stringify(error.error.Message));
-          },
-          () => {
-            this.toastr.success("Bank Payment edited successfully");
-          }
-        );
-    }
+    if (this.editBankPaymentForm.invalid) return;
+    this.bankPaymentService
+      .updateBankPayment(this.editBankPaymentForm.value)
+      .subscribe(
+        (response) => {
+          this.router.navigate(["/bank-payment"]);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Bank Payment edited successfully");
+        }
+      );
   }
 
   public cancel(): void {
@@ -224,8 +223,8 @@ export class EditBankPaymentComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.editBankPaymentForm.get("bankPaymentEntryList").invalid) return;
-    (<FormArray>this.editBankPaymentForm.get("bankPaymentEntryList")).push(
+    if (this.editBankPaymentForm.get("BankPaymentDetailsList").invalid) return;
+    (<FormArray>this.editBankPaymentForm.get("BankPaymentDetailsList")).push(
       this.addBankPaymentEntryList()
     );
     this.rowSubmitted = false;
@@ -240,7 +239,7 @@ export class EditBankPaymentComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     const bankPaymentEntry = <FormArray>(
-      this.editBankPaymentForm.get("bankPaymentEntryList")
+      this.editBankPaymentForm.get("BankPaymentDetailsList")
     );
     bankPaymentEntry.controls[rowIndex]
       .get("LedgerName")
@@ -255,7 +254,7 @@ export class EditBankPaymentComponent implements OnInit {
     this.editedRowIndex = rowIndex;
     sender.editRow(
       rowIndex,
-      this.editBankPaymentForm.get("bankPaymentEntryList")
+      this.editBankPaymentForm.get("BankPaymentDetailsList")
     );
   }
 
@@ -269,7 +268,7 @@ export class EditBankPaymentComponent implements OnInit {
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const bankPaymentFormArray = <FormArray>(
-          this.editBankPaymentForm.get("bankPaymentEntryList")
+          this.editBankPaymentForm.get("BankPaymentDetailsList")
         );
         bankPaymentFormArray.controls[index]
           .get("LedgerBalance")
@@ -298,11 +297,11 @@ export class EditBankPaymentComponent implements OnInit {
   public removeHandler({ dataItem, rowIndex }): void {
     // Calculation on Debit Total and Credit Total on Rows Removed
     const bankPaymentEntry = <FormArray>(
-      this.editBankPaymentForm.get("bankPaymentEntryList")
+      this.editBankPaymentForm.get("BankPaymentDetailsList")
     );
     // Remove the Row
-    (<FormArray>this.editBankPaymentForm.get("bankPaymentEntryList")).removeAt(
-      rowIndex
-    );
+    (<FormArray>(
+      this.editBankPaymentForm.get("BankPaymentDetailsList")
+    )).removeAt(rowIndex);
   }
 }
