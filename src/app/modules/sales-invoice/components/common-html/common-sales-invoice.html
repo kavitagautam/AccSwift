@@ -1,5 +1,5 @@
 <div class="box box-default">
-  <form [formGroup]="addInvoiceForm" novalidate>
+  <form [formGroup]="salesInvoiceForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -47,7 +47,7 @@
                   [textField]="'LedgerName'"
                   [valueField]="'LedgerID'"
                   [valuePrimitive]="true"
-                  [formControl]="addInvoiceForm.get('CashPartyLedgerID')"
+                  [formControl]="salesInvoiceForm.get('CashPartyLedgerID')"
                   (filterChange)="cashPartyDDFilter($event)"
                 >
                 </kendo-dropdownlist>
@@ -87,8 +87,8 @@
               <option [ngValue]="null">Choose Option....</option>
               <option
                 *ngFor="
-                  let salesAccount of salesInvoiceService.salesAccountList
-                "
+                    let salesAccount of salesInvoiceService.salesAccountList
+                  "
                 [ngValue]="salesAccount.LedgerID"
               >
                 {{ salesAccount.LedgerName }}
@@ -152,16 +152,16 @@
                     style="width: 80px;"
                     placeholder="Code"
                     [formControl]="
-                      getInvoiceEntryList.controls[rowIndex].get('ProductCode')
-                    "
+                        getInvoiceEntryList.controls[rowIndex].get('ProductCode')
+                      "
                     (change)="handelProductCode(dataItem, rowIndex)"
                   />
                   <kendo-popup
                     [anchor]="input"
                     *ngIf="
-                      getInvoiceEntryList.controls[rowIndex].get('ProductCode')
-                        .invalid
-                    "
+                        getInvoiceEntryList.controls[rowIndex].get('ProductCode')
+                          .invalid
+                      "
                     popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
                   >
                     <span class="k-icon k-i-warning"></span>
@@ -175,8 +175,8 @@
                     [readonly]="true"
                     style="width: 150px;"
                     [formControl]="
-                      getInvoiceEntryList.controls[rowIndex].get('ProductName')
-                    "
+                        getInvoiceEntryList.controls[rowIndex].get('ProductName')
+                      "
                   />
                   <a (click)="openModal(rowIndex)"
                     ><i
@@ -185,18 +185,18 @@
                     ></i>
                   </a>
                   <!-- <kendo-popup
-                  [anchor]="input"
-                  *ngIf="
-                    getInvoiceEntryList.controls[rowIndex].get('ProductName')
-                      .invalid &&
-                    getInvoiceEntryList.controls[rowIndex].get('ProductName')
-                      .untouched
-                  "
-                  popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-                >
-                  <span class="k-icon k-i-warning"></span>
-                  Prodcut Name is required
-                </kendo-popup> -->
+                    [anchor]="input"
+                    *ngIf="
+                      getInvoiceEntryList.controls[rowIndex].get('ProductName')
+                        .invalid &&
+                      getInvoiceEntryList.controls[rowIndex].get('ProductName')
+                        .untouched
+                    "
+                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                  >
+                    <span class="k-icon k-i-warning"></span>
+                    Prodcut Name is required
+                  </kendo-popup> -->
                 </div>
               </div>
             </ng-template>
@@ -216,8 +216,8 @@
                 popupAnchor
                 style="width: 90px; margin: -5px !important;"
                 [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get(column.field)
-                "
+                    getInvoiceEntryList.controls[rowIndex].get(column.field)
+                  "
                 (change)="changeInvoiceValues(dataItem, rowIndex)"
               >
               </kendo-numerictextbox>
@@ -248,8 +248,8 @@
                 valueField="ID"
                 [valuePrimitive]="true"
                 [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get(column.field)
-                "
+                    getInvoiceEntryList.controls[rowIndex].get(column.field)
+                  "
               >
               </kendo-dropdownlist>
             </ng-template>
@@ -268,10 +268,11 @@
                 popupAnchor
                 style="width: 90px; margin: -5px !important;"
                 [decimals]="decimals"
+                [spinners]="false"
                 [format]="c0"
                 [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get(column.field)
-                "
+                    getInvoiceEntryList.controls[rowIndex].get(column.field)
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -290,10 +291,11 @@
                 popupAnchor
                 style="width: 90px; margin: -5px !important;"
                 [decimals]="decimals"
+                [spinners]="false"
                 [format]="c0"
                 [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get(column.field)
-                "
+                    getInvoiceEntryList.controls[rowIndex].get(column.field)
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -323,19 +325,17 @@
               let-formGroup="formGroup"
             >
               <kendo-numerictextbox
-                popupAnchor
-                style="width: 90px; margin: -5px !important;"
-                [value]="percentage"
                 [format]="'p'"
+                [step]="0.1"
                 [min]="0"
-                [max]="100"
-                [step]="1"
+                style="width: 90px; margin: -5px !important;"
+                [max]="1"
+                [value]="percentage"
                 [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get(column.field)
-                "
+              getInvoiceEntryList.controls[rowIndex].get(column.field)
+            "
                 (change)="changeInvoiceValues(dataItem, rowIndex)"
-              >
-              </kendo-numerictextbox>
+              ></kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
 
@@ -356,10 +356,11 @@
                 popupAnchor
                 style="width: 90px; margin: -5px !important;"
                 [decimals]="decimals"
+                [spinners]="false"
                 [format]="c0"
                 [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get(column.field)
-                "
+                    getInvoiceEntryList.controls[rowIndex].get(column.field)
+                  "
                 (change)="changeInvoiceValues(dataItem, rowIndex)"
               >
               </kendo-numerictextbox>
@@ -380,9 +381,10 @@
                 style="width: 100px; margin: -5px !important;"
                 [decimals]="decimals"
                 [format]="c0"
+                [spinners]="false"
                 [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get(column.field)
-                "
+                    getInvoiceEntryList.controls[rowIndex].get(column.field)
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -411,23 +413,23 @@
                 valueField="ID"
                 [valuePrimitive]="true"
                 [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get(column.field)
-                "
+                    getInvoiceEntryList.controls[rowIndex].get(column.field)
+                  "
                 (valueChange)="handleTaxChange($event, rowIndex)"
               >
                 <ng-template kendoDropDownListItemTemplate let-dataItem>
-                  <span class="template">{{ dataItem.Name }}</span
-                  >({{ dataItem.Rate }} %)
+                  <span class="template">{{ dataItem.Name }}</span>({{
+                  dataItem.Rate }} %)
                 </ng-template>
               </kendo-dropdownlist>
               <!-- <kendo-numerictextbox
-              popupAnchor
-              style="width: 120px;"
-              [formControl]="
-                getInvoiceEntryList.controls[rowIndex].get(column.field)
-              "
-            >
-            </kendo-numerictextbox> -->
+                popupAnchor
+                style="width: 120px;"
+                [formControl]="
+                  getInvoiceEntryList.controls[rowIndex].get(column.field)
+                "
+              >
+              </kendo-numerictextbox> -->
             </ng-template>
           </kendo-grid-column>
 
@@ -445,9 +447,10 @@
                 style="width: 90px; margin: -5px !important;"
                 [decimals]="decimals"
                 [format]="c0"
+                [spinners]="false"
                 [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get(column.field)
-                "
+                    getInvoiceEntryList.controls[rowIndex].get(column.field)
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -468,8 +471,8 @@
                 class="k-textbox"
                 style="width: 120px;"
                 [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get(column.field)
-                "
+                    getInvoiceEntryList.controls[rowIndex].get(column.field)
+                  "
               />
             </ng-template>
           </kendo-grid-column>
@@ -593,7 +596,7 @@
         class="btn btn-primary"
         (click)="save()"
         accSwiftFormSubmitValidationMsg
-        [validationControl]="addInvoiceForm"
+        [validationControl]="salesInvoiceForm"
       >
         Save
       </button>

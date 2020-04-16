@@ -37,6 +37,7 @@ export class CashPaymentService {
       this.projectLists = res.Entity;
     });
   }
+
   getSeriesList(): void {
     const params = new HttpParams().set("VoucherType", "CASH_PMNT"); // Series List for Cash Receipt Voucher Type
     this.httpService
@@ -68,6 +69,10 @@ export class CashPaymentService {
       `${this._api_URL}CashPaymentMaster/navigate`,
       body
     );
+  }
+
+  getLedgerDetails(id): Observable<any> {
+    return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
   }
 
   getCashPaymentDetails(id): Observable<CashPaymentDetailModel> {

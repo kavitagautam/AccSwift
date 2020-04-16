@@ -1,14 +1,20 @@
 export interface ProjectList {
   ID: number;
   ProjectNumber: number;
-  ParentProjectID: number;
+  ParentProjectID?: number;
   EngName: string;
   NepName: string;
   Description: string;
   CreatedBy: string;
-  CreatedDate: string;
+  CreatedDate?: Date;
   ModifiedBy: string;
-  ModifiedDate: string;
+  ModifiedDate?: Date;
+}
+
+export interface ProjectListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: ProjectList[];
 }
 
 export interface SeriesListModel {
@@ -41,7 +47,7 @@ export interface Fields {
   Field5: string;
 }
 
-export interface CashReceiptMaster {
+export interface CashReceiptList {
   ID: number;
   Date: Date;
   IsPayByInvoice: boolean;
@@ -63,10 +69,19 @@ export interface CashReceiptMaster {
   ModifiedDate: Date;
 }
 
-export interface CashReceiptMasterModel {
+export interface CashReceiptNavigate {
+  Entity: CashReceiptList[];
+  ItemsPerPage: number;
+  ItemsReturned: number;
+  TotalItemsAvailable: number;
+  CurrentPage: number;
+  TotalPages: number;
+}
+
+export interface CashReceiptNavigateModel {
   StatusCode: number;
   Message: string;
-  Entity: CashReceiptMaster[];
+  Entity: CashReceiptNavigate;
 }
 
 export interface CashReceiptDetail {
@@ -85,7 +100,7 @@ export interface CashReceiptDetail {
   Remarks: string;
 }
 
-export interface CashReceiptDetail {
+export interface CashReceipt {
   ID: number;
   Date: Date;
   IsPayByInvoice: boolean;
@@ -110,8 +125,9 @@ export interface CashReceiptDetail {
 export interface CashReceiptDetailModel {
   StatusCode: number;
   Message: string;
-  Entity: CashReceiptDetail;
+  Entity: CashReceipt;
 }
+
 export interface CashAccountsModel {
   Entity: CashAccountList[];
 }

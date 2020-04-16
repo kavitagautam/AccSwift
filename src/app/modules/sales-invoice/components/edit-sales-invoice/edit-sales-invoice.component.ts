@@ -20,11 +20,11 @@ import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
-  templateUrl: "./edit-sales-invoice.component.html",
+  templateUrl: "../common-html/common-sales-invoice.html",
   styleUrls: ["./edit-sales-invoice.component.scss"],
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
-  editInvoiceForm: FormGroup;
+  salesInvoiceForm: FormGroup;
   salesDetails: SalseInvoice;
   editedRowIndex: any;
   submitted: boolean;
@@ -72,7 +72,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.buildEditInvoiceForm();
+    this.buildsalesInvoiceForm();
     this.getIdFromRoute();
   }
 
@@ -81,8 +81,8 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  buildEditInvoiceForm(): void {
-    this.editInvoiceForm = this._fb.group({
+  buildsalesInvoiceForm(): void {
+    this.salesInvoiceForm = this._fb.group({
       ID: this.salesDetails ? this.salesDetails.ID : 0,
       SeriesID: this.salesDetails ? this.salesDetails.SeriesID : "",
       VoucherNo: [
@@ -103,7 +103,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       Remarks: [this.salesDetails ? this.salesDetails.Remarks : ""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
-    this.myFormValueChanges$ = this.editInvoiceForm.controls[
+    this.myFormValueChanges$ = this.salesInvoiceForm.controls[
       "InvoiceDetails"
     ].valueChanges;
 
@@ -134,7 +134,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
                 this.salesDetails.GrossAmount - this.salesDetails.NetAmount;
               this.grandTotalAmount = this.salesDetails.TotalAmount;
             }
-            this.buildEditInvoiceForm();
+            this.buildsalesInvoiceForm();
             this.setInvoiceList();
           });
       }
@@ -175,7 +175,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   private invoiceValueChange(value): void {
-    this.editInvoiceForm.controls["InvoiceDetails"].valueChanges
+    this.salesInvoiceForm.controls["InvoiceDetails"].valueChanges
       .pipe(takeUntil(this.destroyed$), debounceTime(20))
       .subscribe((invoices) => {
         let sumQty = 0;
@@ -254,12 +254,12 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   setInvoiceList(): void {
-    this.editInvoiceForm.setControl(
+    this.salesInvoiceForm.setControl(
       "InvoiceDetails",
       this.setInvoiceDetailsFormArray(this.salesDetails.InvoiceDetails)
     );
 
-    (<FormArray>this.editInvoiceForm.get("InvoiceDetails")).push(
+    (<FormArray>this.salesInvoiceForm.get("InvoiceDetails")).push(
       this.addInvoiceEntryList()
     );
   }
@@ -317,9 +317,9 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    if (this.editInvoiceForm.invalid) return;
+    if (this.salesInvoiceForm.invalid) return;
     this.salesInvoiceService
-      .updateSalesInvoice(this.editInvoiceForm.value)
+      .updateSalesInvoice(this.salesInvoiceForm.value)
       .subscribe(
         (response) => {
           this.router.navigate(["/sales-invoice"]);
@@ -334,12 +334,12 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
-    this.editInvoiceForm.reset();
+    this.salesInvoiceForm.reset();
     this.router.navigate(["/sales-invoice"]);
   }
 
   changeInvoiceValues(dataItem, index): void {
-    this.myFormValueChanges$ = this.editInvoiceForm.controls[
+    this.myFormValueChanges$ = this.salesInvoiceForm.controls[
       "InvoiceDetails"
     ].valueChanges;
 
@@ -348,7 +348,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     );
 
     const invoiceEntryArray = <FormArray>(
-      this.editInvoiceForm.get("InvoiceDetails")
+      this.salesInvoiceForm.get("InvoiceDetails")
     );
     let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
 
@@ -393,7 +393,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       (s) => s.ID === value
     );
     const invoiceEntryArray = <FormArray>(
-      this.editInvoiceForm.get("InvoiceDetails")
+      this.salesInvoiceForm.get("InvoiceDetails")
     );
     let netAmountV = invoiceEntryArray.controls[index].get("NetAmount").value;
     invoiceEntryArray.controls[index]
@@ -403,7 +403,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
 
   handelProductCode(dataItem, index): void {
     const invoiceEntryArray = <FormArray>(
-      this.editInvoiceForm.get("InvoiceDetails")
+      this.salesInvoiceForm.get("InvoiceDetails")
     );
 
     const productCode = invoiceEntryArray.controls[index].get("ProductCode")
@@ -458,7 +458,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
           this.getRelatedUnitList(selectedItem[0].ID);
         }
 
-        (<FormArray>this.editInvoiceForm.get("InvoiceDetails")).push(
+        (<FormArray>this.salesInvoiceForm.get("InvoiceDetails")).push(
           this.addInvoiceEntryList()
         );
       });
@@ -480,7 +480,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         // Do After the the sucess
-        this.editInvoiceForm.get("CashPartyLedgerID").setValue(data.LedgerID);
+        this.salesInvoiceForm.get("CashPartyLedgerID").setValue(data.LedgerID);
       }
     });
     this.modalRef.content.onClose.subscribe((data) => {
@@ -498,7 +498,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const invoiceEntryArray = <FormArray>(
-          this.editInvoiceForm.get("InvoiceDetails")
+          this.salesInvoiceForm.get("InvoiceDetails")
         );
         invoiceEntryArray.controls[index]
           .get("ProductCode")
@@ -543,7 +543,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       }
     });
 
-    (<FormArray>this.editInvoiceForm.get("InvoiceDetails")).push(
+    (<FormArray>this.salesInvoiceForm.get("InvoiceDetails")).push(
       this.addInvoiceEntryList()
     );
     this.modalRef.content.onClose.subscribe((data) => {
@@ -569,7 +569,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   get getInvoiceEntryList(): FormArray {
-    return <FormArray>this.editInvoiceForm.get("InvoiceDetails");
+    return <FormArray>this.salesInvoiceForm.get("InvoiceDetails");
   }
 
   private closeEditor(grid, rowIndex = 1) {
@@ -581,9 +581,9 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    const invoiceEntry = <FormArray>this.editInvoiceForm.get("InvoiceDetails");
+    const invoiceEntry = <FormArray>this.salesInvoiceForm.get("InvoiceDetails");
     if (invoiceEntry.invalid) return;
-    (<FormArray>this.editInvoiceForm.get("InvoiceDetails")).push(
+    (<FormArray>this.salesInvoiceForm.get("InvoiceDetails")).push(
       this.addInvoiceEntryList()
     );
     this.rowSubmitted = false;
@@ -593,11 +593,11 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.editInvoiceForm.get("InvoiceDetails"));
+    sender.editRow(rowIndex, this.salesInvoiceForm.get("InvoiceDetails"));
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.editInvoiceForm.get("InvoiceDetails")).removeAt(rowIndex);
+    (<FormArray>this.salesInvoiceForm.get("InvoiceDetails")).removeAt(rowIndex);
   }
 
   public cancelHandler({ sender, rowIndex }) {

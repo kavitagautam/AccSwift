@@ -116,18 +116,19 @@
           (pageChange)="pageChange($event)"
           scrollable="true"
         >
-          <kendo-grid-column field="VoucherNo" title="VoucherNo.">
+          <kendo-grid-column field="VoucherNo" title="VoucherNo." width="120">
           </kendo-grid-column>
           <kendo-grid-column
             field="LedgerName"
             title="Particular/Accounting Head"
+            width="200"
           >
           </kendo-grid-column>
-          <kendo-grid-column field="TotalAmount" title="Amount">
+          <kendo-grid-column field="TotalAmount" title="Amount" width="100">
           </kendo-grid-column>
-          <kendo-grid-column field="SeriesName" title="Series">
+          <kendo-grid-column field="SeriesName" title="Series" width="100">
           </kendo-grid-column>
-          <kendo-grid-column field="ProjectName" title="Project">
+          <kendo-grid-column field="ProjectName" title="Project" width="100">
           </kendo-grid-column>
           <kendo-grid-column
             field="CreatedDate"
@@ -135,7 +136,11 @@
             filter="date"
             [filterable]="false"
             format="{0: yyyy-mm-dd}"
+            width="120"
           >
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              {{ dataItem.CreatedDate | dateStringFormat: "yyyy-MM-dd" }}
+            </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="Remarks" title="Remarks">
           </kendo-grid-column>

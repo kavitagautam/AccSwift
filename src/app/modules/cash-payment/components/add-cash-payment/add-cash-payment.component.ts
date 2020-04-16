@@ -7,14 +7,13 @@ import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-p
 
 @Component({
   selector: "accSwift-add-cash-payment",
-  templateUrl: "./add-cash-payment.component.html",
+  templateUrl: "../common-html/common-cash-payment.html",
   styleUrls: ["./add-cash-payment.component.scss"],
 })
 export class AddCashPaymentComponent implements OnInit {
-  addCashPaymentForm: FormGroup;
-  allCash;
-
+  cashPaymentForm: FormGroup;
   submitted: boolean;
+  currentAmount: string = "0.00";
   rowSubmitted: boolean;
   date: Date = new Date();
   editedRowIndex: any;
@@ -35,12 +34,12 @@ export class AddCashPaymentComponent implements OnInit {
     private modalService: BsModalService
   ) {}
 
-  ngOnInit() {
-    this.buildAddCashPaymentForm(); // initialize the form
+  ngOnInit(): void {
+    this.buildCashPaymentForm(); // initialize the form
   }
 
-  buildAddCashPaymentForm() {
-    this.addCashPaymentForm = this.fb.group({
+  buildCashPaymentForm(): void {
+    this.cashPaymentForm = this.fb.group({
       seriesId: [null],
       projectId: [null],
       voucherNo: ["", [Validators.required]],
@@ -65,20 +64,26 @@ export class AddCashPaymentComponent implements OnInit {
 
   get getCashPaymentEntryList(): FormArray {
     const cashPaymentFormArray = <FormArray>(
-      this.addCashPaymentForm.get("cashPaymentEntryList")
+      this.cashPaymentForm.get("cashPaymentEntryList")
     );
     return cashPaymentFormArray;
   }
 
   public save(): void {
-    if (this.addCashPaymentForm.valid) {
+    if (this.cashPaymentForm.valid) {
       this.router.navigate(["/cash-payment"]);
     }
   }
 
   public cancel(): void {
-    this.addCashPaymentForm.reset();
+    this.cashPaymentForm.reset();
     this.router.navigate(["/cash-payment"]);
+  }
+
+  changeAccount(event, ledgerId): void {
+    this.cashPaymentService.getLedgerDetails(ledgerId).subscribe((response) => {
+      this.currentAmount = response;
+    });
   }
 
   openModal(index: number): void {
@@ -91,7 +96,7 @@ export class AddCashPaymentComponent implements OnInit {
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const cashPaymentFormArray = <FormArray>(
-          this.addCashPaymentForm.get("cashPaymentEntryList")
+          this.cashPaymentForm.get("cashPaymentEntryList")
         );
         cashPaymentFormArray.controls[index]
           .get("currentBalance")
@@ -110,8 +115,8 @@ export class AddCashPaymentComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.addCashPaymentForm.get("cashPaymentEntryList").invalid) return;
-    (<FormArray>this.addCashPaymentForm.get("cashPaymentEntryList")).push(
+    if (this.cashPaymentForm.get("cashPaymentEntryList").invalid) return;
+    (<FormArray>this.cashPaymentForm.get("cashPaymentEntryList")).push(
       this.addCashPaymentEntryList()
     );
     this.submitted = false;
@@ -125,7 +130,7 @@ export class AddCashPaymentComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     const cashPaymentEntry = <FormArray>(
-      this.addCashPaymentForm.get("cashPaymentEntryList")
+      this.cashPaymentForm.get("cashPaymentEntryList")
     );
     cashPaymentEntry.controls[rowIndex]
       .get("particularsOraccountingHead")
@@ -141,10 +146,7 @@ export class AddCashPaymentComponent implements OnInit {
       .get("remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
-    sender.editRow(
-      rowIndex,
-      this.addCashPaymentForm.get("cashPaymentEntryList")
-    );
+    sender.editRow(rowIndex, this.cashPaymentForm.get("cashPaymentEntryList"));
   }
 
   public cancelHandler({ sender, rowIndex }) {
@@ -152,7 +154,7 @@ export class AddCashPaymentComponent implements OnInit {
   }
 
   public removeHandler({ dataItem, rowIndex }) {
-    (<FormArray>this.addCashPaymentForm.get("cashPaymentEntryList")).removeAt(
+    (<FormArray>this.cashPaymentForm.get("cashPaymentEntryList")).removeAt(
       rowIndex
     );
   }

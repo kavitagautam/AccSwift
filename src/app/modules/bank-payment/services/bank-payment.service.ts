@@ -46,6 +46,7 @@ export class BankPaymentService {
         this.seriesList = res.Entity;
       });
   }
+
   getBankPaymentAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/BankAccounts`)
@@ -63,6 +64,10 @@ export class BankPaymentService {
 
   getBankPaymentDetails(id): Observable<BankPaymentDetailModel> {
     return this.httpService.get(`${this._api_URL}BankPaymentMaster/${id}`);
+  }
+
+  getLedgerDetails(id): Observable<any> {
+    return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
   }
 
   updateBankPayment(body): Observable<any> {

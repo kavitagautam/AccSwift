@@ -23,9 +23,7 @@ export class BankReceiptService {
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {}
-
-  init() {
+  ) {
     this.getProjectLists();
     this.getSeriesList();
     this.getBankReceiptAccounts();
@@ -62,6 +60,10 @@ export class BankReceiptService {
       `${this._api_URL}BankReceiptMaster/navigate`,
       body
     );
+  }
+
+  getLedgerDetails(id): Observable<any> {
+    return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
   }
 
   getBankReceiptDetails(id): Observable<BankReceiptDetailModel> {

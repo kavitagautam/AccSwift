@@ -71,7 +71,7 @@ export interface BankReceiptNavigateModel {
   StatusCode: number;
   Message: string;
   Entity: BankReceiptNavigate;
-} 
+}
 
 export interface BankReceiptDetailsList {
   ChequeNumber: string;

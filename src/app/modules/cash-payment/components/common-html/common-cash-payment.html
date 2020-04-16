@@ -1,61 +1,75 @@
 <div class="box box-default">
-  <form [formGroup]="addBankPaymentForm" novalidate>
+  <form [formGroup]="cashPaymentForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Series</label>
-            <select class="form-control" formControlName="SeriesID">
+            <label>Series </label>
+            <select
+              class="form-control"
+              id="seriesId"
+              formControlName="seriesId"
+            >
               <option [ngValue]="null">Choose Option....</option>
               <option
-                *ngFor="let series of bankPaymentService.seriesList"
+                *ngFor="let series of cashPaymentService.seriesLists"
                 [ngValue]="series.ID"
               >
-                {{ series.Name }}
-              </option>
+                {{ series.Name }}</option
+              >
             </select>
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Bank Account </label>
+            <label>Cash Account </label>
             <select
               class="form-control"
-              formControlName="LedgerID"
+              id="cashAccountNo"
+              formControlName="cashAccountId"
+              (change)="changeAccount($event, cashPaymentForm.get('cashAccountId').value)"
               accSwiftFormValidator
             >
               <option [ngValue]="null">Choose Option....</option>
               <option
-                *ngFor="let account of bankPaymentService.bankAccountList"
+                *ngFor="let account of cashPaymentService.cashAccountLists"
                 [ngValue]="account.LedgerID"
               >
-                {{ account.LedgerName }}
+                {{ account.LedgerName }}</option
+              >
+            </select>
+            <span class="current-balance"
+              >Current Amount : {{currentAmount}}</span
+            >
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Cash Party/ Customer </label>
+            <select
+              class="form-control"
+              id="cashPartyId"
+              formControlName="cashPartyId"
+              accSwiftFormValidator
+            >
+              <option [ngValue]="null">Choose Option....</option>
+              <option
+                *ngFor="let cash of cashPaymentService.cashPartyLists"
+                [ngValue]="cash.LedgerID"
+              >
+                {{ cash.LedgerName }}
               </option>
             </select>
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Voucher</label>
+            <label>Voucher #</label>
             <input
               class="form-control"
-              formControlName="VoucherNo"
+              formControlName="voucherNo"
               accSwiftFormValidator
             />
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Project</label>
-            <select class="form-control" formControlName="ProjectID">
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let project of bankPaymentService.projectList"
-                [ngValue]="project.ID"
-              >
-                {{ project.EngName }}</option
-              >
-            </select>
           </div>
         </div>
       </div>
@@ -65,19 +79,31 @@
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Date</label>
-            <input
-              type="text"
+            <label>Project </label>
+            <select
               class="form-control"
-              formControlName="Date"
-              bsDatepicker
-            />
+              id="projectId"
+              formControlName="projectId"
+            >
+              <option [ngValue]="null">Choose Option....</option>
+              <option
+                *ngFor="let project of cashPaymentService.projectLists"
+                [ngValue]="project.LedgerID"
+              >
+                {{ project.EngName }}</option
+              >
+            </select>
           </div>
         </div>
-
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Current Balance </label>
+            <label>Date</label>
+            <input formControlName="date" class="form-control" bsDatepicker />
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Current Balance</label>
             <div class="row clearfix ml-2 mt-3">
               <span>0.00</span>
             </div>
@@ -86,10 +112,10 @@
       </div>
     </div>
 
-    <div class="col-md-12 p-0">
+    <div class="col-md-12">
       <div class="box-body">
         <kendo-grid
-          [data]="getBankPaymentEntryList.value"
+          [data]="getCashPaymentEntryList.value"
           (edit)="editHandler($event)"
           (cancel)="cancelHandler($event)"
           (save)="saveHandler($event)"
@@ -101,7 +127,7 @@
           </ng-template>
 
           <kendo-grid-column
-            field="LedgerName"
+            field="particularsOraccountingHead"
             title="Particulars Or Accounting Head"
             width="300"
           >
@@ -121,19 +147,19 @@
                     style="width: 100px;"
                     placeholder="Ledger Code"
                     [formControl]="
-                      getBankPaymentEntryList.controls[rowIndex].get(
-                        'LedgerCode'
-                      )
-                    "
+                        getCashPaymentEntryList.controls[rowIndex].get(
+                          'ledgerCode'
+                        )
+                      "
                     (change)="changeLedgerValue(dataItem, rowIndex)"
                   />
                   <kendo-popup
                     [anchor]="input"
                     *ngIf="
-                      getBankPaymentEntryList.controls[rowIndex].get(
-                        'LedgerCode'
-                      ).invalid
-                    "
+                        getCashPaymentEntryList.controls[rowIndex].get(
+                          'ledgerCode'
+                        ).invalid
+                      "
                     popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
                   >
                     <span class="k-icon k-i-warning"></span>
@@ -146,10 +172,10 @@
                     class="k-textbox"
                     [readonly]="true"
                     [formControl]="
-                      getBankPaymentEntryList.controls[rowIndex].get(
-                        'LedgerName'
-                      )
-                    "
+                        getCashPaymentEntryList.controls[rowIndex].get(
+                          'particularsOraccountingHead'
+                        )
+                      "
                   />
                   <a (click)="openModal(rowIndex)"
                     ><i
@@ -160,20 +186,20 @@
                   <kendo-popup
                     [anchor]="input"
                     *ngIf="
-                      getBankPaymentEntryList.controls[rowIndex].get(
-                        'LedgerName'
-                      ).invalid &&
-                      rowSubmitted &&
-                      !(
-                        isNew &&
-                        getBankPaymentEntryList.controls[rowIndex].get(
-                          'LedgerName'
-                        ).untouched
-                      ) &&
-                      !getBankPaymentEntryList.controls[rowIndex].get(
-                        'LedgerCode'
-                      )
-                    "
+                        getCashPaymentEntryList.controls[rowIndex].get(
+                          'particularsOraccountingHead'
+                        ).invalid &&
+                        rowSubmitted &&
+                        !(
+                          isNew &&
+                          getCashPaymentEntryList.controls[rowIndex].get(
+                            'particularsOraccountingHead'
+                          ).untouched
+                        ) &&
+                        !getCashPaymentEntryList.controls[rowIndex].get(
+                          'ledgerCode'
+                        )
+                      "
                     popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
                   >
                     <span class="k-icon k-i-warning"></span>
@@ -184,7 +210,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="Amount" title="Amount" width="120">
+          <kendo-grid-column field="voucherNo" title="Voucher No" width="150">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -193,100 +219,46 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-              <kendo-numerictextbox
+              <input
                 #ntb="popupAnchor"
                 popupAnchor
-                style="width: 100px;"
-                [decimals]="decimals"
-                [format]="'c0'"
-                [formControl]="
-                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
-                "
-              ></kendo-numerictextbox>
-            </ng-template>
-          </kendo-grid-column>
-
-          <kendo-grid-column
-            field="LedgerBalance"
-            title="Current Balance"
-            width="120"
-          >
-            <ng-template
-              kendoGridCellTemplate
-              let-dataItem="dataItem"
-              let-column="column"
-              let-formGroup="formGroup"
-              let-isNew="isNew"
-              let-rowIndex="rowIndex"
-            >
-              <!-- <input
-                #input
-                class="k-textbox"
-                style="width: 100px;"
-                [formControl]="
-                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
-                "
-              /> -->
-              <kendo-numerictextbox
-                #ntb="popupAnchor"
-                popupAnchor
-                style="width: 100px;"
-                [decimals]="decimals"
-                [format]="'c0'"
-                [formControl]="
-                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
-                "
-              ></kendo-numerictextbox>
-            </ng-template>
-          </kendo-grid-column>
-
-          <kendo-grid-column
-            field="ChequeNumber"
-            title="Cheque Number"
-            width="120"
-          >
-            <ng-template
-              kendoGridCellTemplate
-              let-dataItem="dataItem"
-              let-column="column"
-              let-formGroup="formGroup"
-              let-isNew="isNew"
-              let-rowIndex="rowIndex"
-            >
-              <kendo-numerictextbox
-                #ntb="popupAnchor"
-                popupAnchor
-                style="width: 100px;"
-                [formControl]="
-                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
-                "
-              ></kendo-numerictextbox>
-            </ng-template>
-          </kendo-grid-column>
-          <kendo-grid-column field="ChequeDate" title="Cheque Date" width="150">
-            <ng-template
-              kendoGridCellTemplate
-              let-dataItem="dataItem"
-              let-column="column"
-              let-formGroup="formGroup"
-              let-isNew="isNew"
-              let-rowIndex="rowIndex"
-            >
-              <kendo-datepicker
-                [valuePrimitive]="true"
-                [formControl]="
-                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
-                "
-                [min]="min"
-                [max]="max"
                 style="width: 130px;"
-              ></kendo-datepicker>
+                [formControl]="
+                    getCashPaymentEntryList.controls[rowIndex].get(column.field)
+                  "
+              />
             </ng-template>
           </kendo-grid-column>
+
+          <kendo-grid-column field="amount" title="Amount" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <kendo-numerictextbox
+                #ntb="popupAnchor"
+                popupAnchor
+                style="width: 130px;"
+                [readonly]="true"
+                [decimals]="decimals"
+                [format]="'c0'"
+                [formControl]="
+                    getCashPaymentEntryList.controls[rowIndex].get(
+                      'currentBalance'
+                    )
+                  "
+              ></kendo-numerictextbox>
+            </ng-template>
+          </kendo-grid-column>
+
           <kendo-grid-column
-            field="LedgerBalance"
-            title="Ledger Balance"
-            width="120"
+            field="currentBalance"
+            title="Current Balance"
+            width="150"
           >
             <ng-template
               kendoGridCellTemplate
@@ -299,25 +271,20 @@
               <kendo-numerictextbox
                 #ntb="popupAnchor"
                 popupAnchor
-                style="width: 100px;"
+                style="width: 130px;"
+                [readonly]="true"
                 [decimals]="decimals"
                 [format]="'c0'"
                 [formControl]="
-                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
-                "
+                    getCashPaymentEntryList.controls[rowIndex].get(
+                      'currentBalance'
+                    )
+                  "
               ></kendo-numerictextbox>
-              <!-- <input
-                #input
-                class="k-textbox"
-                style="width: 100px;"
-                [formControl]="
-                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
-                "
-              /> -->
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="Remarks" title="Remarks" width="120">
+          <kendo-grid-column field="vType" title="V. Type" width="150">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -329,10 +296,28 @@
               <input
                 #input
                 class="k-textbox"
-                style="width: 100px;"
                 [formControl]="
-                  getBankPaymentEntryList.controls[rowIndex].get(column.field)
-                "
+                    getCashPaymentEntryList.controls[rowIndex].get(column.field)
+                  "
+              />
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="remarks" title="Remarks" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-isNew="isNew"
+              let-rowIndex="rowIndex"
+            >
+              <input
+                #input
+                class="k-textbox"
+                [formControl]="
+                    getCashPaymentEntryList.controls[rowIndex].get('remarks')
+                  "
               />
             </ng-template>
           </kendo-grid-column>
@@ -364,31 +349,6 @@
         </kendo-grid>
       </div>
     </div>
-    
-    <div class="col-md-12">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Remarks</label>
-          <input formControlName="Remarks" type="text" class="form-control" />
-        </div>
-      </div>
-    </div>
-    <div class="col-md-12">
-      <div class="col-sm-2">
-        <div class="form-group">
-          <div class="checkbox">
-            <label> <input type="checkbox" />Do not close </label>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-2">
-        <div class="form-group">
-          <div class="checkbox">
-            <label> <input type="checkbox" />Print while saving </label>
-          </div>
-        </div>
-      </div>
-    </div>
   </form>
   <div class="box-footer">
     <div class="mb-2">
@@ -396,7 +356,7 @@
         class="btn btn-primary"
         (click)="save()"
         accSwiftFormSubmitValidationMsg
-        [validationControl]="addBankPaymentForm"
+        [validationControl]="cashPaymentForm"
       >
         Save
       </button>
