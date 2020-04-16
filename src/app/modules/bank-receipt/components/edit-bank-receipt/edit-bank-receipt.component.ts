@@ -16,7 +16,7 @@ import { BankReceiptDetail } from "../../models/bank-receipt.model";
 export class EditBankReceiptComponent implements OnInit {
   private editedRowIndex: number;
   bankReceiptDetails: BankReceiptDetail;
-  currentBankAmount: string = "0.00";
+  currentAmount: string = "0.00";
   bankReceiptForm: FormGroup;
   numericFormat: string = "n2";
   public decimals: number = 2;
@@ -45,7 +45,6 @@ export class EditBankReceiptComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildBankReceiptForm();
-    this.bankReceiptService.init();
     this.getIdFromRoute(); // Get Id From the Route URL and get the Details
   }
 
@@ -168,9 +167,9 @@ export class EditBankReceiptComponent implements OnInit {
     this.submitted = false;
   }
 
-  changeBankAccount(event, ledgerId): void {
+  changeAccount(event, ledgerId): void {
     this.bankReceiptService.getLedgerDetails(ledgerId).subscribe((response) => {
-      this.currentBankAmount = response.Entity[0].Balance;
+      this.currentAmount = response;
     });
   }
 

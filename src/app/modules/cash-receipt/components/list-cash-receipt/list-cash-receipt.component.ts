@@ -10,7 +10,7 @@ import {
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
-import { CashReceiptMaster } from "../../models/cash-receipt.model";
+import { CashReceiptList } from "../../models/cash-receipt.model";
 
 @Component({
   selector: "accSwift-list-cash-receipt",
@@ -20,7 +20,7 @@ import { CashReceiptMaster } from "../../models/cash-receipt.model";
 export class ListCashReceiptComponent implements OnInit {
   cashReceiptForm: FormGroup;
   listLoading: boolean;
-  cashList: CashReceiptMaster[] = [];
+  cashReceiptList: CashReceiptList[] = [];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
   date: Date = new Date();
@@ -36,12 +36,17 @@ export class ListCashReceiptComponent implements OnInit {
     },
   ];
 
+  orderByKey = "";
+  dirKey = "asc";
+
   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
   };
+
+  searchFilterList: Array<any> = [];
 
   constructor(
     public _fb: FormBuilder,
@@ -51,7 +56,7 @@ export class ListCashReceiptComponent implements OnInit {
     public cashReceiptService: CashReceiptService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.cashReceiptForm = this._fb.group({
       seriesId: [null],
       projectId: [null],
@@ -64,25 +69,31 @@ export class ListCashReceiptComponent implements OnInit {
   }
 
   public sortChange(sort: SortDescriptor[]): void {
+    this.currentPage = 1;
+    this.skip = 0;
+    this.orderByKey = "";
+    this.dirKey = "";
     this.sort = sort;
+    this.dirKey = this.sort[0].dir;
+    this.orderByKey = this.sort[0].field;
     this.getCashReceiptlList();
   }
 
   getCashReceiptlList(): void {
     this.listLoading = true;
-    const params = {
+    const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
-      OrderBy: "",
-      Direction: "asc", // "asc" or "desc"
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey, // "asc" or "desc"
     };
 
-    this.cashReceiptService.getCashReceiptMaster().subscribe(
+    this.cashReceiptService.getCashReceiptMaster(obj).subscribe(
       (response) => {
-        this.cashList = response.Entity;
+        this.cashReceiptList = response.Entity.Entity;
         this.gridView = {
-          data: this.cashList,
-          total: this.cashList ? this.cashList.length : 0,
+          data: this.cashReceiptList,
+          total: response.Entity.TotalItemsAvailable,
         };
       },
       (error) => {
@@ -100,6 +111,19 @@ export class ListCashReceiptComponent implements OnInit {
   }
 
   public searchForm(): void {
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.cashReceiptForm.invalid) return;
+    for (const key in this.cashReceiptForm.value) {
+      if (this.cashReceiptForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.cashReceiptForm.value[key],
+        });
+      }
+    }
     this.getCashReceiptlList();
   }
 
@@ -138,7 +162,16 @@ export class ListCashReceiptComponent implements OnInit {
   }
 
   public deleteReceiptByID(id): void {
-    this.toastr.success("Cash deleted successfully");
-    //call Delete Api
+    this.cashReceiptService.deleteCashReceiptByID(id).subscribe(
+      (response) => {
+        this.getCashReceiptlList();
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error));
+      },
+      () => {
+        this.toastr.success("Cash receipt deleted successfully");
+      }
+    );
   }
 }

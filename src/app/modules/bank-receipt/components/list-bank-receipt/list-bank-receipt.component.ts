@@ -65,7 +65,6 @@ export class ListBankReceiptComponent implements OnInit {
       date: [new Date()],
     });
     this.getBankReceiptlList();
-    this.bankReceiptService.init();
   }
 
   public sortChange(sort: SortDescriptor[]): void {

@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { CashReceiptMaster } from "../../models/cash-receipt.model";
 import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { CashReceiptService } from "../../services/cash-receipt.service";
@@ -10,16 +9,15 @@ import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-p
 
 @Component({
   selector: "accSwift-add-cash-receipt",
-  templateUrl: "./add-cash-receipt.component.html",
+  templateUrl: "../common-html/common-cash-receipt.html",
   styleUrls: ["./add-cash-receipt.component.scss"],
 })
 export class AddCashReceiptComponent implements OnInit {
-  addCashReceiptForm: FormGroup;
+  cashReceiptForm: FormGroup;
   private editedRowIndex: number;
+  currentAmount: string = "0.00";
   numericFormat: string = "n2";
   public decimals: number = 2;
-  date: Date = new Date();
-  cashRecieptDetail: CashReceiptMaster;
   submitted: boolean;
   rowSubmitted: boolean;
   //Open the Ledger List Modal on PopUp
@@ -42,11 +40,11 @@ export class AddCashReceiptComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.buildAddCashReceiptForm();
+    this.buildcashReceiptForm();
   }
 
-  buildAddCashReceiptForm(): void {
-    this.addCashReceiptForm = this._fb.group({
+  buildcashReceiptForm(): void {
+    this.cashReceiptForm = this._fb.group({
       seriesId: [null],
       projectId: [null],
       voucherNo: ["", [Validators.required]],
@@ -60,7 +58,7 @@ export class AddCashReceiptComponent implements OnInit {
   }
 
   get getCashReceiptEntryList(): FormArray {
-    return <FormArray>this.addCashReceiptForm.get("cashReceiptEntryList");
+    return <FormArray>this.cashReceiptForm.get("cashReceiptEntryList");
   }
 
   addCashReceiptEntryFormGroup(): FormGroup {
@@ -77,17 +75,23 @@ export class AddCashReceiptComponent implements OnInit {
 
   addCashReceiptEntry(): void {
     this.submitted = true;
-    if (this.addCashReceiptForm.get("cashReceiptEntryList").invalid) return;
+    if (this.cashReceiptForm.get("cashReceiptEntryList").invalid) return;
 
-    (<FormArray>this.addCashReceiptForm.get("cashReceiptEntryList")).push(
+    (<FormArray>this.cashReceiptForm.get("cashReceiptEntryList")).push(
       this.addCashReceiptEntryFormGroup()
     );
     this.submitted = false;
   }
 
+  changeAccount(event, ledgerId): void {
+    this.cashReceiptService.getLedgerDetails(ledgerId).subscribe((response) => {
+      this.currentAmount = response;
+    });
+  }
+
   changeLedgerValue(dataItem, selectedRow): void {
     const cashReceiptFormArray = <FormArray>(
-      this.addCashReceiptForm.get("cashReceiptEntryList")
+      this.cashReceiptForm.get("cashReceiptEntryList")
     );
 
     const ledgerCode = cashReceiptFormArray.controls[selectedRow].get(
@@ -110,18 +114,22 @@ export class AddCashReceiptComponent implements OnInit {
             .get("ledgerCode")
             .setValue(selectedItem[0].LedgerCode);
         }
+        (<FormArray>this.cashReceiptForm.get("cashReceiptEntryList")).push(
+          this.addCashReceiptEntryFormGroup()
+        );
       });
     }
   }
+
   public save(): void {
-    if (this.addCashReceiptForm.valid) {
+    if (this.cashReceiptForm.valid) {
       this.router.navigate(["/cash-receipt"]);
     } else {
     }
   }
 
   public cancel(): void {
-    this.addCashReceiptForm.reset();
+    this.cashReceiptForm.reset();
     this.router.navigate(["/cash-receipt"]);
   }
 
@@ -129,8 +137,8 @@ export class AddCashReceiptComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.addCashReceiptForm.get("cashReceiptEntryList").invalid) return;
-    (<FormArray>this.addCashReceiptForm.get("cashReceiptEntryList")).push(
+    if (this.cashReceiptForm.get("cashReceiptEntryList").invalid) return;
+    (<FormArray>this.cashReceiptForm.get("cashReceiptEntryList")).push(
       this.addCashReceiptEntryFormGroup()
     );
     this.rowSubmitted = false;
@@ -140,7 +148,7 @@ export class AddCashReceiptComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }): void {
     this.closeEditor(sender);
     const cashReceiptEntry = <FormArray>(
-      this.addCashReceiptForm.get("cashReceiptEntryList")
+      this.cashReceiptForm.get("cashReceiptEntryList")
     );
     cashReceiptEntry.controls[rowIndex]
       .get("particularsOraccountingHead")
@@ -156,10 +164,7 @@ export class AddCashReceiptComponent implements OnInit {
       .get("remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
-    sender.editRow(
-      rowIndex,
-      this.addCashReceiptForm.get("cashReceiptEntryList")
-    );
+    sender.editRow(rowIndex, this.cashReceiptForm.get("cashReceiptEntryList"));
   }
 
   openModal(index: number): void {
@@ -172,7 +177,7 @@ export class AddCashReceiptComponent implements OnInit {
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const cashReceiptFormArray = <FormArray>(
-          this.addCashReceiptForm.get("cashReceiptEntryList")
+          this.cashReceiptForm.get("cashReceiptEntryList")
         );
         cashReceiptFormArray.controls[index]
           .get("currentBalance")
@@ -181,6 +186,9 @@ export class AddCashReceiptComponent implements OnInit {
           .get("particularsOraccountingHead")
           .setValue(data.LedgerName);
       }
+      (<FormArray>this.cashReceiptForm.get("cashReceiptEntryList")).push(
+        this.addCashReceiptEntryFormGroup()
+      );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
@@ -199,11 +207,11 @@ export class AddCashReceiptComponent implements OnInit {
   public removeHandler({ dataItem, rowIndex }): void {
     // Calculation on Debit Total and Credit Total on Rows Removed
     const cashReceiptEntry = <FormArray>(
-      this.addCashReceiptForm.get("cashReceiptEntryList")
+      this.cashReceiptForm.get("cashReceiptEntryList")
     );
 
     // Remove the Row
-    (<FormArray>this.addCashReceiptForm.get("cashReceiptEntryList")).removeAt(
+    (<FormArray>this.cashReceiptForm.get("cashReceiptEntryList")).removeAt(
       rowIndex
     );
   }

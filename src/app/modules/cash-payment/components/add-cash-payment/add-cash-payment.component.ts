@@ -13,6 +13,7 @@ import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-p
 export class AddCashPaymentComponent implements OnInit {
   cashPaymentForm: FormGroup;
   submitted: boolean;
+  currentAmount: string = "0.00";
   rowSubmitted: boolean;
   date: Date = new Date();
   editedRowIndex: any;
@@ -77,6 +78,12 @@ export class AddCashPaymentComponent implements OnInit {
   public cancel(): void {
     this.cashPaymentForm.reset();
     this.router.navigate(["/cash-payment"]);
+  }
+
+  changeAccount(event, ledgerId): void {
+    this.cashPaymentService.getLedgerDetails(ledgerId).subscribe((response) => {
+      this.currentAmount = response;
+    });
   }
 
   openModal(index: number): void {

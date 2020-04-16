@@ -5,11 +5,11 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import {
   ProjectList,
   SeriesList,
-  CashReceiptMaster,
-  CashReceiptMasterModel,
   CashAccountList,
   CashPartyList,
-  CashAccountsModel,
+  ProjectListModel,
+  CashReceiptNavigateModel,
+  CashReceiptDetailModel,
 } from "../models/cash-receipt.model";
 import { Observable } from "rxjs";
 @Injectable({
@@ -17,7 +17,7 @@ import { Observable } from "rxjs";
 })
 export class CashReceiptService {
   seriesLists: SeriesList;
-  projectLists: ProjectList;
+  projectLists: ProjectList[];
   cashAccountLists: CashAccountList;
   cashPartyLists: CashPartyList;
   _api_URL = environment.baseAPI;
@@ -35,10 +35,11 @@ export class CashReceiptService {
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectList) => {
-        this.projectLists = res;
+      .subscribe((res: ProjectListModel) => {
+        this.projectLists = res.Entity;
       });
   }
+
   getSeriesList(): void {
     const params = new HttpParams().set("VoucherType", "CASH_RCPT"); // Series List for Cash Receipt Voucher Type
     this.httpService
@@ -64,12 +65,31 @@ export class CashReceiptService {
       });
   }
 
-  getCashReceiptMaster(): Observable<CashReceiptMasterModel> {
-    return this.httpService.get(`${this._api_URL}CashReceiptMaster`);
+  getCashReceiptMaster(body): Observable<CashReceiptNavigateModel> {
+    return this.httpService.post(
+      `${this._api_URL}CashReceiptMaster/navigate`,
+      body
+    );
   }
 
-  getCashReceiptDetails(id): Observable<CashReceiptMaster> {
+  getLedgerDetails(id): Observable<any> {
+    return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
+  }
+
+  getCashReceiptDetails(id): Observable<CashReceiptDetailModel> {
     return this.httpService.get(`${this._api_URL}CashReceiptMaster/${id}`);
+  }
+
+  addCashReceipt(body): Observable<any> {
+    return this.httpService.post(`${this._api_URL}CashReceiptMaster`, body);
+  }
+
+  updateCashReceipt(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}CashReceiptMaster`, body);
+  }
+
+  deleteCashReceiptByID(id): Observable<any> {
+    return this.httpService.delete(`${this._api_URL}CashReceiptMaster/${id}`);
   }
 
   getCashParty(): Observable<CashPartyList[]> {

@@ -8,7 +8,6 @@ import {
   BankPaymentNavigateModel,
   BankPaymentDetailModel,
   ProjectList,
-  LedgerModel,
 } from "../models/bank-payment.model";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
@@ -67,8 +66,8 @@ export class BankPaymentService {
     return this.httpService.get(`${this._api_URL}BankPaymentMaster/${id}`);
   }
 
-  getLedgerDetails(id): Observable<LedgerModel> {
-    return this.httpService.get(`${this._api_URL}Ledger/LOV/${id}`);
+  getLedgerDetails(id): Observable<any> {
+    return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
   }
 
   updateBankPayment(body): Observable<any> {

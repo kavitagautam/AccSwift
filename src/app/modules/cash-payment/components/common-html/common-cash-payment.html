@@ -27,6 +27,7 @@
               class="form-control"
               id="cashAccountNo"
               formControlName="cashAccountId"
+              (change)="changeAccount($event, cashPaymentForm.get('cashAccountId').value)"
               accSwiftFormValidator
             >
               <option [ngValue]="null">Choose Option....</option>
@@ -37,6 +38,9 @@
                 {{ account.LedgerName }}</option
               >
             </select>
+            <span class="current-balance"
+              >Current Amount : {{currentAmount}}</span
+            >
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">

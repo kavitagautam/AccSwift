@@ -138,20 +138,3 @@ export interface Entity {
   LedgerName: string;
   GroupID: number;
 }
-
-export interface Ledger {
-  GroupName: string;
-  Balance: string;
-  ActualBalance: number;
-  LedgerType: string;
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-
-export interface LedgerModel {
-  StatusCode: number;
-  Message: string;
-  Entity: Ledger[];
-}

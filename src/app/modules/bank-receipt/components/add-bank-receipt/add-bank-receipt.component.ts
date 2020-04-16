@@ -17,7 +17,7 @@ export class AddBankReceiptComponent implements OnInit {
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
-  currentBankAmount: string = "0.00";
+  currentAmount: string = "0.00";
   bankReceiptForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -40,9 +40,8 @@ export class AddBankReceiptComponent implements OnInit {
     public ledgerCodeService: LedgerCodeMatchService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildBankReceiptForm();
-    this.bankReceiptService.init();
   }
 
   buildBankReceiptForm(): void {
@@ -85,9 +84,9 @@ export class AddBankReceiptComponent implements OnInit {
     this.submitted = false;
   }
 
-  changeBankAccount(event, ledgerId): void {
+  changeAccount(event, ledgerId): void {
     this.bankReceiptService.getLedgerDetails(ledgerId).subscribe((response) => {
-      this.currentBankAmount = response.Entity[0].Balance;
+      this.currentAmount = response;
     });
   }
 

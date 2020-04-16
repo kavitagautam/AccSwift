@@ -22,7 +22,7 @@
             <select
               class="form-control"
               formControlName="LedgerID"
-              (change)="changeBankAccount($event, bankPaymentForm.get('LedgerID').value)"
+              (change)="changeAccount($event, bankPaymentForm.get('LedgerID').value)"
               accSwiftFormValidator
             >
               <option [ngValue]="null">Choose Option....</option>
@@ -33,10 +33,10 @@
                 {{ account.LedgerName }}
               </option>
             </select>
+            <span class="current-balance"
+              >Current Amount : {{currentAmount}}</span
+            >
           </div>
-          <span style="font-size: 13px; font-family: cursive;"
-            >Current Amount : {{currentBankAmount}}</span
-          >
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">

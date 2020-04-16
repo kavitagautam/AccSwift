@@ -17,7 +17,7 @@ import { ToastrService } from "ngx-toastr";
 export class EditBankPaymentComponent implements OnInit {
   bankPaymentForm: FormGroup;
   private editedRowIndex: number;
-  currentBankAmount: string = "0.00";
+  currentAmount: string = "0.00";
   numericFormat: string = "n2";
   public decimals: number = 2;
   bankPaymentDetails: BankPaymentList;
@@ -174,9 +174,9 @@ export class EditBankPaymentComponent implements OnInit {
     this.submitted = false;
   }
 
-  changeBankAccount(event, ledgerId): void {
+  changeAccount(event, ledgerId): void {
     this.bankPaymentService.getLedgerDetails(ledgerId).subscribe((response) => {
-      this.currentBankAmount = response.Entity[0].Balance;
+      this.currentAmount = response;
     });
   }
 
@@ -294,6 +294,9 @@ export class EditBankPaymentComponent implements OnInit {
           .get("LedgerCode")
           .setValue(data.LedgerCode);
       }
+      (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+        this.addBankPaymentEntryList()
+      );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal

@@ -15,6 +15,8 @@ import { CashPaymentDetail } from "../../models/cash-payment.model";
 export class EditCashPaymentComponent implements OnInit {
   private editedRowIndex: number;
   cashPaymentForm: FormGroup;
+  currentAmount: string = "0.00";
+
   cashPaymentDetail: CashPaymentDetail;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -143,6 +145,11 @@ export class EditCashPaymentComponent implements OnInit {
     return <FormArray>this.cashPaymentForm.get("cashPaymentEntryList");
   }
 
+  changeAccount(event, ledgerId): void {
+    this.cashPaymentService.getLedgerDetails(ledgerId).subscribe((response) => {
+      this.currentAmount = response;
+    });
+  }
   public save(): void {
     if (this.cashPaymentForm.valid) {
       this.router.navigate(["/cash-payment"]);

@@ -23,7 +23,7 @@
             <select
               class="form-control"
               formControlName="bankAccountId"
-              (change)="changeBankAccount($event, bankPaymentForm.get('bankAccountId').value)"
+              (change)="changeAccount($event, bankReceiptForm.get('bankAccountId').value)"
               accSwiftFormValidator
             >
               <option [ngValue]="null">Choose Option....</option>
@@ -34,10 +34,10 @@
                 {{ account.LedgerName }}
               </option>
             </select>
+            <span class="current-balance"
+              >Current Amount : {{currentAmount}}</span
+            >
           </div>
-          <span style="font-size: 13px; font-family: cursive;"
-            >Current Amount : {{currentBankAmount}}</span
-          >
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -215,6 +215,7 @@
                 popupAnchor
                 style="width: 130px;"
                 [readonly]="true"
+                [spinners]="false"
                 [decimals]="decimals"
                 [format]="'c0'"
                 [formControl]="
@@ -244,6 +245,7 @@
                 popupAnchor
                 style="width: 130px;"
                 [decimals]="decimals"
+                [spinners]="false"
                 [format]="'c0'"
                 [formControl]="
                     getBankReceiptEntryList.controls[rowIndex].get(
