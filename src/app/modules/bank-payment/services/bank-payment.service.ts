@@ -8,6 +8,7 @@ import {
   BankPaymentNavigateModel,
   BankPaymentDetailModel,
   ProjectList,
+  LedgerModel,
 } from "../models/bank-payment.model";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
@@ -46,6 +47,7 @@ export class BankPaymentService {
         this.seriesList = res.Entity;
       });
   }
+
   getBankPaymentAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/BankAccounts`)
@@ -63,6 +65,10 @@ export class BankPaymentService {
 
   getBankPaymentDetails(id): Observable<BankPaymentDetailModel> {
     return this.httpService.get(`${this._api_URL}BankPaymentMaster/${id}`);
+  }
+
+  getLedgerDetails(id): Observable<LedgerModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/LOV/${id}`);
   }
 
   updateBankPayment(body): Observable<any> {

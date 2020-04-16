@@ -8,6 +8,7 @@ import {
   ProjectListModel,
   BankReceiptNavigateModel,
   BankReceiptDetailModel,
+  LedgerModel,
 } from "../models/bank-receipt.model";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
@@ -62,6 +63,10 @@ export class BankReceiptService {
       `${this._api_URL}BankReceiptMaster/navigate`,
       body
     );
+  }
+
+  getLedgerDetails(id): Observable<LedgerModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/LOV/${id}`);
   }
 
   getBankReceiptDetails(id): Observable<BankReceiptDetailModel> {

@@ -71,7 +71,7 @@ export interface BankReceiptNavigateModel {
   StatusCode: number;
   Message: string;
   Entity: BankReceiptNavigate;
-} 
+}
 
 export interface BankReceiptDetailsList {
   ChequeNumber: string;
@@ -137,4 +137,21 @@ export interface Entity {
   LedgerCode: string;
   LedgerName: string;
   GroupID: number;
+}
+
+export interface Ledger {
+  GroupName: string;
+  Balance: string;
+  ActualBalance: number;
+  LedgerType: string;
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  GroupID: number;
+}
+
+export interface LedgerModel {
+  StatusCode: number;
+  Message: string;
+  Entity: Ledger[];
 }

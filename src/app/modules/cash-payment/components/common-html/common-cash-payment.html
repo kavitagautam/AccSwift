@@ -1,5 +1,5 @@
 <div class="box box-default">
-  <form [formGroup]="editCashPaymentForm" novalidate>
+  <form [formGroup]="cashPaymentForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -52,8 +52,9 @@
               <option
                 *ngFor="let cash of cashPaymentService.cashPartyLists"
                 [ngValue]="cash.LedgerID"
-                >{{ cash.LedgerName }}</option
               >
+                {{ cash.LedgerName }}
+              </option>
             </select>
           </div>
         </div>
@@ -70,7 +71,7 @@
       </div>
     </div>
 
-    <div class="row mt-3">
+    <div class="row">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
@@ -109,8 +110,6 @@
 
     <div class="col-md-12">
       <div class="box-body">
-        <!-- kendo grid started -->
-
         <kendo-grid
           [data]="getCashPaymentEntryList.value"
           (edit)="editHandler($event)"
@@ -141,22 +140,22 @@
                   <input
                     #input
                     class="k-textbox"
-                    style="width: 100px"
+                    style="width: 100px;"
                     placeholder="Ledger Code"
                     [formControl]="
-                      getCashPaymentEntryList.controls[rowIndex].get(
-                        'ledgerCode'
-                      )
-                    "
+                        getCashPaymentEntryList.controls[rowIndex].get(
+                          'ledgerCode'
+                        )
+                      "
                     (change)="changeLedgerValue(dataItem, rowIndex)"
                   />
                   <kendo-popup
                     [anchor]="input"
                     *ngIf="
-                      getCashPaymentEntryList.controls[rowIndex].get(
-                        'ledgerCode'
-                      ).invalid
-                    "
+                        getCashPaymentEntryList.controls[rowIndex].get(
+                          'ledgerCode'
+                        ).invalid
+                      "
                     popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
                   >
                     <span class="k-icon k-i-warning"></span>
@@ -169,10 +168,10 @@
                     class="k-textbox"
                     [readonly]="true"
                     [formControl]="
-                      getCashPaymentEntryList.controls[rowIndex].get(
-                        'particularsOraccountingHead'
-                      )
-                    "
+                        getCashPaymentEntryList.controls[rowIndex].get(
+                          'particularsOraccountingHead'
+                        )
+                      "
                   />
                   <a (click)="openModal(rowIndex)"
                     ><i
@@ -183,20 +182,20 @@
                   <kendo-popup
                     [anchor]="input"
                     *ngIf="
-                      getCashPaymentEntryList.controls[rowIndex].get(
-                        'particularsOraccountingHead'
-                      ).invalid &&
-                      rowSubmitted &&
-                      !(
-                        isNew &&
                         getCashPaymentEntryList.controls[rowIndex].get(
                           'particularsOraccountingHead'
-                        ).untouched
-                      ) &&
-                      !getCashPaymentEntryList.controls[rowIndex].get(
-                        'ledgerCode'
-                      )
-                    "
+                        ).invalid &&
+                        rowSubmitted &&
+                        !(
+                          isNew &&
+                          getCashPaymentEntryList.controls[rowIndex].get(
+                            'particularsOraccountingHead'
+                          ).untouched
+                        ) &&
+                        !getCashPaymentEntryList.controls[rowIndex].get(
+                          'ledgerCode'
+                        )
+                      "
                     popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
                   >
                     <span class="k-icon k-i-warning"></span>
@@ -219,10 +218,10 @@
               <input
                 #ntb="popupAnchor"
                 popupAnchor
-                style="width:130px"
+                style="width: 130px;"
                 [formControl]="
-                  getCashPaymentEntryList.controls[rowIndex].get(column.field)
-                "
+                    getCashPaymentEntryList.controls[rowIndex].get(column.field)
+                  "
               />
             </ng-template>
           </kendo-grid-column>
@@ -239,15 +238,15 @@
               <kendo-numerictextbox
                 #ntb="popupAnchor"
                 popupAnchor
-                style="width:130px"
+                style="width: 130px;"
                 [readonly]="true"
                 [decimals]="decimals"
                 [format]="'c0'"
                 [formControl]="
-                  getCashPaymentEntryList.controls[rowIndex].get(
-                    'currentBalance'
-                  )
-                "
+                    getCashPaymentEntryList.controls[rowIndex].get(
+                      'currentBalance'
+                    )
+                  "
               ></kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
@@ -268,15 +267,15 @@
               <kendo-numerictextbox
                 #ntb="popupAnchor"
                 popupAnchor
-                style="width:130px"
+                style="width: 130px;"
                 [readonly]="true"
                 [decimals]="decimals"
                 [format]="'c0'"
                 [formControl]="
-                  getCashPaymentEntryList.controls[rowIndex].get(
-                    'currentBalance'
-                  )
-                "
+                    getCashPaymentEntryList.controls[rowIndex].get(
+                      'currentBalance'
+                    )
+                  "
               ></kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
@@ -294,8 +293,8 @@
                 #input
                 class="k-textbox"
                 [formControl]="
-                  getCashPaymentEntryList.controls[rowIndex].get(column.field)
-                "
+                    getCashPaymentEntryList.controls[rowIndex].get(column.field)
+                  "
               />
             </ng-template>
           </kendo-grid-column>
@@ -313,8 +312,8 @@
                 #input
                 class="k-textbox"
                 [formControl]="
-                  getCashPaymentEntryList.controls[rowIndex].get('remarks')
-                "
+                    getCashPaymentEntryList.controls[rowIndex].get('remarks')
+                  "
               />
             </ng-template>
           </kendo-grid-column>
@@ -353,7 +352,7 @@
         class="btn btn-primary"
         (click)="save()"
         accSwiftFormSubmitValidationMsg
-        [validationControl]="editCashPaymentForm"
+        [validationControl]="cashPaymentForm"
       >
         Save
       </button>

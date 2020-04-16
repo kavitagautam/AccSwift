@@ -10,13 +10,14 @@ import { BankReceiptDetail } from "../../models/bank-receipt.model";
 
 @Component({
   selector: "accswift-edit-bank-receipt",
-  templateUrl: "./edit-bank-receipt.component.html",
+  templateUrl: "../common-html/common-bank-receipt.html",
   styleUrls: ["./edit-bank-receipt.component.scss"],
 })
 export class EditBankReceiptComponent implements OnInit {
   private editedRowIndex: number;
   bankReceiptDetails: BankReceiptDetail;
-  editBankReceiptForm: FormGroup;
+  currentBankAmount: string = "0.00";
+  bankReceiptForm: FormGroup;
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
@@ -49,7 +50,7 @@ export class EditBankReceiptComponent implements OnInit {
   }
 
   buildBankReceiptForm(): void {
-    this.editBankReceiptForm = this._fb.group({
+    this.bankReceiptForm = this._fb.group({
       seriesId: [
         this.bankReceiptDetails ? this.bankReceiptDetails.SeriesID : null,
       ],
@@ -105,7 +106,7 @@ export class EditBankReceiptComponent implements OnInit {
   }
 
   setBankReceiptList(): void {
-    this.editBankReceiptForm.setControl(
+    this.bankReceiptForm.setControl(
       "bankReceiptEntryList",
       this.setBankReceiptFormArray(
         this.bankReceiptDetails.BankReceiptDetailsList
@@ -114,7 +115,7 @@ export class EditBankReceiptComponent implements OnInit {
   }
 
   get getBankReceiptEntryList(): FormArray {
-    return <FormArray>this.editBankReceiptForm.get("bankReceiptEntryList");
+    return <FormArray>this.bankReceiptForm.get("bankReceiptEntryList");
   }
 
   setBankReceiptFormArray(bankReceiptDetails): FormArray {
@@ -159,17 +160,23 @@ export class EditBankReceiptComponent implements OnInit {
 
   addCashReceiptEntry(): void {
     this.submitted = true;
-    if (this.editBankReceiptForm.get("bankReceiptEntryList").invalid) return;
+    if (this.bankReceiptForm.get("bankReceiptEntryList").invalid) return;
 
-    (<FormArray>this.editBankReceiptForm.get("bankReceiptEntryList")).push(
+    (<FormArray>this.bankReceiptForm.get("bankReceiptEntryList")).push(
       this.addBankReceiptEntryList()
     );
     this.submitted = false;
   }
 
+  changeBankAccount(event, ledgerId): void {
+    this.bankReceiptService.getLedgerDetails(ledgerId).subscribe((response) => {
+      this.currentBankAmount = response.Entity[0].Balance;
+    });
+  }
+
   changeLedgerValue(dataItem, selectedRow): void {
     const bankReceiptFormArray = <FormArray>(
-      this.editBankReceiptForm.get("bankReceiptEntryList")
+      this.bankReceiptForm.get("bankReceiptEntryList")
     );
 
     const ledgerCode = bankReceiptFormArray.controls[selectedRow].get(
@@ -197,14 +204,14 @@ export class EditBankReceiptComponent implements OnInit {
   }
 
   public save(): void {
-    if (this.editBankReceiptForm.valid) {
+    if (this.bankReceiptForm.valid) {
       this.router.navigate(["/cash-receipt"]);
     } else {
     }
   }
 
   public cancel(): void {
-    this.editBankReceiptForm.reset();
+    this.bankReceiptForm.reset();
     this.router.navigate(["/cash-receipt"]);
   }
 
@@ -212,8 +219,8 @@ export class EditBankReceiptComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.editBankReceiptForm.get("bankReceiptEntryList").invalid) return;
-    (<FormArray>this.editBankReceiptForm.get("bankReceiptEntryList")).push(
+    if (this.bankReceiptForm.get("bankReceiptEntryList").invalid) return;
+    (<FormArray>this.bankReceiptForm.get("bankReceiptEntryList")).push(
       this.addBankReceiptEntryList()
     );
     this.rowSubmitted = false;
@@ -223,7 +230,7 @@ export class EditBankReceiptComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     const bankReceiptEntry = <FormArray>(
-      this.editBankReceiptForm.get("bankReceiptEntryList")
+      this.bankReceiptForm.get("bankReceiptEntryList")
     );
     bankReceiptEntry.controls[rowIndex]
       .get("particularsOraccountingHead")
@@ -239,10 +246,7 @@ export class EditBankReceiptComponent implements OnInit {
       .get("remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
-    sender.editRow(
-      rowIndex,
-      this.editBankReceiptForm.get("bankReceiptEntryList")
-    );
+    sender.editRow(rowIndex, this.bankReceiptForm.get("bankReceiptEntryList"));
   }
 
   openModal(index: number): void {
@@ -255,7 +259,7 @@ export class EditBankReceiptComponent implements OnInit {
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const cashReceiptFormArray = <FormArray>(
-          this.editBankReceiptForm.get("bankReceiptEntryList")
+          this.bankReceiptForm.get("bankReceiptEntryList")
         );
         cashReceiptFormArray.controls[index]
           .get("currentBalance")
@@ -285,10 +289,10 @@ export class EditBankReceiptComponent implements OnInit {
   public removeHandler({ dataItem, rowIndex }): void {
     // Calculation on Debit Total and Credit Total on Rows Removed
     const bankReceiptEntry = <FormArray>(
-      this.editBankReceiptForm.get("bankReceiptEntryList")
+      this.bankReceiptForm.get("bankReceiptEntryList")
     );
     // Remove the Row
-    (<FormArray>this.editBankReceiptForm.get("bankReceiptEntryList")).removeAt(
+    (<FormArray>this.bankReceiptForm.get("bankReceiptEntryList")).removeAt(
       rowIndex
     );
   }

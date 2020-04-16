@@ -186,18 +186,18 @@
                     ></i>
                   </a>
                   <!-- <kendo-popup
-                  [anchor]="input"
-                  *ngIf="
-                    getInvoiceEntryList.controls[rowIndex].get('ProductName')
-                      .invalid &&
-                    getInvoiceEntryList.controls[rowIndex].get('ProductName')
-                      .untouched
-                  "
-                  popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-                >
-                  <span class="k-icon k-i-warning"></span>
-                  Prodcut Name is required
-                </kendo-popup> -->
+                [anchor]="input"
+                *ngIf="
+                  getInvoiceEntryList.controls[rowIndex].get('ProductName')
+                    .invalid &&
+                  getInvoiceEntryList.controls[rowIndex].get('ProductName')
+                    .untouched
+                "
+                popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+              >
+                <span class="k-icon k-i-warning"></span>
+                Prodcut Name is required
+              </kendo-popup> -->
                 </div>
               </div>
             </ng-template>
@@ -269,6 +269,7 @@
                 popupAnchor
                 style="width: 90px; margin: -5px !important;"
                 [decimals]="decimals"
+                [spinners]="false"
                 [format]="c0"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
@@ -291,6 +292,7 @@
                 popupAnchor
                 style="width: 90px; margin: -5px !important;"
                 [decimals]="decimals"
+                [spinners]="false"
                 [format]="c0"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
@@ -357,6 +359,7 @@
                 popupAnchor
                 style="width: 90px; margin: -5px !important;"
                 [decimals]="decimals"
+                [spinners]="false"
                 [format]="c0"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
@@ -381,6 +384,7 @@
                 style="width: 100px; margin: -5px !important;"
                 [decimals]="decimals"
                 [format]="c0"
+                [spinners]="false"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
@@ -422,13 +426,13 @@
                 </ng-template>
               </kendo-dropdownlist>
               <!-- <kendo-numerictextbox
-              popupAnchor
-              style="width: 120px;"
-              [formControl]="
-                getInvoiceEntryList.controls[rowIndex].get(column.field)
-              "
-            >
-            </kendo-numerictextbox> -->
+            popupAnchor
+            style="width: 120px;"
+            [formControl]="
+              getInvoiceEntryList.controls[rowIndex].get(column.field)
+            "
+          >
+          </kendo-numerictextbox> -->
             </ng-template>
           </kendo-grid-column>
 
@@ -446,6 +450,7 @@
                 style="width: 90px; margin: -5px !important;"
                 [decimals]="decimals"
                 [format]="c0"
+                [spinners]="false"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "

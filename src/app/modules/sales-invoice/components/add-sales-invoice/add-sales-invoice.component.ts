@@ -13,11 +13,11 @@ import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-
 
 @Component({
   selector: "accSwift-add-sales-invoice",
-  templateUrl: "./add-sales-invoice.component.html",
+  templateUrl: "../common-html/common-sales-invoice.html",
   styleUrls: ["./add-sales-invoice.component.scss"],
 })
 export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
-  addInvoiceForm: FormGroup;
+  salesInvoiceForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
   private editedRowIndex: number;
@@ -63,7 +63,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.buildAddSalesInvoiceForm();
 
-    this.myFormValueChanges$ = this.addInvoiceForm.controls[
+    this.myFormValueChanges$ = this.salesInvoiceForm.controls[
       "InvoiceDetails"
     ].valueChanges;
 
@@ -112,7 +112,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   buildAddSalesInvoiceForm(): void {
-    this.addInvoiceForm = this._fb.group({
+    this.salesInvoiceForm = this._fb.group({
       SeriesID: ["", Validators.required],
       CashPartyLedgerID: [null],
       VoucherNo: [null, Validators.required],
@@ -180,9 +180,9 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    if (this.addInvoiceForm.invalid) return;
+    if (this.salesInvoiceForm.invalid) return;
     this.salesInvoiceService
-      .addSalesInvoice(this.addInvoiceForm.value)
+      .addSalesInvoice(this.salesInvoiceForm.value)
       .subscribe(
         (response) => {
           this.router.navigate(["/sales-invoice"]);
@@ -197,18 +197,18 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
-    this.addInvoiceForm.reset();
+    this.salesInvoiceForm.reset();
     this.router.navigate(["/sales-invoice"]);
   }
 
   get getInvoiceEntryList(): FormArray {
-    return <FormArray>this.addInvoiceForm.get("InvoiceDetails");
+    return <FormArray>this.salesInvoiceForm.get("InvoiceDetails");
   }
 
   //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
     const invoiceEntryArray = <FormArray>(
-      this.addInvoiceForm.get("InvoiceDetails")
+      this.salesInvoiceForm.get("InvoiceDetails")
     );
 
     let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
@@ -255,7 +255,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       (s) => s.ID === value
     );
     const invoiceEntryArray = <FormArray>(
-      this.addInvoiceForm.get("InvoiceDetails")
+      this.salesInvoiceForm.get("InvoiceDetails")
     );
     let netAmountV = invoiceEntryArray.controls[index].get("NetAmount").value;
     invoiceEntryArray.controls[index]
@@ -272,7 +272,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   handelProductCode(dataItem, index): void {
     const invoiceEntryArray = <FormArray>(
-      this.addInvoiceForm.get("InvoiceDetails")
+      this.salesInvoiceForm.get("InvoiceDetails")
     );
 
     const productCode = invoiceEntryArray.controls[index].get("ProductCode")
@@ -325,7 +325,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           invoiceEntryArray.controls[index].get("Remarks").setValue("");
         }
 
-        (<FormArray>this.addInvoiceForm.get("InvoiceDetails")).push(
+        (<FormArray>this.salesInvoiceForm.get("InvoiceDetails")).push(
           this.addInvoiceEntryList()
         );
       });
@@ -342,7 +342,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         // Do After the the sucess
-        this.addInvoiceForm.get("CashPartyLedgerID").setValue(data.LedgerID);
+        this.salesInvoiceForm.get("CashPartyLedgerID").setValue(data.LedgerID);
       }
     });
     this.modalRef.content.onClose.subscribe((data) => {
@@ -360,7 +360,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const invoiceEntryArray = <FormArray>(
-          this.addInvoiceForm.get("InvoiceDetails")
+          this.salesInvoiceForm.get("InvoiceDetails")
         );
         invoiceEntryArray.controls[index]
           .get("ProductCode")
@@ -442,9 +442,9 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    const invoiceEntry = <FormArray>this.addInvoiceForm.get("InvoiceDetails");
+    const invoiceEntry = <FormArray>this.salesInvoiceForm.get("InvoiceDetails");
     if (invoiceEntry.invalid) return;
-    (<FormArray>this.addInvoiceForm.get("InvoiceDetails")).push(
+    (<FormArray>this.salesInvoiceForm.get("InvoiceDetails")).push(
       this.addInvoiceEntryList()
     );
     this.rowSubmitted = false;
@@ -455,11 +455,11 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.closeEditor(sender);
 
     this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.addInvoiceForm.get("InvoiceDetails"));
+    sender.editRow(rowIndex, this.salesInvoiceForm.get("InvoiceDetails"));
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.addInvoiceForm.get("InvoiceDetails")).removeAt(rowIndex);
+    (<FormArray>this.salesInvoiceForm.get("InvoiceDetails")).removeAt(rowIndex);
   }
 
   public cancelHandler({ sender, rowIndex }) {
