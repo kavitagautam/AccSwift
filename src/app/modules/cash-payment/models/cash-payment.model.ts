@@ -64,7 +64,7 @@ export interface Fields {
 export interface CashPaymentList {
   ID: number;
   Date: Date;
-  CashPaymentDetailsList?: any;
+  CashPaymentDetailsList: CashPaymentDetailsList[];
   LedgerID: number;
   LedgerName: string;
   SeriesID: number;

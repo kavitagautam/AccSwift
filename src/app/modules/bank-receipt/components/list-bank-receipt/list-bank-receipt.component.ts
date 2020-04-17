@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { PageChangeEvent, GridDataResult } from "@progress/kendo-angular-grid";
 import {
@@ -10,7 +10,10 @@ import { BankReceiptService } from "../../services/bank-receipt.service";
 import { ToastrService } from "ngx-toastr";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
-import { BankReceiptList } from "../../models/bank-receipt.model";
+import {
+  BankReceiptList,
+  BankReceiptDetailsList,
+} from "../../models/bank-receipt.model";
 
 @Component({
   selector: "accswift-list-bank-receipt",
@@ -136,6 +139,13 @@ export class ListBankReceiptComponent implements OnInit {
 
   public edit(item): void {
     this.router.navigate(["/bank-receipt/edit", item.ID]);
+  }
+
+  ledgerList: BankReceiptDetailsList[] = [];
+
+  openLedgerModal(template: TemplateRef<any>, dataItem): void {
+    this.ledgerList = dataItem.BankReceiptDetailsList;
+    this.modalRef = this.modalService.show(template, this.config);
   }
 
   openConfirmationDialogue(dataItem): void {

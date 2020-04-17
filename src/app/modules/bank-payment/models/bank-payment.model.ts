@@ -39,7 +39,7 @@ export interface Fields {
 export interface BankPaymentList {
   ID: number;
   Date: Date;
-  BankPaymentDetailsList?: any;
+  BankPaymentDetailsList: BankPaymentDetailsList[];
   LedgerID: number;
   LedgerName: string;
   SeriesID: number;

@@ -1,11 +1,12 @@
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
-import { BsModalRef } from "ngx-bootstrap";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { CashPaymentService } from "../../services/cash-payment.service";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { CashPaymentDetail } from "../../models/cash-payment.model";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-edit-cash-payment",
@@ -33,9 +34,10 @@ export class EditCashPaymentComponent implements OnInit {
 
   constructor(
     public cashPaymentService: CashPaymentService,
-    private fb: FormBuilder,
+    private _fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
+    private modalService: BsModalService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService
   ) {}
@@ -46,7 +48,7 @@ export class EditCashPaymentComponent implements OnInit {
   }
 
   buildcashPaymentForm(): void {
-    this.cashPaymentForm = this.fb.group({
+    this.cashPaymentForm = this._fb.group({
       seriesId: [
         this.cashPaymentDetail ? this.cashPaymentDetail.SeriesID : null,
       ],
@@ -67,19 +69,20 @@ export class EditCashPaymentComponent implements OnInit {
           ? new Date(this.cashPaymentDetail.CreatedDate)
           : "",
       ],
-      cashPaymentEntryList: this.fb.array([this.addCashPaymentEntryList()]),
+      CashPaymentDetailsList: this._fb.array([this.addCashPaymentEntryList()]),
     });
   }
 
   addCashPaymentEntryList(): FormGroup {
-    return this.fb.group({
-      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
-      particularsOraccountingHead: ["", Validators.required],
-      voucherNo: "",
-      amount: "",
-      currentBalance: "",
-      vType: "",
-      remarks: "",
+    return this._fb.group({
+      ID: [0],
+      MasterID: [0],
+      LedgerID: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+      LedgerCode: [""],
+      LedgerName: ["", Validators.required],
+      LedgerBalance: [""],
+      Amount: [""],
+      Remarks: [""],
     });
   }
 
@@ -100,7 +103,7 @@ export class EditCashPaymentComponent implements OnInit {
 
   setCashPaymentList(): void {
     this.cashPaymentForm.setControl(
-      "cashPaymentEntryList",
+      "CashPaymentDetailsList",
       this.setCashPaymentFormArray(
         this.cashPaymentDetail.CashPaymentDetailsList
       )
@@ -112,29 +115,29 @@ export class EditCashPaymentComponent implements OnInit {
     if (cashPaymentDetails && cashPaymentDetails.length > 0) {
       cashPaymentDetails.forEach((element) => {
         cashPaymentFormArray.push(
-          this.fb.group({
-            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
-            particularsOraccountingHead: [
-              element.Ledger.EngName,
-              Validators.required,
-            ],
-            voucherNo: element.VoucherNumber,
-            amount: element.Amount,
-            currentBalance: element.Amount,
-            vType: element.VoucherType,
-            remarks: element.Remarks,
+          this._fb.group({
+            ID: [element.ID],
+            MasterID: [element.MasterID],
+            LedgerID: [element.LedgerID],
+            LedgerCode: [element.LedgerCode ? element.LedgerCode : ""],
+            LedgerName: [element.LedgerName, Validators.required],
+            LedgerBalance: element.LedgerBalance,
+            Amount: element.Amount,
+            Remarks: element.Remarks,
           })
         );
       });
     } else {
       cashPaymentFormArray.push(
-        this.fb.group({
-          particularsOraccountingHead: ["", Validators.required],
-          voucherNo: [""],
-          amount: [""],
-          currentBalance: [""],
-          vType: [""],
-          remarks: [""],
+        this._fb.group({
+          ID: [0],
+          MasterID: [0],
+          LedgerID: [0],
+          LedgerCode: [""],
+          LedgerName: ["", Validators.required],
+          LedgerBalance: [""],
+          Amount: [""],
+          Remarks: [""],
         })
       );
     }
@@ -142,7 +145,7 @@ export class EditCashPaymentComponent implements OnInit {
   }
 
   get getCashPaymentEntryList(): FormArray {
-    return <FormArray>this.cashPaymentForm.get("cashPaymentEntryList");
+    return <FormArray>this.cashPaymentForm.get("CashPaymentDetailsList");
   }
 
   changeAccount(event, ledgerId): void {
@@ -150,6 +153,35 @@ export class EditCashPaymentComponent implements OnInit {
       this.currentAmount = response;
     });
   }
+
+  openModal(index: number): void {
+    this.modalRef = this.modalService.show(
+      LedgerModalPopupComponent,
+      this.config
+    );
+    this.modalRef.content = index;
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe((data) => {
+      if (data) {
+        const cashPaymentFormArray = <FormArray>(
+          this.cashPaymentForm.get("CashPaymentDetailsList")
+        );
+        cashPaymentFormArray.controls[index]
+          .get("LedgerBalance")
+          .setValue(data.ActualBalance);
+        cashPaymentFormArray.controls[index]
+          .get("LedgerCode")
+          .setValue(data.LedgerCode);
+        cashPaymentFormArray.controls[index]
+          .get("LedgerName")
+          .setValue(data.LedgerName);
+      }
+    });
+    this.modalRef.content.onClose.subscribe((data) => {
+      //Do after Close the Modal
+    });
+  }
+
   public save(): void {
     if (this.cashPaymentForm.valid) {
       this.router.navigate(["/cash-payment"]);
@@ -166,8 +198,8 @@ export class EditCashPaymentComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.cashPaymentForm.get("cashPaymentEntryList").invalid) return;
-    (<FormArray>this.cashPaymentForm.get("cashPaymentEntryList")).push(
+    if (this.cashPaymentForm.get("CashPaymentDetailsList").invalid) return;
+    (<FormArray>this.cashPaymentForm.get("CashPaymentDetailsList")).push(
       this.addCashPaymentEntryList()
     );
     this.submitted = false;
@@ -177,23 +209,25 @@ export class EditCashPaymentComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     const cashPaymentEntry = <FormArray>(
-      this.cashPaymentForm.get("cashPaymentEntryList")
+      this.cashPaymentForm.get("CashPaymentDetailsList")
     );
     cashPaymentEntry.controls[rowIndex]
-      .get("particularsOraccountingHead")
-      .setValue(dataItem.particularsOraccountingHead);
+      .get("LedgerName")
+      .setValue(dataItem.LedgerName);
     cashPaymentEntry.controls[rowIndex]
-      .get("voucherNo")
-      .setValue(dataItem.voucherNo);
+      .get("LedgerCode")
+      .setValue(dataItem.LedgerCode);
     cashPaymentEntry.controls[rowIndex]
-      .get("currentAmount")
-      .setValue(dataItem.currentAmount);
-    cashPaymentEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
+      .get("LedgerBalance")
+      .setValue(dataItem.LedgerBalance);
     cashPaymentEntry.controls[rowIndex]
-      .get("remarks")
+      .get("Remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.cashPaymentForm.get("cashPaymentEntryList"));
+    sender.editRow(
+      rowIndex,
+      this.cashPaymentForm.get("CashPaymentDetailsList")
+    );
   }
 
   public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
@@ -203,7 +237,7 @@ export class EditCashPaymentComponent implements OnInit {
 
   public removeHandler({ dataItem, rowIndex }): void {
     const cashPaymentEntry = <FormArray>(
-      this.cashPaymentForm.get("cashPaymentEntryList")
+      this.cashPaymentForm.get("CashPaymentDetailsList")
     );
     cashPaymentEntry.removeAt(rowIndex);
   }

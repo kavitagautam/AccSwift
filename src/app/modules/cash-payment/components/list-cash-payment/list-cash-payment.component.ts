@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
@@ -10,7 +10,10 @@ import {
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { CashPaymentService } from "../../services/cash-payment.service";
-import { CashPaymentList } from "../../models/cash-payment.model";
+import {
+  CashPaymentList,
+  CashPaymentDetail,
+} from "../../models/cash-payment.model";
 
 @Component({
   selector: "accSwift-list-cash-payment",
@@ -139,6 +142,13 @@ export class ListCashPaymentComponent implements OnInit {
 
   public edit(item): void {
     this.router.navigate(["/cash-payment/edit", item.ID]);
+  }
+
+  ledgerList: CashPaymentDetail[] = [];
+
+  openLedgerModal(template: TemplateRef<any>, dataItem): void {
+    this.ledgerList = dataItem.CashPaymentDetailsList;
+    this.modalRef = this.modalService.show(template, this.config);
   }
 
   openConfirmationDialogue(dataItem): void {
