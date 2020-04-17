@@ -1,11 +1,14 @@
-import { BankPaymentList } from "./../../models/bank-payment.model";
+import {
+  BankPaymentList,
+  BankPaymentDetailsList,
+} from "./../../models/bank-payment.model";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { BankPaymentService } from "./../../services/bank-payment.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import { SortDescriptor } from "@progress/kendo-data-query";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
@@ -20,7 +23,6 @@ export class ListBankPaymentComponent implements OnInit {
   bankPaymentList: BankPaymentList[];
   private toastr: ToastrService;
   modalRef: BsModalRef;
-  private modalService: BsModalService;
   listLoading: boolean;
   public skip = 0;
   public pageSize = 10;
@@ -47,7 +49,8 @@ export class ListBankPaymentComponent implements OnInit {
   constructor(
     public bankPaymentService: BankPaymentService,
     private _fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private modalService: BsModalService
   ) {}
 
   ngOnInit(): void {
@@ -116,6 +119,13 @@ export class ListBankPaymentComponent implements OnInit {
 
   public edit(item): void {
     this.router.navigate(["/bank-payment/edit", item.ID]);
+  }
+
+  ledgerList: BankPaymentDetailsList[] = [];
+
+  openLedgerModal(template: TemplateRef<any>, dataItem): void {
+    this.ledgerList = dataItem.BankPaymentDetailsList;
+    this.modalRef = this.modalService.show(template, this.config);
   }
 
   openConfirmationDialogue(dataItem): void {

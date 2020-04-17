@@ -52,7 +52,7 @@ export interface CashReceiptList {
   Date: Date;
   IsPayByInvoice: boolean;
   TotalAmount: number;
-  CashReceiptDetails?: any;
+  CashReceiptDetails: CashReceiptDetail[];
   LedgerID: number;
   LedgerName: string;
   SeriesID: number;

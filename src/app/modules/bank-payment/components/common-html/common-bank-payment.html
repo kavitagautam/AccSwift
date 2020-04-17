@@ -215,25 +215,15 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-              <!-- <input
-                  #input
-                  class="k-textbox"
-                  style="width: 100px;"
-                  [formControl]="
-                    getBankPaymentEntryList.controls[rowIndex].get(column.field)
-                  "
-                /> -->
-              <kendo-numerictextbox
-                #ntb="popupAnchor"
-                popupAnchor
+              <input
+                #input
+                class="k-textbox"
+                [readonly]="true"
                 style="width: 100px;"
-                [decimals]="decimals"
-                [spinners]="false"
-                [format]="'c0'"
                 [formControl]="
                     getBankPaymentEntryList.controls[rowIndex].get(column.field)
                   "
-              ></kendo-numerictextbox>
+              />
             </ng-template>
           </kendo-grid-column>
 

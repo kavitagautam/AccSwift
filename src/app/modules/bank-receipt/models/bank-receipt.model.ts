@@ -41,7 +41,7 @@ export interface BankReceiptList {
   Date: Date;
   IsPayByInvoice: boolean;
   TotalAmount: number;
-  BankReceiptDetailsList?: any;
+  BankReceiptDetailsList: BankReceiptDetailsList[];
   LedgerID: number;
   LedgerName: string;
   SeriesID: number;

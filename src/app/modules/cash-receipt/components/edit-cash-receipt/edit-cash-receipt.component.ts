@@ -119,9 +119,9 @@ export class EditCashReceiptComponent implements OnInit {
       cashRecepitDetails.forEach((element) => {
         cashReceiptFormArray.push(
           this._fb.group({
-            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
+            ledgerCode: [element.LedgerCode ? element.LedgerCode : ""],
             particularsOraccountingHead: [
-              element.Ledger.EngName,
+              element.LedgerName,
               Validators.required,
             ],
             voucherNo: element.VoucherNumber,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
@@ -10,7 +10,10 @@ import {
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
-import { CashReceiptList } from "../../models/cash-receipt.model";
+import {
+  CashReceiptList,
+  CashReceiptDetail,
+} from "../../models/cash-receipt.model";
 
 @Component({
   selector: "accSwift-list-cash-receipt",
@@ -105,11 +108,6 @@ export class ListCashReceiptComponent implements OnInit {
     );
   }
 
-  public filterChange(filter): void {
-    this.filter = filter;
-    this.getCashReceiptlList();
-  }
-
   public searchForm(): void {
     this.searchFilterList = [];
     this.currentPage = 1;
@@ -142,6 +140,13 @@ export class ListCashReceiptComponent implements OnInit {
 
   public edit(item): void {
     this.router.navigate(["/cash-receipt/edit", item.ID]);
+  }
+
+  ledgerList: CashReceiptDetail[] = [];
+
+  openLedgerModal(template: TemplateRef<any>, dataItem): void {
+    this.ledgerList = dataItem.CashReceiptDetails;
+    this.modalRef = this.modalService.show(template, this.config);
   }
 
   openConfirmationDialogue(dataItem): void {
