@@ -7,6 +7,7 @@ import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/l
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { BankReceiptDetail } from "../../models/bank-receipt.model";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accswift-edit-bank-receipt",
@@ -40,7 +41,8 @@ export class EditBankReceiptComponent implements OnInit {
     public bankReceiptService: BankReceiptService,
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
-    public ledgerCodeService: LedgerCodeMatchService
+    public ledgerCodeService: LedgerCodeMatchService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -50,43 +52,48 @@ export class EditBankReceiptComponent implements OnInit {
 
   buildBankReceiptForm(): void {
     this.bankReceiptForm = this._fb.group({
-      seriesId: [
+      ID: [this.bankReceiptDetails ? this.bankReceiptDetails.ID : null],
+      SeriesID: [
         this.bankReceiptDetails ? this.bankReceiptDetails.SeriesID : null,
       ],
-      projectId: [
+      ProjectID: [
         this.bankReceiptDetails ? this.bankReceiptDetails.ProjectID : null,
         [Validators.required],
       ],
-      voucherNo: [
+      VoucherNo: [
         this.bankReceiptDetails ? this.bankReceiptDetails.VoucherNo : "",
         [Validators.required],
       ],
-      bankAccountId: [
+      LedgerID: [
         this.bankReceiptDetails ? this.bankReceiptDetails.LedgerID : null,
         [Validators.required],
       ],
-      cashParty: [""],
-      date: [
+      Date: [
         this.bankReceiptDetails
           ? new Date(this.bankReceiptDetails.CreatedDate)
           : "",
       ],
-      bankReceiptEntryList: this._fb.array([this.addBankReceiptEntryList()]),
+      BankReceiptDetailsList: this._fb.array([
+        this.addBankReceiptDetailsList(),
+      ]),
     });
   }
 
-  addBankReceiptEntryList(): FormGroup {
+  addBankReceiptDetailsList(): FormGroup {
     return this._fb.group({
-      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
-      particularsOraccountingHead: ["", Validators.required],
-      voucherNo: [""],
-      chequeNo: [""],
-      chequeBank: [""],
-      chequeDate: [""],
-      amount: [""],
-      currentBalance: [""],
-      vType: [""],
-      remarks: [""],
+      ID: [0],
+      MasterID: [0],
+      LedgerID: [0],
+      LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+      LedgerName: ["", Validators.required],
+      VoucherNo: [""],
+      ChequeNumber: [""],
+      ChequeBank: [""],
+      ChequeDate: [""],
+      Amount: [""],
+      LedgerBalance: [""],
+      VoucherType: [""],
+      Remarks: [""],
     });
   }
 
@@ -106,7 +113,7 @@ export class EditBankReceiptComponent implements OnInit {
 
   setBankReceiptList(): void {
     this.bankReceiptForm.setControl(
-      "bankReceiptEntryList",
+      "BankReceiptDetailsList",
       this.setBankReceiptFormArray(
         this.bankReceiptDetails.BankReceiptDetailsList
       )
@@ -114,7 +121,7 @@ export class EditBankReceiptComponent implements OnInit {
   }
 
   get getBankReceiptEntryList(): FormArray {
-    return <FormArray>this.bankReceiptForm.get("bankReceiptEntryList");
+    return <FormArray>this.bankReceiptForm.get("BankReceiptDetailsList");
   }
 
   setBankReceiptFormArray(bankReceiptDetails): FormArray {
@@ -123,19 +130,26 @@ export class EditBankReceiptComponent implements OnInit {
       bankReceiptDetails.forEach((element) => {
         bankReceiptFormArray.push(
           this._fb.group({
-            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
-            particularsOraccountingHead: [
-              element.Ledger.EngName,
+            ID: [element.ID ? element.ID : 0],
+            MasterID: [element.MasterID ? element.MasterID : 0],
+            LedgerID: [element.LedgerID ? element.LedgerID : 0],
+            LedgerCode: [
+              element.LedgerCode ? element.LedgerCode : "",
+              null,
+              this.ledgerCodeMatchValidators.ledgerCodeMatch(),
+            ],
+            LedgerName: [
+              element.LedgerName ? element.LedgerName : "",
               Validators.required,
             ],
-            voucherNo: element.VoucherNumber,
-            chequeNo: element.ChequeNumber,
-            chequeBank: element.ChequeBank,
-            chequeDate: new Date(element.ChequeDate),
-            amount: element.Amount,
-            currentBalance: element.Amount,
-            vType: element.VoucherType,
-            remarks: element.Remarks,
+            VoucherNo: [element.VoucherNo ? element.VoucherNo : ""],
+            ChequeNumber: [element.ChequeNumber ? element.ChequeNumber : ""],
+            ChequeBank: [element.ChequeBank ? element.ChequeBank : ""],
+            ChequeDate: [element.ChequeDate ? element.ChequeDate : ""],
+            Amount: [element.Amount ? element.Amount : 0],
+            LedgerBalance: [element.LedgerBalance ? element.LedgerBalance : ""],
+            VoucherType: [element.VoucherType ? element.VoucherType : ""],
+            Remarks: [element.Remarks ? element.Remarks : ""],
           })
         );
       });
@@ -143,14 +157,23 @@ export class EditBankReceiptComponent implements OnInit {
       bankReceiptFormArray.push(
         this._fb.group({
           particularsOraccountingHead: ["", Validators.required],
-          voucherNo: [""],
-          chequeNo: [""],
-          chequeBank: [""],
-          chequeDate: [""],
-          amount: [""],
-          currentBalance: [""],
-          vType: [""],
-          remarks: [""],
+          ID: [0],
+          MasterID: [0],
+          LedgerID: [0],
+          LedgerCode: [
+            "",
+            null,
+            this.ledgerCodeMatchValidators.ledgerCodeMatch(),
+          ],
+          LedgerName: ["", Validators.required],
+          VoucherNo: [""],
+          ChequeNumber: [""],
+          ChequeBank: [""],
+          ChequeDate: [""],
+          Amount: [""],
+          LedgerBalance: [""],
+          VoucherType: [""],
+          Remarks: [""],
         })
       );
     }
@@ -159,10 +182,10 @@ export class EditBankReceiptComponent implements OnInit {
 
   addCashReceiptEntry(): void {
     this.submitted = true;
-    if (this.bankReceiptForm.get("bankReceiptEntryList").invalid) return;
+    if (this.bankReceiptForm.get("BankReceiptDetailsList").invalid) return;
 
-    (<FormArray>this.bankReceiptForm.get("bankReceiptEntryList")).push(
-      this.addBankReceiptEntryList()
+    (<FormArray>this.bankReceiptForm.get("BankReceiptDetailsList")).push(
+      this.addBankReceiptDetailsList()
     );
     this.submitted = false;
   }
@@ -175,38 +198,51 @@ export class EditBankReceiptComponent implements OnInit {
 
   changeLedgerValue(dataItem, selectedRow): void {
     const bankReceiptFormArray = <FormArray>(
-      this.bankReceiptForm.get("bankReceiptEntryList")
+      this.bankReceiptForm.get("BankReceiptDetailsList")
     );
 
     const ledgerCode = bankReceiptFormArray.controls[selectedRow].get(
-      "ledgerCode"
+      "LedgerCode"
     ).value;
     if (
-      bankReceiptFormArray.controls[selectedRow].get("ledgerCode").status ===
+      bankReceiptFormArray.controls[selectedRow].get("LedgerCode").status ===
       "VALID"
     ) {
       this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           bankReceiptFormArray.controls[selectedRow]
-            .get("currentBalance")
+            .get("LedgerBalance")
             .setValue(selectedItem[0].ActualBalance);
           bankReceiptFormArray.controls[selectedRow]
-            .get("particularsOraccountingHead")
+            .get("LedgerName")
             .setValue(selectedItem[0].LedgerName);
           bankReceiptFormArray.controls[selectedRow]
-            .get("ledgerCode")
+            .get("LedgerCode")
             .setValue(selectedItem[0].LedgerCode);
+          bankReceiptFormArray.controls[selectedRow]
+            .get("LedgerID")
+            .setValue(selectedItem[0].LedgerID);
         }
       });
     }
   }
 
   public save(): void {
-    if (this.bankReceiptForm.valid) {
-      this.router.navigate(["/cash-receipt"]);
-    } else {
-    }
+    if (this.bankReceiptForm.invalid) return;
+    this.bankReceiptService
+      .updateBankReceipt(this.bankReceiptForm.value)
+      .subscribe(
+        (response) => {
+          this.router.navigate(["/bank-receipt"]);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Bank Receipt edited successfully");
+        }
+      );
   }
 
   public cancel(): void {
@@ -218,9 +254,9 @@ export class EditBankReceiptComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.bankReceiptForm.get("bankReceiptEntryList").invalid) return;
-    (<FormArray>this.bankReceiptForm.get("bankReceiptEntryList")).push(
-      this.addBankReceiptEntryList()
+    if (this.bankReceiptForm.get("BankReceiptDetailsList").invalid) return;
+    (<FormArray>this.bankReceiptForm.get("BankReceiptDetailsList")).push(
+      this.addBankReceiptDetailsList()
     );
     this.rowSubmitted = false;
     this.submitted = false;
@@ -229,23 +265,28 @@ export class EditBankReceiptComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     const bankReceiptEntry = <FormArray>(
-      this.bankReceiptForm.get("bankReceiptEntryList")
+      this.bankReceiptForm.get("BankReceiptDetailsList")
     );
     bankReceiptEntry.controls[rowIndex]
-      .get("particularsOraccountingHead")
-      .setValue(dataItem.particularsOraccountingHead);
+      .get("LedgerName")
+      .setValue(dataItem.LedgerName);
     bankReceiptEntry.controls[rowIndex]
-      .get("voucherNo")
-      .setValue(dataItem.voucherNo);
+      .get("VoucherNo")
+      .setValue(dataItem.VoucherNo);
     bankReceiptEntry.controls[rowIndex]
-      .get("currentAmount")
-      .setValue(dataItem.currentAmount);
-    bankReceiptEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
+      .get("LedgerBalance")
+      .setValue(dataItem.LedgerBalance);
     bankReceiptEntry.controls[rowIndex]
-      .get("remarks")
-      .setValue(dataItem.remarks);
+      .get("VoucherType")
+      .setValue(dataItem.VoucherType);
+    bankReceiptEntry.controls[rowIndex]
+      .get("Remarks")
+      .setValue(dataItem.Remarks);
     this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.bankReceiptForm.get("bankReceiptEntryList"));
+    sender.editRow(
+      rowIndex,
+      this.bankReceiptForm.get("BankReceiptDetailsList")
+    );
   }
 
   openModal(index: number): void {
@@ -258,17 +299,20 @@ export class EditBankReceiptComponent implements OnInit {
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const cashReceiptFormArray = <FormArray>(
-          this.bankReceiptForm.get("bankReceiptEntryList")
+          this.bankReceiptForm.get("BankReceiptDetailsList")
         );
         cashReceiptFormArray.controls[index]
-          .get("currentBalance")
+          .get("LedgerBalance")
           .setValue(data.ActualBalance);
         cashReceiptFormArray.controls[index]
-          .get("particularsOraccountingHead")
+          .get("LedgerName")
           .setValue(data.LedgerName);
         cashReceiptFormArray.controls[index]
-          .get("ledgerCode")
+          .get("LedgerCode")
           .setValue(data.LedgerCode);
+        cashReceiptFormArray.controls[index]
+          .get("LedgerID")
+          .setValue(data.LedgerID);
       }
     });
     this.modalRef.content.onClose.subscribe((data) => {
@@ -288,10 +332,10 @@ export class EditBankReceiptComponent implements OnInit {
   public removeHandler({ dataItem, rowIndex }): void {
     // Calculation on Debit Total and Credit Total on Rows Removed
     const bankReceiptEntry = <FormArray>(
-      this.bankReceiptForm.get("bankReceiptEntryList")
+      this.bankReceiptForm.get("BankReceiptDetailsList")
     );
     // Remove the Row
-    (<FormArray>this.bankReceiptForm.get("bankReceiptEntryList")).removeAt(
+    (<FormArray>this.bankReceiptForm.get("BankReceiptDetailsList")).removeAt(
       rowIndex
     );
   }

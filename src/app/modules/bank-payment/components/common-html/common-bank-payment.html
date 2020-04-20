@@ -269,9 +269,7 @@
             >
               <kendo-datepicker
                 [valuePrimitive]="true"
-                [formControl]="
-                    getBankPaymentEntryList.controls[rowIndex].get(column.field)
-                  "
+                [formControl]="getBankPaymentEntryList.controls[rowIndex].get(column.field)"
                 [min]="min"
                 [max]="max"
                 style="width: 130px;"
@@ -291,17 +289,15 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-              <kendo-numerictextbox
-                #ntb="popupAnchor"
-                popupAnchor
-                style="width: 100px;"
-                [decimals]="decimals"
-                [spinners]="false"
-                [format]="'c0'"
+              <input
+                #input
+                class="k-textbox"
+                style="width: 100px; text-align: right;"
+                [readonly]="true"
                 [formControl]="
-                    getBankPaymentEntryList.controls[rowIndex].get(column.field)
-                  "
-              ></kendo-numerictextbox>
+                getBankPaymentEntryList.controls[rowIndex].get(column.field)
+          "
+              />
             </ng-template>
           </kendo-grid-column>
 

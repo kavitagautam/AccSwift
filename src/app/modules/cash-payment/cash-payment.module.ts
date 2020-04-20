@@ -2,7 +2,6 @@ import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import { PopupModule } from "@progress/kendo-angular-popup";
-import { SharedModule } from "@shared/shared.module";
 import { GridModule } from "@progress/kendo-angular-grid";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormsModule } from "@angular/forms";
@@ -15,6 +14,7 @@ import { EditCashPaymentComponent } from "./components/edit-cash-payment/edit-ca
 import { ListCashPaymentComponent } from "./components/list-cash-payment/list-cash-payment.component";
 import { AddCashPaymentComponent } from "./components/add-cash-payment/add-cash-payment.component";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { SharedModule } from "@app/shared/shared.module";
 
 @NgModule({
   declarations: [

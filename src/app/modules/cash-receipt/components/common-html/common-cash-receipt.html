@@ -8,7 +8,7 @@
             <select
               class="form-control"
               id="seriesId"
-              formControlName="seriesId"
+              formControlName="SeriesID"
             >
               <option [ngValue]="null">Choose option.... </option>
               <option
@@ -27,8 +27,8 @@
             <select
               class="form-control"
               id="cashAccountNo"
-              formControlName="cashAccountId"
-              (change)="changeAccount($event, cashReceiptForm.get('cashAccountId').value)"
+              formControlName="LedgerID"
+              (change)="changeAccount($event, cashReceiptForm.get('LedgerID').value)"
               accSwiftFormValidator
             >
               <option [ngValue]="null">Choose option... </option>
@@ -48,12 +48,7 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Cash Party/ Customer </label>
-            <select
-              class="form-control"
-              id="cashPartyId"
-              formControlName="cashPartyId"
-              accSwiftFormValidator
-            >
+            <select class="form-control" id="cashPartyId">
               <option [ngValue]="null">Choose option... </option>
               <option
                 *ngFor="let cash of cashReceiptService.cashPartyLists"
@@ -69,7 +64,7 @@
             <label>Voucher #</label>
             <input
               class="form-control"
-              formControlName="voucherNo"
+              formControlName="VoucherNo"
               accSwiftFormValidator
             />
           </div>
@@ -85,12 +80,12 @@
             <select
               class="form-control"
               id="projectId"
-              formControlName="projectId"
+              formControlName="ProjectID"
             >
               <option [ngValue]="null">Choose option...</option>
               <option
                 *ngFor="let project of cashReceiptService.projectLists"
-                [ngValue]="project.LedgerID"
+                [ngValue]="project.ID"
               >
                 {{ project.EngName }}</option
               >
@@ -100,7 +95,7 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Date</label>
-            <input formControlName="date" class="form-control" bsDatepicker />
+            <input formControlName="Date" class="form-control" bsDatepicker />
           </div>
         </div>
       </div>
@@ -120,7 +115,7 @@
             </ng-template>
 
             <kendo-grid-column
-              field="particularsOraccountingHead"
+              field="LedgerName"
               title="Particulars Or Accounting Head"
               width="300"
             >
@@ -141,7 +136,7 @@
                       placeholder="Ledger Code"
                       [formControl]="
                           getCashReceiptEntryList.controls[rowIndex].get(
-                            'ledgerCode'
+                            'LedgerCode'
                           )
                         "
                       (change)="changeLedgerValue(dataItem, rowIndex)"
@@ -150,7 +145,7 @@
                       [anchor]="input"
                       *ngIf="
                           getCashReceiptEntryList.controls[rowIndex].get(
-                            'ledgerCode'
+                            'LedgerCode'
                           ).invalid
                         "
                       popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
@@ -166,7 +161,7 @@
                       [readonly]="true"
                       [formControl]="
                           getCashReceiptEntryList.controls[rowIndex].get(
-                            'particularsOraccountingHead'
+                            'LedgerName'
                           )
                         "
                     />
@@ -180,17 +175,17 @@
                       [anchor]="input"
                       *ngIf="
                           getCashReceiptEntryList.controls[rowIndex].get(
-                            'particularsOraccountingHead'
+                            'LedgerName'
                           ).invalid &&
                           rowSubmitted &&
                           !(
                             isNew &&
                             getCashReceiptEntryList.controls[rowIndex].get(
-                              'particularsOraccountingHead'
+                              'LedgerName'
                             ).untouched
                           ) &&
                           !getCashReceiptEntryList.controls[rowIndex].get(
-                            'ledgerCode'
+                            'LedgerCode'
                           )
                         "
                       popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
@@ -203,56 +198,9 @@
               </ng-template>
             </kendo-grid-column>
 
-            <kendo-grid-column field="voucherNo" title="Voucher No" width="150">
-              <ng-template
-                kendoGridCellTemplate
-                let-dataItem="dataItem"
-                let-column="column"
-                let-formGroup="formGroup"
-                let-isNew="isNew"
-                let-rowIndex="rowIndex"
-              >
-                <input
-                  #ntb="popupAnchor"
-                  class="k-textbox"
-                  popupAnchor
-                  style="width: 130px;"
-                  [formControl]="
-                      getCashReceiptEntryList.controls[rowIndex].get(column.field)
-                    "
-                />
-              </ng-template>
-            </kendo-grid-column>
-
-            <kendo-grid-column field="amount" title="Amount" width="150">
-              <ng-template
-                kendoGridCellTemplate
-                let-dataItem="dataItem"
-                let-column="column"
-                let-formGroup="formGroup"
-                let-isNew="isNew"
-                let-rowIndex="rowIndex"
-              >
-                <kendo-numerictextbox
-                  #ntb="popupAnchor"
-                  popupAnchor
-                  style="width: 130px;"
-                  [readonly]="true"
-                  [decimals]="decimals"
-                  [spinners]="false"
-                  [format]="'c0'"
-                  [formControl]="
-                      getCashReceiptEntryList.controls[rowIndex].get(
-                        'currentBalance'
-                      )
-                    "
-                ></kendo-numerictextbox>
-              </ng-template>
-            </kendo-grid-column>
-
             <kendo-grid-column
-              field="currentBalance"
-              title="Current Balance"
+              field="VoucherNumber"
+              title="Voucher No"
               width="150"
             >
               <ng-template
@@ -263,24 +211,69 @@
                 let-isNew="isNew"
                 let-rowIndex="rowIndex"
               >
+                <input
+                  #ntb="popupAnchor"
+                  class="k-textbox"
+                  popupAnchor
+                  style="width: 130px;"
+                  [formControl]="
+                      getCashReceiptEntryList.controls[rowIndex].get(column.field)
+                    "
+                />
+              </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column field="Amount" title="Amount" width="150">
+              <ng-template
+                kendoGridCellTemplate
+                let-dataItem="dataItem"
+                let-column="column"
+                let-formGroup="formGroup"
+                let-isNew="isNew"
+                let-rowIndex="rowIndex"
+              >
                 <kendo-numerictextbox
                   #ntb="popupAnchor"
                   popupAnchor
                   style="width: 130px;"
-                  [readonly]="true"
                   [decimals]="decimals"
                   [spinners]="false"
                   [format]="'c0'"
                   [formControl]="
                       getCashReceiptEntryList.controls[rowIndex].get(
-                        'currentBalance'
+                        column.field
                       )
                     "
                 ></kendo-numerictextbox>
               </ng-template>
             </kendo-grid-column>
 
-            <kendo-grid-column field="vType" title="V. Type" width="150">
+            <kendo-grid-column
+              field="LedgerBalance"
+              title="Ledger Balance"
+              width="150"
+            >
+              <ng-template
+                kendoGridCellTemplate
+                let-dataItem="dataItem"
+                let-column="column"
+                let-formGroup="formGroup"
+                let-isNew="isNew"
+                let-rowIndex="rowIndex"
+              >
+                <input
+                  #input
+                  class="k-textbox"
+                  style="width: 130px; text-align: right;"
+                  [readonly]="true"
+                  [formControl]="
+                  getCashReceiptEntryList.controls[rowIndex].get(column.field)
+            "
+                />
+              </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column field="VoucherType" title="V. Type" width="150">
               <ng-template
                 kendoGridCellTemplate
                 let-dataItem="dataItem"
@@ -299,7 +292,7 @@
               </ng-template>
             </kendo-grid-column>
 
-            <kendo-grid-column field="remarks" title="Remarks" width="150">
+            <kendo-grid-column field="Remarks" title="Remarks" width="150">
               <ng-template
                 kendoGridCellTemplate
                 let-dataItem="dataItem"
@@ -312,7 +305,7 @@
                   #input
                   class="k-textbox"
                   [formControl]="
-                      getCashReceiptEntryList.controls[rowIndex].get('remarks')
+                      getCashReceiptEntryList.controls[rowIndex].get(column.field)
                     "
                 />
               </ng-template>

@@ -61,12 +61,11 @@ export class ListCashReceiptComponent implements OnInit {
 
   ngOnInit(): void {
     this.cashReceiptForm = this._fb.group({
-      seriesId: [null],
-      projectId: [null],
-      voucherNo: [""],
-      cashAccountId: [null],
-      cashPartyId: [null],
-      date: [new Date()],
+      SeriesID: [null],
+      ProjectID: [null],
+      VoucherNo: [""],
+      LedgerID: [null],
+      Date: [""],
     });
     this.getCashReceiptlList();
   }
