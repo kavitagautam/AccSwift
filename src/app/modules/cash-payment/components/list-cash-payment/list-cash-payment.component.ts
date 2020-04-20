@@ -62,12 +62,11 @@ export class ListCashPaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.cashPaymentsForm = this._fb.group({
-      seriesId: [null],
-      projectId: [null],
-      voucherNo: [""],
-      cashPartyId: [null],
-      cashAccountId: [null],
-      date: [""],
+      SeriesID: [null],
+      ProjectID: [null],
+      VoucherNo: [""],
+      LedgerID: [null],
+      Date: [""],
     });
     this.getCashPaymentList();
   }

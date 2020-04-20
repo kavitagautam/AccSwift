@@ -23,7 +23,7 @@
                 <select
                   class="form-control"
                   id="seriesId"
-                  formControlName="seriesId"
+                  formControlName="SeriesID"
                 >
                   <option [ngValue]="null">Choose Option....</option>
                   <option
@@ -42,7 +42,7 @@
                 <select
                   class="form-control"
                   id="cashAccountNo"
-                  formControlName="cashAccountId"
+                  formControlName="LedgerID"
                 >
                   <option [ngValue]="null">Choose Option....</option>
                   <option
@@ -58,11 +58,7 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Cash Party/ Customer </label>
-                <select
-                  class="form-control"
-                  id="cashPartyId"
-                  formControlName="cashPartyId"
-                >
+                <select class="form-control" id="cashPartyId">
                   <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let cash of cashReceiptService.cashPartyLists"
@@ -76,7 +72,7 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Voucher #</label>
-                <input class="form-control" formControlName="voucherNo" />
+                <input class="form-control" formControlName="VoucherNo" />
               </div>
             </div>
 
@@ -86,7 +82,7 @@
                 <select
                   class="form-control"
                   id="projectId"
-                  formControlName="projectId"
+                  formControlName="ProjectID"
                 >
                   <option [ngValue]="null">Choose Option....</option>
                   <option
@@ -102,7 +98,7 @@
               <div class="form-group">
                 <label>Date</label>
                 <input
-                  formControlName="date"
+                  formControlName="Date"
                   class="form-control"
                   bsDatepicker
                   [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"

@@ -69,16 +69,16 @@ export class EditBankPaymentComponent implements OnInit {
           ? new Date(this.bankPaymentDetails.CreatedDate)
           : "",
       ],
-      Remarks: [""],
+      Remarks: [this.bankPaymentDetails ? this.bankPaymentDetails.Remarks : ""],
       BankPaymentDetailsList: this._fb.array([this.addBankPaymentEntryList()]),
     });
   }
 
   addBankPaymentEntryList(): FormGroup {
     return this._fb.group({
-      ID: [""],
-      MasterID: [""],
-      LedgerID: [""],
+      ID: [0],
+      MasterID: [0],
+      LedgerID: [0],
       LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       LedgerName: ["", Validators.required],
       ChequeNumber: [""],
@@ -128,15 +128,15 @@ export class EditBankPaymentComponent implements OnInit {
             ],
             LedgerName: [element.LedgerName, Validators.required],
             ChequeNumber: [element.ChequeNumber],
-            ChequeDate: [element.ChequeNumber],
+            ChequeDate: [element.ChequeDate],
             LedgerBalance: [element.LedgerBalance],
             Amount: [element.Amount],
             Remarks: [element.Remarks],
           })
         );
-        (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
-          this.addBankPaymentEntryList()
-        );
+        // (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+        //   this.addBankPaymentEntryList()
+        // );
       });
     } else {
       bankPaymentFormArray.push(
@@ -205,9 +205,9 @@ export class EditBankPaymentComponent implements OnInit {
             .setValue(selectedItem[0].LedgerCode);
         }
       });
-      (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
-        this.addBankPaymentEntryList()
-      );
+      // (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+      //   this.addBankPaymentEntryList()
+      // );
     }
   }
 
@@ -294,9 +294,9 @@ export class EditBankPaymentComponent implements OnInit {
           .get("LedgerCode")
           .setValue(data.LedgerCode);
       }
-      (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
-        this.addBankPaymentEntryList()
-      );
+      // (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+      //   this.addBankPaymentEntryList()
+      // );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal

@@ -60,11 +60,11 @@ export class ListBankPaymentComponent implements OnInit {
 
   buildListBankPaymentForm(): void {
     this.bankPaymentForm = this._fb.group({
-      seriesId: [null],
-      projectId: [null],
-      voucherNo: [""],
-      bankAccountId: [null],
-      date: [""],
+      SeriesID: [null],
+      ProjectID: [null],
+      VoucherNo: [""],
+      LedgerID: [null],
+      Date: [""],
     });
   }
 

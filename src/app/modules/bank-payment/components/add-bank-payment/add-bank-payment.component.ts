@@ -62,7 +62,7 @@ export class AddBankPaymentComponent implements OnInit {
       MasterID: [0],
       LedgerID: [0],
       LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
-      LedgerName: ["", Validators.required],
+      LedgerName: [""],
       ChequeNumber: [""],
       ChequeDate: [""],
       LedgerBalance: [""],
@@ -114,9 +114,9 @@ export class AddBankPaymentComponent implements OnInit {
             .setValue(selectedItem[0].LedgerCode);
         }
       });
-      (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
-        this.addBankPaymentEntryList()
-      );
+      // (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+      //   this.addBankPaymentEntryList()
+      // );
     }
   }
 
@@ -132,10 +132,9 @@ export class AddBankPaymentComponent implements OnInit {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
-          this.toastr.success("Banl Payment added successfully");
+          this.toastr.success("Bank Payment added successfully");
         }
       );
-    this.router.navigate(["/bank-payment"]);
   }
 
   public cancel(): void {
@@ -210,9 +209,9 @@ export class AddBankPaymentComponent implements OnInit {
           .get("LedgerName")
           .setValue(data.LedgerName);
       }
-      (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
-        this.addBankPaymentEntryList()
-      );
+      // (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+      //   this.addBankPaymentEntryList()
+      // );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal

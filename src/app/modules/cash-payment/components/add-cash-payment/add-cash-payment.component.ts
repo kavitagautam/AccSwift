@@ -3,8 +3,10 @@ import { Router } from "@angular/router";
 import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { CashPaymentService } from "../../services/cash-payment.service";
-import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { ToastrService } from "ngx-toastr";
+import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-add-cash-payment",
@@ -16,7 +18,6 @@ export class AddCashPaymentComponent implements OnInit {
   submitted: boolean;
   currentAmount: string = "0.00";
   rowSubmitted: boolean;
-  date: Date = new Date();
   editedRowIndex: any;
 
   modalRef: BsModalRef;
@@ -33,6 +34,8 @@ export class AddCashPaymentComponent implements OnInit {
     private _fb: FormBuilder,
     private router: Router,
     private modalService: BsModalService,
+    private toastr: ToastrService,
+    public ledgerCodeService: LedgerCodeMatchService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators
   ) {}
 
@@ -42,12 +45,11 @@ export class AddCashPaymentComponent implements OnInit {
 
   buildCashPaymentForm(): void {
     this.cashPaymentForm = this._fb.group({
-      seriesId: [null],
-      projectId: [null],
-      voucherNo: ["", [Validators.required]],
-      cashPartyId: [null, [Validators.required]],
-      cashAccountId: [null, [Validators.required]],
-      date: [""],
+      SeriesID: [null],
+      ProjectID: [null, Validators.required],
+      VoucherNo: ["", [Validators.required]],
+      LedgerID: [null, [Validators.required]],
+      Date: [""],
       CashPaymentDetailsList: this._fb.array([this.addCashPaymentEntryList()]),
     });
   }
@@ -56,9 +58,9 @@ export class AddCashPaymentComponent implements OnInit {
     return this._fb.group({
       ID: [0],
       MasterID: [0],
-      LedgerID: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
-      LedgerCode: [""],
-      LedgerName: ["", Validators.required],
+      LedgerID: [0],
+      LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+      LedgerName: [""],
       LedgerBalance: [""],
       Amount: [""],
       Remarks: [""],
@@ -73,9 +75,20 @@ export class AddCashPaymentComponent implements OnInit {
   }
 
   public save(): void {
-    if (this.cashPaymentForm.valid) {
-      this.router.navigate(["/cash-payment"]);
-    }
+    if (this.cashPaymentForm.invalid) return;
+    this.cashPaymentService
+      .addCashPayment(this.cashPaymentForm.value)
+      .subscribe(
+        (response) => {
+          this.router.navigate(["/cash-payment"]);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Cash Payment added successfully");
+        }
+      );
   }
 
   public cancel(): void {
@@ -89,13 +102,51 @@ export class AddCashPaymentComponent implements OnInit {
     });
   }
 
+  changeLedgerValue(dataItem, selectedRow): void {
+    const cashPaymentFormArray = <FormArray>(
+      this.cashPaymentForm.get("CashPaymentDetailsList")
+    );
+
+    const ledgerCode = cashPaymentFormArray.controls[selectedRow].get(
+      "LedgerCode"
+    ).value;
+    if (
+      cashPaymentFormArray.controls[selectedRow].get("LedgerCode").status ===
+      "VALID"
+    ) {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
+        const selectedItem = res.Entity;
+        if (selectedItem && selectedItem.length > 0) {
+          cashPaymentFormArray.controls[selectedRow]
+            .get("LedgerBalance")
+            .setValue(selectedItem[0].ActualBalance);
+          cashPaymentFormArray.controls[selectedRow]
+            .get("LedgerID")
+            .setValue(selectedItem[0].LedgerID);
+          cashPaymentFormArray.controls[selectedRow]
+            .get("LedgerBalance")
+            .disable();
+          cashPaymentFormArray.controls[selectedRow]
+            .get("LedgerName")
+            .setValue(selectedItem[0].LedgerName);
+          cashPaymentFormArray.controls[selectedRow]
+            .get("LedgerCode")
+            .setValue(selectedItem[0].LedgerCode);
+        }
+        // (<FormArray>this.cashPaymentForm.get("CashPaymentDetailsList")).push(
+        //   this.addCashPaymentEntryList()
+        // );
+      });
+    }
+  }
+
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
       LedgerModalPopupComponent,
       this.config
     );
-    this.modalRef.content = index;
-    this.modalRef.content.action = "Select";
+    // this.modalRef.content = index;
+    // this.modalRef.content.action = "Select";
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const cashPaymentFormArray = <FormArray>(
@@ -105,12 +156,18 @@ export class AddCashPaymentComponent implements OnInit {
           .get("LedgerBalance")
           .setValue(data.ActualBalance);
         cashPaymentFormArray.controls[index]
+          .get("LedgerID")
+          .setValue(data.LedgerID);
+        cashPaymentFormArray.controls[index]
           .get("LedgerCode")
           .setValue(data.LedgerCode);
         cashPaymentFormArray.controls[index]
           .get("LedgerName")
           .setValue(data.LedgerName);
       }
+      // (<FormArray>this.cashPaymentForm.get("CashPaymentDetailsList")).push(
+      //   this.addCashPaymentEntryList()
+      // );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal

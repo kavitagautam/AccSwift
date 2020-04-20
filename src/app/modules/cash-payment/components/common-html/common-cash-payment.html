@@ -8,7 +8,7 @@
             <select
               class="form-control"
               id="seriesId"
-              formControlName="seriesId"
+              formControlName="SeriesID"
             >
               <option [ngValue]="null">Choose Option....</option>
               <option
@@ -26,8 +26,8 @@
             <select
               class="form-control"
               id="cashAccountNo"
-              formControlName="cashAccountId"
-              (change)="changeAccount($event, cashPaymentForm.get('cashAccountId').value)"
+              formControlName="LedgerID"
+              (change)="changeAccount($event, cashPaymentForm.get('LedgerID').value)"
               accSwiftFormValidator
             >
               <option [ngValue]="null">Choose Option....</option>
@@ -45,20 +45,19 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Cash Party/ Customer </label>
+            <label>Project </label>
             <select
               class="form-control"
-              id="cashPartyId"
-              formControlName="cashPartyId"
-              accSwiftFormValidator
+              id="projectId"
+              formControlName="ProjectID"
             >
               <option [ngValue]="null">Choose Option....</option>
               <option
-                *ngFor="let cash of cashPaymentService.cashPartyLists"
-                [ngValue]="cash.LedgerID"
+                *ngFor="let project of cashPaymentService.projectLists"
+                [ngValue]="project.ID"
               >
-                {{ cash.LedgerName }}
-              </option>
+                {{ project.EngName }}</option
+              >
             </select>
           </div>
         </div>
@@ -67,7 +66,7 @@
             <label>Voucher #</label>
             <input
               class="form-control"
-              formControlName="voucherNo"
+              formControlName="VoucherNo"
               accSwiftFormValidator
             />
           </div>
@@ -79,26 +78,13 @@
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Project </label>
-            <select
-              class="form-control"
-              id="projectId"
-              formControlName="projectId"
-            >
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let project of cashPaymentService.projectLists"
-                [ngValue]="project.LedgerID"
-              >
-                {{ project.EngName }}</option
-              >
-            </select>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
             <label>Date</label>
-            <input formControlName="date" class="form-control" bsDatepicker />
+            <input
+              formControlName="Date"
+              class="form-control"
+              bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+            />
           </div>
         </div>
       </div>
@@ -215,8 +201,8 @@
                 #ntb="popupAnchor"
                 popupAnchor
                 style="width: 130px;"
-                [readonly]="true"
                 [decimals]="decimals"
+                [spinners]="false"
                 [format]="'c0'"
                 [formControl]="
                     getCashPaymentEntryList.controls[rowIndex].get(
@@ -240,19 +226,15 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-              <kendo-numerictextbox
-                #ntb="popupAnchor"
-                popupAnchor
-                style="width: 130px;"
+              <input
+                #input
+                class="k-textbox"
+                style="width: 100px; text-align: right;"
                 [readonly]="true"
-                [decimals]="decimals"
-                [format]="'c0'"
                 [formControl]="
-                    getCashPaymentEntryList.controls[rowIndex].get(
-                      column.field
-                    )
-                  "
-              ></kendo-numerictextbox>
+                getCashPaymentEntryList.controls[rowIndex].get(column.field)
+              "
+              />
             </ng-template>
           </kendo-grid-column>
 
