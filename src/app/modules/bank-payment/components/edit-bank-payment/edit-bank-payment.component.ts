@@ -110,6 +110,9 @@ export class EditBankPaymentComponent implements OnInit {
         this.bankPaymentDetails.BankPaymentDetailsList
       )
     );
+    (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+      this.addBankPaymentEntryList()
+    );
   }
 
   setBankPaymentFormArray(bankPaymentDetails): FormArray {
@@ -133,9 +136,6 @@ export class EditBankPaymentComponent implements OnInit {
             Amount: [element.Amount],
             Remarks: [element.Remarks],
           })
-        );
-        (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
-          this.addBankPaymentEntryList()
         );
       });
     } else {

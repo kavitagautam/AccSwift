@@ -107,6 +107,9 @@ export class EditCashPaymentComponent implements OnInit {
         this.cashPaymentDetail.CashPaymentDetailsList
       )
     );
+    (<FormArray>this.cashPaymentForm.get("CashPaymentDetailsList")).push(
+      this.addCashPaymentEntryList()
+    );
   }
 
   setCashPaymentFormArray(cashPaymentDetails): FormArray {
@@ -124,9 +127,6 @@ export class EditCashPaymentComponent implements OnInit {
             Amount: element.Amount,
             Remarks: element.Remarks,
           })
-        );
-        (<FormArray>this.cashPaymentForm.get("CashPaymentDetailsList")).push(
-          this.addCashPaymentEntryList()
         );
       });
     } else {

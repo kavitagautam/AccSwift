@@ -118,6 +118,9 @@ export class EditBankReceiptComponent implements OnInit {
         this.bankReceiptDetails.BankReceiptDetailsList
       )
     );
+    (<FormArray>this.bankReceiptForm.get("BankReceiptDetailsList")).push(
+      this.addBankReceiptDetailsList()
+    );
   }
 
   get getBankReceiptEntryList(): FormArray {
@@ -179,9 +182,7 @@ export class EditBankReceiptComponent implements OnInit {
         })
       );
     }
-    (<FormArray>this.bankReceiptForm.get("BankReceiptDetailsList")).push(
-      this.addBankReceiptDetailsList()
-    );
+
     return bankReceiptFormArray;
   }
 
