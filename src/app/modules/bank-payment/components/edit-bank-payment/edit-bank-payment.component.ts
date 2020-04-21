@@ -110,6 +110,9 @@ export class EditBankPaymentComponent implements OnInit {
         this.bankPaymentDetails.BankPaymentDetailsList
       )
     );
+    (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+      this.addBankPaymentEntryList()
+    );
   }
 
   setBankPaymentFormArray(bankPaymentDetails): FormArray {
@@ -128,15 +131,12 @@ export class EditBankPaymentComponent implements OnInit {
             ],
             LedgerName: [element.LedgerName, Validators.required],
             ChequeNumber: [element.ChequeNumber],
-            ChequeDate: [element.ChequeDate],
+            ChequeDate: [new Date(element.ChequeDate)],
             LedgerBalance: [element.LedgerBalance],
             Amount: [element.Amount],
             Remarks: [element.Remarks],
           })
         );
-        // (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
-        //   this.addBankPaymentEntryList()
-        // );
       });
     } else {
       bankPaymentFormArray.push(
@@ -205,9 +205,9 @@ export class EditBankPaymentComponent implements OnInit {
             .setValue(selectedItem[0].LedgerCode);
         }
       });
-      // (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
-      //   this.addBankPaymentEntryList()
-      // );
+      (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+        this.addBankPaymentEntryList()
+      );
     }
   }
 
@@ -294,9 +294,9 @@ export class EditBankPaymentComponent implements OnInit {
           .get("LedgerCode")
           .setValue(data.LedgerCode);
       }
-      // (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
-      //   this.addBankPaymentEntryList()
-      // );
+      (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+        this.addBankPaymentEntryList()
+      );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal

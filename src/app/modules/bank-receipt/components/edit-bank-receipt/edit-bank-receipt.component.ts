@@ -86,7 +86,7 @@ export class EditBankReceiptComponent implements OnInit {
       LedgerID: [0],
       LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       LedgerName: ["", Validators.required],
-      VoucherNo: [""],
+      VoucherNumber: [""],
       ChequeNumber: [""],
       ChequeBank: [""],
       ChequeDate: [""],
@@ -118,6 +118,9 @@ export class EditBankReceiptComponent implements OnInit {
         this.bankReceiptDetails.BankReceiptDetailsList
       )
     );
+    (<FormArray>this.bankReceiptForm.get("BankReceiptDetailsList")).push(
+      this.addBankReceiptDetailsList()
+    );
   }
 
   get getBankReceiptEntryList(): FormArray {
@@ -142,10 +145,12 @@ export class EditBankReceiptComponent implements OnInit {
               element.LedgerName ? element.LedgerName : "",
               Validators.required,
             ],
-            VoucherNo: [element.VoucherNo ? element.VoucherNo : ""],
+            VoucherNumber: [element.VoucherNumber ? element.VoucherNumber : ""],
             ChequeNumber: [element.ChequeNumber ? element.ChequeNumber : ""],
             ChequeBank: [element.ChequeBank ? element.ChequeBank : ""],
-            ChequeDate: [element.ChequeDate ? element.ChequeDate : ""],
+            ChequeDate: [
+              element.ChequeDate ? new Date(element.ChequeDate) : "",
+            ],
             Amount: [element.Amount ? element.Amount : 0],
             LedgerBalance: [element.LedgerBalance ? element.LedgerBalance : ""],
             VoucherType: [element.VoucherType ? element.VoucherType : ""],
@@ -166,7 +171,7 @@ export class EditBankReceiptComponent implements OnInit {
             this.ledgerCodeMatchValidators.ledgerCodeMatch(),
           ],
           LedgerName: ["", Validators.required],
-          VoucherNo: [""],
+          VoucherNumber: [""],
           ChequeNumber: [""],
           ChequeBank: [""],
           ChequeDate: [""],
@@ -177,6 +182,7 @@ export class EditBankReceiptComponent implements OnInit {
         })
       );
     }
+
     return bankReceiptFormArray;
   }
 
@@ -224,6 +230,9 @@ export class EditBankReceiptComponent implements OnInit {
             .get("LedgerID")
             .setValue(selectedItem[0].LedgerID);
         }
+        (<FormArray>this.bankReceiptForm.get("BankReceiptDetailsList")).push(
+          this.addBankReceiptDetailsList()
+        );
       });
     }
   }
@@ -271,8 +280,8 @@ export class EditBankReceiptComponent implements OnInit {
       .get("LedgerName")
       .setValue(dataItem.LedgerName);
     bankReceiptEntry.controls[rowIndex]
-      .get("VoucherNo")
-      .setValue(dataItem.VoucherNo);
+      .get("VoucherNumber")
+      .setValue(dataItem.VoucherNumber);
     bankReceiptEntry.controls[rowIndex]
       .get("LedgerBalance")
       .setValue(dataItem.LedgerBalance);
@@ -314,6 +323,9 @@ export class EditBankReceiptComponent implements OnInit {
           .get("LedgerID")
           .setValue(data.LedgerID);
       }
+      (<FormArray>this.bankReceiptForm.get("BankReceiptDetailsList")).push(
+        this.addBankReceiptDetailsList()
+      );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal

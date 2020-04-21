@@ -133,9 +133,9 @@ export class AddCashPaymentComponent implements OnInit {
             .get("LedgerCode")
             .setValue(selectedItem[0].LedgerCode);
         }
-        // (<FormArray>this.cashPaymentForm.get("CashPaymentDetailsList")).push(
-        //   this.addCashPaymentEntryList()
-        // );
+        (<FormArray>this.cashPaymentForm.get("CashPaymentDetailsList")).push(
+          this.addCashPaymentEntryList()
+        );
       });
     }
   }
@@ -165,9 +165,9 @@ export class AddCashPaymentComponent implements OnInit {
           .get("LedgerName")
           .setValue(data.LedgerName);
       }
-      // (<FormArray>this.cashPaymentForm.get("CashPaymentDetailsList")).push(
-      //   this.addCashPaymentEntryList()
-      // );
+      (<FormArray>this.cashPaymentForm.get("CashPaymentDetailsList")).push(
+        this.addCashPaymentEntryList()
+      );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal

@@ -83,11 +83,12 @@
         </div>
       </div>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12 p-0">
       <div class="box-body">
         <kendo-grid
           [data]="getBankReceiptEntryList.value"
           (edit)="editHandler($event)"
+          scrollable="false"
           (cancel)="cancelHandler($event)"
           (save)="saveHandler($event)"
           (remove)="removeHandler($event)"
@@ -181,7 +182,11 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="VoucherNo" title="Voucher No" width="150">
+          <kendo-grid-column
+            field="VoucherNumber"
+            title="Voucher No"
+            width="130"
+          >
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -192,8 +197,9 @@
             >
               <input
                 #ntb="popupAnchor"
+                class="k-textbox"
                 popupAnchor
-                style="width: 130px;"
+                style="width: 110px;"
                 [formControl]="
                     getBankReceiptEntryList.controls[rowIndex].get(column.field)
                   "
@@ -201,7 +207,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="Amount" title="Amount" width="150">
+          <kendo-grid-column field="Amount" title="Amount" width="130">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -210,28 +216,38 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-              <kendo-numerictextbox
-                #ntb="popupAnchor"
-                popupAnchor
-                style="width: 130px;"
-                [readonly]="true"
-                [spinners]="false"
-                [decimals]="decimals"
-                [format]="'c0'"
-                [formControl]="
+              <div class="form-group">
+                <label>Amount</label>
+                <kendo-numerictextbox
+                  #ntb="popupAnchor"
+                  popupAnchor
+                  style="width: 110px;"
+                  [spinners]="false"
+                  [decimals]="decimals"
+                  [format]="'c0'"
+                  [formControl]="
                     getBankReceiptEntryList.controls[rowIndex].get(
                       column.field
                     )
                   "
-              ></kendo-numerictextbox>
+                ></kendo-numerictextbox>
+              </div>
+              <div class="form-group">
+                <label>Ledger Balance</label>
+                <input
+                  #input
+                  class="k-textbox"
+                  style="width: 110px; text-align: right;"
+                  [readonly]="true"
+                  [formControl]="
+            getBankReceiptEntryList.controls[rowIndex].get('LedgerBalance')
+      "
+                />
+              </div>
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column
-            field="LedgerBalance"
-            title="Current Balance"
-            width="150"
-          >
+          <kendo-grid-column field="ChequeNumber" title="Cheque" width="150">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -240,43 +256,32 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-              <input
-                #input
-                class="k-textbox"
-                style="width: 130px; text-align: right;"
-                [readonly]="true"
-                [formControl]="
-                getBankReceiptEntryList.controls[rowIndex].get(column.field)
-          "
-              />
-            </ng-template>
-          </kendo-grid-column>
-
-          <kendo-grid-column
-            field="ChequeNumber"
-            title="Cheque Number"
-            width="150"
-          >
-            <ng-template
-              kendoGridCellTemplate
-              let-dataItem="dataItem"
-              let-column="column"
-              let-formGroup="formGroup"
-              let-isNew="isNew"
-              let-rowIndex="rowIndex"
-            >
-              <input
-                #input
-                class="k-textbox"
-                style="width: 130px;"
-                [readonly]="true"
-                [formControl]="
+              <div class="form-group">
+                <label>Number</label>
+                <input
+                  #input
+                  class="k-textbox"
+                  style="width: 130px;"
+                  [formControl]="
                     getBankReceiptEntryList.controls[rowIndex].get(column.field)
                   "
-              />
+                />
+              </div>
+              <div class="form-group">
+                <label>Date</label>
+                <kendo-datepicker
+                  [valuePrimitive]="true"
+                  [formControl]="
+                getBankReceiptEntryList.controls[rowIndex].get('ChequeDate')
+                  "
+                  [min]="min"
+                  [max]="max"
+                  style="width: 130px;"
+                ></kendo-datepicker>
+              </div>
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="ChequeDate" title="Cheque Date" width="150">
+          <!-- <kendo-grid-column field="ChequeDate" title="Cheque Date" width="150">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -295,8 +300,8 @@
                 style="width: 130px;"
               ></kendo-datepicker>
             </ng-template>
-          </kendo-grid-column>
-          <kendo-grid-column field="ChequeBank" title="Cheque Bank" width="150">
+          </kendo-grid-column> -->
+          <kendo-grid-column field="ChequeBank" title="Cheque Bank" width="120">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -308,14 +313,14 @@
               <input
                 #input
                 class="k-textbox"
-                style="width: 130px;"
+                style="width: 100px;"
                 [formControl]="
                     getBankReceiptEntryList.controls[rowIndex].get(column.field)
                   "
               />
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="VoucherType" title="V. Type" width="150">
+          <kendo-grid-column field="VoucherType" title="V. Type" width="120">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -327,6 +332,7 @@
               <input
                 #input
                 class="k-textbox"
+                style="width: 100px;"
                 [formControl]="
                     getBankReceiptEntryList.controls[rowIndex].get(column.field)
                   "
@@ -334,7 +340,7 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="Remarks" title="Remarks" width="150">
+          <kendo-grid-column field="Remarks" title="Remarks" width="120">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -346,8 +352,9 @@
               <input
                 #input
                 class="k-textbox"
+                style="width: 100px;"
                 [formControl]="
-                    getBankReceiptEntryList.controls[rowIndex].get('remarks')
+                    getBankReceiptEntryList.controls[rowIndex].get(column.field)
                   "
               />
             </ng-template>

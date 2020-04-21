@@ -114,6 +114,9 @@ export class EditCashReceiptComponent implements OnInit {
       "CashReceiptDetails",
       this.setCashReceiptFormArray(this.cashReceiptDetails.CashReceiptDetails)
     );
+    (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).push(
+      this.addCashReceiptEntryFormGroup()
+    );
   }
 
   setCashReceiptFormArray(cashRecepitDetails): FormArray {
@@ -122,16 +125,16 @@ export class EditCashReceiptComponent implements OnInit {
       cashRecepitDetails.forEach((element) => {
         cashReceiptFormArray.push(
           this._fb.group({
-            ID: [element.ID ? element.ID : ""],
-            MasterID: [element.MasterID ? element.MasterID : 0],
-            LedgerID: [element.LedgerID ? element.LedgerID : 0],
-            LedgerCode: [element.LedgerCode ? element.LedgerCode : ""],
+            ID: [element.ID],
+            MasterID: [element.MasterID],
+            LedgerID: [element.LedgerID],
+            LedgerCode: [element.LedgerCode],
             LedgerName: [element.LedgerName, Validators.required],
             VoucherNumber: [element.VoucherNumber],
-            Amount: element.Amount,
-            LedgerBalance: element.LedgerBalance,
-            VoucherType: element.VoucherType,
-            Remarks: element.Remarks,
+            Amount: [element.Amount],
+            LedgerBalance: [element.LedgerBalance],
+            VoucherType: [element.VoucherType],
+            Remarks: [element.Remarks],
           })
         );
       });
@@ -202,6 +205,9 @@ export class EditCashReceiptComponent implements OnInit {
             .get("LedgerID")
             .setValue(selectedItem[0].LedgerID);
         }
+        (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).push(
+          this.addCashReceiptEntryFormGroup()
+        );
       });
     }
   }
@@ -289,6 +295,9 @@ export class EditCashReceiptComponent implements OnInit {
           .get("LedgerID")
           .setValue(data.LedgerID);
       }
+      (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).push(
+        this.addCashReceiptEntryFormGroup()
+      );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
