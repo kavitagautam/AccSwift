@@ -42,10 +42,10 @@ export class AddBankPaymentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.buildbankPaymentForm(); //Initialize the Form....
+    this.buildBankPaymentForm(); //Initialize the Form....
   }
 
-  buildbankPaymentForm(): void {
+  buildBankPaymentForm(): void {
     this.bankPaymentForm = this._fb.group({
       SeriesID: [null],
       ProjectID: [null],
@@ -114,9 +114,9 @@ export class AddBankPaymentComponent implements OnInit {
             .setValue(selectedItem[0].LedgerCode);
         }
       });
-      // (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
-      //   this.addBankPaymentEntryList()
-      // );
+      (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+        this.addBankPaymentEntryList()
+      );
     }
   }
 
@@ -209,9 +209,9 @@ export class AddBankPaymentComponent implements OnInit {
           .get("LedgerName")
           .setValue(data.LedgerName);
       }
-      // (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
-      //   this.addBankPaymentEntryList()
-      // );
+      (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+        this.addBankPaymentEntryList()
+      );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal

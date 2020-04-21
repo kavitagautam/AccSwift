@@ -67,8 +67,8 @@ export class AddBankReceiptComponent implements OnInit {
       MasterID: [0],
       LedgerID: [0],
       LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
-      LedgerName: ["", Validators.required],
-      VoucherNo: [""],
+      LedgerName: [""],
+      VoucherNumber: [""],
       ChequeNumber: [""],
       ChequeBank: [""],
       ChequeDate: [""],
@@ -123,6 +123,9 @@ export class AddBankReceiptComponent implements OnInit {
             .get("LedgerID")
             .setValue(selectedItem[0].LedgerID);
         }
+        (<FormArray>this.bankReceiptForm.get("BankReceiptDetailsList")).push(
+          this.addBankReceiptEntryList()
+        );
       });
     }
   }
@@ -170,8 +173,8 @@ export class AddBankReceiptComponent implements OnInit {
       .get("LedgerName")
       .setValue(dataItem.LedgerName);
     bankReceiptEntry.controls[rowIndex]
-      .get("VoucherNo")
-      .setValue(dataItem.VoucherNo);
+      .get("VoucherNumber")
+      .setValue(dataItem.VoucherNumber);
     bankReceiptEntry.controls[rowIndex]
       .get("LedgerBalance")
       .setValue(dataItem.LedgerBalance);
@@ -209,7 +212,13 @@ export class AddBankReceiptComponent implements OnInit {
         bankReceiptFormArray.controls[index]
           .get("LedgerCode")
           .setValue(data.LedgerCode);
+        bankReceiptFormArray.controls[index]
+          .get("LedgerID")
+          .setValue(data.LedgerID);
       }
+      (<FormArray>this.bankReceiptForm.get("BankReceiptDetailsList")).push(
+        this.addBankReceiptEntryList()
+      );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal

@@ -119,6 +119,9 @@ export class AddCashReceiptComponent implements OnInit {
             .get("LedgerID")
             .setValue(selectedItem[0].LedgerID);
         }
+        (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).push(
+          this.addCashReceiptEntryFormGroup()
+        );
       });
     }
   }
@@ -206,6 +209,9 @@ export class AddCashReceiptComponent implements OnInit {
           .get("LedgerID")
           .setValue(data.LedgerID);
       }
+      (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).push(
+        this.addCashReceiptEntryFormGroup()
+      );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
