@@ -30,16 +30,7 @@ export interface CashPartyModel {
   Entity: CashParty[];
 }
 
-export interface SeriesList {
-  ID: number;
-  EngName: string;
-  NepName: string;
-  VoucherType: string;
-  AutoNumber: number;
-  BuiltIn: boolean;
-}
-
-export interface PurchaseOrderList {
+export interface SalesOrderList {
   ID: number;
   Date: Date;
   OrderDetails?: any;
@@ -56,8 +47,8 @@ export interface PurchaseOrderList {
   ModifiedDate?: any;
 }
 
-export interface PurchaseOrderNavigate {
-  Entity: PurchaseOrderList[];
+export interface SalesOrderNavigate {
+  Entity: SalesOrderList[];
   ItemsPerPage: number;
   ItemsReturned: number;
   TotalItemsAvailable: number;
@@ -65,16 +56,16 @@ export interface PurchaseOrderNavigate {
   TotalPages: number;
 }
 
-export interface PurchaseOrderNavigateModel {
+export interface SalesOrderNavigateModel {
   StatusCode: number;
   Message: string;
-  Entity: PurchaseOrderNavigate;
+  Entity: SalesOrderNavigate;
 }
 
 export interface OrderDetail {
   ID: number;
-  PurchaseOrderID: number;
-  PurchaseRate: number;
+  SalesOrderID: number;
+  SalesRate: number;
   ProductID: number;
   ProductName: string;
   ProductCode: string;
@@ -84,7 +75,7 @@ export interface OrderDetail {
   PenndingQuantity: number;
 }
 
-export interface PurchaseOrderDetail {
+export interface SalesOrderDetail {
   ID: number;
   Date: Date;
   OrderDetails: OrderDetail[];
@@ -101,8 +92,8 @@ export interface PurchaseOrderDetail {
   ModifiedDate?: any;
 }
 
-export interface PurchaseOrderDetailModel {
+export interface SalesOrderDetailModel {
   StatusCode: number;
   Message: string;
-  Entity: PurchaseOrderDetail;
+  Entity: SalesOrderDetail;
 }

@@ -14,6 +14,7 @@ import { SalesOrderRoutingModule } from "./sales-order-routing.module";
 import { ListSalesOrderComponent } from "./components/list-sales-order/list-sales-order.component";
 import { AddSalesOrderComponent } from "./components/add-sales-order/add-sales-order.component";
 import { EditSalesOrderComponent } from "./components/edit-sales-order/edit-sales-order.component";
+import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
 
 @NgModule({
   declarations: [
@@ -33,5 +34,6 @@ import { EditSalesOrderComponent } from "./components/edit-sales-order/edit-sale
     DropDownListModule,
     DropDownsModule,
   ],
+  entryComponents: [ProductModalPopupComponent],
 })
 export class SalesOrderModule {}
