@@ -26,6 +26,7 @@ export interface SeriesList {
   ID: number;
   Name: string;
 }
+
 export interface SalesInvoiceMaster {
   ID: number;
   SalesLedgerID: number;

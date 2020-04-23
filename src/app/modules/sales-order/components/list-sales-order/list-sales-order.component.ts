@@ -1,4 +1,3 @@
-import { SalesOrderMaster } from "./../models/list-sales-order.model";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
@@ -12,6 +11,7 @@ import { FormBuilder } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
+import { SalesOrderList } from "../../models/sales-order.model";
 
 @Component({
   selector: "accSwift-list-sales-order",
@@ -29,6 +29,10 @@ export class ListSalesOrderComponent implements OnInit {
   public currentPage = 1;
   modalRef: BsModalRef;
   //sorting Kendo Data
+
+  orderByKey = "";
+  dirKey = "asc";
+  //sorting kendo data
   public allowUnsort = true;
   public sort: SortDescriptor[] = [
     {
@@ -36,16 +40,18 @@ export class ListSalesOrderComponent implements OnInit {
       dir: "asc",
     },
   ];
+
+  searchFilterList = [];
   //modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
   };
-  salesOrderList: SalesOrderMaster[];
+  salesOrderList: SalesOrderList[];
   modalService: BsModalService;
 
   constructor(
-    private fb: FormBuilder,
+    private _fb: FormBuilder,
     public salesOrderService: SalesOrderService,
     private router: Router,
     private toastr: ToastrService
@@ -53,38 +59,44 @@ export class ListSalesOrderComponent implements OnInit {
 
   ngOnInit() {
     this.buildSalesOrderForm();
+    this.getSalesOrderList();
   }
 
-  buildSalesOrderForm() {
-    this.salesOrderForm = this.fb.group({
-      orderNo: [""],
-      cashPartyACId: [null],
-      remarks: [""],
-      projectId: [null],
-      date: [new Date()],
+  buildSalesOrderForm(): void {
+    this.salesOrderForm = this._fb.group({
+      OrderNo: [""],
+      CashPartyLedgerID: [null],
+      ProjectID: [null],
+      Date: [""],
+      Remarks: [""],
     });
   }
 
   public sortChange(sort: SortDescriptor[]): void {
+    this.orderByKey = "";
+    this.dirKey = "";
     this.sort = sort;
+    this.dirKey = this.sort[0].dir;
+    this.orderByKey = this.sort[0].field;
     this.getSalesOrderList();
   }
+
   getSalesOrderList(): void {
     this.listLoading = true;
-    const params = {
+    const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
-      OrderBy: "",
-      Direction: "asc",
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey,
+      FilterList: this.searchFilterList,
     };
 
-    this.salesOrderService.getSalesOrderMaster().subscribe(
+    this.salesOrderService.getSalesOrderMaster(obj).subscribe(
       (response) => {
-        this.listLoading = true;
-        this.salesOrderList = response;
+        this.salesOrderList = response.Entity.Entity;
         this.gridView = {
-          data: this.salesOrderList.slice(this.skip, this.skip + this.pageSize),
-          total: this.salesOrderList ? this.salesOrderList.length : 0,
+          data: this.salesOrderList,
+          total: response.Entity.TotalItemsAvailable,
         };
       },
       (error) => {
@@ -102,6 +114,19 @@ export class ListSalesOrderComponent implements OnInit {
   }
 
   public searchForm() {
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.salesOrderForm.invalid) return;
+    for (const key in this.salesOrderForm.value) {
+      if (this.salesOrderForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.salesOrderForm.value[key],
+        });
+      }
+    }
     this.getSalesOrderList();
   }
 
@@ -122,7 +147,7 @@ export class ListSalesOrderComponent implements OnInit {
     this.router.navigate(["/sales-order/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const salesOrderID = {
       id: dataItem.ID,
     };
@@ -134,13 +159,22 @@ export class ListSalesOrderComponent implements OnInit {
     this.modalRef.content.action = "delete";
     this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
-        this.deletePaymentsByID(salesOrderID.id);
+        this.deleteOrderByID(salesOrderID.id);
       }
     });
   }
 
-  public deletePaymentsByID(id): void {
-    this.toastr.success("Sales Order deleted successfully");
-    //call Delete Api
+  public deleteOrderByID(id): void {
+    this.salesOrderService.deleteSalesById(id).subscribe(
+      (response) => {
+        this.getSalesOrderList();
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error));
+      },
+      () => {
+        this.toastr.success("Sales Order deleted successfully");
+      }
+    );
   }
 }

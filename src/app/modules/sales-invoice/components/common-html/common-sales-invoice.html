@@ -180,7 +180,7 @@
                       #input
                       class="k-textbox"
                       [readonly]="true"
-                      style="width: 150px;"
+                      style="width: 150px; display: inherit;"
                       [formControl]="
                         getInvoiceEntryList.controls[rowIndex].get('ProductName')
                       "
@@ -258,10 +258,12 @@
               <kendo-numerictextbox
                 popupAnchor
                 style="width: 80px;"
+                [format]="'n0'"
+                [min]="1"
                 [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get(column.field)
                 "
-                (change)="changeInvoiceValues(dataItem, rowIndex)"
+                (valueChange)="changeInvoiceValues(dataItem, rowIndex)"
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -301,7 +303,7 @@
                       [formControl]="
               getInvoiceEntryList.controls[rowIndex].get('DiscPercentage')
             "
-                      (change)="changeInvoiceValues(dataItem, rowIndex)"
+                      (valueChange)="changeInvoiceValues(dataItem, rowIndex)"
                     ></kendo-numerictextbox>
                   </div>
                   <div class="form-group">
