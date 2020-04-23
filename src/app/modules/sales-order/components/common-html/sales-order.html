@@ -101,7 +101,7 @@
                       [formControl]="
                         getSalesOrderEntryList.controls[rowIndex].get('ProductCode')
                       "
-                      (change)="handelProductCode(dataItem, rowIndex)"
+                      (change)="handelProductCode(rowIndex)"
                     />
                     <kendo-popup
                       [anchor]="input"
@@ -185,9 +185,12 @@
               <kendo-numerictextbox
                 popupAnchor
                 style="width: 120px;"
+                [format]="'n0'"
+                [min]="1"
                 [formControl]="
               getSalesOrderEntryList.controls[rowIndex].get('Quantity')
             "
+                (valueChange)="changeQuantityValues(rowIndex)"
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -232,6 +235,8 @@
               <kendo-numerictextbox
                 popupAnchor
                 style="width: 120px;"
+                [format]="'n0'"
+                [min]="0"
                 [formControl]="
                   getSalesOrderEntryList.controls[rowIndex].get(
                     'UpdatedQuantity'
@@ -258,6 +263,8 @@
               <kendo-numerictextbox
                 popupAnchor
                 style="width: 120px;"
+                [format]="'n0'"
+                [min]="0"
                 [formControl]="
                   getSalesOrderEntryList.controls[rowIndex].get('PenndingQuantity')
                 "

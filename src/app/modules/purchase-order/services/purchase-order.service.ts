@@ -45,7 +45,7 @@ export class PurchaseOrderService {
 
   getPurchaseOrderMaster(body): Observable<PurchaseOrderNavigateModel> {
     return this.httpService.post(
-      `${this._api_URL}PurchaseInvoiceMaster/navigate`,
+      `${this._api_URL}PurchaseOrderMaster/navigate`,
       body
     );
   }

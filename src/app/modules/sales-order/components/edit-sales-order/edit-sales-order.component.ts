@@ -47,6 +47,7 @@ export class EditSalesOrderComponent implements OnInit {
 
   buildSalesOrderForm(): void {
     this.salesOrderForm = this._fb.group({
+      ID: [this.salesOrderDetail ? this.salesOrderDetail.ID : 0],
       OrderNo: [
         this.salesOrderDetail ? this.salesOrderDetail.OrderNo : "",
         [Validators.required],
@@ -123,7 +124,7 @@ export class EditSalesOrderComponent implements OnInit {
             ProductID: [element.ProductID],
             ProductName: [element.ProductName],
             Quantity: [element.Quantity],
-            SalesRate: [element.SalesOrderID],
+            SalesRate: [element.SalesRate],
             Amount: [element.Amount],
             UpdatedQuantity: [element.UpdatedQuantity],
             PenndingQuantity: [element.PenndingQuantity],
@@ -149,7 +150,16 @@ export class EditSalesOrderComponent implements OnInit {
     return orderFormArray;
   }
 
-  handelProductCode(dataItem, index): void {
+  //Quantity Column value changes
+  changeQuantityValues(index): void {
+    const oederEntryList = <FormArray>this.salesOrderForm.get("OrderDetails");
+    let qunatityValue = oederEntryList.controls[index].get("Quantity").value;
+    let salesRateValue = oederEntryList.controls[index].get("SalesRate").value;
+    let amountC = qunatityValue * salesRateValue;
+    oederEntryList.controls[index].get("Amount").setValue(amountC);
+  }
+
+  handelProductCode(index): void {
     const oederEntryList = <FormArray>this.salesOrderForm.get("OrderDetails");
 
     const productCode = oederEntryList.controls[index].get("ProductCode").value;

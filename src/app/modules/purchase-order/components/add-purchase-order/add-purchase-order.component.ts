@@ -72,6 +72,18 @@ export class AddPurchaseOrderComponent implements OnInit {
     return <FormArray>this.purchaseOrderForm.get("OrderDetails");
   }
 
+  //Quantity Column value changes
+  changeQuantityValues(index): void {
+    const oederEntryList = <FormArray>(
+      this.purchaseOrderForm.get("OrderDetails")
+    );
+    let qunatityValue = oederEntryList.controls[index].get("Quantity").value;
+    let purchaseRateValue = oederEntryList.controls[index].get("PurchaseRate")
+      .value;
+    let amountC = qunatityValue * purchaseRateValue;
+    oederEntryList.controls[index].get("Amount").setValue(amountC);
+  }
+
   handelProductCode(dataItem, index): void {
     const oederEntryList = <FormArray>(
       this.purchaseOrderForm.get("OrderDetails")

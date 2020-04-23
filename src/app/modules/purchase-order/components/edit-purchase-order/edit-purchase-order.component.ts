@@ -51,6 +51,7 @@ export class EditPurchaseOrderComponent implements OnInit {
 
   buildPurchaseOrderForm(): void {
     this.purchaseOrderForm = this._fb.group({
+      ID: [this.purchaseOrderDetail ? this.purchaseOrderDetail.ID : 0],
       OrderNo: [
         this.purchaseOrderDetail ? this.purchaseOrderDetail.OrderNo : "",
         [Validators.required],
@@ -95,6 +96,7 @@ export class EditPurchaseOrderComponent implements OnInit {
           .subscribe((response) => {
             this.purchaseOrderDetail = response.Entity;
             this.buildPurchaseOrderForm();
+            this.setOrderList();
           });
       }
     });
@@ -154,6 +156,18 @@ export class EditPurchaseOrderComponent implements OnInit {
       );
     }
     return orderFormArray;
+  }
+
+  //Quantity Column value changes
+  changeQuantityValues(index): void {
+    const oederEntryList = <FormArray>(
+      this.purchaseOrderForm.get("OrderDetails")
+    );
+    let qunatityValue = oederEntryList.controls[index].get("Quantity").value;
+    let purchaseRateValue = oederEntryList.controls[index].get("PurchaseRate")
+      .value;
+    let amountC = qunatityValue * purchaseRateValue;
+    oederEntryList.controls[index].get("Amount").setValue(amountC);
   }
 
   handelProductCode(dataItem, index): void {

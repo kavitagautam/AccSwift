@@ -71,7 +71,16 @@ export class AddSalesOrderComponent implements OnInit {
     return <FormArray>this.salesOrderForm.get("OrderDetails");
   }
 
-  handelProductCode(dataItem, index): void {
+  //Quantity Column value changes
+  changeQuantityValues(index): void {
+    const oederEntryList = <FormArray>this.salesOrderForm.get("OrderDetails");
+    let qunatityValue = oederEntryList.controls[index].get("Quantity").value;
+    let salesRateValue = oederEntryList.controls[index].get("SalesRate").value;
+    let amountC = qunatityValue * salesRateValue;
+    oederEntryList.controls[index].get("Amount").setValue(amountC);
+  }
+
+  handelProductCode(index): void {
     const oederEntryList = <FormArray>this.salesOrderForm.get("OrderDetails");
 
     const productCode = oederEntryList.controls[index].get("ProductCode").value;
@@ -134,6 +143,7 @@ export class AddSalesOrderComponent implements OnInit {
             data.SalesRate *
               oederEntryList.controls[index].get("Quantity").value
           );
+
         oederEntryList.controls[index].get("UpdatedQuantity").setValue(0);
         oederEntryList.controls[index].get("PenndingQuantity").setValue(0);
       }

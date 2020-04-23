@@ -182,9 +182,12 @@
               <kendo-numerictextbox
                 popupAnchor
                 style="width: 120px;"
+                [format]="'n0'"
+                [min]="1"
                 [formControl]="
               getPurchaseOrderEntryList.controls[rowIndex].get('Quantity')
             "
+                (valueChange)="changeQuantityValues(rowIndex)"
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -229,6 +232,8 @@
               <kendo-numerictextbox
                 popupAnchor
                 style="width: 120px;"
+                [format]="'n0'"
+                [min]="0"
                 [formControl]="
                   getPurchaseOrderEntryList.controls[rowIndex].get(
                     'UpdatedQuantity'
@@ -255,6 +260,8 @@
               <kendo-numerictextbox
                 popupAnchor
                 style="width: 120px;"
+                [format]="'n0'"
+                [min]="0"
                 [formControl]="
                   getPurchaseOrderEntryList.controls[rowIndex].get('PenndingQuantity')
                 "
