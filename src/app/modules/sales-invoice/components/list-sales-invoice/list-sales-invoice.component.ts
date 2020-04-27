@@ -66,7 +66,7 @@ export class ListSalesInvoiceComponent implements OnInit {
       SalesLedgerID: [null],
       DepotID: [null],
       ProjectID: [null],
-      Date: [new Date()],
+      Date: [],
       OrderNo: [""],
     });
   }

@@ -20,69 +20,97 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Series</label>
-                <select class="form-control" formControlName="seriesId">
+                <select class="form-control" formControlName="SeriesID">
                   <option [ngValue]="null">Choose Option....</option>
+                  <option
+                    *ngFor="let series of salesReturnService.seriesList"
+                    [ngValue]="series.ID"
+                  >
+                    {{ series.Name }}
+                  </option>
                 </select>
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Cash/Party/A/C <sup>*</sup></label>
-                <select class="form-control" formControlName="cashPartyACId">
-                  <option [ngValue]="null">Choose Option....</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Date <sup>*</sup></label>
-                <input
+                <label>Cash/ Party /A/C</label>
+                <select
                   class="form-control"
+                  formControlName="CashPartyLedgerID"
+                >
+                  <option [ngValue]="null">Choose Option....</option>
+                  <option
+                    *ngFor="let cashParty of salesReturnService.cashPartyList"
+                    [ngValue]="cashParty.LedgerID"
+                  >
+                    {{ cashParty.LedgerName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Sales /A/C</label>
+                <select class="form-control" formControlName="SalesLedgerID">
+                  <option [ngValue]="null">Choose Option....</option>
+                  <option
+                    *ngFor="
+                      let salesAccount of salesReturnService.salesAccountList
+                    "
+                    [ngValue]="salesAccount.LedgerID"
+                  >
+                    {{ salesAccount.LedgerName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Depot/ Location</label>
+                <select class="form-control" formControlName="DepotID">
+                  <option [ngValue]="null">Choose Option....</option>
+                  <option
+                    *ngFor="let depot of salesReturnService.depotList"
+                    [ngValue]="depot.ID"
+                  >
+                    {{ depot.DepotName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Project</label>
+                <select class="form-control" formControlName="ProjectID">
+                  <option [ngValue]="null">Choose Option....</option>
+                  <option
+                    *ngFor="let project of salesReturnService.projectList"
+                    [ngValue]="project.LedgerID"
+                  >
+                    {{ project.EngName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label>Date</label>
+                <input
                   type="text"
-                  formControlName="date"
+                  class="form-control"
+                  formControlName="Date"
                   bsDatepicker
-                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                 />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Sales A/C<sup>*</sup> </label>
-                <select class="form-control" formControlName="salesACId">
-                  <option [ngValue]="null">Choose Option....</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Depot/Location <sup>*</sup> </label>
-                <select class="form-control" formControlName="depotLocationId">
-                  <option [ngValue]="null">Choose Option....</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Project</label>
-                <select class="form-control" formControlName="projectId">
-                  <option [ngValue]="null">Choose Option....</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Order No. <sup>*</sup></label>
-                <input class="form-control" formControlName="orderNo" />
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Remarks <sup>*</sup></label>
-                <input class="form-control" formControlName="remarks" />
+                <label>Order No.</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="OrderNo"
+                />
               </div>
             </div>
           </form>
@@ -108,6 +136,7 @@
           [filterable]="false"
           [filter]="filter"
           [pageSize]="pageSize"
+          [resizable]="true"
           [skip]="skip"
           [sortable]="{
             allowUnsort: allowUnsort,
@@ -117,37 +146,80 @@
           (sortChange)="sortChange($event)"
           [pageable]="true"
           (pageChange)="pageChange($event)"
-          (filterChange)="filterChange($event)"
         >
+          <kendo-grid-column field="VoucherNo" title="Voucher No" width="80">
+          </kendo-grid-column>
+          <kendo-grid-column title="Product Name" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-sm-12">
+                <span>{{ dataItem.ReturnDetails[0].ProductName }}</span>
+                <a
+                  class="pull-right"
+                  title="More Products..."
+                  (click)="openProductModal(openProductModalPopup, dataItem)"
+                  ><i
+                    class="fa fa-eye pull-right ledgerSelectIcon"
+                    aria-hidden="true"
+                  ></i>
+                </a>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column title="Product Code" width="80">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-sm-12">
+                <span>{{ dataItem.ReturnDetails[0].ProductCode }}</span>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+
           <kendo-grid-column
-            field="ProductName"
-            title="Product Name"
-            width="150"
+            field="CashPartName"
+            title="Cash Party"
+            width="130"
           >
           </kendo-grid-column>
-          <kendo-grid-column field="Quantity" title="Qty" width="80">
-          </kendo-grid-column>
-          <kendo-grid-column field="Unit" title="Unit" width="80">
-          </kendo-grid-column>
-          <kendo-grid-column
-            field="PurchaseRate"
-            title="Purchase Rate"
-            width="80"
-          >
-          </kendo-grid-column>
-          <kendo-grid-column field="Amount" title="Amount" width="120">
-          </kendo-grid-column>
+
           <kendo-grid-column
             field="SpecialDiscount"
-            title="Spl. Disc%"
-            width="150"
+            title="Special Discount"
+            width="70"
           >
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span class="float-right">{{ dataItem.SpecialDiscount }}</span>
+            </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="NetAmount" title="Net Amount" width="150">
+
+          <kendo-grid-column
+            field="TotalAmount"
+            title="Total Amount"
+            width="80"
+          >
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span class="float-right">{{ dataItem.TotalAmount }}</span>
+            </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="VAT" title="VAT" width="80">
+          <kendo-grid-column field="NetAmount" title="Net Amount" width="70">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span class="float-right">{{ dataItem.NetAmount }}</span>
+            </ng-template>
           </kendo-grid-column>
-          <kendo-grid-command-column title="Action" width="150">
+          <kendo-grid-column field="Remarks" title="Remarks" width="80">
+          </kendo-grid-column>
+          <kendo-grid-command-column title="Action" width="120">
             <ng-template
               kendoGridCellTemplate
               let-isNew="isNew"
@@ -177,3 +249,64 @@
     </div>
   </div>
 </div>
+
+<ng-template #openProductModalPopup>
+  <div class="modal-header">
+    <h3 class="modal-title pull-left">Product List</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <kendo-grid
+          [data]="productList"
+          [filterable]="false"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+        >
+          <kendo-grid-column
+            field="ProductName"
+            title="Product Name"
+            width="130"
+          >
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="ProductCode"
+            title="Product Code"
+            width="120"
+          >
+          </kendo-grid-column>
+          <kendo-grid-column field="Quantity" title="Quantity" width="120">
+          </kendo-grid-column>
+          <kendo-grid-column field="Amount" title="Amount" width="130">
+          </kendo-grid-column>
+        </kendo-grid>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="modalRef.hide()">
+      OK
+    </button>
+    <button
+      class="btn btn-secondary ml-2"
+      type="button"
+      (click)="modalRef.hide()"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>

@@ -72,7 +72,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.buildsalesInvoiceForm();
+    this.buildSalesInvoiceForm();
     this.getIdFromRoute();
   }
 
@@ -81,20 +81,26 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  buildsalesInvoiceForm(): void {
+  buildSalesInvoiceForm(): void {
     this.salesInvoiceForm = this._fb.group({
       ID: this.salesDetails ? this.salesDetails.ID : 0,
-      SeriesID: this.salesDetails ? this.salesDetails.SeriesID : "",
-      VoucherNo: [
-        this.salesDetails ? this.salesDetails.VoucherNo : null,
+      SeriesID: [
+        this.salesDetails ? this.salesDetails.SeriesID : null,
         Validators.required,
       ],
-      CashPartyLedgerID: this.salesDetails
-        ? [this.salesDetails.CashPartyLedgerID, [Validators.required]]
-        : null,
+      VoucherNo: [
+        this.salesDetails ? this.salesDetails.VoucherNo : "",
+        Validators.required,
+      ],
+      CashPartyLedgerID: [
+        this.salesDetails ? this.salesDetails.CashPartyLedgerID : null,
+        Validators.required,
+      ],
       SalesLedgerID: [
-        this.salesDetails ? this.salesDetails.SalesLedgerID : null,
-        [Validators.required],
+        [
+          this.salesDetails ? this.salesDetails.SalesLedgerID : null,
+          Validators.required,
+        ],
       ],
       DepotID: [this.salesDetails ? this.salesDetails.DepotID : null],
       ProjectID: [this.salesDetails ? this.salesDetails.ProjectID : null],
@@ -134,7 +140,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
                 this.salesDetails.GrossAmount - this.salesDetails.NetAmount;
               this.grandTotalAmount = this.salesDetails.TotalAmount;
             }
-            this.buildsalesInvoiceForm();
+            this.buildSalesInvoiceForm();
             this.setInvoiceList();
           });
       }
@@ -219,18 +225,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
           this.totalDiscountAmount +
           this.vatTotalAmount +
           this.totalTaxAmount;
-        console.log(
-          "total Qty : " +
-            this.totalQty +
-            "totalGrossAmount :" +
-            this.totalGrossAmount +
-            " Total NetAmount" +
-            this.totalNetAmount +
-            "total discountAmount " +
-            this.totalDiscountAmount +
-            " total vatTotalAmount" +
-            this.vatTotalAmount
-        );
       });
   }
 

@@ -418,7 +418,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       .getRelatedUnits(productCode)
       .subscribe((response) => {
         this.relatedUnits = response.Entity;
-        console.log("Related Units" + JSON.stringify(this.relatedUnits));
       });
   }
 

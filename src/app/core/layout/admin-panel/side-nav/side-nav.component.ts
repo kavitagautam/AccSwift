@@ -73,7 +73,7 @@ export class SideNavComponent implements OnInit {
     },
     {
       id: 3,
-      displayName: "Ledger",
+      displayName: "Chart Of Account",
       iconName: "fas fa-file-invoice-dollar",
       route: "/ledger",
     },
