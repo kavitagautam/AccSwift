@@ -128,7 +128,7 @@ const routes: Routes = [
         path: "ledger",
         loadChildren: "@modules/ledger/ledger.module#LedgerModule",
         data: {
-          breadcrumb: "Ledger",
+          breadcrumb: "Chart Of Account",
         },
       },
       {
