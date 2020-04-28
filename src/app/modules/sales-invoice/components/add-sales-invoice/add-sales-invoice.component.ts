@@ -10,6 +10,8 @@ import { ProductModalPopupComponent } from "@app/shared/components/product-modal
 import { RelatedUnits, CashParty } from "../../models/sales-invoice.model";
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { takeUntil, debounceTime } from "rxjs/operators";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "accSwift-add-sales-invoice",
@@ -26,6 +28,8 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   //Total Calculation
   myFormValueChanges$;
+  private destroyed$ = new Subject<void>();
+
   totalQty: number = 0;
   totalGrossAmount: number = 0;
   totalNetAmount: number = 0;
@@ -67,48 +71,15 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       "InvoiceDetails"
     ].valueChanges;
 
-    this.myFormValueChanges$.subscribe((invoices) => {
-      // console.log("Value change " + JSON.stringify(invoices));
-      let sumQty = 0;
-      let sumNetAmount = 0;
-      let sumGrossAmount = 0;
-      let sumDiscountAmount = 0;
-      let sumTotalDiscountPer = 0;
-      let sumTaxAmount = 0;
-
-      for (let i = 0; i < invoices.length; i++) {
-        if (invoices && invoices[i].Quantity) {
-          sumQty = sumQty + invoices[i].Quantity;
-        }
-        if (invoices && invoices[i].Amount) {
-          sumGrossAmount = sumGrossAmount + invoices[i].Amount;
-        }
-        if (invoices && invoices[i].NetAmount) {
-          sumNetAmount = sumNetAmount + invoices[i].NetAmount;
-        }
-        if (invoices && invoices[i].DiscountAmount) {
-          sumDiscountAmount = sumNetAmount + invoices[i].DiscountAmount;
-        }
-        if (invoices && invoices[i].DiscPercentage) {
-          sumTotalDiscountPer = sumNetAmount + invoices[i].DiscPercentage;
-        }
-
-        if (invoices && invoices[i].TaxAmount) {
-          sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
-        }
-      }
-
-      this.totalQty = sumQty;
-      this.totalGrossAmount = sumGrossAmount;
-      this.totalNetAmount = sumNetAmount;
-      this.totalDiscountAmount = sumDiscountAmount;
-      this.totalDiscountPercentage = sumTotalDiscountPer;
-      this.totalTaxAmount = sumTaxAmount;
-    });
+    this.myFormValueChanges$.subscribe((changes) =>
+      this.invoiceValueChange(changes)
+    );
   }
 
   ngOnDestroy(): void {
     this.myFormValueChanges$.unsubscribe();
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   buildAddSalesInvoiceForm(): void {
@@ -205,6 +176,88 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     return <FormArray>this.salesInvoiceForm.get("InvoiceDetails");
   }
 
+  private invoiceValueChange(value): void {
+    this.salesInvoiceForm.controls["InvoiceDetails"].valueChanges
+      .pipe(takeUntil(this.destroyed$), debounceTime(20))
+      .subscribe((invoices) => {
+        let sumQty = 0;
+        let sumNetAmount = 0;
+        let sumGrossAmount = 0;
+        let sumDiscountAmount = 0;
+        let sumTotalDiscountPer = 0;
+        let sumTaxAmount = 0;
+        for (let i = 0; i < invoices.length; i++) {
+          if (invoices && invoices[i].Quantity) {
+            sumQty = sumQty + invoices[i].Quantity;
+          }
+          if (invoices && invoices[i].Amount) {
+            sumGrossAmount = sumGrossAmount + invoices[i].Amount;
+          }
+          if (invoices && invoices[i].NetAmount) {
+            sumNetAmount = sumNetAmount + invoices[i].NetAmount;
+          }
+          if (invoices && invoices[i].DiscountAmount) {
+            sumDiscountAmount = sumDiscountAmount + invoices[i].DiscountAmount;
+            console.log("discount Amount" + sumDiscountAmount);
+          }
+          if (invoices && invoices[i].DiscPercentage) {
+            sumTotalDiscountPer =
+              sumTotalDiscountPer + invoices[i].DiscPercentage;
+          }
+          if (invoices && invoices[i].TaxAmount) {
+            sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
+          }
+        }
+
+        this.totalQty = sumQty;
+        this.totalGrossAmount = sumGrossAmount;
+        this.totalNetAmount = sumNetAmount;
+        this.totalDiscountAmount = sumDiscountAmount;
+        this.totalDiscountPercentage = sumTotalDiscountPer;
+        this.totalTaxAmount = sumTaxAmount;
+
+        this.vatTotalAmount = this.totalNetAmount * 0.13;
+        this.grandTotalAmount =
+          this.totalGrossAmount -
+          this.totalDiscountAmount +
+          this.vatTotalAmount +
+          this.totalTaxAmount;
+      });
+  }
+
+  //Change Discount Value
+  changeDiscountValue(dataItem, index): void {
+    const invoiceEntryArray = <FormArray>(
+      this.salesInvoiceForm.get("InvoiceDetails")
+    );
+    let discountAmountValue = invoiceEntryArray.controls[index].get(
+      "DiscountAmount"
+    ).value;
+    let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
+
+    let salesRateValue = invoiceEntryArray.controls[index].get("SalesRate")
+      .value;
+
+    let amountC = qunatityValue * salesRateValue;
+    let calculatePercentage = discountAmountValue / amountC;
+    invoiceEntryArray.controls[index]
+      .get("DiscPercentage")
+      .setValue(calculatePercentage);
+    let discountPer = invoiceEntryArray.controls[index].get("DiscPercentage")
+      .value;
+    let discountAmountC = discountPer * amountC;
+
+    discountPer = calculatePercentage;
+    discountAmountC = amountC * discountPer;
+    invoiceEntryArray.controls[index]
+      .get("NetAmount")
+      .setValue(amountC - discountAmountC);
+
+    this.myFormValueChanges$.subscribe((changes) =>
+      this.invoiceValueChange(changes)
+    );
+  }
+
   //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
     const invoiceEntryArray = <FormArray>(
@@ -217,36 +270,21 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       .value;
     let discountPer = invoiceEntryArray.controls[index].get("DiscPercentage")
       .value;
-    let discountAmountValue = invoiceEntryArray.controls[index].get(
-      "DiscountAmount"
-    ).value;
+
     let amountC = qunatityValue * salesRateValue;
     let discountAmountC = discountPer * amountC;
-
-    invoiceEntryArray.controls[index].get("Amount").setValue(amountC);
-
-    // discount Amount Input
-    if (discountAmountValue) {
-      let calculatePercentage = discountAmountValue / amountC;
-      invoiceEntryArray.controls[index]
-        .get("DiscPercentage")
-        .setValue(calculatePercentage);
-      discountPer = calculatePercentage;
-      discountAmountC = amountC * discountPer;
-    }
     invoiceEntryArray.controls[index]
       .get("DiscountAmount")
       .setValue(discountAmountC);
+
+    invoiceEntryArray.controls[index].get("Amount").setValue(amountC);
     invoiceEntryArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
 
-    this.vatTotalAmount = discountAmountC * 0.13;
-    this.grandTotalAmount =
-      this.totalGrossAmount -
-      this.totalDiscountAmount +
-      this.vatTotalAmount +
-      this.totalTaxAmount;
+    this.myFormValueChanges$.subscribe((changes) => {
+      this.invoiceValueChange(changes);
+    });
   }
 
   //tax Change value calculation
@@ -261,6 +299,9 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     invoiceEntryArray.controls[index]
       .get("TaxAmount")
       .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
+    this.myFormValueChanges$.subscribe((changes) =>
+      this.invoiceValueChange(changes)
+    );
   }
 
   // Filterable Cash Party Drop-down
@@ -273,6 +314,10 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   handelProductCode(dataItem, index): void {
     const invoiceEntryArray = <FormArray>(
       this.salesInvoiceForm.get("InvoiceDetails")
+    );
+
+    this.myFormValueChanges$.subscribe((changes) =>
+      this.invoiceValueChange(changes)
     );
 
     const productCode = invoiceEntryArray.controls[index].get("ProductCode")
@@ -303,7 +348,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           invoiceEntryArray.controls[index]
             .get("Amount")
             .setValue(
-              selectedItem[0].SalesRate *
+              invoiceEntryArray.controls[index].get("SalesRate").value *
                 invoiceEntryArray.controls[index].get("Quantity").value
             );
           invoiceEntryArray.controls[index].get("DiscPercentage").setValue(0);
@@ -379,7 +424,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         invoiceEntryArray.controls[index]
           .get("Amount")
           .setValue(
-            data.SalesRate *
+            invoiceEntryArray.controls[index].get("SalesRate").value *
               invoiceEntryArray.controls[index].get("Quantity").value
           );
         invoiceEntryArray.controls[index].get("DiscPercentage").setValue(0);

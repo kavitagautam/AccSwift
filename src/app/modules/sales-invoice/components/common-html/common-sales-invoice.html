@@ -299,6 +299,7 @@
                       [min]="0"
                       style="width: 100px;"
                       [max]="1"
+                      [valuePrimitive]="true"
                       [value]="percentage"
                       [formControl]="
               getInvoiceEntryList.controls[rowIndex].get('DiscPercentage')
@@ -317,7 +318,7 @@
                       [formControl]="
                   getInvoiceEntryList.controls[rowIndex].get('DiscountAmount')
                 "
-                      (change)="changeInvoiceValues(dataItem, rowIndex)"
+                      (change)="changeDiscountValue(dataItem, rowIndex)"
                     >
                     </kendo-numerictextbox>
                   </div>
