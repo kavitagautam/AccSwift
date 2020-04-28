@@ -1,15 +1,19 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { SettingsService } from "../../services/settings.service";
 
 @Component({
   selector: "accSwift-accounts",
   templateUrl: "./accounts.component.html",
-  styleUrls: ["./accounts.component.scss"]
+  styleUrls: ["./accounts.component.scss"],
 })
 export class AccountsComponent implements OnInit {
   accountsForm: FormGroup;
 
-  constructor(private _fb: FormBuilder) {}
+  constructor(
+    private _fb: FormBuilder,
+    private settingService: SettingsService
+  ) {}
 
   ngOnInit() {
     this.buildAccountsForm();
@@ -24,7 +28,7 @@ export class AccountsComponent implements OnInit {
       creditLimit: [""],
       creditors: [""],
       budgetLimit: [""],
-      transaction: [""]
+      transaction: [""],
     });
   }
 }

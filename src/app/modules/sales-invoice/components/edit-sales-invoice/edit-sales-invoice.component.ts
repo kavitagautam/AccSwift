@@ -332,54 +332,64 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.router.navigate(["/sales-invoice"]);
   }
 
-  changeInvoiceValues(dataItem, index): void {
-    this.myFormValueChanges$ = this.salesInvoiceForm.controls[
-      "InvoiceDetails"
-    ].valueChanges;
+  //Change Discount Value
+  changeDiscountValue(dataItem, index): void {
+    const invoiceEntryArray = <FormArray>(
+      this.salesInvoiceForm.get("InvoiceDetails")
+    );
+    let discountAmountValue = invoiceEntryArray.controls[index].get(
+      "DiscountAmount"
+    ).value;
+    let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
+
+    let salesRateValue = invoiceEntryArray.controls[index].get("SalesRate")
+      .value;
+
+    let amountC = qunatityValue * salesRateValue;
+    let calculatePercentage = discountAmountValue / amountC;
+    invoiceEntryArray.controls[index]
+      .get("DiscPercentage")
+      .setValue(calculatePercentage);
+    let discountPer = invoiceEntryArray.controls[index].get("DiscPercentage")
+      .value;
+    let discountAmountC = discountPer * amountC;
+
+    discountPer = calculatePercentage;
+    discountAmountC = amountC * discountPer;
+    invoiceEntryArray.controls[index]
+      .get("NetAmount")
+      .setValue(amountC - discountAmountC);
 
     this.myFormValueChanges$.subscribe((changes) =>
       this.invoiceValueChange(changes)
     );
+  }
 
+  changeInvoiceValues(dataItem, index): void {
     const invoiceEntryArray = <FormArray>(
       this.salesInvoiceForm.get("InvoiceDetails")
     );
+
     let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
 
     let salesRateValue = invoiceEntryArray.controls[index].get("SalesRate")
       .value;
     let discountPer = invoiceEntryArray.controls[index].get("DiscPercentage")
       .value;
-    let discountAmountValue = invoiceEntryArray.controls[index].get(
-      "DiscountAmount"
-    ).value;
     let amountC = qunatityValue * salesRateValue;
     let discountAmountC = discountPer * amountC;
 
-    invoiceEntryArray.controls[index].get("Amount").setValue(amountC);
-
-    // discount Amount Input
-    if (discountAmountValue) {
-      let calculatePercentage = discountAmountValue / amountC;
-      invoiceEntryArray.controls[index]
-        .get("DiscPercentage")
-        .setValue(calculatePercentage);
-      discountPer = calculatePercentage;
-      discountAmountC = amountC * discountPer;
-    }
     invoiceEntryArray.controls[index]
       .get("DiscountAmount")
       .setValue(discountAmountC);
+    invoiceEntryArray.controls[index].get("Amount").setValue(amountC);
     invoiceEntryArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
 
-    this.vatTotalAmount = discountAmountC * 0.13;
-    this.grandTotalAmount =
-      this.totalGrossAmount -
-      this.totalDiscountAmount +
-      this.vatTotalAmount +
-      this.totalTaxAmount;
+    this.myFormValueChanges$.subscribe((changes) => {
+      this.invoiceValueChange(changes);
+    });
   }
 
   handleTaxChange(value, index): void {
@@ -428,7 +438,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
           invoiceEntryArray.controls[index]
             .get("Amount")
             .setValue(
-              selectedItem[0].SalesRate *
+              invoiceEntryArray.controls[index].get("SalesRate").value *
                 invoiceEntryArray.controls[index].get("Quantity").value
             );
           invoiceEntryArray.controls[index].get("DiscPercentage").setValue(0);
@@ -512,7 +522,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         invoiceEntryArray.controls[index]
           .get("Amount")
           .setValue(
-            data.SalesRate *
+            invoiceEntryArray.controls[index].get("SalesRate").value *
               invoiceEntryArray.controls[index].get("Quantity").value
           );
         invoiceEntryArray.controls[index].get("DiscPercentage").setValue(0);
