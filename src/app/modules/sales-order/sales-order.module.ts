@@ -15,6 +15,7 @@ import { ListSalesOrderComponent } from "./components/list-sales-order/list-sale
 import { AddSalesOrderComponent } from "./components/add-sales-order/add-sales-order.component";
 import { EditSalesOrderComponent } from "./components/edit-sales-order/edit-sales-order.component";
 import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
+import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @NgModule({
   declarations: [
@@ -34,6 +35,6 @@ import { ProductModalPopupComponent } from "@app/shared/components/product-modal
     DropDownListModule,
     DropDownsModule,
   ],
-  entryComponents: [ProductModalPopupComponent],
+  entryComponents: [ProductModalPopupComponent, CashPartyModalPopupComponent],
 })
 export class SalesOrderModule {}

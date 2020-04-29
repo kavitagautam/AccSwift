@@ -198,7 +198,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           }
           if (invoices && invoices[i].DiscountAmount) {
             sumDiscountAmount = sumDiscountAmount + invoices[i].DiscountAmount;
-            console.log("discount Amount" + sumDiscountAmount);
           }
           if (invoices && invoices[i].DiscPercentage) {
             sumTotalDiscountPer =

@@ -33,19 +33,32 @@
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <label>Cash/ Party /A/C</label>
-                <select
-                  class="form-control"
-                  formControlName="CashPartyLedgerID"
-                >
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let cashParty of salesReturnService.cashPartyList"
-                    [ngValue]="cashParty.LedgerID"
-                  >
-                    {{ cashParty.LedgerName }}
-                  </option>
-                </select>
+                <div class="col-md-12 p-0">
+                  <div class="col-md-11 pl-0">
+                    <label>Cash/ Party /A/C </label>
+
+                    <kendo-dropdownlist
+                      class="form-control"
+                      [data]="cashPartyList"
+                      [filterable]="true"
+                      [textField]="'LedgerName'"
+                      [valueField]="'LedgerID'"
+                      [valuePrimitive]="true"
+                      [formControl]="salesReturnForm.get('CashPartyLedgerID')"
+                      (filterChange)="cashPartyDDFilter($event)"
+                    >
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="col-md-1 p-0">
+                    <a (click)="openCashPartyModel()"
+                      ><i
+                        class="fa fa-eye pull-right ledgerSelectIcon"
+                        style="margin-top: 25px; font-size: 18px;"
+                        aria-hidden="true"
+                      ></i>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">

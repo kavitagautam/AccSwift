@@ -9,6 +9,8 @@ import { ToastrService } from "ngx-toastr";
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
+import { takeUntil, debounceTime } from "rxjs/operators";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "accSwift-add-sales-return",
@@ -21,6 +23,8 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
   submitted: boolean;
   cashPartyList: CashParty[] = [];
   relatedUnits: RelatedUnits[] = [];
+
+  private destroyed$ = new Subject<void>();
 
   //Total Calculation
   totalQty: number = 0;
@@ -66,43 +70,9 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
       "ReturnDetails"
     ].valueChanges;
 
-    this.myFormValueChanges$.subscribe((returnDetails) => {
-      let sumQty = 0;
-      let sumNetAmount = 0;
-      let sumGrossAmount = 0;
-      let sumDiscountAmount = 0;
-      let sumTotalDiscountPer = 0;
-      let sumTaxAmount = 0;
-
-      for (let i = 0; i < returnDetails.length; i++) {
-        if (returnDetails && returnDetails[i].Quantity) {
-          sumQty = sumQty + returnDetails[i].Quantity;
-        }
-        if (returnDetails && returnDetails[i].Amount) {
-          sumGrossAmount = sumGrossAmount + returnDetails[i].Amount;
-        }
-        if (returnDetails && returnDetails[i].NetAmount) {
-          sumNetAmount = sumNetAmount + returnDetails[i].NetAmount;
-        }
-        if (returnDetails && returnDetails[i].DiscountAmount) {
-          sumDiscountAmount = sumNetAmount + returnDetails[i].DiscountAmount;
-        }
-        if (returnDetails && returnDetails[i].DiscPercentage) {
-          sumTotalDiscountPer = sumNetAmount + returnDetails[i].DiscPercentage;
-        }
-
-        if (returnDetails && returnDetails[i].TaxAmount) {
-          sumTaxAmount = sumTaxAmount + returnDetails[i].TaxAmount;
-        }
-      }
-
-      this.totalQty = sumQty;
-      this.totalGrossAmount = sumGrossAmount;
-      this.totalNetAmount = sumNetAmount;
-      this.totalDiscountAmount = sumDiscountAmount;
-      this.totalDiscountPercentage = sumTotalDiscountPer;
-      this.totalTaxAmount = sumTaxAmount;
-    });
+    this.myFormValueChanges$.subscribe((changes) =>
+      this.returnValueChange(changes)
+    );
   }
 
   ngOnDestroy(): void {
@@ -248,6 +218,87 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
     });
   }
 
+  private returnValueChange(value): void {
+    this.salesReturnForm.controls["ReturnDetails"].valueChanges
+      .pipe(takeUntil(this.destroyed$), debounceTime(20))
+      .subscribe((invoices) => {
+        let sumQty = 0;
+        let sumNetAmount = 0;
+        let sumGrossAmount = 0;
+        let sumDiscountAmount = 0;
+        let sumTotalDiscountPer = 0;
+        let sumTaxAmount = 0;
+        for (let i = 0; i < invoices.length; i++) {
+          if (invoices && invoices[i].Quantity) {
+            sumQty = sumQty + invoices[i].Quantity;
+          }
+          if (invoices && invoices[i].Amount) {
+            sumGrossAmount = sumGrossAmount + invoices[i].Amount;
+          }
+          if (invoices && invoices[i].NetAmount) {
+            sumNetAmount = sumNetAmount + invoices[i].NetAmount;
+          }
+          if (invoices && invoices[i].DiscountAmount) {
+            sumDiscountAmount = sumDiscountAmount + invoices[i].DiscountAmount;
+          }
+          if (invoices && invoices[i].DiscPercentage) {
+            sumTotalDiscountPer =
+              sumTotalDiscountPer + invoices[i].DiscPercentage;
+          }
+          if (invoices && invoices[i].TaxAmount) {
+            sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
+          }
+        }
+
+        this.totalQty = sumQty;
+        this.totalGrossAmount = sumGrossAmount;
+        this.totalNetAmount = sumNetAmount;
+        this.totalDiscountAmount = sumDiscountAmount;
+        this.totalDiscountPercentage = sumTotalDiscountPer;
+        this.totalTaxAmount = sumTaxAmount;
+
+        this.vatTotalAmount = this.totalNetAmount * 0.13;
+        this.grandTotalAmount =
+          this.totalGrossAmount -
+          this.totalDiscountAmount +
+          this.vatTotalAmount +
+          this.totalTaxAmount;
+      });
+  }
+
+  //Change Discount Value
+  changeDiscountValue(dataItem, index): void {
+    const invoiceEntryArray = <FormArray>(
+      this.salesReturnForm.get("ReturnDetails")
+    );
+    let discountAmountValue = invoiceEntryArray.controls[index].get(
+      "DiscountAmount"
+    ).value;
+    let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
+
+    let salesRateValue = invoiceEntryArray.controls[index].get("SalesRate")
+      .value;
+
+    let amountC = qunatityValue * salesRateValue;
+    let calculatePercentage = discountAmountValue / amountC;
+    invoiceEntryArray.controls[index]
+      .get("DiscPercentage")
+      .setValue(calculatePercentage);
+    let discountPer = invoiceEntryArray.controls[index].get("DiscPercentage")
+      .value;
+    let discountAmountC = discountPer * amountC;
+
+    discountPer = calculatePercentage;
+    discountAmountC = amountC * discountPer;
+    invoiceEntryArray.controls[index]
+      .get("NetAmount")
+      .setValue(amountC - discountAmountC);
+
+    this.myFormValueChanges$.subscribe((changes) =>
+      this.returnValueChange(changes)
+    );
+  }
+
   //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
     const returnArray = <FormArray>this.salesReturnForm.get("ReturnDetails");
@@ -263,15 +314,6 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
 
     returnArray.controls[index].get("Amount").setValue(amountC);
 
-    // discount Amount Input
-    if (discountAmountValue) {
-      let calculatePercentage = discountAmountValue / amountC;
-      returnArray.controls[index]
-        .get("DiscPercentage")
-        .setValue(calculatePercentage);
-      discountPer = calculatePercentage;
-      discountAmountC = amountC * discountPer;
-    }
     returnArray.controls[index].get("DiscountAmount").setValue(discountAmountC);
     returnArray.controls[index]
       .get("NetAmount")
@@ -281,12 +323,10 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
     this.salesReturnForm.get("TotalQty").setValue(this.totalQty);
     this.salesReturnForm.get("GrossAmount").setValue(this.totalGrossAmount);
     this.salesReturnForm.get("NetAmount").setValue(this.totalNetAmount);
-    this.vatTotalAmount = discountAmountC * 0.13;
-    this.grandTotalAmount =
-      this.totalGrossAmount -
-      this.totalDiscountAmount +
-      this.vatTotalAmount +
-      this.totalTaxAmount;
+    this.myFormValueChanges$.subscribe((changes) => {
+      this.returnValueChange(changes);
+    });
+
     this.salesReturnForm.get("TotalAmount").setValue(this.grandTotalAmount);
   }
 

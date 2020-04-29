@@ -48,6 +48,10 @@ export class SalesOrderService {
     );
   }
 
+  getCashPartyAccountDD(): Observable<any> {
+    return this.httpService.get(`${this._api_URL}Ledger/cashparty`);
+  }
+
   getSalesOrderDetails(id: any): Observable<SalesOrderDetailModel> {
     return this.httpService.get(`${this._api_URL}SalesOrderMaster/${id}`);
   }
