@@ -306,6 +306,39 @@ export class EditSalesReturnComponent implements OnInit, OnDestroy {
       });
   }
 
+  //Change Discount Value
+  changeDiscountValue(dataItem, index): void {
+    const invoiceEntryArray = <FormArray>(
+      this.salesReturnForm.get("ReturnDetails")
+    );
+    let discountAmountValue = invoiceEntryArray.controls[index].get(
+      "DiscountAmount"
+    ).value;
+    let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
+
+    let salesRateValue = invoiceEntryArray.controls[index].get("SalesRate")
+      .value;
+
+    let amountC = qunatityValue * salesRateValue;
+    let calculatePercentage = discountAmountValue / amountC;
+    invoiceEntryArray.controls[index]
+      .get("DiscPercentage")
+      .setValue(calculatePercentage);
+    let discountPer = invoiceEntryArray.controls[index].get("DiscPercentage")
+      .value;
+    let discountAmountC = discountPer * amountC;
+
+    discountPer = calculatePercentage;
+    discountAmountC = amountC * discountPer;
+    invoiceEntryArray.controls[index]
+      .get("NetAmount")
+      .setValue(amountC - discountAmountC);
+
+    this.myFormValueChanges$.subscribe((changes) =>
+      this.returnValueChange(changes)
+    );
+  }
+
   //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
     const returnArray = <FormArray>this.salesReturnForm.get("ReturnDetails");
@@ -324,26 +357,15 @@ export class EditSalesReturnComponent implements OnInit, OnDestroy {
 
     returnArray.controls[index].get("Amount").setValue(amountC);
 
-    // discount Amount Input
-    if (discountAmountValue) {
-      let calculatePercentage = discountAmountValue / amountC;
-      returnArray.controls[index]
-        .get("DiscPercentage")
-        .setValue(calculatePercentage);
-      discountPer = calculatePercentage;
-      discountAmountC = amountC * discountPer;
-    }
     returnArray.controls[index].get("DiscountAmount").setValue(discountAmountC);
     returnArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
 
-    this.vatTotalAmount = discountAmountC * 0.13;
-    this.grandTotalAmount =
-      this.totalGrossAmount -
-      this.totalDiscountAmount +
-      this.vatTotalAmount +
-      this.totalTaxAmount;
+    this.myFormValueChanges$.subscribe((changes) => {
+      this.returnValueChange(changes);
+    });
+    this.salesReturnForm.get("TotalAmount").setValue(this.grandTotalAmount);
   }
 
   //tax Change value calculation

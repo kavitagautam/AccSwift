@@ -11,7 +11,8 @@ import { FormBuilder } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
-import { SalesOrderList } from "../../models/sales-order.model";
+import { SalesOrderList, CashParty } from "../../models/sales-order.model";
+import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-list-sales-order",
@@ -20,8 +21,9 @@ import { SalesOrderList } from "../../models/sales-order.model";
 })
 export class ListSalesOrderComponent implements OnInit {
   salesOrderForm: FormGroup;
-  date: Date = new Date();
   listLoading: Boolean;
+  cashPartyList: CashParty[] = [];
+
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
   public pageSize = 10;
@@ -55,9 +57,13 @@ export class ListSalesOrderComponent implements OnInit {
     public salesOrderService: SalesOrderService,
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.salesOrderService.getCashPartyAccountDD().subscribe((response) => {
+      this.cashPartyList = response.Entity;
+    });
+  }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildSalesOrderForm();
     this.getSalesOrderList();
   }
@@ -108,12 +114,7 @@ export class ListSalesOrderComponent implements OnInit {
     );
   }
 
-  public filterChange(filter) {
-    this.filter = filter;
-    this.getSalesOrderList();
-  }
-
-  public searchForm() {
+  public searchForm(): void {
     this.searchFilterList = [];
     this.currentPage = 1;
     this.skip = 0;
@@ -145,6 +146,29 @@ export class ListSalesOrderComponent implements OnInit {
 
   public edit(item): void {
     this.router.navigate(["/sales-order/edit", item.ID]);
+  }
+  // Filterable Cash Party Drop-down
+  cashPartyDDFilter(value): void {
+    this.cashPartyList = this.salesOrderService.cashPartyList.filter(
+      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
+  openCashPartyModel(): void {
+    this.modalRef = this.modalService.show(
+      CashPartyModalPopupComponent,
+      this.config
+    );
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe((data) => {
+      if (data) {
+        // Do After the the sucess
+        this.salesOrderForm.get("CashPartyLedgerID").setValue(data.LedgerID);
+      }
+    });
+    this.modalRef.content.onClose.subscribe((data) => {
+      //Do after Close the Modal
+    });
   }
 
   openConfirmationDialogue(dataItem): void {

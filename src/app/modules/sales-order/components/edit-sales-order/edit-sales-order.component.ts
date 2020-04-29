@@ -4,11 +4,12 @@ import { FormBuilder } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
-import { SalesOrderDetail } from "../../models/sales-order.model";
+import { SalesOrderDetail, CashParty } from "../../models/sales-order.model";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-edit-sales-order",
@@ -21,6 +22,7 @@ export class EditSalesOrderComponent implements OnInit {
   submitted: boolean;
   rowSubmitted: boolean;
   salesOrderDetail: SalesOrderDetail;
+  cashPartyList: CashParty[] = [];
 
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -38,7 +40,11 @@ export class EditSalesOrderComponent implements OnInit {
     private toastr: ToastrService,
     private modalService: BsModalService,
     public productCodeMatch: ProductCodeValidatorsService
-  ) {}
+  ) {
+    this.salesOrderService.getCashPartyAccountDD().subscribe((response) => {
+      this.cashPartyList = response.Entity;
+    });
+  }
 
   ngOnInit(): void {
     this.buildSalesOrderForm();
@@ -194,6 +200,30 @@ export class EditSalesOrderComponent implements OnInit {
         );
       });
     }
+  }
+
+  // Filterable Cash Party Drop-down
+  cashPartyDDFilter(value): void {
+    this.cashPartyList = this.salesOrderService.cashPartyList.filter(
+      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
+  openCashPartyModel(): void {
+    this.modalRef = this.modalService.show(
+      CashPartyModalPopupComponent,
+      this.config
+    );
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe((data) => {
+      if (data) {
+        // Do After the the sucess
+        this.salesOrderForm.get("CashPartyLedgerID").setValue(data.LedgerID);
+      }
+    });
+    this.modalRef.content.onClose.subscribe((data) => {
+      //Do after Close the Modal
+    });
   }
 
   openModal(index: number): void {

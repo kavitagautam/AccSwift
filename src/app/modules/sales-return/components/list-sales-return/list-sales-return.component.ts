@@ -11,7 +11,12 @@ import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
-import { SalesReturnList, ReturnDetail } from "../../models/sales-return.model";
+import {
+  SalesReturnList,
+  ReturnDetail,
+  CashParty,
+} from "../../models/sales-return.model";
+import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-list-sales-return",
@@ -21,6 +26,8 @@ import { SalesReturnList, ReturnDetail } from "../../models/sales-return.model";
 export class ListSalesReturnComponent implements OnInit {
   salesReturnForm: FormGroup;
   salesReturnList: SalesReturnList[] = [];
+  cashPartyList: CashParty[] = [];
+
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
   public pageSize = 10;
@@ -54,7 +61,11 @@ export class ListSalesReturnComponent implements OnInit {
     private toastr: ToastrService,
     private modalService: BsModalService,
     public salesReturnService: SalesReturnService
-  ) {}
+  ) {
+    this.salesReturnService.getCashPartyAccountDD().subscribe((response) => {
+      this.cashPartyList = response.Entity;
+    });
+  }
 
   ngOnInit(): void {
     this.buildSalesReturnForm();
@@ -143,6 +154,30 @@ export class ListSalesReturnComponent implements OnInit {
     this.router.navigate(["/sales-return/edit", item.ID]);
   }
 
+  // Filterable Cash Party Drop-down
+  cashPartyDDFilter(value): void {
+    this.cashPartyList = this.salesReturnService.cashPartyList.filter(
+      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
+  openCashPartyModel(): void {
+    this.modalRef = this.modalService.show(
+      CashPartyModalPopupComponent,
+      this.config
+    );
+    this.modalRef.content.action = "Select";
+
+    this.modalRef.content.onSelected.subscribe((data) => {
+      if (data) {
+        // Do After the the sucess
+        this.salesReturnForm.get("CashPartyLedgerID").setValue(data.LedgerID);
+      }
+    });
+    this.modalRef.content.onClose.subscribe((data) => {
+      //Do after Close the Modal
+    });
+  }
   productList: ReturnDetail[] = [];
 
   openProductModal(template: TemplateRef<any>, dataItem): void {
