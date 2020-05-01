@@ -1,11 +1,11 @@
 import { HttpClientService } from "@core/services/http-client/http-client.service";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import {
-  PurchaseInvoiceMaster,
-  SeriesList,
-  ProjectList,
   PurchaseInvoiceNavigateModel,
   PurchaseInvoiceDetailModel,
+  RelatedUnitModel,
+  TaxListModel,
+  TaxList,
 } from "./../models/purchase-invoice.model";
 import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
@@ -16,33 +16,27 @@ import { environment } from "@env/environment";
 })
 export class PurchaseInvoiceService {
   _api_URL = environment.baseAPI;
-  seriesList: SeriesList;
-  projectList: ProjectList;
+  taxList: TaxList[] = [];
+
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
   ) {
-    this.getProjectList();
-    this.getSeriesList();
+    this.getTaxList();
   }
 
-  getProjectList(): void {
+  getTaxList(): void {
     this.httpService
-      .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectList) => {
-        this.projectList = res;
+      .get(`${this._api_URL}Tax/min`)
+      .subscribe((response: TaxListModel) => {
+        this.taxList = response.Entity;
       });
   }
-
-  getSeriesList(): void {
-    const params = new HttpParams().set("VoucherType", "PURCH"); // Series List for Cash Receipt Voucher Type
-    this.httpService
-      .get(`${this._api_URL}series`, null, params)
-      .subscribe((res: SeriesList) => {
-        this.seriesList = res;
-      });
+  getRelatedUnits(id: any): Observable<RelatedUnitModel> {
+    return this.httpService.get(
+      `${this._api_URL}CompoundUnit/RelatedUnits/${id}`
+    );
   }
-
   getPurchaseInvoiceMaster(body): Observable<PurchaseInvoiceNavigateModel> {
     return this.httpService.post(
       `${this._api_URL}PurchaseInvoiceMaster/navigate`,

@@ -2,18 +2,12 @@ import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
-import {
-  SortDescriptor,
-  CompositeFilterDescriptor,
-} from "@progress/kendo-data-query";
+import { SortDescriptor } from "@progress/kendo-data-query";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { PurchaseInvoiceService } from "./../../services/purchase-invoice.service";
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
-import {
-  PurchaseInvoiceList,
-  PurchaseInvoiceDetails,
-} from "../../models/purchase-invoice.model";
+import { PurchaseInvoiceList } from "../../models/purchase-invoice.model";
 
 @Component({
   selector: "accSwift-list-purchase-invoice",
@@ -149,7 +143,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
     this.router.navigate(["/purchase-invoice/edit", item.ID]);
   }
 
-  productList: PurchaseInvoiceDetails[] = [];
+  productList: PurchaseInvoiceList[] = [];
 
   openProductModal(template: TemplateRef<any>, dataItem): void {
     this.productList = dataItem.PurchInvoiceDetails;
