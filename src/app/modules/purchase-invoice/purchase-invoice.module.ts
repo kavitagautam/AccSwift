@@ -12,28 +12,30 @@ import { PopupModule } from "@progress/kendo-angular-popup";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import {
   DropDownListModule,
-  DropDownsModule
+  DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
 import { SharedModule } from "@app/shared/shared.module";
+import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
 
 @NgModule({
   declarations: [
     AddPurchaseInvoiceComponent,
     EditPurchaseInvoiceComponent,
-    ListPurchaseInvoiceComponent
+    ListPurchaseInvoiceComponent,
   ],
   imports: [
     CommonModule,
     PurchaseInvoiceRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    AccswiftFormsModule,
     SharedModule,
     GridModule,
     PopupModule,
     InputsModule,
     DropDownListModule,
-    DropDownsModule
+    DropDownsModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PurchaseInvoiceModule {}

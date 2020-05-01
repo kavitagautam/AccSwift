@@ -1,4 +1,7 @@
-import { PurchaseInvoiceMaster } from "./../../models/purchase-invoice.model";
+import {
+  PurchaseInvoiceMaster,
+  PurchaseInvoiceDetail,
+} from "./../../models/purchase-invoice.model";
 import { PurchaseInvoiceService } from "./../../services/purchase-invoice.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormArray, Validators } from "@angular/forms";
@@ -7,14 +10,14 @@ import { Component, OnInit } from "@angular/core";
 
 @Component({
   selector: "accSwift-edit-purchase-invoice",
-  templateUrl: "./edit-purchase-invoice.component.html",
-  styleUrls: ["./edit-purchase-invoice.component.scss"]
+  templateUrl: "../common-html/purchase-invoice.html",
+  styleUrls: ["./edit-purchase-invoice.component.scss"],
 })
 export class EditPurchaseInvoiceComponent implements OnInit {
-  editPurchaseForm: FormGroup;
+  purchaseInvoiceForm: FormGroup;
   numericFormat: string = "n2";
   public decimals: number = 2;
-  purchaseDetails: PurchaseInvoiceMaster;
+  purchaseDetails: PurchaseInvoiceDetail;
   date: Date = new Date();
   submitted: boolean;
   rowSubmitted: boolean;
@@ -32,37 +35,37 @@ export class EditPurchaseInvoiceComponent implements OnInit {
   }
 
   buildEditInvoiceForm(): void {
-    this.editPurchaseForm = this._fb.group({
+    this.purchaseInvoiceForm = this._fb.group({
       seriesId: this.purchaseDetails ? this.purchaseDetails.SeriesID : null,
       cashPartyACId: this.purchaseDetails
         ? [this.purchaseDetails.CashPartyLedgerID, [Validators.required]]
         : null,
       purchaseAcId: [
-        this.purchaseDetails ? this.purchaseDetails.PurchLedgerID : null
+        this.purchaseDetails ? this.purchaseDetails.PurchaseLedgerID : null,
       ],
       voucherNo: [
         this.purchaseDetails ? this.purchaseDetails.VoucherNo : "",
-        [Validators.required]
+        [Validators.required],
       ],
       partyBillNo: [
-        this.purchaseDetails ? this.purchaseDetails.PartyBillNumber : ""
+        this.purchaseDetails ? this.purchaseDetails.PartyBillNumber : "",
       ],
       depotLocationId: [
         this.purchaseDetails ? this.purchaseDetails.DepotID : null,
-        [Validators.required]
+        [Validators.required],
       ],
       projectId: [this.purchaseDetails ? this.purchaseDetails.ProjectID : null],
       date: [
-        this.purchaseDetails ? new Date(this.purchaseDetails.CreatedDate) : ""
+        this.purchaseDetails ? new Date(this.purchaseDetails.CreatedDate) : "",
       ],
       orderNo: [
         this.purchaseDetails ? this.purchaseDetails.OrderNo : "",
-        [Validators.required]
+        [Validators.required],
       ],
       remarks: [this.purchaseDetails ? this.purchaseDetails.Remarks : ""],
       purchaseInvoiceEntryList: this._fb.array([
-        this.addPurchaseInvoiceEntryList()
-      ])
+        this.addPurchaseInvoiceEntryList(),
+      ]),
     });
   }
 
@@ -82,35 +85,37 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       customDutyAmt: [" "],
       freight: [" "],
       tc: [" "],
-      tcAmount: [""]
+      tcAmount: [""],
     });
   }
 
   getIdFromRoute(): void {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const param = +params.get("id");
       if (param) {
-        this.purchaseService.getPurchaseInvoiceDetails(param).subscribe(res => {
-          this.purchaseDetails = res;
-          this.buildEditInvoiceForm();
-        });
+        this.purchaseService
+          .getPurchaseInvoiceDetails(param)
+          .subscribe((res) => {
+            this.purchaseDetails = res.Entity;
+            this.buildEditInvoiceForm();
+          });
       }
     });
   }
 
   public save(): void {
-    if (this.editPurchaseForm.valid) {
+    if (this.purchaseInvoiceForm.valid) {
       this.router.navigate(["/purchase-invoice"]);
     }
   }
 
   public cancel(): void {
-    this.editPurchaseForm.reset();
+    this.purchaseInvoiceForm.reset();
     this.router.navigate(["/purchase-invoice"]);
   }
 
   get getPurchaseEntryList(): FormArray {
-    return <FormArray>this.editPurchaseForm.get("purchaseInvoiceEntryList");
+    return <FormArray>this.purchaseInvoiceForm.get("purchaseInvoiceEntryList");
   }
 
   private closeEditor(grid, rowIndex = 1): void {
@@ -123,10 +128,10 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     this.submitted = true;
     this.rowSubmitted = true;
     const purchaseInvoiceEntry = <FormArray>(
-      this.editPurchaseForm.get("purchaseInvoiceEntryList")
+      this.purchaseInvoiceForm.get("purchaseInvoiceEntryList")
     );
     if (purchaseInvoiceEntry.invalid) return;
-    (<FormArray>this.editPurchaseForm.get("purchaseInvoiceEntryList")).push(
+    (<FormArray>this.purchaseInvoiceForm.get("purchaseInvoiceEntryList")).push(
       this.addPurchaseInvoiceEntryList()
     );
     this.submitted = false;
@@ -136,7 +141,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }): void {
     this.closeEditor(sender);
     const purchaseInvoiceEntry = <FormArray>(
-      this.editPurchaseForm.get("purchaseInvoiceEntryList")
+      this.purchaseInvoiceForm.get("purchaseInvoiceEntryList")
     );
     purchaseInvoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
     purchaseInvoiceEntry.controls[rowIndex]
@@ -172,14 +177,14 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     this.editedRowIndex = rowIndex;
     sender.editRow(
       rowIndex,
-      this.editPurchaseForm.get("purchaseInvoiceEntryList")
+      this.purchaseInvoiceForm.get("purchaseInvoiceEntryList")
     );
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.editPurchaseForm.get("purchaseInvoiceEntryList")).removeAt(
-      rowIndex
-    );
+    (<FormArray>(
+      this.purchaseInvoiceForm.get("purchaseInvoiceEntryList")
+    )).removeAt(rowIndex);
   }
 
   public cancelHandler({ sender, rowIndex }): void {

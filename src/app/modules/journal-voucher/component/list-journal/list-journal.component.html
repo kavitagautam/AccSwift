@@ -39,7 +39,11 @@
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
+              <accSwift-series-forms
+                formControlName="SeriesID"
+                [voucherType]="'JRNL'"
+              ></accSwift-series-forms>
+              <!-- <div class="form-group">
                 <label for="series">Series</label>
                 <select class="form-control" formControlName="SeriesID">
                   <option [ngValue]="null">Choose Option....</option>
@@ -49,7 +53,7 @@
                     >{{ series.Name }}</option
                   >
                 </select>
-              </div>
+              </div> -->
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">

@@ -1,23 +1,12 @@
 <div class="box box-default">
-  <form [formGroup]="editPurchaseForm" novalidate>
+  <form [formGroup]="purchaseInvoiceForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Series </label>
-            <select
-              class="form-control"
-              id="seriesNameId"
-              formControlName="seriesId"
-            >
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let series of purchaseService.seriesList"
-                [ngValue]="series.ID"
-                >{{ series.EngName }}
-              </option>
-            </select>
-          </div>
+          <accSwift-series-forms
+            formControlName="SeriesID"
+            [voucherType]="'PURCH'"
+          ></accSwift-series-forms>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
@@ -32,7 +21,7 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Date<sup>*</sup> </label>
+            <label>Date<sup>*</sup></label>
             <input
               type="text"
               class="form-control"
@@ -43,7 +32,7 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Cash/Party/A/C<sup>*</sup> </label>
+            <label>Cash/Party/A/C <sup>*</sup></label>
             <select
               class="form-control"
               id="cashAccountNo"
@@ -84,32 +73,20 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Purchase A/C </label> <sup>*</sup>
+            <label>Purchase A/C <sup>*</sup></label>
             <select
               class="form-control"
+              id="purchaseAcId"
               formControlName="purchaseAcId"
-              accSwiftFormValidator
             >
               <option [ngValue]="null">Choose Option....</option>
             </select>
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Project </label>
-            <select
-              class="form-control"
-              id="projectId"
-              formControlName="projectId"
-            >
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let project of purchaseService.projectList"
-                [ngValue]="project.ID"
-                >{{ project.EngName }}
-              </option>
-            </select>
-          </div>
+          <accSwift-project-forms
+            formControlName="ProjectID"
+          ></accSwift-project-forms>
         </div>
       </div>
     </div>
@@ -118,7 +95,7 @@
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Remarks <sup>*</sup></label>
+            <label>Remarks<sup>*</sup></label>
             <input class="form-control" formControlName="remarks" />
           </div>
         </div>
@@ -136,9 +113,9 @@
     </div>
     <div class="col-md-12">
       <div class="box-body">
+        <!-- kendo grid started -->
         <kendo-grid
           [data]="getPurchaseEntryList.value"
-          [resizable]="true"
           (edit)="editHandler($event)"
           (cancel)="cancelHandler($event)"
           (save)="saveHandler($event)"
@@ -159,10 +136,10 @@
               let-rowIndex="rowIndex"
             >
               <input
-                style="width: 120px"
+                style="width: 120px;"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('code')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('code')
+                  "
               />
             </ng-template>
           </kendo-grid-column>
@@ -181,10 +158,10 @@
               let-rowIndex="rowIndex"
             >
               <input
-                style="width: 120px"
+                style="width: 120px;"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('productName')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('productName')
+                  "
               />
             </ng-template>
           </kendo-grid-column>
@@ -200,10 +177,10 @@
               let-rowIndex="rowIndex"
             >
               <input
-                style="width: 120px"
+                style="width: 120px;"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('quantity')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('quantity')
+                  "
               />
             </ng-template>
           </kendo-grid-column>
@@ -221,10 +198,10 @@
               <input
                 #input
                 class="k-textbox"
-                style="width: 130px"
+                style="width: 130px;"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('unit')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('unit')
+                  "
               />
             </ng-template>
           </kendo-grid-column>
@@ -249,8 +226,8 @@
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('purchaseRate')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('purchaseRate')
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -269,8 +246,8 @@
                 popupAnchor
                 style="width: 120px;"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('amount')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('amount')
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -297,8 +274,8 @@
                 [min]="0"
                 [max]="1"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('specialDiscount')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('specialDiscount')
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -323,10 +300,10 @@
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get(
-                    'specialDiscounts'
-                  )
-                "
+                    getPurchaseEntryList.controls[rowIndex].get(
+                      'specialDiscounts'
+                    )
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -347,8 +324,8 @@
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('netAmount')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('netAmount')
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -369,8 +346,8 @@
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('vat')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('vat')
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -397,8 +374,8 @@
                 [min]="0"
                 [max]="1"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('customDuty')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('customDuty')
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -423,8 +400,8 @@
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('customDutyAmt')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('customDutyAmt')
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -445,8 +422,8 @@
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('freight')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('freight')
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -466,8 +443,8 @@
                 style="width: 120px;"
                 class="k-textbox"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('tc')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('tc')
+                  "
               />
             </ng-template>
           </kendo-grid-column>
@@ -487,8 +464,8 @@
                 [decimals]="decimals"
                 [format]="c0"
                 [formControl]="
-                  getPurchaseEntryList.controls[rowIndex].get('tcAmount')
-                "
+                    getPurchaseEntryList.controls[rowIndex].get('tcAmount')
+                  "
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -527,7 +504,7 @@
         class="btn btn-primary"
         (click)="save()"
         accSwiftFormSubmitValidationMsg
-        [validationControl]="editPurchaseForm"
+        [validationControl]="purchaseInvoiceForm"
       >
         Save
       </button>

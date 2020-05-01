@@ -4,6 +4,8 @@ import {
   PurchaseInvoiceMaster,
   SeriesList,
   ProjectList,
+  PurchaseInvoiceNavigateModel,
+  PurchaseInvoiceDetailModel,
 } from "./../models/purchase-invoice.model";
 import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
@@ -41,15 +43,26 @@ export class PurchaseInvoiceService {
       });
   }
 
-  getPurchaseInvoiceMaster(): Observable<PurchaseInvoiceMaster[]> {
-    return this.httpService.get(`${this._api_URL}PurchaseInvoiceMaster`);
+  getPurchaseInvoiceMaster(body): Observable<PurchaseInvoiceNavigateModel> {
+    return this.httpService.post(
+      `${this._api_URL}PurchaseInvoiceMaster/navigate`,
+      body
+    );
   }
 
-  getPurchaseInvoiceDetails(id: any): Observable<PurchaseInvoiceMaster> {
+  getPurchaseInvoiceDetails(id: any): Observable<PurchaseInvoiceDetailModel> {
     return this.httpService.get(`${this._api_URL}PurchaseInvoiceMaster/${id}`);
   }
 
-  deleteInvoiceById(id): Observable<any> {
+  addPurchaseInvoice(body): Observable<any> {
+    return this.httpService.post(`${this._api_URL}PurchaseInvoiceMaster`, body);
+  }
+
+  updatePurchaseInvoice(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}PurchaseInvoiceMaster`, body);
+  }
+
+  deletePurchaseById(id): Observable<any> {
     return this.http.delete(`${this._api_URL}PurchaseInvoiceMaster/${id}`);
   }
 }

@@ -6,11 +6,11 @@ import { Component, OnInit } from "@angular/core";
 
 @Component({
   selector: "accSwift-add-purchase-invoice",
-  templateUrl: "./add-purchase-invoice.component.html",
-  styleUrls: ["./add-purchase-invoice.component.scss"]
+  templateUrl: "../common-html/purchase-invoice.html",
+  styleUrls: ["./add-purchase-invoice.component.scss"],
 })
 export class AddPurchaseInvoiceComponent implements OnInit {
-  addPurchaseForm: FormGroup;
+  purchaseInvoiceForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
   private editedRowIndex: number;
@@ -20,12 +20,12 @@ export class AddPurchaseInvoiceComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildPurchaseInvoiceForm();
   }
 
-  buildPurchaseInvoiceForm() {
-    this.addPurchaseForm = this.fb.group({
+  buildPurchaseInvoiceForm(): void {
+    this.purchaseInvoiceForm = this.fb.group({
       seriesId: [null],
       cashPartyACId: [null, [Validators.required]],
       purchaseAcId: [null],
@@ -36,7 +36,7 @@ export class AddPurchaseInvoiceComponent implements OnInit {
       date: [new Date()],
       orderNo: ["", [Validators.required]],
       remarks: [""],
-      purchaseInvoiceEntryList: this.fb.array([this.addPurchaseEntryList()])
+      purchaseInvoiceEntryList: this.fb.array([this.addPurchaseEntryList()]),
     });
   }
 
@@ -56,23 +56,23 @@ export class AddPurchaseInvoiceComponent implements OnInit {
       customDutyAmt: [""],
       freight: [""],
       tc: [""],
-      tcAmount: [""]
+      tcAmount: [""],
     });
   }
 
   public save(): void {
-    if (this.addPurchaseForm.valid) {
+    if (this.purchaseInvoiceForm.valid) {
       this.router.navigate(["/purchase-invoice"]);
     }
   }
 
   public cancel(): void {
-    this.addPurchaseForm.reset();
+    this.purchaseInvoiceForm.reset();
     this.router.navigate(["/purchase-invoice"]);
   }
 
   get getPurchaseEntryList(): FormArray {
-    return <FormArray>this.addPurchaseForm.get("purchaseInvoiceEntryList");
+    return <FormArray>this.purchaseInvoiceForm.get("purchaseInvoiceEntryList");
   }
 
   private closeEditor(grid, rowIndex = 1) {
@@ -85,10 +85,10 @@ export class AddPurchaseInvoiceComponent implements OnInit {
     this.submitted = true;
     this.rowSubmitted = true;
     const purchaseInvoiceEntry = <FormArray>(
-      this.addPurchaseForm.get("purchaseInvoiceEntryList")
+      this.purchaseInvoiceForm.get("purchaseInvoiceEntryList")
     );
     if (purchaseInvoiceEntry.invalid) return;
-    (<FormArray>this.addPurchaseForm.get("purchaseInvoiceEntryList")).push(
+    (<FormArray>this.purchaseInvoiceForm.get("purchaseInvoiceEntryList")).push(
       this.addPurchaseEntryList()
     );
     this.rowSubmitted = false;
@@ -98,7 +98,7 @@ export class AddPurchaseInvoiceComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     const purchaseInvoiceEntry = <FormArray>(
-      this.addPurchaseForm.get("purchaseInvoiceEntryList")
+      this.purchaseInvoiceForm.get("purchaseInvoiceEntryList")
     );
     purchaseInvoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
     purchaseInvoiceEntry.controls[rowIndex]
@@ -134,14 +134,14 @@ export class AddPurchaseInvoiceComponent implements OnInit {
     this.editedRowIndex = rowIndex;
     sender.editRow(
       rowIndex,
-      this.addPurchaseForm.get("purchaseInvoiceEntryList")
+      this.purchaseInvoiceForm.get("purchaseInvoiceEntryList")
     );
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.addPurchaseForm.get("purchaseInvoiceEntryList")).removeAt(
-      rowIndex
-    );
+    (<FormArray>(
+      this.purchaseInvoiceForm.get("purchaseInvoiceEntryList")
+    )).removeAt(rowIndex);
   }
 
   public cancelHandler({ sender, rowIndex }) {

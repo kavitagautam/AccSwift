@@ -22,6 +22,7 @@ import {
 import { JournalService } from "./services/journal.service";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { NepaliDatepickerModule } from "@lib/nepali-datepicker/src/public-api";
+import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/admin/", ".json");
@@ -38,6 +39,7 @@ export function createTranslateLoader(http: HttpClient) {
     CommonModule,
     SharedModule,
     GridModule,
+    AccswiftFormsModule,
     PopupModule,
     InputsModule,
     DropDownListModule,
