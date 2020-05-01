@@ -10,7 +10,8 @@
       "@modules/*": ["app/modules/*"],
       "@shared/*": ["app/shared/*"],
       "@assets/*": ["assets/*"],
-      "@config/*": ["config/*"]
+      "@config/*": ["config/*"],
+      "@accSwiftForms/*": ["app/modules/accswift-forms/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

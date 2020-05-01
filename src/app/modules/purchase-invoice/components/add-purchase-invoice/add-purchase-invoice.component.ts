@@ -3,76 +3,295 @@ import { PurchaseInvoiceService } from "./../../services/purchase-invoice.servic
 import { FormBuilder, FormArray, Validators } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
+import { Subject } from "rxjs";
+import { takeUntil, debounceTime } from "rxjs/operators";
+import { BsModalService } from "ngx-bootstrap";
+import { ToastrService } from "ngx-toastr";
+import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
 
 @Component({
   selector: "accSwift-add-purchase-invoice",
-  templateUrl: "./add-purchase-invoice.component.html",
-  styleUrls: ["./add-purchase-invoice.component.scss"]
+  templateUrl: "../common-html/purchase-invoice.html",
+  styleUrls: ["./add-purchase-invoice.component.scss"],
 })
 export class AddPurchaseInvoiceComponent implements OnInit {
-  addPurchaseForm: FormGroup;
+  purchaseInvoiceForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
+
+  //Total Calculation
+  myFormValueChanges$;
+
+  private destroyed$ = new Subject<void>();
+  totalQty: number = 0;
+  totalGrossAmount: number = 0;
+  totalNetAmount: number = 0;
+  totalDiscountAmount: number = 0;
+  totalDiscountPercentage: number = 0;
+  totalTaxAmount: number = 0;
+  tenderAmount: number = 0;
+  changeAmount: number = 0;
+  adjustmentAmount: number = 0;
+  vatTotalAmount: number = 0;
+  grandTotalAmount: number = 0;
   private editedRowIndex: number;
   constructor(
-    private fb: FormBuilder,
+    private _fb: FormBuilder,
     public purchaseService: PurchaseInvoiceService,
-    private router: Router
+    private router: Router,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
+    public productCodeMatch: ProductCodeValidatorsService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildPurchaseInvoiceForm();
   }
 
-  buildPurchaseInvoiceForm() {
-    this.addPurchaseForm = this.fb.group({
-      seriesId: [null],
-      cashPartyACId: [null, [Validators.required]],
-      purchaseAcId: [null],
-      voucherNo: ["", [Validators.required]],
-      partyBillNo: [""],
-      depotLocationId: [null, [Validators.required]],
-      projectId: [null],
-      date: [new Date()],
-      orderNo: ["", [Validators.required]],
-      remarks: [""],
-      purchaseInvoiceEntryList: this.fb.array([this.addPurchaseEntryList()])
+  buildPurchaseInvoiceForm(): void {
+    this.purchaseInvoiceForm = this._fb.group({
+      SeriesID: [null],
+      CashPartyLedgerID: [null, [Validators.required]],
+      PurchaseLedgerID: [null],
+      VoucherNo: ["", [Validators.required]],
+      PartyBillNumber: [""],
+      DepotID: [null, [Validators.required]],
+      ProjectID: [null],
+      Date: [new Date()],
+      OrderNo: ["", [Validators.required]],
+      Remarks: [""],
+      PurchInvoiceDetails: this._fb.array([this.addPurchaseInvoiceEntryList()]),
     });
   }
 
-  addPurchaseEntryList(): FormGroup {
-    return this.fb.group({
-      code: [""],
-      productName: [""],
-      quantity: [""],
-      unit: [""],
-      purchaseRate: [""],
-      amount: [""],
-      specialDiscount: [""],
-      specialDiscounts: [""],
-      netAmount: [""],
-      vat: [""],
-      customDuty: [""],
-      customDutyAmt: [""],
-      freight: [""],
-      tc: [""],
-      tcAmount: [""]
+  addPurchaseInvoiceEntryList(): FormGroup {
+    return this._fb.group({
+      ID: [0],
+      ProductName: [""],
+      ProductCode: [""],
+      Quantity: [1],
+      PurchaseRate: [""],
+      Amount: [""],
+      DiscPercentage: [""],
+      DiscountAmount: [""],
+      NetAmount: [""],
+      TaxAmount: [""],
+      VAT: [""],
+      CustomDuty: [""],
+      CustomDutyPercent: [""],
+      Freight: [""],
+      QtyUnitID: [""],
+      TaxID: [null],
     });
   }
 
-  public save(): void {
-    if (this.addPurchaseForm.valid) {
-      this.router.navigate(["/purchase-invoice"]);
+  //Change Discount Value
+  changeDiscountValue(dataItem, index): void {
+    const invoiceEntryArray = <FormArray>(
+      this.purchaseInvoiceForm.get("PurchInvoiceDetails")
+    );
+    let discountAmountValue = invoiceEntryArray.controls[index].get(
+      "DiscountAmount"
+    ).value;
+    let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
+
+    let salesRateValue = invoiceEntryArray.controls[index].get("SalesRate")
+      .value;
+
+    let amountC = qunatityValue * salesRateValue;
+    let calculatePercentage = discountAmountValue / amountC;
+    invoiceEntryArray.controls[index]
+      .get("DiscPercentage")
+      .setValue(calculatePercentage);
+    let discountPer = invoiceEntryArray.controls[index].get("DiscPercentage")
+      .value;
+    let discountAmountC = discountPer * amountC;
+
+    discountPer = calculatePercentage;
+    discountAmountC = amountC * discountPer;
+    invoiceEntryArray.controls[index]
+      .get("NetAmount")
+      .setValue(amountC - discountAmountC);
+
+    this.myFormValueChanges$.subscribe((changes) =>
+      this.invoiceValueChange(changes)
+    );
+  }
+
+  changeInvoiceValues(dataItem, index): void {
+    const invoiceEntryArray = <FormArray>(
+      this.purchaseInvoiceForm.get("PurchInvoiceDetails")
+    );
+
+    let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
+
+    let salesRateValue = invoiceEntryArray.controls[index].get("SalesRate")
+      .value;
+    let discountPer = invoiceEntryArray.controls[index].get("DiscPercentage")
+      .value;
+    let amountC = qunatityValue * salesRateValue;
+    let discountAmountC = discountPer * amountC;
+
+    invoiceEntryArray.controls[index]
+      .get("DiscountAmount")
+      .setValue(discountAmountC);
+    invoiceEntryArray.controls[index].get("Amount").setValue(amountC);
+    invoiceEntryArray.controls[index]
+      .get("NetAmount")
+      .setValue(amountC - discountAmountC);
+
+    this.myFormValueChanges$.subscribe((changes) => {
+      this.invoiceValueChange(changes);
+    });
+  }
+
+  handleTaxChange(value, index): void {
+    const selectedTaxValue = this.purchaseService.taxList.filter(
+      (s) => s.ID === value
+    );
+    const invoiceEntryArray = <FormArray>(
+      this.purchaseInvoiceForm.get("PurchInvoiceDetails")
+    );
+    let netAmountV = invoiceEntryArray.controls[index].get("NetAmount").value;
+    invoiceEntryArray.controls[index]
+      .get("TaxAmount")
+      .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
+  }
+
+  handelProductCode(dataItem, index): void {
+    const invoiceEntryArray = <FormArray>(
+      this.purchaseInvoiceForm.get("PurchInvoiceDetails")
+    );
+
+    const productCode = invoiceEntryArray.controls[index].get("ProductCode")
+      .value;
+    if (
+      invoiceEntryArray.controls[index].get("ProductCode").status === "VALID"
+    ) {
+      this.productCodeMatch.checkProductCode(productCode).subscribe((res) => {
+        const selectedItem = res.Entity;
+        if (selectedItem && selectedItem.length > 0) {
+          invoiceEntryArray.controls[index]
+            .get("ProductCode")
+            .setValue(selectedItem[0].Code);
+          invoiceEntryArray.controls[index]
+            .get("ProductID")
+            .setValue(selectedItem[0].ID);
+          invoiceEntryArray.controls[index]
+            .get("ProductName")
+            .setValue(selectedItem[0].Name);
+          invoiceEntryArray.controls[index].get("Quantity").setValue(1);
+          invoiceEntryArray.controls[index]
+            .get("QtyUnitID")
+            .setValue(selectedItem[0].UnitID);
+          invoiceEntryArray.controls[index]
+            .get("PurchaseRate")
+            .setValue(selectedItem[0].PurchaseRate);
+
+          invoiceEntryArray.controls[index]
+            .get("Amount")
+            .setValue(
+              invoiceEntryArray.controls[index].get("SalesRate").value *
+                invoiceEntryArray.controls[index].get("Quantity").value
+            );
+          invoiceEntryArray.controls[index].get("DiscPercentage").setValue(0);
+          invoiceEntryArray.controls[index]
+            .get("DiscountAmount")
+            .setValue(
+              invoiceEntryArray.controls[index].get("DiscPercentage").value *
+                invoiceEntryArray.controls[index].get("Amount").value
+            );
+          invoiceEntryArray.controls[index]
+            .get("NetAmount")
+            .setValue(
+              invoiceEntryArray.controls[index].get("Amount").value -
+                invoiceEntryArray.controls[index].get("DiscountAmount").value
+            );
+
+          invoiceEntryArray.controls[index].get("TaxID").setValue("");
+          invoiceEntryArray.controls[index].get("TaxAmount").setValue("");
+          invoiceEntryArray.controls[index].get("Remarks").setValue("");
+        }
+
+        (<FormArray>this.purchaseInvoiceForm.get("PurchInvoiceDetails")).push(
+          this.addPurchaseInvoiceEntryList()
+        );
+      });
     }
   }
 
+  private invoiceValueChange(value): void {
+    this.purchaseInvoiceForm.controls["PurchInvoiceDetails"].valueChanges
+      .pipe(takeUntil(this.destroyed$), debounceTime(20))
+      .subscribe((invoices) => {
+        let sumQty = 0;
+        let sumNetAmount = 0;
+        let sumGrossAmount = 0;
+        let sumDiscountAmount = 0;
+        let sumTotalDiscountPer = 0;
+        let sumTaxAmount = 0;
+        for (let i = 0; i < invoices.length; i++) {
+          if (invoices && invoices[i].Quantity) {
+            sumQty = sumQty + invoices[i].Quantity;
+          }
+          if (invoices && invoices[i].Amount) {
+            sumGrossAmount = sumGrossAmount + invoices[i].Amount;
+          }
+          if (invoices && invoices[i].NetAmount) {
+            sumNetAmount = sumNetAmount + invoices[i].NetAmount;
+          }
+          if (invoices && invoices[i].DiscountAmount) {
+            sumDiscountAmount = sumDiscountAmount + invoices[i].DiscountAmount;
+          }
+          if (invoices && invoices[i].DiscPercentage) {
+            sumTotalDiscountPer =
+              sumTotalDiscountPer + invoices[i].DiscPercentage;
+          }
+          if (invoices && invoices[i].TaxAmount) {
+            sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
+          }
+        }
+
+        this.totalQty = sumQty;
+        this.totalGrossAmount = sumGrossAmount;
+        this.totalNetAmount = sumNetAmount;
+        this.totalDiscountAmount = sumDiscountAmount;
+        this.totalDiscountPercentage = sumTotalDiscountPer;
+        this.totalTaxAmount = sumTaxAmount;
+
+        this.vatTotalAmount = this.totalNetAmount * 0.13;
+        this.grandTotalAmount =
+          this.totalGrossAmount -
+          this.totalDiscountAmount +
+          this.vatTotalAmount +
+          this.totalTaxAmount;
+      });
+  }
+
+  public save(): void {
+    if (this.purchaseInvoiceForm.invalid) return;
+    this.purchaseService
+      .addPurchaseInvoice(this.purchaseInvoiceForm.value)
+      .subscribe(
+        (response) => {
+          this.router.navigate(["/purchase-invoice"]);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Invoice added successfully");
+        }
+      );
+  }
+
   public cancel(): void {
-    this.addPurchaseForm.reset();
+    this.purchaseInvoiceForm.reset();
     this.router.navigate(["/purchase-invoice"]);
   }
 
   get getPurchaseEntryList(): FormArray {
-    return <FormArray>this.addPurchaseForm.get("purchaseInvoiceEntryList");
+    return <FormArray>this.purchaseInvoiceForm.get("PurchInvoiceDetails");
   }
 
   private closeEditor(grid, rowIndex = 1) {
@@ -85,11 +304,11 @@ export class AddPurchaseInvoiceComponent implements OnInit {
     this.submitted = true;
     this.rowSubmitted = true;
     const purchaseInvoiceEntry = <FormArray>(
-      this.addPurchaseForm.get("purchaseInvoiceEntryList")
+      this.purchaseInvoiceForm.get("PurchInvoiceDetails")
     );
     if (purchaseInvoiceEntry.invalid) return;
-    (<FormArray>this.addPurchaseForm.get("purchaseInvoiceEntryList")).push(
-      this.addPurchaseEntryList()
+    (<FormArray>this.purchaseInvoiceForm.get("PurchInvoiceDetails")).push(
+      this.addPurchaseInvoiceEntryList()
     );
     this.rowSubmitted = false;
     this.rowSubmitted = false;
@@ -98,7 +317,7 @@ export class AddPurchaseInvoiceComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     const purchaseInvoiceEntry = <FormArray>(
-      this.addPurchaseForm.get("purchaseInvoiceEntryList")
+      this.purchaseInvoiceForm.get("PurchInvoiceDetails")
     );
     purchaseInvoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
     purchaseInvoiceEntry.controls[rowIndex]
@@ -134,12 +353,12 @@ export class AddPurchaseInvoiceComponent implements OnInit {
     this.editedRowIndex = rowIndex;
     sender.editRow(
       rowIndex,
-      this.addPurchaseForm.get("purchaseInvoiceEntryList")
+      this.purchaseInvoiceForm.get("PurchInvoiceDetails")
     );
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.addPurchaseForm.get("purchaseInvoiceEntryList")).removeAt(
+    (<FormArray>this.purchaseInvoiceForm.get("PurchInvoiceDetails")).removeAt(
       rowIndex
     );
   }
