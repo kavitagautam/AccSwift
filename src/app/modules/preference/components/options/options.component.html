@@ -8,9 +8,9 @@
         <div class="col-md-2">
           <label>Default Date: </label>
         </div>
-        <div class="col-md-2 ">
-          <div class="form-group ">
-            <div class="radio  ">
+        <div class="col-md-2">
+          <div class="form-group">
+            <div class="radio">
               <label>
                 <input
                   type="radio"
@@ -25,7 +25,7 @@
         </div>
         <div class="col-md-1">
           <div class="form-group">
-            <div class="radio ">
+            <div class="radio">
               <label>
                 <input
                   type="radio"
@@ -51,9 +51,11 @@
               (change)="dateFormatChange(optionForm.get('dateFormat').value)"
             >
               <option [ngValue]="null">Choose Option..</option>
-              <option *ngFor="let format of sampleFormat">{{
-                format.format
-              }}</option>
+              <option
+                *ngFor="let format of sampleFormat"
+                [ngValue]="format.format"
+                >{{ format.format }}</option
+              >
             </select>
           </div>
         </div>
@@ -72,7 +74,7 @@
     <div class="col-md-6">
       <div class="row">
         <div class="col-md-12">
-          <div class="form-group ">
+          <div class="form-group">
             <label>Number of Decimal Places</label>
             <select class="form-control" formControlName="decimalPlace">
               <option [ngValue]="null">Choose Option...</option>
@@ -87,7 +89,7 @@
         <div class="flex-item">
           <div class="col-md-12">
             <div class="form-group">
-              <div class="checkbox ">
+              <div class="checkbox">
                 <label>
                   <input type="checkbox" name="comma" formControlName="comma" />
                   <label>Comma Seperated numbers</label>
@@ -101,7 +103,7 @@
         <div class="flex-item">
           <div class="col-md-12">
             <div class="form-group">
-              <div class="radio ">
+              <div class="radio">
                 <label>
                   <input
                     type="radio"
@@ -120,7 +122,7 @@
         <div class="flex-item">
           <div class="col-md-12">
             <div class="form-group">
-              <div class="radio ">
+              <div class="radio">
                 <label>
                   <input
                     type="radio"
@@ -184,7 +186,7 @@
 </form>
 <div class="row">
   <div class="col-md-12">
-    <button type="button" class="btn btn-danger  pull-right ml-3">
+    <button type="button" class="btn btn-danger pull-right ml-3">
       Cancel
     </button>
     <button type="button" class="btn btn-primary pull-right ml-3">

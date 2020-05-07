@@ -29,6 +29,8 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   editedRowIndex: any;
   submitted: boolean;
   rowSubmitted: boolean;
+  hideVoucherField: boolean;
+
   relatedUnits: RelatedUnits[] = [];
 
   //Total Calculation
@@ -106,6 +108,13 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       ProjectID: [this.salesDetails ? this.salesDetails.ProjectID : null],
       Date: [this.salesDetails ? new Date(this.salesDetails.CreatedDate) : ""],
       OrderNo: [this.salesDetails ? this.salesDetails.OrderNo : ""],
+      TotalAmount: [this.salesDetails ? this.salesDetails.TotalAmount : 0],
+      TotalQty: [this.salesDetails ? this.salesDetails.TotalQty : 0],
+      GrossAmount: [
+        this.salesDetails ? this.salesDetails.GrossAmount : 0,
+        Validators.required,
+      ],
+      NetAmount: [this.salesDetails ? this.salesDetails.NetAmount : 0],
       Remarks: [this.salesDetails ? this.salesDetails.Remarks : ""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
@@ -310,6 +319,23 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     return invoiceFormArray;
   }
 
+  seriesValueChange(): void {
+    const seriesChange = this.salesInvoiceForm.get("SeriesID").value;
+    this.salesInvoiceService
+      .getVoucherNoWithSeriesChange(seriesChange)
+      .subscribe((response) => {
+        this.salesInvoiceForm.get("VoucherNo").setValue(response.VoucherNO);
+        if (response.IsEnabled) {
+          this.salesInvoiceForm.get("VoucherNo").enable();
+        } else {
+          this.salesInvoiceForm.get("VoucherNo").disable();
+        }
+        if (response.IsHidden) {
+          this.hideVoucherField = true;
+        }
+      });
+  }
+
   public save(): void {
     if (this.salesInvoiceForm.invalid) return;
     this.salesInvoiceService
@@ -390,6 +416,11 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.myFormValueChanges$.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
+
+    this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
+    this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
+    this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
+    this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
   }
 
   handleTaxChange(value, index): void {

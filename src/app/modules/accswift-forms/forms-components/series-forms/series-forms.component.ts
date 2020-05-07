@@ -1,4 +1,4 @@
-import { Component, OnDestroy, forwardRef, Input } from "@angular/core";
+import { Component, OnDestroy, forwardRef, Input, OnInit } from "@angular/core";
 import {
   ControlValueAccessor,
   FormBuilder,
@@ -15,8 +15,8 @@ import { SeriesList } from "../../models/forms-data.model";
   selector: "accSwift-series-forms",
   template: `<div class="form-group">
     <label for="series">Series</label>
-    <select class="form-control" [formControl]="SeriesID">
-      <option [ngValue]="null">Choose Option....</option>
+    <select class="form-control" type="number" [formControl]="SeriesID">
+      <option [value]="null">Choose Option....</option>
       <option *ngFor="let series of seriesList" [value]="series.ID">{{
         series.Name
       }}</option>
@@ -35,37 +35,39 @@ import { SeriesList } from "../../models/forms-data.model";
     },
   ],
 })
-export class SeriesFormsComponent implements ControlValueAccessor, OnDestroy {
-  @Input() voucherType: string;
+export class SeriesFormsComponent
+  implements ControlValueAccessor, OnDestroy, OnInit {
+  @Input("voucherType") voucherType: string;
   subscriptions: Subscription[] = [];
   SeriesID = new FormControl();
   seriesList: SeriesList[];
+  // get value(): number {
+  //   return this.SeriesID.value;
+  // }
 
-  get value(): number {
-    return this.SeriesID.value;
-  }
-
-  set value(value) {
-    this.SeriesID.setValue(value);
-    this.onChange(value);
-    this.onTouched();
-  }
+  // set value(value) {
+  //   this.SeriesID.setValue(value);
+  //   this.onChange(value);
+  //   this.onTouched();
+  // }
 
   constructor(private seriesServices: FormsService) {
+    this.subscriptions.push(
+      this.SeriesID.valueChanges.subscribe((value: number) => {
+        this.registerOnChange(value);
+
+        //   this.onChange(value);
+        this.onTouched();
+      })
+    );
+  }
+  ngOnInit(): void {
     this.seriesServices
       .getSeriesList(this.voucherType)
       .subscribe((response) => {
         this.seriesList = response.Entity;
       });
-
-    this.subscriptions.push(
-      this.SeriesID.valueChanges.subscribe((value) => {
-        this.onChange(value);
-        this.onTouched();
-      })
-    );
   }
-
   ngOnDestroy() {
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
@@ -73,21 +75,20 @@ export class SeriesFormsComponent implements ControlValueAccessor, OnDestroy {
   onChange: any = () => {};
   onTouched: any = () => {};
 
-  registerOnChange(fn) {
+  registerOnChange(fn: number) {
     this.onChange = fn;
   }
 
-  writeValue(value) {
+  writeValue(value: number) {
     if (value) {
-      this.value = value;
+      this.SeriesID.setValue(value);
     }
-
-    if (value === null) {
-      this.SeriesID.reset();
-    }
+    // if (value === null) {
+    //   this.SeriesID.reset();
+    // }
   }
 
-  registerOnTouched(fn) {
+  registerOnTouched(fn: number) {
     this.onTouched = fn;
   }
 

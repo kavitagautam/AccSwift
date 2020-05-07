@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "@env/environment";
-import { SettingsDataModel } from "../models/settings.model";
+import { SettingsModel } from "../models/settings.model";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -15,7 +15,7 @@ export class SettingsService {
     private http: HttpClient
   ) {}
 
-  getSettings(): Observable<SettingsDataModel> {
+  getSettings(): Observable<SettingsModel> {
     return this.httpService.get(`${this._api_URL}Settings`);
   }
 }

@@ -15,9 +15,9 @@ export class FormsService {
     private httpService: HttpClientService
   ) {}
 
-  getSeriesList(VouchetType): Observable<SeriesListModel> {
-    const params = new HttpParams().set("VouchetType", VouchetType);
-    return this.httpService.get(`${this._api_URL}series/journal`, null, params);
+  getSeriesList(voucherType): Observable<SeriesListModel> {
+    const params = new HttpParams().set("VoucherType", voucherType);
+    return this.httpService.get(`${this._api_URL}Series`, null, params);
   }
 
   getProjectLists(): Observable<ProjectListModel> {

@@ -1,42 +1,68 @@
 <h3>Accounts</h3>
-<div class="col-md-6">
-  <fieldset>
-    <legend>Cash Account</legend>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Default Cash Account</label>
-          <select class="form-control">
-            <option>Cash in Hand</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </fieldset>
-</div>
-<div class="col-md-6">
-  <fieldset>
-    <legend>Bank Account</legend>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Default Bank Account</label>
-          <select class="form-control">
-            <option></option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </fieldset>
-</div>
+<form [formGroup]="accountFroms" novalidate>
+  <div class="col-md-6">
+    {{ accountFroms.getRawValue() | json }}
+    <fieldset>
+      <legend>Cash Account</legend>
 
-<div class="row">
-  <div class="col-md-12">
-    <button type="button" class="btn btn-danger  pull-right ml-3">
-      Cancel
-    </button>
-    <button type="button" class="btn btn-primary pull-right ml-3">
-      Save
-    </button>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Cash Account</label>
+
+            <select
+              class="form-control"
+              id="cashAccountNo"
+              formControlName="CashAccount"
+              accSwiftFormValidator
+            >
+              <option [ngValue]="null">Choose option... </option>
+              <option
+                *ngFor="let cashAccount of cashAccountLists"
+                [ngValue]="cashAccount.LedgerID"
+              >
+                {{ cashAccount.LedgerName }}</option
+              >
+            </select>
+          </div>
+        </div>
+      </div>
+    </fieldset>
   </div>
-</div>
+  <div class="col-md-6">
+    <fieldset>
+      <legend>Bank Account</legend>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Bank Account</label>
+            <select
+              class="form-control"
+              formControlName="BankAccount"
+              accSwiftFormValidator
+            >
+              <option [ngValue]="null">Choose Option....</option>
+              <option
+                *ngFor="let account of bankAccountLists"
+                [ngValue]="account.LedgerID"
+              >
+                {{ account.LedgerName }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-danger pull-right ml-3">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-primary pull-right ml-3">
+        Save
+      </button>
+    </div>
+  </div>
+</form>

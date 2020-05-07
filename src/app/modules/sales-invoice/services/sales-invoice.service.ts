@@ -97,6 +97,15 @@ export class SalesInvoiceService {
     return this.httpService.get(`${this._api_URL}Ledger/cashparty`);
   }
 
+  getVoucherNoWithSeriesChange(seriesId): Observable<any> {
+    const params = new HttpParams().set("SeriesID", seriesId);
+    return this.httpService.get(
+      `${this._api_URL}Series/VoucherNo`,
+      null,
+      params
+    );
+  }
+
   getRelatedUnits(id: any): Observable<RelatedUnitModel> {
     return this.httpService.get(
       `${this._api_URL}CompoundUnit/RelatedUnits/${id}`

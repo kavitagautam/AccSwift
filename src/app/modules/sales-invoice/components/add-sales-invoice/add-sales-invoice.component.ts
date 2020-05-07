@@ -12,6 +12,7 @@ import { ProductCodeValidatorsService } from "@app/shared/validators/async-valid
 import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
+import { PreferenceService } from "@app/modules/preference/services/preference.service";
 
 @Component({
   selector: "accSwift-add-sales-invoice",
@@ -22,6 +23,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   salesInvoiceForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
+  hideVoucherField: boolean;
   private editedRowIndex: number;
   relatedUnits: RelatedUnits[] = [];
   cashPartyList: CashParty[] = [];
@@ -57,7 +59,8 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     public salesInvoiceService: SalesInvoiceService,
     private toastr: ToastrService,
     private modalService: BsModalService,
-    public productCodeMatch: ProductCodeValidatorsService
+    public productCodeMatch: ProductCodeValidatorsService,
+    private preferenceService: PreferenceService
   ) {
     this.salesInvoiceService.getCashPartyAccountDD().subscribe((response) => {
       this.cashPartyList = response.Entity;
@@ -71,9 +74,9 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       "InvoiceDetails"
     ].valueChanges;
 
-    this.myFormValueChanges$.subscribe((changes) =>
-      this.invoiceValueChange(changes)
-    );
+    this.myFormValueChanges$.subscribe((changes) => {
+      this.invoiceValueChange(changes);
+    });
   }
 
   ngOnDestroy(): void {
@@ -88,10 +91,18 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       CashPartyLedgerID: [null],
       VoucherNo: [null, Validators.required],
       SalesLedgerID: [null],
-      DepotID: [null],
+      DepotID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_DEPOT.Value
+          : null,
+      ],
       ProjectID: [null, Validators.required],
       Date: [new Date()],
       OrderNo: [""],
+      TotalAmount: [0, Validators.required],
+      TotalQty: [0, Validators.required],
+      GrossAmount: [0, Validators.required],
+      NetAmount: [0, Validators.required],
       Remarks: [""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
@@ -148,6 +159,23 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         this.tenderForm.get("tenderAmount").value;
       this.tenderForm.get("returnAmount").setValue(paidA.toFixed(2));
     });
+  }
+
+  seriesValueChange(): void {
+    const seriesChange = this.salesInvoiceForm.get("SeriesID").value;
+    this.salesInvoiceService
+      .getVoucherNoWithSeriesChange(seriesChange)
+      .subscribe((response) => {
+        this.salesInvoiceForm.get("VoucherNo").setValue(response.VoucherNO);
+        if (response.IsEnabled) {
+          this.salesInvoiceForm.get("VoucherNo").enable();
+        } else {
+          this.salesInvoiceForm.get("VoucherNo").disable();
+        }
+        if (response.IsHidden) {
+          this.hideVoucherField = true;
+        }
+      });
   }
 
   public save(): void {
@@ -284,6 +312,11 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.myFormValueChanges$.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
+
+    this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
+    this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
+    this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
+    this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
   }
 
   //tax Change value calculation
