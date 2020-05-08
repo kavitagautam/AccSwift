@@ -61,7 +61,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
   buildEditInvoiceForm(): void {
     this.purchaseInvoiceForm = this._fb.group({
       ID: [this.purchaseDetails ? this.purchaseDetails.ID : null],
-      SeriesID: [this.purchaseDetails ? this.purchaseDetails.SeriesID : null],
+      SeriesID: [this.purchaseDetails ? this.purchaseDetails.SeriesID : 279],
       CashPartyLedgerID: this.purchaseDetails
         ? [this.purchaseDetails.CashPartyLedgerID, [Validators.required]]
         : null,
@@ -87,6 +87,15 @@ export class EditPurchaseInvoiceComponent implements OnInit {
         this.purchaseDetails ? this.purchaseDetails.OrderNo : "",
         [Validators.required],
       ],
+      TotalAmount: [
+        this.purchaseDetails ? this.purchaseDetails.TotalAmount : 0,
+      ],
+      TotalQty: [this.purchaseDetails ? this.purchaseDetails.TotalQty : 0],
+      GrossAmount: [
+        this.purchaseDetails ? this.purchaseDetails.GrossAmount : 0,
+        Validators.required,
+      ],
+      NetAmount: [this.purchaseDetails ? this.purchaseDetails.NetAmount : 0],
       Remarks: [this.purchaseDetails ? this.purchaseDetails.Remarks : ""],
       PurchInvoiceDetails: this._fb.array([this.addPurchaseInvoiceEntryList()]),
     });
@@ -104,9 +113,9 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       DiscountAmount: [""],
       NetAmount: [""],
       TaxAmount: [""],
-      VAT: [""],
+      VAT: [0],
       CustomDuty: [""],
-      CustomDutyPercent: [""],
+      CustomDutyPercent: [0],
       Freight: [""],
       QtyUnitID: [null],
       TaxID: [null],
@@ -152,17 +161,21 @@ export class EditPurchaseInvoiceComponent implements OnInit {
               null,
               this.productCodeMatch.productCodeMatch(),
             ],
-            ProductName: [element.ProductName, Validators.required],
-            ProductID: [element.ProductID, Validators.required],
-            Quantity: [element.Quantity, Validators.required],
-            QtyUnitID: [element.QtyUnitID, Validators.required],
-            PurchaseRate: [element.PurchaseRate, Validators.required],
-            Amount: [element.Amount, Validators.required],
-            DiscPercentage: [element.DiscPercentage, Validators.required],
-            DiscountAmount: [element.DiscountAmount, Validators.required],
-            NetAmount: [element.NetAmount, Validators.required],
-            TaxID: [element.TaxID],
+            ProductName: [element.ProductName],
+            ProductID: [element.ProductID],
+            Quantity: [element.Quantity],
+            QtyUnitID: [element.QtyUnitID],
+            PurchaseRate: [element.PurchaseRate],
+            Amount: [element.Amount],
+            DiscPercentage: [element.DiscPercentage],
+            DiscountAmount: [element.DiscountAmount],
+            NetAmount: [element.NetAmount],
             TaxAmount: [element.TaxAmount],
+            Vat: [element.Vat],
+            CustomDuty: [element.CustomDuty],
+            CustomDutyPercent: [element.CustomDutyPercent],
+            Freight: [""],
+            TaxID: [element.TaxID],
             Remarks: [element.Remarks],
           })
         );
@@ -172,19 +185,21 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       invoiceFormArray.push(
         this._fb.group({
           ID: [0],
-          ProductCode: ["", null, this.productCodeMatch.productCodeMatch()],
-          ProductName: ["", Validators.required],
-          ProductID: [null, Validators.required],
-          Quantity: [1, Validators.required],
-          QtyUnitID: [null, Validators.required],
-          PurchaseRate: ["", Validators.required],
-          Amount: ["", Validators.required],
-          DiscPercentage: [0, Validators.required],
-          DiscountAmount: [0, Validators.required],
-          NetAmount: [0, Validators.required],
-          TaxID: [null],
+          ProductName: [""],
+          ProductCode: [""],
+          Quantity: [1],
+          PurchaseRate: [""],
+          Amount: [""],
+          DiscPercentage: [""],
+          DiscountAmount: [""],
+          NetAmount: [""],
           TaxAmount: [""],
-          Remarks: [""],
+          VAT: [0],
+          CustomDuty: [""],
+          CustomDutyPercent: [0],
+          Freight: [""],
+          QtyUnitID: [null],
+          TaxID: [null],
         })
       );
     }
@@ -192,6 +207,9 @@ export class EditPurchaseInvoiceComponent implements OnInit {
   }
 
   public save(): void {
+    console.log(
+      "this value" + JSON.stringify(this.purchaseInvoiceForm.getRawValue())
+    );
     if (this.purchaseInvoiceForm.invalid) return;
     this.purchaseService
       .updatePurchaseInvoice(this.purchaseInvoiceForm.value)
@@ -275,6 +293,11 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     this.myFormValueChanges$.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
+
+    this.purchaseInvoiceForm.get("TotalQty").setValue(this.totalQty);
+    this.purchaseInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
+    this.purchaseInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
+    this.purchaseInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
   }
 
   handleTaxChange(value, index): void {
@@ -431,37 +454,43 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     const purchaseInvoiceEntry = <FormArray>(
       this.purchaseInvoiceForm.get("PurchInvoiceDetails")
     );
-    purchaseInvoiceEntry.controls[rowIndex].get("code").setValue(dataItem.code);
     purchaseInvoiceEntry.controls[rowIndex]
-      .get("productName")
-      .setValue(dataItem.productName);
+      .get("ProductCode")
+      .setValue(dataItem.ProductCode);
     purchaseInvoiceEntry.controls[rowIndex]
-      .get("quantity")
-      .setValue(dataItem.quantity);
-    purchaseInvoiceEntry.controls[rowIndex].get("unit").setValue(dataItem.unit);
+      .get("ProductName")
+      .setValue(dataItem.ProductName);
     purchaseInvoiceEntry.controls[rowIndex]
-      .get("purchaseRate")
+      .get("Quantity")
+      .setValue(dataItem.Quantity);
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("QtyUnitID")
+      .setValue(dataItem.QtyUnitID);
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("PurchaseRate")
       .setValue(dataItem.purchaseRate);
     purchaseInvoiceEntry.controls[rowIndex]
-      .get("amount")
+      .get("Amount")
       .setValue(dataItem.amount);
     purchaseInvoiceEntry.controls[rowIndex]
-      .get("specialDiscount")
-      .setValue(dataItem.specialDiscount);
+      .get("DiscPercentage")
+      .setValue(dataItem.DiscPercentage);
     purchaseInvoiceEntry.controls[rowIndex]
-      .get("specialDiscounts")
-      .setValue(dataItem.specialDiscounts);
-    purchaseInvoiceEntry.controls[rowIndex].get("vat").setValue(dataItem.vat);
+      .get("DiscountAmount")
+      .setValue(dataItem.DiscountAmount);
+    purchaseInvoiceEntry.controls[rowIndex].get("Vat").setValue(dataItem.Vat);
     purchaseInvoiceEntry.controls[rowIndex]
-      .get("customDuty")
-      .setValue(dataItem.customDuty);
+      .get("CustomDuty")
+      .setValue(dataItem.CustomDuty);
     purchaseInvoiceEntry.controls[rowIndex]
-      .get("freight")
-      .setValue(dataItem.freight);
-    purchaseInvoiceEntry.controls[rowIndex].get("tc").setValue(dataItem.tc);
+      .get("Freight")
+      .setValue(dataItem.Freight);
     purchaseInvoiceEntry.controls[rowIndex]
-      .get("tcAmount")
-      .setValue(dataItem.tcAmount);
+      .get("CustomDutyPercent")
+      .setValue(dataItem.CustomDutyPercent);
+    purchaseInvoiceEntry.controls[rowIndex]
+      .get("TaxID")
+      .setValue(dataItem.TaxID);
     this.editedRowIndex = rowIndex;
     sender.editRow(
       rowIndex,

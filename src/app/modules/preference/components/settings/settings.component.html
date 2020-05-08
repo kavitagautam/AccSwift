@@ -1,57 +1,89 @@
 <h3>Settings</h3>
-<div class="col-md-6">
-  <fieldset>
-    <legend>Purchase Account</legend>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Default Purchase Account</label>
-          <select class="form-control">
-            <option>Purchase A/C</option>
-          </select>
+<form [formGroup]="settingForms" novalidate>
+  <div class="col-md-6">
+    <fieldset>
+      <legend>Purchase Account</legend>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Purchase Account</label>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_PURCHASE_ACCOUNT"
+              accSwiftFormValidator
+            >
+              <option [ngValue]="null">Choose Option....</option>
+              <option
+                *ngFor="let purchAcc of purchaseAccountList"
+                [ngValue]="purchAcc.LedgerID"
+              >
+                {{ purchAcc.LedgerName }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
-    </div>
-  </fieldset>
-</div>
-<div class="col-md-6">
-  <fieldset>
-    <legend>Sales Account</legend>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Default Sales Account</label>
-          <select class="form-control">
-            <option>Sales A/C</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </fieldset>
-</div>
-<div class="col-md-6">
-  <fieldset>
-    <legend>Accounting Class</legend>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Default Accounting Class</label>
-          <select class="form-control">
-            <option>ROOT</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </fieldset>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-    <button type="button" class="btn btn-danger  pull-right ml-3">
-      Cancel
-    </button>
-    <button type="button" class="btn btn-primary pull-right ml-3">
-      Save
-    </button>
+    </fieldset>
   </div>
-</div>
+  <div class="col-md-6">
+    <fieldset>
+      <legend>Sales Account</legend>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Sales Account</label>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SALES_ACCOUNT"
+              accSwiftFormValidator
+            >
+              <option [ngValue]="null">Choose Option....</option>
+              <option
+                *ngFor="let salesAccount of salesAccountList"
+                [ngValue]="salesAccount.LedgerID"
+              >
+                {{ salesAccount.LedgerName }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <div class="col-md-6">
+    <fieldset>
+      <legend>Accounting Class</legend>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Default Accounting Class</label>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_ACC_CLASS"
+              accSwiftFormValidator
+            >
+              <option [ngValue]="null">Choose Option....</option>
+              <option
+                *ngFor="let accClass of accountClassList"
+                [ngValue]="accClass.ID"
+              >
+                {{ accClass.Name }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-danger pull-right ml-3">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-primary pull-right ml-3">
+        Save
+      </button>
+    </div>
+  </div>
+</form>

@@ -1,17 +1,20 @@
 import { Component, OnInit } from "@angular/core";
+import { PreferenceService } from "../services/preference.service";
 
 @Component({
   selector: "accSwift-preference",
   templateUrl: "./preference.component.html",
-  styleUrls: ["./preference.component.scss"]
+  styleUrls: ["./preference.component.scss"],
 })
 export class PreferenceComponent implements OnInit {
   private toggler = document.getElementsByClassName("boxes");
   nodeName: string;
 
-  constructor() {}
+  constructor(private preferenceService: PreferenceService) {
+    this.preferenceService.getPerference();
+  }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildMenuItem();
     this.nodeName = "options";
   }
@@ -22,7 +25,7 @@ export class PreferenceComponent implements OnInit {
 
   buildMenuItem(): void {
     for (let i = 0; i < this.toggler.length; i++) {
-      this.toggler[i].addEventListener("click", function() {
+      this.toggler[i].addEventListener("click", function () {
         this.parentElement.querySelector(".nested").classList.toggle("active");
         this.classList.toggle("check-boxes");
       });

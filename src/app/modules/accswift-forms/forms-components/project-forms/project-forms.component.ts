@@ -38,15 +38,15 @@ export class ProjectFormsComponent implements ControlValueAccessor, OnDestroy {
   ProjectID = new FormControl();
   projectList: ProjectList[];
 
-  get value(): number {
-    return this.ProjectID.value;
-  }
+  // get value(): number {
+  //   return this.ProjectID.value;
+  // }
 
-  set value(value) {
-    this.ProjectID.setValue(value);
-    this.onChange(value);
-    this.onTouched();
-  }
+  // set value(value) {
+  //   this.ProjectID.setValue(value);
+  //   this.onChange(value);
+  //   this.onTouched();
+  // }
 
   constructor(private formService: FormsService) {
     this.formService.getProjectLists().subscribe((response) => {
@@ -54,8 +54,9 @@ export class ProjectFormsComponent implements ControlValueAccessor, OnDestroy {
     });
 
     this.subscriptions.push(
-      this.ProjectID.valueChanges.subscribe((value) => {
-        this.onChange(value);
+      this.ProjectID.valueChanges.subscribe((value: number) => {
+        //  this.onChange(value);
+        this.registerOnChange(value);
         this.onTouched();
       })
     );
@@ -68,13 +69,13 @@ export class ProjectFormsComponent implements ControlValueAccessor, OnDestroy {
   onChange: any = () => {};
   onTouched: any = () => {};
 
-  registerOnChange(fn) {
+  registerOnChange(fn: number) {
     this.onChange = fn;
   }
 
-  writeValue(value) {
+  writeValue(value: number) {
     if (value) {
-      this.value = value;
+      this.ProjectID.setValue(value);
     }
 
     if (value === null) {
