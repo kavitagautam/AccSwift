@@ -47,12 +47,12 @@ export class AccountsComponent implements OnInit {
 
   buildAccountForms(): void {
     this.accountFroms = this._fb.group({
-      CashAccount: [
+      DEFAULT_CASH_ACCOUNT: [
         this.preferenceList
           ? this.preferenceList.DEFAULT_CASH_ACCOUNT.Value
           : null,
       ],
-      BankAccount: [
+      DEFAULT_BANK_ACCOUNT: [
         this.preferenceList
           ? this.preferenceList.DEFAULT_BANK_ACCOUNT.Value
           : null,

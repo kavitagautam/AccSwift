@@ -88,15 +88,28 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   buildAddSalesInvoiceForm(): void {
     this.salesInvoiceForm = this._fb.group({
       SeriesID: ["", Validators.required],
-      CashPartyLedgerID: [null],
+      CashPartyLedgerID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_CASH_ACCOUNT.Value
+          : null,
+      ],
       VoucherNo: [null, Validators.required],
-      SalesLedgerID: [null],
+      SalesLedgerID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SALES_ACCOUNT.Value
+          : null,
+      ],
       DepotID: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_DEPOT.Value
           : null,
       ],
-      ProjectID: [null, Validators.required],
+      ProjectID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+          : null,
+        Validators.required,
+      ],
       Date: [new Date()],
       OrderNo: [""],
       TotalAmount: [0, Validators.required],

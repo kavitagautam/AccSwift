@@ -1,7 +1,6 @@
 <h3>Accounts</h3>
 <form [formGroup]="accountFroms" novalidate>
   <div class="col-md-6">
-    {{ accountFroms.getRawValue() | json }}
     <fieldset>
       <legend>Cash Account</legend>
 
@@ -13,7 +12,7 @@
             <select
               class="form-control"
               id="cashAccountNo"
-              formControlName="CashAccount"
+              formControlName="DEFAULT_CASH_ACCOUNT"
               accSwiftFormValidator
             >
               <option [ngValue]="null">Choose option... </option>
@@ -38,7 +37,7 @@
             <label>Bank Account</label>
             <select
               class="form-control"
-              formControlName="BankAccount"
+              formControlName="DEFAULT_BANK_ACCOUNT"
               accSwiftFormValidator
             >
               <option [ngValue]="null">Choose Option....</option>

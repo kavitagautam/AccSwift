@@ -202,11 +202,49 @@ export interface BankAccountsModel {
   Entity: BankAccounts[];
 }
 
+export interface SalesAccounts {
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  GroupID: number;
+}
+
+export interface SalesAccountModel {
+  StatusCode: number;
+  Message: string;
+  Entity: SalesAccounts[];
+}
+
+export interface PurchaseAccount {
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  GroupID: number;
+}
+
+export interface PurchaseAccountModel {
+  StatusCode: number;
+  Message: string;
+  Entity: PurchaseAccount[];
+}
 export interface BankAccounts {
   LedgerID: number;
   LedgerCode: string;
   LedgerName: string;
   GroupID: number;
+}
+
+export interface AccountClass {
+  ID: number;
+  Name: string;
+  ParentID: number;
+  Remarks?: any;
+}
+
+export interface AccountClassModel {
+  StatusCode: number;
+  Message: string;
+  Entity: AccountClass[];
 }
 
 export const APIData = {

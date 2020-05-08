@@ -8,6 +8,9 @@ import {
   CashAccountsModel,
   Preferences,
   BankAccountsModel,
+  SalesAccountModel,
+  PurchaseAccountModel,
+  AccountClassModel,
 } from "../models/preference.model";
 
 @Injectable({
@@ -43,5 +46,17 @@ export class PreferenceService {
 
   getPreferenceData(): Observable<PreferenceModel> {
     return this.httpService.get(`${this._api_URL}UserPreference`);
+  }
+
+  getSalesAccount(): Observable<SalesAccountModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/salesAccounts`);
+  }
+
+  getPurchaseAccount(): Observable<PurchaseAccountModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/purchAccounts`);
+  }
+
+  getAccountClass(): Observable<AccountClassModel> {
+    return this.httpService.get(`${this._api_URL}AccountClass`);
   }
 }

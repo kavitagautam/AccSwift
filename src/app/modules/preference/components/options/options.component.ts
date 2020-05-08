@@ -10,8 +10,8 @@ import { PreferenceService } from "../../services/preference.service";
 })
 export class OptionsComponent implements OnInit {
   optionForm: FormGroup;
-  dateFormat: string;
-  preferenceList;
+
+  dateSampleValue: string;
   constructor(
     private _fb: FormBuilder,
     public preferenceService: PreferenceService
@@ -19,48 +19,51 @@ export class OptionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildOptionForm();
-
-    this.preferenceService.getPreferenceData().subscribe((response) => {
-      this.preferenceList = response.Entity;
-      this.buildOptionForm();
-    });
   }
 
   public sampleFormat = [
-    { id: 1, format: "YYYY/MM/DD" },
-    { id: 2, format: "dd-MM-yyyy" },
-    { id: 3, format: "MM-dd-yyyy" },
+    { id: 1, format: "yyyy/MM/dd" },
+    { id: 2, format: "dd/MM/yyyy" },
+    { id: 3, format: "MM/dd/yyyy" },
   ];
 
   buildOptionForm(): void {
     this.optionForm = this._fb.group({
-      date: [this.preferenceList ? this.preferenceList.DEFAULT_DATE.Value : ""],
-      dateFormat: [
-        this.preferenceList ? this.preferenceList.DATE_FORMAT.Value : "",
-      ],
-      sample: [""],
-      decimalPlace: [
-        this.preferenceList
-          ? this.preferenceList.DEFAULT_DECIMALPLACES.Value
+      DEFAULT_DATE: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_DATE.Value
           : "",
       ],
-      comma: [
-        this.preferenceList ? this.preferenceList.COMMA_SEPARATED.Value : "",
+      DATE_FORMAT: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DATE_FORMAT.Value
+          : "",
       ],
-      decimal: [
-        this.preferenceList ? this.preferenceList.DECIMAL_FORMAT.Value : "",
+      DEFAULT_DECIMALPLACES: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_DECIMALPLACES.Value
+          : "",
+      ],
+      COMMA_SEPARATED: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.COMMA_SEPARATED.Value
+          : "",
+      ],
+      DECIMAL_FORMAT: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DECIMAL_FORMAT.Value
+          : "",
       ],
       mailServer: [""],
       serverPort: [""],
       email: [""],
       password: [""],
     });
+
+    this.dateFormatChange(this.optionForm.get("DATE_FORMAT").value);
   }
 
   dateFormatChange(value): void {
-    console.log("Format Value");
-    this.optionForm
-      .get("sample")
-      .setValue(formatDate("2020-02-20", value, "en_US"));
+    this.dateSampleValue = formatDate("2020-02-20", value, "en_US");
   }
 }
