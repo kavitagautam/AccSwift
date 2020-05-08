@@ -12,9 +12,9 @@
             <label>
               <input
                 type="radio"
-                name="date"
-                formControlName="date"
-                value="english"
+                name="DEFAULT_DATE"
+                formControlName="DEFAULT_DATE"
+                value="English"
               />
               English
             </label>
@@ -27,9 +27,9 @@
             <label>
               <input
                 type="radio"
-                name="date"
-                formControlName="date"
-                value="nepali"
+                name="DEFAULT_DATE"
+                formControlName="DEFAULT_DATE"
+                value="Nepali"
               />
               Nepali
             </label>
@@ -43,8 +43,8 @@
           <label>Format</label>
           <select
             class="form-control"
-            formControlName="format"
-            (change)="changeFormat(settingsForm.get('format').value)"
+            formControlName="DATE_FORMAT"
+            (change)="changeFormat(settingsForm.get('DATE_FORMAT').value)"
           >
             <option *ngFor="let date of dateFormat">{{ date.format }}</option>
           </select>
@@ -53,7 +53,8 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Sample</label>
-          <input class="form-control" formControlName="sample" />
+
+          {{ dateFormatValue }}
         </div>
       </div>
     </div>
@@ -66,7 +67,10 @@
         <div class="col-md-12">
           <div class="form-group">
             <label>Number of Decimal Places</label>
-            <select class="form-control" formControlName="decimalPlace">
+            <select
+              class="form-control"
+              formControlName="DEFAULT_DECIMALPLACES"
+            >
               <option>2</option>
             </select>
           </div>
@@ -78,9 +82,13 @@
         <div class="flex-item">
           <div class="col-md-12">
             <div class="form-group">
-              <div class="checkbox ">
+              <div class="checkbox">
                 <label>
-                  <input type="checkbox" name="comma" formControlName="comma" />
+                  <input
+                    type="checkbox"
+                    name="comma"
+                    formControlName="COMMA_SEPARATED"
+                  />
                   <label>Comma Seperated numbers</label>
                 </label>
               </div>
@@ -92,13 +100,13 @@
         <div class="flex-item">
           <div class="col-md-12">
             <div class="form-group">
-              <div class="radio ">
+              <div class="radio">
                 <label>
                   <input
                     type="radio"
-                    name="decimal"
-                    value="number"
-                    formControlName="decimal"
+                    name="DEFAULT_DECIMALPLACES"
+                    value="false"
+                    formControlName="DEFAULT_DECIMALPLACES"
                   />
                   <label>(422.30) </label>
                 </label>
@@ -111,13 +119,13 @@
         <div class="flex-item">
           <div class="col-md-12">
             <div class="form-group">
-              <div class="radio ">
+              <div class="radio">
                 <label>
                   <input
                     type="radio"
-                    name="decimal"
-                    value="numbers"
-                    formControlName="decimal"
+                    name="DEFAULT_DECIMALPLACES"
+                    value="true"
+                    formControlName="DEFAULT_DECIMALPLACES"
                   />
                   <label>(-422.30)</label>
                 </label>
@@ -141,9 +149,9 @@
             <label>
               <input
                 type="radio"
-                name="defaultLanguage"
-                value="english"
-                formControlName="defaultLanguage"
+                name="DEFAULT_LANGUAGE"
+                value="English"
+                formControlName="DEFAULT_LANGUAGE"
               />
               English
             </label>
@@ -156,9 +164,9 @@
             <label>
               <input
                 type="radio"
-                name="defaultLanguage"
-                value="nepali"
-                formControlName="defaultLanguage"
+                name="DEFAULT_LANGUAGE"
+                value="Nepali"
+                formControlName="DEFAULT_LANGUAGE"
               />
               Nepali
             </label>
@@ -171,7 +179,7 @@
         <div class="form-group">
           <div class="checkbox">
             <label>
-              <input type="checkbox" formControlName="multiCurrency" />
+              <input type="checkbox" formControlName="MULTI_CURRENCY" />
               Multi Currency
             </label>
           </div>
@@ -196,8 +204,12 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label>Amount</label>
-          <input type="number" class="form-control" formControlName="amount" />
+          <label>Prev. Year Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            formControlName="PL_AMOUNT"
+          />
         </div>
       </div>
     </div>
@@ -206,7 +218,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <button type="button" class="btn btn-danger  pull-right ml-3">
+    <button type="button" class="btn btn-danger pull-right ml-3">
       Cancel
     </button>
     <button type="button" class="btn btn-primary pull-right ml-3">

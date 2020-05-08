@@ -35,7 +35,6 @@ export class AccountsComponent implements OnInit {
   getCashAccount(): void {
     this.preferenceService.getCashReceiptAccounts().subscribe((response) => {
       this.cashAccountLists = response.Entity;
-      console.log(JSON.stringify(this.cashAccountLists));
     });
   }
 
