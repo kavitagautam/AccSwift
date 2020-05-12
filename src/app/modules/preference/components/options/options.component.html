@@ -76,10 +76,17 @@
         <div class="col-md-12">
           <div class="form-group">
             <label>Number of Decimal Places</label>
-            <input
+            <select
               class="form-control"
               formControlName="DEFAULT_DECIMALPLACES"
-            />
+            >
+              <option [ngValue]="null"> Choose Option...</option>
+              <option [ngValue]="1">1</option>
+              <option [ngValue]="2"> 2</option>
+              <option [ngValue]="3">3</option>
+              <option [ngValue]="4">4</option>
+              <option [ngValue]="5">5</option>
+            </select>
           </div>
         </div>
       </div>

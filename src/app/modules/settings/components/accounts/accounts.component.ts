@@ -54,7 +54,6 @@ export class AccountsComponent implements OnInit {
           ? this.settingsService.settings.CREDIT_LIMIT.Value
           : false,
       ],
-      creditors: [""],
       DEFAULT_BUDGET_LIMIT: [
         this.settingsService.settings
           ? this.settingsService.settings.DEFAULT_BUDGET_LIMIT.Value

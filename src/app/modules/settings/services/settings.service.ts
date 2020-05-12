@@ -35,6 +35,10 @@ export class SettingsService {
       });
   }
 
+  getSettingsData(): Observable<SettingsModel> {
+    return this.httpService.get(`${this._api_URL}Settings`);
+  }
+
   updateSettings(body): Observable<any> {
     return this.httpService.put(`${this._api_URL}Settings`, body);
   }

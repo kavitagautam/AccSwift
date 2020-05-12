@@ -49,7 +49,7 @@ export class OptionsComponent implements OnInit {
       DEFAULT_DECIMALPLACES: [
         this.preferenceData
           ? this.preferenceData.DEFAULT_DECIMALPLACES.Value
-          : "",
+          : null,
       ],
       COMMA_SEPARATED: [
         this.preferenceData ? this.preferenceData.COMMA_SEPARATED.Value : "",

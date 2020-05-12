@@ -4,7 +4,7 @@ import { formatDate } from "@angular/common";
 import { SettingsService } from "../../services/settings.service";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { DATE_FORMAT } from "../../models/settings.model";
+import { DATE_FORMAT, Settings } from "../../models/settings.model";
 
 @Component({
   selector: "accSwift-options",
@@ -15,6 +15,8 @@ export class OptionsComponent implements OnInit {
   settingsForm: FormGroup;
   dateFormats: DATE_FORMAT[];
   dateSampleValue: string;
+
+  settings: Settings;
   constructor(
     private _fb: FormBuilder,
     private settingsService: SettingsService,
@@ -25,56 +27,35 @@ export class OptionsComponent implements OnInit {
   ngOnInit(): void {
     this.buildSettingsForm();
     this.getDateFormat();
+    this.getSettings();
+  }
+
+  getSettings(): void {
+    this.settingsService.getSettingsData().subscribe((response) => {
+      this.settings = response.Entity;
+      this.buildSettingsForm();
+    });
   }
 
   buildSettingsForm(): void {
     this.settingsForm = this._fb.group({
-      DEFAULT_DATE: [
-        this.settingsService.settings
-          ? this.settingsService.settings.DEFAULT_DATE.Value
-          : "",
-      ],
-      DATE_FORMAT: [
-        this.settingsService.settings
-          ? this.settingsService.settings.DATE_FORMAT.Value
-          : "",
-      ],
+      DEFAULT_DATE: [this.settings ? this.settings.DEFAULT_DATE.Value : ""],
+      DATE_FORMAT: [this.settings ? this.settings.DATE_FORMAT.Value : ""],
       DEFAULT_DECIMALPLACES: [
-        this.settingsService.settings
-          ? this.settingsService.settings.DEFAULT_DECIMALPLACES.Value
-          : "",
+        this.settings ? this.settings.DEFAULT_DECIMALPLACES.Value : null,
       ],
       COMMA_SEPARATED: [
-        this.settingsService.settings
-          ? this.settingsService.settings.COMMA_SEPARATED.Value
-          : "",
+        this.settings ? this.settings.COMMA_SEPARATED.Value : "",
       ],
-      DECIMAL_FORMAT: [
-        this.settingsService.settings
-          ? this.settingsService.settings.DECIMAL_FORMAT.Value
-          : "",
-      ],
+      DECIMAL_FORMAT: [this.settings ? this.settings.DECIMAL_FORMAT.Value : ""],
       DEFAULT_LANGUAGE: [
-        this.settingsService.settings
-          ? this.settingsService.settings.DEFAULT_LANGUAGE.Value
-          : "",
+        this.settings ? this.settings.DEFAULT_LANGUAGE.Value : "",
       ],
-      MULTI_CURRENCY: [
-        this.settingsService.settings
-          ? this.settingsService.settings.MULTI_CURRENCY.Value
-          : "",
-      ],
-      VAT: [
-        this.settingsService.settings
-          ? this.settingsService.settings.VAT.Value
-          : "",
-      ],
-      PL_AMOUNT: [
-        this.settingsService.settings
-          ? this.settingsService.settings.PL_AMOUNT.Value
-          : "",
-      ],
+      MULTI_CURRENCY: [this.settings ? this.settings.MULTI_CURRENCY.Value : ""],
+      VAT: [this.settings ? this.settings.VAT.Value : ""],
+      PL_AMOUNT: [this.settings ? this.settings.PL_AMOUNT.Value : ""],
     });
+    this.dateFormatChange(this.settingsForm.get("DATE_FORMAT").value);
   }
 
   dateFormatChange(value): void {
