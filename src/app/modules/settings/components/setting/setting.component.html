@@ -6,8 +6,11 @@
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
-            <label>Default Purchase Account</label>
-            <select class="form-control" formControlName="purchase">
+            <label>Purchase Account</label>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_PURCHASE_ACCOUNT"
+            >
               <option [ngValue]="null">Choose option...</option>
               <option>Purchase A/C</option>
             </select>
@@ -23,7 +26,7 @@
       <div class="col-md-12">
         <div class="form-group">
           <label>Sales Report Preference: </label>
-          <select class="form-control" formControlName="salesReceipt">
+          <select class="form-control" formControlName="DEFAULT_SALES_ACCOUNT">
             <option [ngValue]="null">Choose option....</option>
             <option>General</option>
           </select>
@@ -37,10 +40,18 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label>Default Sales Account</label>
-            <select class="form-control" formControlName="salesAccount">
+            <label> Sales Account</label>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SALES_ACCOUNT"
+            >
               <option [ngValue]="null">Choose option...</option>
-              <option>Sales A/C</option>
+              <option
+                *ngFor="let salesAccount of salesAccountList"
+                [ngValue]="salesAccount.LedgerID"
+              >
+                {{ salesAccount.LedgerName }}
+              </option>
             </select>
           </div>
         </div>
@@ -52,7 +63,11 @@
                 <div class="form-group">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="negativeStock" value="allow" />
+                      <input
+                        type="radio"
+                        name="DEFAULT_NEGATIVESTOCK"
+                        value="Allow"
+                      />
                       Allow
                     </label>
                   </div>
@@ -62,7 +77,11 @@
                 <div class="form-group">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="negativeStock" value="warn" />
+                      <input
+                        type="radio"
+                        name="DEFAULT_NEGATIVESTOCK"
+                        value="Warn"
+                      />
                       Warn
                     </label>
                   </div>
@@ -72,7 +91,11 @@
                 <div class="form-group">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="negativeStock" value="deny" />
+                      <input
+                        type="radio"
+                        name="DEFAULT_NEGATIVESTOCK"
+                        value="Deny"
+                      />
                       Deny
                     </label>
                   </div>
@@ -88,7 +111,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <button type="button" class="btn btn-danger  pull-right ml-3">
+    <button type="button" class="btn btn-danger pull-right ml-3">
       Cancel
     </button>
     <button type="button" class="btn btn-primary pull-right ml-3">

@@ -44,9 +44,12 @@
           <select
             class="form-control"
             formControlName="DATE_FORMAT"
-            (change)="changeFormat(settingsForm.get('DATE_FORMAT').value)"
+            (change)="dateFormatChange(settingsForm.get('DATE_FORMAT').value)"
           >
-            <option *ngFor="let date of dateFormat">{{ date.format }}</option>
+            <option [ngValue]="null">Choose Option...</option>
+            <option *ngFor="let date of dateFormats" [ngValue]="date.ID">{{
+              date.Format
+            }}</option>
           </select>
         </div>
       </div>
@@ -54,7 +57,7 @@
         <div class="form-group">
           <label>Sample</label>
 
-          {{ dateFormatValue }}
+          {{ dateSampleValue }}
         </div>
       </div>
     </div>
@@ -71,7 +74,12 @@
               class="form-control"
               formControlName="DEFAULT_DECIMALPLACES"
             >
-              <option>2</option>
+              <option [ngValue]="null"> Choose Option...</option>
+              <option [ngValue]="1">1</option>
+              <option [ngValue]="2">2</option>
+              <option [ngValue]="3">3</option>
+              <option [ngValue]="4">4</option>
+              <option [ngValue]="5">5</option>
             </select>
           </div>
         </div>
@@ -218,10 +226,18 @@
 
 <div class="row">
   <div class="col-md-12">
-    <button type="button" class="btn btn-danger pull-right ml-3">
+    <button
+      type="button"
+      class="btn btn-danger pull-right ml-3"
+      (click)="cancel()"
+    >
       Cancel
     </button>
-    <button type="button" class="btn btn-primary pull-right ml-3">
+    <button
+      type="button"
+      class="btn btn-primary pull-right ml-3"
+      (click)="save()"
+    >
       Save
     </button>
   </div>

@@ -19,7 +19,7 @@ export interface DEFAULTDECIMALPLACES {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value: string;
+  Value: number;
 }
 
 export interface COMMASEPARATED {
@@ -27,7 +27,7 @@ export interface COMMASEPARATED {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value: string;
+  Value: boolean;
 }
 
 export interface DECIMALFORMAT {
@@ -35,7 +35,7 @@ export interface DECIMALFORMAT {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value: string;
+  Value: boolean;
 }
 
 export interface DEFAULTCASHACCOUNT {
@@ -43,7 +43,7 @@ export interface DEFAULTCASHACCOUNT {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value: string;
+  Value: number;
 }
 
 export interface DEFAULTBANKACCOUNT {
@@ -51,7 +51,7 @@ export interface DEFAULTBANKACCOUNT {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value: string;
+  Value: number;
 }
 
 export interface DEFAULTPURCHASEACCOUNT {
@@ -59,7 +59,7 @@ export interface DEFAULTPURCHASEACCOUNT {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value: string;
+  Value: number;
 }
 
 export interface DEFAULTSALESACCOUNT {
@@ -67,7 +67,7 @@ export interface DEFAULTSALESACCOUNT {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value: string;
+  Value: number;
 }
 
 export interface ACCOUNTCLASS {
@@ -75,7 +75,7 @@ export interface ACCOUNTCLASS {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value: string;
+  Value: number;
 }
 
 export interface COMPANYNAME {
@@ -107,7 +107,7 @@ export interface COMPANYPAN {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value: string;
+  Value: number;
 }
 
 export interface COMPANYPHONE {
@@ -115,7 +115,7 @@ export interface COMPANYPHONE {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value: string;
+  Value: number;
 }
 
 export interface COMPANYSLOGAN {
@@ -123,7 +123,7 @@ export interface COMPANYSLOGAN {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value?: any;
+  Value: string;
 }
 
 export interface DEFAULTDEPOT {
@@ -131,7 +131,7 @@ export interface DEFAULTDEPOT {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value: string;
+  Value: number;
 }
 
 export interface DEFAULTSERIES {
@@ -147,7 +147,7 @@ export interface DEFAULTPROJECT {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
-  Value: string;
+  Value: number;
 }
 
 export interface DEFAULTACCCLASS {
@@ -155,7 +155,183 @@ export interface DEFAULTACCCLASS {
   UserID: number;
   PrefernceID: number;
   PreferenceCode: string;
+  Value: number;
+}
+
+export interface MAILSERVER {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
   Value: string;
+}
+
+export interface SERVERPORT {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: string;
+}
+
+export interface USEREMAIL {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: string;
+}
+
+export interface PASSWORD {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: string;
+}
+
+export interface DEFAULTSERIESBANKPMNT {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESBANKRCPT {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESBRECON {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESCASHPMNT {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESCASHRCPT {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESCHEQUERCPT {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESCNTR {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESCRNOT {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESDAMAGE {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESDRNOT {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESJRNL {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESPURCH {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESPURCHRTN {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESSALES {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESSLSRTN {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESSTOCKTRANS {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESSLSORDER {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
+}
+
+export interface DEFAULTSERIESPURCHORDER {
+  ID: number;
+  UserID: number;
+  PrefernceID: number;
+  PreferenceCode: string;
+  Value: number;
 }
 
 export interface Preferences {
@@ -179,6 +355,28 @@ export interface Preferences {
   DEFAULT_SERIES: DEFAULTSERIES;
   DEFAULT_PROJECT: DEFAULTPROJECT;
   DEFAULT_ACC_CLASS: DEFAULTACCCLASS;
+  MAIL_SERVER: MAILSERVER;
+  SERVER_PORT: SERVERPORT;
+  USER_EMAIL: USEREMAIL;
+  PASSWORD: PASSWORD;
+  DEFAULT_SERIES_BANK_PMNT: DEFAULTSERIESBANKPMNT;
+  DEFAULT_SERIES_BANK_RCPT: DEFAULTSERIESBANKRCPT;
+  DEFAULT_SERIES_BRECON: DEFAULTSERIESBRECON;
+  DEFAULT_SERIES_CASH_PMNT: DEFAULTSERIESCASHPMNT;
+  DEFAULT_SERIES_CASH_RCPT: DEFAULTSERIESCASHRCPT;
+  DEFAULT_SERIES_CHEQUERCPT: DEFAULTSERIESCHEQUERCPT;
+  DEFAULT_SERIES_CNTR: DEFAULTSERIESCNTR;
+  DEFAULT_SERIES_CR_NOT: DEFAULTSERIESCRNOT;
+  DEFAULT_SERIES_DAMAGE: DEFAULTSERIESDAMAGE;
+  DEFAULT_SERIES_DR_NOT: DEFAULTSERIESDRNOT;
+  DEFAULT_SERIES_JRNL: DEFAULTSERIESJRNL;
+  DEFAULT_SERIES_PURCH: DEFAULTSERIESPURCH;
+  DEFAULT_SERIES_PURCH_RTN: DEFAULTSERIESPURCHRTN;
+  DEFAULT_SERIES_SALES: DEFAULTSERIESSALES;
+  DEFAULT_SERIES_SLS_RTN: DEFAULTSERIESSLSRTN;
+  DEFAULT_SERIES_STOCK_TRANS: DEFAULTSERIESSTOCKTRANS;
+  DEFAULT_SERIES_SLS_ORDER: DEFAULTSERIESSLSORDER;
+  DEFAULT_SERIES_PURCH_ORDER: DEFAULTSERIESPURCHORDER;
 }
 
 export interface PreferenceModel {
@@ -247,149 +445,23 @@ export interface AccountClassModel {
   Entity: AccountClass[];
 }
 
-export const APIData = {
-  StatusCode: 200,
-  Message: "List of items found.",
-  Entity: [
-    {
-      ID: 167,
-      UserID: 1,
-      PrefernceID: 1,
-      PreferenceCode: "DEFAULT_DATE",
-      Value: "Nepali",
-    },
-    {
-      ID: 168,
-      UserID: 1,
-      PrefernceID: 2,
-      PreferenceCode: "DATE_FORMAT",
-      Value: "YYYY/MM/DD",
-    },
-    {
-      ID: 169,
-      UserID: 1,
-      PrefernceID: 3,
-      PreferenceCode: "DEFAULT_DECIMALPLACES",
-      Value: "2",
-    },
-    {
-      ID: 170,
-      UserID: 1,
-      PrefernceID: 5,
-      PreferenceCode: "COMMA_SEPARATED",
-      Value: "0",
-    },
-    {
-      ID: 171,
-      UserID: 1,
-      PrefernceID: 4,
-      PreferenceCode: "DECIMAL_FORMAT",
-      Value: "0",
-    },
-    {
-      ID: 172,
-      UserID: 1,
-      PrefernceID: 6,
-      PreferenceCode: "DEFAULT_CASH_ACCOUNT",
-      Value: "191",
-    },
-    {
-      ID: 173,
-      UserID: 1,
-      PrefernceID: 7,
-      PreferenceCode: "DEFAULT_BANK_ACCOUNT",
-      Value: "1614",
-    },
-    {
-      ID: 174,
-      UserID: 1,
-      PrefernceID: 8,
-      PreferenceCode: "DEFAULT_PURCHASE_ACCOUNT",
-      Value: "577",
-    },
-    {
-      ID: 175,
-      UserID: 1,
-      PrefernceID: 9,
-      PreferenceCode: "DEFAULT_SALES_ACCOUNT",
-      Value: "576",
-    },
-    {
-      ID: 176,
-      UserID: 1,
-      PrefernceID: 10,
-      PreferenceCode: "ACCOUNT_CLASS",
-      Value: "1",
-    },
-    {
-      ID: 1189,
-      UserID: 1,
-      PrefernceID: 15,
-      PreferenceCode: "COMPANY_NAME",
-      Value: "SABAL SUPPLIERS",
-    },
-    {
-      ID: 1190,
-      UserID: 1,
-      PrefernceID: 16,
-      PreferenceCode: "COMPANY_ADDRESS",
-      Value: "JWAGAL, KOPUNDOLE,LALITPUR",
-    },
-    {
-      ID: 1191,
-      UserID: 1,
-      PrefernceID: 17,
-      PreferenceCode: "COMPANY_CITY",
-      Value: "LALITPUR",
-    },
-    {
-      ID: 1192,
-      UserID: 1,
-      PrefernceID: 18,
-      PreferenceCode: "COMPANY_PAN",
-      Value: "600600543",
-    },
-    {
-      ID: 1193,
-      UserID: 1,
-      PrefernceID: 19,
-      PreferenceCode: "COMPANY_PHONE",
-      Value: "5539017",
-    },
-    {
-      ID: 1194,
-      UserID: 1,
-      PrefernceID: 20,
-      PreferenceCode: "COMPANY_SLOGAN",
-      Value: null,
-    },
-    {
-      ID: 4095,
-      UserID: 1,
-      PrefernceID: 21,
-      PreferenceCode: "DEFAULT_DEPOT",
-      Value: "12",
-    },
-    {
-      ID: 4096,
-      UserID: 1,
-      PrefernceID: 22,
-      PreferenceCode: "DEFAULT_SERIES",
-      Value: "Main",
-    },
-    {
-      ID: 4097,
-      UserID: 1,
-      PrefernceID: 23,
-      PreferenceCode: "DEFAULT_PROJECT",
-      Value: "1",
-    },
-    {
-      ID: 4098,
-      UserID: 1,
-      PrefernceID: 24,
-      PreferenceCode: "DEFAULT_ACC_CLASS",
-      Value: "1",
-    },
-  ],
-};
+export interface DATE_FORMAT {
+  ID: number;
+  Format: string;
+}
+
+export interface DATE_FORMAT_MODEL {
+  StatusCode: number;
+  Message: string;
+  Entity: DATE_FORMAT[];
+}
+
+export interface SeriesListModel {
+  Status: number;
+  Entity: SeriesList[];
+}
+
+export interface SeriesList {
+  ID: number;
+  Name: string;
+}

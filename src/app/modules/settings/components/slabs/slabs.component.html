@@ -1,158 +1,250 @@
 <h3>Slabs</h3>
-<fieldset>
-  <legend>
-    Slabs
-  </legend>
-  <div class="row">
-    <div class="col-md-6">
-      <fieldset>
-        <legend>Sales</legend>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="form-group">
-              <div class="checkbox">
-                <label> <input type="checkbox" />Tax 1 </label>
+<form [formGroup]="slabsForms" novalidate>
+  <fieldset>
+    <legend>
+      Slabs
+    </legend>
+    <div class="row">
+      <div class="col-md-6">
+        <fieldset>
+          <legend>Sales</legend>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      formControlName="DEFAULT_SALES_TAX1CHECK"
+                    />Tax 1
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label>On</label>
+            </div>
+            <div class="col-md-6">
+              <select
+                class="form-control"
+                formControlName="DEFAULT_PURCHASE_TAX1"
+              >
+                <option [ngValue]="">Choose Option...</option>
+                <option [ngValue]="'Net Amt'">Net Amt</option>
+                <option [ngValue]="'Gross'">Gross</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      formControlName="DEFAULT_SALES_TAX2CHECK"
+                    />Tax 2
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label>On</label>
+            </div>
+            <div class="col-md-6">
+              <select
+                class="form-control"
+                formControlName="DEFAULT_PURCHASE_TAX2"
+              >
+                <option [ngValue]="">Choose Option...</option>
+                <option [ngValue]="'Net Amt'">Net Amt</option>
+                <option [ngValue]="'Gross'">Gross</option>
+                <option [ngValue]="'Tax 1'">Tax 1</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      formControlName="DEFAULT_SALES_TAX2CHECK"
+                    />Tax 3
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label>On</label>
+            </div>
+            <div class="col-md-6">
+              <select
+                class="form-control"
+                formControlName="DEFAULT_PURCHASE_TAX3"
+              >
+                <option [ngValue]="">Choose Option...</option>
+                <option [ngValue]="'Net Amt'">Net Amt</option>
+                <option [ngValue]="'Gross'">Gross</option>
+                <option [ngValue]="'Tax 1'">Tax 1</option>
+                <option [ngValue]="'Tax 2'">Tax 2</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      formControlName="DEFAULT_SALES_VAT"
+                    />
+                    VAT</label
+                  >
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-md-2">
-            <label>On</label>
-          </div>
-          <div class="col-md-6">
-            <select class="form-control">
-              <option>Net Amt</option>
-            </select>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-4">
-            <div class="form-group">
-              <div class="checkbox">
-                <label> <input type="checkbox" />Tax 2 </label>
+        </fieldset>
+      </div>
+      <div class="col-md-6">
+        <fieldset>
+          <legend>Purchase</legend>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      formControlName="DEFAULT_PURCHASE_TAX1CHECK"
+                    />Tax 1
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-2">
-            <label>On</label>
-          </div>
-          <div class="col-md-6">
-            <select class="form-control">
-              <option>Tax 1</option>
-            </select>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-4">
-            <div class="form-group">
-              <div class="checkbox">
-                <label> <input type="checkbox" />Tax 3 </label>
-              </div>
+            <div class="col-md-2">
+              <label>On</label>
+            </div>
+            <div class="col-md-6">
+              <select
+                class="form-control"
+                formControlName="DEFAULT_PURCHASE_TAX1"
+              >
+                <option [ngValue]="">Choose Option...</option>
+                <option [ngValue]="'Net Amt'">Net Amt</option>
+                <option [ngValue]="'Gross'">Gross</option>
+              </select>
             </div>
           </div>
-          <div class="col-md-2">
-            <label>On</label>
-          </div>
-          <div class="col-md-6">
-            <select class="form-control">
-              <option>Tax 2</option>
-            </select>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="checkbox">
-                <label> <input type="checkbox" checked /> VAT</label>
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      formControlName="DEFAULT_PURCHASE_TAX2CHECK"
+                    />Tax 2
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </fieldset>
-    </div>
-    <div class="col-md-6">
-      <fieldset>
-        <legend>Purchase</legend>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="form-group">
-              <div class="checkbox">
-                <label> <input type="checkbox" />Tax 1 </label>
-              </div>
+            <div class="col-md-2">
+              <label>On</label>
+            </div>
+            <div class="col-md-6">
+              <select
+                class="form-control"
+                formControlName="DEFAULT_PURCHASE_TAX2"
+              >
+                <option [ngValue]="">Choose Option...</option>
+                <option [ngValue]="'Net Amt'">Net Amt</option>
+                <option [ngValue]="'Gross'">Gross</option>
+                <option [ngValue]="'Tax 1'">Tax 1</option>
+              </select>
             </div>
           </div>
-          <div class="col-md-2">
-            <label>On</label>
-          </div>
-          <div class="col-md-6">
-            <select class="form-control">
-              <option>Net Amt</option>
-            </select>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-4">
-            <div class="form-group">
-              <div class="checkbox">
-                <label> <input type="checkbox" />Tax 2 </label>
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      formControlName="DEFAULT_PURCHASE_TAX1CHECK"
+                    />Tax 3
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-2">
-            <label>On</label>
-          </div>
-          <div class="col-md-6">
-            <select class="form-control">
-              <option>Tax 1</option>
-            </select>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-4">
-            <div class="form-group">
-              <div class="checkbox">
-                <label> <input type="checkbox" />Tax 3 </label>
-              </div>
+            <div class="col-md-2">
+              <label>On</label>
+            </div>
+            <div class="col-md-6">
+              <select
+                class="form-control"
+                formControlName="DEFAULT_PURCHASE_TAX3"
+              >
+                <option [ngValue]="">Choose Option...</option>
+                <option [ngValue]="'Net Amt'">Net Amt</option>
+                <option [ngValue]="'Gross'">Gross</option>
+                <option [ngValue]="'Tax 1'">Tax 1</option>
+                <option [ngValue]="'Tax 2'">Tax 2</option>
+              </select>
             </div>
           </div>
-          <div class="col-md-2">
-            <label>On</label>
-          </div>
-          <div class="col-md-6">
-            <select class="form-control">
-              <option>Tax 2</option>
-            </select>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="checkbox">
-                <label> <input type="checkbox" checked /> VAT</label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="checkbox">
-                <label> <input type="checkbox" checked /> Custom Duty</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </fieldset>
-    </div>
-  </div>
-</fieldset>
 
-<div class="row">
-  <div class="col-md-12">
-    <button type="button" class="btn btn-danger  pull-right ml-3">
-      Cancel
-    </button>
-    <button type="button" class="btn btn-primary pull-right ml-3">
-      Save
-    </button>
+          <div class="row mt-3">
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      formContolName="DEFAULT_PURCHASE_VAT"
+                    />
+                    VAT</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" formControlName="CUSTOMDUTY" />
+                    Custom Duty</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="row">
+    <div class="col-md-12">
+      <button
+        type="button"
+        class="btn btn-danger pull-right ml-3"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary pull-right ml-3"
+        (click)="save()"
+      >
+        Save
+      </button>
+    </div>
   </div>
-</div>
+</form>

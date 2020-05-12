@@ -52,9 +52,9 @@
             >
               <option [ngValue]="null">Choose Option..</option>
               <option
-                *ngFor="let format of sampleFormat"
-                [ngValue]="format.format"
-                >{{ format.format }}</option
+                *ngFor="let format of dateFormats"
+                [ngValue]="format.ID"
+                >{{ format.Format }}</option
               >
             </select>
           </div>
@@ -76,10 +76,17 @@
         <div class="col-md-12">
           <div class="form-group">
             <label>Number of Decimal Places</label>
-            <input
+            <select
               class="form-control"
               formControlName="DEFAULT_DECIMALPLACES"
-            />
+            >
+              <option [ngValue]="null"> Choose Option...</option>
+              <option [ngValue]="1">1</option>
+              <option [ngValue]="2"> 2</option>
+              <option [ngValue]="3">3</option>
+              <option [ngValue]="4">4</option>
+              <option [ngValue]="5">5</option>
+            </select>
           </div>
         </div>
       </div>
@@ -155,7 +162,7 @@
             <input
               class="form-control"
               type="text"
-              formControlName="mailServer"
+              formControlName="MAIL_SERVER"
             />
           </div>
         </div>
@@ -164,15 +171,19 @@
             <label>Server Port</label>
             <input
               class="form-control"
-              type="text"
-              formControlName="serverPort"
+              type="number"
+              formControlName="SERVER_PORT"
             />
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label>User Email</label>
-            <input class="form-control" type="email" formControlName="email" />
+            <input
+              class="form-control"
+              type="email"
+              formControlName="USER_EMAIL"
+            />
           </div>
         </div>
         <div class="col-md-6">
@@ -181,7 +192,7 @@
             <input
               class="form-control"
               type="password"
-              formControlName="password"
+              formControlName="PASSWORD"
             />
           </div>
         </div>
@@ -191,10 +202,18 @@
 </form>
 <div class="row">
   <div class="col-md-12">
-    <button type="button" class="btn btn-danger pull-right ml-3">
+    <button
+      type="button"
+      class="btn btn-danger pull-right ml-3"
+      (click)="cancel()"
+    >
       Cancel
     </button>
-    <button type="button" class="btn btn-primary pull-right ml-3">
+    <button
+      type="button"
+      class="btn btn-primary pull-right ml-3"
+      (click)="save()"
+    >
       Save
     </button>
   </div>

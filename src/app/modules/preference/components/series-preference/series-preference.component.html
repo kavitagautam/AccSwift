@@ -1,0 +1,346 @@
+<fieldset>
+  <legend>Series Preference</legend>
+  <form [formGroup]="seriesForms" novalidate>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Voucher Type</th>
+          <th>Select Series</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            Bank Payment
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_BANK_PMNT"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of bankPaymentSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Bank Receipt
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_BANK_RCPT"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of bankReceiptSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Bank Reconciliation
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_BRECON"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of bankReconciliationSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Cash Payment
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_CASH_PMNT"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of cashPaymentSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Cash Receipt
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_CASH_RCPT"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of cashReceiptSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Cheque Receipt
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_CHEQUERCPT"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of chequeReceiptSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Contra
+          </td>
+          <td>
+            <select class="form-control" formControlName="DEFAULT_SERIES_CNTR">
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of contraSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Credit Notes
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_CR_NOT"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of creditNoteSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Damage Item
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_DAMAGE"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of damageSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Debit Notes
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_DR_NOT"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of debitNoteSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Journal
+          </td>
+          <td>
+            <select class="form-control" formControlName="DEFAULT_SERIES_JRNL">
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of journalSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            Purchase
+          </td>
+          <td>
+            <select class="form-control" formControlName="DEFAULT_SERIES_PURCH">
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of purchaseSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Purchase Return
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_PURCH_RTN"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of purchaseReturnSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Sales
+          </td>
+          <td>
+            <select class="form-control" formControlName="DEFAULT_SERIES_SALES">
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of salesSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Sales Return
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_SLS_RTN"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of salesReturnSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Stock Transfer
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_STOCK_TRANS"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of stockTransferSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Sales Order
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_SLS_ORDER"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of salesOrderSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Purchase Order
+          </td>
+          <td>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SERIES_PURCH_ORDER"
+            >
+              <option [ngValue]="null">Choose Option..</option>
+              <option
+                *ngFor="let series of purchaseOrderSeries"
+                [ngValue]="series.ID"
+                >{{ series.Name }}</option
+              >
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+  <div class="row">
+    <div class="col-md-12">
+      <button
+        type="button"
+        class="btn btn-danger pull-right ml-3"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary pull-right ml-3"
+        (click)="save()"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</fieldset>

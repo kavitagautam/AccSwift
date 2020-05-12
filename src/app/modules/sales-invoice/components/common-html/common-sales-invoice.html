@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group" *ngIf="!hideVoucherField">
+          <div class="form-group">
             <label>Voucher No. <sup>*</sup></label>
             <input
               type="text"
@@ -38,7 +38,11 @@
               formControlName="VoucherNo"
               accSwiftFormValidator
             />
-            <span>Voucher Number is automatic created</span>
+            <i
+              *ngIf="IsAutomatic"
+              style="position: relative; top: -25px; margin: 172px;"
+              >Automatic</i
+            >
           </div>
           <div class="form-group">
             <div class="col-md-12 p-0">

@@ -8,6 +8,7 @@ import { CompanyInfoComponent } from "./components/company-info/company-info.com
 import { SalesComponent } from "./components/sales/sales.component";
 import { AccountsComponent } from "./components/accounts/accounts.component";
 import { SettingsComponent } from "./components/settings/settings.component";
+import { SeriesPreferenceComponent } from './components/series-preference/series-preference.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { SettingsComponent } from "./components/settings/settings.component";
     CompanyInfoComponent,
     SalesComponent,
     AccountsComponent,
-    SettingsComponent
+    SettingsComponent,
+    SeriesPreferenceComponent
   ],
   imports: [
     CommonModule,
