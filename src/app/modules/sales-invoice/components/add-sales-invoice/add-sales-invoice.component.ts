@@ -23,7 +23,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   salesInvoiceForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
-  hideVoucherField: boolean;
+  IsAutomatic: boolean = false;
   private editedRowIndex: number;
   relatedUnits: RelatedUnits[] = [];
   cashPartyList: CashParty[] = [];
@@ -87,7 +87,12 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   buildAddSalesInvoiceForm(): void {
     this.salesInvoiceForm = this._fb.group({
-      SeriesID: ["", Validators.required],
+      SeriesID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SERIES_SALES.Value
+          : null,
+        Validators.required,
+      ],
       CashPartyLedgerID: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_CASH_ACCOUNT.Value
@@ -185,8 +190,8 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         } else {
           this.salesInvoiceForm.get("VoucherNo").disable();
         }
-        if (response.IsHidden) {
-          this.hideVoucherField = true;
+        if (response.VoucherNoType === "Automatic") {
+          this.IsAutomatic = true;
         }
       });
   }

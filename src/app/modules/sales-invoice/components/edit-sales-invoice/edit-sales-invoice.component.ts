@@ -29,7 +29,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   editedRowIndex: any;
   submitted: boolean;
   rowSubmitted: boolean;
-  hideVoucherField: boolean;
+  IsAutomatic: boolean = false;
 
   relatedUnits: RelatedUnits[] = [];
 
@@ -330,8 +330,8 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         } else {
           this.salesInvoiceForm.get("VoucherNo").disable();
         }
-        if (response.IsHidden) {
-          this.hideVoucherField = true;
+        if (response.VoucherNoType === "Automatic") {
+          this.IsAutomatic = true;
         }
       });
   }
@@ -367,7 +367,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       "DiscountAmount"
     ).value;
     let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
-
     let salesRateValue = invoiceEntryArray.controls[index].get("SalesRate")
       .value;
 

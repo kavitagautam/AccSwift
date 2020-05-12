@@ -6,6 +6,8 @@ import {
   PurchaseAccount,
   AccountClass,
 } from "../../models/preference.model";
+import { ToastrService } from "ngx-toastr";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "accSwift-settings",
@@ -19,18 +21,20 @@ export class SettingsComponent implements OnInit {
   accountClassList: AccountClass[];
   constructor(
     private _fb: FormBuilder,
-    private prefrenceService: PreferenceService
+    private preferenceService: PreferenceService,
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.buildSettingsForm();
-    this.prefrenceService.getSalesAccount().subscribe((response) => {
+    this.preferenceService.getSalesAccount().subscribe((response) => {
       this.salesAccountList = response.Entity;
     });
-    this.prefrenceService.getPurchaseAccount().subscribe((response) => {
+    this.preferenceService.getPurchaseAccount().subscribe((response) => {
       this.purchaseAccountList = response.Entity;
     });
-    this.prefrenceService.getAccountClass().subscribe((response) => {
+    this.preferenceService.getAccountClass().subscribe((response) => {
       this.accountClassList = response.Entity;
     });
   }
@@ -38,20 +42,37 @@ export class SettingsComponent implements OnInit {
   buildSettingsForm(): void {
     this.settingForms = this._fb.group({
       DEFAULT_PURCHASE_ACCOUNT: [
-        this.prefrenceService.preferences
-          ? this.prefrenceService.preferences.DEFAULT_PURCHASE_ACCOUNT.Value
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_PURCHASE_ACCOUNT.Value
           : null,
       ],
       DEFAULT_SALES_ACCOUNT: [
-        this.prefrenceService.preferences
-          ? this.prefrenceService.preferences.DEFAULT_SALES_ACCOUNT.Value
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SALES_ACCOUNT.Value
           : null,
       ],
       DEFAULT_ACC_CLASS: [
-        this.prefrenceService.preferences
-          ? this.prefrenceService.preferences.DEFAULT_ACC_CLASS.Value
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_ACC_CLASS.Value
           : null,
       ],
     });
+  }
+  save(): void {
+    this.preferenceService.updatePreference(this.settingForms.value).subscribe(
+      (response) => {
+        this.router.navigate(["/preference"]);
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Option prefrence edited successfully");
+      }
+    );
+  }
+
+  cancel(): void {
+    this.router.navigate(["/preference"]);
   }
 }

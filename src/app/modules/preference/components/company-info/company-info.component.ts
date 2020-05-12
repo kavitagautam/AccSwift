@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { PreferenceService } from "../../services/preference.service";
+import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-company-info",
@@ -12,7 +14,9 @@ export class CompanyInfoComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    private preferenceService: PreferenceService
+    private preferenceService: PreferenceService,
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -52,5 +56,23 @@ export class CompanyInfoComponent implements OnInit {
           : "",
       ],
     });
+  }
+
+  save(): void {
+    this.preferenceService.updatePreference(this.companyForm.value).subscribe(
+      (response) => {
+        this.router.navigate(["/preference"]);
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Option prefrence edited successfully");
+      }
+    );
+  }
+
+  cancel(): void {
+    this.router.navigate(["/preference"]);
   }
 }

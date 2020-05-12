@@ -2,6 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { formatDate } from "@angular/common";
 import { SettingsService } from "../../services/settings.service";
+import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
+import { DATE_FORMAT } from "../../models/settings.model";
 
 @Component({
   selector: "accSwift-options",
@@ -10,73 +13,102 @@ import { SettingsService } from "../../services/settings.service";
 })
 export class OptionsComponent implements OnInit {
   settingsForm: FormGroup;
-  dateFormatValue: string;
+  dateFormats: DATE_FORMAT[];
+  dateSampleValue: string;
   constructor(
     private _fb: FormBuilder,
-    private settingServices: SettingsService
+    private settingsService: SettingsService,
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.buildSettingsForm();
+    this.getDateFormat();
   }
-
-  public dateFormat = [
-    { id: 1, format: "yyyy-MM-dd" },
-    { id: 2, format: "dd-MM-yyyy" },
-    { id: 3, format: "MM-dd-yyyy" },
-  ];
 
   buildSettingsForm(): void {
     this.settingsForm = this._fb.group({
       DEFAULT_DATE: [
-        this.settingServices.settings
-          ? this.settingServices.settings.DEFAULT_DATE.Value
+        this.settingsService.settings
+          ? this.settingsService.settings.DEFAULT_DATE.Value
           : "",
       ],
       DATE_FORMAT: [
-        this.settingServices.settings
-          ? this.settingServices.settings.DATE_FORMAT.Value
+        this.settingsService.settings
+          ? this.settingsService.settings.DATE_FORMAT.Value
           : "",
       ],
       DEFAULT_DECIMALPLACES: [
-        this.settingServices.settings
-          ? this.settingServices.settings.DEFAULT_DECIMALPLACES.Value
+        this.settingsService.settings
+          ? this.settingsService.settings.DEFAULT_DECIMALPLACES.Value
           : "",
       ],
       COMMA_SEPARATED: [
-        this.settingServices.settings
-          ? this.settingServices.settings.COMMA_SEPARATED.Value
+        this.settingsService.settings
+          ? this.settingsService.settings.COMMA_SEPARATED.Value
           : "",
       ],
       DECIMAL_FORMAT: [
-        this.settingServices.settings
-          ? this.settingServices.settings.DECIMAL_FORMAT.Value
+        this.settingsService.settings
+          ? this.settingsService.settings.DECIMAL_FORMAT.Value
           : "",
       ],
       DEFAULT_LANGUAGE: [
-        this.settingServices.settings
-          ? this.settingServices.settings.DEFAULT_LANGUAGE.Value
+        this.settingsService.settings
+          ? this.settingsService.settings.DEFAULT_LANGUAGE.Value
           : "",
       ],
       MULTI_CURRENCY: [
-        this.settingServices.settings
-          ? this.settingServices.settings.MULTI_CURRENCY.Value
+        this.settingsService.settings
+          ? this.settingsService.settings.MULTI_CURRENCY.Value
           : "",
       ],
       VAT: [
-        this.settingServices.settings
-          ? this.settingServices.settings.VAT.Value
+        this.settingsService.settings
+          ? this.settingsService.settings.VAT.Value
           : "",
       ],
       PL_AMOUNT: [
-        this.settingServices.settings
-          ? this.settingServices.settings.PL_AMOUNT.Value
+        this.settingsService.settings
+          ? this.settingsService.settings.PL_AMOUNT.Value
           : "",
       ],
     });
   }
 
-  changeFormat(value): void {
-    this.dateFormatValue = formatDate("2020-02-20", value, "en_US");
+  dateFormatChange(value): void {
+    if (this.dateFormats && this.dateFormats.length > 0) {
+      const dateFormat = this.dateFormats.filter((date) => date.ID === value);
+      this.dateSampleValue = formatDate(
+        "2020-02-20",
+        dateFormat[0].Format,
+        "en_US"
+      );
+    }
+  }
+
+  getDateFormat(): void {
+    this.settingsService.getDateFormats().subscribe((response) => {
+      this.dateFormats = response.Entity;
+    });
+  }
+
+  save(): void {
+    this.settingsService.updateSettings(this.settingsForm.value).subscribe(
+      (response) => {
+        this.router.navigate(["/settings"]);
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Account settings edited successfully");
+      }
+    );
+  }
+
+  cancel(): void {
+    this.router.navigate(["/settings"]);
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import {
   PreferenceModel,
@@ -11,6 +11,8 @@ import {
   SalesAccountModel,
   PurchaseAccountModel,
   AccountClassModel,
+  DATE_FORMAT_MODEL,
+  SeriesListModel,
 } from "../models/preference.model";
 
 @Injectable({
@@ -40,7 +42,7 @@ export class PreferenceService {
       .get(`${this._api_URL}UserPreference`)
       .subscribe((response: PreferenceModel) => {
         this.preferences = response.Entity;
-        //console.log("Dsadas dsa" + JSON.stringify(this.preferences));
+        // console.log("Dsadas dsa" + JSON.stringify(this.preferences));
       });
   }
 
@@ -58,5 +60,18 @@ export class PreferenceService {
 
   getAccountClass(): Observable<AccountClassModel> {
     return this.httpService.get(`${this._api_URL}AccountClass`);
+  }
+
+  getDateFormats(): Observable<DATE_FORMAT_MODEL> {
+    return this.httpService.get(`${this._api_URL}UserPreference/DateFormats`);
+  }
+
+  updatePreference(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}UserPreference`, body);
+  }
+
+  getSeriesList(voucherType): Observable<SeriesListModel> {
+    const params = new HttpParams().set("VoucherType", voucherType);
+    return this.httpService.get(`${this._api_URL}Series`, null, params);
   }
 }

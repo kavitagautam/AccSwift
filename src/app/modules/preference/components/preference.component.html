@@ -12,6 +12,9 @@
           <li>
             <a role="button" (click)="selectedNode('accounts')">Accounts</a>
           </li>
+          <li>
+            <a role="button" (click)="selectedNode('series')">Series</a>
+          </li>
         </ul>
       </li>
     </ul>
@@ -66,6 +69,9 @@
 
     <div *ngIf="nodeName === 'accounts'">
       <accSwift-accounts></accSwift-accounts>
+    </div>
+    <div *ngIf="nodeName === 'series'">
+      <accSwift-series-preference></accSwift-series-preference>
     </div>
 
     <div *ngIf="nodeName === 'settings'">

@@ -1,87 +1,76 @@
 <h3>Sales</h3>
 <form [formGroup]="salesForms" novalidate>
-  <div class="col-md-6">
-    <fieldset>
-      <legend>Purchase Account</legend>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="form-group">
-            <label>Purchase Account</label>
-            <select
-              class="form-control"
-              formControlName="DEFAULT_PURCHASE_ACCOUNT"
-              accSwiftFormValidator
-            >
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let purchAcc of purchaseAccountList"
-                [ngValue]="purchAcc.LedgerID"
-              >
-                {{ purchAcc.LedgerName }}
-              </option>
-            </select>
-          </div>
-        </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Purchase Account</label>
+        <select
+          class="form-control"
+          formControlName="DEFAULT_PURCHASE_ACCOUNT"
+          accSwiftFormValidator
+        >
+          <option [ngValue]="null">Choose Option....</option>
+          <option
+            *ngFor="let purchAcc of purchaseAccountList"
+            [ngValue]="purchAcc.LedgerID"
+          >
+            {{ purchAcc.LedgerName }}
+          </option>
+        </select>
       </div>
-    </fieldset>
-  </div>
-  <div class="col-md-6">
-    <fieldset>
-      <legend>Sales Account</legend>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="form-group">
-            <label>Sales Account</label>
-            <select
-              class="form-control"
-              formControlName="DEFAULT_SALES_ACCOUNT"
-              accSwiftFormValidator
-            >
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let salesAccount of salesAccountList"
-                [ngValue]="salesAccount.LedgerID"
-              >
-                {{ salesAccount.LedgerName }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </fieldset>
-  </div>
-  <div class="col-md-6">
-    <fieldset>
-      <legend>Accounting Class</legend>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="form-group">
-            <label>Accounting Class</label>
-            <select
-              class="form-control"
-              formControlName="DEFAULT_ACC_CLASS"
-              accSwiftFormValidator
-            >
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let accClass of accountClassList"
-                [ngValue]="accClass.ID"
-              >
-                {{ accClass.Name }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </fieldset>
-  </div>
+    </div>
 
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Sales Account</label>
+        <select
+          class="form-control"
+          formControlName="DEFAULT_SALES_ACCOUNT"
+          accSwiftFormValidator
+        >
+          <option [ngValue]="null">Choose Option....</option>
+          <option
+            *ngFor="let salesAccount of salesAccountList"
+            [ngValue]="salesAccount.LedgerID"
+          >
+            {{ salesAccount.LedgerName }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Accounting Class</label>
+        <select
+          class="form-control"
+          formControlName="DEFAULT_ACC_CLASS"
+          accSwiftFormValidator
+        >
+          <option [ngValue]="null">Choose Option....</option>
+          <option
+            *ngFor="let accClass of accountClassList"
+            [ngValue]="accClass.ID"
+          >
+            {{ accClass.Name }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-12">
-      <button type="button" class="btn btn-danger pull-right ml-3">
+      <button
+        type="button"
+        class="btn btn-danger pull-right ml-3"
+        (click)="cancel()"
+      >
         Cancel
       </button>
-      <button type="button" class="btn btn-primary pull-right ml-3">
+      <button
+        type="button"
+        class="btn btn-primary pull-right ml-3"
+        (click)="save()"
+      >
         Save
       </button>
     </div>

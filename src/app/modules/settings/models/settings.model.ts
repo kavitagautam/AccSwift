@@ -723,3 +723,14 @@ export interface AccountClassModel {
   Message: string;
   Entity: AccountClass[];
 }
+
+export interface DATE_FORMAT {
+  ID: number;
+  Format: string;
+}
+
+export interface DATE_FORMAT_MODEL {
+  StatusCode: number;
+  Message: string;
+  Entity: DATE_FORMAT[];
+}

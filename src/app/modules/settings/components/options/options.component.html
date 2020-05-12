@@ -44,9 +44,12 @@
           <select
             class="form-control"
             formControlName="DATE_FORMAT"
-            (change)="changeFormat(settingsForm.get('DATE_FORMAT').value)"
+            (change)="dateFormatChange(settingsForm.get('DATE_FORMAT').value)"
           >
-            <option *ngFor="let date of dateFormat">{{ date.format }}</option>
+            <option [ngValue]="null">Choose Option...</option>
+            <option *ngFor="let date of dateFormats" [ngValue]="date.ID">{{
+              date.Format
+            }}</option>
           </select>
         </div>
       </div>
@@ -54,7 +57,7 @@
         <div class="form-group">
           <label>Sample</label>
 
-          {{ dateFormatValue }}
+          {{ dateSampleValue }}
         </div>
       </div>
     </div>

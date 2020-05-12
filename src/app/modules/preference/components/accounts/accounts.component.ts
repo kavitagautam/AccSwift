@@ -1,11 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroupName, FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder } from "@angular/forms";
 import { PreferenceService } from "../../services/preference.service";
 import {
   CashAccountList,
   Preferences,
   BankAccounts,
 } from "../../models/preference.model";
+import { ToastrService } from "ngx-toastr";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "accSwift-accounts",
@@ -19,7 +21,9 @@ export class AccountsComponent implements OnInit {
   bankAccountLists: BankAccounts[];
   constructor(
     private _fb: FormBuilder,
-    private preferenceService: PreferenceService
+    private preferenceService: PreferenceService,
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -57,5 +61,23 @@ export class AccountsComponent implements OnInit {
           : null,
       ],
     });
+  }
+
+  save(): void {
+    this.preferenceService.updatePreference(this.accountFroms.value).subscribe(
+      (response) => {
+        this.router.navigate(["/preference"]);
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Account prefrence edited successfully");
+      }
+    );
+  }
+
+  cancel(): void {
+    this.router.navigate(["/preference"]);
   }
 }

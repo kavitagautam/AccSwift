@@ -10,6 +10,7 @@ import {
   AccountClassModel,
   PurchaseAccountModel,
   SalesAccountModel,
+  DATE_FORMAT_MODEL,
 } from "../models/settings.model";
 import { Observable } from "rxjs";
 
@@ -34,6 +35,10 @@ export class SettingsService {
       });
   }
 
+  updateSettings(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}Settings`, body);
+  }
+
   getCashReceiptAccounts(): Observable<CashAccountsModel> {
     return this.httpService.get(`${this._api_URL}Ledger/CashAccounts`);
   }
@@ -52,5 +57,8 @@ export class SettingsService {
 
   getAccountClass(): Observable<AccountClassModel> {
     return this.httpService.get(`${this._api_URL}AccountClass`);
+  }
+  getDateFormats(): Observable<DATE_FORMAT_MODEL> {
+    return this.httpService.get(`${this._api_URL}UserPreference/DateFormats`);
   }
 }
