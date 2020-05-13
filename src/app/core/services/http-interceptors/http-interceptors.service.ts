@@ -5,13 +5,13 @@ import {
   HttpHandler,
   HttpEvent,
   HttpResponse,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class HttpInterceptorsService implements HttpInterceptor {
   constructor() {}
@@ -22,7 +22,12 @@ export class HttpInterceptorsService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const authToken = sessionStorage.getItem("access_token");
     let authReq = req.clone({
-      headers: req.headers.append("Authorization", `bearer ` + authToken)
+      headers: req.headers
+        .append("Authorization", `bearer ` + authToken)
+        .append("Cache-Control", "no-cache, no-store, must-revalidate")
+        .append("Pragma", "no-cache")
+        .append("Expires", "0")
+        .append("If-Modified-Since", "0"),
     });
 
     return next.handle(authReq).pipe(
