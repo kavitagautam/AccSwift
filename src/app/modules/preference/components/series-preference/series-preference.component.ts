@@ -50,7 +50,6 @@ export class SeriesPreferenceComponent implements OnInit {
   getPreferences(): void {
     this.preferenceService.getPreferenceData().subscribe((response) => {
       this.preferenceData = response.Entity;
-      console.log("Preference Data " + JSON.stringify(this.preferenceData));
       this.buildSeriesForms();
     });
   }
@@ -148,7 +147,6 @@ export class SeriesPreferenceComponent implements OnInit {
           : null,
       ],
     });
-    console.log("Series List" + JSON.stringify(this.seriesForms.getRawValue()));
   }
 
   getAllSeriesList(): void {
@@ -223,7 +221,8 @@ export class SeriesPreferenceComponent implements OnInit {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
-        this.toastr.success("Option prefrence edited successfully");
+        this.toastr.success("Series prefrence edited successfully");
+        this.getPreferences();
       }
     );
   }

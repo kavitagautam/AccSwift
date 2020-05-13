@@ -68,6 +68,7 @@ export class SettingsComponent implements OnInit {
       },
       () => {
         this.toastr.success("Option prefrence edited successfully");
+        this.buildSettingsForm();
       }
     );
   }

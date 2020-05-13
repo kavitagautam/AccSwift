@@ -85,6 +85,7 @@ export class OptionsComponent implements OnInit {
       },
       () => {
         this.toastr.success("Account settings edited successfully");
+        this.getSettings();
       }
     );
   }

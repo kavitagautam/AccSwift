@@ -1,6 +1,48 @@
 <h3>Defaults</h3>
 <form [formGroup]="defaultsForm">
   <fieldset>
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Prepared By</label>
+            <input class="form-control" formControlName="PREPARED_BY" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Checked By</label>
+            <input class="form-control" formControlName="CHECKED_BY" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Approved By</label>
+            <input class="form-control" formControlName="APPROVED_BY" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label> Authorised Capital</label>
+            <input class="form-control" formControlName="AUTHORISED_CAPITAL" />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label> Issued Capital</label>
+            <input class="form-control" formControlName="ISSUED_CAPITAL" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
     <legend>Email Settings</legend>
     <div class="row">
       <div class="col-md-12">
@@ -42,48 +84,6 @@
               type="text"
               formControlName="PASSWORD"
             />
-          </div>
-        </div>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset>
-    <div class="row mt-4">
-      <div class="col-md-12">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>Prepared By</label>
-            <input class="form-control" formControlName="PREPARED_BY" />
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>Checked By</label>
-            <input class="form-control" formControlName="CHECKED_BY" />
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>Approved By</label>
-            <input class="form-control" formControlName="APPROVED_BY" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </fieldset>
-  <fieldset>
-    <div class="row mt-4">
-      <div class="col-md-12">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label> Authorised Capital</label>
-            <input class="form-control" formControlName="AUTHORISED_CAPITAL" />
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label> Issued Capital</label>
-            <input class="form-control" formControlName="ISSUED_CAPITAL" />
           </div>
         </div>
       </div>

@@ -1,155 +1,152 @@
 <h3>Options</h3>
 <form [formGroup]="settingsForm" novalidate>
-  <fieldset>
-    <legend>Date</legend>
-    <div class="row">
-      <div class="col-md-2">
-        <label>Default Date: </label>
-      </div>
-      <div class="col-md-2">
-        <div class="form-group">
-          <div class="radio">
-            <label>
-              <input
-                type="radio"
-                name="DEFAULT_DATE"
-                formControlName="DEFAULT_DATE"
-                value="English"
-              />
-              English
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-2">
-        <div class="form-group">
-          <div class="radio">
-            <label>
-              <input
-                type="radio"
-                name="DEFAULT_DATE"
-                formControlName="DEFAULT_DATE"
-                value="Nepali"
-              />
-              Nepali
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Format</label>
-          <select
-            class="form-control"
-            formControlName="DATE_FORMAT"
-            (change)="dateFormatChange(settingsForm.get('DATE_FORMAT').value)"
-          >
-            <option [ngValue]="null">Choose Option...</option>
-            <option *ngFor="let date of dateFormats" [ngValue]="date.ID">{{
-              date.Format
-            }}</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Sample</label>
-
-          {{ dateSampleValue }}
-        </div>
-      </div>
-    </div>
-  </fieldset>
-
-  <fieldset>
-    <legend>Decimal Preference</legend>
+  <div class="row">
     <div class="col-md-6">
-      <div class="row">
+      <fieldset>
+        <legend>Date</legend>
+        <div class="row">
+          <div class="col-md-2">
+            <label> Date </label>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="DEFAULT_DATE"
+                    formControlName="DEFAULT_DATE"
+                    value="English"
+                  />
+                  English
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="DEFAULT_DATE"
+                    formControlName="DEFAULT_DATE"
+                    value="Nepali"
+                  />
+                  Nepali
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Format</label>
+              <select
+                class="form-control"
+                formControlName="DATE_FORMAT"
+                (change)="
+                  dateFormatChange(settingsForm.get('DATE_FORMAT').value)
+                "
+              >
+                <option [ngValue]="null">Choose Option...</option>
+                <option *ngFor="let date of dateFormats" [ngValue]="date.ID">{{
+                  date.Format
+                }}</option>
+              </select>
+            </div>
+            <span>Sample Date: {{ dateSampleValue }} </span>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="col-md-6">
+      <fieldset>
+        <legend>Decimal Preference</legend>
+        <div class="row">
+          <div class="col-md-7">
+            <div class="form-group">
+              <label>Decimal Places</label>
+              <select
+                class="form-control"
+                formControlName="DEFAULT_DECIMALPLACES"
+              >
+                <option [value]="null"> Choose Option...</option>
+                <option [value]="1">1</option>
+                <option [value]="2">2</option>
+                <option [value]="3">3</option>
+                <option [value]="4">4</option>
+                <option [value]="5">5</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <label>Decimal Format</label>
+            <div class="row">
+              <div class="flex-item">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div class="radio">
+                      <label>
+                        <input
+                          type="radio"
+                          name="DECIMAL_FORMAT"
+                          formControlName="DECIMAL_FORMAT"
+                          [value]="0"
+                        />
+                        <label>(422.30) </label>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="flex-item">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div class="radio">
+                      <label>
+                        <input
+                          type="radio"
+                          name="DECIMAL_FORMAT"
+                          [value]="1"
+                          formControlName="DECIMAL_FORMAT"
+                        />
+                        <label>(-422.30)</label>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="col-md-12">
           <div class="form-group">
-            <label>Number of Decimal Places</label>
-            <select
-              class="form-control"
-              formControlName="DEFAULT_DECIMALPLACES"
-            >
-              <option [ngValue]="null"> Choose Option...</option>
-              <option [ngValue]="1">1</option>
-              <option [ngValue]="2">2</option>
-              <option [ngValue]="3">3</option>
-              <option [ngValue]="4">4</option>
-              <option [ngValue]="5">5</option>
-            </select>
+            <div class="checkbox">
+              <label>
+                <input
+                  type="checkbox"
+                  name="comma"
+                  formControlName="COMMA_SEPARATED"
+                />
+                <label>Comma Seperated numbers</label>
+              </label>
+            </div>
           </div>
         </div>
-      </div>
+      </fieldset>
     </div>
-    <div class="col-md-6">
-      <div class="row">
-        <div class="flex-item">
-          <div class="col-md-12">
-            <div class="form-group">
-              <div class="checkbox">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="comma"
-                    formControlName="COMMA_SEPARATED"
-                  />
-                  <label>Comma Seperated numbers</label>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="flex-item">
-          <div class="col-md-12">
-            <div class="form-group">
-              <div class="radio">
-                <label>
-                  <input
-                    type="radio"
-                    name="DEFAULT_DECIMALPLACES"
-                    value="false"
-                    formControlName="DEFAULT_DECIMALPLACES"
-                  />
-                  <label>(422.30) </label>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="flex-item">
-          <div class="col-md-12">
-            <div class="form-group">
-              <div class="radio">
-                <label>
-                  <input
-                    type="radio"
-                    name="DEFAULT_DECIMALPLACES"
-                    value="true"
-                    formControlName="DEFAULT_DECIMALPLACES"
-                  />
-                  <label>(-422.30)</label>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </fieldset>
+  </div>
 
   <fieldset>
     <legend>Currency</legend>
     <div class="row">
       <div class="col-md-3">
-        <label>Default Language: </label>
+        <label>Language</label>
       </div>
       <div class="col-md-2">
         <div class="form-group">

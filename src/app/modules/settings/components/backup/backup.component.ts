@@ -18,7 +18,10 @@ export class BackupComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.buildBackUpForms();
+  }
+
   buildBackUpForms(): void {
     this.backUpForms = this._fb.group({
       AUTO_BACKUP: [
@@ -48,6 +51,7 @@ export class BackupComponent implements OnInit {
       },
       () => {
         this.toastr.success("Backup settings edited successfully");
+        this.buildBackUpForms();
       }
     );
   }
