@@ -8,6 +8,8 @@ import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/l
 import { ToastrService } from "ngx-toastr";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { PreferenceService } from "@app/modules/preference/services/preference.service";
+import { Preferences } from "@app/modules/preference/models/preference.model";
 
 @Component({
   selector: "accSwift-add-journal",
@@ -20,7 +22,7 @@ export class AddJournalComponent implements OnInit {
   //Input Field Property
   public decimals: number = 2;
   numericFormat: string = "n3";
-
+  preferenceData: Preferences;
   addJournalForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -45,19 +47,34 @@ export class AddJournalComponent implements OnInit {
     private modalService: BsModalService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private preferenceService: PreferenceService
   ) {}
 
   ngOnInit() {
     this.buildAddJournalForm();
+    this.getPreferences();
+  }
+
+  getPreferences(): void {
+    this.preferenceService.getPreferenceData().subscribe((response) => {
+      this.preferenceData = response.Entity;
+      this.buildAddJournalForm();
+    });
   }
 
   buildAddJournalForm(): void {
     this.addJournalForm = this._fb.group({
-      seriesId: [null],
+      seriesId: [
+        this.preferenceData
+          ? this.preferenceData.DEFAULT_SERIES_JRNL.Value
+          : null,
+      ],
       voucherNo: ["", [Validators.required]],
       date: [new Date()],
-      projectId: [null],
+      projectId: [
+        this.preferenceData ? this.preferenceData.DEFAULT_PROJECT.Value : null,
+      ],
       narration: [""],
       journalEntryList: this._fb.array([this.addJournalEntryFormGroup()]),
     });

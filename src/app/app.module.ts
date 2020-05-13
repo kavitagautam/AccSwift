@@ -13,11 +13,11 @@ import { HttpInterceptorsService } from "./core/services/http-interceptors/http-
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorsService,
-      multi: true
+      multi: true,
     },
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,42 +1,8 @@
 <h3>Settings</h3>
 <form [formGroup]="settingsForm" novalidate>
-  <div class="col-md-6">
-    <fieldset>
-      <legend>Purchase Account</legend>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="form-group">
-            <label>Purchase Account</label>
-            <select
-              class="form-control"
-              formControlName="DEFAULT_PURCHASE_ACCOUNT"
-            >
-              <option [ngValue]="null">Choose option...</option>
-              <option>Purchase A/C</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </fieldset>
-  </div>
-  <div class="col-md-6">
-    <fieldset>
-      <legend>Sales Receipt</legend>
-
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Sales Report Preference: </label>
-          <select class="form-control" formControlName="DEFAULT_SALES_ACCOUNT">
-            <option [ngValue]="null">Choose option....</option>
-            <option>General</option>
-          </select>
-        </div>
-      </div>
-    </fieldset>
-  </div>
   <div class="col-md-12">
     <fieldset>
-      <legend>Sales Account</legend>
+      <legend>Accounts</legend>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
@@ -102,6 +68,46 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Purchase Account</label>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_PURCHASE_ACCOUNT"
+            >
+              <option [ngValue]="null">Choose option...</option>
+              >
+              <option
+                *ngFor="let purchAccount of purchaseAccountList"
+                [ngValue]="purchAccount.LedgerID"
+              >
+                {{ purchAccount.LedgerName }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Sales Receipt</legend>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Sales report preference </label>
+            <select class="form-control" formControlName="SALES_REPORT_TYPE">
+              <option [ngValue]="null">Choose option....</option>
+
+              <option
+                *ngFor="let salesAccount of salesAccountList"
+                [ngValue]="salesAccount.LedgerID"
+              >
+                {{ salesAccount.LedgerName }}
+              </option>
+            </select>
           </div>
         </div>
       </div>

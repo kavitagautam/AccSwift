@@ -27,98 +27,74 @@ export interface SeriesList {
   Name: string;
 }
 
-export interface SalesInvoiceMaster {
-  ID: number;
-  SalesLedgerID: number;
-  SalesName: string;
-  CashPartyLedgerID: number;
-  CashPartName: string;
-  DepotID: number;
-  DepotName: string;
-  OrderNo: string;
-  Date: Date;
-  TotalQty: number;
-  GrossAmount: number;
-  SpecialDiscount: number;
+export interface InvoiceDetail {
+  SalesInvoiceID: number;
+  Electricity?: any;
+  Garbage?: any;
+  GeneralName: string;
+  Description: string;
+  SalesRate: number;
+  VATAmount: number;
+  DiscPercentage: number;
+  DiscountAmount: number;
   NetAmount: number;
-  Tax1: number;
-  Tax2: number;
-  Tax3: number;
-  VAT: number;
-  TotalAmount: number;
-  TotalTCAmount: number;
-  TenderAmount: number;
-  ChangeAmount: number;
-  AdjustmentAmount: number;
-  SalesDueDate: Date;
-  DueDays: string;
-  TableNumber: string;
-  PrintCount: number;
-  IRDSync: boolean;
-  InvoiceDetails?: any;
-  VoucherNo: string;
-  SeriesID: number;
-  SeriesName: string;
-  ProjectID: number;
-  ProjectName: string;
-  Field1: string;
-  Field2: string;
-  Field3: string;
-  Field4: string;
-  Field5: string;
-  CompanyID: number;
-  Remarks: string;
-  CreatedBy: string;
-  CreatedDate: Date;
-  ModifiedBy?: any;
-  ModifiedDate?: any;
+  QtyUnitID: number;
+  QtyUnitName: string;
+  TaxID: number;
+  TaxAmount: number;
+  ID: number;
+  ProductID: number;
+  ProductName: string;
+  ProductCode: string;
+  Quantity: number;
+  Amount: number;
 }
 
 export interface SalseInvoice {
   ID: number;
-  SalesLedgerID: number;
-  SalesName: string;
-  CashPartyLedgerID: number;
-  CashPartName: string;
-  DepotID: number;
-  DepotName: string;
   OrderNo: string;
   Date: Date;
   TotalQty: number;
-  GrossAmount: number;
-  SpecialDiscount: number;
-  NetAmount: number;
-  Tax1: number;
-  Tax2: number;
-  Tax3: number;
-  VAT: number;
   TotalAmount: number;
-  TotalTCAmount: number;
   TenderAmount: number;
   ChangeAmount: number;
   AdjustmentAmount: number;
-  SalesDueDate: Date;
+  SalesDueDate?: Date;
   DueDays: string;
   TableNumber: string;
   PrintCount: number;
   IRDSync: boolean;
   InvoiceDetails: InvoiceDetail[];
-  VoucherNo: string;
-  SeriesID: number;
-  SeriesName: string;
-  ProjectID: number;
-  ProjectName: string;
+  SalesLedgerID: number;
+  SalesName: string;
+  CashPartyLedgerID: number;
+  CashPartName: string;
+  DepotID: number;
+  DepotName: string;
+  GrossAmount: number;
+  SpecialDiscount: number;
+  NetAmount: number;
+  Tax1: number;
+  Tax2: number;
+  Tax3: number;
+  VAT: number;
+  TotalTCAmount: number;
   Field1: string;
   Field2: string;
   Field3: string;
   Field4: string;
   Field5: string;
+  SeriesID: number;
+  SeriesName: string;
+  VoucherNo: string;
+  ProjectID: number;
+  ProjectName: string;
   CompanyID: number;
   Remarks: string;
   CreatedBy: string;
   CreatedDate: Date;
-  ModifiedBy?: any;
-  ModifiedDate?: any;
+  ModifiedBy: string;
+  ModifiedDate?: Date;
 }
 
 export interface SalseInvoiceNavigate {
@@ -136,48 +112,12 @@ export interface SalseInvoiceNavigateModel {
   Entity: SalseInvoiceNavigate;
 }
 
-export interface InvoiceDetail {
+export interface SalesInvoiceDetails {
   ID: number;
-  SalesInvoiceID: number;
-  ProductID: number;
-  ProductName: string;
-  ProductCode: string;
-  Quantity: number;
-  SalesRate: number;
-  Amount: number;
-  DiscPercentage: number;
-  DiscountAmount: number;
-  NetAmount: number;
-  Electricity?: any;
-  Garbage?: any;
-  QtyUnitID: number;
-  QtyUnitName: string;
-  TaxID: number;
-  TaxAmount: number;
-  GeneralName: string;
-  Description: string;
-}
-
-export interface SalseInvoiceDetails {
-  ID: number;
-  SalesLedgerID: number;
-  SalesName: string;
-  CashPartyLedgerID: number;
-  CashPartName: string;
-  DepotID: number;
-  DepotName: string;
   OrderNo: string;
   Date: Date;
   TotalQty: number;
-  GrossAmount: number;
-  SpecialDiscount: number;
-  NetAmount: number;
-  Tax1: number;
-  Tax2: number;
-  Tax3: number;
-  VAT: number;
   TotalAmount: number;
-  TotalTCAmount: number;
   TenderAmount: number;
   ChangeAmount: number;
   AdjustmentAmount: number;
@@ -187,16 +127,30 @@ export interface SalseInvoiceDetails {
   PrintCount: number;
   IRDSync: boolean;
   InvoiceDetails: InvoiceDetail[];
-  VoucherNo: string;
-  SeriesID: number;
-  SeriesName: string;
-  ProjectID: number;
-  ProjectName: string;
+  SalesLedgerID: number;
+  SalesName: string;
+  CashPartyLedgerID: number;
+  CashPartName: string;
+  DepotID: number;
+  DepotName: string;
+  GrossAmount: number;
+  SpecialDiscount: number;
+  NetAmount: number;
+  Tax1: number;
+  Tax2: number;
+  Tax3: number;
+  VAT: number;
+  TotalTCAmount: number;
   Field1: string;
   Field2: string;
   Field3: string;
   Field4: string;
   Field5: string;
+  SeriesID: number;
+  SeriesName: string;
+  VoucherNo: string;
+  ProjectID: number;
+  ProjectName: string;
   CompanyID: number;
   Remarks: string;
   CreatedBy: string;
@@ -208,7 +162,7 @@ export interface SalseInvoiceDetails {
 export interface SalesInvoiceDetailsModel {
   StatusCode: number;
   Message: string;
-  Entity: SalseInvoiceDetails;
+  Entity: SalesInvoiceDetails;
 }
 
 export interface CashParty {

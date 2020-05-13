@@ -22,6 +22,22 @@ export class SlabsComponent implements OnInit {
     this.buildSlabsForms();
   }
 
+  tax1Value = [
+    { id: 1, name: "Net Amt" },
+    { id: 2, name: "Gross" },
+  ];
+  tax2Value = [
+    { id: 1, name: "Net Amt" },
+    { id: 2, name: "Gross" },
+    { id: 3, name: "Tax 1" },
+  ];
+  tax3Value = [
+    { id: 1, name: "Net Amt" },
+    { id: 2, name: "Gross" },
+    { id: 3, name: "Tax 1" },
+    { id: 4, name: "Tax 2" },
+  ];
+
   buildSlabsForms(): void {
     this.slabsForms = this._fb.group({
       DEFAULT_SALES_TAX1CHECK: [
@@ -105,6 +121,7 @@ export class SlabsComponent implements OnInit {
           : "",
       ],
     });
+    console.log("Slabs Value " + JSON.stringify(this.slabsForms.getRawValue()));
   }
 
   save(): void {
@@ -117,6 +134,7 @@ export class SlabsComponent implements OnInit {
       },
       () => {
         this.toastr.success("Slabs settings edited successfully");
+        this.buildSlabsForms();
       }
     );
   }

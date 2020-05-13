@@ -68,6 +68,7 @@ export class CompanyInfoComponent implements OnInit {
       },
       () => {
         this.toastr.success("Option prefrence edited successfully");
+        this.buildCompanyForm();
       }
     );
   }

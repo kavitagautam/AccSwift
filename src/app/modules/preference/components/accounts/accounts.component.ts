@@ -73,6 +73,7 @@ export class AccountsComponent implements OnInit {
       },
       () => {
         this.toastr.success("Account prefrence edited successfully");
+        this.buildAccountForms();
       }
     );
   }

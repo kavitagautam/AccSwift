@@ -1,7 +1,7 @@
 import {
-  SalseInvoice,
   RelatedUnits,
   CashParty,
+  SalesInvoiceDetails,
 } from "../../models/sales-invoice.model";
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
 import { ActivatedRoute } from "@angular/router";
@@ -25,7 +25,7 @@ import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   salesInvoiceForm: FormGroup;
-  salesDetails: SalseInvoice;
+  salesDetails: SalesInvoiceDetails;
   editedRowIndex: any;
   submitted: boolean;
   rowSubmitted: boolean;

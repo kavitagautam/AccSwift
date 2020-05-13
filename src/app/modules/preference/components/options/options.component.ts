@@ -68,7 +68,6 @@ export class OptionsComponent implements OnInit {
         this.preferenceData ? this.preferenceData.USER_EMAIL.Value : "",
       ],
     });
-
     this.dateFormatChange(this.optionForm.get("DATE_FORMAT").value);
   }
 
@@ -99,6 +98,7 @@ export class OptionsComponent implements OnInit {
       },
       () => {
         this.toastr.success("Option prefrence edited successfully");
+        this.getPreferences();
       }
     );
   }

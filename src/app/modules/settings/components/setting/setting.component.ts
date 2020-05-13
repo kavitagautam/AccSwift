@@ -38,6 +38,11 @@ export class SettingComponent implements OnInit {
           ? this.settingsService.settings.DEFAULT_PURCHASE_ACCOUNT.Value
           : null,
       ],
+      SALES_REPORT_TYPE: [
+        this.settingsService.settings
+          ? this.settingsService.settings.SALES_REPORT_TYPE.Value
+          : null,
+      ],
       DEFAULT_SALES_ACCOUNT: [
         this.settingsService.settings
           ? this.settingsService.settings.DEFAULT_SALES_ACCOUNT.Value
