@@ -21,6 +21,7 @@ export class EditSalesOrderComponent implements OnInit {
   editedRowIndex: any;
   submitted: boolean;
   rowSubmitted: boolean;
+  IsAutomatic: boolean;
   salesOrderDetail: SalesOrderDetail;
   cashPartyList: CashParty[] = [];
 
@@ -54,6 +55,7 @@ export class EditSalesOrderComponent implements OnInit {
   buildSalesOrderForm(): void {
     this.salesOrderForm = this._fb.group({
       ID: [this.salesOrderDetail ? this.salesOrderDetail.ID : 0],
+      SeriesID: [this.salesOrderDetail ? this.salesOrderDetail.SeriesID : null],
       OrderNo: [
         this.salesOrderDetail ? this.salesOrderDetail.OrderNo : "",
         [Validators.required],
@@ -84,6 +86,25 @@ export class EditSalesOrderComponent implements OnInit {
       UpdatedQuantity: [0],
       PenndingQuantity: [0],
     });
+  }
+
+  seriesValueChange(): void {
+    const seriesChange = this.salesOrderForm.get("SeriesID").value;
+    if (seriesChange) {
+      this.salesOrderService
+        .getVoucherNoWithSeriesChange(seriesChange)
+        .subscribe((response) => {
+          this.salesOrderForm.get("OrderNo").setValue(response.VoucherNO);
+          if (response.IsEnabled) {
+            this.salesOrderForm.get("OrderNo").enable();
+          } else {
+            this.salesOrderForm.get("OrderNo").disable();
+          }
+          if (response.VoucherNoType === "Automatic") {
+            this.IsAutomatic = true;
+          }
+        });
+    }
   }
 
   // Get id from route

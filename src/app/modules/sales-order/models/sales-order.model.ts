@@ -11,6 +11,16 @@ export interface ProjectList {
   ModifiedDate?: Date;
 }
 
+export interface SeriesListModel {
+  Status: number;
+  Entity: SeriesList[];
+}
+
+export interface SeriesList {
+  ID: number;
+  Name: string;
+}
+
 export interface ProjectListModel {
   StatusCode: number;
   Message: string;
@@ -30,21 +40,36 @@ export interface CashPartyModel {
   Entity: CashParty[];
 }
 
+export interface OrderDetail {
+  ID: number;
+  SalesOrderID: number;
+  SalesRate: number;
+  UpdatedQuantity: number;
+  PenndingQuantity: number;
+  ProductID: number;
+  ProductName: string;
+  ProductCode?: any;
+  Quantity: number;
+  Amount: number;
+}
+
 export interface SalesOrderList {
   ID: number;
   Date: Date;
-  OrderDetails?: any;
+  OrderDetails: OrderDetail[];
+  OrderNo: string;
+  SeriesID: number;
+  SeriesName: string;
   CashPartyLedgerID: number;
   CashPartName: string;
   ProjectID: number;
   ProjectName: string;
-  OrderNo: string;
   CompanyID: number;
   Remarks: string;
   CreatedBy: string;
   CreatedDate: Date;
-  ModifiedBy?: any;
-  ModifiedDate?: any;
+  ModifiedBy: string;
+  ModifiedDate?: Date;
 }
 
 export interface SalesOrderNavigate {
@@ -62,28 +87,17 @@ export interface SalesOrderNavigateModel {
   Entity: SalesOrderNavigate;
 }
 
-export interface OrderDetail {
-  ID: number;
-  SalesOrderID: number;
-  SalesRate: number;
-  ProductID: number;
-  ProductName: string;
-  ProductCode: string;
-  Quantity: number;
-  Amount: number;
-  UpdatedQuantity: number;
-  PenndingQuantity: number;
-}
-
 export interface SalesOrderDetail {
   ID: number;
   Date: Date;
   OrderDetails: OrderDetail[];
+  OrderNo: string;
+  SeriesID: number;
+  SeriesName: string;
   CashPartyLedgerID: number;
   CashPartName: string;
   ProjectID: number;
   ProjectName: string;
-  OrderNo: string;
   CompanyID: number;
   Remarks: string;
   CreatedBy: string;
