@@ -107,6 +107,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       DepotID: [this.salesDetails ? this.salesDetails.DepotID : null],
       ProjectID: [this.salesDetails ? this.salesDetails.ProjectID : null],
       Date: [this.salesDetails ? new Date(this.salesDetails.CreatedDate) : ""],
+      IsPay: [this.salesDetails ? this.salesDetails.IsPay : false],
       OrderNo: [this.salesDetails ? this.salesDetails.OrderNo : ""],
       TotalAmount: [this.salesDetails ? this.salesDetails.TotalAmount : 0],
       TotalQty: [this.salesDetails ? this.salesDetails.TotalQty : 0],
@@ -334,6 +335,24 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
           this.IsAutomatic = true;
         }
       });
+  }
+
+  payInvoice(): void {
+    this.salesInvoiceForm.get("IsPay").setValue(true);
+    this.salesInvoiceService
+      .updateSalesInvoice(this.salesInvoiceForm.value)
+      .subscribe(
+        (response) => {
+          this.router.navigate(["/sales-invoice"]);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Invoice edited and Cash Receipt successfully");
+          this.modalRef.hide();
+        }
+      );
   }
 
   public save(): void {

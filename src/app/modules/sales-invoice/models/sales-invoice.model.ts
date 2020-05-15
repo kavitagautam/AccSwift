@@ -64,6 +64,7 @@ export interface SalseInvoice {
   TableNumber: string;
   PrintCount: number;
   IRDSync: boolean;
+  IsPay: boolean;
   InvoiceDetails: InvoiceDetail[];
   SalesLedgerID: number;
   SalesName: string;
@@ -112,6 +113,29 @@ export interface SalseInvoiceNavigateModel {
   Entity: SalseInvoiceNavigate;
 }
 
+export interface InvoiceDetail {
+  SalesInvoiceID: number;
+  Electricity?: any;
+  Garbage?: any;
+  GeneralName: string;
+  Description: string;
+  SalesRate: number;
+  VATAmount: number;
+  DiscPercentage: number;
+  DiscountAmount: number;
+  NetAmount: number;
+  QtyUnitID: number;
+  QtyUnitName: string;
+  TaxID: number;
+  TaxAmount: number;
+  ID: number;
+  ProductID: number;
+  ProductName: string;
+  ProductCode: string;
+  Quantity: number;
+  Amount: number;
+}
+
 export interface SalesInvoiceDetails {
   ID: number;
   OrderNo: string;
@@ -126,6 +150,7 @@ export interface SalesInvoiceDetails {
   TableNumber: string;
   PrintCount: number;
   IRDSync: boolean;
+  IsPay: boolean;
   InvoiceDetails: InvoiceDetail[];
   SalesLedgerID: number;
   SalesName: string;
