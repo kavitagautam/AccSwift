@@ -8,6 +8,7 @@ import { Component, OnInit } from "@angular/core";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
+import { PreferenceService } from "@app/modules/preference/services/preference.service";
 
 @Component({
   selector: "accSwift-add-bank-payment",
@@ -37,6 +38,7 @@ export class AddBankPaymentComponent implements OnInit {
     private modalService: BsModalService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
+    private preferenceService: PreferenceService,
     private router: Router,
     private toastr: ToastrService
   ) {}
@@ -47,10 +49,23 @@ export class AddBankPaymentComponent implements OnInit {
 
   buildBankPaymentForm(): void {
     this.bankPaymentForm = this._fb.group({
-      SeriesID: [null],
-      ProjectID: [null],
+      SeriesID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SERIES_BANK_PMNT.Value
+          : null,
+      ],
+      ProjectID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+          : null,
+      ],
       VoucherNo: ["", [Validators.required]],
-      LedgerID: [null, [Validators.required]],
+      LedgerID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_BANK_ACCOUNT.Value
+          : null,
+        [Validators.required],
+      ],
       Date: [new Date()],
       Remarks: [""],
       BankPaymentDetailsList: this._fb.array([this.addBankPaymentEntryList()]),

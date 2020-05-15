@@ -45,7 +45,7 @@ export class SalesReturnService {
   }
 
   getSeriesList(): void {
-    const params = new HttpParams().set("VoucherType", "SALES");
+    const params = new HttpParams().set("VoucherType", "SLS_RTN");
     this.httpService
       .get(`${this._api_URL}series`, null, params)
       .subscribe((response: SeriesListModel) => {

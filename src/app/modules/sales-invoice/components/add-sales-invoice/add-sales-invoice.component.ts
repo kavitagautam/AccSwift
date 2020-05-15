@@ -124,6 +124,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       Remarks: [""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
+    this.seriesValueChange();
   }
 
   addInvoiceEntryList(): FormGroup {
@@ -181,19 +182,21 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   seriesValueChange(): void {
     const seriesChange = this.salesInvoiceForm.get("SeriesID").value;
-    this.salesInvoiceService
-      .getVoucherNoWithSeriesChange(seriesChange)
-      .subscribe((response) => {
-        this.salesInvoiceForm.get("VoucherNo").setValue(response.VoucherNO);
-        if (response.IsEnabled) {
-          this.salesInvoiceForm.get("VoucherNo").enable();
-        } else {
-          this.salesInvoiceForm.get("VoucherNo").disable();
-        }
-        if (response.VoucherNoType === "Automatic") {
-          this.IsAutomatic = true;
-        }
-      });
+    if (seriesChange) {
+      this.salesInvoiceService
+        .getVoucherNoWithSeriesChange(seriesChange)
+        .subscribe((response) => {
+          this.salesInvoiceForm.get("VoucherNo").setValue(response.VoucherNO);
+          if (response.IsEnabled) {
+            this.salesInvoiceForm.get("VoucherNo").enable();
+          } else {
+            this.salesInvoiceForm.get("VoucherNo").disable();
+          }
+          if (response.VoucherNoType === "Automatic") {
+            this.IsAutomatic = true;
+          }
+        });
+    }
   }
 
   public save(): void {

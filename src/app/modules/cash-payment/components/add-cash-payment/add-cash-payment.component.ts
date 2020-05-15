@@ -7,6 +7,7 @@ import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validato
 import { ToastrService } from "ngx-toastr";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { PreferenceService } from "@app/modules/preference/services/preference.service";
 
 @Component({
   selector: "accSwift-add-cash-payment",
@@ -36,7 +37,8 @@ export class AddCashPaymentComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
     public ledgerCodeService: LedgerCodeMatchService,
-    public ledgerCodeMatchValidators: LedgerCodeAsyncValidators
+    public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
+    private preferenceService: PreferenceService
   ) {}
 
   ngOnInit(): void {
@@ -45,11 +47,25 @@ export class AddCashPaymentComponent implements OnInit {
 
   buildCashPaymentForm(): void {
     this.cashPaymentForm = this._fb.group({
-      SeriesID: [null],
-      ProjectID: [null, Validators.required],
+      SeriesID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SERIES_CASH_PMNT.Value
+          : null,
+      ],
+      ProjectID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+          : null,
+        Validators.required,
+      ],
       VoucherNo: ["", [Validators.required]],
-      LedgerID: [null, [Validators.required]],
-      Date: [""],
+      LedgerID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_CASH_ACCOUNT.Value
+          : null,
+        [Validators.required],
+      ],
+      Date: [new Date()],
       CashPaymentDetailsList: this._fb.array([this.addCashPaymentEntryList()]),
     });
   }

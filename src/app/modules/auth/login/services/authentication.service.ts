@@ -4,7 +4,7 @@ import { environment } from "@env/environment.prod";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class AuthenticationService {
   _api_URL = environment.baseAPI;
@@ -15,7 +15,7 @@ export class AuthenticationService {
   login(username: string, password: string) {
     const obj = {
       UserName: username,
-      Password: password
+      Password: password,
     };
     return this.httpService.post(`${this._api_URL}User/Login`, obj);
   }

@@ -9,6 +9,8 @@ import {
   ProjectListModel,
   CashParty,
   ProjectList,
+  SeriesListModel,
+  SeriesList,
 } from "../models/sales-order.model";
 
 @Injectable({
@@ -18,6 +20,7 @@ export class SalesOrderService {
   _api_URL = environment.baseAPI;
   cashPartyList: CashParty[] = [];
   projectList: ProjectList[] = [];
+  seriesList: SeriesList[] = [];
 
   constructor(
     private httpService: HttpClientService,
@@ -25,6 +28,7 @@ export class SalesOrderService {
   ) {
     this.getCashPartyAccount();
     this.getProjectList();
+    this.getSeriesList();
   }
 
   getCashPartyAccount(): void {
@@ -32,6 +36,15 @@ export class SalesOrderService {
       .get(`${this._api_URL}Ledger/cashparty`)
       .subscribe((response: any) => {
         this.cashPartyList = response.Entity;
+      });
+  }
+
+  getSeriesList(): void {
+    const params = new HttpParams().set("VoucherType", "SLS_ORDER");
+    this.httpService
+      .get(`${this._api_URL}series`, null, params)
+      .subscribe((response: SeriesListModel) => {
+        this.seriesList = response.Entity;
       });
   }
   getProjectList(): void {
@@ -45,6 +58,15 @@ export class SalesOrderService {
     return this.httpService.post(
       `${this._api_URL}SalesOrderMaster/navigate`,
       body
+    );
+  }
+
+  getVoucherNoWithSeriesChange(seriesId): Observable<any> {
+    const params = new HttpParams().set("SeriesID", seriesId);
+    return this.httpService.get(
+      `${this._api_URL}Series/VoucherNo`,
+      null,
+      params
     );
   }
 

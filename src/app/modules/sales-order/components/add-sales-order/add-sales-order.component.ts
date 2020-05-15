@@ -9,6 +9,7 @@ import { ProductModalPopupComponent } from "@app/shared/components/product-modal
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 import { CashParty } from "../../models/sales-order.model";
+import { PreferenceService } from "@app/modules/preference/services/preference.service";
 
 @Component({
   selector: "accSwift-add-sales-order",
@@ -19,9 +20,9 @@ export class AddSalesOrderComponent implements OnInit {
   salesOrderForm: FormGroup;
   editedRowIndex: any;
   submitted: boolean;
+  IsAutomatic: boolean;
   rowSubmitted: boolean;
   cashPartyList: CashParty[] = [];
-
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
   config = {
@@ -37,7 +38,8 @@ export class AddSalesOrderComponent implements OnInit {
     public salesOrderService: SalesOrderService,
     private toastr: ToastrService,
     private modalService: BsModalService,
-    public productCodeMatch: ProductCodeValidatorsService
+    public productCodeMatch: ProductCodeValidatorsService,
+    private preferenceService: PreferenceService
   ) {
     this.salesOrderService.getCashPartyAccountDD().subscribe((response) => {
       this.cashPartyList = response.Entity;
@@ -50,13 +52,24 @@ export class AddSalesOrderComponent implements OnInit {
 
   buildSalesOrderForm(): void {
     this.salesOrderForm = this._fb.group({
+      SeriesID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SERIES_SLS_ORDER.Value
+          : null,
+      ],
       OrderNo: ["", [Validators.required]],
-      CashPartyLedgerID: [null, [Validators.required]],
+      CashPartyLedgerID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_CASH_ACCOUNT.Value
+          : null,
+        [Validators.required],
+      ],
       ProjectID: [null],
       Date: [new Date()],
       Remarks: [""],
       OrderDetails: this._fb.array([this.addSalesOrderEntryList()]),
     });
+    this.seriesValueChange();
   }
 
   addSalesOrderEntryList(): FormGroup {
@@ -76,6 +89,25 @@ export class AddSalesOrderComponent implements OnInit {
 
   get getSalesOrderEntryList(): FormArray {
     return <FormArray>this.salesOrderForm.get("OrderDetails");
+  }
+
+  seriesValueChange(): void {
+    const seriesChange = this.salesOrderForm.get("SeriesID").value;
+    if (seriesChange) {
+      this.salesOrderService
+        .getVoucherNoWithSeriesChange(seriesChange)
+        .subscribe((response) => {
+          this.salesOrderForm.get("OrderNo").setValue(response.VoucherNO);
+          if (response.IsEnabled) {
+            this.salesOrderForm.get("OrderNo").enable();
+          } else {
+            this.salesOrderForm.get("OrderNo").disable();
+          }
+          if (response.VoucherNoType === "Automatic") {
+            this.IsAutomatic = true;
+          }
+        });
+    }
   }
 
   //Quantity Column value changes

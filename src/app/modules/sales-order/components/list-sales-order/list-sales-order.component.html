@@ -125,8 +125,31 @@
             title="Product Name"
             width="150"
           >
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <span>{{ dataItem.OrderDetails[0].ProductName }}</span>
+            </ng-template>
           </kendo-grid-column>
-
+          <kendo-grid-column
+            field="ProductCode"
+            title="Product Code"
+            width="120"
+          >
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <span>{{ dataItem.OrderDetails[0].ProductCode }}</span>
+            </ng-template>
+          </kendo-grid-column>
           <kendo-grid-column
             field="CashPartName"
             title="CashPartName"
