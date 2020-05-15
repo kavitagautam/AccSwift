@@ -14,6 +14,7 @@ import {
   DATE_FORMAT_MODEL,
   SeriesListModel,
 } from "../models/preference.model";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root",
@@ -21,6 +22,7 @@ import {
 export class PreferenceService {
   _api_URL = environment.baseAPI;
   preferences: Preferences;
+  preferencesList: Preferences;
 
   constructor(
     private httpService: HttpClientService,
@@ -46,6 +48,32 @@ export class PreferenceService {
       });
   }
 
+  getStuff(): Promise<void> {
+    return this.getPreferenceData()
+      .toPromise()
+      .then((data) => {
+        this.preferences = data.Entity;
+      });
+  }
+
+  getAppPreference(): void {
+    this.httpService
+      .get(`${this._api_URL}UserPreference`)
+      .subscribe((response: PreferenceModel) => {
+        const data = response.Entity;
+        if (data.DEFAULT_DATE.Value === "Nepali") {
+          data.DEFAULT_DATE.Value = "ne";
+        } else {
+          data.DEFAULT_DATE.Value = "en_US";
+        }
+        if (data.DEFAULT_DECIMALPLACES.Value) {
+          data.DECIMAL_PLACES_FORMAT = "n" + data.DEFAULT_DECIMALPLACES.Value;
+        }
+        console.log("data" + JSON.stringify(data));
+        this.preferences = data;
+        console.log("this.preferences" + JSON.stringify(this.preferences));
+      });
+  }
   getPreferenceData(): Observable<PreferenceModel> {
     return this.httpService.get(`${this._api_URL}UserPreference`);
   }

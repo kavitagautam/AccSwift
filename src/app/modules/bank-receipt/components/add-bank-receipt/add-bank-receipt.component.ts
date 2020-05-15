@@ -7,6 +7,7 @@ import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/l
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
+import { PreferenceService } from "@app/modules/preference/services/preference.service";
 
 @Component({
   selector: "accswift-add-bank-receipt",
@@ -39,7 +40,8 @@ export class AddBankReceiptComponent implements OnInit {
     public bankReceiptService: BankReceiptService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private preferenceService: PreferenceService
   ) {}
 
   ngOnInit(): void {
@@ -48,10 +50,23 @@ export class AddBankReceiptComponent implements OnInit {
 
   buildBankReceiptForm(): void {
     this.bankReceiptForm = this._fb.group({
-      SeriesID: [null],
-      ProjectID: [null],
+      SeriesID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SERIES_BANK_RCPT.Value
+          : null,
+      ],
+      ProjectID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+          : null,
+      ],
       VoucherNo: ["", [Validators.required]],
-      LedgerID: [null, [Validators.required]],
+      LedgerID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_BANK_ACCOUNT.Value
+          : null,
+        [Validators.required],
+      ],
       Date: [new Date()],
       BankReceiptDetailsList: this._fb.array([this.addBankReceiptEntryList()]),
     });

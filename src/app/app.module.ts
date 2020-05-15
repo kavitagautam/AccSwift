@@ -19,6 +19,7 @@ export function initPreferenceData(preferenceService: PreferenceService) {
     return preferenceService.getPreferenceData();
   };
 }
+
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, CoreModule, AppRoutingModule, HttpClientModule],
