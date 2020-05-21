@@ -221,6 +221,14 @@ const routes: Routes = [
           breadcrumb: "Preference",
         },
       },
+      {
+        path: "voucher-configuration",
+        loadChildren:
+          "@modules/configuration/configuration.module#ConfigurationModule",
+        data: {
+          breadcrumb: "Preference",
+        },
+      },
     ],
   },
 ];

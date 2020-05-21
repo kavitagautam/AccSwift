@@ -186,6 +186,23 @@ export class SideNavComponent implements OnInit {
       ],
     },
     {
+      id: 11,
+      displayName: "Initialize",
+      iconName: "fas fa-file-invoice",
+      children: [
+        {
+          displayName: "Voucher Configuration",
+          iconName: "far fa-edit",
+          route: "/voucher-configuration",
+        },
+        {
+          displayName: "Slabs",
+          iconName: "fa fa-money",
+          route: "",
+        },
+      ],
+    },
+    {
       id: 7,
       displayName: "Preference",
       iconName: "fas fa-cogs",

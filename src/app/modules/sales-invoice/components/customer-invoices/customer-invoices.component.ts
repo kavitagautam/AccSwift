@@ -5,6 +5,7 @@ import { ExportToCsvService } from "@app/shared/services/export-to-csv/export-to
 import { IconConst } from "@shared/constants/icon.constant";
 import { MapCustomerInvoiceExportData } from "@app/shared/data/map-customer-invoice-export-data";
 import { CustomerInvoiceExportColumnHeaders } from "@app/shared/models/customer-invoice-export-column-headers.model";
+import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: "simpliflysaas-customer-invoices",
   templateUrl: "./customer-invoices.component.html",
@@ -26,9 +27,23 @@ export class CustomerInvoicesComponent implements OnInit {
   ];
 
   customerDescription: any[];
-  constructor(private exportService: ExportToCsvService) {}
+  constructor(
+    private exportService: ExportToCsvService,
+    private route: ActivatedRoute
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getIdFromRoute();
+  }
+
+  getIdFromRoute(): void {
+    this.route.paramMap.subscribe((params) => {
+      const param = params.get("id");
+      console.log("Invoice ID" + JSON.stringify(param));
+      if (param) {
+      }
+    });
+  }
 
   exportToCSV() {
     var exportData: IExport = {

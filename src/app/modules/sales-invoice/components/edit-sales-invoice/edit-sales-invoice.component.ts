@@ -99,10 +99,8 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         Validators.required,
       ],
       SalesLedgerID: [
-        [
-          this.salesDetails ? this.salesDetails.SalesLedgerID : null,
-          Validators.required,
-        ],
+        this.salesDetails ? this.salesDetails.SalesLedgerID : null,
+        Validators.required,
       ],
       DepotID: [this.salesDetails ? this.salesDetails.DepotID : null],
       ProjectID: [this.salesDetails ? this.salesDetails.ProjectID : null],
@@ -340,7 +338,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   payInvoice(): void {
     this.salesInvoiceForm.get("IsPay").setValue(true);
     this.salesInvoiceService
-      .updateSalesInvoice(this.salesInvoiceForm.value)
+      .addSalesInvoice(this.salesInvoiceForm.value)
       .subscribe(
         (response) => {
           this.router.navigate(["/sales-invoice"]);
