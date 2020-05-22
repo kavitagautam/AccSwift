@@ -116,6 +116,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         Validators.required,
       ],
       Date: [new Date()],
+      IsPay: [false],
       OrderNo: [""],
       TotalAmount: [0, Validators.required],
       TotalQty: [0, Validators.required],
@@ -197,6 +198,24 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           }
         });
     }
+  }
+
+  payInvoice(): void {
+    this.salesInvoiceForm.get("IsPay").setValue(true);
+    this.salesInvoiceService
+      .addSalesInvoice(this.salesInvoiceForm.value)
+      .subscribe(
+        (response) => {
+          this.router.navigate(["/sales-invoice"]);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Invoice edited and Cash Receipt successfully");
+          this.modalRef.hide();
+        }
+      );
   }
 
   public save(): void {

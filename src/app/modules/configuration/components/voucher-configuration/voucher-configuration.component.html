@@ -28,369 +28,449 @@
   </div>
   <div class="col-md-8 col-sm-12 col-lg-8">
     <h5>Voucher Configuration</h5>
-    <form [formGroup]="numberingConfigForm" novalidate>
-      <kendo-tabstrip>
-        <kendo-tabstrip-tab
-          [title]="'Numbering Configuration'"
-          [selected]="true"
-        >
-          <ng-template kendoTabContent>
-            <div class="row mt-3">
-              <div class="col-md-12" formGroupName="VouchNumberConfiguration">
-                <div class="col-md-6 col-sm-6 col-xs-6 p-0">
-                  <div class="form-group">
-                    <label>Numbering Type </label>
-                    <select
-                      class="form-control"
-                      formControlName="NumberingType"
-                      accSwiftFormValidator
-                    >
-                      <option [ngValue]="null">Choose Option....</option>
-                      <option
-                        *ngFor="let type of numberingTypes"
-                        [value]="type.type"
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Series </label>
+          <select class="form-control" [(ngModel)]="seriesID">
+            <option [ngValue]="null">Choose Option....</option>
+            <option
+              *ngFor="let series of seriesDropDownList"
+              [value]="series.ID"
+            >
+              {{ series.Name }}</option
+            >
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <form [formGroup]="numberingConfigForm" novalidate>
+        <kendo-tabstrip>
+          <kendo-tabstrip-tab
+            [title]="'Numbering Configuration'"
+            [selected]="true"
+          >
+            <ng-template kendoTabContent>
+              <div class="row mt-3">
+                <div class="col-md-12" formGroupName="VouchNumberConfiguration">
+                  <div class="col-md-6 col-sm-6 col-xs-6 p-0">
+                    <div class="form-group">
+                      <label>Numbering Type </label>
+                      <select
+                        class="form-control"
+                        formControlName="NumberingType"
+                        accSwiftFormValidator
                       >
-                        {{ type.type }}</option
-                      >
-                    </select>
+                        <option [ngValue]="null">Choose Option....</option>
+                        <option
+                          *ngFor="let type of numberingTypes"
+                          [value]="type.type"
+                        >
+                          {{ type.type }}</option
+                        >
+                      </select>
+                    </div>
+                    <fieldset>
+                      <legend>Manual Numbering Validation</legend>
+                      <div class="form-group">
+                        <label>Duplicate Voucher Number</label>
+                        <select
+                          class="form-control"
+                          formControlName="DuplicateVoucherNumber"
+                          accSwiftFormValidator
+                        >
+                          <option [ngValue]="null">Choose Option....</option>
+
+                          <option
+                            *ngFor="let type of voucherNoValidation"
+                            [value]="type.type"
+                          >
+                            {{ type.value }}</option
+                          >
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label>Bank Voucher Number</label>
+                        <select
+                          class="form-control"
+                          formControlName="BlankVoucherNumber"
+                          accSwiftFormValidator
+                        >
+                          <option [ngValue]="null">Choose Option....</option>
+                          <option
+                            *ngFor="let type of voucherNoValidation"
+                            [value]="type.type"
+                          >
+                            {{ type.value }}</option
+                          >
+                        </select>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <legend>Auto Numbering Info</legend>
+                      <div class="form-group">
+                        <label>Starting No.</label>
+                        <input
+                          class="form-control"
+                          formControlName="StartingNo"
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <div class="checkbox">
+                          <label>
+                            <input
+                              type="checkbox"
+                              name="IsHideVoucherNumber"
+                              value="true"
+                              formControlName="IsHideVoucherNumber"
+                            />
+                            <label>Hide Voucher No.</label>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="checkbox">
+                          <label>
+                            <input
+                              type="checkbox"
+                              name="IsSpecifyEndNo"
+                              value="true"
+                              formControlName="IsSpecifyEndNo"
+                            />
+                            <label>Specify Ending No.</label>
+                          </label>
+                        </div>
+                      </div>
+                    </fieldset>
                   </div>
-                  <fieldset>
-                    <legend>Manual Numbering Validation</legend>
-                    <div class="form-group">
-                      <label>Duplicate Voucher Number</label>
-                      <select
-                        class="form-control"
-                        formControlName="DuplicateVoucherNumber"
-                        accSwiftFormValidator
-                      >
-                        <option [ngValue]="null">Choose Option....</option>
-
-                        <option
-                          *ngFor="let type of voucherNoValidation"
-                          [value]="type.type"
+                  <div class="col-md-6 col-sm-6 col-xs-6">
+                    <fieldset>
+                      <legend>Ending Details</legend>
+                      <div class="form-group">
+                        <button
+                          (click)="openNumberFormatting(numberFormat)"
+                          class="btn-primary"
                         >
-                          {{ type.value }}</option
-                        >
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label>Bank Voucher Number</label>
-                      <select
-                        class="form-control"
-                        formControlName="BlankVoucherNumber"
-                        accSwiftFormValidator
-                      >
-                        <option [ngValue]="null">Choose Option....</option>
-                        <option
-                          *ngFor="let type of voucherNoValidation"
-                          [value]="type.type"
-                        >
-                          {{ type.value }}</option
-                        >
-                      </select>
-                    </div>
-                  </fieldset>
-                  <fieldset>
-                    <legend>Auto Numbering Info</legend>
-                    <div class="form-group">
-                      <label>Starting No.</label>
-                      <input
-                        class="form-control"
-                        formControlName="StartingNo"
-                      />
-                    </div>
-
-                    <div class="form-group">
-                      <div class="checkbox">
-                        <label>
-                          <input
-                            type="checkbox"
-                            name="IsHideVoucherNumber"
-                            value="true"
-                            formControlName="IsHideVoucherNumber"
-                          />
-                          <label>Hide Voucher No.</label>
-                        </label>
+                          Numbering Format
+                        </button>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="checkbox">
-                        <label>
-                          <input
-                            type="checkbox"
-                            name="IsSpecifyEndNo"
-                            value="true"
-                            formControlName="IsSpecifyEndNo"
-                          />
-                          <label>Specify Ending No.</label>
-                        </label>
+                      <div class="form-group">
+                        <label>Ending No.</label>
+                        <input class="form-control" formControlName="EndNo" />
                       </div>
-                    </div>
-                  </fieldset>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <fieldset>
-                    <legend>Ending Details</legend>
-                    <div class="form-group">
-                      <label>Ending No.</label>
-                      <input class="form-control" formControlName="EndNo" />
-                    </div>
-                    <div class="form-group">
-                      <label>Warnig Voucher Left</label>
-                      <input
-                        class="form-control"
-                        formControlName="WarningVouLeft"
-                      />
-                    </div>
-                    <div class="form-group">
-                      <label>Warnig Message</label>
-                      <input
-                        class="form-control"
-                        formControlName="WarningMessage"
-                      />
-                    </div>
-                  </fieldset>
-                  <fieldset>
-                    <div class="form-group">
-                      <label>Renumbering Frequency</label>
-                      <select
-                        class="form-control"
-                        formControlName="RenumberingFrequency"
-                        accSwiftFormValidator
-                      >
-                        <option [ngValue]="null">Choose Option....</option>
-                        <option
-                          *ngFor="let freq of renumberingFreq"
-                          [value]="freq.value"
-                        >
-                          {{ freq.value }}</option
-                        >
-                        <option>Annual</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <div class="checkbox">
-                        <label>
-                          <input
-                            type="checkbox"
-                            name="IsNumericPart"
-                            value="true"
-                            formControlName="IsNumericPart"
-                          />
-                          <label>Fix Lenght of Numeric Part</label>
-                        </label>
+                      <div class="form-group">
+                        <label>Warnig Voucher Left</label>
+                        <input
+                          class="form-control"
+                          formControlName="WarningVouLeft"
+                        />
                       </div>
-                    </div>
-                  </fieldset>
-                  <fieldset>
-                    <legend>Padding Details</legend>
-                    <div class="form-group">
-                      <label>Total Lenght of Numeric Part</label>
-                      <input
-                        class="form-control"
-                        formControlName="TotalLengthNumPart"
-                      />
-                    </div>
-                    <div class="form-group">
-                      <label>Padding Character</label>
-                      <input
-                        class="form-control"
-                        formControlName="PaddingChar"
-                      />
-                    </div>
-                  </fieldset>
+                      <div class="form-group">
+                        <label>Warnig Message</label>
+                        <input
+                          class="form-control"
+                          formControlName="WarningMessage"
+                        />
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="form-group">
+                        <label>Renumbering Frequency</label>
+                        <select
+                          class="form-control"
+                          formControlName="RenumberingFrequency"
+                          accSwiftFormValidator
+                        >
+                          <option [ngValue]="null">Choose Option....</option>
+                          <option
+                            *ngFor="let freq of renumberingFreq"
+                            [value]="freq.value"
+                          >
+                            {{ freq.value }}</option
+                          >
+                          <option>Annual</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <div class="checkbox">
+                          <label>
+                            <input
+                              type="checkbox"
+                              name="IsNumericPart"
+                              value="true"
+                              formControlName="IsNumericPart"
+                            />
+                            <label>Fix Lenght of Numeric Part</label>
+                          </label>
+                        </div>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <legend>Padding Details</legend>
+                      <div class="form-group">
+                        <label>Total Lenght of Numeric Part</label>
+                        <input
+                          class="form-control"
+                          formControlName="TotalLengthNumPart"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label>Padding Character</label>
+                        <input
+                          class="form-control"
+                          formControlName="PaddingChar"
+                        />
+                      </div>
+                    </fieldset>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="box-footer" style="display: table; margin: auto;">
-              <div class="mb-2">
-                <button
-                  class="btn btn-primary"
-                  (click)="save()"
-                  accSwiftFormSubmitValidationMsg
-                  [validationControl]="numberingConfigForm"
-                >
-                  Save
-                </button>
-                <button class="btn btn-secondary ml-2" (click)="cancel($event)">
-                  Cancel
-                </button>
+              <div class="box-footer" style="display: table; margin: auto;">
+                <div class="mb-2">
+                  <button
+                    class="btn btn-primary"
+                    (click)="save()"
+                    accSwiftFormSubmitValidationMsg
+                    [validationControl]="numberingConfigForm"
+                  >
+                    Save
+                  </button>
+                  <button
+                    class="btn btn-secondary ml-2"
+                    (click)="cancel($event)"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-            </div>
-          </ng-template>
-        </kendo-tabstrip-tab>
-        <kendo-tabstrip-tab [title]="'Voucher Configuration'">
-          <ng-template kendoTabContent>
-            <fieldset>
-              <legend>Optional Field Information</legend>
-              <div formGroupName="OptionalFields">
-                <table class="table" style="width: 80%;">
-                  <thead>
-                    <tr>
-                      <th colspan="1"></th>
-                      <th align="center">Field Name</th>
-                      <th align="center">Required</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="form-group">
-                          <div class="checkbox">
-                            <label>
-                              <input type="checkbox" name="Field1" />
-                              <label>Optional Field 1</label>
-                            </label>
+            </ng-template>
+          </kendo-tabstrip-tab>
+          <kendo-tabstrip-tab [title]="'Voucher Configuration'">
+            <ng-template kendoTabContent>
+              <fieldset>
+                <legend>Optional Field Information</legend>
+                <div formGroupName="OptionalFields">
+                  <table class="table" style="width: 80%;">
+                    <thead>
+                      <tr>
+                        <th colspan="1"></th>
+                        <th align="center">Field Name</th>
+                        <th align="center">Required</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="form-group">
+                            <div class="checkbox">
+                              <label>
+                                <input type="checkbox" name="Field1" />
+                                <label>Optional Field 1</label>
+                              </label>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            name="Field1"
-                            formControlName="Field1"
-                          />
-                        </div>
-                      </td>
-                      <td>
-                        <div class="checkbox">
-                          <input
-                            type="checkbox"
-                            name="IsField1Required"
-                            formControlName="IsField1Required"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-group">
-                          <div class="checkbox">
-                            <label>
-                              <input type="checkbox" name="Field2" />
-                              <label>Optional Field 2</label>
-                            </label>
+                        </td>
+                        <td>
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              name="Field1"
+                              formControlName="Field1"
+                            />
                           </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            name="Field2"
-                            formControlName="Field2"
-                          />
-                        </div>
-                      </td>
-                      <td>
-                        <div class="checkbox">
-                          <input
-                            type="checkbox"
-                            name="IsField2Required"
-                            formControlName="IsField2Required"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-group">
+                        </td>
+                        <td>
                           <div class="checkbox">
-                            <label>
-                              <input type="checkbox" name="Field3" />
-                              <label>Optional Field 3</label>
-                            </label>
+                            <input
+                              type="checkbox"
+                              name="IsField1Required"
+                              formControlName="IsField1Required"
+                            />
                           </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            name="Field3"
-                            formControlName="Field3"
-                          />
-                        </div>
-                      </td>
-                      <td>
-                        <div class="checkbox">
-                          <input
-                            type="checkbox"
-                            name="IsField3Required"
-                            formControlName="IsField3Required"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-group">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="form-group">
+                            <div class="checkbox">
+                              <label>
+                                <input type="checkbox" name="Field2" />
+                                <label>Optional Field 2</label>
+                              </label>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              name="Field2"
+                              formControlName="Field2"
+                            />
+                          </div>
+                        </td>
+                        <td>
                           <div class="checkbox">
-                            <label>
-                              <input type="checkbox" name="Field4" />
-                              <label>Optional Field 4</label>
-                            </label>
+                            <input
+                              type="checkbox"
+                              name="IsField2Required"
+                              formControlName="IsField2Required"
+                            />
                           </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            name="Field4"
-                            formControlName="Field4"
-                          />
-                        </div>
-                      </td>
-                      <td>
-                        <div class="checkbox">
-                          <input
-                            type="checkbox"
-                            name="IsField4Required"
-                            formControlName="IsField4Required"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-group">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="form-group">
+                            <div class="checkbox">
+                              <label>
+                                <input type="checkbox" name="Field3" />
+                                <label>Optional Field 3</label>
+                              </label>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              name="Field3"
+                              formControlName="Field3"
+                            />
+                          </div>
+                        </td>
+                        <td>
                           <div class="checkbox">
-                            <label>
-                              <input type="checkbox" name="Field5" />
-                              <label>Optional Field 5</label>
-                            </label>
+                            <input
+                              type="checkbox"
+                              name="IsField3Required"
+                              formControlName="IsField3Required"
+                            />
                           </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="form-group">
-                          <input
-                            type="text"
-                            name="Field5"
-                            formControlName="Field5"
-                          />
-                        </div>
-                      </td>
-                      <td>
-                        <div class="checkbox">
-                          <input
-                            type="checkbox"
-                            name="IsField5Required"
-                            formControlName="IsField5Required"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </fieldset>
-          </ng-template>
-        </kendo-tabstrip-tab>
-      </kendo-tabstrip>
-    </form>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="form-group">
+                            <div class="checkbox">
+                              <label>
+                                <input type="checkbox" name="Field4" />
+                                <label>Optional Field 4</label>
+                              </label>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              name="Field4"
+                              formControlName="Field4"
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div class="checkbox">
+                            <input
+                              type="checkbox"
+                              name="IsField4Required"
+                              formControlName="IsField4Required"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="form-group">
+                            <div class="checkbox">
+                              <label>
+                                <input type="checkbox" name="Field5" />
+                                <label>Optional Field 5</label>
+                              </label>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              name="Field5"
+                              formControlName="Field5"
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div class="checkbox">
+                            <input
+                              type="checkbox"
+                              name="IsField5Required"
+                              formControlName="IsField5Required"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </fieldset>
+            </ng-template>
+          </kendo-tabstrip-tab>
+        </kendo-tabstrip>
+      </form>
+    </div>
   </div>
 </div>
+
+<ng-template #numberFormat>
+  <div class="modal-header">
+    <h3 class="modal-title pull-left">Numbering Format</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <div *ngFor="let control of getNumberFormatList.controls; index as i">
+          <input [formControl]="getNumberFormatList.controls[i]" />
+          <div class="form-group">
+            <label>Symbol/Prefix/Sufix</label>
+            <input
+              type="number"
+              class="form-control"
+              [formControl]="getNumberFormatList.controls[i].Parameter"
+            />
+          </div>
+          <div class="form-group">
+            <label>Choose Date Format</label>
+            <input
+              type="number"
+              class="form-control"
+              [formControl]="getNumberFormatList.controls[i].Parameter"
+            />
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      class="btn btn-secondary ml-2"
+      type="button"
+      (click)="modalRef.hide()"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>
