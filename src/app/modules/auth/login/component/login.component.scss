@@ -10,7 +10,7 @@ body {
 
 body {
   background: linear-gradient(rgba(16, 134, 171, 0.3), rgba(16, 134, 171, 0.4)),
-    url("../../../../../assets/images/Image4.png");
+    url("/assets/images/Image4.png");
   background-size: cover !important;
 
   background-blend-mode: multiply;
@@ -193,12 +193,12 @@ h5 {
 }
 
 .google-btn {
-  background: url("../../../../../assets/images/Google__G__Logo.svg") no-repeat;
+  background: url("/assets/images/Google__G__Logo.svg") no-repeat;
   background-position: 10% 50%;
 }
 
 .fb-btn {
-  background: url("../../../../../assets/images/Path17.svg") no-repeat;
+  background: url("/assets/images/Path17.svg") no-repeat;
   background-position: 10% 50%;
 }
 

@@ -8,8 +8,8 @@ import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/l
 import { ToastrService } from "ngx-toastr";
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
-import { PreferenceService } from "@app/modules/preference/services/preference.service";
-import { Preferences } from "@app/modules/preference/models/preference.model";
+import { PreferenceService } from "../../../preference/services/preference.service";
+import { Preferences } from "../../../preference/models/preference.model";
 
 @Component({
   selector: "accSwift-add-journal",

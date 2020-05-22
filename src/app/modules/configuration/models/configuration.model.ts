@@ -77,3 +77,13 @@ export interface SeriesTreeViewModel {
   Tree: Tree[];
   Node: string[];
 }
+
+export interface SeriesListModel {
+  Status: number;
+  Entity: SeriesList[];
+}
+
+export interface SeriesList {
+  ID: number;
+  Name: string;
+}

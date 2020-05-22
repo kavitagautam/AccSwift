@@ -8,11 +8,11 @@ import {
   ProjectListModel,
   SeriesList,
   JournalNavigateModel,
-  JournalDetailsModel
+  JournalDetailsModel,
 } from "../models/journal.model";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class JournalService {
   journalSeriesList: SeriesList;
@@ -50,9 +50,9 @@ export class JournalService {
   }
 
   getSeriesList(): void {
-    const params = new HttpParams().set("VouchetType", "JRNL");
+    const params = new HttpParams().set("VoucherType", "JRNL");
     this.httpService
-      .get(`${this._api_URL}series/journal`, null, params)
+      .get(`${this._api_URL}series`, null, params)
       .subscribe((res: any) => {
         this.journalSeriesList = res.Entity;
       });

@@ -9,7 +9,7 @@ import { ProductModalPopupComponent } from "@app/shared/components/product-modal
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 import { CashParty } from "../../models/sales-order.model";
-import { PreferenceService } from "@app/modules/preference/services/preference.service";
+import { PreferenceService } from "../../../preference/services/preference.service";
 
 @Component({
   selector: "accSwift-add-sales-order",

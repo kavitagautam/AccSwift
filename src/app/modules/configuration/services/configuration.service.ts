@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import {
   SeriesTreeViewModel,
   VoucherConfigurationModel,
+  SeriesListModel,
 } from "../models/configuration.model";
 import { Observable } from "rxjs";
 
@@ -25,5 +26,10 @@ export class ConfigurationService {
 
   getVoucherConfigDetails(seriesId): Observable<VoucherConfigurationModel> {
     return this.httpService.get(`${this._api_URL}Series/${seriesId}`);
+  }
+
+  getSeriesList(voucherType): Observable<SeriesListModel> {
+    const params = new HttpParams().set("VoucherType", voucherType);
+    return this.httpService.get(`${this._api_URL}series`, null, params);
   }
 }
