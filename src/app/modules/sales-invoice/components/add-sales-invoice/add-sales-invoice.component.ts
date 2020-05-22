@@ -12,7 +12,7 @@ import { ProductCodeValidatorsService } from "@app/shared/validators/async-valid
 import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { PreferenceService } from "@app/modules/preference/services/preference.service";
+import { PreferenceService } from "../../../preference/services/preference.service";
 
 @Component({
   selector: "accSwift-add-sales-invoice",

@@ -7,7 +7,7 @@ import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/l
 import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
-import { PreferenceService } from "@app/modules/preference/services/preference.service";
+import { PreferenceService } from "../../../preference/services/preference.service";
 
 @Component({
   selector: "accswift-add-bank-receipt",
