@@ -61,7 +61,7 @@
                       <select
                         class="form-control"
                         formControlName="NumberingType"
-                        accSwiftFormValidator
+                        (change)="numberingTypeChange($event)"
                       >
                         <option [ngValue]="null">Choose Option....</option>
                         <option
@@ -150,6 +150,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <button
+                          *ngIf="hideNumberFormatting"
                           (click)="openNumberFormatting(numberFormat)"
                           class="btn-secondary pull-right"
                           style="margin: 24px;"
@@ -473,9 +474,9 @@
           <table class="table">
             <thead>
               <tr>
-                <th>S.N</th>
-                <th>Particulars</th>
-                <th>Value</th>
+                <th width="80">S.N</th>
+                <th width="120">Particulars</th>
+                <th width="120">Value</th>
               </tr>
             </thead>
             <tbody>
