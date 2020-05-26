@@ -10,6 +10,10 @@ import { GridModule } from "@progress/kendo-angular-grid";
 import { PopupModule } from "@progress/kendo-angular-popup";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import { LayoutModule } from "@progress/kendo-angular-layout";
+import {
+  DropDownListModule,
+  DropDownsModule,
+} from "@progress/kendo-angular-dropdowns";
 
 @NgModule({
   declarations: [VoucherConfigurationComponent],
@@ -21,9 +25,13 @@ import { LayoutModule } from "@progress/kendo-angular-layout";
     GridModule,
     PopupModule,
     InputsModule,
+    SharedModule,
     TreeViewModule,
     SharedModule,
     LayoutModule,
+    InputsModule,
+    DropDownListModule,
+    DropDownsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
