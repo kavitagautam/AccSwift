@@ -147,16 +147,20 @@
                     </fieldset>
                   </div>
                   <div class="col-md-6 col-sm-6 col-xs-6">
-                    <fieldset>
-                      <legend>Ending Details</legend>
+                    <div class="col-md-12">
                       <div class="form-group">
                         <button
                           (click)="openNumberFormatting(numberFormat)"
-                          class="btn-primary"
+                          class="btn-secondary pull-right"
+                          style="margin: 24px;"
                         >
                           Numbering Format
                         </button>
                       </div>
+                    </div>
+
+                    <fieldset>
+                      <legend>Ending Details</legend>
                       <div class="form-group">
                         <label>Ending No.</label>
                         <input class="form-control" formControlName="EndNo" />
@@ -226,25 +230,6 @@
                       </div>
                     </fieldset>
                   </div>
-                </div>
-              </div>
-
-              <div class="box-footer" style="display: table; margin: auto;">
-                <div class="mb-2">
-                  <button
-                    class="btn btn-primary"
-                    (click)="save()"
-                    accSwiftFormSubmitValidationMsg
-                    [validationControl]="numberingConfigForm"
-                  >
-                    Save
-                  </button>
-                  <button
-                    class="btn btn-secondary ml-2"
-                    (click)="cancel($event)"
-                  >
-                    Cancel
-                  </button>
                 </div>
               </div>
             </ng-template>
@@ -420,6 +405,21 @@
             </ng-template>
           </kendo-tabstrip-tab>
         </kendo-tabstrip>
+        <div class="box-footer" style="display: table; margin: auto;">
+          <div class="mb-2">
+            <button
+              class="btn btn-primary"
+              (click)="save()"
+              accSwiftFormSubmitValidationMsg
+              [validationControl]="numberingConfigForm"
+            >
+              Save
+            </button>
+            <button class="btn btn-secondary ml-2" (click)="cancel()">
+              Cancel
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   </div>
@@ -441,30 +441,71 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-md-12">
-        <!-- <div *ngFor="let control of getNumberFormatList.controls; index as i">
-          <input [formControl]="getNumberFormatList.controls[i]" />
+        <div class="col-md-5 p-0">
+          <div class="form-group">
+            <label>AutoNumber</label>
+            <button class="btn" (click)="autonumberInput()">=>></button>
+          </div>
           <div class="form-group">
             <label>Symbol/Prefix/Sufix</label>
             <input
-              type="number"
+              type="text"
               class="form-control"
-              [formControl]="getNumberFormatList.controls[i].Parameter"
+              (change)="symbolInput($event)"
+              [(ngModel)]="symbol"
             />
           </div>
           <div class="form-group">
             <label>Choose Date Format</label>
-            <input
-              type="number"
+            <select
               class="form-control"
-              [formControl]="getNumberFormatList.controls[i].Parameter"
-            />
+              [(ngModel)]="dateType"
+              (change)="dateInput($event)"
+            >
+              <option [ngValue]="null">Choose Option...</option>
+              <option *ngFor="let date of dateTypeDD" [value]="date.type">{{
+                date.value
+              }}</option>
+            </select>
           </div>
-        </div> -->
+        </div>
+        <div class="col-md-7 p-l">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.N</th>
+                <th>Particulars</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let format of getNumberFormatList.value; index as i"
+                (click)="setClickedRow(i)"
+                [class.active]="i == selectedRow"
+              >
+                <td>{{ i + 1 }}</td>
+                <td>{{ format.FormatType }}</td>
+                <td>{{ format.Parameter }}</td>
+              </tr>
+              <button class="btn m-2" (click)="upItem()">UP</button>
+              <button class="btn m-2" (click)="downItem()">DOWN</button>
+              <button class="btn m-2" (click)="deleteItem()">DELETE</button>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="modal-footer">
+    <button
+      class="btn btn-primary ml-2"
+      type="button"
+      (click)="modalRef.hide()"
+    >
+      OK
+    </button>
     <button
       class="btn btn-secondary ml-2"
       type="button"

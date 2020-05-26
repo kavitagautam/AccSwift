@@ -226,7 +226,7 @@ const routes: Routes = [
         loadChildren:
           "@modules/configuration/configuration.module#ConfigurationModule",
         data: {
-          breadcrumb: "Preference",
+          breadcrumb: "Configuration",
         },
       },
     ],

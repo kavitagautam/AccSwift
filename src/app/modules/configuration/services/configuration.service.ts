@@ -28,6 +28,10 @@ export class ConfigurationService {
     return this.httpService.get(`${this._api_URL}Series/${seriesId}`);
   }
 
+  updateVoucherConfig(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}Series`, body);
+  }
+
   getSeriesList(voucherType): Observable<SeriesListModel> {
     const params = new HttpParams().set("VoucherType", voucherType);
     return this.httpService.get(`${this._api_URL}series`, null, params);

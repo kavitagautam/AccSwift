@@ -7,6 +7,8 @@ import {
 import { ConfigurationService } from "../../services/configuration.service";
 import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-voucher-configuration",
@@ -17,17 +19,28 @@ export class VoucherConfigurationComponent implements OnInit {
   seriesTreeView: Tree[];
   seriesNode: string[];
   seriesID: number;
+  selectedRow: number;
   seriesDropDownList: SeriesList[];
   treeViewLoading: boolean;
   configDetails: VoucherConfiguration;
   numberingConfigForm: FormGroup;
   modalRef: BsModalRef;
+  setClickedRow: Function;
   public expandedKeys: any[] = ["Main"];
+  symbol: string;
+  dateType: string;
+
   constructor(
     private configService: ConfigurationService,
     private _fb: FormBuilder,
-    private modalService: BsModalService
-  ) {}
+    private modalService: BsModalService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {
+    this.setClickedRow = function (index) {
+      this.selectedRow = index;
+    };
+  }
 
   numberingTypes = [
     { id: 1, type: "Automatic" },
@@ -39,19 +52,43 @@ export class VoucherConfigurationComponent implements OnInit {
     { id: 2, type: "DONT_ALLOW", value: "Don't Allow" },
     { id: 3, type: "NO_ACTION", value: "No Action" },
   ];
+
+  dateTypeDD = [
+    {
+      id: 1,
+      type: "ENGLISH_FISCAL_YEAR",
+      value: "English Fiscal Year (eg. 09/02)",
+    },
+    {
+      id: 2,
+      type: "NEPALI_FISCAL_YEAR",
+      value: "Nepali Fiscal Year (eg. 068/069)",
+    },
+  ];
+
   renumberingFreq = [
     { id: 1, value: "Annual" },
     { id: 2, value: "Daily" },
   ];
 
   ngOnInit(): void {
-    this.getSeriesTreeView();
     this.buildNumberingConfigForms();
+    this.getSeriesTreeView();
   }
 
   buildNumberingConfigForms(): void {
     this.numberingConfigForm = this._fb.group({
+      ID: this.configDetails ? this.configDetails.ID : 0,
+      Name: this.configDetails ? this.configDetails.Name : "",
+      VoucherType: this.configDetails ? this.configDetails.VoucherType : "",
+      AutoNumber: this.configDetails ? this.configDetails.AutoNumber : 0,
+      VoucherFormat: this._fb.array([]),
       VouchNumberConfiguration: this._fb.group({
+        ID: [
+          this.configDetails
+            ? this.configDetails.VouchNumberConfiguration.ID
+            : 0,
+        ],
         NumberingType: [
           this.configDetails
             ? this.configDetails.VouchNumberConfiguration.NumberingType
@@ -165,7 +202,6 @@ export class VoucherConfigurationComponent implements OnInit {
             ? this.configDetails.OptionalFields.IsField5Required
             : "",
         ],
-        VoucherFormat: this._fb.array([this.addNumberingFormatFromGroup()]),
       }),
     });
   }
@@ -200,7 +236,7 @@ export class VoucherConfigurationComponent implements OnInit {
             ID: [element.ID],
             FormatType: [element.FormatType],
             Parameter: [element.Parameter],
-            SeriesID: [element.seriesID],
+            SeriesID: [element.SeriesID],
           })
         );
       });
@@ -238,7 +274,7 @@ export class VoucherConfigurationComponent implements OnInit {
       backdrop: true,
       ignoreBackdropClick: true,
       centered: true,
-      class: "modal-sm",
+      class: "modal-lg",
     };
     this.modalRef = this.modalService.show(template, config);
   }
@@ -256,6 +292,25 @@ export class VoucherConfigurationComponent implements OnInit {
     };
   }
 
+  save(): void {
+    this.configService
+      .updateVoucherConfig(JSON.stringify(this.numberingConfigForm.value))
+      .subscribe(
+        (response) => {
+          this.router.navigate(["/voucher-configuration"]);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Voucher Configuration updated successfully");
+        }
+      );
+  }
+  cancel(): void {
+    this.router.navigate(["/voucher-configuration"]);
+  }
+
   selectedNode(dataItem): void {
     this.configService
       .getVoucherConfigDetails(dataItem.ID)
@@ -264,8 +319,105 @@ export class VoucherConfigurationComponent implements OnInit {
         this.getSeriesDD(response.Entity.VoucherType);
         this.seriesID = dataItem.ID;
         this.buildNumberingConfigForms();
-        this.setNumberingFormatFormArray(this.configDetails.VoucherFormat);
+        this.setNumberingFormatList();
       });
+  }
+
+  autonumberInput(): void {
+    (<FormArray>this.numberingConfigForm.get("VoucherFormat")).push(
+      this._fb.group({
+        ID: this.getNumberFormatList.value
+          ? this.getNumberFormatList.value.length + 1
+          : 1,
+        FormatType: "AutoNumber",
+        Parameter: "(Auto)",
+        SeriesID: this.seriesID,
+      })
+    );
+  }
+
+  symbolInput(event): void {
+    (<FormArray>this.numberingConfigForm.get("VoucherFormat")).push(
+      this._fb.group({
+        ID: this.getNumberFormatList.value
+          ? this.getNumberFormatList.value.length + 1
+          : 1,
+        FormatType: "Symbol",
+        Parameter: this.symbol,
+        SeriesID: this.seriesID,
+      })
+    );
+    this.symbol = "";
+  }
+
+  dateInput(event): void {
+    if (this.dateType) {
+      (<FormArray>this.numberingConfigForm.get("VoucherFormat")).push(
+        this._fb.group({
+          ID: this.getNumberFormatList.value
+            ? this.getNumberFormatList.value.length + 1
+            : 1,
+          FormatType: "Date",
+          Parameter: this.dateType,
+          SeriesID: this.seriesID,
+        })
+      );
+    }
+
+    this.dateType = "";
+  }
+
+  downItem(): void {
+    const index = this.selectedRow;
+    const length = this.numberingConfigForm.controls["VoucherFormat"].value
+      .length;
+    if (index != length - 1) {
+      (<FormArray>this.numberingConfigForm.controls["VoucherFormat"]).at(index);
+      console.log(
+        JSON.stringify(this.numberingConfigForm.controls["VoucherFormat"].value)
+      );
+      let group = (<FormArray>this.numberingConfigForm.get("VoucherFormat")).at(
+        index
+      );
+      (<FormArray>this.numberingConfigForm.get("VoucherFormat")).removeAt(
+        index
+      );
+      (<FormArray>this.numberingConfigForm.get("VoucherFormat")).insert(
+        index + 1,
+        group
+      );
+      this.selectedRow = index + 1;
+    }
+  }
+
+  upItem(): void {
+    const index = this.selectedRow;
+    if (index != 0) {
+      const temp = Object.assign(
+        {},
+        (<FormArray>this.numberingConfigForm.controls["VoucherFormat"]).at(
+          index - 1
+        ).value
+      );
+      (<FormArray>this.numberingConfigForm.controls["VoucherFormat"])
+        .at(index - 1)
+        .setValue(
+          (<FormArray>this.numberingConfigForm.controls["VoucherFormat"]).at(
+            index
+          ).value
+        );
+      (<FormArray>this.numberingConfigForm.controls["VoucherFormat"])
+        .at(index)
+        .setValue(temp);
+      this.selectedRow = index - 1;
+    }
+  }
+
+  deleteItem(): void {
+    const index = this.selectedRow;
+    (<FormArray>this.numberingConfigForm.controls["VoucherFormat"]).removeAt(
+      index
+    );
   }
 
   getSeriesDD(voucherType): void {
@@ -276,5 +428,21 @@ export class VoucherConfigurationComponent implements OnInit {
 
   expandAllNode(): void {
     this.expandedKeys = this.seriesNode;
+  }
+
+  public addHandler({ sender }) {
+    const invoiceEntry = <FormArray>(
+      this.numberingConfigForm.get("VoucherFormat")
+    );
+    if (invoiceEntry.invalid) return;
+    (<FormArray>this.numberingConfigForm.get("VoucherFormat")).push(
+      this.addNumberingFormatFromGroup()
+    );
+  }
+
+  public removeHandler({ dataItem, rowIndex }): void {
+    (<FormArray>this.numberingConfigForm.get("VoucherFormat")).removeAt(
+      rowIndex
+    );
   }
 }
