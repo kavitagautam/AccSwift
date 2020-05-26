@@ -52,7 +52,7 @@
           <div class="form-group">
             <div class="col-md-12 p-0">
               <div class="col-md-11 pl-0">
-                <label>Cash/ Party /A/C </label>
+                <label>Cash/ Party /A/C <sup>*</sup></label>
 
                 <kendo-dropdownlist
                   class="form-control"
@@ -92,7 +92,7 @@
             >
           </div>
           <div class="form-group">
-            <label>Sales /A/C </label>
+            <label>Sales /A/C <sup>*</sup></label>
             <select
               class="form-control"
               formControlName="SalesLedgerID"
@@ -112,8 +112,12 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Depot/ Location</label>
-            <select class="form-control" formControlName="DepotID">
+            <label>Depot/ Location<sup>*</sup></label>
+            <select
+              class="form-control"
+              formControlName="DepotID"
+              accSwiftFormValidator
+            >
               <option [ngValue]="null">Choose Option....</option>
               <option
                 *ngFor="let depot of salesInvoiceService.depotList"

@@ -26,6 +26,7 @@ export class VoucherConfigurationComponent implements OnInit {
   numberingConfigForm: FormGroup;
   modalRef: BsModalRef;
   setClickedRow: Function;
+  hideNumberFormatting: boolean = false;
   public expandedKeys: any[] = ["Main"];
   symbol: string;
   dateType: string;
@@ -307,8 +308,32 @@ export class VoucherConfigurationComponent implements OnInit {
         }
       );
   }
+
   cancel(): void {
     this.router.navigate(["/voucher-configuration"]);
+  }
+
+  numberingTypeChange(event): void {
+    const vouchNumberConfig = <FormArray>(
+      this.numberingConfigForm.get("VouchNumberConfiguration")
+    );
+    if (vouchNumberConfig.controls["NumberingType"].value === "Automatic") {
+      vouchNumberConfig.controls["DuplicateVoucherNumber"].disable();
+      vouchNumberConfig.controls["BlankVoucherNumber"].disable();
+      this.hideNumberFormatting = true;
+    }
+    if (vouchNumberConfig.controls["NumberingType"].value === "Manual") {
+      vouchNumberConfig.disable();
+      vouchNumberConfig.controls["NumberingType"].enable();
+      vouchNumberConfig.controls["DuplicateVoucherNumber"].enable();
+      vouchNumberConfig.controls["BlankVoucherNumber"].enable();
+      this.hideNumberFormatting = false;
+    }
+    if (vouchNumberConfig.controls["NumberingType"].value === "Not Required") {
+      vouchNumberConfig.disable();
+      vouchNumberConfig.controls["NumberingType"].enable();
+      this.hideNumberFormatting = false;
+    }
   }
 
   selectedNode(dataItem): void {

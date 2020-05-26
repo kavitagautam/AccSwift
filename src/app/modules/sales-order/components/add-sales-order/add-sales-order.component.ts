@@ -79,7 +79,7 @@ export class AddSalesOrderComponent implements OnInit {
       ProductCode: [""],
       ProductID: [0],
       ProductName: [""],
-      Quantity: [""],
+      Quantity: [1],
       SalesRate: [""],
       Amount: [""],
       UpdatedQuantity: [0],
