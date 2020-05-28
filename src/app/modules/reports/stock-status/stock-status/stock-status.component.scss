@@ -18,11 +18,11 @@ th {
   border: 1px !important;
 }
 
-.table-striped tbody {
-  height: 230px;
-  overflow-y: auto;
-  width: 100%;
-}
+// .table-striped tbody {
+//   height: 230px;
+//   overflow-y: auto;
+//   width: 100%;
+// }
 
 tfoot > tr > td {
   font-size: 16px;
@@ -35,13 +35,27 @@ tfoot > tr > td {
 }
 
 .ledger_name {
-  padding-left: 50px;
   color: blue;
   font-weight: 700;
-  max-width: fit-content;
+  min-width: 250px;
+  text-overflow: break-word;
 }
+
 .balance {
   text-align: right;
+}
+.account_name {
+  color: blue;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgb(235, 232, 232);
 }
 
 .table-box {
@@ -82,7 +96,7 @@ tfoot > tr > td {
 }
 
 /* #header-fixed         { overflow-y: auto; height: 100px; }
-
-
-#header-fixed thead th { position: sticky; top: 0; }
-*/
+  
+  
+  #header-fixed thead th { position: sticky; top: 0; }
+  */

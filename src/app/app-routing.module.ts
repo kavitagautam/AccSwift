@@ -160,6 +160,14 @@ const routes: Routes = [
         },
       },
       {
+        path: "stock-status",
+        loadChildren:
+          "@modules/reports/stock-status/stock-status.module#StockStatusModule",
+        data: {
+          breadcrumb: "Stock Status",
+        },
+      },
+      {
         path: "purchase-invoice",
         loadChildren:
           "@modules/purchase-invoice/purchase-invoice.module#PurchaseInvoiceModule",

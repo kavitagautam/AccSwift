@@ -127,6 +127,11 @@ export class SideNavComponent implements OnInit {
           iconName: "fa fa-file-excel-o",
           route: "/day-book",
         },
+        {
+          displayName: "Stock Status",
+          iconName: "fa fa-file-excel-o",
+          route: "/stock-status",
+        },
       ],
     },
     {

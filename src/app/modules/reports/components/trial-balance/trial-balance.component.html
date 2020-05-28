@@ -4,66 +4,75 @@
 
   <div class="col-md-12">
     <div class="grid-wrapper">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th colspan="1" style="text-align: left;">Account Code</th>
-            <th colspan="1" style="text-align: center;">Account Name</th>
-            <th colspan="1">Debit Amount</th>
-            <th colspan="1">Credit Amount</th>
-          </tr>
-          <tr>
-            <th colspan="1"></th>
-            <th colspan="1" style="text-align: left;">
-              Opening Stock
-            </th>
-            <th colspan="1"></th>
-            <th colspan="1"></th>
-          </tr>
-        </thead>
-        <tbody *ngFor="let group of groupBalanceList; let i = index">
-          <tr>
-            <td>
-              {{ group.GroupCode }}
-            </td>
-            <td class="group_name">
-              {{ group.GroupName }}
-            </td>
-            <td class="balance">
-              {{ group.TotalDrBal }}
-            </td>
-            <td class="balance">
-              {{ group.TotalCrBal }}
-            </td>
-          </tr>
-          <tr *ngFor="let l of group.Ledgers">
-            <td>{{ l.LedgerCode }}</td>
-            <td class="ledger_name">{{ l.LedgerName }}</td>
-            <td class="balance">{{ l.DrBal }}</td>
-            <td class="balance">{{ l.CrBal }}</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="1"></td>
-            <td>Previous Year P/L(Profit)</td>
-            <td colspan="1" class="balance">{{ previousYearPLDR }}</td>
-            <td colspan="1" class="balance">{{ previousYearPLCR }}</td>
-          </tr>
-          <tr>
-            <td colspan="1"></td>
-            <td>DIFFERENCE IN OPENING BALANCE</td>
-            <td colspan="1" class="balance">{{ openingDR }}</td>
-            <td colspan="1" class="balance">{{ openingCR }}</td>
-          </tr>
-          <tr>
-            <td colspan="1"></td>
-            <td>TRIAL TOTAL</td>
-            <td colspan="1" class="balance">{{ trialTotalDR }}</td>
-            <td colspan="1" class="balance">{{ trialTotalCR }}</td>
-          </tr>
-        </tfoot>
-      </table>
+      <div class="table-box">
+        <table id="header-fixed" class="table table-hover table-fixed">
+          <thead>
+            <tr>
+              <th colspan="1" style="text-align: left;">Account Code</th>
+              <th colspan="1" style="text-align: center;">Account Name</th>
+              <th colspan="1">Debit Amount</th>
+              <th colspan="1">Credit Amount</th>
+            </tr>
+            <tr>
+              <th colspan="1"></th>
+              <th colspan="1" style="text-align: left;">
+                Opening Stock
+              </th>
+              <th colspan="1"></th>
+              <th colspan="1"></th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let group of groupBalanceList; let i = index">
+            <tr>
+              <td>
+                {{ group.GroupCode }}
+              </td>
+              <td class="group_name">
+                {{ group.GroupName }}
+              </td>
+              <td class="balance">
+                {{ group.TotalDrBal }}
+              </td>
+              <td class="balance">
+                {{ group.TotalCrBal }}
+              </td>
+            </tr>
+            <tr *ngFor="let l of group.Ledgers">
+              <td>{{ l.LedgerCode }}</td>
+              <td>{{ l.LedgerName }}</td>
+              <td class="balance">{{ l.DrBal }}</td>
+              <td class="balance">{{ l.CrBal }}</td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="groupBalanceList.length == 0">
+            <tr>
+              <td colspan="7" align="center">
+                No Data Available
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="1"></td>
+              <td>Previous Year P/L(Profit)</td>
+              <td colspan="1" class="balance">{{ previousYearPLDR }}</td>
+              <td colspan="1" class="balance">{{ previousYearPLCR }}</td>
+            </tr>
+            <tr>
+              <td colspan="1"></td>
+              <td>DIFFERENCE IN OPENING BALANCE</td>
+              <td colspan="1" class="balance">{{ openingDR }}</td>
+              <td colspan="1" class="balance">{{ openingCR }}</td>
+            </tr>
+            <tr>
+              <td colspan="1"></td>
+              <td>TRIAL TOTAL</td>
+              <td colspan="1" class="balance">{{ trialTotalDR }}</td>
+              <td colspan="1" class="balance">{{ trialTotalCR }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
     <div *ngIf="listLoading" class="k-i-loading"></div>
   </div>
