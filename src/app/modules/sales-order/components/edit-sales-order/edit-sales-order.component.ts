@@ -298,7 +298,7 @@ export class EditSalesOrderComponent implements OnInit {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
-          this.toastr.success("Sales Order added successfully");
+          this.toastr.success("Sales Order edited successfully");
         }
       );
   }
