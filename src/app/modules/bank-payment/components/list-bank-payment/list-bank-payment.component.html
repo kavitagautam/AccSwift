@@ -20,13 +20,13 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Series</label>
-                <select class="form-control" formControlName="seriesId">
+                <select class="form-control" formControlName="SeriesID">
                   <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let series of bankPaymentService.seriesList"
                     [ngValue]="series.ID"
                   >
-                    {{ series.EngName }}
+                    {{ series.Name }}
                   </option>
                 </select>
               </div>
@@ -34,7 +34,7 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Bank Account </label>
-                <select class="form-control" formControlName="bankAccountId">
+                <select class="form-control" formControlName="LedgerID">
                   <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let account of bankPaymentService.bankAccountList"
@@ -48,13 +48,13 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Voucher</label>
-                <input class="form-control" formControlName="voucherNo" />
+                <input class="form-control" formControlName="VoucherNo" />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project</label>
-                <select class="form-control" formControlName="projectId">
+                <select class="form-control" formControlName="ProjectID">
                   <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let project of bankPaymentService.projectList"
@@ -71,7 +71,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  formControlName="date"
+                  formControlName="Date"
                   bsDatepicker
                 />
               </div>
@@ -96,8 +96,7 @@
       <div class="grid-wrapper">
         <kendo-grid
           [data]="gridView"
-          [filterable]="true"
-          [filter]="filter"
+          [filterable]="false"
           [pageSize]="pageSize"
           [skip]="skip"
           [sortable]="{
@@ -107,22 +106,65 @@
           [sort]="sort"
           (sortChange)="sortChange($event)"
           [pageable]="true"
+          [resizable]="true"
           (pageChange)="pageChange($event)"
-          scrollable="none"
-          (filterChange)="filterChange($event)"
+          scrollable="true"
         >
-          <kendo-grid-column field="VoucherNo" title="VoucherNo.">
+          <kendo-grid-column field="VoucherNo" title="VoucherNo." width="100">
           </kendo-grid-column>
-          <kendo-grid-column
-            field="LedgerName"
-            title="Particular/Accounting Head"
-          >
+          <kendo-grid-column title="Ledger Name" width="250">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-sm-12">
+                <span>{{ dataItem.BankPaymentDetailsList[0].LedgerName }}</span>
+                <a
+                  class="pull-right"
+                  title="More Products..."
+                  (click)="openLedgerModal(openInvoiceModalPopup, dataItem)"
+                  ><i
+                    class="fa fa-eye pull-right ledgerSelectIcon"
+                    aria-hidden="true"
+                  ></i>
+                </a>
+              </div>
+            </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="TotalAmount" title="Amount">
+          <kendo-grid-column title="Ledger Code" width="120">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-sm-12">
+                <span>{{ dataItem.BankPaymentDetailsList[0].LedgerCode }}</span>
+              </div>
+            </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="SeriesName" title="Series">
+          <kendo-grid-column title="Ledger Balance" width="120">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-sm-12">
+                <span class="pull-right">{{
+                  dataItem.BankPaymentDetailsList[0].LedgerBalance
+                }}</span>
+              </div>
+            </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="ProjectName" title="Project">
+          <kendo-grid-column field="SeriesName" title="Series" width="100">
+          </kendo-grid-column>
+          <kendo-grid-column field="ProjectName" title="Project" width="100">
           </kendo-grid-column>
           <kendo-grid-column
             field="CreatedDate"
@@ -130,11 +172,15 @@
             filter="date"
             [filterable]="false"
             format="{0: yyyy-mm-dd}"
+            width="100"
           >
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              {{ dataItem.CreatedDate | dateStringFormat: "yyyy-MM-dd" }}
+            </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="Remarks" title="Remarks">
           </kendo-grid-column>
-          <kendo-grid-command-column title="Action" width="220">
+          <kendo-grid-command-column title="Action" width="150">
             <ng-template
               kendoGridCellTemplate
               let-isNew="isNew"
@@ -164,3 +210,78 @@
     </div>
   </div>
 </div>
+
+<ng-template #openInvoiceModalPopup>
+  <div class="modal-header">
+    <h3 class="modal-title pull-left">Payment List</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <kendo-grid
+          [data]="ledgerList"
+          [filterable]="false"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+        >
+          <kendo-grid-column field="LedgerName" title="Ledger Name" width="200">
+          </kendo-grid-column>
+          <kendo-grid-column field="LedgerCode" title="Ledger Code" width="110">
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="LedgerBalance"
+            title="Ledger Balance "
+            width="110"
+          >
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <span class="pull-right">{{ dataItem.LedgerBalance }}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="Amount" title="Amount" width="100">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <span class="pull-right">{{ dataItem.Amount }}</span>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="modalRef.hide()">
+      OK
+    </button>
+    <button
+      class="btn btn-secondary ml-2"
+      type="button"
+      (click)="modalRef.hide()"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>

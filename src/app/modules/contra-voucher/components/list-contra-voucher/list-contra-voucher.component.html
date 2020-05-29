@@ -27,7 +27,7 @@
                     *ngFor="let series of contraVoucherService.seriesLists"
                     [ngValue]="series.ID"
                   >
-                    {{ series.EngName }}
+                    {{ series.Name }}
                   </option>
                 </select>
               </div>
@@ -56,8 +56,11 @@
                 <label>Cash Party / Customer</label>
                 <select class="form-control" formControlName="cashPartyId">
                   <option [ngValue]="null">Choose Option....</option>
-                  <option *ngFor="let cash of contraVoucherService.seriesLists">
-                    {{ cash.EngName }}
+                  <option
+                    *ngFor="let cash of contraVoucherService.cashPartyLists"
+                    [ngValue]="cash.LedgerID"
+                  >
+                    {{ cash.LedgerName }}
                   </option>
                 </select>
               </div>
@@ -129,7 +132,7 @@
       <div class="grid-wrapper">
         <kendo-grid
           [data]="gridView"
-          [filterable]="true"
+          [filterable]="false"
           [filter]="filter"
           [pageSize]="pageSize"
           [skip]="skip"

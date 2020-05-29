@@ -6,60 +6,21 @@ import { Observable } from "rxjs";
 import {
   SeriesList,
   ProjectList,
-  CashPaymentMaster,
-  LedgerList
+  CashAccounts,
+  CashParty,
+  CashPaymentNavigateModel,
+  CashPaymentDetailModel,
 } from "../models/cash-payment.model";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class CashPaymentService {
   seriesLists: SeriesList;
-  cashAccountLists;
-  projectLists: ProjectList;
+  cashAccountLists: CashAccounts;
+  cashPartyLists: CashParty;
+  projectLists: ProjectList[] = [];
   _api_URL = environment.baseAPI;
-  cashPayment = [
-    {
-      IsPayByInvoice: false,
-      TotalAmount: 1234.0,
-      CashReceiptDetails: null,
-      LedgerID: 20712,
-      LedgerName: "Pt Cash",
-      ID: 8,
-      SeriesID: 282,
-      SeriesName: "Main",
-      VoucherNo: "00024",
-      Date: "2019-01-10T00:00:00",
-      ProjectID: 1,
-      ProjectName: "All Project",
-      Fields: { Field1: "", Field2: "", Field3: "", Field4: "", Field5: "" },
-      Remarks: "",
-      CreatedBy: "root",
-      CreatedDate: "2019-01-10T00:00:00",
-      ModifiedBy: "root",
-      ModifiedDate: "2019-01-10T00:00:00"
-    },
-    {
-      IsPayByInvoice: true,
-      TotalAmount: 70.0,
-      CashReceiptDetails: null,
-      LedgerID: 20712,
-      LedgerName: "Pt Cash",
-      ID: 9,
-      SeriesID: 282,
-      SeriesName: "Main",
-      VoucherNo: "00031",
-      Date: "2019-01-11T00:00:00",
-      ProjectID: 1,
-      ProjectName: "All Project",
-      Fields: { Field1: "", Field2: "", Field3: "", Field4: "", Field5: "" },
-      Remarks: "",
-      CreatedBy: "root",
-      CreatedDate: "2019-01-11T00:00:00",
-      ModifiedBy: "root",
-      ModifiedDate: "2019-01-11T00:00:00"
-    }
-  ];
 
   constructor(
     private http: HttpClient,
@@ -67,47 +28,65 @@ export class CashPaymentService {
   ) {
     this.getProjectLists();
     this.getSeriesList();
-  }
-
-  getCashPayment() {
-    return this.cashPayment;
+    this.getCashPaymentAccounts();
+    this.getCashParty();
   }
 
   getProjectLists(): void {
-    this.httpService
-      .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectList) => {
-        this.projectLists = res;
-      });
+    this.httpService.get(`${this._api_URL}project`).subscribe((res: any) => {
+      this.projectLists = res.Entity;
+    });
   }
+
   getSeriesList(): void {
     const params = new HttpParams().set("VoucherType", "CASH_PMNT"); // Series List for Cash Receipt Voucher Type
     this.httpService
       .get(`${this._api_URL}series`, null, params)
-      .subscribe((res: SeriesList) => {
-        this.seriesLists = res;
+      .subscribe((res: any) => {
+        this.seriesLists = res.Entity;
       });
-  }
-
-  getCashPaymentMaster(): Observable<CashPaymentMaster[]> {
-    return this.http.get<CashPaymentMaster[]>(
-      `${this._api_URL}CashPaymentMaster`
-    );
   }
 
   getCashPaymentAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/CashAccounts`)
-      .subscribe(res => {
+      .subscribe((res: any) => {
         this.cashAccountLists = res.Entity;
       });
   }
 
-  getCashPaymentDetails(id): Observable<CashPaymentMaster> {
+  getCashParty(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/cashparty`)
+      .subscribe((res: any) => {
+        this.cashPartyLists = res.Entity;
+      });
+  }
+
+  getCashPaymentMaster(body): Observable<CashPaymentNavigateModel> {
+    return this.httpService.post(
+      `${this._api_URL}CashPaymentMaster/navigate`,
+      body
+    );
+  }
+
+  getLedgerDetails(id): Observable<any> {
+    return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
+  }
+
+  getCashPaymentDetails(id): Observable<CashPaymentDetailModel> {
     return this.httpService.get(`${this._api_URL}CashPaymentMaster/${id}`);
   }
 
-  getLedgerList(): Observable<LedgerList[]> {
-    return this.httpService.get(`${this._api_URL}ledger/lov`);
+  addCashPayment(body): Observable<any> {
+    return this.httpService.post(`${this._api_URL}CashPaymentMaster`, body);
+  }
+
+  updateCashPayment(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}CashPaymentMaster`, body);
+  }
+
+  deleteCashPaymentByID(id): Observable<any> {
+    return this.httpService.delete(`${this._api_URL}CashPaymentMaster/${id}`);
   }
 }

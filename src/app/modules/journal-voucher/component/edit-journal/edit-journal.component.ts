@@ -3,27 +3,29 @@ import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe } from "@angular/common";
-import { JournalMaster } from "../../models/journal.model";
+import { JournalDetails } from "../../models/journal.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
-import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { IntlService } from "@progress/kendo-angular-intl";
 import { LocaleService } from "@app/core/services/locale/locale.services";
+import { ToastrService } from "ngx-toastr";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-edit-journal",
   templateUrl: "./edit-journal.component.html",
   styleUrls: ["./edit-journal.component.css"],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class EditJournalComponent implements OnInit {
   private editedRowIndex: number;
   //Input Field Property
+
   numericFormat: string = "n2";
   public decimals: number = 2;
   editJournalForm: FormGroup;
-  journalDetail: JournalMaster;
+  journalDetail: JournalDetails;
   submitted: boolean;
   rowSubmitted: boolean;
   debitTotal: number = 0;
@@ -36,7 +38,8 @@ export class EditJournalComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
-    centered: true
+    centered: true,
+    class: "modal-lg",
   };
 
   constructor(
@@ -48,7 +51,8 @@ export class EditJournalComponent implements OnInit {
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     public intlService: IntlService,
-    private localeService: LocaleService
+    private localeService: LocaleService,
+    private toastr: ToastrService
   ) {
     this.localeService.set("en-US");
   }
@@ -56,12 +60,12 @@ export class EditJournalComponent implements OnInit {
   ngOnInit() {
     this.buildJournalForm();
     // Get Id From the Route URL and get the Details
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       if (params.get("id")) {
         this.journalService
           .getJournalDetails(params.get("id"))
-          .subscribe(res => {
-            this.journalDetail = res;
+          .subscribe((response) => {
+            this.journalDetail = response.Entity;
             this.buildJournalForm();
             this.setJournalList();
           });
@@ -74,11 +78,11 @@ export class EditJournalComponent implements OnInit {
       seriesId: [this.journalDetail ? this.journalDetail.SeriesID : null],
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
       date: [
-        this.journalDetail ? new Date(this.journalDetail.CreatedDate) : ""
+        this.journalDetail ? new Date(this.journalDetail.CreatedDate) : "",
       ],
       projectId: [this.journalDetail ? this.journalDetail.ProjectID : null],
       narration: [this.journalDetail ? this.journalDetail.Remarks : ""],
-      journalEntryList: [this.addJournalEntryFormGroup()]
+      journalEntryList: [this.addJournalEntryFormGroup()],
     });
   }
 
@@ -90,7 +94,7 @@ export class EditJournalComponent implements OnInit {
       debit: ["", Validators.required],
       credit: [""],
       balance: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
@@ -109,29 +113,29 @@ export class EditJournalComponent implements OnInit {
   setJournalFormArray(journaldetails): FormArray {
     const journalFormArray = new FormArray([]);
     if (journaldetails && journaldetails.length > 0) {
-      journaldetails.forEach(element => {
+      journaldetails.forEach((element) => {
         journalFormArray.push(
           this._fb.group({
-            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
+            ledgerCode: [element.LedgerCode ? element.LedgerCode : ""],
             particularsOraccountingHead: [
               element.LedgerName,
-              Validators.required
+              Validators.required,
             ],
             ledgerID: element.MasterID,
             debit: [
               {
                 value: element.DebitCredit === "Debit" ? element.Amount : "",
-                disabled: element.DebitCredit === "Credit" ? true : false
-              }
+                disabled: element.DebitCredit === "Credit" ? true : false,
+              },
             ],
             credit: [
               {
                 value: element.DebitCredit === "Credit" ? element.Amount : "",
-                disabled: element.DebitCredit === "Debit" ? true : false
-              }
+                disabled: element.DebitCredit === "Debit" ? true : false,
+              },
             ],
             balance: element.Amount ? element.Amount : "",
-            remarks: element.Remarks
+            remarks: element.Remarks,
           })
         );
         if ((element.DebitCredit = "Debit")) {
@@ -147,14 +151,14 @@ export class EditJournalComponent implements OnInit {
           ledgerCode: [
             "",
             null,
-            this.ledgerCodeMatchValidators.ledgerCodeMatch()
+            this.ledgerCodeMatchValidators.ledgerCodeMatch(),
           ],
           particularsOraccountingHead: ["", Validators.required],
           ledgerID: [""],
           debit: ["", Validators.required],
           credit: [""],
           balance: [{ value: "", disabled: false }],
-          remarks: [""]
+          remarks: [""],
         })
       );
     }
@@ -214,7 +218,7 @@ export class EditJournalComponent implements OnInit {
       journalEntryFormArray.controls[selectedRow].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           journalEntryFormArray.controls[selectedRow]
@@ -242,11 +246,58 @@ export class EditJournalComponent implements OnInit {
     this.submitted = false;
   }
 
+  journalEntryList = [];
   public save(): void {
-    if (this.editJournalForm.valid) {
-      this.router.navigate(["/journal"]);
-    } else {
+    this.journalEntryList = [];
+    const journalEntryFormArray = <FormArray>(
+      this.editJournalForm.get("journalEntryList")
+    );
+
+    for (const key in journalEntryFormArray.value) {
+      if (journalEntryFormArray.value[key]) {
+        this.journalEntryList.push({
+          DebitCredit: journalEntryFormArray.value[key].debit
+            ? "Debit"
+            : "Credit",
+          LedgerID: journalEntryFormArray.value[key].ledgerID,
+          LedgerCode: journalEntryFormArray.value[key].ledgerCode,
+          LedgerBalance: journalEntryFormArray.value[key].balance,
+          Amount: journalEntryFormArray.value[key].debit
+            ? journalEntryFormArray.value[key].debit
+            : journalEntryFormArray.value[key].credit,
+          Remarks: journalEntryFormArray.value[key].remarks,
+        });
+      }
     }
+
+    if (this.editJournalForm.invalid) return;
+    const obj = {
+      ID: this.journalDetail.ID,
+      Date: this.editJournalForm.get("date").value,
+      Journaldetails: this.journalEntryList,
+      SeriesID: this.editJournalForm.get("seriesId").value,
+      Fields: {
+        Field1: "",
+        Field2: "",
+        Field3: "",
+        Field4: "",
+        Field5: "",
+      },
+      VoucherNo: this.editJournalForm.get("voucherNo").value,
+      ProjectID: this.editJournalForm.get("projectId").value,
+      Remarks: this.editJournalForm.get("narration").value,
+    };
+    this.journalService.updateJournalVoucher(obj).subscribe(
+      (response) => {
+        this.router.navigate(["/journal"]);
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Journal edited successfully");
+      }
+    );
   }
 
   public cancel(): void {
@@ -256,12 +307,12 @@ export class EditJournalComponent implements OnInit {
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const journalEntryFormArray = <FormArray>(
           this.editJournalForm.get("journalEntryList")
@@ -280,7 +331,7 @@ export class EditJournalComponent implements OnInit {
           .setValue(data.LedgerCode);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }
@@ -358,6 +409,5 @@ export class EditJournalComponent implements OnInit {
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
-    // this.formGroup = undefined;
   }
 }

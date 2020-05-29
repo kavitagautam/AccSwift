@@ -8,15 +8,11 @@ import { FormsModule } from "@angular/forms";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { SharedModule } from "@app/shared/shared.module";
-
 import { DepotRoutingModule } from "./depot-routing.module";
-
-import { EditDepotComponent } from "./components/edit-depot/edit-depot.component";
-import { ListDepotComponent } from "./components/list-depot/list-depot.component";
-import { AddDepotComponent } from "./components/add-depot/add-depot.component";
+import { ListDepotComponent } from "./components/list-depot.component";
 
 @NgModule({
-  declarations: [AddDepotComponent, EditDepotComponent, ListDepotComponent],
+  declarations: [ListDepotComponent],
   imports: [
     CommonModule,
     DepotRoutingModule,

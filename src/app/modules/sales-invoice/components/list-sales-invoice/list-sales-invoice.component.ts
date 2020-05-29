@@ -1,24 +1,32 @@
-import { ConfirmationDialogComponent } from "./../../../../shared/component/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
-import { FormBuilder } from "@angular/forms";
-import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { Component, OnInit, TemplateRef } from "@angular/core";
+import {
+  InvoiceDetail,
+  CashParty,
+  SalseInvoice,
+} from "../../models/sales-invoice.model";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
+import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-list-sales-invoice",
   templateUrl: "./list-sales-invoice.component.html",
-  styleUrls: ["./list-sales-invoice.component.scss"]
+  styleUrls: ["./list-sales-invoice.component.scss"],
 })
 export class ListSalesInvoiceComponent implements OnInit {
-  salesInvoiceForm;
-  salesInvoiceList;
+  salesInvoiceForm: FormGroup;
+  salesInvoiceList: SalseInvoice[];
+  cashPartyList: CashParty[] = [];
+
   listLoading: Boolean;
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
@@ -27,17 +35,22 @@ export class ListSalesInvoiceComponent implements OnInit {
   public currentPage = 1;
   modalRef: BsModalRef;
   //sorting Kendo Data
+  orderByKey = "";
+  dirKey = "asc";
+  //sorting kendo data
   public allowUnsort = true;
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
+
+  searchFilterList = [];
   //modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
 
   constructor(
@@ -46,52 +59,61 @@ export class ListSalesInvoiceComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private modalService: BsModalService
-  ) {}
-
-  ngOnInit() {
-    this.buildListSalesForm();
-    this.getSalesInvoiceList();
-  }
-
-  buildListSalesForm() {
-    this.salesInvoiceForm = this.fb.group({
-      seriesId: [null],
-      cashPartyACId: [null],
-      salesACId: [null],
-      depotLocationId: [null],
-      projectId: [null],
-      date: [new Date()],
-      orderNo: [""]
+  ) {
+    this.salesInvoiceService.getCashPartyAccountDD().subscribe((response) => {
+      this.cashPartyList = response.Entity;
     });
   }
 
+  ngOnInit() {
+    this.buildSalesInvoiceSearchForm();
+    this.getSalesInvoiceList();
+  }
+
+  buildSalesInvoiceSearchForm() {
+    this.salesInvoiceForm = this.fb.group({
+      SeriesID: [null],
+      CashPartyLedgerID: [null],
+      SalesLedgerID: [null],
+      DepotID: [null],
+      ProjectID: [null],
+      Date: [],
+      OrderNo: [""],
+    });
+  }
+
+  resetForm(): void {
+    this.buildSalesInvoiceSearchForm();
+    this.getSalesInvoiceList();
+  }
+
   public sortChange(sort: SortDescriptor[]): void {
+    this.orderByKey = "";
+    this.dirKey = "";
     this.sort = sort;
+    this.dirKey = this.sort[0].dir;
+    this.orderByKey = this.sort[0].field;
     this.getSalesInvoiceList();
   }
 
   getSalesInvoiceList(): void {
     this.listLoading = true;
-    const params = {
+    const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
-      OrderBy: "",
-      Direction: "asc"
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey,
+      FilterList: this.searchFilterList,
     };
-
-    this.salesInvoiceService.getSalesInvoiceMaster().subscribe(
-      res => {
-        this.listLoading = true;
-        this.salesInvoiceList = res;
+    this.salesInvoiceService.getSalesInvoiceMaster(obj).subscribe(
+      (response) => {
+        this.salesInvoiceList = response.Entity.Entity;
         this.gridView = {
-          data: this.salesInvoiceList.slice(
-            this.skip,
-            this.skip + this.pageSize
-          ),
-          total: this.salesInvoiceList ? this.salesInvoiceList.length : 0
+          data: this.salesInvoiceList,
+          total: response.Entity.TotalItemsAvailable,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -100,12 +122,20 @@ export class ListSalesInvoiceComponent implements OnInit {
     );
   }
 
-  public filterChange(filter) {
-    this.filter = filter;
-    this.getSalesInvoiceList();
-  }
-
-  public searchForm() {
+  public searchForm(): void {
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.salesInvoiceForm.invalid) return;
+    for (const key in this.salesInvoiceForm.value) {
+      if (this.salesInvoiceForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.salesInvoiceForm.value[key],
+        });
+      }
+    }
     this.getSalesInvoiceList();
   }
 
@@ -126,29 +156,60 @@ export class ListSalesInvoiceComponent implements OnInit {
     this.router.navigate(["/sales-invoice/edit", item.ID]);
   }
 
+  // Filterable Cash Party Drop-down
+  cashPartyDDFilter(value): void {
+    this.cashPartyList = this.salesInvoiceService.cashPartyList.filter(
+      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
+  openCashPartyModel(): void {
+    this.modalRef = this.modalService.show(
+      CashPartyModalPopupComponent,
+      this.config
+    );
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe((data) => {
+      if (data) {
+        // Do After the the sucess
+        this.salesInvoiceForm.get("CashPartyLedgerID").setValue(data.LedgerID);
+      }
+    });
+    this.modalRef.content.onClose.subscribe((data) => {
+      //Do after Close the Modal
+    });
+  }
+
   openConfirmationDialogue(dataItem) {
     const salesInvoiceID = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
       this.config
     );
-    this.modalRef.content.data = "Payments No." + dataItem.VoucherNo;
+    this.modalRef.content.data = "Voucher No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deletePaymentsByID(salesInvoiceID.id);
       }
     });
   }
 
+  productList: InvoiceDetail[] = [];
+
+  openProductModal(template: TemplateRef<any>, dataItem): void {
+    this.productList = dataItem.InvoiceDetails;
+    this.modalRef = this.modalService.show(template, this.config);
+  }
+
   public deletePaymentsByID(id): void {
     this.salesInvoiceService.deleteSalesById(id).subscribe(
-      response => {
+      (response) => {
         this.getSalesInvoiceList();
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error));
       },
       () => {

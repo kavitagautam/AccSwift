@@ -1,0 +1,98 @@
+<h3>Company Informations</h3>
+<form [formGroup]="companyForm">
+  <fieldset>
+    <legend>Company Informations</legend>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label> Name</label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="COMPANY_NAME"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label> Address</label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="COMPANY_ADDRESS"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label> City</label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="COMPANY_CITY"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label> PAN</label>
+            <input
+              class="form-control"
+              type="number"
+              formControlName="COMPANY_PAN"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label> Phone</label>
+            <input
+              class="form-control"
+              type="tel"
+              formControlName="COMPANY_PHONE"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label> Slogan</label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="COMPANY_SLOGAN"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</form>
+<div class="row">
+  <div class="col-md-12">
+    <button
+      type="button"
+      class="btn btn-danger pull-right ml-3"
+      (click)="cancel()"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary pull-right ml-3"
+      (click)="save()"
+    >
+      Save
+    </button>
+  </div>
+</div>

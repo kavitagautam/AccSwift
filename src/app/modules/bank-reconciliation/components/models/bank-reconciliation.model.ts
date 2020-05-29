@@ -1,23 +1,44 @@
 export interface ProjectList {
   ID: number;
   ProjectNumber: number;
-  ParentProjectID: number;
+  ParentProjectID?: number;
   EngName: string;
   NepName: string;
   Description: string;
   CreatedBy: string;
-  CreatedDate: string;
+  CreatedDate?: Date;
   ModifiedBy: string;
-  ModifiedDate: string;
+  ModifiedDate?: Date;
+}
+
+export interface ProjectListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: ProjectList[];
+}
+
+export interface SeriesListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: SeriesList[];
 }
 
 export interface SeriesList {
   ID: number;
-  EngName: string;
-  NepName: string;
+  Name: string;
   VoucherType: string;
-  AutoNumber: number;
-  BuiltIn: boolean;
+}
+
+export interface BankAccounts {
+  Status: number;
+  Entity: Entity[];
+}
+
+export interface Entity {
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  GroupID: number;
 }
 
 export interface BankReconciliationMaster {
@@ -98,16 +119,4 @@ export interface BankReconciliationDetailsLists {
   };
   Amount: number;
   Remarks: string;
-}
-
-export interface BankAccounts {
-  Status: number;
-  Entity: Entity[];
-}
-
-export interface Entity {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
 }

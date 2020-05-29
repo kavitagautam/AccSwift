@@ -1,0 +1,81 @@
+<div class="box box-body">
+  <div class="col-md-3 border">
+    <ul id="myUL">
+      <li>
+        <span class="boxes">General</span>
+        <ul class="nested active">
+          <li>
+            <a role="button" role="button" (click)="selectedNode('options')"
+              >Options</a
+            >
+          </li>
+          <li>
+            <a role="button" (click)="selectedNode('accounts')">Accounts</a>
+          </li>
+          <li>
+            <a role="button" (click)="selectedNode('series')">Series</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ul id="myUL">
+      <li>
+        <span class="boxes">Sales and Purchases</span>
+        <ul class="nested">
+          <li>
+            <a role="button" role="button" (click)="selectedNode('settings')"
+              >Settings</a
+            >
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ul id="myUL">
+      <li>
+        <span class="boxes">Company Info</span>
+        <ul class="nested">
+          <li>
+            <a role="button" (click)="selectedNode('companyInfos')"
+              >Company Informations</a
+            >
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ul id="myUL">
+      <li>
+        <span class="boxes">Report Preferences</span>
+        <ul class="nested">
+          <li>
+            <a role="button" (click)="selectedNode('sales')">Sales</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-md-9">
+    <div *ngIf="nodeName === 'options'">
+      <accSwift-options></accSwift-options>
+    </div>
+
+    <div *ngIf="nodeName === 'companyInfos'">
+      <accSwift-company-info></accSwift-company-info>
+    </div>
+
+    <div *ngIf="nodeName === 'sales'">
+      <accSwift-sales></accSwift-sales>
+    </div>
+
+    <div *ngIf="nodeName === 'accounts'">
+      <accSwift-accounts></accSwift-accounts>
+    </div>
+    <div *ngIf="nodeName === 'series'">
+      <accSwift-series-preference></accSwift-series-preference>
+    </div>
+
+    <div *ngIf="nodeName === 'settings'">
+      <accSwift-settings></accSwift-settings>
+    </div>
+  </div>
+</div>

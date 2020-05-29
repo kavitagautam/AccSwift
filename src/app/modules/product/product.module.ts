@@ -11,40 +11,37 @@ import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
 import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import { ProductComponent } from "./components/product/product.component";
 import { SharedModule } from "@app/shared/shared.module";
-import { ViewProductComponent } from "./components/product/view-product/view-product.component";
-import { AddProductComponent } from "./components/product/add-product/add-product.component";
-import { EditProductComponent } from "./components/product/edit-product/edit-product.component";
-import { ProductGroupModule } from "../product-group/product-group.module";
 import { LandingProductComponent } from "./landing-product.component";
+import { ProductGroupComponent } from "./components/product-group/product-group.component";
+import { ImageCropperModule } from "ngx-image-cropper";
+import { UploadsModule } from "@progress/kendo-angular-upload";
+import { ProductMoreDetailComponent } from "./components/product-more-detail/product-more-detail.component";
+import { ProductImageComponent } from "./components/product-image/product-image.component";
 
 @NgModule({
   declarations: [
-    AddProductComponent,
-    EditProductComponent,
     LandingProductComponent,
     ProductComponent,
-    ViewProductComponent
+    ProductGroupComponent,
+    ProductMoreDetailComponent,
+    ProductImageComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     ProductRoutingModule,
-    ProductGroupModule,
     SharedModule,
     GridModule,
     PopupModule,
     InputsModule,
     LayoutModule,
+    ImageCropperModule,
     DropDownListModule,
+    UploadsModule,
     DropDownsModule,
-    TreeViewModule
+    TreeViewModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [
-    AddProductComponent,
-    EditProductComponent,
-    ViewProductComponent
-  ]
 })
 export class ProductModule {}

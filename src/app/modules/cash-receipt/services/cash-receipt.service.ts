@@ -5,17 +5,21 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import {
   ProjectList,
   SeriesList,
-  CashReceiptMaster,
-  CashAccounts
+  CashAccountList,
+  CashPartyList,
+  ProjectListModel,
+  CashReceiptNavigateModel,
+  CashReceiptDetailModel,
 } from "../models/cash-receipt.model";
 import { Observable } from "rxjs";
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class CashReceiptService {
   seriesLists: SeriesList;
-  projectLists: ProjectList;
-  cashAccountLists;
+  projectLists: ProjectList[];
+  cashAccountLists: CashAccountList;
+  cashPartyLists: CashPartyList;
   _api_URL = environment.baseAPI;
 
   constructor(
@@ -25,41 +29,70 @@ export class CashReceiptService {
     this.getProjectLists();
     this.getSeriesList();
     this.getCashReceiptAccounts();
+    this.getCashPartyLists();
   }
 
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectList) => {
-        this.projectLists = res;
+      .subscribe((res: ProjectListModel) => {
+        this.projectLists = res.Entity;
       });
   }
+
   getSeriesList(): void {
     const params = new HttpParams().set("VoucherType", "CASH_RCPT"); // Series List for Cash Receipt Voucher Type
     this.httpService
-      .get(`${this._api_URL}series`, null, params)
-      .subscribe((res: SeriesList) => {
-        this.seriesLists = res;
+      .get(`${this._api_URL}Series`, null, params)
+      .subscribe((res) => {
+        this.seriesLists = res.Entity;
       });
   }
 
   getCashReceiptAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/CashAccounts`)
-      .subscribe((res: CashAccounts) => {
+      .subscribe((res) => {
         this.cashAccountLists = res.Entity;
       });
   }
 
-  getCashReceiptMaster(): Observable<CashReceiptMaster[]> {
-    return this.httpService.get(`${this._api_URL}CashReceiptMaster`);
+  getCashPartyLists(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/cashparty`)
+      .subscribe((res: any) => {
+        this.cashPartyLists = res.Entity;
+      });
   }
 
-  getCashReceiptDetails(id): Observable<CashReceiptMaster> {
+  getCashReceiptMaster(body): Observable<CashReceiptNavigateModel> {
+    return this.httpService.post(
+      `${this._api_URL}CashReceiptMaster/navigate`,
+      body
+    );
+  }
+
+  getLedgerDetails(id): Observable<any> {
+    return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
+  }
+
+  getCashReceiptDetails(id): Observable<CashReceiptDetailModel> {
     return this.httpService.get(`${this._api_URL}CashReceiptMaster/${id}`);
   }
 
-  getCashParty(): Observable<CashAccounts[]> {
+  addCashReceipt(body): Observable<any> {
+    return this.httpService.post(`${this._api_URL}CashReceiptMaster`, body);
+  }
+
+  updateCashReceipt(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}CashReceiptMaster`, body);
+  }
+
+  deleteCashReceiptByID(id): Observable<any> {
+    return this.httpService.delete(`${this._api_URL}CashReceiptMaster/${id}`);
+  }
+
+  getCashParty(): Observable<CashPartyList[]> {
     return this.httpService.get(`${this._api_URL} /Ledger/cashparty`);
   }
 }

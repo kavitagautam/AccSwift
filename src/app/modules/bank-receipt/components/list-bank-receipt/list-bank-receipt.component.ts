@@ -1,27 +1,30 @@
-import { Component, OnInit } from "@angular/core";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { Component, OnInit, TemplateRef } from "@angular/core";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { PageChangeEvent, GridDataResult } from "@progress/kendo-angular-grid";
 import {
   SortDescriptor,
-  CompositeFilterDescriptor
+  CompositeFilterDescriptor,
 } from "@progress/kendo-data-query";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { BankReceiptService } from "../../services/bank-receipt.service";
 import { ToastrService } from "ngx-toastr";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
-import { BankReceiptMaster } from "../../models/bank-receipt.model";
+import {
+  BankReceiptList,
+  BankReceiptDetailsList,
+} from "../../models/bank-receipt.model";
 
 @Component({
   selector: "accswift-list-bank-receipt",
   templateUrl: "./list-bank-receipt.component.html",
-  styleUrls: ["./list-bank-receipt.component.scss"]
+  styleUrls: ["./list-bank-receipt.component.scss"],
 })
 export class ListBankReceiptComponent implements OnInit {
   bankReceiptForm: FormGroup;
   date: Date = new Date();
   listLoading: boolean;
-  bankReceiptList: any;
+  bankReceiptList: BankReceiptList[] = [];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
   public pageSize = 10;
@@ -32,16 +35,21 @@ export class ListBankReceiptComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
+
+  orderByKey = "";
+  dirKey = "asc";
 
   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
+
+  searchFilterList: Array<any> = [];
 
   constructor(
     public _fb: FormBuilder,
@@ -51,43 +59,46 @@ export class ListBankReceiptComponent implements OnInit {
     public bankReceiptService: BankReceiptService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.bankReceiptForm = this._fb.group({
       seriesId: [null],
       projectId: [null],
       voucherNo: [""],
       bankAccountId: [null],
-      date: [new Date()]
+      date: [new Date()],
     });
     this.getBankReceiptlList();
-    this.bankReceiptService.init();
   }
 
   public sortChange(sort: SortDescriptor[]): void {
+    this.currentPage = 1;
+    this.skip = 0;
+    this.orderByKey = "";
+    this.dirKey = "";
     this.sort = sort;
+    this.dirKey = this.sort[0].dir;
+    this.orderByKey = this.sort[0].field;
     this.getBankReceiptlList();
   }
 
   getBankReceiptlList(): void {
-    const params = {
+    this.listLoading = true;
+    const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
-      OrderBy: "",
-      Direction: "asc" // "asc" or "desc"
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey, // "asc" or "desc"
+      FilterList: this.searchFilterList,
     };
-    this.bankReceiptService.getBankReceiptMaster().subscribe(
-      response => {
-        this.listLoading = true;
-        this.bankReceiptList = response;
+    this.bankReceiptService.getBankReceiptMaster(obj).subscribe(
+      (response) => {
+        this.bankReceiptList = response.Entity.Entity;
         this.gridView = {
-          data: this.bankReceiptList.slice(
-            this.skip,
-            this.skip + this.pageSize
-          ),
-          total: this.bankReceiptList ? this.bankReceiptList.length : 0
+          data: this.bankReceiptList,
+          total: response.Entity.TotalItemsAvailable,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -96,12 +107,20 @@ export class ListBankReceiptComponent implements OnInit {
     );
   }
 
-  public filterChange(filter): void {
-    this.filter = filter;
-    this.getBankReceiptlList();
-  }
-
-  public searchForm() {
+  public searchForm(): void {
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.bankReceiptForm.invalid) return;
+    for (const key in this.bankReceiptForm.value) {
+      if (this.bankReceiptForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.bankReceiptForm.value[key],
+        });
+      }
+    }
     this.getBankReceiptlList();
   }
 
@@ -122,9 +141,16 @@ export class ListBankReceiptComponent implements OnInit {
     this.router.navigate(["/bank-receipt/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  ledgerList: BankReceiptDetailsList[] = [];
+
+  openLedgerModal(template: TemplateRef<any>, dataItem): void {
+    this.ledgerList = dataItem.BankReceiptDetailsList;
+    this.modalRef = this.modalService.show(template, this.config);
+  }
+
+  openConfirmationDialogue(dataItem): void {
     const journalId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -132,7 +158,7 @@ export class ListBankReceiptComponent implements OnInit {
     );
     this.modalRef.content.data = "Receipt No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteReceiptByID(journalId.id);
       }
@@ -140,7 +166,16 @@ export class ListBankReceiptComponent implements OnInit {
   }
 
   public deleteReceiptByID(id): void {
-    this.toastr.success("Bank deleted successfully");
-    //call Delete Api
+    this.bankReceiptService.deleteBankReceiptByID(id).subscribe(
+      (response) => {
+        this.getBankReceiptlList();
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error));
+      },
+      () => {
+        this.toastr.success("Bank deleted successfully");
+      }
+    );
   }
 }

@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { ListUnitMaintenanceComponent } from "./components/list-unit-maintenance/list-unit-maintenance.component";
+import { ListUnitMaintenanceComponent } from "./components/list-unit-maintenance.component";
 
 const routes: Routes = [{ path: "", component: ListUnitMaintenanceComponent }];
 

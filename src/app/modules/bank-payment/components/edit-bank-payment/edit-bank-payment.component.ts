@@ -1,24 +1,26 @@
-import { BankPaymentMaster } from "./../../models/bank-payment.model";
+import { BankPaymentList } from "./../../models/bank-payment.model";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { BankPaymentService } from "../../services/bank-payment.service";
-import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-edit-bank-payment",
-  templateUrl: "./edit-bank-payment.component.html",
-  styleUrls: ["./edit-bank-payment.component.scss"]
+  templateUrl: "../common-html/common-bank-payment.html",
+  styleUrls: ["./edit-bank-payment.component.scss"],
 })
 export class EditBankPaymentComponent implements OnInit {
-  editBankPaymentForm: FormGroup;
+  bankPaymentForm: FormGroup;
   private editedRowIndex: number;
+  currentAmount: string = "0.00";
   numericFormat: string = "n2";
   public decimals: number = 2;
-  bankPaymentDetails: BankPaymentMaster;
+  bankPaymentDetails: BankPaymentList;
   date: Date = new Date();
   submitted: boolean;
   rowSubmitted: boolean;
@@ -26,71 +28,75 @@ export class EditBankPaymentComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
-    centered: true
+    centered: true,
   };
+
   constructor(
     public bankPaymentService: BankPaymentService,
-    private fb: FormBuilder,
+    private _fb: FormBuilder,
     private modalService: BsModalService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     private router: Router,
+    private toastr: ToastrService,
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
-    this.buildEditBankPaymentForm();
+  ngOnInit(): void {
+    this.buildbankPaymentForm();
+    this.getIdFromRoute();
   }
 
-  buildEditBankPaymentForm() {
-    this.editBankPaymentForm = this.fb.group({
-      seriesId: [
-        this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : null
+  buildbankPaymentForm(): void {
+    this.bankPaymentForm = this._fb.group({
+      ID: this.bankPaymentDetails ? this.bankPaymentDetails.ID : 0,
+      SeriesID: [
+        this.bankPaymentDetails ? this.bankPaymentDetails.SeriesID : null,
       ],
-      projectId: [
-        this.bankPaymentDetails ? this.bankPaymentDetails.ProjectID : null
+      ProjectID: [
+        this.bankPaymentDetails ? this.bankPaymentDetails.ProjectID : null,
       ],
-      voucherNo: [
+      VoucherNo: [
         this.bankPaymentDetails ? this.bankPaymentDetails.VoucherNo : "",
-        [Validators.required]
+        [Validators.required],
       ],
-      bankAccountId: [
+      LedgerID: [
         this.bankPaymentDetails ? this.bankPaymentDetails.LedgerID : null,
-        [Validators.required]
+        [Validators.required],
       ],
-      cashParty: ["", [Validators.required]],
-      date: [
+      Date: [
         this.bankPaymentDetails
           ? new Date(this.bankPaymentDetails.CreatedDate)
-          : ""
+          : "",
       ],
-      bankPaymentEntryList: this.fb.array([this.addBankPaymentEntryList()])
+      Remarks: [this.bankPaymentDetails ? this.bankPaymentDetails.Remarks : ""],
+      BankPaymentDetailsList: this._fb.array([this.addBankPaymentEntryList()]),
     });
   }
 
   addBankPaymentEntryList(): FormGroup {
-    return this.fb.group({
-      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
-      particularsOraccountingHead: ["", Validators.required],
-      voucherNo: [""],
-      chequeNo: [""],
-      chequeBank: [""],
-      chequeDate: [""],
-      amount: [""],
-      currentBalance: [""],
-      vType: [""],
-      remarks: [""]
+    return this._fb.group({
+      ID: [0],
+      MasterID: [0],
+      LedgerID: [0],
+      LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+      LedgerName: ["", Validators.required],
+      ChequeNumber: [""],
+      ChequeDate: [""],
+      LedgerBalance: [""],
+      Amount: [""],
+      Remarks: [""],
     });
   }
 
-  getIdFromRoute() {
-    this.route.paramMap.subscribe(params => {
+  getIdFromRoute(): void {
+    this.route.paramMap.subscribe((params) => {
       if (params.get("id")) {
         this.bankPaymentService
           .getBankPaymentDetails(params.get("id"))
-          .subscribe(res => {
-            this.bankPaymentDetails = res;
-            this.buildEditBankPaymentForm();
+          .subscribe((response) => {
+            this.bankPaymentDetails = response.Entity;
+            this.buildbankPaymentForm();
             this.setBankPaymentList();
           });
       }
@@ -98,42 +104,57 @@ export class EditBankPaymentComponent implements OnInit {
   }
 
   setBankPaymentList(): void {
-    this.editBankPaymentForm.setControl(
-      "bankPaymentEntryList",
+    this.bankPaymentForm.setControl(
+      "BankPaymentDetailsList",
       this.setBankPaymentFormArray(
         this.bankPaymentDetails.BankPaymentDetailsList
       )
+    );
+    (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+      this.addBankPaymentEntryList()
     );
   }
 
   setBankPaymentFormArray(bankPaymentDetails): FormArray {
     const bankPaymentFormArray = new FormArray([]);
     if (bankPaymentDetails && bankPaymentDetails.length > 0) {
-      bankPaymentDetails.forEach(element => {
+      bankPaymentDetails.forEach((element) => {
         bankPaymentFormArray.push(
-          this.fb.group({
-            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
-            particularsOraccountingHead: [
-              element.Ledger.EngName,
-              Validators.required
+          this._fb.group({
+            ID: [element.ID],
+            MasterID: [element.MasterID],
+            LedgerID: [element.LedgerID],
+            LedgerCode: [
+              element.LedgerCode ? element.LedgerCode : "",
+              null,
+              this.ledgerCodeMatchValidators.ledgerCodeMatch(),
             ],
-            voucherNo: element.VoucherNumber,
-            amount: element.Amount,
-            currentBalance: element.Amount,
-            vType: element.VoucherType,
-            remarks: element.Remarks
+            LedgerName: [element.LedgerName, Validators.required],
+            ChequeNumber: [element.ChequeNumber],
+            ChequeDate: [new Date(element.ChequeDate)],
+            LedgerBalance: [element.LedgerBalance],
+            Amount: [element.Amount],
+            Remarks: [element.Remarks],
           })
         );
       });
     } else {
       bankPaymentFormArray.push(
-        this.fb.group({
-          particularsOraccountingHead: ["", Validators.required],
-          voucherNo: [""],
-          amount: [""],
-          currentBalance: [""],
-          vType: [""],
-          remarks: [""]
+        this._fb.group({
+          ID: [""],
+          MasterID: [""],
+          LedgerID: [""],
+          LedgerCode: [
+            "",
+            null,
+            this.ledgerCodeMatchValidators.ledgerCodeMatch(),
+          ],
+          LedgerName: ["", Validators.required],
+          ChequeNumber: [""],
+          ChequeDate: [""],
+          LedgerBalance: [""],
+          Amount: [""],
+          Remarks: [""],
         })
       );
     }
@@ -141,54 +162,74 @@ export class EditBankPaymentComponent implements OnInit {
   }
 
   get getBankPaymentEntryList(): FormArray {
-    return <FormArray>this.editBankPaymentForm.get("bankPaymentEntryList");
+    return <FormArray>this.bankPaymentForm.get("BankPaymentDetailsList");
   }
 
   editBankPaymentEntry(): void {
     this.submitted = true;
-    if (this.editBankPaymentForm.get("bankPaymentEntryList").invalid) return;
-    (<FormArray>this.editBankPaymentForm.get("bankPaymentEntryList")).push(
+    if (this.bankPaymentForm.get("BankPaymentDetailsList").invalid) return;
+    (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
       this.addBankPaymentEntryList()
     );
     this.submitted = false;
   }
 
+  changeAccount(event, ledgerId): void {
+    this.bankPaymentService.getLedgerDetails(ledgerId).subscribe((response) => {
+      this.currentAmount = response;
+    });
+  }
+
   changeLedgerValue(dataItem, rowIndex): void {
     const bankPaymentFormArray = <FormArray>(
-      this.editBankPaymentForm.get("bankPaymentEntryList")
+      this.bankPaymentForm.get("BankPaymentDetailsList")
     );
-    const ledgerCode = bankPaymentFormArray.controls[rowIndex].get("ledgerCode")
+
+    const ledgerCode = bankPaymentFormArray.controls[rowIndex].get("LedgerCode")
       .value;
     if (
-      bankPaymentFormArray.controls[rowIndex].get("ledgerCode").status ===
+      bankPaymentFormArray.controls[rowIndex].get("LedgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           bankPaymentFormArray.controls[rowIndex]
-            .get("currentBalance")
+            .get("LedgerBalance")
             .setValue(selectedItem[0].ActualBalance);
           bankPaymentFormArray.controls[rowIndex]
-            .get("particularsOraccountinHead")
+            .get("LedgerName")
             .setValue(selectedItem[0].LedgerName);
           bankPaymentFormArray.controls[rowIndex]
-            .get("currentBalance")
+            .get("LedgerCode")
             .setValue(selectedItem[0].LedgerCode);
         }
       });
+      (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+        this.addBankPaymentEntryList()
+      );
     }
   }
 
   public save(): void {
-    if (this.editBankPaymentForm.valid) {
-      this.router.navigate(["/bank-payment"]);
-    } else {
-    }
+    if (this.bankPaymentForm.invalid) return;
+    this.bankPaymentService
+      .updateBankPayment(this.bankPaymentForm.value)
+      .subscribe(
+        (response) => {
+          this.router.navigate(["/bank-payment"]);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Bank Payment edited successfully");
+        }
+      );
   }
 
   public cancel(): void {
-    this.editBankPaymentForm.reset();
+    this.bankPaymentForm.reset();
     this.router.navigate(["/bank-payment"]);
   }
 
@@ -196,8 +237,8 @@ export class EditBankPaymentComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.editBankPaymentForm.get("bankPaymentEntryList").invalid) return;
-    (<FormArray>this.editBankPaymentForm.get("bankPaymentEntryList")).push(
+    if (this.bankPaymentForm.get("BankPaymentDetailsList").invalid) return;
+    (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
       this.addBankPaymentEntryList()
     );
     this.rowSubmitted = false;
@@ -212,49 +253,52 @@ export class EditBankPaymentComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     const bankPaymentEntry = <FormArray>(
-      this.editBankPaymentForm.get("bankPaymentEntryList")
+      this.bankPaymentForm.get("BankPaymentDetailsList")
     );
     bankPaymentEntry.controls[rowIndex]
-      .get("particularsOraccountinHead")
+      .get("LedgerName")
       .setValue(dataItem.particularsOraccountingHead);
+
     bankPaymentEntry.controls[rowIndex]
-      .get("voucherNo")
-      .setValue(dataItem.voucherNo);
-    bankPaymentEntry.controls[rowIndex]
-      .get("currentAmount")
+      .get("LedgerBalance")
       .setValue(dataItem.currentAmount);
-    bankPaymentEntry.controls[rowIndex].get("vType").setValue(dataItem.vType);
     bankPaymentEntry.controls[rowIndex]
-      .get("remarks")
+      .get("Remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
     sender.editRow(
       rowIndex,
-      this.editBankPaymentForm.get("bankPaymentEntryList")
+      this.bankPaymentForm.get("BankPaymentDetailsList")
     );
   }
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const bankPaymentFormArray = <FormArray>(
-          this.editBankPaymentForm.get("bankPaymentEntryList")
+          this.bankPaymentForm.get("BankPaymentDetailsList")
         );
         bankPaymentFormArray.controls[index]
-          .get("currentBalance")
+          .get("LedgerBalance")
           .setValue(data.ActualBalance);
         bankPaymentFormArray.controls[index]
-          .get("particularsOraccountingHead")
+          .get("LedgerName")
           .setValue(data.LedgerName);
+        bankPaymentFormArray.controls[index]
+          .get("LedgerCode")
+          .setValue(data.LedgerCode);
       }
+      (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).push(
+        this.addBankPaymentEntryList()
+      );
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }
@@ -270,10 +314,10 @@ export class EditBankPaymentComponent implements OnInit {
   public removeHandler({ dataItem, rowIndex }): void {
     // Calculation on Debit Total and Credit Total on Rows Removed
     const bankPaymentEntry = <FormArray>(
-      this.editBankPaymentForm.get("bankPaymentEntryList")
+      this.bankPaymentForm.get("BankPaymentDetailsList")
     );
     // Remove the Row
-    (<FormArray>this.editBankPaymentForm.get("bankPaymentEntryList")).removeAt(
+    (<FormArray>this.bankPaymentForm.get("BankPaymentDetailsList")).removeAt(
       rowIndex
     );
   }

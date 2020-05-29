@@ -1,16 +1,16 @@
 import { Component, OnInit } from "@angular/core";
 import { FormArray, FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { ContraVoucherService } from "../../services/contra-voucher.service";
 import { ContraVoucherMaster } from "../../models/contraVoucher.model";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-add-contra-voucher",
   templateUrl: "./add-contra-voucher.component.html",
-  styleUrls: ["./add-contra-voucher.component.scss"]
+  styleUrls: ["./add-contra-voucher.component.scss"],
 })
 export class AddContraVoucherComponent implements OnInit {
   addContraVoucherForm: FormGroup;
@@ -25,7 +25,8 @@ export class AddContraVoucherComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
-    centered: true
+    centered: true,
+    class: "modal-lg",
   };
 
   constructor(
@@ -48,7 +49,7 @@ export class AddContraVoucherComponent implements OnInit {
       voucherNo: ["", [Validators.required]],
       cashPartyId: [null, [Validators.required]],
       date: [new Date()],
-      contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryList()])
+      contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryList()]),
     });
   }
 
@@ -60,7 +61,7 @@ export class AddContraVoucherComponent implements OnInit {
       amount: [""],
       currentBalance: [""],
       vType: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
@@ -88,7 +89,7 @@ export class AddContraVoucherComponent implements OnInit {
       contraVoucherFormArray.controls[rowIndex].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           contraVoucherFormArray.controls[rowIndex]
@@ -159,12 +160,12 @@ export class AddContraVoucherComponent implements OnInit {
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const contraVoucherFormArray = <FormArray>(
           this.addContraVoucherForm.get("contraVoucherEntryList")
@@ -180,7 +181,7 @@ export class AddContraVoucherComponent implements OnInit {
           .setValue(data.LedgerCode);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }

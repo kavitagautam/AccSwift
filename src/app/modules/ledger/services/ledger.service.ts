@@ -3,9 +3,11 @@ import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
 import {
-  GroupDetails,
-  LedgerDetails,
-  LedgerList
+  LedgerGroupDetailsModel,
+  LedgerDetailsModel,
+  LedgerListModel,
+  LedgerGroup,
+  AccountClass
 } from "../models/ledger.models";
 import { Observable } from "rxjs";
 
@@ -14,33 +16,66 @@ import { Observable } from "rxjs";
 })
 export class LedgerService {
   _api_URL = environment.baseAPI;
-  groupList: any = [];
+  ledgerGroupLists: LedgerGroup[] = [];
+  accountClass: AccountClass;
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {}
-
-  init() {
-    this.getGroup();
-  }
-  getLedgerTreeView(): any {
-    return this.httpService.get(`${this._api_URL}Group/Tree`);
-  }
-  getLedgerListView(): Observable<LedgerList> {
-    return this.httpService.get(`${this._api_URL}Ledger/ListView`);
+  ) {
+    this.getLedgerGroupDropDown();
+    this.getAccountClass();
   }
 
-  getGroup() {
-    this.httpService.get(`${this._api_URL}Group`).subscribe(res => {
-      this.groupList = res;
+  getAccountClass(): void {
+    this.httpService.get(`${this._api_URL}AccountClass`).subscribe(response => {
+      this.accountClass = response.Entity;
     });
   }
 
-  getGroupDetails(groupId): Observable<GroupDetails> {
-    return this.httpService.get(`${this._api_URL}Group/${groupId}`);
+  getLedgerTreeView(): any {
+    return this.httpService.get(`${this._api_URL}LedgerGroup/Tree`);
+  }
+  getLedgerListView(): Observable<LedgerListModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/ListView`);
   }
 
-  getLedgerDetails(ledgerId): Observable<LedgerDetails> {
+  getLedgerGroupDetails(groupId): Observable<LedgerGroupDetailsModel> {
+    return this.httpService.get(`${this._api_URL}LedgerGroup/${groupId}`);
+  }
+
+  addLedgerGroup(value): Observable<any> {
+    return this.httpService.post(`${this._api_URL}LedgerGroup`, value);
+  }
+
+  updateLedgerGroup(value): Observable<any> {
+    return this.httpService.put(`${this._api_URL}LedgerGroup`, value);
+  }
+
+  deleteLedgerGroupByID(ledgerGroupId): Observable<any> {
+    return this.httpService.delete(
+      `${this._api_URL}LegderGroup/${ledgerGroupId}`
+    );
+  }
+
+  addLedgerAccount(value): Observable<any> {
+    return this.httpService.post(`${this._api_URL}Ledger`, value);
+  }
+
+  updateLedgerAccount(value): Observable<any> {
+    return this.httpService.put(`${this._api_URL}Ledger`, value);
+  }
+
+  getLedgerDetails(ledgerId): Observable<LedgerDetailsModel> {
     return this.httpService.get(`${this._api_URL}Ledger/${ledgerId}`);
+  }
+
+  deleteLedgerById(ledgerId): Observable<any> {
+    return this.httpService.delete(`${this._api_URL}Legder/${ledgerId}`);
+  }
+
+  getLedgerGroupDropDown(): void {
+    this.httpService.get(`${this._api_URL}LedgerGroup`).subscribe(response => {
+      this.ledgerGroupLists = response.Entity;
+    });
   }
 }

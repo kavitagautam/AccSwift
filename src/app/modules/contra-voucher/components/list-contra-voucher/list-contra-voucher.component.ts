@@ -5,17 +5,17 @@ import { Router } from "@angular/router";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
 } from "@progress/kendo-data-query";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ContraVoucherMaster } from "../../models/contraVoucher.model";
 
 @Component({
   selector: "accSwift-list-contra-voucher",
   templateUrl: "./list-contra-voucher.component.html",
-  styleUrls: ["./list-contra-voucher.component.scss"]
+  styleUrls: ["./list-contra-voucher.component.scss"],
 })
 export class ListContraVoucherComponent implements OnInit {
   contraVoucherForm: FormGroup;
@@ -49,7 +49,7 @@ export class ListContraVoucherComponent implements OnInit {
       cashAccountId: [null],
       voucherNo: [""],
       cashPartyId: [null],
-      date: [new Date()]
+      date: [new Date()],
     });
   }
 
@@ -58,14 +58,14 @@ export class ListContraVoucherComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
 
   //modal config to unhide when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
 
   public sortChange(sort: SortDescriptor[]): void {
@@ -79,19 +79,19 @@ export class ListContraVoucherComponent implements OnInit {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
-      Direction: "asc" // "asc" or "desc"
+      Direction: "asc", // "asc" or "desc"
     };
 
     this.contraVoucherService.getCashReceiptMaster().subscribe(
-      response => {
+      (response) => {
         this.listLoading = true;
         this.contraVoucherList = response;
         this.gridView = {
           data: this.contraVoucherList,
-          total: this.contraVoucherList ? this.contraVoucherList.length : 0
+          total: this.contraVoucherList ? this.contraVoucherList.length : 0,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -127,7 +127,7 @@ export class ListContraVoucherComponent implements OnInit {
 
   openConfirmationDialogue(dataItem): void {
     const contraId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -135,7 +135,7 @@ export class ListContraVoucherComponent implements OnInit {
     );
     this.modalRef.content.data = "Receipt No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteContraById(contraId.id);
       }

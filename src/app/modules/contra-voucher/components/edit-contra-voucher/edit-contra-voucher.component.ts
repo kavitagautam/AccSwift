@@ -1,17 +1,17 @@
-import { LedgerCodeAsyncValidators } from "./../../../../shared/validators/async-validators/ledger-code-validators.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ContraVoucherService } from "./../../services/contra-voucher.service";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, FormArray, Validators } from "@angular/forms";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
 import { ContraVoucherMaster } from "../../models/contraVoucher.model";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-edit-contra-voucher",
   templateUrl: "./edit-contra-voucher.component.html",
-  styleUrls: ["./edit-contra-voucher.component.scss"]
+  styleUrls: ["./edit-contra-voucher.component.scss"],
 })
 export class EditContraVoucherComponent implements OnInit {
   editContraVoucherForm: FormGroup;
@@ -28,7 +28,7 @@ export class EditContraVoucherComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
-    centered: true
+    centered: true,
   };
 
   constructor(
@@ -49,31 +49,31 @@ export class EditContraVoucherComponent implements OnInit {
   buildEditContraVoucherForm() {
     this.editContraVoucherForm = this.fb.group({
       seriesId: [
-        this.contraVoucherDetail ? this.contraVoucherDetail.SeriesID : null
+        this.contraVoucherDetail ? this.contraVoucherDetail.SeriesID : null,
       ],
       projectId: [
-        this.contraVoucherDetail ? this.contraVoucherDetail.ProjectID : null
+        this.contraVoucherDetail ? this.contraVoucherDetail.ProjectID : null,
       ],
       voucherNo: [
         this.contraVoucherDetail ? this.contraVoucherDetail.VoucherNo : "",
-        [Validators.required]
+        [Validators.required],
       ],
       cashAccountId: [
         this.contraVoucherDetail ? this.contraVoucherDetail.LedgerID : null,
-        [Validators.required]
+        [Validators.required],
       ],
       cashPartyId: [
         this.contraVoucherDetail
           ? this.contraVoucherDetail.ContraVoucherDetails
           : null,
-        [Validators.required]
+        [Validators.required],
       ],
       date: [
         this.contraVoucherDetail
           ? new Date(this.contraVoucherDetail.CreatedDate)
-          : ""
+          : "",
       ],
-      contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryList()])
+      contraVoucherEntryList: this.fb.array([this.addContraVoucherEntryList()]),
     });
   }
 
@@ -85,17 +85,17 @@ export class EditContraVoucherComponent implements OnInit {
       amount: [""],
       currentBalance: [""],
       vType: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
   getIdFromRoute() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const paramGetId = params.get("id");
       if (paramGetId) {
         this.contraVoucherService
           .getContraVoucherDetails(paramGetId)
-          .subscribe(res => {
+          .subscribe((res) => {
             this.contraVoucherDetail = res;
             this.buildEditContraVoucherForm();
             this.setContraVoucherList();
@@ -120,19 +120,19 @@ export class EditContraVoucherComponent implements OnInit {
   setContraVoucherFormArray(contraVoucherDetails): FormArray {
     const contraVoucherFormArray = new FormArray([]);
     if (contraVoucherDetails && contraVoucherDetails.length > 0) {
-      contraVoucherDetails.forEach(element => {
+      contraVoucherDetails.forEach((element) => {
         contraVoucherFormArray.push(
           this.fb.group({
             ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
             particularsOraccountingHead: [
               element.Ledger.EngName,
-              Validators.required
+              Validators.required,
             ],
             voucherNo: [element.VoucherNumber],
             amount: element.Amount,
             currentBalance: element.Amount,
             vType: element.VoucherType,
-            remarks: element.Remarks
+            remarks: element.Remarks,
           })
         );
       });
@@ -144,7 +144,7 @@ export class EditContraVoucherComponent implements OnInit {
           amount: "",
           currentBalance: "",
           vType: "",
-          remarks: ""
+          remarks: "",
         })
       );
     }
@@ -172,7 +172,7 @@ export class EditContraVoucherComponent implements OnInit {
       contraVoucherFormArray.controls[rowIndex].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           contraVoucherFormArray.controls[rowIndex]
@@ -246,12 +246,12 @@ export class EditContraVoucherComponent implements OnInit {
   //Open Modal Goes Here...
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const contraVoucherFormArray = <FormArray>(
           this.editContraVoucherForm.get("contraVoucherEntryList")
@@ -267,7 +267,7 @@ export class EditContraVoucherComponent implements OnInit {
           .setValue(data.LedgerCode);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }

@@ -1,21 +1,23 @@
 import { Observable } from "rxjs";
 import { HttpParams } from "@angular/common/http";
-import { HttpClientService } from "./../../../core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
-import { environment } from "./../../../../environments/environment";
+import { environment } from "@env/environment";
 import {
   SeriesList,
   ProjectList,
-  BankReconciliationMaster
+  BankReconciliationMaster,
+  BankAccounts,
+  ProjectListModel,
 } from "./../components/models/bank-reconciliation.model";
 import { Injectable } from "@angular/core";
+import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class BankReconciliationService {
   seriesLists: SeriesList;
-  projectLists: ProjectList;
+  projectLists: ProjectList[] = [];
   _api_URL = environment.baseAPI;
   bankAccountLists;
   constructor(
@@ -24,30 +26,31 @@ export class BankReconciliationService {
   ) {
     this.getProjectLists();
     this.getSeriesList();
+    this.getBankReconciliationAccounts();
   }
 
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectList) => {
-        this.projectLists = res;
+      .subscribe((res: ProjectListModel) => {
+        this.projectLists = res.Entity;
       });
   }
 
-  // getBankReceiptAccounts(): void {
-  //   this.httpService
-  //     .get(`${this._api_URL}Ledger/BankAccounts`)
-  //     .subscribe((res: BankAccounts) => {
-  //       this.bankAccountLists = res.Entity;
-  //     });
-  // }
+  getBankReconciliationAccounts(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/BankAccounts`)
+      .subscribe((res: BankAccounts) => {
+        this.bankAccountLists = res.Entity;
+      });
+  }
 
   getSeriesList(): void {
-    const params = new HttpParams().set("VoucherType", "BANK_RECONCILIATION"); // Series List for bank Reconciliation V.Type
+    const params = new HttpParams().set("VoucherType", "BRECON"); // Series List for bank Reconciliation V.Type
     this.httpService
       .get(`${this._api_URL}series`, null, params)
-      .subscribe((res: SeriesList) => {
-        this.seriesLists = res;
+      .subscribe((res: any) => {
+        this.seriesLists = res.Entity;
       });
   }
 

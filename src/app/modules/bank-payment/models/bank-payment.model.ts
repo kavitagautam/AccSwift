@@ -1,108 +1,126 @@
 export interface ProjectList {
   ID: number;
   ProjectNumber: number;
-  ParentProjectID: number;
+  ParentProjectID?: number;
   EngName: string;
   NepName: string;
   Description: string;
   CreatedBy: string;
-  CreatedDate: string;
+  CreatedDate?: Date;
   ModifiedBy: string;
-  ModifiedDate: string;
+  ModifiedDate?: Date;
+}
+
+export interface ProjectListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: ProjectList[];
+}
+
+export interface SeriesListModel {
+  status: string;
+  Entity: SeriesList[];
 }
 
 export interface SeriesList {
   ID: number;
-  EngName: string;
-  NepName: string;
+  Name: string;
   VoucherType: string;
-  AutoNumber: number;
-  BuiltIn: boolean;
 }
 
-export interface BankPaymentMaster {
-  IsPayByInvoice: boolean;
-  TotalAmount: number;
-  BankPaymentDetailsList: BankPaymentDetailsLists[];
+export interface Fields {
+  Field1: string;
+  Field2: string;
+  Field3: string;
+  Field4: string;
+  Field5: string;
+}
+
+export interface BankPaymentList {
+  ID: number;
+  Date: Date;
+  BankPaymentDetailsList: BankPaymentDetailsList[];
   LedgerID: number;
   LedgerName: string;
-  ID: number;
   SeriesID: number;
   SeriesName: string;
   VoucherNo: string;
-  Date: Date;
   ProjectID: number;
   ProjectName: string;
-  Fields: {
-    Field1: string;
-    Field2: string;
-    Field3: string;
-    Field4: string;
-    Field5: string;
-  };
+  Fields: Fields;
+  CompanyID: number;
   Remarks: string;
   CreatedBy: string;
   CreatedDate: Date;
-  ModifiedBy: string;
+  ModifiedBy?: any;
   ModifiedDate: Date;
 }
 
-export interface BankPaymentDetailsLists {
+export interface BankPaymentNavigate {
+  Entity: BankPaymentList[];
+  ItemsPerPage: number;
+  ItemsReturned: number;
+  TotalItemsAvailable: number;
+  CurrentPage: number;
+  TotalPages: number;
+}
+
+export interface BankPaymentNavigateModel {
+  StatusCode: number;
+  Message: string;
+  Entity: BankPaymentNavigate;
+}
+
+export interface BankPaymentDetailsList {
   ChequeNumber: string;
-  ChequeBank: string;
   ChequeDate: Date;
-  VoucherNumber: string;
-  VoucherType: string;
-  InvoiceID: number;
-  InvoiceType: string;
-  DiscountAmount: number;
   ID: number;
   MasterID: number;
   LedgerID: number;
-  Ledger: {
-    ID: number;
-    Code: string;
-    LedgerNumber: number;
-    EngName: string;
-    NepName: string;
-    PreviousYearBalance: number;
-    PreviousYearBalanceDebitCredit: string;
-    OpCCYID: number;
-    Currency: string;
-    OpCCR: number;
-    OpCCRDate: Date;
-    DebitCredit: string;
-    GroupID: number;
-    GroupName: string;
-    PersonName: string;
-    Address1: string;
-    Address2: string;
-    City: string;
-    Phone: string;
-    Email: string;
-    Company: string;
-    Website: string;
-    VatPanNo: string;
-    CreditLimit: number;
-    IsBuiltIn: boolean;
-    IsActive: boolean;
-    IsCalculated: boolean;
-    CalculateRate: number;
-    LF: number;
-    IsBillReference: boolean;
-    Remarks: string;
-    CreatedBy: string;
-    CreatedDate: Date;
-    ModifiedBy: string;
-    ModifiedDate: Date;
-  };
+  LedgerName: string;
+  LedgerCode: string;
+  LedgerBalance: string;
   Amount: number;
   Remarks: string;
 }
 
+export interface Fields {
+  Field1: string;
+  Field2: string;
+  Field3: string;
+  Field4: string;
+  Field5: string;
+}
+
+export interface BankPaymentDetail {
+  ID: number;
+  Date: Date;
+  BankPaymentDetailsList: BankPaymentDetailsList[];
+  LedgerID: number;
+  LedgerName: string;
+  SeriesID: number;
+  SeriesName: string;
+  VoucherNo: string;
+  ProjectID: number;
+  ProjectName: string;
+  Fields: Fields;
+  CompanyID: number;
+  Remarks: string;
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedBy?: any;
+  ModifiedDate: Date;
+}
+
+export interface BankPaymentDetailModel {
+  StatusCode: number;
+  Message: string;
+  Entity: BankPaymentDetail;
+}
+
 export interface BankAccounts {
   Status: number;
-  Entity: Entity[];
+  Entity: BankPaymentDetail[];
 }
 
 export interface Entity {

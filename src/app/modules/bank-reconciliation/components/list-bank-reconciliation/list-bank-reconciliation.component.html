@@ -27,7 +27,7 @@
                     *ngFor="let series of reconciliationService.seriesLists"
                     [ngValue]="series.ID"
                   >
-                    {{ series.EngName }}
+                    {{ series.Name }}
                   </option>
                 </select>
               </div>
@@ -37,6 +37,11 @@
                 <label>Bank Account </label>
                 <select class="form-control" formControlName="bankAccountId">
                   <option [ngValue]="null">Choose Option....</option>
+                  <option
+                    *ngFor="let bank of reconciliationService.bankAccountLists"
+                    [ngValue]="bank.LedgerID"
+                    >{{ bank.LedgerName }}</option
+                  >
                 </select>
               </div>
             </div>
@@ -92,7 +97,7 @@
       <div class="grid-wrapper">
         <kendo-grid
           [data]="gridView"
-          [filterable]="true"
+          [filterable]="false"
           [filter]="filter"
           [pageSize]="pageSize"
           [skip]="skip"

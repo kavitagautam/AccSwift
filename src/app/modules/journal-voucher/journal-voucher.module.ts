@@ -2,7 +2,6 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { JournalVoucherRoutingModule } from "./journal-voucher.routing";
-import { NgxPaginationModule } from "ngx-pagination";
 import { SharedModule } from "@app/shared/shared.module";
 import { HttpClient } from "@angular/common/http";
 import { GridModule } from "@progress/kendo-angular-grid";
@@ -18,11 +17,12 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import {
   TranslateModule,
   TranslateLoader,
-  TranslateService
+  TranslateService,
 } from "@ngx-translate/core";
 import { JournalService } from "./services/journal.service";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
-import { NepaliDatepickerModule } from "../../../../lib/nepali-datepicker/src/public-api";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { NepaliDatepickerModule } from "@lib/nepali-datepicker/src/public-api";
+import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/admin/", ".json");
@@ -31,7 +31,7 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AddJournalComponent,
     EditJournalComponent,
-    ListJournalComponent
+    ListJournalComponent,
   ],
   imports: [
     FormsModule,
@@ -39,24 +39,24 @@ export function createTranslateLoader(http: HttpClient) {
     CommonModule,
     SharedModule,
     GridModule,
+    AccswiftFormsModule,
     PopupModule,
     InputsModule,
     DropDownListModule,
     DropDownsModule,
     NepaliDatepickerModule,
     JournalVoucherRoutingModule,
-    NgxPaginationModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [HttpClient]
+        deps: [HttpClient],
       },
-      isolate: true
-    })
+      isolate: true,
+    }),
   ],
   providers: [TranslateService, JournalService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [LedgerModelPopupComponent]
+  entryComponents: [LedgerModalPopupComponent],
 })
 export class JournalVoucherModule {}

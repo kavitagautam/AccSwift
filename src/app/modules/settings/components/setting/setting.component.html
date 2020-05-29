@@ -1,0 +1,127 @@
+<h3>Settings</h3>
+<form [formGroup]="settingsForm" novalidate>
+  <div class="col-md-12">
+    <fieldset>
+      <legend>Accounts</legend>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label> Sales Account</label>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_SALES_ACCOUNT"
+            >
+              <option [ngValue]="null">Choose option...</option>
+              <option
+                *ngFor="let salesAccount of salesAccountList"
+                [ngValue]="salesAccount.LedgerID"
+              >
+                {{ salesAccount.LedgerName }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Negative Stock</label>
+            <div class="row mt-3">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <div class="radio">
+                    <label>
+                      <input
+                        type="radio"
+                        name="DEFAULT_NEGATIVESTOCK"
+                        value="Allow"
+                      />
+                      Allow
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <div class="radio">
+                    <label>
+                      <input
+                        type="radio"
+                        name="DEFAULT_NEGATIVESTOCK"
+                        value="Warn"
+                      />
+                      Warn
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <div class="radio">
+                    <label>
+                      <input
+                        type="radio"
+                        name="DEFAULT_NEGATIVESTOCK"
+                        value="Deny"
+                      />
+                      Deny
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Purchase Account</label>
+            <select
+              class="form-control"
+              formControlName="DEFAULT_PURCHASE_ACCOUNT"
+            >
+              <option [ngValue]="null">Choose option...</option>
+              >
+              <option
+                *ngFor="let purchAccount of purchaseAccountList"
+                [ngValue]="purchAccount.LedgerID"
+              >
+                {{ purchAccount.LedgerName }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Sales Receipt</legend>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Sales report preference </label>
+            <select class="form-control" formControlName="SALES_REPORT_TYPE">
+              <option [ngValue]="null">Choose option....</option>
+
+              <option
+                *ngFor="let salesAccount of salesAccountList"
+                [ngValue]="salesAccount.LedgerID"
+              >
+                {{ salesAccount.LedgerName }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</form>
+
+<div class="row">
+  <div class="col-md-12">
+    <button type="button" class="btn btn-danger pull-right ml-3">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary pull-right ml-3">
+      Save
+    </button>
+  </div>
+</div>

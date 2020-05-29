@@ -14,36 +14,21 @@
     </div>
     <div class="box-body collapse" id="collapseOne" data-parent="#accordion">
       <div class="row">
-        <div class="col-md-12">
-          <form [formGroup]="journalSearchForm" novalidate>
-            <div class="col-md-2 col-sm-6 col-xs-6">
+        <form [formGroup]="journalSearchForm" novalidate>
+          <div class="col-md-12">
+            <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="voucher#">Voucher #</label>
-                <input class="form-control" formControlName="voucherNo" />
+                <input class="form-control" formControlName="VoucherNo" />
               </div>
-            </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label for="series">Series</label>
-                <select class="form-control" formControlName="seriesId">
-                 <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let series of journalService.journalSeriesList"
-                    [value]="series.ID"
-                    >{{ series.EngName }}</option
-                  >
-                </select>
-              </div>
-            </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Project</label>
                 <select
                   class="form-control"
                   id="projectId"
-                  formControlName="projectId"
+                  formControlName="ProjectID"
                 >
-                 <option [ngValue]="null">Choose Option....</option>
+                  <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let project of journalService.projectLists"
                     [value]="project.ID"
@@ -53,25 +38,24 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label for="date">To Date</label>
-                <input
-                  type="text"
-                  placeholder="To Date"
-                  class="form-control"
-                  formControlName="toDate"
-                  bsDatepicker
-                />
-              </div>
-
-              <!-- <np-datepicker formControlName="date"  class="form-group" inputClass="form-control"
-            ></np-datepicker> 
-          
-                            [value]="date | date: 'MM/dd/yyyy'"
--->
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <accSwift-series-forms
+                formControlName="SeriesID"
+                [voucherType]="'JRNL'"
+              ></accSwift-series-forms>
+              <!-- <div class="form-group">
+                <label for="series">Series</label>
+                <select class="form-control" formControlName="SeriesID">
+                  <option [ngValue]="null">Choose Option....</option>
+                  <option
+                    *ngFor="let series of journalService.journalSeriesList"
+                    [value]="series.ID"
+                    >{{ series.Name }}</option
+                  >
+                </select>
+              </div> -->
             </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">
+            <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="date">From Date</label>
                 <input
@@ -79,12 +63,26 @@
                   placeholder="From Date"
                   class="form-control"
                   formControlName="fromDate"
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                   bsDatepicker
                 />
               </div>
             </div>
-          </form>
-        </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <div class="form-group">
+                <label for="date">To Date</label>
+                <input
+                  type="text"
+                  placeholder="To Date"
+                  class="form-control"
+                  formControlName="toDate"
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                  bsDatepicker
+                />
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
       <div class="box-footer">
         <div class="mb-2">
@@ -102,7 +100,7 @@
       <div class="grid-wrapper">
         <kendo-grid
           [data]="gridView"
-          [filterable]="true"
+          [filterable]="false"
           [filter]="filter"
           [pageSize]="pageSize"
           [skip]="skip"
@@ -115,7 +113,6 @@
           [pageable]="true"
           (pageChange)="pageChange($event)"
           scrollable="none"
-          (filterChange)="filterChange($event)"
         >
           <kendo-grid-column field="VoucherNo" title="Voucher No.">
           </kendo-grid-column>

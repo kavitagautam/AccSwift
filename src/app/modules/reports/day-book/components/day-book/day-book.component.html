@@ -1,0 +1,52 @@
+<div class="box box-default">
+  <h1 style="text-align: center;">Day Book</h1>
+  <h3 style="text-align: center;">Project : All Project</h3>
+
+  <div class="col-md-12">
+    <div class="grid-wrapper">
+      <div class="table-box">
+        <table id="header-fixed" class="table table-hover table-fixed">
+          <thead>
+            <tr>
+              <th colspan="1" style="text-align: left;">S.N</th>
+              <th colspan="1" style="text-align: left;">Transaction Date</th>
+              <th colspan="1" style="text-align: left;">Voucher Type</th>
+              <th colspan="1" style="text-align: left;">Voucher No.</th>
+              <th colspan="1" style="text-align: center;">Account Name</th>
+              <th colspan="1">Debit Amount</th>
+              <th colspan="1">Credit Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let l of dayBookList">
+              <td>{{ l.RowID }}</td>
+              <td>{{ l.TransactionDate | date: "yyyy-MM-dd" }}</td>
+              <td>{{ l.VoucherType }}</td>
+              <td>{{ l.VoucherNo }}</td>
+              <td class="account_name">{{ l.AccountName }}</td>
+              <td class="balance">{{ l.DebitAmount }}</td>
+              <td class="balance">{{ l.CreditAmount }}</td>
+            </tr>
+            <tr *ngIf="dayBookList.length == 0">
+              <td colspan="7" align="center">
+                No Data Available
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="1"></td>
+              <td colspan="1"></td>
+              <td colspan="1"></td>
+              <td colspan="1">Debit Total</td>
+              <td colspan="1">{{ debitTotal }}</td>
+              <td colspan="1" class="balance">Credit Total</td>
+              <td colspan="1" class="balance">{{ creditTotal }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="listLoading" class="k-i-loading"></div>
+  </div>
+</div>

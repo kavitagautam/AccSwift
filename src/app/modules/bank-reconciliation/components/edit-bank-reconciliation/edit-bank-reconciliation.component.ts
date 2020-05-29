@@ -1,9 +1,8 @@
 import {
   BankReconciliationMaster,
-  BankAccounts
+  BankAccounts,
 } from "./../models/bank-reconciliation.model";
-import { LedgerCodeMatchService } from "./../../../../shared/services/ledger-code-match/ledger-code-match.service";
-import { LedgerCodeAsyncValidators } from "./../../../../shared/validators/async-validators/ledger-code-validators.service";
+import { LedgerCodeMatchService } from "@shared/services/ledger-code-match/ledger-code-match.service";
 import { Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { BankReconciliationService } from "./../../services/bank-reconciliation.service";
@@ -11,12 +10,13 @@ import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-edit-bank-reconciliation",
   templateUrl: "./edit-bank-reconciliation.component.html",
-  styleUrls: ["./edit-bank-reconciliation.component.scss"]
+  styleUrls: ["./edit-bank-reconciliation.component.scss"],
 })
 export class EditBankReconciliationComponent implements OnInit {
   editReconciliationForm: FormGroup;
@@ -31,7 +31,7 @@ export class EditBankReconciliationComponent implements OnInit {
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
-    centered: true
+    centered: true,
   };
 
   constructor(
@@ -52,27 +52,29 @@ export class EditBankReconciliationComponent implements OnInit {
   buildeditReconciliationForm() {
     this.editReconciliationForm = this._fb.group({
       seriesId: [
-        this.reconciliationDetails ? this.reconciliationDetails.SeriesID : null
+        this.reconciliationDetails ? this.reconciliationDetails.SeriesID : null,
       ],
       projectId: [
-        this.reconciliationDetails ? this.reconciliationDetails.ProjectID : null
+        this.reconciliationDetails
+          ? this.reconciliationDetails.ProjectID
+          : null,
       ],
       voucherNo: [
         this.reconciliationDetails ? this.reconciliationDetails.VoucherNo : "",
-        [Validators.required]
+        [Validators.required],
       ],
       bankAccountId: [
         this.reconciliationDetails ? this.reconciliationDetails.LedgerID : null,
-        [Validators.required]
+        [Validators.required],
       ],
       date: [
         this.reconciliationDetails
           ? new Date(this.reconciliationDetails.CreatedDate)
-          : ""
+          : "",
       ],
       reconciliationEntryList: this._fb.array([
-        this.addReconciliationEntryList()
-      ])
+        this.addReconciliationEntryList(),
+      ]),
     });
   }
 
@@ -87,17 +89,17 @@ export class EditBankReconciliationComponent implements OnInit {
       amount: [""],
       currentBalance: [""],
       vType: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
   getIdFromRoute() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const param = params.get("id");
       if (param) {
         this.reconciliationService
           .getBankReconciliationDetails(param)
-          .subscribe(res => {
+          .subscribe((res) => {
             this.reconciliationDetails = res;
             this.buildeditReconciliationForm();
             this.setReconciliationList();
@@ -124,13 +126,13 @@ export class EditBankReconciliationComponent implements OnInit {
   setReconciliationFormArray(reconciliationDetails): FormArray {
     const reconciliationFormArray = new FormArray([]);
     if (reconciliationDetails && reconciliationDetails.length > 0) {
-      reconciliationDetails.forEach(element => {
+      reconciliationDetails.forEach((element) => {
         reconciliationFormArray.push(
           this._fb.group({
             ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
             particularsOrAccountingHead: [
               element.Ledger.EngName,
-              Validators.required
+              Validators.required,
             ],
             voucherNo: [element.VoucherNumber],
             chequeNo: [element.ChequeNumber],
@@ -139,7 +141,7 @@ export class EditBankReconciliationComponent implements OnInit {
             amount: [element.Amount],
             currentBalance: [element.Amount],
             vType: [element.VoucherType],
-            remarks: [element.Remarks]
+            remarks: [element.Remarks],
           })
         );
       });
@@ -154,7 +156,7 @@ export class EditBankReconciliationComponent implements OnInit {
           amount: [""],
           currentBalance: [""],
           vType: [""],
-          remarks: [""]
+          remarks: [""],
         })
       );
     }
@@ -183,7 +185,7 @@ export class EditBankReconciliationComponent implements OnInit {
       reconciliationFormArray.controls[selectedRow].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           reconciliationFormArray.controls[selectedRow]
@@ -253,12 +255,12 @@ export class EditBankReconciliationComponent implements OnInit {
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const reconciliationFormArray = <FormArray>(
           this.editReconciliationForm.get("reconciliationEntryList")
@@ -271,7 +273,7 @@ export class EditBankReconciliationComponent implements OnInit {
           .setValue(data.LedgerName);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }

@@ -1,19 +1,18 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { NgxPaginationModule } from "ngx-pagination";
-import { PaginationComponent } from "./component/pagination/pagination.component";
-import { LanguageSwitcherComponent } from "./component/language-switcher/language-switcher.component";
-import { CommonModalComponent } from "./component/common-modal/common-modal.component";
+import { PaginationComponent } from "./components/pagination/pagination.component";
+import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component";
+import { CommonModalComponent } from "./components/common-modal/common-modal.component";
 import { PopupAnchorDirective } from "./directives/popup-anchor/popup.anchor-target.directive";
 import { CurrencyFormatPipe } from "./pipes/currency-format.pipe";
 import { CurrencyDirective } from "./directives/localCurrency/currency.directive";
-import { LedgerModelPopupComponent } from "./component/ledger-model-popup/ledger-model-popup.component";
 import { GridModule } from "@progress/kendo-angular-grid";
 import { PopupModule } from "@progress/kendo-angular-popup";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import {
   DropDownListModule,
-  DropDownsModule
+  DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
 import { LedgerFilterPipe } from "./pipes/ledger-filter/ledger-filter.pipe";
 import {
@@ -23,12 +22,17 @@ import {
   ModalModule,
   TimepickerModule,
   BsDatepickerModule,
-  BsDropdownModule
+  BsDropdownModule,
 } from "ngx-bootstrap";
 import { DateFormatPipe } from "./pipes/dateFormat/date-format.pipe";
 import { FormSubmitValidationMsgDirective } from "./directives/form-validators/submit-validation-msg.directive";
 import { FormControlValidationMsgDirective } from "./directives/form-validators/validation-message.directive";
 import { ValidationMsgService } from "./services/form-validators/validation-message.service";
+import { PhoneMaskDirective } from "./directives/phone-mask/phone-mask.directive";
+import { CashPartyModalPopupComponent } from "./components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { ProductModalPopupComponent } from "./components/product-modal-popup/product-modal-popup.component";
+import { LedgerModalPopupComponent } from "./components/ledger-modal-popup/ledger-modal-popup.component";
+import { DecimalPlaceDirective } from "./directives/decimal-place/decimal-place.directive";
 
 @NgModule({
   declarations: [
@@ -39,10 +43,14 @@ import { ValidationMsgService } from "./services/form-validators/validation-mess
     PopupAnchorDirective,
     CurrencyDirective,
     LedgerFilterPipe,
-    LedgerModelPopupComponent,
+    LedgerModalPopupComponent,
     DateFormatPipe,
     FormSubmitValidationMsgDirective,
-    FormControlValidationMsgDirective
+    FormControlValidationMsgDirective,
+    PhoneMaskDirective,
+    ProductModalPopupComponent,
+    CashPartyModalPopupComponent,
+    DecimalPlaceDirective,
   ],
   imports: [
     CommonModule,
@@ -59,7 +67,7 @@ import { ValidationMsgService } from "./services/form-validators/validation-mess
     PopupModule,
     InputsModule,
     DropDownListModule,
-    DropDownsModule
+    DropDownsModule,
   ],
   exports: [
     CollapseModule,
@@ -80,8 +88,12 @@ import { ValidationMsgService } from "./services/form-validators/validation-mess
     CurrencyDirective,
     DateFormatPipe,
     FormSubmitValidationMsgDirective,
-    FormControlValidationMsgDirective
+    FormControlValidationMsgDirective,
+    PhoneMaskDirective,
+    ProductModalPopupComponent,
+    CashPartyModalPopupComponent,
+    DecimalPlaceDirective,
   ],
-  providers: [ValidationMsgService]
+  providers: [ValidationMsgService],
 })
 export class SharedModule {}

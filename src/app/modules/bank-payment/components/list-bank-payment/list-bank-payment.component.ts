@@ -1,67 +1,91 @@
+import {
+  BankPaymentList,
+  BankPaymentDetailsList,
+} from "./../../models/bank-payment.model";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { BankPaymentService } from "./../../services/bank-payment.service";
-import { Component, OnInit } from "@angular/core";
-
-import {
-  CompositeFilterDescriptor,
-  SortDescriptor
-} from "@progress/kendo-data-query";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { Component, OnInit, TemplateRef } from "@angular/core";
+import { SortDescriptor } from "@progress/kendo-data-query";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-list-bank-payment",
   templateUrl: "./list-bank-payment.component.html",
-  styleUrls: ["./list-bank-payment.component.scss"]
+  styleUrls: ["./list-bank-payment.component.scss"],
 })
 export class ListBankPaymentComponent implements OnInit {
-  bankPaymentList: any;
-  listLoading: boolean;
+  bankPaymentForm: FormGroup;
   public gridView: GridDataResult;
+  bankPaymentList: BankPaymentList[];
+  private toastr: ToastrService;
+  modalRef: BsModalRef;
+  listLoading: boolean;
+  public skip = 0;
+  public pageSize = 10;
+  public currentPage = 1;
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [
+    {
+      field: "",
+      dir: "asc",
+    },
+  ];
+
+  orderByKey = "";
+  dirKey = "asc";
+  //sorting kendo data
+
+  config = {
+    backdrop: true,
+    ignoreBackDrop: true,
+  };
+
+  searchFilterList: Array<any> = [];
 
   constructor(
     public bankPaymentService: BankPaymentService,
-    private fb: FormBuilder,
-    private router: Router
+    private _fb: FormBuilder,
+    private router: Router,
+    private modalService: BsModalService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildListBankPaymentForm();
     this.getBankPaymentList();
   }
 
-  bankPaymentForm: FormGroup;
-  buildListBankPaymentForm() {
-    this.bankPaymentForm = this.fb.group({
-      seriesId: [null],
-      projectId: [null],
-      voucherNo: [""],
-      bankAccountId: [null],
-      date: new Date()
+  buildListBankPaymentForm(): void {
+    this.bankPaymentForm = this._fb.group({
+      SeriesID: [null],
+      ProjectID: [null],
+      VoucherNo: [""],
+      LedgerID: [null],
+      Date: [""],
     });
   }
 
   getBankPaymentList(): void {
-    const params = {
+    this.listLoading = true;
+    const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
-      OrderBy: "",
-      Direction: "asc" // "asc" or "desc"
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey,
+      FilterList: this.searchFilterList,
     };
-    this.bankPaymentService.getBankPaymentMaster().subscribe(
-      response => {
-        this.listLoading = true;
-        this.bankPaymentList = response;
-        console.log(response);
+    this.bankPaymentService.getBankPaymentMaster(obj).subscribe(
+      (response) => {
+        this.bankPaymentList = response.Entity.Entity;
         this.gridView = {
           data: this.bankPaymentList,
-          total: this.bankPaymentList ? this.bankPaymentList.length : 0
+          total: response.Entity.TotalItemsAvailable,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -70,27 +94,17 @@ export class ListBankPaymentComponent implements OnInit {
     );
   }
 
-  public allowUnsort = true;
-  public sort: SortDescriptor[] = [
-    {
-      field: "",
-      dir: "asc"
-    }
-  ];
   public sortChange(sort: SortDescriptor[]): void {
+    this.orderByKey = "";
+    this.currentPage = 1;
+    this.skip = 0;
+    this.dirKey = "";
     this.sort = sort;
+    this.dirKey = this.sort[0].dir;
+    this.orderByKey = this.sort[0].field;
     this.getBankPaymentList();
   }
 
-  public filter: CompositeFilterDescriptor;
-  public filterChange(filter) {
-    this.filter = filter;
-    this.getBankPaymentList();
-  }
-
-  public skip = 0;
-  public pageSize = 10;
-  public currentPage = 1;
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
     if (event.skip == 0) {
@@ -107,15 +121,16 @@ export class ListBankPaymentComponent implements OnInit {
     this.router.navigate(["/bank-payment/edit", item.ID]);
   }
 
-  modalRef: BsModalRef;
-  private modalService: BsModalService;
-  config = {
-    backdrop: true,
-    ignoreBackDrop: true
-  };
-  openConfirmationDialogue(dataItem) {
+  ledgerList: BankPaymentDetailsList[] = [];
+
+  openLedgerModal(template: TemplateRef<any>, dataItem): void {
+    this.ledgerList = dataItem.BankPaymentDetailsList;
+    this.modalRef = this.modalService.show(template, this.config);
+  }
+
+  openConfirmationDialogue(dataItem): void {
     const journalId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -123,19 +138,41 @@ export class ListBankPaymentComponent implements OnInit {
     );
     this.modalRef.content.data = "Receipt No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deletePaymentById(journalId.id);
       }
     });
   }
 
-  public searchForm() {
+  public searchForm(): void {
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.bankPaymentForm.invalid) return;
+    for (const key in this.bankPaymentForm.value) {
+      if (this.bankPaymentForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.bankPaymentForm.value[key],
+        });
+      }
+    }
     this.getBankPaymentList();
   }
 
-  private toastr: ToastrService;
   deletePaymentById(id): void {
-    this.toastr.success("Bank deleted successfully");
+    this.bankPaymentService.deleteBankPaymentByID(id).subscribe(
+      (response) => {
+        this.getBankPaymentList();
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error));
+      },
+      () => {
+        this.toastr.success("Bank Payment deleted successfully");
+      }
+    );
   }
 }

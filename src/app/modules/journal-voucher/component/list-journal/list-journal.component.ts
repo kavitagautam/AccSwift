@@ -2,42 +2,36 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
+import { RegexConst } from "@app/shared/constants/regex.constant";
 import {
   SortDescriptor,
-  CompositeFilterDescriptor
+  CompositeFilterDescriptor,
 } from "@progress/kendo-data-query";
 
 import { JournalService } from "../../services/journal.service";
-import { JournalMaster } from "../../models/journal.model";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
+import { JournalMasterList } from "../../models/journal.model";
 @Component({
   selector: "accSwift-list-journal",
   templateUrl: "./list-journal.component.html",
-  styleUrls: ["./list-journal.component.css"]
+  styleUrls: ["./list-journal.component.css"],
 })
 export class ListJournalComponent implements OnInit {
   journalSearchForm: FormGroup;
-  journalList: JournalMaster[] = [];
+  journalList: JournalMasterList[] = [];
   journalListLoading: boolean;
   date: Date = new Date();
+
+  regexConst = RegexConst;
+
   //kendo Grid
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
 
   //Filter Serach Key
-  voucherNoSearch = "";
-  journalDateToSearch = "";
-  journalDateFromSearch = "";
-  projectIdSearch = "";
-  seriesIdSearch = "";
-  voucherNoSearchKey = "";
-  journalDateToSerchKey = "";
-  journalDateFromSerchKey = "";
-  projectNameSerachKey = "";
-  seriesNameSearchKey = "";
-  remarkSearchKey = "";
+
   orderByKey = "";
   dirKey = "asc";
   public pageSize = 10;
@@ -48,9 +42,19 @@ export class ListJournalComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
+
+  searchFilterList: Array<any> = [];
+
+  modalRef: BsModalRef;
+  // modal config to unhide modal when clicked outside
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+  };
+
   constructor(
     public _fb: FormBuilder,
     private router: Router,
@@ -60,71 +64,43 @@ export class ListJournalComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.journalSearchForm = this._fb.group({
-      seriesId: [null],
-      projectId: [null],
-      voucherNo: [""],
+      SeriesID: [null],
+      ProjectID: [null],
+      VoucherNo: [""],
       toDate: [""],
-      fromDate: [""]
+      fromDate: [""],
     });
     this.getJournalList();
   }
-
-  modalRef: BsModalRef;
-  // modal config to unhide modal when clicked outside
-  config = {
-    backdrop: true,
-    ignoreBackdropClick: true
-  };
 
   public sortChange(sort: SortDescriptor[]): void {
     this.orderByKey = "";
     this.dirKey = "";
     this.sort = sort;
     this.dirKey = this.sort[0].dir;
-    if (this.sort[0].field === "VoucherNo") {
-      this.orderByKey = "Voucher_No";
-    }
-    if (this.sort[0].field === "Date") {
-      this.orderByKey = "Journal_Date";
-    }
-    if (this.sort[0].field === "ProjectName") {
-      this.orderByKey = "Project";
-    }
-    if (this.sort[0].field === "SeriesName") {
-      this.orderByKey = "Series";
-    }
-    if (this.sort[0].field === "Remarks") {
-      this.orderByKey = "Remarks";
-    }
+    this.orderByKey = this.sort[0].field;
     this.getJournalList();
   }
 
   getJournalList(): void {
     this.journalListLoading = true;
-    const params = {
+    const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
-      OrderBy: this.orderByKey, // string[] OrderByList = new string[] { "Voucher_No", "Journal_Date", "Remarks", "Series", "Project" };
-      Direction: this.dirKey, // "asc" or "desc"
-      SeriesId: this.seriesIdSearch,
-      ProjectId: this.projectIdSearch,
-      VoucherNo: this.voucherNoSearch,
-      JournalDateTo: this.journalDateToSearch,
-      JournalDateFrom: this.journalDateFromSearch,
-      VoucherNoSearchTerm: this.voucherNoSearchKey,
-      ProjectNameSearchTerm: this.projectNameSerachKey,
-      SeriesNameSearchTerm: this.seriesNameSearchKey,
-      Remarks: this.remarkSearchKey
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey,
+      FilterList: this.searchFilterList,
     };
-    this.journalService.getJournalList(params).subscribe(
-      res => {
-        this.journalList = res.Entity;
+
+    this.journalService.getJournalList(obj).subscribe(
+      (response) => {
+        this.journalList = response.Entity.Entity;
         this.gridView = {
           data: this.journalList,
-          total: res.TotalItemsAvailable
+          total: response.Entity.TotalItemsAvailable,
         };
       },
-      error => {
+      (error) => {
         this.journalListLoading = false;
       },
       () => {
@@ -133,31 +109,40 @@ export class ListJournalComponent implements OnInit {
     );
   }
 
-  public filterChange(filter): void {
-    this.voucherNoSearchKey = "";
-    this.projectNameSerachKey = "";
-    this.seriesNameSearchKey = "";
-    this.filter = filter;
-    for (let i = 0; i < filter.filters.length; i++) {
-      if (filter.filters[i].field == "VoucherNo") {
-        this.voucherNoSearchKey = filter.filters[i].value;
-      }
-      if (filter.filters[i].field == "ProjectName") {
-        this.projectNameSerachKey = filter.filters[i].value;
-      }
-      if (filter.filters[i].field == "SeriesName") {
-        this.seriesNameSearchKey = filter.filters[i].value;
+  public searchForm(): void {
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.journalSearchForm.invalid) return;
+    for (const key in this.journalSearchForm.value) {
+      if (this.journalSearchForm.value[key]) {
+        if (
+          this.journalSearchForm.value[key] !== "toDate" &&
+          this.journalSearchForm.value[key] !== "fromDate"
+        ) {
+          this.searchFilterList.push({
+            Field: key,
+            Operator: "contains",
+            value: this.journalSearchForm.value[key],
+          });
+        } else {
+          if (this.journalSearchForm.value[key] == "toDate") {
+            this.searchFilterList.push({
+              Field: "Date",
+              Operator: "<=",
+              value: this.journalSearchForm.value[key],
+            });
+          }
+          if (this.journalSearchForm.value[key] == "fromDate") {
+            this.searchFilterList.push({
+              Field: "Date",
+              Operator: ">=",
+              value: this.journalSearchForm.value[key],
+            });
+          }
+        }
       }
     }
-    this.getJournalList();
-  }
-
-  public searchForm() {
-    this.voucherNoSearch = this.journalSearchForm.controls.voucherNo.value;
-    this.journalDateToSearch = this.journalSearchForm.controls.toDate.value;
-    this.journalDateFromSearch = this.journalSearchForm.controls.fromDate.value;
-    this.projectIdSearch = this.journalSearchForm.controls.projectId.value;
-    this.seriesIdSearch = this.journalSearchForm.controls.seriesId.value;
     this.getJournalList();
   }
 
@@ -181,7 +166,7 @@ export class ListJournalComponent implements OnInit {
 
   openConfirmationDialogue(dataItem): void {
     const journalId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -189,7 +174,7 @@ export class ListJournalComponent implements OnInit {
     );
     this.modalRef.content.data = "Voucher No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteJournalByID(journalId.id);
       }
@@ -197,7 +182,7 @@ export class ListJournalComponent implements OnInit {
   }
 
   public deleteJournalByID(id): void {
-    this.journalService.deleteJournal(id).subscribe(response => {
+    this.journalService.deleteJournal(id).subscribe((response) => {
       this.toastr.success("Journal deleted successfully");
       this.getJournalList();
     });

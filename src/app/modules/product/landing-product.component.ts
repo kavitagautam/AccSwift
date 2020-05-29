@@ -1,13 +1,14 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { ProductService } from "./services/product.service";
+
 const is = (fileName: string, ext: string) =>
   new RegExp(`.${ext}\$`).test(fileName);
 
 @Component({
   selector: "accSwift-landing-product",
   templateUrl: "./landing-product.component.html",
-  styleUrls: ["./landing-product.component.scss"]
+  styleUrls: ["./landing-product.component.scss"],
 })
 export class LandingProductComponent implements OnInit {
   @Output("selectedProductGroup") selectedProductGroup = new EventEmitter();
@@ -49,12 +50,12 @@ export class LandingProductComponent implements OnInit {
   getProductTreeView(): void {
     this.treeViewLoading = true;
     this.productService.getProductTree().subscribe(
-      res => {
+      (res) => {
         this.productTreeNode = res.Entity.Node;
         this.productTreeList = res.Entity.Tree;
         this.treeViewLoading = false;
       },
-      error => {
+      (error) => {
         this.treeViewLoading = false;
       },
       () => {
@@ -66,10 +67,10 @@ export class LandingProductComponent implements OnInit {
   loadProductListView(): void {
     this.listViewLoading = true;
     this.productService.getProductList().subscribe(
-      response => {
+      (response) => {
         this.productListView = response.Entity;
       },
-      error => {
+      (error) => {
         this.listViewLoading = false;
       },
       () => {
@@ -78,7 +79,7 @@ export class LandingProductComponent implements OnInit {
     );
   }
 
-  public onTabSelect(e) {
+  public onTabSelect(e): void {
     if (e.index == 1) {
       this.loadProductListView();
     }
@@ -86,8 +87,8 @@ export class LandingProductComponent implements OnInit {
 
   public colorGroupOrProduct({ Title, TypeOf }: any): any {
     return {
-      "tree-child": TypeOf == 1,
-      "tree-node": TypeOf == 0
+      "tree-child": TypeOf == 0,
+      "tree-node": TypeOf == 1,
     };
   }
 

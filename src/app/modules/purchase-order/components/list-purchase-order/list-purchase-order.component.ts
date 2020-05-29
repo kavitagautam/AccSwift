@@ -6,15 +6,15 @@ import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import {
   SortDescriptor,
-  CompositeFilterDescriptor
+  CompositeFilterDescriptor,
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-list-purchase-order",
   templateUrl: "./list-purchase-order.component.html",
-  styleUrls: ["./list-purchase-order.component.scss"]
+  styleUrls: ["./list-purchase-order.component.scss"],
 })
 export class ListPurchaseOrderComponent implements OnInit {
   purchaseOrderForm: FormGroup;
@@ -27,18 +27,26 @@ export class ListPurchaseOrderComponent implements OnInit {
   public currentPage = 1;
   //sorting Kendo Data
   public allowUnsort = true;
+  modalRef: BsModalRef;
+  //sorting Kendo Data
+
+  orderByKey = "";
+  dirKey = "asc";
+  //sorting kendo data
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
-  modalRef: BsModalRef;
+
+  searchFilterList = [];
   //modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
+
   constructor(
     private _fb: FormBuilder,
     public purchaseOrderService: PurchaseOrderService,
@@ -47,47 +55,48 @@ export class ListPurchaseOrderComponent implements OnInit {
     private modalService: BsModalService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildPurchaseOrderForm();
     this.getPurchaseOrderList();
   }
 
   buildPurchaseOrderForm(): void {
     this.purchaseOrderForm = this._fb.group({
-      cashPartyACId: [null],
-      projectId: [null],
-      date: [new Date()],
-      orderNo: [""]
+      CashPartyLedgerID: [null],
+      ProjectID: [null],
+      Date: [""],
+      OrderNo: [""],
     });
   }
 
   public sortChange(sort: SortDescriptor[]): void {
+    this.orderByKey = "";
+    this.dirKey = "";
     this.sort = sort;
+    this.dirKey = this.sort[0].dir;
+    this.orderByKey = this.sort[0].field;
     this.getPurchaseOrderList();
   }
 
   getPurchaseOrderList(): void {
     this.listLoading = true;
-    const params = {
+    const obj = {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
-      OrderBy: "",
-      Direction: "asc"
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey,
+      FilterList: this.searchFilterList,
     };
 
-    this.purchaseOrderService.getPurchaseOrderMaster().subscribe(
-      response => {
-        this.listLoading = true;
-        this.purchaseOrderList = response;
+    this.purchaseOrderService.getPurchaseOrderMaster(obj).subscribe(
+      (response) => {
+        this.purchaseOrderList = response.Entity.Entity;
         this.gridView = {
-          data: this.purchaseOrderList.slice(
-            this.skip,
-            this.skip + this.pageSize
-          ),
-          total: this.purchaseOrderList ? this.purchaseOrderList.length : 0
+          data: this.purchaseOrderList,
+          total: response.Entity.TotalItemsAvailable,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -95,12 +104,21 @@ export class ListPurchaseOrderComponent implements OnInit {
       }
     );
   }
-  public filterChange(filter): void {
-    this.filter = filter;
-    this.getPurchaseOrderList();
-  }
 
-  public searchForm() {
+  public searchForm(): void {
+    this.searchFilterList = [];
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.purchaseOrderForm.invalid) return;
+    for (const key in this.purchaseOrderForm.value) {
+      if (this.purchaseOrderForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.purchaseOrderForm.value[key],
+        });
+      }
+    }
     this.getPurchaseOrderList();
   }
 
@@ -121,9 +139,9 @@ export class ListPurchaseOrderComponent implements OnInit {
     this.router.navigate(["/purchase-order/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const purchaseInvoiceID = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -131,15 +149,24 @@ export class ListPurchaseOrderComponent implements OnInit {
     );
     this.modalRef.content.data = "Payments No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
-        this.deletePaymentsByID(purchaseInvoiceID.id);
+        this.deletePurchaseOrderByID(purchaseInvoiceID.id);
       }
     });
   }
 
-  public deletePaymentsByID(id): void {
-    this.toastr.success("Invoice deleted successfully");
-    //call Delete Api
+  public deletePurchaseOrderByID(id): void {
+    this.purchaseOrderService.deletePurchaseById(id).subscribe(
+      (response) => {
+        this.getPurchaseOrderList();
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error));
+      },
+      () => {
+        this.toastr.success("Purchase Order deleted successfully");
+      }
+    );
   }
 }

@@ -18,29 +18,29 @@
 
         <div class="row">
           <div class="col">
-            <form id="main-form">
-              <div
-                class="form-group error-msg"
-                *ngIf="(!username || !password) && submitted"
-              >
-                Username or Password did not match
-              </div>
+            <form id="main-form" [formGroup]="loginForm">
               <div class="form-group">
                 <label for="exampleInputEmail1">Username or Email</label>
 
                 <div class="icon-wrapper">
                   <img src="../../../../../assets/images/user.svg" alt="" />
+
                   <input
                     type="email"
-                    class="form-control"
-                    placeholder="Username or Email"
-                    id="username"
-                    [(ngModel)]="username"
-                    tabindex="1"
-                    [ngModelOptions]="{ standalone: true }"
+                    class="form-control credential-field"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="niranjan@bentraytech.com"
+                    formControlName="username"
                   />
-                  <div class="error-msg" *ngIf="!username && submitted">
-                    Password is required
+                  <div
+                    class="error-msg"
+                    *ngIf="
+                      username?.errors?.required &&
+                      (username.touched || submitted)
+                    "
+                  >
+                    Username is required
                   </div>
                 </div>
               </div>
@@ -50,15 +50,19 @@
                   <img src="../../../../../assets/images/padlock.svg" alt="" />
                   <input
                     type="password"
-                    class="form-control"
+                    class="form-control credential-field"
+                    id="exampleInputPassword1"
                     placeholder="Password"
-                    id="accPwd"
-                    [(ngModel)]="password"
-                    tabindex="2"
+                    formControlName="password"
                     (keyup.enter)="login()"
-                    [ngModelOptions]="{ standalone: true }"
                   />
-                  <div class="error-msg" *ngIf="!password && submitted">
+                  <div
+                    class="error-msg"
+                    *ngIf="
+                      password?.errors?.required &&
+                      (password.touched || submitted)
+                    "
+                  >
                     Password is required
                   </div>
                 </div>
@@ -69,21 +73,15 @@
                     type="checkbox"
                     class="form-check-input"
                     id="exampleCheck1"
-                    ng-click="handleRememberMe()"
-                    onclick="onRememberPwdChange()"
                   />
+
                   <label class="form-check-label" for="exampleCheck1"
                     >Remember Me</label
                   >
                 </div>
                 <a class="secondary-link" href="">Forgot Password?</a>
               </div>
-              <button
-                type="submit"
-                class="btn btn-login"
-                (click)="login()"
-                [disabled]="!username || !password"
-              >
+              <button type="submit" class="btn btn-login" (click)="login()">
                 Sign In
               </button>
             </form>
@@ -140,181 +138,4 @@
       </div>
     </div>
   </div>
-
-  <!-- <div class="container" id="login-card">
-
-    <div class="row">
-      <div class="col-sm-8 login-form col-sm-push-4">
-        <div class="row">
-          <div class="logo">
-            <img
-              src="../../../../../assets/images/AccSwift-Logo_white-01-300x68.png"
-              class="img-fluid"
-              alt="logo"
-              title="logo"
-            />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <form id="main-form">
-              <div class="form-group error-msg">
-                Username or Password did not match
-              </div>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Username or Email</label>
-
-                <div class="icon-wrapper">
-                  <img src="../../../../../assets/images/user.svg" alt="" />
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Username or Email"
-                    id="username"
-                    [(ngModel)]="username"
-                    tabindex="1"
-                    [ngModelOptions]="{ standalone: true }"
-                  />
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <div class="icon-wrapper">
-                  <img src="../../../../../assets/images/padlock.svg" alt="" />
-                  <input
-                    type="password"
-                    class="form-control"
-                    placeholder="Password"
-                    id="accPwd"
-                    [(ngModel)]="password"
-                    tabindex="2"
-                    ng-enter="login()"
-                    [ngModelOptions]="{ standalone: true }"
-                  />
-                </div>
-              </div>
-              <div class="pwd-util-row">
-                <div class="form-check">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="exampleCheck1"
-                  />
-                  <label
-                    class="form-check-label"
-                    for="exampleCheck1"
-                    ng-click="handleRememberMe()"
-                    onclick="onRememberPwdChange()"
-                    >Remember Me</label
-                  >
-                </div>
-                <a class="secondary-link" href="">Forgot Password?</a>
-              </div>
-              <button
-                type="submit"
-                class="btn btn-login disabled"
-                (click)="login()"
-              >
-                Sign In
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <div class="row alt-login-container">
-          <h5>or Sign In with</h5>
-          <div id="alt-login">
-            <button class="google-btn alt-login-btn">Google</button>
-            <button class="fb-btn alt-login-btn">Facebook</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-4 col-sm-pull-8" id="welcome-section">
-        <div class="row">
-          <div class="col">
-            <h1>
-              Welcome Back
-            </h1>
-
-            <button class="btn btn-signup">Sign up</button>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <div class="welcome-footer">
-              <ul class="social">
-                <li>
-                  <a
-                    href="https://www.facebook.com/accswift.accounting.software"
-                    target="_blank"
-                    ><i class="fab fa-facebook-square"></i
-                  ></a>
-                </li>
-                <li>
-                  <a href=""><i class="fab fa-twitter-square"></i></a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.linkedin.com/company/bent-ray-technologies"
-                    target="_blank"
-                    ><i class="fab fa-linkedin"></i
-                  ></a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
 </body>
-<script>
-  function onRememberPwdChange() {
-    if (!$("#accPwd").prop("checked")) {
-      $(".checkbox").addClass("show");
-      $("#accPwd").prop("checked", true);
-    } else {
-      $("#accPwd").prop("checked", false);
-      $(".checkbox").removeClass("show");
-    }
-  }
-
-  setTimeout(function() {
-    $("#login-page").css({ visibility: "visible" });
-  }, 1000);
-
-  $(window).load(function() {
-    $("#login-page").css({ "min-height": $(window).height() - 78 });
-  });
-  $(window).resize(function() {
-    $("#login-page").css({ "min-height": $(window).height() - 78 });
-  });
-
-  $("#exampleInputEmail1").focus(function() {
-    $(this)
-      .siblings()
-      .attr("src", "../../../../../assets/images/user-active.svg");
-  });
-
-  $("#exampleInputEmail1").focusout(function() {
-    $(this)
-      .siblings()
-      .attr("src", "../../../../../assets/images/user.svg");
-  });
-
-  $("#exampleInputPassword1").focus(function() {
-    $(this)
-      .siblings()
-      .attr("src", "../../../../../assets/images/padlock-active.svg");
-  });
-
-  $("#exampleInputPassword1").focusout(function() {
-    $(this)
-      .siblings()
-      .attr("src", "../../../../../assets/images/padlock.svg");
-  });
-</script>

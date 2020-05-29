@@ -10,7 +10,7 @@ body {
 
 body {
   background: linear-gradient(rgba(16, 134, 171, 0.3), rgba(16, 134, 171, 0.4)),
-    url("../../../../../assets/images/Image4.png");
+    url("/assets/images/Image4.png");
   background-size: cover !important;
 
   background-blend-mode: multiply;
@@ -66,16 +66,16 @@ body {
   border: 2px solid #a29e9e;
 }
 
-.error-msg {
-  height: 54px;
-  background-color: rgba(243, 11, 11, 0.12);
-  color: #a1050a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 27px;
-  opacity: 0;
-}
+// .error-msg {
+//   height: 54px;
+//   background-color: rgba(243, 11, 11, 0.12);
+//   color: #a1050a;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   border-radius: 27px;
+//   opacity: 0;
+// }
 
 .opacity-full {
   opacity: 1 !important;
@@ -193,12 +193,12 @@ h5 {
 }
 
 .google-btn {
-  background: url("../../../../../assets/images/Google__G__Logo.svg") no-repeat;
+  background: url("/assets/images/Google__G__Logo.svg") no-repeat;
   background-position: 10% 50%;
 }
 
 .fb-btn {
-  background: url("../../../../../assets/images/Path17.svg") no-repeat;
+  background: url("/assets/images/Path17.svg") no-repeat;
   background-position: 10% 50%;
 }
 

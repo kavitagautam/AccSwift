@@ -1,4 +1,4 @@
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import { StockTransferService } from "./../../services/stock-transfer.service";
@@ -9,14 +9,13 @@ import { FormBuilder } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
 } from "@progress/kendo-data-query";
-import { SalesOrderService } from "@app/modules/sales-order/services/sales-order.service";
 
 @Component({
   selector: "accSwift-list-stock-transfer",
   templateUrl: "./list-stock-transfer.component.html",
-  styleUrls: ["./list-stock-transfer.component.scss"]
+  styleUrls: ["./list-stock-transfer.component.scss"],
 })
 export class ListStockTransferComponent implements OnInit {
   stockTransferForm: FormGroup;
@@ -38,13 +37,13 @@ export class ListStockTransferComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
   //modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
   modalService: BsModalService;
 
@@ -67,7 +66,7 @@ export class ListStockTransferComponent implements OnInit {
       date: [new Date(), [Validators.required]],
       fromDepotLoc: [null],
       toDepotLoc: [null],
-      remarks: [""]
+      remarks: [""],
     });
   }
 
@@ -149,7 +148,7 @@ export class ListStockTransferComponent implements OnInit {
 
   openConfirmationDialogue(dataItem) {
     const stockTransferID = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -157,7 +156,7 @@ export class ListStockTransferComponent implements OnInit {
     );
     this.modalRef.content.data = "Payments No. " + dataItem.VoucherNo;
     this.modalRef.content.action = "delete ";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteStockByID(stockTransferID.id);
       }

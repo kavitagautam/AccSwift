@@ -6,7 +6,7 @@ import { LocaleService } from "@app/core/services/locale/locale.services";
 @Component({
   selector: "accswift-side-nav",
   templateUrl: "./side-nav.component.html",
-  styleUrls: ["./side-nav.component.scss"]
+  styleUrls: ["./side-nav.component.scss"],
 })
 export class SideNavComponent implements OnInit {
   userName: string;
@@ -16,7 +16,7 @@ export class SideNavComponent implements OnInit {
   ngOnInit() {
     this.userName = "Admin";
     this.userInfo = {
-      email_address: "admin@bentraytech.com"
+      email_address: "admin@bentraytech.com",
     };
   }
   defaultImagePath = environment.defaultImagePath;
@@ -26,7 +26,7 @@ export class SideNavComponent implements OnInit {
       id: 1,
       displayName: "Dashboard",
       iconName: "fas fa-fw fa-tachometer-alt",
-      route: "/dashboard"
+      route: "/dashboard",
     },
     {
       id: 2,
@@ -36,64 +36,64 @@ export class SideNavComponent implements OnInit {
         {
           displayName: "Journal Voucher",
           iconName: "far fa-edit",
-          route: "/journal"
+          route: "/journal",
         },
         {
           displayName: "Cash Receipt",
           iconName: "fa fa-money",
-          route: "/cash-receipt"
+          route: "/cash-receipt",
         },
         {
           displayName: "Bank Receipt",
           iconName: "fas fa-money-check-alt",
-          route: "/bank-receipt"
+          route: "/bank-receipt",
         },
         {
           displayName: "Cash Payment",
           iconName: "fas fa-rupee-sign",
-          route: "/cash-payment"
+          route: "/cash-payment",
         },
 
         {
           displayName: "Bank Payment",
           iconName: "fa fa-credit-card",
-          route: "/bank-payment"
+          route: "/bank-payment",
         },
         {
           displayName: "Bank Reconciliation",
           iconName: "fa fa-handshake-o",
-          route: "/bank-reconciliation"
+          route: "/bank-reconciliation",
         },
         {
           displayName: "Contra Voucher",
           iconName: "fas fa-file-invoice",
-          route: "/contra-voucher"
-        }
-      ]
+          route: "/contra-voucher",
+        },
+      ],
     },
     {
       id: 3,
-      displayName: "Ledger",
+      displayName: "Chart Of Account",
       iconName: "fas fa-file-invoice-dollar",
-      route: "/ledger"
+      route: "/ledger",
     },
     {
       id: 4,
       displayName: "Company",
       iconName: "fas fa-building",
-      route: "/company"
+      route: "/company",
     },
     {
       id: 5,
       displayName: "Product",
       iconName: "fab fa-product-hunt",
-      route: "/product"
+      route: "/product",
     },
     {
       id: 6,
       displayName: "Budget",
       iconName: "fas fa-file-invoice-dollar",
-      route: "/budget"
+      route: "/budget",
     },
     {
       id: 15,
@@ -103,26 +103,48 @@ export class SideNavComponent implements OnInit {
         {
           displayName: "Unit Maintenance",
           iconName: "fa fa-cogs",
-          route: "/unit-maintenance"
+          route: "/unit-maintenance",
         },
         {
           displayName: "Compound Unit",
           iconName: "fa fa-external-link",
-          route: "/compound-unit"
-        }
-      ]
+          route: "/compound-unit",
+        },
+      ],
+    },
+    {
+      id: 15,
+      displayName: "Report",
+      iconName: "fa fa-file-pdf-o",
+      children: [
+        {
+          displayName: "Trial Balance",
+          iconName: "fa fa-file-excel-o",
+          route: "/reports",
+        },
+        {
+          displayName: "Day Book",
+          iconName: "fa fa-file-excel-o",
+          route: "/day-book",
+        },
+        {
+          displayName: "Stock Status",
+          iconName: "fa fa-file-excel-o",
+          route: "/stock-status",
+        },
+      ],
     },
     {
       id: 11,
       displayName: "Depot",
       iconName: "fas fa-home",
-      route: "/depot"
+      route: "/depot",
     },
     {
       id: 16,
       displayName: "Stock Transfer",
       iconName: "fas fa-repeat",
-      route: "/stock-transfer"
+      route: "/stock-transfer",
     },
     {
       id: 9,
@@ -132,19 +154,19 @@ export class SideNavComponent implements OnInit {
         {
           displayName: "Purchase Invoice",
           iconName: "far fa-edit",
-          route: "/purchase-invoice"
+          route: "/purchase-invoice",
         },
         {
           displayName: "Purchase Order",
           iconName: "fa fa-check-square-o",
-          route: "/purchase-order"
+          route: "/purchase-order",
         },
         {
           displayName: "Purchase Return",
           iconName: "fas fa-file-invoice",
-          route: "/purchase-return"
-        }
-      ]
+          route: "/purchase-return",
+        },
+      ],
     },
     {
       id: 10,
@@ -154,31 +176,48 @@ export class SideNavComponent implements OnInit {
         {
           displayName: "Sales Invoice",
           iconName: "far fa-edit",
-          route: "/sales-invoice"
+          route: "/sales-invoice",
         },
         {
           displayName: "Sales Order",
           iconName: "fa fa-check-square-o",
-          route: "/sales-order"
+          route: "/sales-order",
         },
         {
           displayName: "Sales Return",
           iconName: "fas fa-file-invoice",
-          route: "/sales-return"
-        }
-      ]
+          route: "/sales-return",
+        },
+      ],
+    },
+    {
+      id: 11,
+      displayName: "Initialize",
+      iconName: "fas fa-file-invoice",
+      children: [
+        {
+          displayName: "Voucher Configuration",
+          iconName: "far fa-edit",
+          route: "/voucher-configuration",
+        },
+        {
+          displayName: "Slabs",
+          iconName: "fa fa-money",
+          route: "",
+        },
+      ],
     },
     {
       id: 7,
       displayName: "Preference",
       iconName: "fas fa-cogs",
-      route: "/preference"
+      route: "/preference",
     },
     {
       id: 8,
       displayName: "Setting",
       iconName: "fas fa-tools",
-      route: "/settings"
-    }
+      route: "/settings",
+    },
   ];
 }

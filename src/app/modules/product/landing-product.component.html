@@ -1,5 +1,5 @@
 <div class="box box-default">
-  <div class="col-md-6 p-0">
+  <div class="col-md-4 col-sm-12 col-lg-6 p-0">
     <div class="box box-solid">
       <kendo-tabstrip (tabSelect)="onTabSelect($event)">
         <kendo-tabstrip-tab [title]="'Tree View'" [selected]="true">
@@ -26,7 +26,7 @@
                   [expandBy]="'Title'"
                   kendoTreeViewExpandable
                   [(expandedKeys)]="expandedKeys"
-                  style="height: 76vh ; overflow:scroll"
+                  style="height: 76vh; overflow: scroll;"
                 >
                   <ng-template kendoTreeViewNodeTemplate let-dataItem>
                     <span
@@ -72,7 +72,7 @@
       </kendo-tabstrip>
     </div>
   </div>
-  <div class="col-md-6 p-0">
+  <div class="col-md-8 col-sm-12 col-lg-6 p-0">
     <div class="row">
       <div class="col-md-12 mr-2">
         <kendo-tabstrip>
@@ -94,6 +94,57 @@
               <accSwift-product
                 [selectedProduct]="selectedProduct"
               ></accSwift-product>
+              <!-- <kendo-tabstrip>
+                <kendo-tabstrip-tab [title]="'Product Details'" selected="true">
+                  <ng-template kendoTabContent>
+                    <accSwift-product
+                      [selectedProduct]="selectedProduct"
+                    ></accSwift-product>
+                  </ng-template>
+                </kendo-tabstrip-tab>
+                <kendo-tabstrip-tab [title]="'More Details'">
+                  <ng-template kendoTabContent>
+                    <accSwift-product-more-detail></accSwift-product-more-detail>
+                  </ng-template>
+                </kendo-tabstrip-tab>
+                <kendo-tabstrip-tab [title]="'Image'">
+                  <ng-template kendoTabContent>
+                    <h5 class="form_heading">Upload Image</h5>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <img
+                          *ngFor="let url of urls"
+                          [src]="url"
+                          height="200"
+                        />
+                        <br />
+                        <input
+                          type="file"
+                          (change)="fileChangeEvent($event)"
+                          multiple
+                        />
+                        <image-cropper
+                          [imageChangedEvent]="imageChangedEvent"
+                          [maintainAspectRatio]="true"
+                          [aspectRatio]="4 / 3"
+                          format="png"
+                          (imageCropped)="imageCropped($event)"
+                          (imageLoaded)="imageLoaded()"
+                          (cropperReady)="cropperReady()"
+                          (loadImageFailed)="loadImageFailed()"
+                          style="width: 400px;height:200px ;object-fit: cover;"
+                        ></image-cropper>
+
+                        <img
+                          *ngIf="croppedImage"
+                          [src]="croppedImage"
+                          style="width: 400px;height:200px ;object-fit: cover;"
+                        />
+                      </div>
+                    </div>
+                  </ng-template>
+                </kendo-tabstrip-tab>
+              </kendo-tabstrip> -->
             </ng-template>
           </kendo-tabstrip-tab>
         </kendo-tabstrip>

@@ -1,9 +1,9 @@
 import {
   DropDownListModule,
-  DropDownsModule
+  DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
 import { PopupModule } from "@progress/kendo-angular-popup";
-import { SharedModule } from "./../../shared/shared.module";
+import { SharedModule } from "@shared/shared.module";
 import { GridModule } from "@progress/kendo-angular-grid";
 import { ReactiveFormsModule } from "@angular/forms";
 import { FormsModule } from "@angular/forms";
@@ -20,7 +20,7 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
   declarations: [
     ListPurchaseReturnComponent,
     EditPurchaseReturnComponent,
-    AddPurchaseReturnComponent
+    AddPurchaseReturnComponent,
   ],
   imports: [
     CommonModule,
@@ -32,7 +32,7 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
     DropDownListModule,
     DropDownsModule,
     InputsModule,
-    SharedModule
-  ]
+    SharedModule,
+  ],
 })
 export class PurchaseReturnModule {}

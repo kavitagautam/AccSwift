@@ -1,31 +1,34 @@
-export interface JournalLists {
-  Entity: JournalMaster[];
+export interface JournalMasterList {
+  ID: number;
+  Date: Date;
+  Journaldetails?: any;
+  SeriesID: number;
+  SeriesName: string;
+  VoucherNo: string;
+  ProjectID: number;
+  ProjectName: string;
+  Fields: Fields;
+  CompanyID: number;
+  Remarks: string;
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedBy: string;
+  ModifiedDate: Date;
+}
+
+export interface JournalNavigate {
+  Entity: JournalMasterList[];
   ItemsPerPage: number;
   ItemsReturned: number;
   TotalItemsAvailable: number;
   CurrentPage: number;
-  TotalPage: number;
+  TotalPages: number;
 }
 
-export interface JournalMaster {
-  ID: number;
-  VoucherNo: number;
-  Date: string;
-  SeriesID: number;
-  SeriesName: string;
-  ProjectID: number;
-  ProjectName: string;
-  Field1: string;
-  Field2: string;
-  Field3: string;
-  Field4: string;
-  Field5: string;
-  Journaldetails: JournalDetails[];
-  Remarks: string;
-  CreatedBy: string;
-  CreatedDate: string;
-  ModifiedBy: string;
-  ModifiedDate: string;
+export interface JournalNavigateModel {
+  StatusCode: number;
+  Message: string;
+  Entity: JournalNavigate;
 }
 
 export interface JournalDetails {
@@ -78,21 +81,72 @@ export interface JournalDetails {
 export interface ProjectList {
   ID: number;
   ProjectNumber: number;
-  ParentProjectID: number;
+  ParentProjectID?: number;
   EngName: string;
   NepName: string;
   Description: string;
   CreatedBy: string;
-  CreatedDate: string;
+  CreatedDate?: Date;
   ModifiedBy: string;
-  ModifiedDate: string;
+  ModifiedDate?: Date;
+}
+
+export interface ProjectListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: ProjectList[];
+}
+
+export interface SeriesListModel {
+  Status: number;
+  Entity: SeriesList[];
 }
 
 export interface SeriesList {
   ID: number;
-  EngName: string;
-  NepName: string;
-  VoucherType: string;
-  AutoNumber: number;
-  BuiltIn: boolean;
+  Name: string;
+}
+
+export interface Journaldetail {
+  DebitCredit: string;
+  ID: number;
+  MasterID: number;
+  LedgerID: number;
+  LedgerName: string;
+  LedgerCode: string;
+  LedgerBalance: string;
+  Amount: number;
+  Remarks: string;
+}
+
+export interface Fields {
+  Field1: string;
+  Field2: string;
+  Field3: string;
+  Field4: string;
+  Field5: string;
+}
+
+export interface JournalDetails {
+  ID: number;
+  Date: Date;
+  Journaldetails: Journaldetail[];
+  SeriesID: number;
+  SeriesName: string;
+  VoucherNo: string;
+  ProjectID: number;
+  ProjectName: string;
+  Fields: Fields;
+  CompanyID: number;
+  Remarks: string;
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedBy: string;
+  ModifiedDate: Date;
+}
+
+export interface JournalDetailsModel {
+  StatusCode: number;
+  Message: string;
+  Entity: JournalDetails;
 }

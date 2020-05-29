@@ -4,22 +4,25 @@ import { Router } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe } from "@angular/common";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { LedgerModelPopupComponent } from "@app/shared/component/ledger-model-popup/ledger-model-popup.component";
-import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
+import { ToastrService } from "ngx-toastr";
+import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { PreferenceService } from "../../../preference/services/preference.service";
+import { Preferences } from "../../../preference/models/preference.model";
 
 @Component({
   selector: "accSwift-add-journal",
   templateUrl: "./add-journal.component.html",
   styleUrls: ["./add-journal.component.scss"],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class AddJournalComponent implements OnInit {
   private editedRowIndex: number;
   //Input Field Property
   public decimals: number = 2;
   numericFormat: string = "n3";
-
+  preferenceData: Preferences;
   addJournalForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -33,7 +36,8 @@ export class AddJournalComponent implements OnInit {
   modalRef: BsModalRef;
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
+    class: "modal-lg",
   };
 
   constructor(
@@ -42,21 +46,37 @@ export class AddJournalComponent implements OnInit {
     public journalService: JournalService,
     private modalService: BsModalService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
-    public ledgerCodeService: LedgerCodeMatchService
+    public ledgerCodeService: LedgerCodeMatchService,
+    private toastr: ToastrService,
+    private preferenceService: PreferenceService
   ) {}
 
   ngOnInit() {
     this.buildAddJournalForm();
+    this.getPreferences();
+  }
+
+  getPreferences(): void {
+    this.preferenceService.getPreferenceData().subscribe((response) => {
+      this.preferenceData = response.Entity;
+      this.buildAddJournalForm();
+    });
   }
 
   buildAddJournalForm(): void {
     this.addJournalForm = this._fb.group({
-      seriesId: [null],
+      seriesId: [
+        this.preferenceData
+          ? this.preferenceData.DEFAULT_SERIES_JRNL.Value
+          : null,
+      ],
       voucherNo: ["", [Validators.required]],
       date: [new Date()],
-      projectId: [null],
+      projectId: [
+        this.preferenceData ? this.preferenceData.DEFAULT_PROJECT.Value : null,
+      ],
       narration: [""],
-      journalEntryList: this._fb.array([this.addJournalEntryFormGroup()])
+      journalEntryList: this._fb.array([this.addJournalEntryFormGroup()]),
     });
   }
 
@@ -68,7 +88,7 @@ export class AddJournalComponent implements OnInit {
       debit: ["", Validators.required],
       credit: [""],
       balance: [""],
-      remarks: [""]
+      remarks: [""],
     });
   }
   get getjournalEntryList(): FormArray {
@@ -158,7 +178,7 @@ export class AddJournalComponent implements OnInit {
       journalEntryFormArray.controls[selectedRow].get("ledgerCode").status ===
       "VALID"
     ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe(res => {
+      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
         const selectedItem = res.Entity;
         if (selectedItem && selectedItem.length > 0) {
           journalEntryFormArray.controls[selectedRow]
@@ -176,11 +196,58 @@ export class AddJournalComponent implements OnInit {
     }
   }
 
+  journalEntryList = [];
+
   public save(): void {
-    if (this.addJournalForm.valid) {
-      this.router.navigate(["/journal"]);
-    } else {
+    this.journalEntryList = [];
+    const journalEntryFormArray = <FormArray>(
+      this.addJournalForm.get("journalEntryList")
+    );
+
+    for (const key in journalEntryFormArray.value) {
+      if (journalEntryFormArray.value[key]) {
+        this.journalEntryList.push({
+          DebitCredit: journalEntryFormArray.value[key].debit
+            ? "Debit"
+            : "Credit",
+          LedgerID: journalEntryFormArray.value[key].ledgerID,
+          LedgerCode: journalEntryFormArray.value[key].ledgerCode,
+          LedgerBalance: journalEntryFormArray.value[key].balance,
+          Amount: journalEntryFormArray.value[key].debit
+            ? journalEntryFormArray.value[key].debit
+            : journalEntryFormArray.value[key].credit,
+          Remarks: journalEntryFormArray.value[key].remarks,
+        });
+      }
     }
+
+    if (this.addJournalForm.invalid) return;
+    const obj = {
+      Date: this.addJournalForm.get("date").value,
+      Journaldetails: this.journalEntryList,
+      SeriesID: this.addJournalForm.get("seriesId").value,
+      Fields: {
+        Field1: "",
+        Field2: "",
+        Field3: "",
+        Field4: "",
+        Field5: "",
+      },
+      VoucherNo: this.addJournalForm.get("voucherNo").value,
+      ProjectID: this.addJournalForm.get("projectId").value,
+      Remarks: this.addJournalForm.get("narration").value,
+    };
+    this.journalService.addJournalVoucher(obj).subscribe(
+      (response) => {
+        this.router.navigate(["/journal"]);
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Journal added successfully");
+      }
+    );
   }
 
   public cancel(): void {
@@ -190,12 +257,12 @@ export class AddJournalComponent implements OnInit {
 
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
-      LedgerModelPopupComponent,
+      LedgerModalPopupComponent,
       this.config
     );
     this.modalRef.content.data = index;
     this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe(data => {
+    this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const journalEntryFormArray = <FormArray>(
           this.addJournalForm.get("journalEntryList")
@@ -214,7 +281,7 @@ export class AddJournalComponent implements OnInit {
           .setValue(data.LedgerCode);
       }
     });
-    this.modalRef.content.onClose.subscribe(data => {
+    this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
   }

@@ -3,7 +3,7 @@ import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import {
   CompositeFilterDescriptor,
-  SortDescriptor
+  SortDescriptor,
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { BankReconciliationService } from "./../../services/bank-reconciliation.service";
@@ -11,20 +11,18 @@ import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ConfirmationDialogComponent } from "@app/shared/component/confirmation-dialog/confirmation-dialog.component";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "accSwift-list-bank-reconciliation",
   templateUrl: "./list-bank-reconciliation.component.html",
-  styleUrls: ["./list-bank-reconciliation.component.scss"]
+  styleUrls: ["./list-bank-reconciliation.component.scss"],
 })
 export class ListBankReconciliationComponent implements OnInit {
   bankReconciliationForm: FormGroup;
   date: Date = new Date();
   listLoading: Boolean;
-  bankReconciliationList;
-  private toastr: ToastrService;
-  private modalService: BsModalService;
+  bankReconciliationList: BankReconciliationMaster[];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
   public pageSize = 10;
@@ -35,21 +33,23 @@ export class ListBankReconciliationComponent implements OnInit {
   public sort: SortDescriptor[] = [
     {
       field: "",
-      dir: "asc"
-    }
+      dir: "asc",
+    },
   ];
 
   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
-    ignoreBackdropClick: true
+    ignoreBackdropClick: true,
   };
 
   constructor(
     private fb: FormBuilder,
     public reconciliationService: BankReconciliationService,
-    private router: Router
+    private router: Router,
+    private modalService: BsModalService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -57,13 +57,13 @@ export class ListBankReconciliationComponent implements OnInit {
     this.getBankReconciliationlList();
   }
 
-  buildBankReconciliationForm() {
+  buildBankReconciliationForm(): void {
     this.bankReconciliationForm = this.fb.group({
       seriesId: [null],
       projectId: [null],
       voucherNo: [""],
       bankAccountId: [null],
-      date: [new Date()]
+      date: [new Date()],
     });
   }
 
@@ -78,12 +78,13 @@ export class ListBankReconciliationComponent implements OnInit {
       PageNo: this.currentPage,
       DisplayRow: this.pageSize,
       OrderBy: "",
-      Direction: "asc" // "asc" or "desc"
+      Direction: "asc", // "asc" or "desc"
     };
     this.reconciliationService.getBankReconciliationMaster().subscribe(
-      response => {
+      (response) => {
         this.listLoading = true;
         this.bankReconciliationList = response;
+        console.log(this.bankReconciliationList);
         this.gridView = {
           data: this.bankReconciliationList.slice(
             this.skip,
@@ -91,10 +92,10 @@ export class ListBankReconciliationComponent implements OnInit {
           ),
           total: this.bankReconciliationList
             ? this.bankReconciliationList.length
-            : 0
+            : 0,
         };
       },
-      error => {
+      (error) => {
         this.listLoading = false;
       },
       () => {
@@ -109,7 +110,7 @@ export class ListBankReconciliationComponent implements OnInit {
     this.getBankReconciliationlList();
   }
 
-  public searchForm() {
+  public searchForm(): void {
     this.getBankReconciliationlList();
   }
 
@@ -130,9 +131,9 @@ export class ListBankReconciliationComponent implements OnInit {
     this.router.navigate(["/bank-reconciliation/edit", item.ID]);
   }
 
-  openConfirmationDialogue(dataItem) {
+  openConfirmationDialogue(dataItem): void {
     const bankId = {
-      id: dataItem.ID
+      id: dataItem.ID,
     };
     this.modalRef = this.modalService.show(
       ConfirmationDialogComponent,
@@ -140,7 +141,7 @@ export class ListBankReconciliationComponent implements OnInit {
     );
     this.modalRef.content.data = "Receipt No." + dataItem.VoucherNo;
     this.modalRef.content.action = "delete";
-    this.modalRef.content.onClose.subscribe(confirm => {
+    this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
         this.deleteBankReconciliationByID(bankId.id);
       }

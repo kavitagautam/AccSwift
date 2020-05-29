@@ -1,0 +1,327 @@
+<h3>Accounts</h3>
+<form [formGroup]="accountsForm" novalidate>
+  <fieldset>
+    <legend>Cash Account</legend>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Cash Account</label>
+          <select
+            class="form-control"
+            id="cashAccountNo"
+            formControlName="DEFAULT_CASH_ACCOUNT"
+            accSwiftFormValidator
+          >
+            <option [ngValue]="null">Choose option... </option>
+            <option
+              *ngFor="let cashAccount of cashAccountLists"
+              [ngValue]="cashAccount.LedgerID"
+            >
+              {{ cashAccount.LedgerName }}</option
+            >
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Negative Cash</label>
+          <div class="row mt-3">
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="DEFAULT_NEGATIVECASH"
+                      value="Allow"
+                      formControlName="DEFAULT_NEGATIVECASH"
+                    />
+                    Allow
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="DEFAULT_NEGATIVECASH"
+                      value="Warn"
+                      formControlName="DEFAULT_NEGATIVECASH"
+                    />
+                    Warn
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="DEFAULT_NEGATIVECASH"
+                      value="Deny"
+                      formControlName="DEFAULT_NEGATIVECASH"
+                    />
+                    Deny
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Bank Account</legend>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label> Bank Account</label>
+          <select
+            class="form-control"
+            formControlName="DEFAULT_BANK_ACCOUNT"
+            accSwiftFormValidator
+          >
+            <option [ngValue]="null">Choose Option....</option>
+            <option
+              *ngFor="let account of bankAccountLists"
+              [ngValue]="account.LedgerID"
+            >
+              {{ account.LedgerName }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Negative Bank</label>
+          <div class="row mt-3">
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="DEFAULT_NEGATIVEBANK"
+                      value="Allow"
+                      formControlName="DEFAULT_NEGATIVEBANK"
+                    />
+                    Allow
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="DEFAULT_NEGATIVEBANK"
+                      value="Warn"
+                      formControlName="DEFAULT_NEGATIVEBANK"
+                    />
+                    Warn
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="DEFAULT_NEGATIVEBANK"
+                      value="Deny"
+                      formControlName="DEFAULT_NEGATIVEBANK"
+                    />
+                    Deny
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Credit Limits</legend>
+    <div class="row">
+      <div class="col-md-5">
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" formControlName="CREDIT_LIMIT" />
+              Enable Credit Limit on Creditors
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="CREDIT_LIMIT"
+                value="Warn"
+                formControlName="CREDIT_LIMIT"
+              />
+              Warn Only
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="CREDIT_LIMIT"
+                value="Deny"
+                formControlName="CREDIT_LIMIT"
+              />
+              Deny
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Budget Limits</legend>
+    <div class="row">
+      <div class="col-md-3">
+        <label>Budget Limits:</label>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="DEFAULT_BUDGET_LIMIT"
+                value="Allow"
+                formControlName="DEFAULT_BUDGET_LIMIT"
+              />
+              Allow
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="DEFAULT_BUDGET_LIMIT"
+                value="Warn"
+                formControlName="DEFAULT_BUDGET_LIMIT"
+              />
+              Warn Only
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="DEFAULT_BUDGET_LIMIT"
+                formControlName="DEFAULT_BUDGET_LIMIT"
+                value="Deny"
+              />
+              Deny
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Post Date Transactions</legend>
+    <div class="row">
+      <div class="col-md-3">
+        <label>Post Date Transactions:</label>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="POST_DATE_TRANSACTION"
+                formControlName="POST_DATE_TRANSACTION"
+                value="Allow"
+              />
+              Allow
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="POST_DATE_TRANSACTION"
+                formControlName="POST_DATE_TRANSACTION"
+                value="Warn"
+              />
+              Warn Only
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input
+                type="radio"
+                name="POST_DATE_TRANSACTION"
+                formControlName="POST_DATE_TRANSACTION"
+                value="Deny"
+              />
+              Deny
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<div class="row">
+  <div class="col-md-12">
+    <button
+      type="button"
+      class="btn btn-danger pull-right ml-3"
+      (click)="cancel()"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary pull-right ml-3"
+      (click)="save()"
+    >
+      Save
+    </button>
+  </div>
+</div>

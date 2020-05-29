@@ -11,14 +11,15 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
 import { SharedModule } from "@app/shared/shared.module";
 import {
   DropDownListModule,
-  DropDownsModule
+  DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
+import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
 
 @NgModule({
   declarations: [
     ListPurchaseOrderComponent,
     EditPurchaseOrderComponent,
-    AddPurchaseOrderComponent
+    AddPurchaseOrderComponent,
   ],
   imports: [
     CommonModule,
@@ -30,8 +31,9 @@ import {
     InputsModule,
     DropDownListModule,
     DropDownsModule,
-    PurchaseOrderRoutingModule
+    PurchaseOrderRoutingModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents: [ProductModalPopupComponent],
 })
 export class PurchaseOrderModule {}

@@ -4,14 +4,20 @@ import { environment } from "@env/environment.prod";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
 export interface LedgerList {
-  LedgerCode: string;
-  LedgerName: string;
-  LedgerID: number;
-  GroupID: number;
   GroupName: string;
   Balance: string;
   ActualBalance: number;
   LedgerType: string;
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  GroupID: number;
+}
+
+export interface LedgerListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: LedgerList[];
 }
 
 @Injectable({
@@ -24,7 +30,7 @@ export class LedgerListService {
     private httpService: HttpClientService
   ) {}
 
-  getLedgerList(): Observable<LedgerList[]> {
+  getLedgerList(): Observable<LedgerListModel> {
     return this.httpService.get(`${this._api_URL}ledger/lov`);
   }
 }

@@ -1,102 +1,142 @@
 export interface ProjectList {
   ID: number;
   ProjectNumber: number;
-  ParentProjectID: number;
+  ParentProjectID?: number;
   EngName: string;
   NepName: string;
   Description: string;
   CreatedBy: string;
-  CreatedDate: string;
+  CreatedDate?: Date;
   ModifiedBy: string;
-  ModifiedDate: string;
+  ModifiedDate?: Date;
+}
+
+export interface ProjectListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: ProjectList[];
+}
+
+export interface CashAccounts {
+  Status: number;
+  Entity: Entity[];
+}
+
+export interface Entity {
+  LedgerID: number;
+  LedgerCode: number;
+  LedgerName: string;
+  GroupID: number;
+}
+
+export interface SeriesListModel {
+  StatusCode: number;
+  Message: string;
+  Entity: SeriesList[];
 }
 
 export interface SeriesList {
   ID: number;
-  EngName: string;
-  NepName: string;
+  Name: string;
   VoucherType: string;
-  AutoNumber: number;
-  BuiltIn: boolean;
 }
 
-export interface CashPaymentMaster {
-  CashPaymentDetailsList: CashPaymentDetails[];
+export interface CashPartyListModel {
+  StatusCode: number;
+  Entity: CashParty[];
+}
+
+export interface CashParty {
+  LedgerID: number;
+  LedgerCode: number;
+  LedgerName: string;
+  GroupID: number;
+}
+
+export interface Fields {
+  Field1: string;
+  Field2: string;
+  Field3: string;
+  Field4: string;
+  Field5: string;
+}
+
+export interface CashPaymentList {
+  ID: number;
+  Date: Date;
+  CashPaymentDetailsList: CashPaymentDetailsList[];
   LedgerID: number;
   LedgerName: string;
-  ID: number;
   SeriesID: number;
   SeriesName: string;
   VoucherNo: string;
-  Date: Date;
   ProjectID: number;
   ProjectName: string;
-  Fields: {
-    Field1: string;
-    Field2: string;
-    Field3: string;
-    Field4: string;
-    Field5: string;
-  };
+  Fields: Fields;
+  CompanyID: number;
   Remarks: string;
   CreatedBy: string;
-  CreatedDate: string;
-  ModifiedBy: string;
-  ModifiedDate: string;
+  CreatedDate: Date;
+  ModifiedBy?: any;
+  ModifiedDate?: any;
 }
 
-export interface CashPaymentDetails {
+export interface CashPaymentNavigate {
+  Entity: CashPaymentList[];
+  ItemsPerPage: number;
+  ItemsReturned: number;
+  TotalItemsAvailable: number;
+  CurrentPage: number;
+  TotalPages: number;
+}
+
+export interface CashPaymentNavigateModel {
+  StatusCode: number;
+  Message: string;
+  Entity: CashPaymentNavigate;
+}
+
+export interface CashPaymentDetailsList {
   ID: number;
   MasterID: number;
   LedgerID: number;
-  Ledger: {
-    ID: number;
-    Code: string;
-    LedgerNumber: number;
-    EngName: string;
-    NepName: string;
-    PreviousYearBalance: number;
-    PreviousYearBalanceDebitCredit: string;
-    OpCCYID: number;
-    Currency: string;
-    OpCCR: number;
-    OpCCRDate: Date;
-    DebitCredit: string;
-    GroupID: number;
-    GroupName: string;
-    PersonName: string;
-    Address1: string;
-    Address2: string;
-    City: string;
-    Phone: string;
-    Email: string;
-    Company: string;
-    Website: string;
-    VatPanNo: string;
-    CreditLimit: number;
-    IsBuiltIn: boolean;
-    IsActive: boolean;
-    IsCalculated: boolean;
-    CalculateRate: number;
-    LF: number;
-    IsBillReference: boolean;
-    Remarks: string;
-    CreatedBy: string;
-    CreatedDate: Date;
-    ModifiedBy: string;
-    ModifiedDate: Date;
-  };
+  LedgerName: string;
+  LedgerCode: string;
+  LedgerBalance: string;
   Amount: number;
   Remarks: string;
 }
 
-export interface LedgerList {
-  LedgerCode: string;
-  LedgerName: string;
+export interface Fields {
+  Field1: string;
+  Field2: string;
+  Field3: string;
+  Field4: string;
+  Field5: string;
+}
+
+export interface CashPaymentDetail {
+  ID: number;
+  Date: Date;
+  CashPaymentDetailsList: CashPaymentDetailsList[];
   LedgerID: number;
-  GroupID: number;
-  GroupName: string;
-  Balance: string;
-  ActualBalance: number;
-  LedgerType: string;
+  LedgerName: string;
+  SeriesID: number;
+  SeriesName: string;
+  VoucherNo: string;
+  ProjectID: number;
+  ProjectName: string;
+  Fields: Fields;
+  CompanyID: number;
+  Remarks: string;
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedBy?: any;
+  ModifiedDate?: any;
+}
+
+export interface CashPaymentDetailModel {
+  StatusCode: number;
+  Message: string;
+  Entity: CashPaymentDetail;
 }
