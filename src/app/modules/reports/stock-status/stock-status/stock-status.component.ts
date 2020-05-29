@@ -121,10 +121,7 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.modalRef = this.modalService.show(
-      this.stockStatusSettings,
-      this.config
-    );
+    setTimeout(() => this.openStockSettings(this.stockStatusSettings), 100);
   }
 
   buildStockStatusForms(): void {

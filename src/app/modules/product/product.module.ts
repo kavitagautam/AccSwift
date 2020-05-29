@@ -14,6 +14,7 @@ import { SharedModule } from "@app/shared/shared.module";
 import { LandingProductComponent } from "./landing-product.component";
 import { ProductGroupComponent } from "./components/product-group/product-group.component";
 import { ImageCropperModule } from "ngx-image-cropper";
+import { UploadsModule } from "@progress/kendo-angular-upload";
 import { ProductMoreDetailComponent } from "./components/product-more-detail/product-more-detail.component";
 import { ProductImageComponent } from "./components/product-image/product-image.component";
 
@@ -23,7 +24,7 @@ import { ProductImageComponent } from "./components/product-image/product-image.
     ProductComponent,
     ProductGroupComponent,
     ProductMoreDetailComponent,
-    ProductImageComponent
+    ProductImageComponent,
   ],
   imports: [
     CommonModule,
@@ -37,9 +38,10 @@ import { ProductImageComponent } from "./components/product-image/product-image.
     LayoutModule,
     ImageCropperModule,
     DropDownListModule,
+    UploadsModule,
     DropDownsModule,
-    TreeViewModule
+    TreeViewModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ProductModule {}
