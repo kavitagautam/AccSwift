@@ -253,3 +253,7 @@ legend {
   font-size: 13px;
   font-family: cursive;
 }
+
+.k-tabstrip > .k-content.k-state-active {
+  overflow-x: hidden !important;
+}

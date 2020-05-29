@@ -13,6 +13,9 @@ import { HttpInterceptorsService } from "./core/services/http-interceptors/http-
 import { PreferenceService } from "./modules/preference/services/preference.service";
 import { PreferenceModel } from "./modules/preference/models/preference.model";
 import { Observable } from "rxjs";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
 
 export function initPreferenceData(preferenceService: PreferenceService) {
   return (): Observable<PreferenceModel> => {
@@ -22,7 +25,7 @@ export function initPreferenceData(preferenceService: PreferenceService) {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, CoreModule, AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, CoreModule, AppRoutingModule, HttpClientModule,  BrowserAnimationsModule],
   providers: [
     PreferenceService,
     {
