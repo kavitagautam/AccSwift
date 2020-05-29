@@ -4,6 +4,8 @@ import {
   TemplateRef,
   ViewChild,
   AfterViewInit,
+  ChangeDetectorRef,
+  AfterContentChecked,
 } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import {
@@ -20,11 +22,11 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
   templateUrl: "./stock-status.component.html",
   styleUrls: ["./stock-status.component.scss"],
 })
-export class StockStatusComponent implements OnInit {
+export class StockStatusComponent implements OnInit, AfterViewInit {
   stockStatusFroms: FormGroup;
   @ViewChild("stockStatusSettings") stockStatusSettings;
 
-  active: boolean;
+  isActive;
   listLoading: boolean;
   productList: Product[];
   productGroupList: ProductGroup[];
@@ -32,6 +34,69 @@ export class StockStatusComponent implements OnInit {
   stockStatusList: StockStatusList[] = [];
   totalQty: number;
   totalAmount: number;
+
+  monthList = [
+    {
+      name: "January",
+      short: "Jan",
+      number: 1,
+    },
+    {
+      name: "February",
+      short: "Feb",
+      number: 2,
+    },
+    {
+      name: "March",
+      short: "Mar",
+      number: 3,
+    },
+    {
+      name: "April",
+      short: "Apr",
+      number: 4,
+    },
+    {
+      name: "May",
+      short: "May",
+      number: 5,
+    },
+    {
+      name: "June",
+      short: "Jun",
+      number: 6,
+    },
+    {
+      name: "July",
+      short: "Jul",
+      number: 7,
+    },
+    {
+      name: "August",
+      short: "Aug",
+      number: 8,
+    },
+    {
+      name: "September",
+      short: "Sep",
+      number: 9,
+    },
+    {
+      name: "October",
+      short: "Oct",
+      number: 10,
+    },
+    {
+      name: "November",
+      short: "Nov",
+      number: 11,
+    },
+    {
+      name: "December",
+      short: "Dec",
+      number: 12,
+    },
+  ];
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -44,7 +109,8 @@ export class StockStatusComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private reportService: ReportsService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private cdref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +118,9 @@ export class StockStatusComponent implements OnInit {
     this.getProduct();
     this.getProject();
     this.getProductGroup();
+  }
+
+  ngAfterViewInit(): void {
     this.modalRef = this.modalService.show(
       this.stockStatusSettings,
       this.config
@@ -90,9 +159,12 @@ export class StockStatusComponent implements OnInit {
       this.productGroupList = response.Entity;
     });
   }
+
   allProduct(event): void {
     this.stockStatusFroms.get("ProductID").setValue(null);
     this.stockStatusFroms.get("ProductGroupID").setValue(null);
+    this.stockStatusFroms.get("ProductID").disable();
+    this.stockStatusFroms.get("ProductGroupID").disable();
   }
 
   quantityRange(): void {
@@ -103,12 +175,18 @@ export class StockStatusComponent implements OnInit {
   }
 
   openStockSettings(template: TemplateRef<any>): void {
-    this.buildStockStatusForms();
-
     this.modalRef = this.modalService.show(template, this.config);
   }
-  singleProduct(event): void {}
-  productGroup(event): void {}
+
+  singleProduct(event): void {
+    this.stockStatusFroms.get("ProductGroupID").setValue(null);
+    this.stockStatusFroms.get("ProductGroupID").disable();
+  }
+
+  productGroup(event): void {
+    this.stockStatusFroms.get("ProductID").setValue(null);
+    this.stockStatusFroms.get("ProductID").disable();
+  }
 
   showReport(): void {
     this.listLoading = true;

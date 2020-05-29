@@ -2,7 +2,7 @@
   <div class="row">
     <button
       type="button"
-      class="btn-primary"
+      class="btn-primary m-3"
       (click)="openStockSettings(stockStatusSettings)"
     >
       Stock Settings
@@ -85,7 +85,7 @@
 
   <div class="modal-body">
     <div class="row">
-      <form [formGroup]="stockStatusFroms">
+      <form [formGroup]="stockStatusFroms" novalidate>
         <div class="col-md-12">
           <fieldset>
             <div class="col-md-6 p-0">
@@ -96,7 +96,9 @@
                       <label>
                         <input
                           type="radio"
-                          [value]="active"
+                          [value]="allproduct"
+                          [(ngModel)]="isActive"
+                          [ngModelOptions]="{ standalone: true }"
                           (change)="allProduct($event)"
                         />
                         <label>All Product</label>
@@ -112,7 +114,9 @@
                       <label>
                         <input
                           type="radio"
-                          [value]="active"
+                          [value]="singleProduct"
+                          [(ngModel)]="isActive"
+                          [ngModelOptions]="{ standalone: true }"
                           (change)="singleProduct($event)"
                         />
                         <label>Single Product</label>
@@ -128,7 +132,9 @@
                       <label>
                         <input
                           type="radio"
-                          [value]="active"
+                          [value]="productGroup"
+                          [(ngModel)]="isActive"
+                          [ngModelOptions]="{ standalone: true }"
                           (change)="productGroup($event)"
                         />
                         <label>Product Group</label>
@@ -138,7 +144,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mt-5">
               <div class="form-group"></div>
               <div class="form-group">
                 <select class="form-control" formControlName="ProductID">
@@ -162,27 +168,34 @@
               </div>
             </div>
           </fieldset>
-          <div class="form-group">
-            <label>At the End of</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="ToDate"
-              bsDatepicker
-              [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
-            />
-          </div>
-          <div class="form-group">
-            <label>End of Month</label>
-            <select class="form-control" formControlName="FromDate">
-              <option [ngValue]="null">Choose Option..</option>
-              <option
-                *ngFor="let productG of productGroupList"
-                [ngValue]="productG.ID"
-                >{{ productG.Name }}</option
-              >
-            </select>
-          </div>
+          <fieldset>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>At the End of</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="ToDate"
+                  bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>End of Month</label>
+                <select class="form-control" formControlName="FromDate">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let month of monthList"
+                    [ngValue]="month.name"
+                    >{{ month.name }}</option
+                  >
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
           <fieldset>
             <legend>Accounting Class</legend>
             <div class="form-group">
