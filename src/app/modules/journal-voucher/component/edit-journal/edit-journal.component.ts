@@ -54,7 +54,7 @@ export class EditJournalComponent implements OnInit {
     private localeService: LocaleService,
     private toastr: ToastrService
   ) {
-    this.localeService.set("en-US");
+    this.localeService.set("ne-NP");
   }
 
   ngOnInit() {
