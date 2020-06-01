@@ -14,7 +14,7 @@ import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-p
 
 @Component({
   selector: "accSwift-edit-journal",
-  templateUrl: "./edit-journal.component.html",
+  templateUrl: "../common-html/journal-voucher.html",
   styleUrls: ["./edit-journal.component.css"],
   providers: [DatePipe],
 })
@@ -24,7 +24,7 @@ export class EditJournalComponent implements OnInit {
 
   numericFormat: string = "n2";
   public decimals: number = 2;
-  editJournalForm: FormGroup;
+  journalVoucherForms: FormGroup;
   journalDetail: JournalDetails;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -74,7 +74,7 @@ export class EditJournalComponent implements OnInit {
   }
 
   buildJournalForm(): void {
-    this.editJournalForm = this._fb.group({
+    this.journalVoucherForms = this._fb.group({
       seriesId: [this.journalDetail ? this.journalDetail.SeriesID : null],
       voucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
       date: [
@@ -99,14 +99,14 @@ export class EditJournalComponent implements OnInit {
   }
 
   setJournalList(): void {
-    this.editJournalForm.setControl(
+    this.journalVoucherForms.setControl(
       "journalEntryList",
       this.setJournalFormArray(this.journalDetail.Journaldetails)
     );
   }
 
   get getjournalEntryList(): FormArray {
-    return <FormArray>this.editJournalForm.get("journalEntryList");
+    return <FormArray>this.journalVoucherForms.get("journalEntryList");
   }
 
   // this block of code is used to show form array data in the template.....
@@ -168,7 +168,7 @@ export class EditJournalComponent implements OnInit {
   checkDebitValue(event: Event, index: number): void {
     let debitValue = 0;
     const journalEntryFormArray = <FormArray>(
-      this.editJournalForm.get("journalEntryList")
+      this.journalVoucherForms.get("journalEntryList")
     );
     const updatedValue = journalEntryFormArray.controls[index].get("debit")
       .value;
@@ -188,7 +188,7 @@ export class EditJournalComponent implements OnInit {
   checkCreditValue(event: Event, index: number): void {
     let creditValue = 0;
     const journalEntryFormArray = <FormArray>(
-      this.editJournalForm.get("journalEntryList")
+      this.journalVoucherForms.get("journalEntryList")
     );
     const updatedValue = journalEntryFormArray.controls[index].get("credit")
       .value;
@@ -208,7 +208,7 @@ export class EditJournalComponent implements OnInit {
 
   changeLedgerValue(dataItem, selectedRow): void {
     const journalEntryFormArray = <FormArray>(
-      this.editJournalForm.get("journalEntryList")
+      this.journalVoucherForms.get("journalEntryList")
     );
 
     const ledgerCode = journalEntryFormArray.controls[selectedRow].get(
@@ -238,9 +238,9 @@ export class EditJournalComponent implements OnInit {
 
   addJournalEntry(): void {
     this.submitted = true;
-    if (this.editJournalForm.get("journalEntryList").invalid) return;
+    if (this.journalVoucherForms.get("journalEntryList").invalid) return;
 
-    (<FormArray>this.editJournalForm.get("journalEntryList")).push(
+    (<FormArray>this.journalVoucherForms.get("journalEntryList")).push(
       this.addJournalEntryFormGroup()
     );
     this.submitted = false;
@@ -250,7 +250,7 @@ export class EditJournalComponent implements OnInit {
   public save(): void {
     this.journalEntryList = [];
     const journalEntryFormArray = <FormArray>(
-      this.editJournalForm.get("journalEntryList")
+      this.journalVoucherForms.get("journalEntryList")
     );
 
     for (const key in journalEntryFormArray.value) {
@@ -270,12 +270,12 @@ export class EditJournalComponent implements OnInit {
       }
     }
 
-    if (this.editJournalForm.invalid) return;
+    if (this.journalVoucherForms.invalid) return;
     const obj = {
       ID: this.journalDetail.ID,
-      Date: this.editJournalForm.get("date").value,
+      Date: this.journalVoucherForms.get("date").value,
       Journaldetails: this.journalEntryList,
-      SeriesID: this.editJournalForm.get("seriesId").value,
+      SeriesID: this.journalVoucherForms.get("seriesId").value,
       Fields: {
         Field1: "",
         Field2: "",
@@ -283,9 +283,9 @@ export class EditJournalComponent implements OnInit {
         Field4: "",
         Field5: "",
       },
-      VoucherNo: this.editJournalForm.get("voucherNo").value,
-      ProjectID: this.editJournalForm.get("projectId").value,
-      Remarks: this.editJournalForm.get("narration").value,
+      VoucherNo: this.journalVoucherForms.get("voucherNo").value,
+      ProjectID: this.journalVoucherForms.get("projectId").value,
+      Remarks: this.journalVoucherForms.get("narration").value,
     };
     this.journalService.updateJournalVoucher(obj).subscribe(
       (response) => {
@@ -301,7 +301,7 @@ export class EditJournalComponent implements OnInit {
   }
 
   public cancel(): void {
-    this.editJournalForm.reset();
+    this.journalVoucherForms.reset();
     this.router.navigate(["/journal"]);
   }
 
@@ -315,7 +315,7 @@ export class EditJournalComponent implements OnInit {
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const journalEntryFormArray = <FormArray>(
-          this.editJournalForm.get("journalEntryList")
+          this.journalVoucherForms.get("journalEntryList")
         );
         journalEntryFormArray.controls[index]
           .get("balance")
@@ -341,8 +341,8 @@ export class EditJournalComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.editJournalForm.get("journalEntryList").invalid) return;
-    (<FormArray>this.editJournalForm.get("journalEntryList")).push(
+    if (this.journalVoucherForms.get("journalEntryList").invalid) return;
+    (<FormArray>this.journalVoucherForms.get("journalEntryList")).push(
       this.addJournalEntryFormGroup()
     );
     this.rowSubmitted = false;
@@ -352,7 +352,7 @@ export class EditJournalComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     const journalEntryFormArray = <FormArray>(
-      this.editJournalForm.get("journalEntryList")
+      this.journalVoucherForms.get("journalEntryList")
     );
     journalEntryFormArray.controls[rowIndex]
       .get("particularsOraccountingHead")
@@ -373,7 +373,7 @@ export class EditJournalComponent implements OnInit {
       .get("remarks")
       .setValue(dataItem.remarks);
     this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.editJournalForm.get("journalEntryList"));
+    sender.editRow(rowIndex, this.journalVoucherForms.get("journalEntryList"));
   }
 
   public cancelHandler({ sender, rowIndex }) {
@@ -388,7 +388,7 @@ export class EditJournalComponent implements OnInit {
   public removeHandler({ dataItem, rowIndex }): void {
     // Calculation on Debit Total and Credit Total on Rows Removed
     const journalEntryFormArray = <FormArray>(
-      this.editJournalForm.get("journalEntryList")
+      this.journalVoucherForms.get("journalEntryList")
     );
     const deletedCreditValue =
       journalEntryFormArray.controls[rowIndex].get("credit").value || 0;
@@ -401,7 +401,7 @@ export class EditJournalComponent implements OnInit {
       this.debitTotal = this.debitTotal - parseFloat(deletedDebitValue) || 0;
     }
     // Remove the Row
-    (<FormArray>this.editJournalForm.get("journalEntryList")).removeAt(
+    (<FormArray>this.journalVoucherForms.get("journalEntryList")).removeAt(
       rowIndex
     );
   }

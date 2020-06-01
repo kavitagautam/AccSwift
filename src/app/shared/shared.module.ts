@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { NgxPaginationModule } from "ngx-pagination";
 import { PaginationComponent } from "./components/pagination/pagination.component";
-import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component";
+//import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component";
 import { CommonModalComponent } from "./components/common-modal/common-modal.component";
 import { PopupAnchorDirective } from "./directives/popup-anchor/popup.anchor-target.directive";
 import { CurrencyFormatPipe } from "./pipes/currency-format.pipe";
@@ -37,7 +37,7 @@ import { DecimalPlaceDirective } from "./directives/decimal-place/decimal-place.
 @NgModule({
   declarations: [
     PaginationComponent,
-    LanguageSwitcherComponent,
+    // LanguageSwitcherComponent,
     CommonModalComponent,
     CurrencyFormatPipe,
     PopupAnchorDirective,
@@ -76,12 +76,11 @@ import { DecimalPlaceDirective } from "./directives/decimal-place/decimal-place.
     ModalModule,
     PaginationComponent,
     NgxPaginationModule,
-    LanguageSwitcherComponent,
     TimepickerModule,
     BsDatepickerModule,
     BsDropdownModule,
     PaginationComponent,
-    LanguageSwitcherComponent,
+    // LanguageSwitcherComponent,
     CommonModalComponent,
     PopupAnchorDirective,
     CurrencyFormatPipe,
