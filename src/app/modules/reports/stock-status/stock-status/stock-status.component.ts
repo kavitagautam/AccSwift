@@ -13,6 +13,7 @@ import {
   ProductGroup,
   ProjectList,
   StockStatusList,
+  AccountClass,
 } from "../models/stock.models";
 import { ReportsService } from "../../services/reports.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
@@ -32,9 +33,10 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
   productGroupList: ProductGroup[];
   projectList: ProjectList[] = [];
   stockStatusList: StockStatusList[] = [];
+  accountLists: AccountClass[];
   totalQty: number;
   totalAmount: number;
-
+  toDateSelect: number;
   monthList = [
     {
       name: "January",
@@ -105,12 +107,12 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
     ignoreBackdropClick: true,
     centered: true,
     class: "modal-md",
+    height: 400,
   };
   constructor(
     private _fb: FormBuilder,
     private reportService: ReportsService,
-    private modalService: BsModalService,
-    private cdref: ChangeDetectorRef
+    private modalService: BsModalService
   ) {}
 
   ngOnInit(): void {
@@ -118,6 +120,7 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
     this.getProduct();
     this.getProject();
     this.getProductGroup();
+    this.getAccountClass();
   }
 
   ngAfterViewInit(): void {
@@ -126,6 +129,7 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
 
   buildStockStatusForms(): void {
     this.stockStatusFroms = this._fb.group({
+      AccClassID: [""],
       ProductID: [null],
       ProductGroupID: [null],
       DepotID: [null],
@@ -140,11 +144,13 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
       ToQtyRange: [""],
     });
   }
+
   getProduct(): void {
     this.reportService.getProductMin().subscribe((response) => {
       this.productList = response.Entity;
     });
   }
+
   getProject(): void {
     this.reportService.getProjectLists().subscribe((response) => {
       this.projectList = response.Entity;
@@ -154,6 +160,12 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
   getProductGroup(): void {
     this.reportService.getProductGroup().subscribe((response) => {
       this.productGroupList = response.Entity;
+    });
+  }
+
+  getAccountClass(): void {
+    this.reportService.getAccountClass().subscribe((response) => {
+      this.accountLists = response.Entity;
     });
   }
 
@@ -171,6 +183,21 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
     this.stockStatusFroms.get("ToQtyRange").enable();
   }
 
+  endOfMonth(): void {
+    var today = new Date();
+    var lastDayOfMonth = new Date(
+      today.getFullYear(),
+      this.toDateSelect + 1,
+      0
+    );
+    this.stockStatusFroms.get("ToDate").setValue(lastDayOfMonth);
+  }
+
+  selectAccounts(id, event): void {
+    if (event.target.checked) {
+      this.stockStatusFroms.get("AccClassID").setValue([id]);
+    }
+  }
   openStockSettings(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, this.config);
   }
@@ -197,10 +224,10 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
         },
         (error) => {
           this.listLoading = false;
+          this.modalRef.hide();
         },
         () => {
           this.listLoading = false;
-
           this.modalRef.hide();
         }
       );

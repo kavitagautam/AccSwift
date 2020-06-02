@@ -9,6 +9,7 @@ import {
   ProductGroupModel,
   ProjectListModel,
   StockStatusReportsModel,
+  AccountClassModel,
 } from "../stock-status/models/stock.models";
 
 @Injectable({
@@ -36,6 +37,10 @@ export class ReportsService {
 
   getProjectLists(): Observable<ProjectListModel> {
     return this.httpService.get(`${this._api_URL}project`);
+  }
+
+  getAccountClass(): Observable<AccountClassModel> {
+    return this.httpService.get(`${this._api_URL}AccountClass`);
   }
 
   stockStatusReports(body): Observable<StockStatusReportsModel> {
