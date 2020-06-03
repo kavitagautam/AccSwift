@@ -150,7 +150,7 @@
                 <select class="form-control" formControlName="ProductID">
                   <option [ngValue]="null">Choose Option..</option>
                   <option
-                    *ngFor="let product of productList"
+                    *ngFor="let product of reportService.productList"
                     [ngValue]="product.ID"
                     >{{ product.Name }}</option
                   >
@@ -160,7 +160,7 @@
                 <select class="form-control" formControlName="ProductGroupID">
                   <option [ngValue]="null">Choose Option..</option>
                   <option
-                    *ngFor="let productG of productGroupList"
+                    *ngFor="let productG of reportService.productGroupList"
                     [ngValue]="productG.ID"
                     >{{ productG.Name }}</option
                   >
@@ -195,7 +195,7 @@
                 >
                   <option [ngValue]="null">Choose Option..</option>
                   <option
-                    *ngFor="let month of monthList"
+                    *ngFor="let month of reportService.monthList"
                     [ngValue]="month.number"
                     >{{ month.name }}</option
                   >
@@ -227,7 +227,7 @@
                 <select class="form-control" formControlName="ProjectID">
                   <option [ngValue]="null">Choose Option..</option>
                   <option
-                    *ngFor="let project of projectList"
+                    *ngFor="let project of reportService.projectList"
                     [ngValue]="project.ID"
                     >{{ project.EngName }}</option
                   >
@@ -346,7 +346,7 @@
                       >
                         <option [ngValue]="null">Choose Option..</option>
                         <option
-                          *ngFor="let account of accountLists"
+                          *ngFor="let account of reportService.accountLists"
                           [ngValue]="account.ID"
                           >{{ account.Name }}</option
                         >
@@ -355,7 +355,10 @@
                     <div class="col-md-12">
                       <div
                         class="form-group"
-                        *ngFor="let account of accountLists; index as i"
+                        *ngFor="
+                          let account of reportService.accountLists;
+                          index as i
+                        "
                       >
                         <div class="checkbox">
                           <label class="form-check-label" for="check1">

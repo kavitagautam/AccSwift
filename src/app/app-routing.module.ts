@@ -168,6 +168,14 @@ const routes: Routes = [
         },
       },
       {
+        path: "sales-report",
+        loadChildren:
+          "@modules/reports/sales-report/sales-report.module#SalesReportModule",
+        data: {
+          breadcrumb: "Sales Report",
+        },
+      },
+      {
         path: "purchase-invoice",
         loadChildren:
           "@modules/purchase-invoice/purchase-invoice.module#PurchaseInvoiceModule",
