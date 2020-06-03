@@ -152,12 +152,8 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   }
 
   reportType(type): void {
-    console.log("type" + type);
     this.selectType = type;
-    if (this.salesReportForms.get("IsProductWise").value) {
-      // this.selectType = "product";
-    } else {
-      //this.selectType = "party";
+    if (this.selectType === "party") {
       this.getCashParty();
       this.getCashPartyGroup();
     }
