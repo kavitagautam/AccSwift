@@ -33,8 +33,8 @@
               <td>{{ l.VoucherType }}</td>
               <td>{{ l.VoucherNo }}</td>
               <td class="account_name">{{ l.AccountName }}</td>
-              <td class="balance">{{ l.DebitAmount }}</td>
-              <td class="balance">{{ l.CreditAmount }}</td>
+              <td class="balance">{{ l.DebitAmount | currencyFormat }}</td>
+              <td class="balance">{{ l.CreditAmount | currencyFormat }}</td>
             </tr>
             <tr *ngIf="dayBookList.length == 0">
               <td colspan="7" align="center">
@@ -48,9 +48,11 @@
               <td colspan="1"></td>
               <td colspan="1"></td>
               <td colspan="1">Debit Total</td>
-              <td colspan="1">{{ debitTotal }}</td>
+              <td colspan="1">{{ debitTotal | currencyFormat }}</td>
               <td colspan="1" class="balance">Credit Total</td>
-              <td colspan="1" class="balance">{{ creditTotal }}</td>
+              <td colspan="1" class="balance">
+                {{ creditTotal | currencyFormat }}
+              </td>
             </tr>
           </tfoot>
         </table>

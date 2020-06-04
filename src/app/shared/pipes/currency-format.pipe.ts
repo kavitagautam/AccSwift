@@ -1,10 +1,11 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: "currencyFormat"
+  name: "currencyFormat",
 })
 export class CurrencyFormatPipe implements PipeTransform {
   transform(value: any, currencySign: string = "रू "): string {
+    console.log("value" + value);
     if (value) {
       let parseNumber = parseFloat(value);
       let res = parseNumber.toFixed(2);
@@ -21,7 +22,7 @@ export class CurrencyFormatPipe implements PipeTransform {
       }
       return currencySign + output;
     } else {
-      return null;
+      return currencySign + (0.0).toFixed(2);
     }
   }
 

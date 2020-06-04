@@ -63,6 +63,7 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
     this.buildSalesReportForms();
     this.getSalesAccount();
     this.getDepot();
+    this.selectType = "product";
   }
 
   ngAfterViewInit(): void {
@@ -149,6 +150,7 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   productGroup(event): void {
     this.salesReportForms.get("ProductID").setValue(null);
     this.salesReportForms.get("ProductID").disable();
+    this.salesReportForms.get("ProductGroupID").enable();
   }
 
   reportType(type): void {
@@ -174,6 +176,7 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   cashPartyGroup(): void {
     this.salesReportForms.get("PartyID").setValue(null);
     this.salesReportForms.get("PartyID").disable();
+    this.salesReportForms.get("PartyGroupID").enable();
   }
 
   showReport(): void {
