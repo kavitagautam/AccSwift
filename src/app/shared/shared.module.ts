@@ -33,6 +33,7 @@ import { ProductModalPopupComponent } from "./components/product-modal-popup/pro
 import { LedgerModalPopupComponent } from "./components/ledger-modal-popup/ledger-modal-popup.component";
 import { DecimalPlaceDirective } from "./directives/decimal-place/decimal-place.directive";
 import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component";
+import { NumberToWordsPipe } from "./pipes/number-to-words/number-to-words.pipe";
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { LanguageSwitcherComponent } from "./components/language-switcher/langua
     ProductModalPopupComponent,
     CashPartyModalPopupComponent,
     DecimalPlaceDirective,
+    NumberToWordsPipe,
   ],
   imports: [
     CommonModule,
@@ -91,6 +93,7 @@ import { LanguageSwitcherComponent } from "./components/language-switcher/langua
     ProductModalPopupComponent,
     CashPartyModalPopupComponent,
     DecimalPlaceDirective,
+    NumberToWordsPipe,
   ],
   providers: [ValidationMsgService],
 })

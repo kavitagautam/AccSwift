@@ -29,11 +29,11 @@
             <tr *ngFor="let l of salesReportList; index as i">
               <td>{{ l.Name }}</td>
               <td>{{ l.Unit }}</td>
-              <td>{{ l.Rate }}</td>
+              <td>{{ l.Rate | currencyFormat }}</td>
               <td>{{ l.SalesQty }}</td>
               <td>{{ l.ReturnQty }}</td>
               <td>{{ l.NetSalesQty }}</td>
-              <td class="balance">{{ l.Amount }}</td>
+              <td class="balance">{{ l.Amount | currencyFormat }}</td>
             </tr>
             <tr *ngIf="salesReportList.length == 0">
               <td colspan="10" align="center">
@@ -106,7 +106,6 @@
                     <label>Party</label>
                   </label>
                 </div>
-                <span> {{ selectType }} </span>
               </div>
             </div>
             <div class="col-md-10" *ngIf="selectType === 'product'">

@@ -31,17 +31,17 @@
                 {{ group.GroupName }}
               </td>
               <td class="balance">
-                {{ group.TotalDrBal }}
+                {{ group.TotalDrBal | currencyFormat }}
               </td>
               <td class="balance">
-                {{ group.TotalCrBal }}
+                {{ group.TotalCrBal | currencyFormat }}
               </td>
             </tr>
             <tr *ngFor="let l of group.Ledgers">
               <td>{{ l.LedgerCode }}</td>
               <td>{{ l.LedgerName }}</td>
-              <td class="balance">{{ l.DrBal }}</td>
-              <td class="balance">{{ l.CrBal }}</td>
+              <td class="balance">{{ l.DrBal | currencyFormat }}</td>
+              <td class="balance">{{ l.CrBal | currencyFormat }}</td>
             </tr>
           </tbody>
           <tbody *ngIf="groupBalanceList.length == 0">
@@ -55,20 +55,32 @@
             <tr>
               <td colspan="1"></td>
               <td>Previous Year P/L(Profit)</td>
-              <td colspan="1" class="balance">{{ previousYearPLDR }}</td>
-              <td colspan="1" class="balance">{{ previousYearPLCR }}</td>
+              <td colspan="1" class="balance">
+                {{ previousYearPLDR | currencyFormat }}
+              </td>
+              <td colspan="1" class="balance">
+                {{ previousYearPLCR | currencyFormat }}
+              </td>
             </tr>
             <tr>
               <td colspan="1"></td>
               <td>DIFFERENCE IN OPENING BALANCE</td>
-              <td colspan="1" class="balance">{{ openingDR }}</td>
-              <td colspan="1" class="balance">{{ openingCR }}</td>
+              <td colspan="1" class="balance">
+                {{ openingDR | currencyFormat }}
+              </td>
+              <td colspan="1" class="balance">
+                {{ openingCR | currencyFormat }}
+              </td>
             </tr>
             <tr>
               <td colspan="1"></td>
               <td>TRIAL TOTAL</td>
-              <td colspan="1" class="balance">{{ trialTotalDR }}</td>
-              <td colspan="1" class="balance">{{ trialTotalCR }}</td>
+              <td colspan="1" class="balance">
+                {{ trialTotalDR | currencyFormat }}
+              </td>
+              <td colspan="1" class="balance">
+                {{ trialTotalCR | currencyFormat }}
+              </td>
             </tr>
           </tfoot>
         </table>
