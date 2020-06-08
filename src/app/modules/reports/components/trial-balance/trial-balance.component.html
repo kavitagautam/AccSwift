@@ -31,17 +31,21 @@
                 {{ group.GroupName }}
               </td>
               <td class="balance">
-                {{ group.TotalDrBal | currencyFormat }}
+                <span [innerHTML]="group.TotalDrBal | currencyFormat"></span>
               </td>
               <td class="balance">
-                {{ group.TotalCrBal | currencyFormat }}
+                <span [innerHTML]="group.TotalCrBal | currencyFormat"></span>
               </td>
             </tr>
             <tr *ngFor="let l of group.Ledgers">
               <td>{{ l.LedgerCode }}</td>
               <td>{{ l.LedgerName }}</td>
-              <td class="balance">{{ l.DrBal | currencyFormat }}</td>
-              <td class="balance">{{ l.CrBal | currencyFormat }}</td>
+              <td class="balance">
+                <span [innerHTML]="l.DrBal | currencyFormat"></span>
+              </td>
+              <td class="balance">
+                <span [innerHTML]="l.CrBal | currencyFormat"></span>
+              </td>
             </tr>
           </tbody>
           <tbody *ngIf="groupBalanceList.length == 0">
@@ -56,30 +60,30 @@
               <td colspan="1"></td>
               <td>Previous Year P/L(Profit)</td>
               <td colspan="1" class="balance">
-                {{ previousYearPLDR | currencyFormat }}
+                <span [innerHTML]="previousYearPLDR | currencyFormat"></span>
               </td>
               <td colspan="1" class="balance">
-                {{ previousYearPLCR | currencyFormat }}
+                <span [innerHTML]="previousYearPLCR | currencyFormat"></span>
               </td>
             </tr>
             <tr>
               <td colspan="1"></td>
               <td>DIFFERENCE IN OPENING BALANCE</td>
               <td colspan="1" class="balance">
-                {{ openingDR | currencyFormat }}
+                <span [innerHTML]="openingDR | currencyFormat"></span>
               </td>
               <td colspan="1" class="balance">
-                {{ openingCR | currencyFormat }}
+                <span [innerHTML]="openingCR | currencyFormat"></span>
               </td>
             </tr>
             <tr>
               <td colspan="1"></td>
               <td>TRIAL TOTAL</td>
               <td colspan="1" class="balance">
-                {{ trialTotalDR | currencyFormat }}
+                <span [innerHTML]="trialTotalDR | currencyFormat"></span>
               </td>
               <td colspan="1" class="balance">
-                {{ trialTotalCR | currencyFormat }}
+                <span [innerHTML]="trialTotalCR | currencyFormat"></span>
               </td>
             </tr>
           </tfoot>

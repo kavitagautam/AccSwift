@@ -201,7 +201,8 @@
                   let-columnIndex="columnIndex"
                 >
                   <span class="pull-right">
-                    Debit Total: {{ debitTotal | currencyFormat }}
+                    Debit Total:
+                    <span [innerHTML]="debitTotal | currencyFormat"></span>
                   </span>
                 </ng-template>
               </kendo-grid-column>
@@ -251,7 +252,8 @@
                   let-columnIndex="columnIndex"
                 >
                   <span class="pull-right">
-                    Credit Total: {{ creditTotal | currencyFormat }}
+                    Credit Total:
+                    <span [innerHTML]="creditTotal | currencyFormat"></span>
                   </span>
                 </ng-template>
               </kendo-grid-column>
@@ -283,9 +285,12 @@
                   let-columnIndex="columnIndex"
                 >
                   <span class="pull-right">
-                    Difference : {{ debitTotal - creditTotal | currencyFormat
-                    }}</span
-                  >
+                    Difference :
+                    <span
+                      [innerHTML]="debitTotal - creditTotal | currencyFormat
+                    "
+                    ></span>
+                  </span>
                 </ng-template>
               </kendo-grid-column>
 

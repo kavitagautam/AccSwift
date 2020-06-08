@@ -38,10 +38,16 @@
               <td>{{ l.OutBoundQty }}</td>
               <td>{{ l.DamagedQty }}</td>
               <td>{{ l.OfficeUseQty }}</td>
-              <td class="balance">{{ l.PurchaseRate | currencyFormat }}</td>
+              <td class="balance">
+                <span [innerHTML]="l.PurchaseRate | currencyFormat"></span>
+              </td>
               <td>{{ l.ClosingQty }}</td>
-              <td class="balance">{{ l.SalesRate | currencyFormat }}</td>
-              <td class="balance">{{ l.ClosingAmount | currencyFormat }}</td>
+              <td class="balance">
+                <span [innerHTML]="l.SalesRate | currencyFormat"></span>
+              </td>
+              <td class="balance">
+                <span [innerHTML]="l.ClosingAmount | currencyFormat"></span>
+              </td>
             </tr>
             <tr *ngIf="stockStatusList.length == 0">
               <td colspan="10" align="center">
@@ -61,7 +67,7 @@
               <td colspan="1">{{ totalQty }}</td>
               <td colspan="1" class="balance">Total Amount</td>
               <td colspan="1" class="balance">
-                {{ totalAmount | currencyFormat }}
+                <span [innerHTML]="totalAmount | currencyFormat"></span>
               </td>
             </tr>
           </tfoot>
