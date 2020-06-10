@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from "@angular/core";
+import { Pipe, PipeTransform, OnInit } from "@angular/core";
 import {
   DomSanitizer,
   SafeHtml,
@@ -7,6 +7,7 @@ import {
   SafeUrl,
   SafeResourceUrl,
 } from "@angular/platform-browser";
+import { SettingsService } from "@app/modules/settings/services/settings.service";
 
 @Pipe({
   name: "currencyFormat",
@@ -14,7 +15,20 @@ import {
 export class CurrencyFormatPipe implements PipeTransform {
   currencySign: string = "रू ";
 
-  constructor(protected sanitizer: DomSanitizer) {}
+  constructor(
+    protected sanitizer: DomSanitizer,
+    private settingService: SettingsService
+  ) {
+    if (
+      this.settingService.settings &&
+      this.settingService.settings.DEFAULT_LANGUAGE.Value === "Nepali"
+    ) {
+      this.currencySign = "रू ";
+    } else {
+      this.currencySign = "$ ";
+    }
+  }
+
   transform(value: any, event?: number): SafeHtml {
     if (value > 0) {
       let parseNumber = parseFloat(value);
@@ -25,8 +39,14 @@ export class CurrencyFormatPipe implements PipeTransform {
       var lastThree = result[0].substring(result[0].length - 3);
       var otherNumbers = result[0].substring(0, result[0].length - 3);
       if (otherNumbers != "") lastThree = "," + lastThree;
-      var output =
-        otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+      if (this.currencySign == "रू ") {
+        var output =
+          otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+      } else {
+        var output =
+          otherNumbers.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + lastThree;
+      }
+
       if (result.length > 1) {
         output += "." + result[1];
       }
@@ -40,8 +60,14 @@ export class CurrencyFormatPipe implements PipeTransform {
       var lastThree = result[0].substring(result[0].length - 3);
       var otherNumbers = result[0].substring(0, result[0].length - 3);
       if (otherNumbers != "") lastThree = "," + lastThree;
-      var output =
-        otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+      if (this.currencySign == "रू ") {
+        var output =
+          otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+      } else {
+        var output =
+          otherNumbers.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + lastThree;
+      }
+
       if (result.length > 1) {
         output += "." + result[1];
       }

@@ -21,6 +21,7 @@ import {
   CashPartyGroupModel,
   DepotModel,
   SalesAccountModel,
+  PurchaseReportModel,
 } from "../models/sales.report.model";
 
 @Injectable({
@@ -150,6 +151,13 @@ export class ReportsService {
   getSalesReports(body): Observable<SalesReportModel> {
     return this.httpService.post(
       `${this._api_URL}InventoryReports/Sales`,
+      body
+    );
+  }
+
+  getPurchaseReports(body): Observable<PurchaseReportModel> {
+    return this.httpService.post(
+      `${this._api_URL}InventoryReports/Purchase`,
       body
     );
   }

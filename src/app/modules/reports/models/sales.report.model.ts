@@ -82,3 +82,35 @@ export interface SalesAccountModel {
   Message: string;
   Entity: SalesAccount[];
 }
+
+export interface PurchaseList {
+  NetPurchaseQty: number;
+  PurchaseQty: number;
+  Code: string;
+  Unit: string;
+  Rate: number;
+  ID: number;
+  Name: string;
+  ReturnQty: number;
+  Amount: number;
+  DiscountAmount: number;
+  VATAmount: number;
+  NetAmount: number;
+}
+
+export interface PurchaseReport {
+  Entity: PurchaseList[];
+  TotalReturnQty: number;
+  TotalPurchaseQty: number;
+  TotalNetPurchaseQty: number;
+  TotalAmount: number;
+  TotalVATAmount: number;
+  TotalNetAmount: number;
+  TotalDiscountAmount: number;
+}
+
+export interface PurchaseReportModel {
+  StatusCode: number;
+  Message: string;
+  Entity: PurchaseReport;
+}
