@@ -3,28 +3,30 @@
     <button
       type="button"
       class="btn-primary m-3"
-      (click)="openSalesReportSettings(salesReportSettings)"
+      (click)="openPurchaseReportSettings(purchaseReportSettings)"
     >
-      Sales Report Settings
+      Purchase Report Settings
     </button>
   </div>
   <h3
     style="text-align: center;"
     *ngIf="
       selectType === 'product' &&
-      salesReportForms.get('ProductID').value === null
+      purchaseReportForms.get('ProductID').value === null
     "
   >
-    Sales Product-Wise Report
+    Purchase Product-Wise Report
   </h3>
   <h3
     style="text-align: center;"
-    *ngIf="selectType === 'product' && salesReportForms.get('ProductID').value"
+    *ngIf="
+      selectType === 'product' && purchaseReportForms.get('ProductID').value
+    "
   >
-    Sales Product-Wise Transaction Report
+    Purchase Product-Wise Transaction Report
   </h3>
   <h3 style="text-align: center;" *ngIf="selectType === 'party'">
-    Sales Party-Wise Report
+    Purchase Party-Wise Report
   </h3>
 
   <div class="col-md-12">
@@ -36,27 +38,27 @@
               <th colspan="1">Product Details</th>
               <th colspan="1">Unit</th>
               <th colspan="1">Rate</th>
-              <th colspan="1">Sales Qty</th>
+              <th colspan="1">Purchase Qty</th>
               <th colspan="1">Return Qty</th>
-              <th colspan="1">Net Sales Qty</th>
+              <th colspan="1">Net Purchase Qty</th>
               <th colspan="1">Amount</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let l of salesReportList; index as i">
+            <tr *ngFor="let l of purchaseReportList; index as i">
               <td>{{ l.Name }}</td>
               <td>{{ l.Unit }}</td>
               <td class="balance">
                 <span [innerHTML]="l.Rate | currencyFormat"></span>
               </td>
-              <td align="right">{{ l.SalesQty }}</td>
+              <td align="right">{{ l.PurchaseQty }}</td>
               <td align="right">{{ l.ReturnQty }}</td>
-              <td align="right">{{ l.NetSalesQty }}</td>
+              <td align="right">{{ l.NetPurchaseQty }}</td>
               <td class="balance">
                 <span [innerHTML]="l.Amount | currencyFormat"></span>
               </td>
             </tr>
-            <tr *ngIf="salesReportList.length == 0">
+            <tr *ngIf="purchaseReportList.length == 0">
               <td colspan="10" align="center">
                 No Data Available
               </td>
@@ -68,7 +70,7 @@
               <td colspan="1"></td>
               <td colspan="1"></td>
               <td colspan="1">Total Qty</td>
-              <td colspan="1">{{ totalSalesQty }}</td>
+              <td colspan="1">{{ totalPurchaseQty }}</td>
               <td colspan="1" class="balance">Total Amount</td>
               <td colspan="1" class="balance">
                 <span [innerHTML]="totalAmount | currencyFormat"></span>
@@ -82,9 +84,9 @@
   </div>
 </div>
 
-<ng-template #salesReportSettings>
+<ng-template #purchaseReportSettings>
   <div class="modal-header">
-    <h3 class="modal-title pull-left">Sales Report Settings</h3>
+    <h3 class="modal-title pull-left">Purchase Report Settings</h3>
     <button
       type="button"
       class="close pull-right"
@@ -97,7 +99,7 @@
 
   <div class="modal-body">
     <div class="row">
-      <form [formGroup]="salesReportForms" novalidate>
+      <form [formGroup]="purchaseReportForms" novalidate>
         <fieldset>
           <div class="col-md-12">
             <div class="col-md-2 pl-0">
@@ -324,13 +326,13 @@
           <fieldset>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Sales A/C</label>
-                <select class="form-control" formControlName="SalesLedgerID">
+                <label>Purchase A/C</label>
+                <select class="form-control" formControlName="PurchaseLedgerID">
                   <option [ngValue]="null">Choose Option..</option>
                   <option
-                    *ngFor="let salesAcc of salesAccountList"
-                    [ngValue]="salesAcc.LedgerID"
-                    >{{ salesAcc.LedgerName }}</option
+                    *ngFor="let PurchaseAcc of purchaseAccountList"
+                    [ngValue]="purchaseAcc.LedgerID"
+                    >{{ PurchaseAcc.LedgerName }}</option
                   >
                 </select>
               </div>
@@ -355,7 +357,7 @@
           <fieldset>
             <div class="col-md-6">
               <div class="form-group">
-                <label>At the End of</label>
+                <label>From</label>
                 <input
                   type="text"
                   class="form-control"
@@ -364,8 +366,6 @@
                   [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                 />
               </div>
-            </div>
-            <div class="col-md-6">
               <div class="form-group">
                 <label>End of Month</label>
                 <select
@@ -381,6 +381,18 @@
                     >{{ month.name }}</option
                   >
                 </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>To</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="ToDate"
+                  bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                />
               </div>
             </div>
           </fieldset>

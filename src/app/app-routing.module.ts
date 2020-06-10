@@ -176,6 +176,14 @@ const routes: Routes = [
         },
       },
       {
+        path: "purchase-report",
+        loadChildren:
+          "@modules/reports/purchase-report/purchase-report.module#PurchaseReportModule",
+        data: {
+          breadcrumb: "Purchase Report",
+        },
+      },
+      {
         path: "purchase-invoice",
         loadChildren:
           "@modules/purchase-invoice/purchase-invoice.module#PurchaseInvoiceModule",
