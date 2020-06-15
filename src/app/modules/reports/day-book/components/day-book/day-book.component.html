@@ -27,7 +27,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let l of dayBookList">
+            <tr
+              *ngFor="let l of dayBookList"
+              (click)="openTransaction($event, l)"
+              (dblclick)="openTransaction($event, l)"
+            >
               <td>{{ l.RowID }}</td>
               <td>{{ l.TransactionDate | date: "yyyy-MM-dd" }}</td>
               <td>{{ l.VoucherType }}</td>
