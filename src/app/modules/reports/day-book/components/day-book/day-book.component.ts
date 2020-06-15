@@ -12,7 +12,9 @@ import {
   ProjectList,
   TransactionVoucher,
 } from "../../models/day-book.models";
+import { Router } from "@angular/router";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { Location } from "@angular/common";
 @Component({
   selector: "accSwift-day-book",
   templateUrl: "./day-book.component.html",
@@ -21,7 +23,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 export class DayBookComponent implements OnInit, AfterViewInit {
   dayBookList: any[] = [];
   @ViewChild("dayBookSettings") dayBookSettings;
-
+  baseURL: string;
   accountLists: AccountClass[];
   projectList: ProjectList[];
   transVoucherType: TransactionVoucher[];
@@ -100,12 +102,14 @@ export class DayBookComponent implements OnInit, AfterViewInit {
     backdrop: true,
     ignoreBackdropClick: true,
     centered: true,
-    class: "modal-md",
+    class: "modal-lg",
   };
   constructor(
     private dayBookService: DayBookService,
     private _fb: FormBuilder,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -113,6 +117,9 @@ export class DayBookComponent implements OnInit, AfterViewInit {
     this.getProject();
     this.getAccountClass();
     this.getTransVoucher();
+    this.baseURL =
+      this.location["_platformStrategy"]._platformLocation["location"].origin +
+      "/#/";
   }
 
   ngAfterViewInit(): void {
@@ -154,6 +161,64 @@ export class DayBookComponent implements OnInit, AfterViewInit {
     this.dayBookService.getProjectLists().subscribe((response) => {
       this.projectList = response.Entity;
     });
+  }
+
+  openTransaction(e, data): void {
+    if (data.VoucherType === "JRNL") {
+      const url = this.router.serializeUrl(
+        this.router.createUrlTree(["/journal/edit", data.RowID])
+      );
+      window.open(this.baseURL + "journal/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "BANK_PMNT") {
+      window.open(this.baseURL + "bank-payment/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "CASH_PMNT") {
+      window.open(this.baseURL + "cash-payment/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "BANK_RCPT") {
+      window.open(this.baseURL + "bank-receipt/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "BRECON") {
+      window.open(
+        this.baseURL + "bank-reconciliation/edit/" + data.RowID,
+        "_blank"
+      );
+    }
+    if (data.VoucherType === "CNTR") {
+      window.open(this.baseURL + "contra-voucher/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "BANK_RCPT") {
+      window.open(this.baseURL + "bank-receipt/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "CASH_RCPT") {
+      window.open(this.baseURL + "cash-receipt/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "SALES") {
+      window.open(this.baseURL + "sales-invoice/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "SLS_RTN") {
+      window.open(this.baseURL + "sales-return/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "SLS_ORDER") {
+      window.open(this.baseURL + "sales-order/edit/" + data.RowID, "_blank");
+    }
+
+    if (data.VoucherType === "PURCH") {
+      window.open(
+        this.baseURL + "purchase-invoice/edit/" + data.RowID,
+        "_blank"
+      );
+    }
+    if (data.VoucherType === "PURCH_RTN") {
+      window.open(
+        this.baseURL + "purchase-return/edit/" + data.RowID,
+        "_blank"
+      );
+    }
+    if (data.VoucherType === "PURCH_ORDER") {
+      window.open(this.baseURL + "purchase-order/edit/" + data.RowID, "_blank");
+    }
   }
 
   getAccountClass(): void {
