@@ -49,14 +49,6 @@ const routes: Routes = [
       },
 
       {
-        path: "reports",
-        loadChildren: "@modules/reports/reports.module#ReportsModule",
-        data: {
-          breadcrumb: "Reports",
-        },
-      },
-
-      {
         path: "cash-payment",
         loadChildren:
           "@modules/cash-payment/cash-payment.module#CashPaymentModule",
@@ -146,10 +138,10 @@ const routes: Routes = [
         },
       },
       {
-        path: "report",
+        path: "trail-balance",
         loadChildren: "@modules/reports/reports.module#ReportsModule",
         data: {
-          breadcrumb: "Report",
+          breadcrumb: "Trail Balance Report",
         },
       },
       {

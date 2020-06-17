@@ -304,25 +304,63 @@ export interface Ledger {
   CrBal: number;
 }
 
-export interface Group {
-  GroupID: number;
-  GroupName: string;
-  GroupCode: string;
-  TotalDrBal: number;
-  TotalCrBal: number;
-  Ledgers: Ledger[];
-}
-
 export interface TrailBalance {
-  Entity: Group[];
-  GrandTotalDr: number;
-  DiffInOpeningDr: number;
-  GrandTotalCr: number;
-  DiffInOpeningCr: number;
+  Type: string;
+  Level: number;
+  ID?: number;
+  AccountCode: string;
+  AccountName: string;
+  DebitAmount: number;
+  CreditAmount: number;
 }
 
 export interface TrailBalanceModel {
   StatusCode: number;
   Message: string;
-  Entity: TrailBalance;
+  Entity: TrailBalance[];
+}
+
+export interface GroupBalanceList {
+  Type: string;
+  ID: number;
+  AccountCode: string;
+  AccountName: string;
+  DebitAmount: number;
+  CreditAmount: number;
+}
+
+export interface GroupBalance {
+  Entity: GroupBalanceList[];
+  ClosingBalance: string;
+}
+
+export interface GroupBalanceModel {
+  StatusCode: number;
+  Message: string;
+  Entity: GroupBalance;
+}
+
+export interface LedgerList {
+  TransactDate?: any;
+  VoucherNo?: any;
+  VoucherType?: any;
+  Balance: string;
+  Type: string;
+  Remarks: string;
+  RowID?: any;
+  ID?: any;
+  AccountCode?: any;
+  AccountName: string;
+  DebitAmount?: any;
+  CreditAmount?: any;
+}
+
+export interface LedgerDetails {
+  Entity: LedgerList[];
+}
+
+export interface LedgerDetailsModel {
+  StatusCode: number;
+  Message: string;
+  Entity: LedgerDetails;
 }
