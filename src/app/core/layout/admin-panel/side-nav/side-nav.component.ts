@@ -120,7 +120,7 @@ export class SideNavComponent implements OnInit {
         {
           displayName: "Trial Balance",
           iconName: "fa fa-file-excel-o",
-          route: "/reports",
+          route: "/trail-balance",
         },
         {
           displayName: "Day Book",

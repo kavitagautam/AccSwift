@@ -28,11 +28,11 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let l of dayBookList"
+              *ngFor="let l of dayBookList; index as i"
               (click)="openTransaction($event, l)"
               (dblclick)="openTransaction($event, l)"
             >
-              <td>{{ l.RowID }}</td>
+              <td>{{ i + 1 }}</td>
               <td>{{ l.TransactionDate | date: "yyyy-MM-dd" }}</td>
               <td>{{ l.VoucherType }}</td>
               <td>{{ l.VoucherNo }}</td>

@@ -3,7 +3,11 @@ import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { TrailBalanceModel } from "../models/trail-balance.model";
+import {
+  TrailBalanceModel,
+  GroupBalanceModel,
+  LedgerDetailsModel,
+} from "../models/trail-balance.model";
 import {
   ProductModel,
   ProductGroupModel,
@@ -105,8 +109,16 @@ export class ReportsService {
     this.getProjectLists();
   }
 
-  getGroupBalanceData(): Observable<TrailBalanceModel> {
-    return this.httpService.get(`${this._api_URL}/Ledger/GroupBalance`);
+  getTrailBalance(body): Observable<TrailBalanceModel> {
+    return this.httpService.post(`${this._api_URL}/Reports/Trial`, body);
+  }
+
+  getTrailGroupDetails(body): Observable<GroupBalanceModel> {
+    return this.httpService.post(`${this._api_URL}Reports/TrialDetails`, body);
+  }
+
+  getTrailLedgerDetails(body): Observable<LedgerDetailsModel> {
+    return this.httpService.post(`${this._api_URL}Reports/TrialDetails`, body);
   }
 
   getProductMin(): void {

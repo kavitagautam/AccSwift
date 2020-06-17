@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { IntlModule } from "@progress/kendo-angular-intl";
 import { NumericTextBoxModule } from "@progress/kendo-angular-inputs";
@@ -19,6 +19,7 @@ import { SharedModule } from "@app/shared/shared.module";
     ButtonsModule,
     IntlModule,
     FormsModule,
+    ReactiveFormsModule,
     NumericTextBoxModule,
     PDFExportModule,
     SharedModule,
