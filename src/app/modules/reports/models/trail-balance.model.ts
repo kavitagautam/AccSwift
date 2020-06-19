@@ -275,27 +275,6 @@ export const trailBalanceData = {
   ],
 };
 
-// export interface Ledger {
-//   LedgerID: number;
-//   LedgerCode: string;
-//   LedgerName: string;
-//   DrBal: number;
-//   CrBal: number;
-// }
-
-// export interface TrailBalance {
-//   GroupID: number;
-//   GroupName: string;
-//   GroupCode: string;
-//   Ledgers: Ledger[];
-// }
-
-// export interface TrailBalanceModel {
-//   StatusCode: number;
-//   Message: string;
-//   Entity: TrailBalance[];
-// }
-
 export interface Ledger {
   LedgerID: number;
   LedgerCode: string;
@@ -314,15 +293,47 @@ export interface TrailBalance {
   CreditAmount: number;
 }
 
+export interface Company {
+  ID: number;
+  Name: string;
+  Code: string;
+  Address1: string;
+  Address2: string;
+  City: string;
+  District: string;
+  Zone: string;
+  Telephone: string;
+  Email: string;
+  Website: string;
+  POBox: string;
+  PAN: string;
+  Logo?: any;
+  FYFrom: Date;
+  BookBeginFrom: Date;
+  FiscalYear: string;
+  CompanyID: number;
+  Remarks: string;
+  CreatedBy?: any;
+  CreatedDate?: any;
+  ModifiedBy: string;
+  ModifiedDate: Date;
+}
+
+export interface Entity {
+  Entity: TrailBalance[];
+  Company: Company;
+}
+
 export interface TrailBalanceModel {
   StatusCode: number;
   Message: string;
-  Entity: TrailBalance[];
+  Entity: Entity;
 }
 
 export interface GroupBalanceList {
   Type: string;
-  ID: number;
+  Level: number;
+  ID?: number;
   AccountCode: string;
   AccountName: string;
   DebitAmount: number;
@@ -332,6 +343,7 @@ export interface GroupBalanceList {
 export interface GroupBalance {
   Entity: GroupBalanceList[];
   ClosingBalance: string;
+  Company: Company;
 }
 
 export interface GroupBalanceModel {
@@ -341,22 +353,23 @@ export interface GroupBalanceModel {
 }
 
 export interface LedgerList {
-  TransactDate?: any;
-  VoucherNo?: any;
-  VoucherType?: any;
+  TransactDate?: Date;
+  VoucherNo: string;
+  VoucherType: string;
   Balance: string;
   Type: string;
   Remarks: string;
-  RowID?: any;
-  ID?: any;
+  RowID?: number;
+  ID?: number;
   AccountCode?: any;
   AccountName: string;
-  DebitAmount?: any;
-  CreditAmount?: any;
+  DebitAmount?: number;
+  CreditAmount?: number;
 }
 
 export interface LedgerDetails {
   Entity: LedgerList[];
+  Company: Company;
 }
 
 export interface LedgerDetailsModel {

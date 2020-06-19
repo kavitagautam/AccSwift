@@ -10,6 +10,7 @@ import {
   TrailBalance,
   GroupBalanceList,
   LedgerList,
+  Company,
 } from "../../models/trail-balance.model";
 import { ReportsService } from "../../services/reports.service";
 import { FormGroup, FormBuilder } from "@angular/forms";
@@ -26,12 +27,20 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   @ViewChild("groupBalance") groupBalance;
   @ViewChild("ledgerDetails") ledgerDetails;
   baseURL: string;
-
+  companyInfo: Company;
   trailBalnceList: TrailBalance[] = [];
   groupBalanceList: GroupBalanceList[] = [];
   ledgerDetailsList: LedgerList[] = [];
   listLoading: boolean;
+  groupLoading: boolean;
+  ledgerLoading: boolean;
   trailBalanceForms: FormGroup;
+  accountsSelect: number;
+  totalGroupClosingBalance: string;
+  groupDetailsPopUp: boolean = false;
+  ledgerDetailsPopUp: boolean = false;
+  projectName: string;
+
   // previousYearPLDR: number;
   // previousYearPLCR: number;
   // openingDR: number;
@@ -49,6 +58,7 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
     centered: true,
     class: "modal-lg",
   };
+
   constructor(
     private _fb: FormBuilder,
     public reportService: ReportsService,
@@ -97,7 +107,7 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
       backdrop: true,
       ignoreBackdropClick: true,
       centered: true,
-      class: "modal-md",
+      class: "modal-lg",
     };
     this.modalRef = this.modalService.show(template, config);
   }
@@ -105,8 +115,41 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   openGroupBalance(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, this.config);
   }
+
   openLedgerDetails(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, this.config);
+  }
+
+  allGroupRadio(): void {
+    if (this.trailBalanceForms.get("IsAllGroups").value === true) {
+      this.trailBalanceForms.get("IsAllGroups").setValue(false);
+    } else {
+      this.trailBalanceForms.get("IsAllGroups").setValue(true);
+    }
+  }
+
+  changeProject(): void {
+    const projectID = this.trailBalanceForms.get("ProjectID").value;
+    const filterValue = this.reportService.projectList.filter(
+      (s) => s.ID == projectID
+    );
+    this.projectName = filterValue[0].EngName;
+  }
+
+  primaryGroupRadio(): void {
+    if (this.trailBalanceForms.get("IsOnlyPrimaryGroups").value === true) {
+      this.trailBalanceForms.get("IsOnlyPrimaryGroups").setValue(false);
+    } else {
+      this.trailBalanceForms.get("IsOnlyPrimaryGroups").setValue(true);
+    }
+  }
+
+  ledgerOnlyRaido(): void {
+    if (this.trailBalanceForms.get("IsLedgerOnly").value === true) {
+      this.trailBalanceForms.get("IsLedgerOnly").setValue(false);
+    } else {
+      this.trailBalanceForms.get("IsLedgerOnly").setValue(true);
+    }
   }
 
   endOfMonth(): void {
@@ -131,22 +174,63 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   }
 
   showReport(): void {
-    this.listLoading = true;
-    this.reportService
-      .getTrailBalance(JSON.stringify(this.trailBalanceForms.value))
-      .subscribe(
-        (response) => {
-          this.trailBalnceList = response.Entity;
-        },
-        (error) => {
-          this.listLoading = false;
-          this.modalRef.hide();
-        },
-        () => {
-          this.listLoading = false;
-          this.modalRef.hide();
-        }
-      );
+    if (this.groupDetailsPopUp) {
+      this.modalRef.hide();
+      this.openGroupBalance(this.groupBalance);
+
+      this.groupLoading = true;
+      this.reportService
+        .getTrailGroupDetails(this.trailBalanceForms.value)
+        .subscribe(
+          (response) => {
+            this.groupBalanceList = response.Entity.Entity;
+            this.companyInfo = response.Entity.Company;
+            this.totalGroupClosingBalance = response.Entity.ClosingBalance;
+          },
+          (error) => {
+            this.groupLoading = false;
+          },
+          () => {
+            this.groupLoading = false;
+          }
+        );
+    }
+    if (this.ledgerDetailsPopUp) {
+      this.modalRef.hide();
+      this.openLedgerDetails(this.ledgerDetails);
+      this.ledgerLoading = true;
+
+      this.reportService
+        .getTrailLedgerDetails(this.trailBalanceForms.value)
+        .subscribe(
+          (response) => {
+            this.ledgerDetailsList = response.Entity.Entity;
+          },
+          (error) => {
+            this.ledgerLoading = false;
+          },
+          () => {
+            this.ledgerLoading = false;
+          }
+        );
+    }
+    if (!this.ledgerDetailsPopUp && !this.ledgerDetailsPopUp) {
+      this.modalRef.hide();
+      this.listLoading = true;
+      this.reportService
+        .getTrailBalance(JSON.stringify(this.trailBalanceForms.value))
+        .subscribe(
+          (response) => {
+            this.trailBalnceList = response.Entity.Entity;
+          },
+          (error) => {
+            this.listLoading = false;
+          },
+          () => {
+            this.listLoading = false;
+          }
+        );
+    }
   }
 
   cancel(): void {
@@ -157,40 +241,16 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
     if (data.Type === "GROUP") {
       this.trailBalanceForms.get("Type").setValue(data.Type);
       this.trailBalanceForms.get("ID").setValue(data.ID);
-      this.openGroupBalance(this.groupBalance);
-      this.reportService
-        .getTrailGroupDetails(this.trailBalanceForms.value)
-        .subscribe((response) => {
-          this.groupBalanceList = response.Entity.Entity;
-        });
+      this.groupDetailsPopUp = true;
+      this.ledgerDetailsPopUp = false;
+      this.openTrialBalanceSettings(this.trailBalanceSettings);
     }
     if (data.Type === "LEDGER") {
       this.trailBalanceForms.get("Type").setValue(data.Type);
       this.trailBalanceForms.get("ID").setValue(data.ID);
-      this.openLedgerDetails(this.ledgerDetails);
-      // const data1 = {
-      //   Type: "LEDGER",
-      //   ID: 191,
-      //   IsLedgerOnly: true,
-      //   IsShowPreviousYear: true,
-      //   IsOpeningTrial: true,
-      //   GroupID: 0,
-      //   IsShowSecondLevelGroupDtl: true,
-      //   IsAllGroups: true,
-      //   IsOnlyPrimaryGroups: true,
-      //   IsDateRange: true,
-      //   IsDetails: true,
-      //   IsShowZeroBalance: true,
-      //   ProjectID: 0,
-      //   AccClassID: [],
-      //   FromDate: "2019-06-12T10:27:03.099Z",
-      //   ToDate: "2020-06-12T10:27:03.099Z",
-      // };
-      this.reportService
-        .getTrailLedgerDetails(this.trailBalanceForms.value)
-        .subscribe((response) => {
-          this.ledgerDetailsList = response.Entity.Entity;
-        });
+      this.ledgerDetailsPopUp = true;
+      this.groupDetailsPopUp = false;
+      this.openTrialBalanceSettings(this.trailBalanceSettings);
     }
   }
 
