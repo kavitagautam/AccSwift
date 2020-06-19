@@ -9,8 +9,9 @@
     </button>
   </div>
   <h1 style="text-align: center;">Day Book</h1>
-  <h3 style="text-align: center;">Project : All Project</h3>
-
+  <h4 style="text-align: center;" *ngIf="projectName">
+    Project : {{ projectName }}
+  </h4>
   <div class="col-md-12">
     <div class="grid-wrapper">
       <div class="table-box">
@@ -185,7 +186,7 @@
             <fieldset>
               <div class="form-group">
                 <label>Project</label>
-                <select class="form-control" formControlName="ProjectID">
+                <select class="form-control" formControlName="ProjectID" (change)="changeProject()">
                   <option [ngValue]="null">Choose Option..</option>
                   <option
                     *ngFor="let project of projectList"
@@ -227,7 +228,7 @@
                       <label>Account Class</label>
                       <select
                         class="form-control"
-                        [(ngModel)]="toDateSelect"
+                        [(ngModel)]="accountSelect"
                         [ngModelOptions]="{ standalone: true }"
                       >
                         <option [ngValue]="null">Choose Option..</option>

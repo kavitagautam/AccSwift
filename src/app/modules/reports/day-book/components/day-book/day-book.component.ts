@@ -24,6 +24,7 @@ export class DayBookComponent implements OnInit, AfterViewInit {
   dayBookList: any[] = [];
   @ViewChild("dayBookSettings") dayBookSettings;
   baseURL: string;
+  projectName: string;
   accountLists: AccountClass[];
   projectList: ProjectList[];
   transVoucherType: TransactionVoucher[];
@@ -32,6 +33,7 @@ export class DayBookComponent implements OnInit, AfterViewInit {
   debitTotal: number;
   creditTotal: number;
   toDateSelect: number;
+  accountSelect: number;
   monthList = [
     {
       name: "January",
@@ -161,6 +163,12 @@ export class DayBookComponent implements OnInit, AfterViewInit {
     this.dayBookService.getProjectLists().subscribe((response) => {
       this.projectList = response.Entity;
     });
+  }
+
+  changeProject(): void {
+    const projectID = this.dayBookSettingsForms.get("ProjectID").value;
+    const filterValue = this.projectList.filter((s) => s.ID == projectID);
+    this.projectName = filterValue[0].EngName;
   }
 
   openTransaction(e, data): void {
