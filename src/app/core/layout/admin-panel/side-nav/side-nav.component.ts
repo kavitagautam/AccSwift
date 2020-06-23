@@ -142,6 +142,11 @@ export class SideNavComponent implements OnInit {
           iconName: "fa fa-file-excel-o",
           route: "/purchase-report",
         },
+        {
+          displayName: "Ledger Report",
+          iconName: "fa fa-file-excel-o",
+          route: "/ledger-report",
+        },
       ],
     },
     {

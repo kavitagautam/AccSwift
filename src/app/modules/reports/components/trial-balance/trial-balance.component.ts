@@ -41,12 +41,6 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   ledgerDetailsPopUp: boolean = false;
   projectName: string;
 
-  // previousYearPLDR: number;
-  // previousYearPLCR: number;
-  // openingDR: number;
-  // openingCR: number;
-  // trialTotalDR: number;
-  // trialTotalCR: number;
   toDateSelect: number;
 
   //Open the Ledger List Modal on PopUp

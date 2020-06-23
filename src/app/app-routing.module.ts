@@ -176,6 +176,14 @@ const routes: Routes = [
         },
       },
       {
+        path: "ledger-report",
+        loadChildren:
+          "@modules/reports/ledger-report/ledger-report.module#LedgerReportModule",
+        data: {
+          breadcrumb: "Ledger Report",
+        },
+      },
+      {
         path: "purchase-invoice",
         loadChildren:
           "@modules/purchase-invoice/purchase-invoice.module#PurchaseInvoiceModule",

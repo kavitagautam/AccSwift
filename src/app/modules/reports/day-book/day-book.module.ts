@@ -23,7 +23,6 @@ import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-p
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    FormsModule,
     ReactiveFormsModule,
     CommonModule,
     GridModule,

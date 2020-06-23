@@ -27,6 +27,7 @@ import {
   SalesAccountModel,
   PurchaseReportModel,
 } from "../models/sales.report.model";
+import { LedgerReportModel } from "../models/ledger.reports.model";
 
 @Injectable({
   providedIn: "root",
@@ -119,6 +120,10 @@ export class ReportsService {
 
   getTrailLedgerDetails(body): Observable<LedgerDetailsModel> {
     return this.httpService.post(`${this._api_URL}Reports/TrialDetails`, body);
+  }
+
+  getLedgerReports(body): Observable<LedgerReportModel> {
+    return this.httpService.post(`${this._api_URL}Reports/LedgerReport`, body);
   }
 
   getProductMin(): void {
