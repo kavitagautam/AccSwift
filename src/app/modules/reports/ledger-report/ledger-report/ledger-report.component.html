@@ -57,7 +57,11 @@
                 {{ ledger.OpeningBalance }}
               </td>
             </tr>
-            <tr *ngFor="let l of ledger.TransactDetails; let i = index">
+            <tr
+              *ngFor="let l of ledger.TransactDetails; let i = index"
+              (click)="openLedgerDetails($event, l)"
+              (dblclick)="openLedgerDetails($event, l)"
+            >
               <td>{{ i + 1 }}</td>
               <td *ngIf="l.Type === 'VOUCHER'" style="color: blue;">
                 {{ l.AccountName }}
@@ -73,8 +77,25 @@
               </td>
               <td>{{ l.VoucherType }}</td>
               <td class="balance">
-                <span [innerHTML]="l.Balance | currencyFormat"></span>
+                <!-- <span [innerHTML]="l.Balance | currencyFormat"></span> -->
+                {{ l.Balance }}
               </td>
+            </tr>
+            <tr style="font-size: 14px; font-weight: 700;">
+              <td colspan="1"></td>
+              <td colspan="1" align="right">
+                Total Amount
+              </td>
+              <td colspan="1"></td>
+              <td colspan="1"></td>
+              <td colspan="1" class="balance">
+                <span [innerHTML]="ledger.TotalDr | currencyFormat"></span>
+              </td>
+              <td colspan="1" class="balance">
+                <span [innerHTML]="ledger.TotalCr | currencyFormat"></span>
+              </td>
+              <td colspan="1"></td>
+              <td class="balance" colspan="1"></td>
             </tr>
             <tr *ngIf="ledger.ClosingBalance">
               <td colspan="1"></td>
@@ -95,13 +116,13 @@
               </td>
             </tr>
           </tbody>
-          <!-- <tbody *ngIf="ledgerReportList.length == 0">
+          <tbody *ngIf="ledgerReportList.length == 0">
             <tr>
-              <td colspan="7" align="center">
+              <td colspan="8" align="center">
                 No Data Available
               </td>
             </tr>
-          </tbody> -->
+          </tbody>
         </table>
       </div>
     </div>
@@ -111,7 +132,7 @@
 
 <ng-template #ledgerSettings>
   <div class="modal-header">
-    <h3 class="modal-title pull-left">ledger Balance Settings</h3>
+    <h3 class="modal-title pull-left">Ledger Balance Settings</h3>
     <button
       type="button"
       class="close pull-right"
@@ -178,36 +199,61 @@
             </div>
             <div class="col-md-12 p-0">
               <div class="flex-item p-0">
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="form-group">
                     <div class="radio">
                       <label>
                         <input
                           type="radio"
+                          id="accountLedger"
                           [value]="true"
-                          (click)="accountLedger()"
                           [(ngModel)]="accountLedger"
                           [ngModelOptions]="{ standalone: true }"
+                          (click)="accountLedgerCheck()"
                         />
                         <label>Choose Account Ledger</label>
                       </label>
                     </div>
                   </div>
+                  <div class="form-group">
+                    <select class="form-control" formControlName="LedgerID">
+                      <option [ngValue]="null">Choose Option..</option>
+                      <option
+                        *ngFor="let ledger of ledgerMinList"
+                        [ngValue]="ledger.LedgerID"
+                        >{{ ledger.LedgerName }}</option
+                      >
+                    </select>
+                  </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="form-group">
                     <div class="radio">
                       <label>
                         <input
                           type="radio"
+                          id="accountGroup"
                           [value]="true"
-                          (click)="accountGroup()"
                           [(ngModel)]="accountGroup"
                           [ngModelOptions]="{ standalone: true }"
+                          (click)="accountGroupCheck()"
                         />
                         <label>Choose Account Group</label>
                       </label>
                     </div>
+                  </div>
+                  <div class="form-group">
+                    <select
+                      class="form-control"
+                      formControlName="AccountGroupID"
+                    >
+                      <option [ngValue]="null">Choose Option..</option>
+                      <option
+                        *ngFor="let group of ledgerGroupList"
+                        [ngValue]="group.ID"
+                        >{{ group.Name }}</option
+                      >
+                    </select>
                   </div>
                 </div>
               </div>

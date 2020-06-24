@@ -10,7 +10,11 @@ import { ReportsService } from "../../services/reports.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
-import { LedgerList } from "../../models/ledger.reports.model";
+import {
+  LedgerList,
+  LedgerMinList,
+  LedgerGroup,
+} from "../../models/ledger.reports.model";
 
 @Component({
   selector: "accSwift-ledger-report",
@@ -23,11 +27,12 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
   ledgerReportForms: FormGroup;
   projectName: string;
   toDateSelect: number;
-  ledgerReportList: LedgerList[];
+  ledgerReportList: LedgerList[] = [];
   listLoading: boolean;
-  accountLedger: boolean;
-  accountGroup: boolean;
-
+  accountLedger: boolean = false;
+  accountGroup: boolean = false;
+  ledgerMinList: LedgerMinList[] = [];
+  ledgerGroupList: LedgerGroup[] = [];
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //modal config to unhide modal when clicked outside
@@ -48,6 +53,8 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.buildLedgerReportForms();
+    this.getLedger();
+    this.getLedgerGroup();
     this.baseURL =
       this.location["_platformStrategy"]._platformLocation["location"].origin +
       "/#/";
@@ -70,10 +77,82 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
       FromDate: [""],
       ToDate: [""],
     });
+    this.ledgerReportForms.get("LedgerID").disable();
+    this.ledgerReportForms.get("AccountGroupID").disable();
+  }
+
+  getLedger(): void {
+    this.reportService.getLedgerMin().subscribe((response) => {
+      this.ledgerMinList = response.Entity;
+    });
+  }
+
+  getLedgerGroup(): void {
+    this.reportService.getLedgerGroup().subscribe((response) => {
+      this.ledgerGroupList = response.Entity;
+    });
   }
 
   openLedgerSettings(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, this.config);
+  }
+
+  openLedgerDetails(e, data): void {
+    if (data.VoucherType === "JRNL") {
+      const url = this.router.serializeUrl(
+        this.router.createUrlTree(["/journal/edit", data.RowID])
+      );
+      window.open(this.baseURL + "journal/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "BANK_PMNT") {
+      window.open(this.baseURL + "bank-payment/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "CASH_PMNT") {
+      window.open(this.baseURL + "cash-payment/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "BANK_RCPT") {
+      window.open(this.baseURL + "bank-receipt/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "BRECON") {
+      window.open(
+        this.baseURL + "bank-reconciliation/edit/" + data.RowID,
+        "_blank"
+      );
+    }
+    if (data.VoucherType === "CNTR") {
+      window.open(this.baseURL + "contra-voucher/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "BANK_RCPT") {
+      window.open(this.baseURL + "bank-receipt/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "CASH_RCPT") {
+      window.open(this.baseURL + "cash-receipt/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "SALES") {
+      window.open(this.baseURL + "sales-invoice/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "SLS_RTN") {
+      window.open(this.baseURL + "sales-return/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "SLS_ORDER") {
+      window.open(this.baseURL + "sales-order/edit/" + data.RowID, "_blank");
+    }
+
+    if (data.VoucherType === "PURCH") {
+      window.open(
+        this.baseURL + "purchase-invoice/edit/" + data.RowID,
+        "_blank"
+      );
+    }
+    if (data.VoucherType === "PURCH_RTN") {
+      window.open(
+        this.baseURL + "purchase-return/edit/" + data.RowID,
+        "_blank"
+      );
+    }
+    if (data.VoucherType === "PURCH_ORDER") {
+      window.open(this.baseURL + "purchase-order/edit/" + data.RowID, "_blank");
+    }
   }
 
   changeProject(): void {
@@ -82,6 +161,28 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
       (s) => s.ID == projectID
     );
     this.projectName = filterValue[0].EngName;
+  }
+
+  accountLedgerCheck(): void {
+    this.accountGroup = false;
+    if (this.accountLedger == true) {
+      this.accountLedger = false;
+      this.ledgerReportForms.get("LedgerID").disable();
+    } else {
+      this.accountLedger = true;
+    }
+    this.ledgerReportForms.get("LedgerID").enable();
+  }
+
+  accountGroupCheck(): void {
+    this.accountLedger = false;
+    if (this.accountGroup == true) {
+      this.accountGroup = false;
+      this.ledgerReportForms.get("AccountGroupID").disable();
+    } else {
+      this.accountGroup = true;
+    }
+    this.ledgerReportForms.get("AccountGroupID").enable();
   }
 
   endOfMonth(): void {

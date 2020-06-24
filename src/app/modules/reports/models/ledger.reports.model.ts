@@ -62,3 +62,32 @@ export interface LedgerReportModel {
   Message: string;
   Entity: LedgerReports;
 }
+
+export interface LedgerMinList {
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  GroupID: number;
+}
+
+export interface LedgerMinModel {
+  StatusCode: number;
+  Message: string;
+  Entity: LedgerMinList[];
+}
+
+export interface LedgerGroup {
+  ID: number;
+  LedgerCode: string;
+  ParentGroupID?: number;
+  Name: string;
+  DrCr: string;
+  IsBuiltIn: boolean;
+  Remarks: string;
+}
+
+export interface LedgerGroupModel {
+  StatusCode: number;
+  Message: string;
+  Entity: LedgerGroup[];
+}

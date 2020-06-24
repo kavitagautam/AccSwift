@@ -228,7 +228,11 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   }
 
   cancel(): void {
-    this.showReport();
+    if (!this.ledgerDetailsPopUp && !this.ledgerDetailsPopUp) {
+      this.showReport();
+    } else {
+      this.modalRef.hide();
+    }
   }
 
   openTrailBalance(event, data): void {
