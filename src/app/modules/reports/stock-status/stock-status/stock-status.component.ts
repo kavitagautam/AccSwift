@@ -13,6 +13,7 @@ import {
   ProductGroup,
   ProjectList,
   StockStatusList,
+  AccountClass,
 } from "../models/stock.models";
 import { ReportsService } from "../../services/reports.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
@@ -28,75 +29,12 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
 
   isActive;
   listLoading: boolean;
-  productList: Product[];
-  productGroupList: ProductGroup[];
-  projectList: ProjectList[] = [];
+
   stockStatusList: StockStatusList[] = [];
   totalQty: number;
   totalAmount: number;
+  toDateSelect: number;
 
-  monthList = [
-    {
-      name: "January",
-      short: "Jan",
-      number: 1,
-    },
-    {
-      name: "February",
-      short: "Feb",
-      number: 2,
-    },
-    {
-      name: "March",
-      short: "Mar",
-      number: 3,
-    },
-    {
-      name: "April",
-      short: "Apr",
-      number: 4,
-    },
-    {
-      name: "May",
-      short: "May",
-      number: 5,
-    },
-    {
-      name: "June",
-      short: "Jun",
-      number: 6,
-    },
-    {
-      name: "July",
-      short: "Jul",
-      number: 7,
-    },
-    {
-      name: "August",
-      short: "Aug",
-      number: 8,
-    },
-    {
-      name: "September",
-      short: "Sep",
-      number: 9,
-    },
-    {
-      name: "October",
-      short: "Oct",
-      number: 10,
-    },
-    {
-      name: "November",
-      short: "Nov",
-      number: 11,
-    },
-    {
-      name: "December",
-      short: "Dec",
-      number: 12,
-    },
-  ];
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -108,16 +46,12 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
   };
   constructor(
     private _fb: FormBuilder,
-    private reportService: ReportsService,
-    private modalService: BsModalService,
-    private cdref: ChangeDetectorRef
+    public reportService: ReportsService,
+    private modalService: BsModalService
   ) {}
 
   ngOnInit(): void {
     this.buildStockStatusForms();
-    this.getProduct();
-    this.getProject();
-    this.getProductGroup();
   }
 
   ngAfterViewInit(): void {
@@ -126,6 +60,7 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
 
   buildStockStatusForms(): void {
     this.stockStatusFroms = this._fb.group({
+      AccClassID: [""],
       ProductID: [null],
       ProductGroupID: [null],
       DepotID: [null],
@@ -138,22 +73,6 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
       IsFromRangeMin: [false],
       IsToRangeMax: [false],
       ToQtyRange: [""],
-    });
-  }
-  getProduct(): void {
-    this.reportService.getProductMin().subscribe((response) => {
-      this.productList = response.Entity;
-    });
-  }
-  getProject(): void {
-    this.reportService.getProjectLists().subscribe((response) => {
-      this.projectList = response.Entity;
-    });
-  }
-
-  getProductGroup(): void {
-    this.reportService.getProductGroup().subscribe((response) => {
-      this.productGroupList = response.Entity;
     });
   }
 
@@ -169,6 +88,22 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
     this.stockStatusFroms.get("IsFromRangeMin").enable();
     this.stockStatusFroms.get("IsToRangeMax").enable();
     this.stockStatusFroms.get("ToQtyRange").enable();
+  }
+
+  endOfMonth(): void {
+    var today = new Date();
+    var lastDayOfMonth = new Date(
+      today.getFullYear(),
+      this.toDateSelect + 1,
+      0
+    );
+    this.stockStatusFroms.get("ToDate").setValue(lastDayOfMonth);
+  }
+
+  selectAccounts(id, event): void {
+    if (event.target.checked) {
+      this.stockStatusFroms.get("AccClassID").setValue([id]);
+    }
   }
 
   openStockSettings(template: TemplateRef<any>): void {
@@ -197,10 +132,10 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
         },
         (error) => {
           this.listLoading = false;
+          this.modalRef.hide();
         },
         () => {
           this.listLoading = false;
-
           this.modalRef.hide();
         }
       );

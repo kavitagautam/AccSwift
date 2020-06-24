@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { NgxPaginationModule } from "ngx-pagination";
 import { PaginationComponent } from "./components/pagination/pagination.component";
-import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component";
 import { CommonModalComponent } from "./components/common-modal/common-modal.component";
 import { PopupAnchorDirective } from "./directives/popup-anchor/popup.anchor-target.directive";
 import { CurrencyFormatPipe } from "./pipes/currency-format.pipe";
@@ -33,6 +32,8 @@ import { CashPartyModalPopupComponent } from "./components/cash-party-modal-popu
 import { ProductModalPopupComponent } from "./components/product-modal-popup/product-modal-popup.component";
 import { LedgerModalPopupComponent } from "./components/ledger-modal-popup/ledger-modal-popup.component";
 import { DecimalPlaceDirective } from "./directives/decimal-place/decimal-place.directive";
+import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component";
+import { NumberToWordsPipe } from "./pipes/number-to-words/number-to-words.pipe";
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { DecimalPlaceDirective } from "./directives/decimal-place/decimal-place.
     ProductModalPopupComponent,
     CashPartyModalPopupComponent,
     DecimalPlaceDirective,
+    NumberToWordsPipe,
   ],
   imports: [
     CommonModule,
@@ -74,9 +76,7 @@ import { DecimalPlaceDirective } from "./directives/decimal-place/decimal-place.
     TooltipModule,
     TabsModule,
     ModalModule,
-    PaginationComponent,
     NgxPaginationModule,
-    LanguageSwitcherComponent,
     TimepickerModule,
     BsDatepickerModule,
     BsDropdownModule,
@@ -93,6 +93,7 @@ import { DecimalPlaceDirective } from "./directives/decimal-place/decimal-place.
     ProductModalPopupComponent,
     CashPartyModalPopupComponent,
     DecimalPlaceDirective,
+    NumberToWordsPipe,
   ],
   providers: [ValidationMsgService],
 })

@@ -49,14 +49,6 @@ const routes: Routes = [
       },
 
       {
-        path: "reports",
-        loadChildren: "@modules/reports/reports.module#ReportsModule",
-        data: {
-          breadcrumb: "Reports",
-        },
-      },
-
-      {
         path: "cash-payment",
         loadChildren:
           "@modules/cash-payment/cash-payment.module#CashPaymentModule",
@@ -146,10 +138,10 @@ const routes: Routes = [
         },
       },
       {
-        path: "report",
+        path: "trail-balance",
         loadChildren: "@modules/reports/reports.module#ReportsModule",
         data: {
-          breadcrumb: "Report",
+          breadcrumb: "Trail Balance Report",
         },
       },
       {
@@ -165,6 +157,30 @@ const routes: Routes = [
           "@modules/reports/stock-status/stock-status.module#StockStatusModule",
         data: {
           breadcrumb: "Stock Status",
+        },
+      },
+      {
+        path: "sales-report",
+        loadChildren:
+          "@modules/reports/sales-report/sales-report.module#SalesReportModule",
+        data: {
+          breadcrumb: "Sales Report",
+        },
+      },
+      {
+        path: "purchase-report",
+        loadChildren:
+          "@modules/reports/purchase-report/purchase-report.module#PurchaseReportModule",
+        data: {
+          breadcrumb: "Purchase Report",
+        },
+      },
+      {
+        path: "ledger-report",
+        loadChildren:
+          "@modules/reports/ledger-report/ledger-report.module#LedgerReportModule",
+        data: {
+          breadcrumb: "Ledger Report",
         },
       },
       {

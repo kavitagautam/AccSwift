@@ -1,7 +1,17 @@
 <div class="box box-default">
+  <div class="col-md-12">
+    <button
+      type="button"
+      class="btn-primary m-3"
+      (click)="openDayBookSettings(dayBookSettings)"
+    >
+      Day-book Settings
+    </button>
+  </div>
   <h1 style="text-align: center;">Day Book</h1>
-  <h3 style="text-align: center;">Project : All Project</h3>
-
+  <h4 style="text-align: center;" *ngIf="projectName">
+    Project : {{ projectName }}
+  </h4>
   <div class="col-md-12">
     <div class="grid-wrapper">
       <div class="table-box">
@@ -18,14 +28,22 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let l of dayBookList">
-              <td>{{ l.RowID }}</td>
+            <tr
+              *ngFor="let l of dayBookList; index as i"
+              (click)="openTransaction($event, l)"
+              (dblclick)="openTransaction($event, l)"
+            >
+              <td>{{ i + 1 }}</td>
               <td>{{ l.TransactionDate | date: "yyyy-MM-dd" }}</td>
               <td>{{ l.VoucherType }}</td>
               <td>{{ l.VoucherNo }}</td>
               <td class="account_name">{{ l.AccountName }}</td>
-              <td class="balance">{{ l.DebitAmount }}</td>
-              <td class="balance">{{ l.CreditAmount }}</td>
+              <td class="balance">
+                <span [innerHTML]="l.DebitAmount | currencyFormat"></span>
+              </td>
+              <td class="balance">
+                <span [innerHTML]="l.CreditAmount | currencyFormat"></span>
+              </td>
             </tr>
             <tr *ngIf="dayBookList.length == 0">
               <td colspan="7" align="center">
@@ -39,9 +57,13 @@
               <td colspan="1"></td>
               <td colspan="1"></td>
               <td colspan="1">Debit Total</td>
-              <td colspan="1">{{ debitTotal }}</td>
+              <td colspan="1">
+                <span [innerHTML]="debitTotal | currencyFormat"></span>
+              </td>
               <td colspan="1" class="balance">Credit Total</td>
-              <td colspan="1" class="balance">{{ creditTotal }}</td>
+              <td colspan="1" class="balance">
+                <span [innerHTML]="creditTotal | currencyFormat"></span>
+              </td>
             </tr>
           </tfoot>
         </table>
@@ -50,3 +72,224 @@
     <div *ngIf="listLoading" class="k-i-loading"></div>
   </div>
 </div>
+
+<ng-template #dayBookSettings>
+  <div class="modal-header">
+    <h3 class="modal-title pull-left">Day Book Settings</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="cancel()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <form [formGroup]="dayBookSettingsForms" novalidate>
+        <div class="col-md-12">
+          <div class="col-md-6 p-0">
+            <div class="form-group">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="selectDate" value="true" />
+                  <label>Click For Date Selection</label>
+                </label>
+              </div>
+            </div>
+            <fieldset>
+              <div class="form-group">
+                <label>Form Date</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="FromDate"
+                  bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                />
+              </div>
+              <div class="form-group">
+                <label>To Date</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="ToDate"
+                  bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>End of Month</label>
+                <select
+                  class="form-control"
+                  [(ngModel)]="toDateSelect"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="endOfMonth()"
+                >
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let month of monthList"
+                    [ngValue]="month.number"
+                    >{{ month.name }}</option
+                  >
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Voucher Type</label>
+                <select class="form-control" formControlName="VoucherType">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let voucherType of transVoucherType"
+                    [ngValue]="voucherType.VouchType"
+                    >{{ voucherType.VouchName }}</option
+                  >
+                </select>
+              </div>
+            </fieldset>
+          </div>
+          <div class="col-md-6">
+            <fieldset>
+              <div class="flex-item p-0">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div class="radio">
+                      <label>
+                        <input
+                          type="radio"
+                          name="IsTransactionWise"
+                          [value]="true"
+                          formControlName="IsTransactionWise"
+                        />
+                        <label>Transaction Wise</label>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Accounting Class</legend>
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-secondory"
+                  data-toggle="modal"
+                  data-target="#openAccountSelect"
+                >
+                  Select Account Class
+                </button>
+              </div>
+            </fieldset>
+            <fieldset>
+              <div class="form-group">
+                <label>Project</label>
+                <select class="form-control" formControlName="ProjectID" (change)="changeProject()">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let project of projectList"
+                    [ngValue]="project.ID"
+                    >{{ project.EngName }}</option
+                  >
+                </select>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <!--Modal PopUp Opening Balance Modal-->
+        <div
+          class="modal fade bd-example-modal"
+          #openAccountSelect
+          id="openAccountSelect"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 class="modal-title pull-left">Select Account Class</h3>
+                <button
+                  class="close"
+                  type="button"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label>Account Class</label>
+                      <select
+                        class="form-control"
+                        [(ngModel)]="accountSelect"
+                        [ngModelOptions]="{ standalone: true }"
+                      >
+                        <option [ngValue]="null">Choose Option..</option>
+                        <option
+                          *ngFor="let account of accountLists"
+                          [ngValue]="account.ID"
+                          >{{ account.Name }}</option
+                        >
+                      </select>
+                    </div>
+                    <div class="col-md-12">
+                      <div
+                        class="form-group"
+                        *ngFor="let account of accountLists; index as i"
+                      >
+                        <div class="checkbox">
+                          <label class="form-check-label" for="check1">
+                            <input
+                              type="checkbox"
+                              class="form-check-input"
+                              id="check1"
+                              [value]="account.ID"
+                              name="account.Name"
+                              (click)="selectAccounts(account.ID, $event)"
+                            />{{ account.Name }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  data-dismiss="modal"
+                >
+                  OK
+                </button>
+                <button
+                  class="btn btn-secondary"
+                  type="button"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="showReport()">
+      Show
+    </button>
+    <button type="button" class="btn btn-danger" (click)="cancel()">
+      Cancel
+    </button>
+  </div>
+</ng-template>

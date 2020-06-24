@@ -1,5 +1,5 @@
 <div class="box box-default">
-  <form [formGroup]="editJournalForm" novalidate>
+  <form [formGroup]="journalVoucherForms" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -14,12 +14,12 @@
               <option
                 *ngFor="let series of journalService.journalSeriesList"
                 [value]="series.ID"
-                >{{ series.Name }}</option
-              >
+                >{{ series.Name }}
+              </option>
             </select>
           </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
+        <div class="col-md-3 col-sm-6 col-xs-5">
           <div class="form-group">
             <label>Project</label>
             <select
@@ -27,7 +27,7 @@
               id="projectId"
               formControlName="projectId"
             >
-              <option [ngValue]="null">Choose Option....</option>
+              <option [ngValue]="null">Choose option..</option>
               <option
                 *ngFor="let project of journalService.projectLists"
                 [value]="project.ID"
@@ -40,7 +40,12 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Voucher #</label>
-            <input class="form-control" formControlName="voucherNo" />
+            <input
+              class="form-control"
+              formControlName="voucherNo"
+              id="voucherNo"
+              accSwiftFormValidator
+            />
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -56,19 +61,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12 ">
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Nepali Date</label>
-            <np-datepicker
-              formControlName="date"
-              class="form-group"
-              inputClass="form-control"
-            ></np-datepicker>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-12 ">
+      <div class="col-md-12">
         <div class="box-body">
           <div class="col-md-12 p-0">
             <kendo-grid
@@ -101,22 +94,22 @@
                       <input
                         #input
                         class="k-textbox"
-                        style="width: 100px"
+                        style="width: 100px;"
                         placeholder="Ledger Code"
                         [formControl]="
-                          getjournalEntryList.controls[rowIndex].get(
-                            'ledgerCode'
-                          )
-                        "
+                            getjournalEntryList.controls[rowIndex].get(
+                              'ledgerCode'
+                            )
+                          "
                         (change)="changeLedgerValue(dataItem, rowIndex)"
                       />
                       <kendo-popup
                         [anchor]="input"
                         *ngIf="
-                          getjournalEntryList.controls[rowIndex].get(
-                            'ledgerCode'
-                          ).invalid
-                        "
+                            getjournalEntryList.controls[rowIndex].get(
+                              'ledgerCode'
+                            ).invalid
+                          "
                         popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
                       >
                         <span class="k-icon k-i-warning"></span>
@@ -129,10 +122,10 @@
                         class="k-textbox"
                         [readonly]="true"
                         [formControl]="
-                          getjournalEntryList.controls[rowIndex].get(
-                            'particularsOraccountingHead'
-                          )
-                        "
+                            getjournalEntryList.controls[rowIndex].get(
+                              'particularsOraccountingHead'
+                            )
+                          "
                       />
                       <a (click)="openModal(rowIndex)"
                         ><i
@@ -143,20 +136,20 @@
                       <kendo-popup
                         [anchor]="input"
                         *ngIf="
-                          getjournalEntryList.controls[rowIndex].get(
-                            'particularsOraccountingHead'
-                          ).invalid &&
-                          rowSubmitted &&
-                          !(
-                            isNew &&
                             getjournalEntryList.controls[rowIndex].get(
                               'particularsOraccountingHead'
-                            ).untouched
-                          ) &&
-                          !getjournalEntryList.controls[rowIndex].get(
-                            'ledgerCode'
-                          )
-                        "
+                            ).invalid &&
+                            rowSubmitted &&
+                            !(
+                              isNew &&
+                              getjournalEntryList.controls[rowIndex].get(
+                                'particularsOraccountingHead'
+                              ).untouched
+                            ) &&
+                            !getjournalEntryList.controls[rowIndex].get(
+                              'ledgerCode'
+                            )
+                          "
                         popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
                       >
                         <span class="k-icon k-i-warning"></span>
@@ -179,24 +172,23 @@
                   <kendo-numerictextbox
                     #ntb="popupAnchor"
                     popupAnchor
-                    style="width:130px"
+                    style="width: 130px;"
                     [decimals]="decimals"
                     [format]="'c0'"
-                    locale="ne"
                     [formControl]="
-                      getjournalEntryList.controls[rowIndex].get(column.field)
-                    "
+                        getjournalEntryList.controls[rowIndex].get(column.field)
+                      "
                     (change)="checkDebitValue(dataItem, rowIndex)"
                   ></kendo-numerictextbox>
                   <kendo-popup
                     [anchor]="ntb.element"
                     *ngIf="
-                      getjournalEntryList.controls[rowIndex].get('debit')
-                        .invalid &&
-                      rowSubmitted &&
-                      !getjournalEntryList.controls[rowIndex].get('debit')
-                        .untouched
-                    "
+                        getjournalEntryList.controls[rowIndex].get('debit')
+                          .invalid &&
+                        rowSubmitted &&
+                        !getjournalEntryList.controls[rowIndex].get('debit')
+                          .untouched
+                      "
                     popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
                   >
                     <span class="k-icon k-i-warning"></span>
@@ -209,7 +201,8 @@
                   let-columnIndex="columnIndex"
                 >
                   <span class="pull-right">
-                    Debit Total: {{ intlService.formatNumber(debitTotal, "c") }}
+                    Debit Total:
+                    <span [innerHTML]="debitTotal | currencyFormat"></span>
                   </span>
                 </ng-template>
               </kendo-grid-column>
@@ -226,27 +219,27 @@
                   <kendo-numerictextbox
                     #ntb="popupAnchor"
                     popupAnchor
-                    style="width:130px"
+                    style="width: 130px;"
                     [decimals]="decimals"
                     [format]="'c0'"
                     [formControl]="
-                      getjournalEntryList.controls[rowIndex].get('credit')
-                    "
+                        getjournalEntryList.controls[rowIndex].get('credit')
+                      "
                     (change)="checkCreditValue(dataItem, rowIndex)"
                   ></kendo-numerictextbox>
 
                   <kendo-popup
                     [anchor]="ntb.element"
                     *ngIf="
-                      getjournalEntryList.controls[rowIndex].get('credit')
-                        .invalid &&
-                      rowSubmitted &&
-                      !(
-                        isNew &&
                         getjournalEntryList.controls[rowIndex].get('credit')
-                          .untouched
-                      )
-                    "
+                          .invalid &&
+                        rowSubmitted &&
+                        !(
+                          isNew &&
+                          getjournalEntryList.controls[rowIndex].get('credit')
+                            .untouched
+                        )
+                      "
                     popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
                   >
                     <span class="k-icon k-i-warning"></span>
@@ -260,7 +253,7 @@
                 >
                   <span class="pull-right">
                     Credit Total:
-                    {{ intlService.formatNumber(creditTotal, "c") }}
+                    <span [innerHTML]="creditTotal | currencyFormat"></span>
                   </span>
                 </ng-template>
               </kendo-grid-column>
@@ -277,13 +270,13 @@
                   <kendo-numerictextbox
                     #ntb="popupAnchor"
                     popupAnchor
-                    style="width:130px"
+                    style="width: 130px;"
                     [readonly]="true"
                     [decimals]="decimals"
                     [format]="'c0'"
                     [formControl]="
-                      getjournalEntryList.controls[rowIndex].get(column.field)
-                    "
+                        getjournalEntryList.controls[rowIndex].get(column.field)
+                      "
                   ></kendo-numerictextbox>
                 </ng-template>
                 <ng-template
@@ -293,10 +286,11 @@
                 >
                   <span class="pull-right">
                     Difference :
-                    {{
-                      intlService.formatNumber(debitTotal - creditTotal, "c")
-                    }}</span
-                  >
+                    <span
+                      [innerHTML]="debitTotal - creditTotal | currencyFormat
+                    "
+                    ></span>
+                  </span>
                 </ng-template>
               </kendo-grid-column>
 
@@ -312,10 +306,10 @@
                   <input
                     #ntb="popupAnchor"
                     popupAnchor
-                    style="width:130px"
+                    style="width: 130px;"
                     [formControl]="
-                      getjournalEntryList.controls[rowIndex].get('remarks')
-                    "
+                        getjournalEntryList.controls[rowIndex].get('remarks')
+                      "
                   />
                 </ng-template>
               </kendo-grid-column>

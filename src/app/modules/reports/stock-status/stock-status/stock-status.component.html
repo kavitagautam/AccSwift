@@ -38,10 +38,16 @@
               <td>{{ l.OutBoundQty }}</td>
               <td>{{ l.DamagedQty }}</td>
               <td>{{ l.OfficeUseQty }}</td>
-              <td class="balance">{{ l.PurchaseRate }}</td>
+              <td class="balance">
+                <span [innerHTML]="l.PurchaseRate | currencyFormat"></span>
+              </td>
               <td>{{ l.ClosingQty }}</td>
-              <td class="balance">{{ l.SalesRate }}</td>
-              <td class="balance">{{ l.ClosingAmount }}</td>
+              <td class="balance">
+                <span [innerHTML]="l.SalesRate | currencyFormat"></span>
+              </td>
+              <td class="balance">
+                <span [innerHTML]="l.ClosingAmount | currencyFormat"></span>
+              </td>
             </tr>
             <tr *ngIf="stockStatusList.length == 0">
               <td colspan="10" align="center">
@@ -60,7 +66,9 @@
               <td colspan="1">Total Qty</td>
               <td colspan="1">{{ totalQty }}</td>
               <td colspan="1" class="balance">Total Amount</td>
-              <td colspan="1" class="balance">{{ totalAmount }}</td>
+              <td colspan="1" class="balance">
+                <span [innerHTML]="totalAmount | currencyFormat"></span>
+              </td>
             </tr>
           </tfoot>
         </table>
@@ -86,9 +94,9 @@
   <div class="modal-body">
     <div class="row">
       <form [formGroup]="stockStatusFroms" novalidate>
-        <div class="col-md-12">
-          <fieldset>
-            <div class="col-md-6 p-0">
+        <fieldset>
+          <div class="col-md-12">
+            <div class="col-sm-6">
               <div class="flex-item">
                 <div class="col-md-12">
                   <div class="form-group">
@@ -150,7 +158,7 @@
                 <select class="form-control" formControlName="ProductID">
                   <option [ngValue]="null">Choose Option..</option>
                   <option
-                    *ngFor="let product of productList"
+                    *ngFor="let product of reportService.productList"
                     [ngValue]="product.ID"
                     >{{ product.Name }}</option
                   >
@@ -160,14 +168,17 @@
                 <select class="form-control" formControlName="ProductGroupID">
                   <option [ngValue]="null">Choose Option..</option>
                   <option
-                    *ngFor="let productG of productGroupList"
+                    *ngFor="let productG of reportService.productGroupList"
                     [ngValue]="productG.ID"
                     >{{ productG.Name }}</option
                   >
                 </select>
               </div>
             </div>
-          </fieldset>
+          </div>
+        </fieldset>
+
+        <div class="col-sm-12">
           <fieldset>
             <div class="col-md-6">
               <div class="form-group">
@@ -175,7 +186,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  formControlName="ToDate"
+                  formControlName="FromDate"
                   bsDatepicker
                   [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                 />
@@ -184,48 +195,112 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>End of Month</label>
-                <select class="form-control" formControlName="FromDate">
+                <select
+                  class="form-control"
+                  [(ngModel)]="toDateSelect"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="endOfMonth()"
+                >
                   <option [ngValue]="null">Choose Option..</option>
                   <option
-                    *ngFor="let month of monthList"
-                    [ngValue]="month.name"
+                    *ngFor="let month of reportService.monthList"
+                    [ngValue]="month.number"
                     >{{ month.name }}</option
                   >
                 </select>
               </div>
             </div>
           </fieldset>
-
-          <fieldset>
-            <legend>Accounting Class</legend>
-            <div class="form-group">
-              <button>Select Account Class</button>
-            </div>
-          </fieldset>
-          <fieldset>
-            <div class="form-group">
-              <label>Project</label>
-              <select class="form-control" formControlName="ProjectID">
-                <option [ngValue]="null">Choose Option..</option>
-                <option
-                  *ngFor="let project of projectList"
-                  [ngValue]="project.ID"
-                  >{{ project.EngName }}</option
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <fieldset>
+              <legend>Accounting Class</legend>
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-secondory"
+                  data-toggle="modal"
+                  data-target="#openAccountSelect"
                 >
-              </select>
+                  Select Account Class
+                </button>
+              </div>
+            </fieldset>
+          </div>
+          <div class="col-md-6">
+            <fieldset>
+              <div class="form-group">
+                <label>Project</label>
+                <select class="form-control" formControlName="ProjectID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let project of reportService.projectList"
+                    [ngValue]="project.ID"
+                    >{{ project.EngName }}</option
+                  >
+                </select>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <fieldset>
+            <div class="col-md-6">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="ShowZeroQunatity"
+                      value="true"
+                      formControlName="ShowZeroQunatity"
+                    />
+                    <label>Show Zero Quantity</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="comma"
+                      value="true"
+                      formControlName="IsClosingQtyRange"
+                      (change)="quantityRange()"
+                    />
+                    <label>Change Qty Rannge</label>
+                  </label>
+                </div>
+              </div>
             </div>
           </fieldset>
-          <fieldset>
+        </div>
+        <div class="col-md-12">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label>From(Qty)</label>
+              <input class="form-control" formControlName="FromQtyRange" />
+            </div>
+            <div class="form-group">
+              <label>To(Qty)</label>
+              <input class="form-control" formControlName="ToQtyRange" />
+            </div>
+          </div>
+          <div class="col-sm-6">
             <div class="form-group">
               <div class="checkbox">
                 <label>
                   <input
                     type="checkbox"
-                    name="ShowZeroQunatity"
+                    name="comma"
                     value="true"
-                    formControlName="ShowZeroQunatity"
+                    formControlName="IsFromRangeMin"
                   />
-                  <label>Show Zero Quantity</label>
+                  <label>Minimum</label>
                 </label>
               </div>
             </div>
@@ -236,73 +311,109 @@
                     type="checkbox"
                     name="comma"
                     value="true"
-                    formControlName="IsClosingQtyRange"
-                    (change)="quantityRange()"
+                    formControlName="IsToRangeMax"
                   />
-                  <label>Change Qty Rannge</label>
+                  <label>Maximum</label>
                 </label>
               </div>
             </div>
-            <div class="row">
-              <div class="col-sm-8">
-                <div class="form-group">
-                  <label>From(Qty)</label>
-                  <input class="form-control" formControlName="FromQtyRange" />
-                </div>
-                <div class="form-group">
-                  <label>To(Qty)</label>
-                  <input class="form-control" formControlName="ToQtyRange" />
+          </div>
+        </div>
+        <!--Modal PopUp Opening Balance Modal-->
+        <div
+          class="modal fade bd-example-modal"
+          #openAccountSelect
+          id="openAccountSelect"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 class="modal-title pull-left">Select Account Class</h3>
+                <button
+                  class="close"
+                  type="button"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label>Account Class</label>
+                      <select
+                        class="form-control"
+                        [(ngModel)]="toDateSelect"
+                        [ngModelOptions]="{ standalone: true }"
+                      >
+                        <option [ngValue]="null">Choose Option..</option>
+                        <option
+                          *ngFor="let account of reportService.accountLists"
+                          [ngValue]="account.ID"
+                          >{{ account.Name }}</option
+                        >
+                      </select>
+                    </div>
+                    <div class="col-md-12">
+                      <div
+                        class="form-group"
+                        *ngFor="
+                          let account of reportService.accountLists;
+                          index as i
+                        "
+                      >
+                        <div class="checkbox">
+                          <label class="form-check-label" for="check1">
+                            <input
+                              type="checkbox"
+                              class="form-check-input"
+                              id="check1"
+                              [value]="account.ID"
+                              name="account.Name"
+                              (click)="selectAccounts(account.ID, $event)"
+                            />{{ account.Name }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="col-sm-4">
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="comma"
-                        value="true"
-                        formControlName="IsFromRangeMin"
-                      />
-                      <label>Minimum</label>
-                    </label>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="comma"
-                        value="true"
-                        formControlName="IsToRangeMax"
-                      />
-                      <label>Maximum</label>
-                    </label>
-                  </div>
-                </div>
+              <div class="modal-footer">
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  data-dismiss="modal"
+                >
+                  OK
+                </button>
+                <button
+                  class="btn btn-secondary"
+                  type="button"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
-          </fieldset>
+          </div>
         </div>
       </form>
     </div>
   </div>
 
   <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-danger pull-right ml-3"
-      (click)="cancel()"
-    >
-      Cancel
-    </button>
-    <button
-      type="button"
-      class="btn btn-primary pull-right ml-3"
-      (click)="showReport()"
-    >
+    <button type="button" class="btn btn-primary" (click)="showReport()">
       Show
+    </button>
+    <button type="button" class="btn btn-danger" (click)="cancel()">
+      Cancel
     </button>
   </div>
 </ng-template>

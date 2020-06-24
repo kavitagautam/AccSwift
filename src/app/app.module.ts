@@ -13,25 +13,43 @@ import { HttpInterceptorsService } from "./core/services/http-interceptors/http-
 import { PreferenceService } from "./modules/preference/services/preference.service";
 import { PreferenceModel } from "./modules/preference/models/preference.model";
 import { Observable } from "rxjs";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { SettingsService } from "./modules/settings/services/settings.service";
+import { SettingsModel } from "./modules/settings/models/settings.model";
 
 export function initPreferenceData(preferenceService: PreferenceService) {
   return (): Observable<PreferenceModel> => {
     return preferenceService.getPreferenceData();
   };
 }
+export function initSettingsData(settingsService: SettingsService) {
+  return (): Observable<SettingsModel> => {
+    return settingsService.getSettingsData();
+  };
+}
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, CoreModule, AppRoutingModule, HttpClientModule,  BrowserAnimationsModule],
+  imports: [
+    BrowserModule,
+    CoreModule,
+    AppRoutingModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+  ],
   providers: [
     PreferenceService,
     {
       provide: APP_INITIALIZER,
       useFactory: initPreferenceData,
       deps: [PreferenceService],
+      multi: true,
+    },
+    SettingsService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initSettingsData,
+      deps: [SettingsService],
       multi: true,
     },
     {
