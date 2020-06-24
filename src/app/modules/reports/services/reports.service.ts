@@ -27,6 +27,11 @@ import {
   SalesAccountModel,
   PurchaseReportModel,
 } from "../models/sales.report.model";
+import {
+  LedgerReportModel,
+  LedgerMinModel,
+} from "../models/ledger.reports.model";
+import { LedgerGroupModel } from "@app/modules/ledger/models/ledger.models";
 
 @Injectable({
   providedIn: "root",
@@ -121,6 +126,10 @@ export class ReportsService {
     return this.httpService.post(`${this._api_URL}Reports/TrialDetails`, body);
   }
 
+  getLedgerReports(body): Observable<LedgerReportModel> {
+    return this.httpService.post(`${this._api_URL}Reports/LedgerReport`, body);
+  }
+
   getProductMin(): void {
     this.httpService
       .get(`${this._api_URL}/Product/min`)
@@ -188,5 +197,13 @@ export class ReportsService {
 
   getSalesAccount(): Observable<SalesAccountModel> {
     return this.httpService.get(`${this._api_URL}Ledger/salesAccounts`);
+  }
+
+  getLedgerMin(): Observable<LedgerMinModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/min`);
+  }
+
+  getLedgerGroup(): Observable<LedgerGroupModel> {
+    return this.httpService.get(`${this._api_URL}LedgerGroup`);
   }
 }
