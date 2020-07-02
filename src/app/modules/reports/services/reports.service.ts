@@ -32,6 +32,11 @@ import {
   LedgerMinModel,
 } from "../models/ledger.reports.model";
 import { LedgerGroupModel } from "@app/modules/ledger/models/ledger.models";
+import {
+  ProfitLossRootModel,
+  ProfitLossLDRootModel,
+  ProfitLossGDRootModel,
+} from "../models/profit-loss.model";
 
 @Injectable({
   providedIn: "root",
@@ -179,6 +184,24 @@ export class ReportsService {
   getPurchaseReports(body): Observable<PurchaseReportModel> {
     return this.httpService.post(
       `${this._api_URL}InventoryReports/Purchase`,
+      body
+    );
+  }
+
+  getProfitLossReports(body): Observable<ProfitLossRootModel> {
+    return this.httpService.post(`${this._api_URL}Reports/ProfitLoss`, body);
+  }
+
+  getPLGroupDetails(body): Observable<ProfitLossGDRootModel> {
+    return this.httpService.post(
+      `${this._api_URL}Reports/ProfitLossDetails`,
+      body
+    );
+  }
+
+  getPLLedgerDetails(body): Observable<ProfitLossLDRootModel> {
+    return this.httpService.post(
+      `${this._api_URL}Reports/ProfitLossDetails`,
       body
     );
   }

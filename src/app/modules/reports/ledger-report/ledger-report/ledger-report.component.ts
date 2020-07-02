@@ -32,7 +32,9 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
   ledgerDetailsReportList: LedgerList[] = [];
   listLoading: boolean;
   listLedgerLoading: boolean;
-
+  totalDebitAmount: number;
+  totalCreditAmount: number;
+  totalClosingBalance: string;
   accountLedger: boolean = false;
   accountGroup: boolean = false;
   ledgerMinList: LedgerMinList[] = [];
@@ -246,6 +248,9 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
       .subscribe(
         (response) => {
           this.ledgerReportList = response.Entity.Entity;
+          this.totalDebitAmount = response.Entity.TotalDebitAmount;
+          this.totalCreditAmount = response.Entity.TotalCreditAmount;
+          this.totalClosingBalance = response.Entity.ClosingBalance;
         },
         (error) => {
           this.listLoading = false;

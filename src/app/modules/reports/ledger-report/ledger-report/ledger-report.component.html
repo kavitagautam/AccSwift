@@ -172,6 +172,21 @@
               </td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2" align="center">
+                Total Debit Amount:
+                <span [innerHTML]="totalDebitAmount | currencyFormat"></span>
+              </td>
+              <td colspan="2" align="center">
+                Total Debit Amount :
+                <span [innerHTML]="totalCreditAmount | currencyFormat"></span>
+              </td>
+              <td colspan="3" align="center">
+                Total Balance :{{ totalClosingBalance }}
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>
