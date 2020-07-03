@@ -37,6 +37,11 @@ import {
   ProfitLossLDRootModel,
   ProfitLossGDRootModel,
 } from "../models/profit-loss.model";
+import {
+  BalanceSheetRootModel,
+  BalanceSheetGDetailModel,
+  BalanceSheetLDetailRootModel,
+} from "../models/balance.sheet.model";
 
 @Injectable({
   providedIn: "root",
@@ -190,6 +195,18 @@ export class ReportsService {
 
   getProfitLossReports(body): Observable<ProfitLossRootModel> {
     return this.httpService.post(`${this._api_URL}Reports/ProfitLoss`, body);
+  }
+
+  getBalanceSheetReports(body): Observable<BalanceSheetRootModel> {
+    return this.httpService.post(`${this._api_URL}Reports/BalanceSheet`, body);
+  }
+
+  getBSGroupDetails(body): Observable<BalanceSheetGDetailModel> {
+    return this.httpService.post(`${this._api_URL}Reports/BalanceSheet`, body);
+  }
+
+  getBSLedgerDetails(body): Observable<BalanceSheetLDetailRootModel> {
+    return this.httpService.post(`${this._api_URL}Reports/BalanceSheet`, body);
   }
 
   getPLGroupDetails(body): Observable<ProfitLossGDRootModel> {
