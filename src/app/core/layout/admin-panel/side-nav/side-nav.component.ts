@@ -152,6 +152,11 @@ export class SideNavComponent implements OnInit {
           iconName: "fa fa-file-excel-o",
           route: "/profit-loss",
         },
+        {
+          displayName: "Balance Sheet Report",
+          iconName: "fa fa-file-excel-o",
+          route: "/balance-sheet",
+        },
       ],
     },
     {

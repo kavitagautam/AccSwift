@@ -1,0 +1,104 @@
+.bold_text {
+  float: right;
+  font-size: 14px;
+  font-style: bold;
+  font-weight: 700;
+}
+
+.table-striped > th {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+th {
+  border: 1px solid #ddd;
+  padding: 5px;
+  text-align: right;
+  font-size: 16px;
+}
+
+.table-striped td {
+  border: 1px solid black !important;
+}
+
+.table-striped td {
+  border: 1px !important;
+}
+
+tfoot > tr > td {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.group_name {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ledger_name {
+  color: blue;
+  font-weight: 700;
+  min-width: 250px;
+  text-overflow: break-word;
+}
+
+.balance {
+  text-align: right;
+}
+.account_name {
+  color: blue;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgb(235, 232, 232);
+}
+
+.table-box {
+  width: 100%;
+  min-height: 200px;
+  max-height: 600px;
+  overflow-y: scroll;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#header-fixed thead th {
+  background-color: #fff;
+  color: #000;
+  position: sticky;
+  top: 0;
+}
+
+#header-fixed tfoot td {
+  background-color: #fff;
+  color: #000;
+  position: sticky;
+  top: 0;
+}
+
+::-webkit-scrollbar {
+  width: 8px !important;
+  background-color: rgb(236, 235, 235);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 5px;
+}
+
+#header-fixed tfoot th {
+  position: sticky;
+  bottom: 0;
+  background-color: rgb(233, 233, 233);
+}
+
+/* #header-fixed         { overflow-y: auto; height: 100px; }
+    
+    
+    #header-fixed thead th { position: sticky; top: 0; }
+    */

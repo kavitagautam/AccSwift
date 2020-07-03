@@ -3,12 +3,12 @@
     <button
       type="button"
       class="btn-primary m-3"
-      (click)="openProfitLossSettings(profitLossSettings)"
+      (click)="openBalanceSheetSettings(balanceSheetSettings)"
     >
-      Profit Loss Settings
+      Balance Sheet Settings
     </button>
   </div>
-  <h1 style="text-align: center;">Profit Loss A/C</h1>
+  <h1 style="text-align: center;">Balance Sheet</h1>
   <h4 style="text-align: center;" *ngIf="projectName">
     Project : {{ projectName }}
   </h4>
@@ -20,7 +20,7 @@
           style="width: 50%;"
           align="left"
           class="table table-hover table-fixed"
-          *ngIf="profitLossForms.get('DisplayFormat').value === 'TFormat'"
+          *ngIf="balanceSheetForms.get('DisplayFormat').value === 'TFormat'"
         >
           <thead>
             <tr>
@@ -30,58 +30,55 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let pl of profitLossList"
-              (click)="openPLDrillDown($event, pl)"
-              (dblclick)="openPLDrillDown($event, pl)"
+              *ngFor="let balanceS of balanceSheetList"
+              (click)="openBalanceDrillDown($event, balanceS)"
+              (dblclick)="openBalanceDrillDown($event, balanceS)"
             >
               <td
-                *ngIf="pl.Type == 'HEADER' && pl.Category == 1"
+                *ngIf="balanceS.Type == 'HEADER' && balanceS.Category == 1"
                 colspan="2"
                 align="center"
                 style="background-color: darkgray;"
               >
-                {{ pl.AccountName }}
+                {{ balanceS.AccountName }}
               </td>
-              <td *ngIf="pl.Category == 1">
-                <span *ngIf="pl.Level == 0 && pl.Type == 'GROUP'">{{
-                  pl.AccountName
+              <td *ngIf="balanceS.Category == 1">
+                <span *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'">{{
+                  balanceS.AccountName
                 }}</span>
                 <span
-                  *ngIf="pl.Category == 1 && pl.Type == 'Opening'"
+                  *ngIf="balanceS.Category == 1 && balanceS.Type == 'Opening'"
                   class="bold_text"
-                  >{{ pl.AccountName }}</span
+                  >{{ balanceS.AccountName }}</span
                 >
                 <span
-                  *ngIf="pl.Category == 1 && pl.Type == 'PL'"
+                  *ngIf="balanceS.Category == 1 && balanceS.Type == 'balanceS'"
                   class="bold_text"
-                  >{{ pl.AccountName }}</span
+                  >{{ balanceS.AccountName }}</span
                 >
                 <span
-                  *ngIf="pl.Category == 1 && pl.Type == 'TOTAL'"
+                  *ngIf="balanceS.Category == 1 && balanceS.Type == 'TOTAL'"
                   class="bold_text"
-                  >{{ pl.AccountName }}</span
+                  >{{ balanceS.AccountName }}</span
                 >
-                <span *ngIf="pl.Level == 1" style="margin-left: 10px;">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Level == 2" style="margin-left: 20px;">{{
-                  pl.AccountName
+                <span *ngIf="balanceS.Level == 1" style="margin-left: 10px;">{{
+                  balanceS.AccountName
                 }}</span>
                 <span
-                  *ngIf="pl.Level == 3"
+                  *ngIf="balanceS.Level == 2"
                   style="margin-left: 30px; color: blue;"
-                  >{{ pl.AccountName }}</span
+                  >{{ balanceS.AccountName }}</span
                 >
               </td>
               <td
-                *ngIf="pl.Category == 1 && pl.Type !== 'HEADER'"
+                *ngIf="balanceS.Category == 1 && balanceS.Type !== 'HEADER'"
                 class="balance"
               >
-                <span [innerHTML]="pl.Amount | currencyFormat"></span>
+                <span [innerHTML]="balanceS.Amount | currencyFormat"></span>
               </td>
             </tr>
 
-            <tr *ngIf="profitLossList.length == 0">
+            <tr *ngIf="balanceSheetList.length == 0">
               <td colspan="7" align="center">
                 No Data Available
               </td>
@@ -94,7 +91,7 @@
           style="width: 50%;"
           align="right"
           class="table table-hover table-fixed"
-          *ngIf="profitLossForms.get('DisplayFormat').value === 'TFormat'"
+          *ngIf="balanceSheetForms.get('DisplayFormat').value === 'TFormat'"
         >
           <thead>
             <tr>
@@ -104,58 +101,55 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let pl of profitLossList"
-              (click)="openPLDrillDown($event, pl)"
-              (dblclick)="openPLDrillDown($event, pl)"
+              *ngFor="let balanceS of balanceSheetList"
+              (click)="openBalanceDrillDown($event, balanceS)"
+              (dblclick)="openBalanceDrillDown($event, balanceS)"
             >
               <td
-                *ngIf="pl.Type == 'HEADER' && pl.Category == 2"
+                *ngIf="balanceS.Type == 'HEADER' && balanceS.Category == 2"
                 colspan="2"
                 align="center"
                 style="background-color: darkgray;"
               >
-                {{ pl.AccountName }}
+                {{ balanceS.AccountName }}
               </td>
-              <td *ngIf="pl.Category == 2">
-                <span *ngIf="pl.Level == 0 && pl.Type == 'GROUP'">{{
-                  pl.AccountName
+              <td *ngIf="balanceS.Category == 2">
+                <span *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'">{{
+                  balanceS.AccountName
                 }}</span>
                 <span
-                  *ngIf="pl.Category == 2 && pl.Type == 'Opening'"
+                  *ngIf="balanceS.Category == 2 && balanceS.Type == 'Opening'"
                   class="bold_text"
-                  >{{ pl.AccountName }}</span
+                  >{{ balanceS.AccountName }}</span
                 >
                 <span
-                  *ngIf="pl.Category == 2 && pl.Type == 'PL'"
+                  *ngIf="balanceS.Category == 2 && balanceS.Type == 'PL'"
                   class="bold_text"
-                  >{{ pl.AccountName }}</span
+                  >{{ balanceS.AccountName }}</span
                 >
                 <span
-                  *ngIf="pl.Category == 2 && pl.Type == 'TOTAL'"
+                  *ngIf="balanceS.Category == 2 && balanceS.Type == 'TOTAL'"
                   class="bold_text"
-                  >{{ pl.AccountName }}</span
+                  >{{ balanceS.AccountName }}</span
                 >
-                <span *ngIf="pl.Level == 1" style="margin-left: 10px;">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Level == 2" style="margin-left: 20px;">{{
-                  pl.AccountName
+                <span *ngIf="balanceS.Level == 1" style="margin-left: 10px;">{{
+                  balanceS.AccountName
                 }}</span>
                 <span
-                  *ngIf="pl.Level == 3"
+                  *ngIf="balanceS.Level == 2"
                   style="margin-left: 30px; color: blue;"
-                  >{{ pl.AccountName }}</span
+                  >{{ balanceS.AccountName }}</span
                 >
               </td>
               <td
-                *ngIf="pl.Category == 2 && pl.Type !== 'HEADER'"
+                *ngIf="balanceS.Category == 2 && balanceS.Type !== 'HEADER'"
                 class="balance"
               >
-                <span [innerHTML]="pl.Amount | currencyFormat"></span>
+                <span [innerHTML]="balanceS.Amount | currencyFormat"></span>
               </td>
             </tr>
 
-            <tr *ngIf="profitLossList.length == 0">
+            <tr *ngIf="balanceSheetList.length == 0">
               <td colspan="7" align="center">
                 No Data Available
               </td>
@@ -165,7 +159,7 @@
         <table
           id="header-fixed"
           class="table table-hover table-fixed"
-          *ngIf="profitLossForms.get('DisplayFormat').value === 'Vertical'"
+          *ngIf="balanceSheetForms.get('DisplayFormat').value === 'Vertical'"
         >
           <thead>
             <tr>
@@ -175,52 +169,107 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let pl of profitLossList"
-              (click)="openPLDrillDown($event, pl)"
-              (dblclick)="openPLDrillDown($event, pl)"
+              *ngFor="let balanceS of balanceSheetList"
+              (click)="openBalanceDrillDown($event, balanceS)"
+              (dblclick)="openBalanceDrillDown($event, balanceS)"
             >
               <td
-                *ngIf="pl.Type == 'HEADER'"
+                *ngIf="balanceS.Type == 'HEADER'"
                 colspan="2"
                 align="center"
                 style="background-color: darkgray;"
               >
-                {{ pl.AccountName }}
+                {{ balanceS.AccountName }}
               </td>
               <td>
-                <span *ngIf="pl.Level == 0 && pl.Type == 'GROUP'">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Type == 'Opening'" class="bold_text">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Type == 'PL'" class="bold_text">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Type == 'Closing'" class="bold_text">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Type == 'TOTAL'" class="bold_text">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Level == 1" style="margin-left: 10px;">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Level == 2" style="margin-left: 20px;">{{
-                  pl.AccountName
+                <span *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'">{{
+                  balanceS.AccountName
                 }}</span>
                 <span
-                  *ngIf="pl.Level == 3"
+                  *ngIf="
+                    balanceS.Type !== 'HEADER' &&
+                    balanceS.Type !== 'GROUP' &&
+                    balanceS.Type !== 'LEDGER'
+                  "
+                  class="bold_text"
+                  >{{ balanceS.AccountName }}</span
+                >
+
+                <span *ngIf="balanceS.Level == 1" style="margin-left: 10px;">{{
+                  balanceS.AccountName
+                }}</span>
+                <span
+                  *ngIf="balanceS.Level == 2"
                   style="margin-left: 30px; color: blue;"
-                  >{{ pl.AccountName }}</span
+                  >{{ balanceS.AccountName }}</span
                 >
               </td>
-              <td *ngIf="pl.Type !== 'HEADER'" class="balance">
-                <span [innerHTML]="pl.Amount | currencyFormat"></span>
+              <td *ngIf="balanceS.Type !== 'HEADER'" class="balance">
+                <span [innerHTML]="balanceS.Amount | currencyFormat"></span>
               </td>
             </tr>
 
-            <tr *ngIf="profitLossList.length == 0">
+            <tr *ngIf="balanceSheetList.length == 0">
+              <td colspan="4" align="center">
+                No Data Available
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table
+          id="header-fixed"
+          class="table table-hover table-fixed"
+          *ngIf="balanceSheetForms.get('DisplayFormat').value === 'Standard'"
+        >
+          <thead>
+            <tr>
+              <th colspan="1" style="text-align: left;">Account Name</th>
+              <th colspan="1" style="text-align: left;">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let balanceS of balanceSheetList"
+              (click)="openBalanceDrillDown($event, balanceS)"
+              (dblclick)="openBalanceDrillDown($event, balanceS)"
+            >
+              <td
+                *ngIf="balanceS.Type == 'HEADER'"
+                colspan="2"
+                align="center"
+                style="background-color: darkgray;"
+              >
+                {{ balanceS.AccountName }}
+              </td>
+              <td>
+                <span *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'">{{
+                  balanceS.AccountName
+                }}</span>
+                <span
+                  *ngIf="
+                    balanceS.Type !== 'HEADER' &&
+                    balanceS.Type !== 'GROUP' &&
+                    balanceS.Type !== 'LEDGER'
+                  "
+                  class="bold_text"
+                  >{{ balanceS.AccountName }}</span
+                >
+
+                <span *ngIf="balanceS.Level == 1" style="margin-left: 10px;">{{
+                  balanceS.AccountName
+                }}</span>
+                <span
+                  *ngIf="balanceS.Level == 2"
+                  style="margin-left: 30px; color: blue;"
+                  >{{ balanceS.AccountName }}</span
+                >
+              </td>
+              <td *ngIf="balanceS.Type !== 'HEADER'" class="balance">
+                <span [innerHTML]="balanceS.Amount | currencyFormat"></span>
+              </td>
+            </tr>
+
+            <tr *ngIf="balanceSheetList.length == 0">
               <td colspan="4" align="center">
                 No Data Available
               </td>
@@ -233,9 +282,9 @@
   </div>
 </div>
 
-<ng-template #profitLossSettings>
+<ng-template #balanceSheetSettings>
   <div class="modal-header">
-    <h3 class="modal-title pull-left">Profit Loss Settings</h3>
+    <h3 class="modal-title pull-left">Balance Sheet Settings</h3>
     <button
       type="button"
       class="close pull-right"
@@ -248,7 +297,7 @@
 
   <div class="modal-body">
     <div class="row">
-      <form [formGroup]="profitLossForms" novalidate>
+      <form [formGroup]="balanceSheetForms" novalidate>
         <div class="col-md-12">
           <div class="col-md-12 p-0">
             <div class="form-group">
@@ -311,7 +360,7 @@
           </div>
           <fieldset>
             <div class="col-md-12">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <div class="radio">
                     <label>
@@ -326,7 +375,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <div class="radio">
                     <label>
@@ -337,6 +386,21 @@
                         formControlName="DisplayFormat"
                       />
                       <label>Vertical</label>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <div class="radio">
+                    <label>
+                      <input
+                        type="radio"
+                        name="DisplayFormat"
+                        value="Standard"
+                        formControlName="DisplayFormat"
+                      />
+                      <label>Standard</label>
                     </label>
                   </div>
                 </div>
@@ -522,7 +586,7 @@
   </div>
 </ng-template>
 
-<ng-template #groupPLBalance>
+<ng-template #groupBalance>
   <div class="modal-header">
     <h3 class="modal-title pull-left">Group Balance</h3>
     <button
@@ -554,26 +618,16 @@
           <table id="header-fixed" class="table table-hover table-fixed">
             <thead>
               <tr>
-                <th colspan="1" style="text-align: left;">Account Code</th>
                 <th colspan="1" style="text-align: center;">Account Name</th>
-                <th colspan="1">Debit Amount</th>
-                <th colspan="1">Credit Amount</th>
+                <th colspan="1">Amount</th>
               </tr>
             </thead>
             <tbody>
               <tr
                 *ngFor="let group of groupBalanceList; let i = index"
-                (click)="openPLDrillDown($event, group)"
-                (dblclick)="openPLDrillDown($event, group)"
+                (click)="openBalanceDrillDown($event, group)"
+                (dblclick)="openBalanceDrillDown($event, group)"
               >
-                <td>
-                  <span *ngIf="group.Type === 'GROUP'">
-                    {{ group.AccountCode }}
-                  </span>
-                  <span *ngIf="group.Type === 'LEDGER'" style="color: blue;">
-                    {{ group.AccountCode }}
-                  </span>
-                </td>
                 <td>
                   <span *ngIf="group.Type === 'GROUP'" class="group_name">
                     {{ group.AccountName }}
@@ -582,26 +636,24 @@
                     {{ group.AccountName }}
                   </span>
                   <span
+                    *ngIf="
+                      group.Type !== 'HEADER' &&
+                      group.Type !== 'GROUP' &&
+                      group.Type !== 'LEDGER'
+                    "
+                    class="bold_text"
+                  >
+                    {{ group.AccountName }}
+                  </span>
+                  <span
                     *ngIf="group.Type === 'LEDGER'"
                     style="margin-left: 50px; color: blue;"
                     >{{ group.AccountName }}</span
                   >
-                  <span *ngIf="group.Type === 'TOTAL'" style="float: right;">{{
-                    group.AccountName
-                  }}</span>
-
-                  <span *ngIf="group.Type === null" style="float: right;">{{
-                    group.AccountName
-                  }}</span>
                 </td>
 
-                <td class="balance">
-                  <span [innerHTML]="group.DebitAmount | currencyFormat"></span>
-                </td>
-                <td class="balance">
-                  <span
-                    [innerHTML]="group.CreditAmount | currencyFormat"
-                  ></span>
+                <td class="balance" *ngIf="group.Type !== 'HEADER'">
+                  <span [innerHTML]="group.Amount | currencyFormat"></span>
                 </td>
               </tr>
             </tbody>
@@ -634,7 +686,7 @@
   </div>
 </ng-template>
 
-<ng-template #ledgerPLDetails>
+<ng-template #ledgerDetails>
   <div class="modal-header">
     <h3 class="modal-title pull-left">Transaction</h3>
     <h4 style="text-align: center;" *ngIf="projectName">
@@ -657,15 +709,9 @@
           <table id="header-fixed" class="table table-hover table-fixed">
             <thead>
               <tr>
-                <th colspan="1" style="text-align: left;">Ledger Name</th>
-                <th colspan="1" style="text-align: center;">
-                  Transaction Date
-                </th>
-                <th colspan="1">VoucherID</th>
-                <th colspan="1">Credit Amount</th>
-                <th colspan="1">Credit Amount</th>
-                <th colspan="1">Voucher Type</th>
-                <th colspan="1">Balance</th>
+                <th colspan="1" style="text-align: left;">Account Name</th>
+
+                <th colspan="1">Amount</th>
               </tr>
             </thead>
             <tbody>
@@ -674,80 +720,40 @@
                 (click)="openLedgerDetailsDetails($event, ledger)"
                 (dblclick)="openLedgerDetailsDetails($event, ledger)"
               >
-                <td *ngIf="ledger.Type === 'HEADER'" colspan="8" align="center">
+                <td
+                  *ngIf="ledger.Type === 'HEADER'"
+                  style="
+                    background-color: darkgray;
+                    font-size: 14px;
+                    text-align: center;
+                  "
+                  colspan="2"
+                >
                   {{ ledger.AccountName }}
                 </td>
-                <td *ngIf="ledger.Type === 'VOUCHER'">
-                  <span *ngIf="ledger.Type === 'VOUCHER'" style="color: blue;">
+                <td>
+                  <span
+                    *ngIf="
+                      ledger.Type !== 'HEADER' &&
+                      ledger.Type !== 'GROUP' &&
+                      ledger.Type !== 'LEDGER'
+                    "
+                    class="bold_text"
+                  >
+                    {{ ledger.AccountName }}
+                  </span>
+                  <span *ngIf="ledger.Type == 'GROUP'" class="group_name">
                     {{ ledger.AccountName }}
                   </span>
                   <span
-                    *ngIf="ledger.Type === 'OPENING'"
-                    style="float: right;"
-                    >{{ group.AccountName }}</span
+                    *ngIf="ledger.Type == 'LEDGER'"
+                    style="color: blue; margin-left: 30px;"
                   >
+                    {{ ledger.AccountName }}
+                  </span>
                 </td>
-                <td
-                  *ngIf="ledger.Type === null"
-                  colspan="7"
-                  align="center"
-                  style="font-size: 18px; font-weight: 700;"
-                >
-                  {{ ledger.AccountName }}
-                </td>
-                <td
-                  *ngIf="ledger.Type === 'CLOSING'"
-                  style="font-size: 14px; font-weight: 700;"
-                >
-                  {{ ledger.AccountName }}
-                </td>
-                <td *ngIf="ledger.Type === 'VOUCHER'">
-                  {{ ledger.TransactDate | date: "yyyy-MM-dd" }}
-                </td>
-                <td *ngIf="ledger.Type === 'VOUCHER'">
-                  {{ ledger.VoucherNo }}
-                </td>
-                <td *ngIf="ledger.Type === 'VOUCHER'" class="balance">
-                  <span
-                    [innerHTML]="ledger.DebitAmount | currencyFormat"
-                  ></span>
-                </td>
-                <td *ngIf="ledger.Type === 'VOUCHER'" class="balance">
-                  <span
-                    [innerHTML]="ledger.CreditAmount | currencyFormat"
-                  ></span>
-                </td>
-                <td *ngIf="ledger.Type === 'VOUCHER'">
-                  {{ ledger.VoucherType }}
-                </td>
-                <td *ngIf="ledger.Type === 'VOUCHER'" class="balance">
-                  <span [innerHTML]="ledger.Balance | currencyFormat"></span>
-                </td>
-                <td *ngIf="ledger.Type === 'OPENING'" class="balance">
-                  <span [innerHTML]="ledger.Balance | currencyFormat"></span>
-                </td>
-                <td *ngIf="ledger.Type === 'TOTAL'" colspan="4" align="right">
-                  {{ ledger.AccountName }}
-                </td>
-                <td *ngIf="ledger.Type === 'TOTAL'" class="balance">
-                  <span
-                    [innerHTML]="ledger.DebitAmount | currencyFormat"
-                  ></span>
-                </td>
-                <td *ngIf="ledger.Type === CLOSING" class="balance">
-                  <span
-                    [innerHTML]="ledger.DebitAmount | currencyFormat"
-                  ></span>
-                </td>
-                <td *ngIf="ledger.Type === 'TOTAL'" class="balance">
-                  <span
-                    [innerHTML]="ledger.CreditAmount | currencyFormat"
-                  ></span>
-                </td>
-                <td *ngIf="ledger.Type === CLOSING" class="balance">
-                  <span
-                    [innerHTML]="ledger.CreditAmount | currencyFormat"
-                  ></span>
+                <td *ngIf="ledger.Type !== 'HEADER'" class="balance">
+                  <span [innerHTML]="ledger.Amount | currencyFormat"></span>
                 </td>
               </tr>
             </tbody>
