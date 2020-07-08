@@ -5,7 +5,11 @@ import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
-import { RelatedUnits, CashParty } from "../../models/sales-invoice.model";
+import {
+  RelatedUnits,
+  CashParty,
+  ProductMinList,
+} from "../../models/sales-invoice.model";
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 import { takeUntil, debounceTime } from "rxjs/operators";
@@ -25,6 +29,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   private editedRowIndex: number;
   relatedUnits: RelatedUnits[] = [];
   cashPartyList: CashParty[] = [];
+  public productList: ProductMinList[] = [];
 
   //Total Calculation
   myFormValueChanges$;
@@ -62,6 +67,9 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   ) {
     this.salesInvoiceService.getCashPartyAccountDD().subscribe((response) => {
       this.cashPartyList = response.Entity;
+    });
+    this.salesInvoiceService.getProductDD().subscribe((response) => {
+      this.productList = response.Entity;
     });
   }
 
@@ -378,6 +386,12 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   cashPartyDDFilter(value): void {
     this.cashPartyList = this.salesInvoiceService.cashPartyList.filter(
       (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
+  productDDFilter(value): void {
+    this.productList = this.salesInvoiceService.productList.filter(
+      (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
   }
 

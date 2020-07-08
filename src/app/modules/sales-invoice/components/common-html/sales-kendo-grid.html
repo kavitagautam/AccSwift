@@ -1,0 +1,338 @@
+<kendo-grid
+  [data]="getInvoiceEntryList.value"
+  (edit)="editHandler($event)"
+  (cancel)="cancelHandler($event)"
+  (save)="saveHandler($event)"
+  (add)="addHandler($event)"
+  (remove)="removeHandler($event)"
+>
+  >
+  <ng-template kendoGridToolbarTemplate>
+    <button kendoGridAddCommand>Add New</button>
+  </ng-template>
+
+  <kendo-grid-column field="ProductName" title="Product" width="300">
+    <ng-template
+      kendoGridCellTemplate
+      let-dataItem="dataItem"
+      let-column="column"
+      let-formGroup="formGroup"
+      let-isNew="isNew"
+      let-rowIndex="rowIndex"
+    >
+      <div class="col-xs-12 col-md-12 p-0">
+        <div class="col-md-4 pl-0">
+          <div class="form-group">
+            <label>
+              Code
+            </label>
+            <input
+              #input
+              class="k-textbox"
+              style="width: 100px;"
+              placeholder="Product Code"
+              [formControl]="
+              getInvoiceEntryList.controls[rowIndex].get('ProductCode')
+            "
+              (change)="handelProductCode(dataItem, rowIndex)"
+            />
+            <kendo-popup
+              [anchor]="input"
+              *ngIf="
+              getInvoiceEntryList.controls[rowIndex].get('ProductCode')
+                .invalid
+            "
+              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+            >
+              <span class="k-icon k-i-warning"></span>
+              Product Code is invalid
+            </kendo-popup>
+          </div>
+        </div>
+        <div class="col-md-8 pr-0">
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              #input
+              class="k-textbox"
+              [readonly]="true"
+              style="width: 150px; display: inherit;"
+              [formControl]="
+              getInvoiceEntryList.controls[rowIndex].get('ProductName')
+            "
+            />
+            <a (click)="openModal(rowIndex)"
+              ><i
+                class="fa fa-eye pull-right ledgerSelectIcon"
+                style="right: 0px; top: 30px;"
+                aria-hidden="true"
+              ></i>
+            </a>
+            <!-- <kendo-popup
+          [anchor]="input"
+          *ngIf="
+            getInvoiceEntryList.controls[rowIndex].get('ProductName')
+              .invalid &&
+            getInvoiceEntryList.controls[rowIndex].get('ProductName')
+              .untouched
+          "
+          popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+        >
+          <span class="k-icon k-i-warning"></span>
+          Prodcut Name is required
+        </kendo-popup> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-12 p-0">
+        <div class="col-md-6 pl-0">
+          <div class="form-group">
+            <label>Unit</label>
+            <kendo-dropdownlist
+              style="width: 120px;"
+              [data]="relatedUnits"
+              textField="Name"
+              valueField="ID"
+              [valuePrimitive]="true"
+              [formControl]="
+          getInvoiceEntryList.controls[rowIndex].get('QtyUnitID')
+        "
+            >
+            </kendo-dropdownlist>
+          </div>
+        </div>
+        <div class="col-md-6 pl-0">
+          <div class="form-group">
+            <label>Sales Rate</label>
+            <kendo-numerictextbox
+              popupAnchor
+              style="width: 120px;"
+              [decimals]="decimals"
+              [spinners]="false"
+              [format]="c0"
+              [formControl]="
+              getInvoiceEntryList.controls[rowIndex].get('SalesRate')
+            "
+            >
+            </kendo-numerictextbox>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="Quantity" title="Quantity" width="100">
+    <ng-template
+      kendoGridCellTemplate
+      let-dataItem="dataItem"
+      let-column="column"
+      let-formGroup="formGroup"
+      let-isNew="isNew"
+      let-column="column"
+      let-rowIndex="rowIndex"
+    >
+      <kendo-numerictextbox
+        popupAnchor
+        style="width: 80px;"
+        [format]="'n0'"
+        [min]="1"
+        [formControl]="
+        getInvoiceEntryList.controls[rowIndex].get(column.field)
+      "
+        (valueChange)="changeInvoiceValues(dataItem, rowIndex)"
+      >
+      </kendo-numerictextbox>
+    </ng-template>
+    <ng-template
+      kendoGridFooterTemplate
+      let-column
+      let-columnIndex="columnIndex"
+    >
+      <span class="pull-right"> Total QTY: {{ totalQty }} </span>
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="Amount" title="Amount & Discount" width="280">
+    <ng-template
+      kendoGridCellTemplate
+      let-dataItem="dataItem"
+      let-column="column"
+      let-rowIndex="rowIndex"
+      let-isNew="isNew"
+      let-formGroup="formGroup"
+    >
+      <div class="col-xs-12 col-md-12 p-0">
+        <div class="col-md-6 pl-0">
+          <div class="form-group">
+            <label>Discount %</label>
+            <kendo-numerictextbox
+              [format]="'p'"
+              [step]="0.1"
+              [min]="0"
+              style="width: 100px;"
+              [max]="1"
+              [valuePrimitive]="true"
+              [value]="percentage"
+              [formControl]="
+    getInvoiceEntryList.controls[rowIndex].get('DiscPercentage')
+  "
+              (valueChange)="changeInvoiceValues(dataItem, rowIndex)"
+            ></kendo-numerictextbox>
+          </div>
+          <div class="form-group">
+            <label>Dis. Amount</label>
+            <kendo-numerictextbox
+              popupAnchor
+              style="width: 100px;"
+              [decimals]="decimals"
+              [spinners]="false"
+              [format]="c0"
+              [formControl]="
+        getInvoiceEntryList.controls[rowIndex].get('DiscountAmount')
+      "
+              (change)="changeDiscountValue(dataItem, rowIndex)"
+            >
+            </kendo-numerictextbox>
+          </div>
+        </div>
+        <div class="col-md-6 pr-0">
+          <div class="form-group">
+            <label>Amount</label>
+            <kendo-numerictextbox
+              popupAnchor
+              style="width: 120px;"
+              [decimals]="decimals"
+              [spinners]="false"
+              [format]="c0"
+              [formControl]="
+        getInvoiceEntryList.controls[rowIndex].get(column.field)
+      "
+            >
+            </kendo-numerictextbox>
+          </div>
+
+          <div class="form-group">
+            <label>Net Amount</label>
+            <kendo-numerictextbox
+              popupAnchor
+              style="width: 120px;"
+              [decimals]="decimals"
+              [format]="c0"
+              [spinners]="false"
+              [formControl]="
+            getInvoiceEntryList.controls[rowIndex].get('NetAmount')
+          "
+            >
+            </kendo-numerictextbox>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template
+      kendoGridFooterTemplate
+      let-column
+      let-columnIndex="columnIndex"
+    >
+      <div class="col-md-12">
+        <span class="pull-right">
+          Gross Amount: {{ totalGrossAmount }}
+        </span>
+      </div>
+      <div class="col-md-12">
+        <span class="pull-right">
+          Net Amount: {{ totalNetAmount }}
+        </span>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="TaxID" title="(Select Tax)" width="130">
+    <ng-template
+      kendoGridCellTemplate
+      let-isNew="isNew"
+      let-dataItem="dataItem"
+      let-rowIndex="rowIndex"
+      let-formGroup="formGroup"
+      let-column="column"
+    >
+      <div class="form-group">
+        <label>
+          Tax %
+        </label>
+        <kendo-dropdownlist
+          style="width: 110px; font-size: 12px;"
+          [data]="salesInvoiceService.taxList"
+          textField="Name"
+          valueField="ID"
+          [valuePrimitive]="true"
+          [formControl]="
+        getInvoiceEntryList.controls[rowIndex].get(column.field)
+      "
+          (valueChange)="handleTaxChange($event, rowIndex)"
+        >
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            <span class="template">{{ dataItem.Name }}</span>({{ dataItem.Rate
+            }} %)
+          </ng-template>
+        </kendo-dropdownlist>
+      </div>
+      <div class="form-group">
+        <label>Tax Amount</label>
+        <kendo-numerictextbox
+          popupAnchor
+          style="width: 110px;"
+          [decimals]="decimals"
+          [format]="c0"
+          [spinners]="false"
+          [formControl]="
+          getInvoiceEntryList.controls[rowIndex].get('TaxAmount')
+        "
+        >
+        </kendo-numerictextbox>
+      </div>
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="Remarks" title="Remarks" width="140">
+    <ng-template
+      kendoGridCellTemplate
+      let-dataItem="dataItem"
+      let-column="column"
+      let-rowIndex="rowIndex"
+      let-isNew="isNew"
+      let-formGroup="formGroup"
+    >
+      <input
+        #ntb="popupAnchor"
+        popupAnchor
+        class="k-textbox"
+        style="width: 120px;"
+        [formControl]="
+          getInvoiceEntryList.controls[rowIndex].get(column.field)
+        "
+      />
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-command-column title="Action" width="100">
+    <ng-template kendoGridCellTemplate let-isNew="isNew">
+      <button class="k-button" kendoGridAddCommand>
+        <i
+          class="fa fa-plus cursor-pointer"
+          aria-hidden="true"
+          tooltip="Add New"
+        ></i>
+      </button>
+      <button kendoGridRemoveCommand>
+        <i class="fas fa-trash-alt mr-2 cursor-pointer" tooltip="Delete"></i>
+      </button>
+      <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
+        {{ isNew ? "Add" : "Update" }}
+      </button>
+      <button kendoGridCancelCommand>
+        {{ isNew ? "Discard changes" : "Cancel" }}
+      </button>
+    </ng-template>
+  </kendo-grid-command-column>
+</kendo-grid>
