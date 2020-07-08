@@ -258,3 +258,17 @@ export interface TaxListModel {
   Message: string;
   Entity: TaxList[];
 }
+
+
+export interface ProductMinList {
+  ID: number;
+  Name: string;
+  Code: string;
+  CodeName: string;
+}
+
+export interface ProductMinModel {
+  StatusCode: number;
+  Message: string;
+  Entity: ProductMinList[];
+}

@@ -14,6 +14,8 @@ import {
   TaxList,
   SeriesList,
   SeriesListModel,
+  ProductMinModel,
+  ProductMinList,
 } from "../models/sales-invoice.model";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@core/services/http-client/http-client.service";
@@ -29,6 +31,7 @@ export class SalesInvoiceService {
   seriesList: SeriesList[] = [];
   projectList: ProjectList[] = [];
   cashPartyList: CashParty[] = [];
+  productList: ProductMinList[] = [];
   salesAccountList: SalesAccounts[] = [];
   depotList: DepotList[] = [];
   taxList: TaxList[] = [];
@@ -69,6 +72,14 @@ export class SalesInvoiceService {
       });
   }
 
+  getProductList(): void {
+    this.httpService
+      .get(`${this._api_URL}Product/min`)
+      .subscribe((response: any) => {
+        this.productList = response.Entity;
+      });
+  }
+
   getDepotList(): void {
     this.httpService
       .get(`${this._api_URL}Depot`)
@@ -95,6 +106,10 @@ export class SalesInvoiceService {
 
   getCashPartyAccountDD(): Observable<any> {
     return this.httpService.get(`${this._api_URL}Ledger/cashparty`);
+  }
+
+  getProductDD(): Observable<ProductMinModel> {
+    return this.httpService.get(`${this._api_URL}Product/min`);
   }
 
   getVoucherNoWithSeriesChange(seriesId): Observable<any> {

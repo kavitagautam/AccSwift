@@ -2,6 +2,7 @@ import {
   RelatedUnits,
   CashParty,
   SalesInvoiceDetails,
+  ProductMinList,
 } from "../../models/sales-invoice.model";
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
 import { ActivatedRoute } from "@angular/router";
@@ -9,14 +10,18 @@ import { FormArray, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
+
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+
 import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
-import { Subject } from "rxjs";
-import { takeUntil, debounceTime } from "rxjs/operators";
+import { Subject, Subscription, fromEvent } from "rxjs";
+import { takeUntil, debounceTime, tap, take } from "rxjs/operators";
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { RowClassArgs } from "@progress/kendo-angular-grid";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
@@ -50,6 +55,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   vatTotalAmount: number = 0;
   grandTotalAmount: number = 0;
   public cashPartyList: CashParty[] = [];
+  public productList: ProductMinList[] = [];
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -70,6 +76,9 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   ) {
     this.salesInvoiceService.getCashPartyAccountDD().subscribe((response) => {
       this.cashPartyList = response.Entity;
+    });
+    this.salesInvoiceService.getProductDD().subscribe((response) => {
+      this.productList = response.Entity;
     });
   }
 
@@ -234,6 +243,14 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
           this.vatTotalAmount +
           this.totalTaxAmount;
       });
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(
+      this.salesInvoiceForm.get("InvoiceDetails").value,
+      event.previousIndex,
+      event.currentIndex
+    );
   }
 
   addInvoiceEntryList(): FormGroup {
@@ -522,6 +539,12 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     );
   }
 
+  productDDFilter(value): void {
+    this.productList = this.salesInvoiceService.productList.filter(
+      (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
   openCashPartyModel(): void {
     this.modalRef = this.modalService.show(
       CashPartyModalPopupComponent,
@@ -626,6 +649,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
+  }
+
+  removeInvoiceList(rowIndex): void {
+    (<FormArray>this.salesInvoiceForm.get("InvoiceDetails")).removeAt(rowIndex);
   }
 
   public addHandler({ sender }) {
