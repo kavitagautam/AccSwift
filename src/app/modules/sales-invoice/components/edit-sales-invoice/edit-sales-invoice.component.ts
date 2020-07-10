@@ -10,9 +10,6 @@ import { FormArray, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
-
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
-
 import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
@@ -21,12 +18,11 @@ import { Subject, Subscription, fromEvent } from "rxjs";
 import { takeUntil, debounceTime, tap, take } from "rxjs/operators";
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { RowClassArgs } from "@progress/kendo-angular-grid";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
   templateUrl: "../common-html/common-sales-invoice.html",
-  styleUrls: ["./edit-sales-invoice.component.scss"],
+  styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   salesInvoiceForm: FormGroup;
@@ -245,20 +241,13 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       });
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(
-      this.salesInvoiceForm.get("InvoiceDetails").value,
-      event.previousIndex,
-      event.currentIndex
-    );
-  }
-
   addInvoiceEntryList(): FormGroup {
     return this._fb.group({
       ID: [0],
       ProductCode: ["", null, this.productCodeMatch.productCodeMatch()],
-      ProductID: ["", Validators.required],
-      ProductName: ["", Validators.required],
+      ProductID: [""],
+      ProductName: [""],
+      CodeName: [""],
       Quantity: ["", Validators.required],
       QtyUnitID: ["", Validators.required],
       SalesRate: ["", Validators.required],
@@ -296,8 +285,9 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
               null,
               this.productCodeMatch.productCodeMatch(),
             ],
-            ProductName: [element.ProductName, Validators.required],
-            ProductID: [element.ProductID, Validators.required],
+            ProductID: [element.ProductID],
+            ProductName: [element.ProductName],
+            CodeName: [element.CodeName],
             Quantity: [element.Quantity, Validators.required],
             QtyUnitID: [element.QtyUnitID, Validators.required],
             SalesRate: [element.SalesRate, Validators.required],
@@ -317,8 +307,9 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         this._fb.group({
           ID: [0],
           ProductCode: ["", null, this.productCodeMatch.productCodeMatch()],
-          ProductName: ["", Validators.required],
-          ProductID: [null, Validators.required],
+          ProductID: [null],
+          ProductName: [""],
+          CodeName: [""],
           Quantity: ["", Validators.required],
           QtyUnitID: [null, Validators.required],
           SalesRate: ["", Validators.required],
@@ -539,10 +530,25 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     );
   }
 
-  productDDFilter(value): void {
+  productDDFilter(value, i): void {
     this.productList = this.salesInvoiceService.productList.filter(
       (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
+    const selectedTaxValue = this.salesInvoiceService.productList.filter(
+      (s) => s.ID === value
+    );
+  }
+
+  handleProductChange(value, index): void {
+    const selectedProductValue = this.salesInvoiceService.productList.filter(
+      (s) => s.ID === value
+    );
+    const invoiceEntryArray = <FormArray>(
+      this.salesInvoiceForm.get("InvoiceDetails")
+    );
+    invoiceEntryArray.controls[index]
+      .get("ProductName")
+      .setValue(selectedProductValue[0].Name);
   }
 
   openCashPartyModel(): void {

@@ -19,7 +19,7 @@ import { PreferenceService } from "../../../preference/services/preference.servi
 @Component({
   selector: "accSwift-add-sales-invoice",
   templateUrl: "../common-html/common-sales-invoice.html",
-  styleUrls: ["./add-sales-invoice.component.scss"],
+  styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   salesInvoiceForm: FormGroup;
@@ -395,6 +395,17 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     );
   }
 
+  handleProductChange(value, index): void {
+    const selectedProductValue = this.salesInvoiceService.productList.filter(
+      (s) => s.ID === value
+    );
+    const invoiceEntryArray = <FormArray>(
+      this.salesInvoiceForm.get("InvoiceDetails")
+    );
+    invoiceEntryArray.controls[index]
+      .get("ProductName")
+      .setValue(selectedProductValue[0].Name);
+  }
   handelProductCode(dataItem, index): void {
     const invoiceEntryArray = <FormArray>(
       this.salesInvoiceForm.get("InvoiceDetails")

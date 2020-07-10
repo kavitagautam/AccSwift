@@ -8,6 +8,7 @@ import { GridModule } from "@progress/kendo-angular-grid";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { SelectDropDownModule } from "ngx-select-dropdown";
 
 import { SalesInvoiceRoutingModule } from "./sales-invoice-routing.module";
 import { ListSalesInvoiceComponent } from "./components/list-sales-invoice/list-sales-invoice.component";
@@ -19,6 +20,7 @@ import { CustomerInvoicesComponent } from "./components/customer-invoices/custom
 import { NgxPrintModule } from "ngx-print";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { SharedModule } from "@app/shared/shared.module";
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { SharedModule } from "@app/shared/shared.module";
     NgxPrintModule,
     GridModule,
     PopupModule,
+    DragDropModule,
+    SelectDropDownModule,
     PDFExportModule,
     InputsModule,
     DropDownListModule,
