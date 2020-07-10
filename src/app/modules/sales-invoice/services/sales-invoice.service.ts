@@ -41,6 +41,7 @@ export class SalesInvoiceService {
   ) {
     this.getSeriesList();
     this.getProjectList();
+    this.getProductList();
     this.getSalesAccount();
     this.getCashPartyAccount();
     this.getDepotList();
