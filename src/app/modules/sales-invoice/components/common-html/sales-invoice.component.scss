@@ -12,6 +12,10 @@
   color: #ff6757;
 }
 
+.k-grid th,
+.k-grid td {
+  padding: 6px 5px !important;
+}
 .drag-handle {
   display: flex;
   align-items: center;

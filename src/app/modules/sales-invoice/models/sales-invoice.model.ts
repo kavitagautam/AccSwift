@@ -131,6 +131,7 @@ export interface InvoiceDetail {
   ID: number;
   ProductID: number;
   ProductName: string;
+  CodeName:string;
   ProductCode: string;
   Quantity: number;
   Amount: number;
@@ -259,12 +260,19 @@ export interface TaxListModel {
   Entity: TaxList[];
 }
 
-
 export interface ProductMinList {
-  ID: number;
-  Name: string;
-  Code: string;
+  ProductID: number;
+  ProductName: string;
+  ProductCode: string;
   CodeName: string;
+  PurchaseRate: number;
+  SalesRate: number;
+  ClosingQty: number;
+  QtyUnitID: number;
+  IsInventory: boolean;
+  IsVAT: boolean;
+  GroupID: number;
+  GroupName: string;
 }
 
 export interface ProductMinModel {

@@ -15,6 +15,7 @@ import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { PreferenceService } from "../../../preference/services/preference.service";
+import { AddProductComponent } from "@app/shared/components/add-product/add-product/add-product.component";
 
 @Component({
   selector: "accSwift-add-sales-invoice",
@@ -374,9 +375,11 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       this.salesInvoiceForm.get("InvoiceDetails")
     );
     let netAmountV = invoiceEntryArray.controls[index].get("NetAmount").value;
-    invoiceEntryArray.controls[index]
-      .get("TaxAmount")
-      .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
+    if (selectedTaxValue) {
+      invoiceEntryArray.controls[index]
+        .get("TaxAmount")
+        .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
+    }
     this.myFormValueChanges$.subscribe((changes) =>
       this.invoiceValueChange(changes)
     );
@@ -389,23 +392,70 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     );
   }
 
-  productDDFilter(value): void {
+  productDDFilter(value, i): void {
     this.productList = this.salesInvoiceService.productList.filter(
       (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+    const selectedTaxValue = this.salesInvoiceService.productList.filter(
+      (s) => s.ProductID === value
     );
   }
 
   handleProductChange(value, index): void {
     const selectedProductValue = this.salesInvoiceService.productList.filter(
-      (s) => s.ID === value
+      (s) => s.ProductID === value
     );
     const invoiceEntryArray = <FormArray>(
       this.salesInvoiceForm.get("InvoiceDetails")
     );
-    invoiceEntryArray.controls[index]
-      .get("ProductName")
-      .setValue(selectedProductValue[0].Name);
+    if (selectedProductValue && selectedProductValue.length > 0) {
+      invoiceEntryArray.controls[index]
+        .get("ProductCode")
+        .setValue(selectedProductValue[0].ProductCode);
+      invoiceEntryArray.controls[index]
+        .get("ProductID")
+        .setValue(selectedProductValue[0].ProductID);
+      invoiceEntryArray.controls[index]
+        .get("CodeName")
+        .setValue(selectedProductValue[0].CodeName);
+      invoiceEntryArray.controls[index]
+        .get("ProductName")
+        .setValue(selectedProductValue[0].ProductName);
+      invoiceEntryArray.controls[index].get("Quantity").setValue(1);
+      invoiceEntryArray.controls[index]
+        .get("QtyUnitID")
+        .setValue(selectedProductValue[0].QtyUnitID);
+      invoiceEntryArray.controls[index]
+        .get("SalesRate")
+        .setValue(selectedProductValue[0].SalesRate);
+
+      invoiceEntryArray.controls[index]
+        .get("Amount")
+        .setValue(
+          invoiceEntryArray.controls[index].get("SalesRate").value *
+            invoiceEntryArray.controls[index].get("Quantity").value
+        );
+      invoiceEntryArray.controls[index].get("DiscPercentage").setValue(0);
+      invoiceEntryArray.controls[index]
+        .get("DiscountAmount")
+        .setValue(
+          invoiceEntryArray.controls[index].get("DiscPercentage").value *
+            invoiceEntryArray.controls[index].get("Amount").value
+        );
+      invoiceEntryArray.controls[index]
+        .get("NetAmount")
+        .setValue(
+          invoiceEntryArray.controls[index].get("Amount").value -
+            invoiceEntryArray.controls[index].get("DiscountAmount").value
+        );
+
+      invoiceEntryArray.controls[index].get("TaxID").setValue("");
+      invoiceEntryArray.controls[index].get("TaxAmount").setValue("");
+      invoiceEntryArray.controls[index].get("Remarks").setValue("");
+      this.getRelatedUnitList(selectedProductValue[0].ProductID);
+    }
   }
+
   handelProductCode(dataItem, index): void {
     const invoiceEntryArray = <FormArray>(
       this.salesInvoiceForm.get("InvoiceDetails")
@@ -490,6 +540,13 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
+  addNewProduct(template: TemplateRef<any>): void {
+    this.modalRef = this.modalService.show(AddProductComponent, this.config);
+    this.modalRef.content.action = "Select";
+
+    //this.modalRef = this.modalService.show(template, this.config);
+  }
+
   openModal(index: number): void {
     this.modalRef = this.modalService.show(
       ProductModalPopupComponent,
@@ -545,7 +602,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           this.totalDiscountAmount +
           this.vatTotalAmount +
           this.totalTaxAmount;
-        this.getRelatedUnits(data.ID);
+        this.getRelatedUnitList(data.ID);
       }
     });
     this.modalRef.content.onClose.subscribe((data) => {
@@ -553,7 +610,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
-  getRelatedUnits(productCode): void {
+  getRelatedUnitList(productCode): void {
     this.salesInvoiceService
       .getRelatedUnits(productCode)
       .subscribe((response) => {
