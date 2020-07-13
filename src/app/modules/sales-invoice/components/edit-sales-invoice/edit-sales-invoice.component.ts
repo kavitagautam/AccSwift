@@ -18,6 +18,7 @@ import { Subject, Subscription, fromEvent } from "rxjs";
 import { takeUntil, debounceTime, tap, take } from "rxjs/operators";
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { AddProductComponent } from "@app/shared/components/add-product/add-product/add-product.component";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
@@ -455,9 +456,11 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       this.salesInvoiceForm.get("InvoiceDetails")
     );
     let netAmountV = invoiceEntryArray.controls[index].get("NetAmount").value;
-    invoiceEntryArray.controls[index]
-      .get("TaxAmount")
-      .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
+    if (selectedTaxValue) {
+      invoiceEntryArray.controls[index]
+        .get("TaxAmount")
+        .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
+    }
   }
 
   handelProductCode(dataItem, index): void {
@@ -535,20 +538,64 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
     const selectedTaxValue = this.salesInvoiceService.productList.filter(
-      (s) => s.ID === value
+      (s) => s.ProductID === value
     );
   }
 
   handleProductChange(value, index): void {
     const selectedProductValue = this.salesInvoiceService.productList.filter(
-      (s) => s.ID === value
+      (s) => s.ProductID === value
     );
     const invoiceEntryArray = <FormArray>(
       this.salesInvoiceForm.get("InvoiceDetails")
     );
-    invoiceEntryArray.controls[index]
-      .get("ProductName")
-      .setValue(selectedProductValue[0].Name);
+    if (selectedProductValue && selectedProductValue.length > 0) {
+      invoiceEntryArray.controls[index]
+        .get("ProductCode")
+        .setValue(selectedProductValue[0].ProductCode);
+      invoiceEntryArray.controls[index]
+        .get("ProductID")
+        .setValue(selectedProductValue[0].ProductID);
+      invoiceEntryArray.controls[index]
+        .get("CodeName")
+        .setValue(selectedProductValue[0].CodeName);
+      invoiceEntryArray.controls[index]
+        .get("ProductName")
+        .setValue(selectedProductValue[0].ProductName);
+      invoiceEntryArray.controls[index].get("Quantity").setValue(1);
+      invoiceEntryArray.controls[index]
+        .get("QtyUnitID")
+        .setValue(selectedProductValue[0].QtyUnitID);
+      invoiceEntryArray.controls[index]
+        .get("SalesRate")
+        .setValue(selectedProductValue[0].SalesRate);
+
+      invoiceEntryArray.controls[index]
+        .get("Amount")
+        .setValue(
+          invoiceEntryArray.controls[index].get("SalesRate").value *
+            invoiceEntryArray.controls[index].get("Quantity").value
+        );
+      invoiceEntryArray.controls[index].get("DiscPercentage").setValue(0);
+      invoiceEntryArray.controls[index]
+        .get("DiscountAmount")
+        .setValue(
+          invoiceEntryArray.controls[index].get("DiscPercentage").value *
+            invoiceEntryArray.controls[index].get("Amount").value
+        );
+      invoiceEntryArray.controls[index]
+        .get("NetAmount")
+        .setValue(
+          invoiceEntryArray.controls[index].get("Amount").value -
+            invoiceEntryArray.controls[index].get("DiscountAmount").value
+        );
+
+      invoiceEntryArray.controls[index].get("TaxID").setValue("");
+      invoiceEntryArray.controls[index].get("TaxAmount").setValue("");
+      invoiceEntryArray.controls[index].get("Remarks").setValue("");
+
+      this.getRelatedUnitList(selectedProductValue[0].ProductID);
+    }
   }
 
   openCashPartyModel(): void {
@@ -629,6 +676,12 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
     });
+  }
+
+  addNewProduct(template: TemplateRef<any>): void {
+    this.modalRef = this.modalService.show(AddProductComponent, this.config);
+    this.modalRef.content.action = "Select";
+    //this.modalRef = this.modalService.show(template, this.config);
   }
 
   openTender(template: TemplateRef<any>): void {

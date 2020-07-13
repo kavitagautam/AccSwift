@@ -152,7 +152,7 @@
           <button kendoGridAddCommand>Add New</button>
         </ng-template>
 
-        <kendo-grid-column field="ProductName" title="Product" width="150">
+        <kendo-grid-column field="ProductID" title="Product" width="150">
           <ng-template
             kendoGridCellTemplate
             let-dataItem="dataItem"
@@ -164,9 +164,10 @@
             <kendo-dropdownlist
               class="form-control"
               [data]="productList"
-              [textField]="Name"
-              [valueField]="ProductName"
+              [textField]="'CodeName'"
+              [valueField]="'ProductID'"
               [filterable]="true"
+              [valuePrimitive]="true"
               [formControl]="
     getInvoiceEntryList.controls[rowIndex].get(column.field)
   "
@@ -175,8 +176,18 @@
             >
               <ng-template kendoDropDownListItemTemplate let-dataItem>
                 <span class="template"
-                  >{{ dataItem.Code}} ({{dataItem.Name}})</span
+                  >{{ dataItem.ProductCode}} ({{dataItem.ProductName}})</span
                 >
+              </ng-template>
+              <ng-template kendoDropDownListNoDataTemplate>
+                <div>
+                  No data found.
+                  <!-- <ng-container *ngIf="filter">Do you want to add new item - '{{ filter }}' ?</ng-container> -->
+                  <br />
+                  <button class="k-button" (click)="addNewProduct(addProduct)">
+                    Add new product
+                  </button>
+                </div>
               </ng-template>
             </kendo-dropdownlist>
           </ng-template>
@@ -367,15 +378,15 @@
           </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-command-column title="Action" width="100">
+        <kendo-grid-command-column title="Action" width="60">
           <ng-template kendoGridCellTemplate let-isNew="isNew">
-            <button class="k-button" kendoGridAddCommand>
+            <!-- <button class="k-button" kendoGridAddCommand>
               <i
                 class="fa fa-plus cursor-pointer"
                 aria-hidden="true"
                 tooltip="Add New"
               ></i>
-            </button>
+            </button> -->
             <button kendoGridRemoveCommand>
               <i
                 class="fas fa-trash-alt mr-2 cursor-pointer"
@@ -498,7 +509,35 @@
     </div>
   </div>
 </div>
+<ng-template #addProduct>
+  <div class="modal-header">
+    <h3 class="modal-title pull-left">Add Product</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 
+  <div class="modal-body">
+    <div class="row"><accSwift-add-product></accSwift-add-product></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="modalRef.hide()">
+      OK
+    </button>
+    <button
+      class="btn btn-secondary ml-2"
+      type="button"
+      (click)="modalRef.hide()"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>
 <ng-template #tenderModal>
   <div class="modal-header">
     <h3 class="modal-title pull-left">Tender Amount</h3>

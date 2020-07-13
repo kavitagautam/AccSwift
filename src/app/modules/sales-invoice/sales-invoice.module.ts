@@ -21,6 +21,7 @@ import { NgxPrintModule } from "ngx-print";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { SharedModule } from "@app/shared/shared.module";
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { AddProductComponent } from "@app/shared/components/add-product/add-product/add-product.component";
 
 @NgModule({
   declarations: [
@@ -33,8 +34,8 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
     CommonModule,
     SalesInvoiceRoutingModule,
     FormsModule,
-    ReactiveFormsModule,
     SharedModule,
+    ReactiveFormsModule,
     NgxPrintModule,
     GridModule,
     PopupModule,
@@ -45,7 +46,11 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
     DropDownListModule,
     DropDownsModule,
   ],
-  entryComponents: [ProductModalPopupComponent, CashPartyModalPopupComponent],
+  entryComponents: [
+    ProductModalPopupComponent,
+    CashPartyModalPopupComponent,
+    AddProductComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SalesInvoiceModule {}

@@ -34,6 +34,8 @@ import { LedgerModalPopupComponent } from "./components/ledger-modal-popup/ledge
 import { DecimalPlaceDirective } from "./directives/decimal-place/decimal-place.directive";
 import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component";
 import { NumberToWordsPipe } from "./pipes/number-to-words/number-to-words.pipe";
+import { AddProductComponent } from "./components/add-product/add-product/add-product.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -53,8 +55,11 @@ import { NumberToWordsPipe } from "./pipes/number-to-words/number-to-words.pipe"
     CashPartyModalPopupComponent,
     DecimalPlaceDirective,
     NumberToWordsPipe,
+    AddProductComponent,
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     CollapseModule.forRoot(),
     TooltipModule.forRoot(),
