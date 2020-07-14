@@ -24,7 +24,7 @@ export class AddProductComponent implements OnInit {
   rowSubmitted: boolean;
   selectedProductId: number;
 
-  modalRef: BsModalRef;
+  public modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -43,51 +43,72 @@ export class AddProductComponent implements OnInit {
 
   buildProductForm(): void {
     this.productForm = this._fb.group({
-      productCode: ["", Validators.required],
-      productName: ["", Validators.required],
-      productGroupId: [null, Validators.required],
-      departmentandLocationId: [null, Validators.required],
-      baseUnitId: [null, Validators.required],
-      isVatApplicable: [false, Validators.required],
-      isDecimalApplicable: [false],
-      isInventoryApplicable: [false],
-      remarks: [""],
-      openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
-      moreDetails: new FormControl(""),
+      ID: 0,
+      Name: ["", Validators.required],
+      GroupID: [null, Validators.required],
+      ProductCode: ["", Validators.required],
+      ProductColor: [""],
+      DepotID: [null, Validators.required],
+      UnitID: [null, Validators.required],
+      ParentProductID: 0,
+      Size: 0,
+      IsVatApplicable: [false, Validators.required],
+      IsInventoryApplicable: [false],
+      IsDecimalApplicable: [false],
+      IsActive: true,
+      ProductImage: [""],
+      ContactPerson: [""],
+      Address1: [""],
+      Address2: [""],
+      City: [""],
+      Telephone: [""],
+      Email: [""],
+      Company: [""],
+      Website: [""],
+      BackColor: 0,
+      OpeningQuantity: this._fb.array([this.addOpeningBalanceFormGroup()]),
+      Remarks: [""],
+
+      // productCode: ["", Validators.required],
+      // productName: ["", Validators.required],
+      // productGroupId: [null, Validators.required],
+      // departmentandLocationId: [null, Validators.required],
+      // baseUnitId: [null, Validators.required],
+      // isVatApplicable: [false, Validators.required],
+      // isDecimalApplicable: [false],
+      // isInventoryApplicable: [false],
+      // remarks: [""],
+      // openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
+      // moreDetails: new FormControl(""),
     });
   }
 
   addOpeningBalanceFormGroup(): FormGroup {
     return this._fb.group({
-      ID: [""],
-      productId: [""],
-      accountClassId: [
+      ID: 0,
+      ProductID: 0,
+      AccClassID: [
         this.productService.accountClass
           ? this.productService.accountClass[0].ID
           : null,
       ],
-      accountClassName: [
-        this.productService.accountClass
-          ? this.productService.accountClass[0].Name
-          : "",
-      ],
-      quantity: [""],
-      purchaseRate: [""],
-      salesRate: [""],
-      date: [""],
+      OpenPurchaseQty: 0,
+      OpenPurchaseRate: 0,
+      OpenSalesRate: 0,
+      OpenQuantityDate: [new Date()],
     });
   }
 
   get getOpeningBalanceList(): FormArray {
-    return <FormArray>this.productForm.get("openingBalanceList");
+    return <FormArray>this.productForm.get("OpeningQuantity");
   }
 
   public addHandler({ sender }) {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.productForm.get("openingBalanceList").invalid) return;
-    (<FormArray>this.productForm.get("openingBalanceList")).push(
+    if (this.productForm.get("OpeningQuantity").invalid) return;
+    (<FormArray>this.productForm.get("OpeningQuantity")).push(
       this.addOpeningBalanceFormGroup()
     );
     this.rowSubmitted = false;
@@ -97,7 +118,7 @@ export class AddProductComponent implements OnInit {
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
     this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.productForm.get("openingBalanceList"));
+    sender.editRow(rowIndex, this.productForm.get("OpeningQuantity"));
   }
 
   public cancelHandler({ sender, rowIndex }) {
@@ -110,7 +131,7 @@ export class AddProductComponent implements OnInit {
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.productForm.get("openingBalanceList")).removeAt(rowIndex);
+    (<FormArray>this.productForm.get("OpeningQuantity")).removeAt(rowIndex);
   }
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);
@@ -119,35 +140,8 @@ export class AddProductComponent implements OnInit {
 
   save(): void {
     if (this.productForm.invalid) return;
-    const openingBalanceArray = <FormArray>(
-      this.productForm.get("openingBalanceList")
-    );
-    const obj = {
-      ProductCode: this.productForm.get("productCode").value,
-      Name: this.productForm.get("productName").value,
-      GroupID: this.productForm.get("productGroupId").value,
-      DepotID: this.productForm.get("departmentandLocationId").value,
-      UnitID: this.productForm.get("baseUnitId").value,
-      IsVatApplicable: this.productForm.get("isVatApplicable").value
-        ? this.productForm.get("isVatApplicable").value
-        : false,
-      IsInventoryApplicable: this.productForm.get("isInventoryApplicable").value
-        ? this.productForm.get("isInventoryApplicable").value
-        : false,
-      IsDecimalApplicable: this.productForm.get("isDecimalApplicable").value
-        ? this.productForm.get("isDecimalApplicable").value
-        : false,
-      OpeningQuantity: {
-        ProductID: this.productForm.get("productGroupId").value,
-        AccClassID: openingBalanceArray.controls[0].get("accountClassId").value,
-        OpenPurchaseQty: openingBalanceArray.controls[0].get("quantity").value,
-        OpenPurchaseRate: openingBalanceArray.controls[0].get("purchaseRate")
-          .value,
-        OpenSalesRate: openingBalanceArray.controls[0].get("salesRate").value,
-        OpenQuantityDate: openingBalanceArray.controls[0].get("date").value,
-      },
-    };
-    this.productService.addProduct(obj).subscribe(
+
+    this.productService.addProduct(this.productForm.value).subscribe(
       (response) => {
         setTimeout(() => {
           window.location.reload();

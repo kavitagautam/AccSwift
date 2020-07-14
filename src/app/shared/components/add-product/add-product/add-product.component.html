@@ -19,7 +19,7 @@
               <label>Product Code<sup>*</sup> </label>
               <input
                 class="form-control"
-                formControlName="productCode"
+                formControlName="ProductCode"
                 accSwiftFormValidator
               />
             </div>
@@ -28,7 +28,7 @@
               <select
                 class="form-control"
                 id="productGroupId"
-                formControlName="productGroupId"
+                formControlName="GroupID"
                 accSwiftFormValidator
               >
                 <option [ngValue]="null">Choose Option....</option>
@@ -45,7 +45,7 @@
               <select
                 class="form-control"
                 id="baseUnitId"
-                formControlName="baseUnitId"
+                formControlName="UnitID"
                 accSwiftFormValidator
               >
                 <option [ngValue]="null">Choose Option....</option>
@@ -74,7 +74,7 @@
               <label>Product Name<sup>*</sup> </label>
               <input
                 class="form-control"
-                formControlName="productName"
+                formControlName="Name"
                 accSwiftFormValidator
               />
             </div>
@@ -83,7 +83,7 @@
               <select
                 class="form-control"
                 id="departmentandLocationId"
-                formControlName="departmentandLocationId"
+                formControlName="DepotID"
                 accSwiftFormValidator
               >
                 <option [ngValue]="null">Choose Option....</option>
@@ -97,13 +97,13 @@
             </div>
             <div class="form-group">
               <label>Remarks</label>
-              <input class="form-control" formControlName="remarks" />
+              <input class="form-control" formControlName="Remarks" />
             </div>
 
             <div class="form-group">
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" formControlName="isVatApplicable" />
+                  <input type="checkbox" formControlName="IsVatApplicable" />
                   IsVat Applicable
                 </label>
               </div>
@@ -114,7 +114,7 @@
                 <label>
                   <input
                     type="checkbox"
-                    formControlName="isInventoryApplicable"
+                    formControlName="IsInventoryApplicable"
                   />
                   IsInventory Applicable
                 </label>
@@ -126,7 +126,7 @@
                 <label>
                   <input
                     type="checkbox"
-                    formControlName="isDecimalApplicable"
+                    formControlName="IsDecimalApplicable"
                   />
                   IsDecimal Applicable
                 </label>
@@ -144,7 +144,7 @@
             >
               Save
             </button>
-            <button class="btn btn-secondary ml-2" (click)="modelRef.hide()">
+            <button class="btn btn-secondary ml-2" (click)="modalRef.hide()">
               Cancel
             </button>
           </div>
@@ -207,7 +207,7 @@
               <ng-template kendoGridToolbarTemplate>
                 <button kendoGridAddCommand>Add new</button>
               </ng-template>
-              <kendo-grid-column field="accountClassName" title="Account Class">
+              <kendo-grid-column field="AccClassID" title="Account Class">
                 <ng-template
                   kendoGridCellTemplate
                   let-dataItem="dataItem"
@@ -216,18 +216,31 @@
                   let-isNew="isNew"
                   let-rowIndex="rowIndex"
                 >
-                  <input
+                  <kendo-dropdownlist
+                    class="form-control"
+                    [data]="productService.accountClass"
+                    textField="Name"
+                    valueField="ID"
+                    [formControl]="
+                      getOpeningBalanceList.controls[rowIndex].get('AccClassID')
+                    "
+                  >
+                  </kendo-dropdownlist>
+                  <!-- <input
                     #input
                     class="k-textbox"
                     style="width: 100px;"
                     [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(column.field)
                     "
-                  />
+                  /> -->
                 </ng-template>
               </kendo-grid-column>
 
-              <kendo-grid-column field="quantity" title="Opening Quantity">
+              <kendo-grid-column
+                field="OpenPurchaseQty"
+                title="Opening Quantity"
+              >
                 <ng-template
                   kendoGridCellTemplate
                   let-dataItem="dataItem"
@@ -246,7 +259,7 @@
                   ></kendo-numerictextbox>
                 </ng-template>
               </kendo-grid-column>
-              <kendo-grid-column field="purchaseRate" title="Purchase Rate">
+              <kendo-grid-column field="OpenPurchaseRate" title="Purchase Rate">
                 <ng-template
                   kendoGridCellTemplate
                   let-dataItem="dataItem"
@@ -266,7 +279,7 @@
                 </ng-template>
               </kendo-grid-column>
 
-              <kendo-grid-column field="salesRate" title="Sales Rate">
+              <kendo-grid-column field="OpenSalesRate" title="Sales Rate">
                 <ng-template
                   kendoGridCellTemplate
                   let-dataItem="dataItem"
@@ -287,7 +300,7 @@
               </kendo-grid-column>
               <kendo-grid-command-column title="Action">
                 <ng-template kendoGridCellTemplate let-isNew="isNew">
-                  <button class="k-button" (click)="updateOpeningBalance()">
+                  <button class="k-button" (click)="modalRef.hide()">
                     Update
                   </button>
                 </ng-template>
