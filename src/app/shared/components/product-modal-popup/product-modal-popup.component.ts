@@ -71,7 +71,7 @@ export class ProductModalPopupComponent implements OnInit {
       this.selectAllState = "checked";
     }
     this.selected = this.productList.filter(function (obj) {
-      return obj.ID == e[0];
+      return obj.ProductID == e[0];
     });
     this.onSelected.next(this.selected[0]);
     this.onClose.next(true);

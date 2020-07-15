@@ -629,15 +629,20 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         );
         invoiceEntryArray.controls[index]
           .get("ProductCode")
-          .setValue(data.Code);
-        invoiceEntryArray.controls[index].get("ProductID").setValue(data.ID);
+          .setValue(data.ProductCode);
+        invoiceEntryArray.controls[index]
+          .get("CodeName")
+          .setValue(data.CodeName);
+        invoiceEntryArray.controls[index]
+          .get("ProductID")
+          .setValue(data.ProductID);
         invoiceEntryArray.controls[index]
           .get("ProductName")
-          .setValue(data.Name);
+          .setValue(data.ProductName);
         invoiceEntryArray.controls[index].get("Quantity").setValue(1);
         invoiceEntryArray.controls[index]
           .get("QtyUnitID")
-          .setValue(data.UnitID);
+          .setValue(data.QtyUnitID);
         invoiceEntryArray.controls[index]
           .get("SalesRate")
           .setValue(data.SalesRate);
@@ -666,7 +671,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         invoiceEntryArray.controls[index].get("TaxAmount").setValue("");
         invoiceEntryArray.controls[index].get("Remarks").setValue("");
 
-        this.getRelatedUnitList(data.ID);
+        this.getRelatedUnitList(data.ProductID);
       }
     });
 

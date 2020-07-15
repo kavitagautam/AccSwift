@@ -152,7 +152,7 @@
           <button kendoGridAddCommand>Add New</button>
         </ng-template>
 
-        <kendo-grid-column field="ProductID" title="Product" width="150">
+        <kendo-grid-column field="ProductID" title="Product" width="180">
           <ng-template
             kendoGridCellTemplate
             let-dataItem="dataItem"
@@ -164,6 +164,7 @@
             <kendo-dropdownlist
               class="form-control"
               [data]="productList"
+              style="width: 150px;"
               [textField]="'CodeName'"
               [valueField]="'ProductID'"
               [filterable]="true"
@@ -182,7 +183,6 @@
               <ng-template kendoDropDownListNoDataTemplate>
                 <div>
                   No data found.
-                  <!-- <ng-container *ngIf="filter">Do you want to add new item - '{{ filter }}' ?</ng-container> -->
                   <br />
                   <button class="k-button" (click)="addNewProduct(addProduct)">
                     Add new product
@@ -190,6 +190,15 @@
                 </div>
               </ng-template>
             </kendo-dropdownlist>
+            <a
+              (click)="openModal(rowIndex)"
+              style="top: 0px; margin-left: 45px; position: absolute;"
+              ><i
+                class="fa fa-eye pull-right ledgerSelectIcon"
+                style="margin-top: 25px; font-size: 18px;"
+                aria-hidden="true"
+              ></i>
+            </a>
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="QtyUnitID" title="Unit" width="100">

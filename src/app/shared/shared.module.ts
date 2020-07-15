@@ -36,6 +36,8 @@ import { LanguageSwitcherComponent } from "./components/language-switcher/langua
 import { NumberToWordsPipe } from "./pipes/number-to-words/number-to-words.pipe";
 import { AddProductComponent } from "./components/add-product/add-product/add-product.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { LayoutModule } from "@progress/kendo-angular-layout";
+import { ImageCropperModule } from "ngx-image-cropper";
 
 @NgModule({
   declarations: [
@@ -70,9 +72,11 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     BsDatepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
     NgxPaginationModule,
+    ImageCropperModule,
     GridModule,
     PopupModule,
     InputsModule,
+    LayoutModule,
     DropDownListModule,
     DropDownsModule,
   ],

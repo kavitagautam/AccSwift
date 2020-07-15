@@ -4,16 +4,18 @@ import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { Observable } from "rxjs";
 export interface ProductList {
+  ClosingQty: number;
+  CodeName: string;
   GroupID: number;
   GroupName: string;
-  PurchaseRate: number;
-  SalesRate: number;
-  ClosingQty: number;
-  UnitID: number;
   IsInventory: boolean;
-  ID: number;
-  Name: string;
-  Code: string;
+  IsVAT: boolean;
+  ProductCode: string;
+  ProductID: number;
+  ProductName: string;
+  PurchaseRate: number;
+  QtyUnitID: number;
+  SalesRate: number;
 }
 
 export interface ProductListModel {
@@ -22,7 +24,7 @@ export interface ProductListModel {
   Entity: ProductList[];
 }
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class ProductlistService {
   _api_URL = environment.baseAPI;
@@ -32,6 +34,6 @@ export class ProductlistService {
   ) {}
 
   getProductList(): Observable<ProductListModel> {
-    return this.httpService.get(`${this._api_URL}Product/LOP`);
+    return this.httpService.get(`${this._api_URL}Product/min`);
   }
 }

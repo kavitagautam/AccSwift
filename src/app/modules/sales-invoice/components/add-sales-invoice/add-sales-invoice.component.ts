@@ -137,17 +137,19 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   addInvoiceEntryList(): FormGroup {
     return this._fb.group({
-      ProductCode: [""],
-      ProductName: ["", Validators.required],
-      ProductID: [null, Validators.required],
+      ID: [0],
+      ProductCode: ["", null, this.productCodeMatch.productCodeMatch()],
+      ProductID: [""],
+      ProductName: [""],
+      CodeName: [""],
       Quantity: ["", Validators.required],
-      QtyUnitID: [null, Validators.required],
+      QtyUnitID: ["", Validators.required],
       SalesRate: ["", Validators.required],
       Amount: ["", Validators.required],
-      DiscPercentage: ["", Validators.required],
-      DiscountAmount: ["", Validators.required],
-      NetAmount: ["", Validators.required],
-      TaxID: [null],
+      DiscPercentage: [0, Validators.required],
+      DiscountAmount: [0, Validators.required],
+      NetAmount: [0, Validators.required],
+      TaxID: [""],
       TaxAmount: [""],
       Remarks: [""],
     });
@@ -561,15 +563,20 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         );
         invoiceEntryArray.controls[index]
           .get("ProductCode")
-          .setValue(data.Code);
-        invoiceEntryArray.controls[index].get("ProductID").setValue(data.ID);
+          .setValue(data.ProductCode);
+        invoiceEntryArray.controls[index]
+          .get("CodeName")
+          .setValue(data.CodeName);
+        invoiceEntryArray.controls[index]
+          .get("ProductID")
+          .setValue(data.ProductID);
         invoiceEntryArray.controls[index]
           .get("ProductName")
-          .setValue(data.Name);
+          .setValue(data.ProductName);
         invoiceEntryArray.controls[index].get("Quantity").setValue(1);
         invoiceEntryArray.controls[index]
           .get("QtyUnitID")
-          .setValue(data.UnitID);
+          .setValue(data.QtyUnitID);
         invoiceEntryArray.controls[index]
           .get("SalesRate")
           .setValue(data.SalesRate);
@@ -602,7 +609,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           this.totalDiscountAmount +
           this.vatTotalAmount +
           this.totalTaxAmount;
-        this.getRelatedUnitList(data.ID);
+        this.getRelatedUnitList(data.ProductID);
       }
     });
     this.modalRef.content.onClose.subscribe((data) => {
