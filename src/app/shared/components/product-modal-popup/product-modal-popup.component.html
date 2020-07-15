@@ -33,7 +33,7 @@
           [kendoGridSelectBy]="'ID'"
           [selectedKeys]="mySelection"
         >
-          <kendo-grid-column field="Name" title="Prdouct Name" width="350">
+          <kendo-grid-column field="ProductName" title="Name" width="150">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -42,26 +42,31 @@
               <a
                 class="a_link"
                 (click)="selectedProduct(dataItem, bsModalRef.content?.data)"
-                >{{ dataItem.Name }}</a
+                >{{ dataItem.ProductName }}</a
               >
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="Code" title="Product Code" width="180">
+          <kendo-grid-column field="ProductCode" title="Code" width="100">
           </kendo-grid-column>
+          <kendo-grid-column field="CodeName" title="CodeName" width="180">
+          </kendo-grid-column>
+          <kendo-grid-column field="ClosingQty" title="ClosingQty" width="80">
+          </kendo-grid-column>
+
           <kendo-grid-column
             field="PurchaseRate"
             title="PurchaseRate"
-            width="180"
+            width="100"
           >
             <ng-template kendoGridCellTemplate let-dataItem="dataItem">
               <span class="float-right">{{ dataItem.PurchaseRate }}</span>
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column
-            field="SalesRate"
-            title="Sales Rate"
-            width="150"
-          ></kendo-grid-column>
+          <kendo-grid-column field="SalesRate" title="Sales Rate" width="100">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span class="float-right">{{ dataItem.SalesRate }}</span>
+            </ng-template></kendo-grid-column
+          >
         </kendo-grid>
         <div *ngIf="listLoading" class="k-i-loading"></div>
       </div>
@@ -72,7 +77,7 @@
   <button class="btn btn-primary" type="button" (click)="onCancel()">
     Ok
   </button>
-  <button class="btn btn-secondary ml-2 " type="button" (click)="onCancel()">
+  <button class="btn btn-secondary ml-2" type="button" (click)="onCancel()">
     Cancel
   </button>
 </div>

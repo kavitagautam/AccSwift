@@ -9,6 +9,8 @@ import {
 import { ProductService } from "@app/modules/product/services/product.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
+import { SelectEvent } from "@progress/kendo-angular-upload";
+import { ImageCroppedEvent } from "ngx-image-cropper";
 
 @Component({
   selector: "accSwift-add-product",
@@ -18,13 +20,14 @@ import { ToastrService } from "ngx-toastr";
 export class AddProductComponent implements OnInit {
   productForm: FormGroup;
   private editedRowIndex: number;
+  imageChangedEvent: Array<any> = [];
+  croppedImage: any = "";
 
   submitted: boolean;
 
   rowSubmitted: boolean;
   selectedProductId: number;
 
-  public modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -34,6 +37,7 @@ export class AddProductComponent implements OnInit {
     private _fb: FormBuilder,
     public productService: ProductService,
     private toastr: ToastrService,
+    public modalRef: BsModalRef,
     private modalService: BsModalService
   ) {}
 
@@ -101,6 +105,69 @@ export class AddProductComponent implements OnInit {
 
   get getOpeningBalanceList(): FormArray {
     return <FormArray>this.productForm.get("OpeningQuantity");
+  }
+
+  fileChangeEvent(event): void {
+    this.imageChangedEvent = event;
+  }
+  public events: string[] = [];
+  public imagePreviews: any[] = [];
+
+  public selectEventHandler(e: SelectEvent): void {
+    const that = this;
+
+    e.files.forEach((file) => {
+      that.log(`File selected: ${file.name}`);
+
+      if (!file.validationErrors) {
+        const reader = new FileReader();
+
+        reader.onload = function (ev) {
+          const image = {
+            src: ev.target["result"],
+            uid: file.uid,
+          };
+
+          that.imagePreviews.unshift(image);
+        };
+
+        reader.readAsDataURL(file.rawFile);
+      }
+    });
+  }
+
+  private log(event: string): void {
+    this.events.unshift(`${event}`);
+  }
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+  imageLoaded() {
+    // show cropper
+  }
+  cropperReady() {
+    // cropper ready
+  }
+  loadImageFailed() {
+    // show message
+  }
+
+  //File Select
+  urls = [];
+  onSelectFile(event) {
+    if (event.target.files && event.target.files[0]) {
+      var filesAmount = event.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        var reader = new FileReader();
+
+        reader.onload = (event: any) => {
+          console.log(event.target.result);
+          this.urls.push(event.target.result);
+        };
+        reader.readAsDataURL(event.target.files[i]);
+        this.productForm.get("ProductImage").setValue(reader);
+      }
+    }
   }
 
   public addHandler({ sender }) {
