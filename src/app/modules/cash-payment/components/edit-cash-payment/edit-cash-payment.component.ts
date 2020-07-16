@@ -196,8 +196,6 @@ export class EditCashPaymentComponent implements OnInit {
       LedgerModalPopupComponent,
       this.config
     );
-    this.modalRef.content = index;
-    this.modalRef.content.action = "Select";
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const cashPaymentFormArray = <FormArray>(
@@ -237,7 +235,7 @@ export class EditCashPaymentComponent implements OnInit {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
-          this.toastr.success("Invoice added successfully");
+          this.toastr.success("Cash payment edited successfully");
         }
       );
   }

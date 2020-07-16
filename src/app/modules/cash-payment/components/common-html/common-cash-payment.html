@@ -121,7 +121,7 @@
                 <div class="col-md-4 pl-0">
                   <input
                     #input
-                    class="k-textbox"
+                    class="form-control"
                     style="width: 100px;"
                     placeholder="Ledger Code"
                     [formControl]="
@@ -147,7 +147,7 @@
                 <div class="col-md-8 pr-0">
                   <input
                     #input
-                    class="k-textbox"
+                    class="form-control"
                     [readonly]="true"
                     [formControl]="
                         getCashPaymentEntryList.controls[rowIndex].get(
@@ -200,15 +200,15 @@
               <kendo-numerictextbox
                 #ntb="popupAnchor"
                 popupAnchor
-                style="width: 130px;"
+                class="form-control"
                 [decimals]="decimals"
                 [spinners]="false"
                 [format]="'c0'"
                 [formControl]="
-                    getCashPaymentEntryList.controls[rowIndex].get(
-                      column.field
-                    )
-                  "
+                  getCashPaymentEntryList.controls[rowIndex].get(
+                    column.field
+                  )
+                "
               ></kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
@@ -228,8 +228,7 @@
             >
               <input
                 #input
-                class="k-textbox"
-                style="width: 100px; text-align: right;"
+                class="form-control"
                 [readonly]="true"
                 [formControl]="
                 getCashPaymentEntryList.controls[rowIndex].get(column.field)
@@ -249,7 +248,7 @@
             >
               <input
                 #input
-                class="k-textbox"
+                class="form-control"
                 [formControl]="
                     getCashPaymentEntryList.controls[rowIndex].get(column.field)
                   "

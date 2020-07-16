@@ -262,6 +262,21 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
+  private showUnitPopup: boolean = true;
+  rowPopupIndexUnit: number;
+  public unitPopup(number): void {
+    this.rowPopupIndexUnit = number;
+    this.showUnitPopup = !this.showUnitPopup;
+  }
+
+  private showTaxPopup: boolean = true;
+  rowPopupIndexTax: number;
+
+  public taxPopup(number): void {
+    this.rowPopupIndexTax = number;
+    this.showTaxPopup = !this.showTaxPopup;
+  }
+
   setInvoiceList(): void {
     this.salesInvoiceForm.setControl(
       "InvoiceDetails",
@@ -595,6 +610,9 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       invoiceEntryArray.controls[index].get("Remarks").setValue("");
 
       this.getRelatedUnitList(selectedProductValue[0].ProductID);
+      (<FormArray>this.salesInvoiceForm.get("InvoiceDetails")).push(
+        this.addInvoiceEntryList()
+      );
     }
   }
 

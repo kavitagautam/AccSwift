@@ -161,8 +161,7 @@ export class AddCashPaymentComponent implements OnInit {
       LedgerModalPopupComponent,
       this.config
     );
-    // this.modalRef.content = index;
-    // this.modalRef.content.action = "Select";
+
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const cashPaymentFormArray = <FormArray>(
