@@ -70,7 +70,19 @@ export class AddProductComponent implements OnInit {
       Company: [""],
       Website: [""],
       BackColor: 0,
-      OpeningQuantity: this._fb.array([this.addOpeningBalanceFormGroup()]),
+      OpeningQuantity: this._fb.group({
+        ID: 0,
+        ProductID: 0,
+        AccClassID: [
+          this.productService.accountClass
+            ? this.productService.accountClass[0].ID
+            : null,
+        ],
+        OpenPurchaseQty: 0,
+        OpenPurchaseRate: 0,
+        OpenSalesRate: 0,
+        OpenQuantityDate: [new Date()],
+      }),
       Remarks: [""],
 
       // productCode: ["", Validators.required],
@@ -103,8 +115,8 @@ export class AddProductComponent implements OnInit {
     });
   }
 
-  get getOpeningBalanceList(): FormArray {
-    return <FormArray>this.productForm.get("OpeningQuantity");
+  get getOpeningBalanceList(): FormGroup {
+    return this.productForm.get("OpeningQuantity").value;
   }
 
   fileChangeEvent(event): void {
@@ -210,9 +222,7 @@ export class AddProductComponent implements OnInit {
 
     this.productService.addProduct(this.productForm.value).subscribe(
       (response) => {
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        this.modalRef.hide();
       },
       (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
@@ -224,7 +234,7 @@ export class AddProductComponent implements OnInit {
   }
 
   cancel(event): void {
-    this.buildProductForm();
+    this.modalRef.hide();
   }
 
   formInitialized(name: string, form: FormGroup) {

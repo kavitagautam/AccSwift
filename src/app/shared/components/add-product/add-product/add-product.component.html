@@ -299,117 +299,59 @@
       </div>
       <div class="modal-body">
         <div class="container-fluid">
-          <div class="row mt-2">
-            <kendo-grid
-              [data]="getOpeningBalanceList.value"
-              (edit)="editHandler($event)"
-              (cancel)="cancelHandler($event)"
-              (save)="saveHandler($event)"
-              (remove)="removeHandler($event)"
-              (add)="addHandler($event)"
-            >
-              <ng-template kendoGridToolbarTemplate>
-                <button kendoGridAddCommand>Add new</button>
-              </ng-template>
-              <kendo-grid-column field="AccClassID" title="Account Class">
-                <ng-template
-                  kendoGridCellTemplate
-                  let-dataItem="dataItem"
-                  let-column="column"
-                  let-formGroup="formGroup"
-                  let-isNew="isNew"
-                  let-rowIndex="rowIndex"
+          <div class="col-sm-12">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Account Class</label>
+                <kendo-dropdownlist
+                  class="form-control"
+                  [data]="productService.accountClass"
+                  [textField]="'Name'"
+                  [valueField]="'ID'"
+                  [valuePrimitive]="true"
+                  [formControl]="
+                    productForm.get('OpeningQuantity').get('AccClassID')
+                  "
                 >
-                  <kendo-dropdownlist
-                    class="form-control"
-                    [data]="productService.accountClass"
-                    textField="Name"
-                    valueField="ID"
-                    [formControl]="
-                      getOpeningBalanceList.controls[rowIndex].get('AccClassID')
-                    "
-                  >
-                  </kendo-dropdownlist>
-                  <!-- <input
-                    #input
-                    class="k-textbox"
-                    style="width: 100px;"
-                    [formControl]="
-                      getOpeningBalanceList.controls[rowIndex].get(column.field)
-                    "
-                  /> -->
-                </ng-template>
-              </kendo-grid-column>
-
-              <kendo-grid-column
-                field="OpenPurchaseQty"
-                title="Opening Quantity"
-              >
-                <ng-template
-                  kendoGridCellTemplate
-                  let-dataItem="dataItem"
-                  let-column="column"
-                  let-formGroup="formGroup"
-                  let-isNew="isNew"
-                  let-rowIndex="rowIndex"
-                >
-                  <kendo-numerictextbox
-                    #ntb="popupAnchor"
-                    popupAnchor
-                    [formControl]="
-                      getOpeningBalanceList.controls[rowIndex].get(column.field)
-                    "
-                    style="width: 130px;"
-                  ></kendo-numerictextbox>
-                </ng-template>
-              </kendo-grid-column>
-              <kendo-grid-column field="OpenPurchaseRate" title="Purchase Rate">
-                <ng-template
-                  kendoGridCellTemplate
-                  let-dataItem="dataItem"
-                  let-column="column"
-                  let-formGroup="formGroup"
-                  let-isNew="isNew"
-                  let-rowIndex="rowIndex"
-                >
-                  <kendo-numerictextbox
-                    #ntb="popupAnchor"
-                    popupAnchor
-                    [formControl]="
-                      getOpeningBalanceList.controls[rowIndex].get(column.field)
-                    "
-                    style="width: 130px;"
-                  ></kendo-numerictextbox>
-                </ng-template>
-              </kendo-grid-column>
-
-              <kendo-grid-column field="OpenSalesRate" title="Sales Rate">
-                <ng-template
-                  kendoGridCellTemplate
-                  let-dataItem="dataItem"
-                  let-column="column"
-                  let-formGroup="formGroup"
-                  let-isNew="isNew"
-                  let-rowIndex="rowIndex"
-                >
-                  <kendo-numerictextbox
-                    #ntb="popupAnchor"
-                    popupAnchor
-                    [formControl]="
-                      getOpeningBalanceList.controls[rowIndex].get(column.field)
-                    "
-                    style="width: 130px;"
-                  ></kendo-numerictextbox>
-                </ng-template>
-              </kendo-grid-column>
-              <kendo-grid-command-column title="Action">
-                <ng-template kendoGridCellTemplate let-isNew="isNew">
-                  <button class="k-button" (click)="modalRef.hide()">
-                    Update
-                  </button>
-                </ng-template>
-              </kendo-grid-command-column>
-            </kendo-grid>
+                </kendo-dropdownlist>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Opening Quantity</label>
+                <kendo-numerictextbox
+                  #ntb="popupAnchor"
+                  popupAnchor
+                  [formControl]="
+                    productForm.get('OpeningQuantity').get('OpenPurchaseQty')
+                  "
+                ></kendo-numerictextbox>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Purchase Rate</label>
+                <kendo-numerictextbox
+                  #ntb="popupAnchor"
+                  popupAnchor
+                  [formControl]="
+                    productForm.get('OpeningQuantity').get('OpenPurchaseRate')
+                  "
+                ></kendo-numerictextbox>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Sales Rate</label>
+                <kendo-numerictextbox
+                  #ntb="popupAnchor"
+                  popupAnchor
+                  [formControl]="
+                    productForm.get('OpeningQuantity').get('OpenSalesRate')
+                  "
+                ></kendo-numerictextbox>
+              </div>
+            </div>
           </div>
         </div>
       </div>
