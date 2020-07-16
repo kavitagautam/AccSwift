@@ -1,7 +1,15 @@
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
 import { FormArray, FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
-import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  TemplateRef,
+  ViewChild,
+  ElementRef,
+  HostListener,
+} from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
@@ -57,6 +65,9 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     centered: true,
     class: "modal-lg",
   };
+  @ViewChild("anchor") public anchor: ElementRef;
+  @ViewChild("popup", { read: ElementRef }) public popup: ElementRef;
+
   constructor(
     private _fb: FormBuilder,
     private router: Router,
@@ -168,6 +179,25 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   public taxPopup(number): void {
     this.rowPopupIndexTax = number;
     this.showTaxPopup = !this.showTaxPopup;
+  }
+
+  @HostListener("document:click", ["$event"])
+  public documentClick(event: any): void {
+    if (!this.contains(event.target)) {
+      if (this.showTaxPopup) {
+        this.showTaxPopup = !this.showTaxPopup;
+      }
+      if (this.showUnitPopup) {
+        this.showUnitPopup = !this.showUnitPopup;
+      }
+    }
+  }
+
+  private contains(target: any): boolean {
+    return (
+      this.anchor.nativeElement.contains(target) ||
+      (this.popup ? this.popup.nativeElement.contains(target) : false)
+    );
   }
 
   tenderForm: FormGroup;

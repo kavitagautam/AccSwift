@@ -215,6 +215,7 @@
                 Change Unit
               </a>
               <kendo-popup
+              #popup
                 [anchor]="anchor"
                 (anchorViewportLeave)="showUnitPopup = false"
                 *ngIf="showUnitPopup && rowPopupIndexUnit==rowIndex"
@@ -224,6 +225,7 @@
                   style="min-height: 70px; padding: 15px;"
                 >
                   <div class="form-group">
+               <label>Unit</label>
                     <kendo-dropdownlist
                       class="form-control"
                       [data]="relatedUnits"
@@ -351,10 +353,11 @@
             let-formGroup="formGroup"
             let-column="column"
           >
-            <button #anchor (click)="taxPopup(rowIndex)">
+            <button #anchor class="btn-secondary" (click)="taxPopup(rowIndex)">
               Calc Tax
             </button>
             <kendo-popup
+            #popup
               [anchor]="anchor"
               (anchorViewportLeave)="showTaxPopup = false"
               *ngIf="showTaxPopup && rowPopupIndexTax==rowIndex"
