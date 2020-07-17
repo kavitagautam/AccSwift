@@ -241,14 +241,14 @@
                     cursor: pointer;
                     margin: 5px;
                   "
-                  (click)="unitPopup[rowIndex]=!unitPopup[rowIndex]"
+                  (click)="unitPopup(rowIndex)"
                 >
                   Change
                 </a>
                 <kendo-popup
                   #popup
                   [anchor]="anchor"
-                  *ngIf="unitPopup[rowIndex]"
+                  *ngIf="showUnitPopup && rowPopupIndexUnit==rowIndex"
                 >
                   <div
                     class="contentPopup"
@@ -386,11 +386,15 @@
               <button
                 #anchor
                 class="btn-secondary"
-                (click)="taxPopup[rowIndex]=!taxPopup[rowIndex]"
+                (click)="taxPopup(rowIndex)"
               >
                 Calc Tax
               </button>
-              <kendo-popup #popup [anchor]="anchor" *ngIf="taxPopup[rowIndex]">
+              <kendo-popup
+                #popup
+                [anchor]="anchor"
+                *ngIf="showTaxPopup && rowPopupIndexTax==rowIndex"
+              >
                 <div
                   class="contentPopup"
                   style="min-height: 120px; width: fit-content; padding: 15px;"

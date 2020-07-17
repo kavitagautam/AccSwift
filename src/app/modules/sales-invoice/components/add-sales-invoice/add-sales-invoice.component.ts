@@ -167,11 +167,37 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
- 
+  private showUnitPopup: boolean = true;
+  rowPopupIndexUnit: number;
+  unitClick = false;
+  taxClick = false;
+  public unitPopup(number): void {
+    this.unitClick = true;
+    this.taxClick = false;
+    this.rowPopupIndexUnit = number;
+    this.showUnitPopup = !this.showUnitPopup;
+  }
+
+  private showTaxPopup: boolean = true;
+  rowPopupIndexTax: number;
+
+  public taxPopup(number): void {
+    this.unitClick = false;
+    this.taxClick = true;
+    this.rowPopupIndexTax = number;
+    this.showTaxPopup = !this.showTaxPopup;
+  }
+
   @HostListener("document:click", ["$event"])
   public documentClick(event: any): void {
     if (!this.contains(event.target)) {
-     //
+      // //
+      // if (this.unitClick) {
+      //   this.showUnitPopup = !this.showUnitPopup;
+      // }
+      // if (this.taxClick) {
+      //   this.showTaxPopup = !this.showTaxPopup;
+      // }
     }
   }
 
