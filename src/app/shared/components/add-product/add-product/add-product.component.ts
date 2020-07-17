@@ -11,6 +11,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { SelectEvent } from "@progress/kendo-angular-upload";
 import { ImageCroppedEvent } from "ngx-image-cropper";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "accSwift-add-product",
@@ -18,6 +19,8 @@ import { ImageCroppedEvent } from "ngx-image-cropper";
   styleUrls: ["./add-product.component.scss"],
 })
 export class AddProductComponent implements OnInit {
+  public onClose: Subject<boolean>;
+
   productForm: FormGroup;
   private editedRowIndex: number;
   imageChangedEvent: Array<any> = [];
@@ -43,6 +46,7 @@ export class AddProductComponent implements OnInit {
 
   ngOnInit() {
     this.buildProductForm();
+    this.onClose = new Subject();
   }
 
   buildProductForm(): void {
@@ -84,18 +88,6 @@ export class AddProductComponent implements OnInit {
         OpenQuantityDate: [new Date()],
       }),
       Remarks: [""],
-
-      // productCode: ["", Validators.required],
-      // productName: ["", Validators.required],
-      // productGroupId: [null, Validators.required],
-      // departmentandLocationId: [null, Validators.required],
-      // baseUnitId: [null, Validators.required],
-      // isVatApplicable: [false, Validators.required],
-      // isDecimalApplicable: [false],
-      // isInventoryApplicable: [false],
-      // remarks: [""],
-      // openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
-      // moreDetails: new FormControl(""),
     });
   }
 
@@ -223,6 +215,7 @@ export class AddProductComponent implements OnInit {
     this.productService.addProduct(this.productForm.value).subscribe(
       (response) => {
         this.modalRef.hide();
+        this.onClose.next(true);
       },
       (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));

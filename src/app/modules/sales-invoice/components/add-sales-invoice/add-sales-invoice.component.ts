@@ -24,6 +24,7 @@ import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { AddProductComponent } from "@app/shared/components/add-product/add-product/add-product.component";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-add-sales-invoice",
@@ -39,11 +40,10 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   relatedUnits: RelatedUnits[] = [];
   cashPartyList: CashParty[] = [];
   public productList: ProductMinList[] = [];
-
   //Total Calculation
   myFormValueChanges$;
   private destroyed$ = new Subject<void>();
-
+  iconConst = IconConst;
   totalQty: number = 0;
   totalGrossAmount: number = 0;
   totalNetAmount: number = 0;
@@ -155,6 +155,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       CodeName: [""],
       Quantity: ["", Validators.required],
       QtyUnitID: ["", Validators.required],
+      QtyUnitName: [""],
       SalesRate: ["", Validators.required],
       Amount: ["", Validators.required],
       DiscPercentage: [0, Validators.required],
@@ -166,30 +167,11 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
-  private showUnitPopup: boolean = true;
-  rowPopupIndexUnit: number;
-  public unitPopup(number): void {
-    this.rowPopupIndexUnit = number;
-    this.showUnitPopup = !this.showUnitPopup;
-  }
-
-  private showTaxPopup: boolean = true;
-  rowPopupIndexTax: number;
-
-  public taxPopup(number): void {
-    this.rowPopupIndexTax = number;
-    this.showTaxPopup = !this.showTaxPopup;
-  }
-
+ 
   @HostListener("document:click", ["$event"])
   public documentClick(event: any): void {
     if (!this.contains(event.target)) {
-      if (this.showTaxPopup) {
-        this.showTaxPopup = !this.showTaxPopup;
-      }
-      if (this.showUnitPopup) {
-        this.showUnitPopup = !this.showUnitPopup;
-      }
+     //
     }
   }
 
@@ -593,8 +575,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   addNewProduct(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(AddProductComponent, this.config);
     this.modalRef.content.action = "Select";
-
-    //this.modalRef = this.modalService.show(template, this.config);
   }
 
   openModal(index: number): void {
