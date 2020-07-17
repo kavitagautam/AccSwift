@@ -4,12 +4,13 @@ import {
   PageChangeEvent,
   SelectAllCheckboxState,
 } from "@progress/kendo-angular-grid";
-import { BsModalRef } from "ngx-bootstrap";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import {
   ProductlistService,
   ProductList,
 } from "@app/shared/services/product-list/productlist.service";
 import { Subject } from "rxjs";
+import { AddProductComponent } from "../add-product/add-product/add-product.component";
 
 @Component({
   selector: "accSwift-product-modal-popup",
@@ -33,11 +34,18 @@ export class ProductModalPopupComponent implements OnInit {
       dir: "asc",
     },
   ];
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+    centered: true,
+    class: "modal-lg",
+  };
   public mySelection: number[] = []; //Kendo row Select
   public selectAllState: SelectAllCheckboxState = "unchecked"; //Kendo row Select
   constructor(
-    public bsModalRef: BsModalRef,
-    private productService: ProductlistService
+    public modalRef: BsModalRef,
+    private productService: ProductlistService,
+    private modalService: BsModalService
   ) {}
 
   public ngOnInit(): void {
@@ -75,16 +83,16 @@ export class ProductModalPopupComponent implements OnInit {
     });
     this.onSelected.next(this.selected[0]);
     this.onClose.next(true);
-    this.bsModalRef.hide();
+    this.modalRef.hide();
   }
   public onConfirm(): void {
     this.onClose.next(true);
-    this.bsModalRef.hide();
+    this.modalRef.hide();
   }
 
   public onCancel(): void {
     this.onClose.next(false);
-    this.bsModalRef.hide();
+    this.modalRef.hide();
   }
 
   public sortChange(sort: SortDescriptor[]): void {
@@ -98,6 +106,13 @@ export class ProductModalPopupComponent implements OnInit {
   selectedProduct(item, selectedRow): void {
     this.onSelected.next(item);
     this.onClose.next(true);
-    this.bsModalRef.hide();
+    this.modalRef.hide();
+  }
+
+  addNewProduct(): void {
+    this.modalRef = this.modalService.show(AddProductComponent, this.config);
+    this.modalRef.content.onClose.subscribe((data) => {
+      this.getProductList();
+    });
   }
 }

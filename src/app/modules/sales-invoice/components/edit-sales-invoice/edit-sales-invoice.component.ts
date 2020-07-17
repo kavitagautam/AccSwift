@@ -27,6 +27,7 @@ import { takeUntil, debounceTime, tap, take } from "rxjs/operators";
 import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 import { AddProductComponent } from "@app/shared/components/add-product/add-product/add-product.component";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
@@ -40,14 +41,11 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   submitted: boolean;
   rowSubmitted: boolean;
   IsAutomatic: boolean = false;
-
   relatedUnits: RelatedUnits[] = [];
-
   //Total Calculation
   myFormValueChanges$;
-
+  iconConst = IconConst;
   private destroyed$ = new Subject<void>();
-
   totalQty: number = 0;
   totalGrossAmount: number = 0;
   totalNetAmount: number = 0;
@@ -262,6 +260,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       CodeName: [""],
       Quantity: ["", Validators.required],
       QtyUnitID: ["", Validators.required],
+      QtyUnitName: [""],
       SalesRate: ["", Validators.required],
       Amount: ["", Validators.required],
       DiscPercentage: [0, Validators.required],
@@ -275,7 +274,11 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
 
   private showUnitPopup: boolean = true;
   rowPopupIndexUnit: number;
+  unitClick = false;
+  taxClick = false;
   public unitPopup(number): void {
+    this.unitClick = true;
+    this.taxClick = false;
     this.rowPopupIndexUnit = number;
     this.showUnitPopup = !this.showUnitPopup;
   }
@@ -284,6 +287,8 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   rowPopupIndexTax: number;
 
   public taxPopup(number): void {
+    this.unitClick = false;
+    this.taxClick = true;
     this.rowPopupIndexTax = number;
     this.showTaxPopup = !this.showTaxPopup;
   }
@@ -291,12 +296,13 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   @HostListener("document:click", ["$event"])
   public documentClick(event: any): void {
     if (!this.contains(event.target)) {
-      if (this.showTaxPopup) {
-        this.showTaxPopup = !this.showTaxPopup;
-      }
-      if (this.showUnitPopup) {
-        this.showUnitPopup = !this.showUnitPopup;
-      }
+      // //
+      // if (this.unitClick) {
+      //   this.showUnitPopup = !this.showUnitPopup;
+      // }
+      // if (this.taxClick) {
+      //   this.showTaxPopup = !this.showTaxPopup;
+      // }
     }
   }
 
@@ -336,6 +342,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
             CodeName: [element.CodeName],
             Quantity: [element.Quantity, Validators.required],
             QtyUnitID: [element.QtyUnitID, Validators.required],
+            QtyUnitName: [element.QtyUnitName],
             SalesRate: [element.SalesRate, Validators.required],
             Amount: [element.Amount, Validators.required],
             DiscPercentage: [element.DiscPercentage, Validators.required],
@@ -358,6 +365,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
           CodeName: [""],
           Quantity: ["", Validators.required],
           QtyUnitID: [null, Validators.required],
+          QtyUnitName: [""],
           SalesRate: ["", Validators.required],
           Amount: ["", Validators.required],
           DiscPercentage: [0, Validators.required],

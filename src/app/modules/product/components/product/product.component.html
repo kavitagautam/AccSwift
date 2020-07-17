@@ -129,7 +129,7 @@
               </div>
             </div>
           </div>
-          <div class="box-footer" style="display: table;margin:auto">
+          <div class="box-footer" style="display: table; margin: auto;">
             <div class="mb-2">
               <button
                 class="btn btn-primary"
@@ -216,7 +216,7 @@
                   <input
                     #input
                     class="k-textbox"
-                    style="width: 100px"
+                    style="width: 100px;"
                     [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(column.field)
                     "
@@ -239,7 +239,7 @@
                     [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(column.field)
                     "
-                    style="width:130px;"
+                    style="width: 130px;"
                   ></kendo-numerictextbox>
                 </ng-template>
               </kendo-grid-column>
@@ -258,7 +258,7 @@
                     [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(column.field)
                     "
-                    style="width:130px;"
+                    style="width: 130px;"
                   ></kendo-numerictextbox>
                 </ng-template>
               </kendo-grid-column>
@@ -278,17 +278,10 @@
                     [formControl]="
                       getOpeningBalanceList.controls[rowIndex].get(column.field)
                     "
-                    style="width:130px;"
+                    style="width: 130px;"
                   ></kendo-numerictextbox>
                 </ng-template>
               </kendo-grid-column>
-              <kendo-grid-command-column title="Action">
-                <ng-template kendoGridCellTemplate let-isNew="isNew">
-                  <button class="k-button" (click)="updateOpeningBalance()">
-                    Update
-                  </button>
-                </ng-template>
-              </kendo-grid-command-column>
             </kendo-grid>
           </div>
         </div>
