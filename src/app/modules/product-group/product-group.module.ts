@@ -6,20 +6,27 @@ import { ProductGroupComponent } from "./product-group.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ViewProductGroupComponent } from "./components/view-product-group/view-product-group.component";
 import { SharedModule } from "@app/shared/shared.module";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [
     ProductGroupComponent,
     AddProductGroupComponent,
     EditProductGroupComponent,
-    ViewProductGroupComponent
+    ViewProductGroupComponent,
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule,
+    AccswiftSharedModule,
+  ],
   exports: [ProductGroupComponent],
   entryComponents: [
     ViewProductGroupComponent,
     AddProductGroupComponent,
-    EditProductGroupComponent
-  ]
+    EditProductGroupComponent,
+  ],
 })
 export class ProductGroupModule {}

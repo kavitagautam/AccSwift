@@ -7,10 +7,10 @@ import {
   HostListener,
   forwardRef,
   Renderer2,
-  Self
+  Self,
 } from "@angular/core";
-import { CurrencyFormatPipe } from "@app/shared/pipes/currency-format.pipe";
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
+import { CurrencyFormatPipe } from "../../pipes/currency-format/currency-format.pipe";
 @Directive({
   selector: "[nepaleseCurrencyInput]",
 
@@ -19,9 +19,9 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => CurrencyDirective),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class CurrencyDirective implements ControlValueAccessor {
   @Input() nepaleseCurrencyInput: string;

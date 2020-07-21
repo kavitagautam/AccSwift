@@ -13,12 +13,13 @@ import { StockTransferRoutingModule } from "./stock-transfer-routing.module";
 import { ListStockTransferComponent } from "./components/list-stock-transfer/list-stock-transfer.component";
 import { AddStockTransferComponent } from "./components/add-stock-transfer/add-stock-transfer.component";
 import { EditStockTransferComponent } from "./components/edit-stock-transfer/edit-stock-transfer.component";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [
     ListStockTransferComponent,
     AddStockTransferComponent,
-    EditStockTransferComponent
+    EditStockTransferComponent,
   ],
   imports: [
     CommonModule,
@@ -26,11 +27,12 @@ import { EditStockTransferComponent } from "./components/edit-stock-transfer/edi
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    AccswiftSharedModule,
     GridModule,
     PopupModule,
     InputsModule,
     DropDownListModule,
-    DropDownsModule
-  ]
+    DropDownsModule,
+  ],
 })
 export class StockTransferModule {}

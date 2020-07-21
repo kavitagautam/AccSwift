@@ -10,9 +10,9 @@ import {
 } from "../../models/sales-return.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
-import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
+import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { ProductModalPopupComponent } from "@app/modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
 

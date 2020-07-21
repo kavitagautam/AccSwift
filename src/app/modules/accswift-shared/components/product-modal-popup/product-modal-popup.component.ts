@@ -5,12 +5,13 @@ import {
   SelectAllCheckboxState,
 } from "@progress/kendo-angular-grid";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import {
-  ProductlistService,
-  ProductList,
-} from "@app/shared/services/product-list/productlist.service";
+
 import { Subject } from "rxjs";
 import { AddProductComponent } from "../add-product/add-product/add-product.component";
+import {
+  ProductList,
+  ProductlistService,
+} from "../../services/product-list/productlist.service";
 
 @Component({
   selector: "accSwift-product-modal-popup",

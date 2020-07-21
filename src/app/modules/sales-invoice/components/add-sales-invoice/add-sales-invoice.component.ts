@@ -12,19 +12,19 @@ import {
 } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
+import { ProductModalPopupComponent } from "@app/modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
 import {
   RelatedUnits,
   CashParty,
   ProductMinList,
 } from "../../models/sales-invoice.model";
-import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
-import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { PreferenceService } from "../../../preference/services/preference.service";
-import { AddProductComponent } from "@app/shared/components/add-product/add-product/add-product.component";
+import { AddProductComponent } from "@app/modules/accswift-shared/components/add-product/add-product/add-product.component";
 import { IconConst } from "@app/shared/constants/icon.constant";
+import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-add-sales-invoice",

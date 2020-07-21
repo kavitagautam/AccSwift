@@ -15,8 +15,9 @@ import { SalesReturnRoutingModule } from "./sales-return-routing.module";
 import { ListSalesReturnComponent } from "./components/list-sales-return/list-sales-return.component";
 import { AddSalesReturnComponent } from "./components/add-sales-return/add-sales-return.component";
 import { EditSalesReturnComponent } from "./components/edit-sales-return/edit-sales-return.component";
-import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
+import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { ProductModalPopupComponent } from "@app/modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ProductModalPopupComponent } from "@app/shared/components/product-modal
     DropDownsModule,
     InputsModule,
     SharedModule,
+    AccswiftSharedModule,
   ],
   entryComponents: [CashPartyModalPopupComponent, ProductModalPopupComponent],
 })

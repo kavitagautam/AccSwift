@@ -11,6 +11,7 @@ import { CommonModule } from "@angular/common";
 
 import { CompoundUnitRoutingModule } from "./compound-unit-routing.module";
 import { CompoundUnitComponent } from "./components/compound-unit/compound-unit.component";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [CompoundUnitComponent],
@@ -23,11 +24,12 @@ import { CompoundUnitComponent } from "./components/compound-unit/compound-unit.
     ReactiveFormsModule,
     CommonModule,
     SharedModule,
+    AccswiftSharedModule,
     GridModule,
     PopupModule,
     InputsModule,
     DropDownListModule,
-    DropDownsModule
-  ]
+    DropDownsModule,
+  ],
 })
 export class CompoundUnitModule {}

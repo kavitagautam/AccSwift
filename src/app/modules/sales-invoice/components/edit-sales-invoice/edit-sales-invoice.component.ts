@@ -20,13 +20,13 @@ import {
   HostListener,
 } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
+import { ProductModalPopupComponent } from "@app/modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
 import { Subject, Subscription, fromEvent } from "rxjs";
 import { takeUntil, debounceTime, tap, take } from "rxjs/operators";
-import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
-import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { AddProductComponent } from "@app/shared/components/add-product/add-product/add-product.component";
+import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { AddProductComponent } from "@app/modules/accswift-shared/components/add-product/add-product/add-product.component";
 import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({

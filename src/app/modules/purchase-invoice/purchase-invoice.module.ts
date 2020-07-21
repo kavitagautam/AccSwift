@@ -16,6 +16,7 @@ import {
 } from "@progress/kendo-angular-dropdowns";
 import { SharedModule } from "@app/shared/shared.module";
 import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
     AccswiftFormsModule,
     SharedModule,
     GridModule,
+    AccswiftSharedModule,
     PopupModule,
     InputsModule,
     DropDownListModule,

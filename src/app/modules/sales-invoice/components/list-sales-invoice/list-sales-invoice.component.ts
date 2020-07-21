@@ -15,7 +15,7 @@ import {
   SalseInvoice,
 } from "../../models/sales-invoice.model";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
-import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-list-sales-invoice",

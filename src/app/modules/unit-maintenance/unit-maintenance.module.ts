@@ -9,9 +9,10 @@ import { PopupModule } from "@progress/kendo-angular-popup";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import {
   DropDownListModule,
-  DropDownsModule
+  DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
 import { SharedModule } from "@app/shared/shared.module";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [ListUnitMaintenanceComponent],
@@ -20,13 +21,14 @@ import { SharedModule } from "@app/shared/shared.module";
     ReactiveFormsModule,
     CommonModule,
     SharedModule,
+    AccswiftSharedModule,
     GridModule,
     PopupModule,
     InputsModule,
     DropDownListModule,
     DropDownsModule,
-    UnitMaintenanceRoutingModule
+    UnitMaintenanceRoutingModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UnitMaintenanceModule {}

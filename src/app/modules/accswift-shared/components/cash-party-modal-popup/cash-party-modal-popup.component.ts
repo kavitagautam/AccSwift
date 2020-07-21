@@ -13,7 +13,7 @@ import { BsModalRef } from "ngx-bootstrap";
 import {
   CashPartyService,
   CashParty,
-} from "@app/shared/services/cash-party-list/cash-party.service";
+} from "../../services/cash-party-list/cash-party.service";
 
 @Component({
   selector: "accSwift-cash-party-modal-popup",

@@ -13,7 +13,8 @@ import {
   DropDownListModule,
   DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
-import { ProductModalPopupComponent } from "@app/shared/components/product-modal-popup/product-modal-popup.component";
+import { ProductModalPopupComponent } from "@app/modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ProductModalPopupComponent } from "@app/shared/components/product-modal
     GridModule,
     PopupModule,
     SharedModule,
+    AccswiftSharedModule,
     InputsModule,
     DropDownListModule,
     DropDownsModule,

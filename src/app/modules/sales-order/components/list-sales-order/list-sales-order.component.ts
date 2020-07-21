@@ -12,7 +12,7 @@ import { Component, OnInit } from "@angular/core";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { SalesOrderList, CashParty } from "../../models/sales-order.model";
-import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-list-sales-order",

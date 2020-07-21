@@ -15,6 +15,7 @@ import { ListPurchaseReturnComponent } from "./components/list-purchase-return/l
 import { EditPurchaseReturnComponent } from "./components/edit-purchase-return/edit-purchase-return.component";
 import { AddPurchaseReturnComponent } from "./components/add-purchase-return/add-purchase-return.component";
 import { InputsModule } from "@progress/kendo-angular-inputs";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
     DropDownsModule,
     InputsModule,
     SharedModule,
+    AccswiftSharedModule,
   ],
 })
 export class PurchaseReturnModule {}

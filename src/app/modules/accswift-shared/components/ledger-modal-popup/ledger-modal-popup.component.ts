@@ -1,15 +1,16 @@
 import { Component, OnInit, Output } from "@angular/core";
 import { Subject } from "rxjs";
 import { BsModalRef } from "ngx-bootstrap";
-import {
-  LedgerListService,
-  LedgerList,
-} from "@app/shared/services/ledger-list.service";
+
 import { SortDescriptor } from "@progress/kendo-data-query";
 import {
   SelectAllCheckboxState,
   PageChangeEvent,
 } from "@progress/kendo-angular-grid";
+import {
+  LedgerList,
+  LedgerListService,
+} from "../../services/ledger-list/ledger-list.service";
 
 @Component({
   selector: "accSwift-ledger-modal-popup",
