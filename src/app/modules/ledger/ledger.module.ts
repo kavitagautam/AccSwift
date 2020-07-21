@@ -13,20 +13,22 @@ import { SharedModule } from "@app/shared/shared.module";
 import { AccountGroupComponent } from "./components/account-group/account-group.component";
 import { AccountLedgerComponent } from "./components/account-ledger/account-ledger.component";
 import { LandingLedgerComponent } from "./components/landing-ledger/landing-ledger.component";
-import { AccountLedgerMoreDetailsComponent } from './components/account-ledger-more-details/account-ledger-more-details.component';
+import { AccountLedgerMoreDetailsComponent } from "./components/account-ledger-more-details/account-ledger-more-details.component";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [
     LandingLedgerComponent,
     AccountGroupComponent,
     AccountLedgerComponent,
-    AccountLedgerMoreDetailsComponent
+    AccountLedgerMoreDetailsComponent,
   ],
   imports: [
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
     SharedModule,
+    AccswiftSharedModule,
     TreeViewModule,
     LayoutModule,
     GridModule,
@@ -34,8 +36,8 @@ import { AccountLedgerMoreDetailsComponent } from './components/account-ledger-m
     InputsModule,
     DropDownListModule,
     DropDownsModule,
-    LedgerRoutingModule
+    LedgerRoutingModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class LedgerModule {}

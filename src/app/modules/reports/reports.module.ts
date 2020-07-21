@@ -10,6 +10,7 @@ import { ReportsRoutingModule } from "./reports-routing.module";
 import { ReportPdfComponent } from "./components/report-pdf/report-pdf.component";
 import { TrialBalanceComponent } from "./components/trial-balance/trial-balance.component";
 import { SharedModule } from "@app/shared/shared.module";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [ReportPdfComponent, TrialBalanceComponent],
@@ -23,6 +24,7 @@ import { SharedModule } from "@app/shared/shared.module";
     NumericTextBoxModule,
     PDFExportModule,
     SharedModule,
+    AccswiftSharedModule,
   ],
 })
 export class ReportsModule {}

@@ -7,14 +7,14 @@ import {
   Validators,
   FormBuilder,
   FormGroup,
-  AbstractControl
+  AbstractControl,
 } from "@angular/forms";
-import { ValidationMessageService } from "@app/shared/services/validation-message/validation-message.service";
+import { ValidationMessageService } from "@app/modules/accswift-shared/services/validation-message/validation-message.service";
 
 @Component({
   selector: "accSwift-login",
   templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.scss"]
+  styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit, OnDestroy {
   returnUrl: string;
@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   buildLoginForm() {
     this.loginForm = this._fb.group({
       username: ["", Validators.required],
-      password: ["", Validators.required]
+      password: ["", Validators.required],
     });
   }
   login(): void {
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .login(this.loginForm.value.username, this.loginForm.value.password)
       .pipe(first())
       .subscribe(
-        data => {
+        (data) => {
           // Set sessionStorage
           for (const key in data) {
             if (data[key]) {
@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           }
           this.router.navigate([""]);
         },
-        error => {
+        (error) => {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {

@@ -4,14 +4,14 @@ import {
   HostListener,
   ElementRef,
   OnInit,
-  OnDestroy
+  OnDestroy,
 } from "@angular/core";
 import { NgControl, ValidationErrors } from "@angular/forms";
 import { Subscription } from "rxjs";
-import { ValidationMsgService } from "@app/shared/services/form-validators/validation-message.service";
+import { ValidationMsgService } from "../../services/form-validators/validation-message.service";
 
 @Directive({
-  selector: "[accSwiftFormValidator]"
+  selector: "[accSwiftFormValidator]",
 })
 export class FormControlValidationMsgDirective implements OnInit, OnDestroy {
   constructor(
@@ -31,7 +31,7 @@ export class FormControlValidationMsgDirective implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.errorSpanId = this.control.name + new Date() + "-error-msg";
     this.statusChangeSubscription = this.control.statusChanges.subscribe(
-      status => {
+      (status) => {
         if (status == "INVALID") {
           this.showError();
         } else {

@@ -41,7 +41,6 @@ export class BankReceiptService {
     this.httpService
       .get(`${this._api_URL}Ledger/BankAccounts`)
       .subscribe((res: BankAccounts) => {
-        console.log(res);
         this.bankAccountLists = res.Entity;
       });
   }

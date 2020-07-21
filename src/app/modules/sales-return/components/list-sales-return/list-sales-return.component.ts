@@ -16,7 +16,7 @@ import {
   ReturnDetail,
   CashParty,
 } from "../../models/sales-return.model";
-import { CashPartyModalPopupComponent } from "@app/shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-list-sales-return",

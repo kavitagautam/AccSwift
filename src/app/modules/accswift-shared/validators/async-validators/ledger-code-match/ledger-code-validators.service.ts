@@ -2,14 +2,14 @@ import { Injectable } from "@angular/core";
 import {
   AbstractControl,
   ValidationErrors,
-  AsyncValidatorFn
+  AsyncValidatorFn,
 } from "@angular/forms";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerCodeMatchService } from "@app/modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class LedgerCodeAsyncValidators {
   constructor(public ledgerCodeService: LedgerCodeMatchService) {}
@@ -18,22 +18,22 @@ export class LedgerCodeAsyncValidators {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return this.ledgerCodeService.checkLedgerCode(control.value).pipe(
         map(
-          res => {
+          (res) => {
             if (control.value) {
               if (res.StatusCode == 200) {
                 return null;
               } else {
                 return {
-                  codeUnMatch: true
+                  codeUnMatch: true,
                 };
               }
             } else {
               return null;
             }
           },
-          error => {
+          (error) => {
             return Promise.resolve({
-              codeUnMatch: true
+              codeUnMatch: true,
             });
           }
         )

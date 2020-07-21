@@ -10,6 +10,7 @@ import { CommonModule } from "@angular/common";
 import { SharedModule } from "@app/shared/shared.module";
 import { DepotRoutingModule } from "./depot-routing.module";
 import { ListDepotComponent } from "./components/list-depot.component";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [ListDepotComponent],
@@ -23,7 +24,8 @@ import { ListDepotComponent } from "./components/list-depot.component";
     DropDownListModule,
     DropDownsModule,
     InputsModule,
-    SharedModule
-  ]
+    SharedModule,
+    AccswiftSharedModule,
+  ],
 })
 export class DepotModule {}

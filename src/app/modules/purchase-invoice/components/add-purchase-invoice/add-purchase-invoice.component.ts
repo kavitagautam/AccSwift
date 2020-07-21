@@ -7,7 +7,7 @@ import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import { ProductCodeValidatorsService } from "@app/shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 
 @Component({
   selector: "accSwift-add-purchase-invoice",

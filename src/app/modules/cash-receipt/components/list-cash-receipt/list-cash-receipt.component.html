@@ -205,7 +205,7 @@
             [filterable]="false"
           >
             <ng-template kendoGridCellTemplate let-dataItem="dataItem">
-              {{ dataItem.CreatedDate | date: "yyyy-MM-dd" }}
+              {{ dataItem.CreatedDate | dateStringFormat: "yyyy-MM-dd" }}
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="Remarks" title="Remarks">
