@@ -3,20 +3,19 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import {
   PurchaseInvoiceNavigateModel,
   PurchaseInvoiceDetailModel,
-  RelatedUnitModel,
-  TaxListModel,
-  TaxList,
 } from "./../models/purchase-invoice.model";
 import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
+import { Tax, TaxModel } from "@app/modules/accswift-shared/models/tax.model";
+import { RelatedUnitModel } from "@app/modules/accswift-shared/models/related-unit.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class PurchaseInvoiceService {
   _api_URL = environment.baseAPI;
-  taxList: TaxList[] = [];
+  taxList: Tax[] = [];
 
   constructor(
     private http: HttpClient,
@@ -28,7 +27,7 @@ export class PurchaseInvoiceService {
   getTaxList(): void {
     this.httpService
       .get(`${this._api_URL}Tax/min`)
-      .subscribe((response: TaxListModel) => {
+      .subscribe((response: TaxModel) => {
         this.taxList = response.Entity;
       });
   }

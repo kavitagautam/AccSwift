@@ -5,7 +5,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { CashPaymentService } from "../../services/cash-payment.service";
 import { LedgerCodeAsyncValidators } from "@app/modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@app/modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
-import { CashPaymentDetail } from "../../models/cash-payment.model";
+import { CashPayment } from "../../models/cash-payment.model";
 import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
 
@@ -19,7 +19,7 @@ export class EditCashPaymentComponent implements OnInit {
   cashPaymentForm: FormGroup;
   currentAmount: string = "0.00";
 
-  cashPaymentDetail: CashPaymentDetail;
+  cashPaymentDetail: CashPayment;
   submitted: boolean;
   rowSubmitted: boolean;
   date: Date = new Date();

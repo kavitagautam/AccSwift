@@ -1,4 +1,3 @@
-import { DepotList } from "../models/depot.model";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -12,6 +11,7 @@ import {
   CompositeFilterDescriptor,
   SortDescriptor,
 } from "@progress/kendo-data-query";
+import { Depot } from "../models/depot.model";
 
 @Component({
   selector: "accSwift-list-depot",
@@ -29,7 +29,7 @@ export class ListDepotComponent implements OnInit {
   submitButton: string;
   modalTitle: string;
 
-  depotList: DepotList[];
+  depotList: Depot[] = [];
   searchFilterList: Array<any> = [];
   filterList: Array<any> = [];
 
@@ -67,7 +67,7 @@ export class ListDepotComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildDepotForm();
     this.getDepotList();
   }

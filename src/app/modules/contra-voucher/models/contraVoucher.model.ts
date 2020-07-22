@@ -1,28 +1,3 @@
-export interface ProjectList {
-  ID: number;
-  ProjectNumber: number;
-  ParentProjectID: number;
-  EngName: string;
-  NepName: string;
-  Description: string;
-  CreatedBy: string;
-  CreatedDate: string;
-  ModifiedBy: string;
-  ModifiedDate: string;
-}
-
-export interface SeriesListModel {
-  StatusCode: number;
-  Message: string;
-  Entity: SeriesList[];
-}
-
-export interface SeriesList {
-  ID: number;
-  Name: string;
-  VoucherType: string;
-}
-
 export interface ContraVoucherMaster {
   IsPayByInvoice: boolean;
   TotalAmount: number;
@@ -98,28 +73,4 @@ export interface ContraVoucherDetails {
   };
   Amount: number;
   Remarks: string;
-}
-
-export interface CashPartyListModel {
-  Status: number;
-  Entity: CashPartyList[];
-}
-
-export interface CashPartyList {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-
-export interface CashAccountsModel {
-  Status: number;
-  Entity: CashAccountsList[];
-}
-
-export interface CashAccountsList {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
 }

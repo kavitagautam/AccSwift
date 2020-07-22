@@ -2,18 +2,18 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CompanyService } from "../../services/company.service";
-import { CompanyList } from "../../models/company.model";
+import { Company } from "../../models/company.model";
 import { ToastrService } from "ngx-toastr";
 import { SelectEvent } from "@progress/kendo-angular-upload";
 
 @Component({
   selector: "accSwift-edit-company",
   templateUrl: "../common-template/company-form.html",
-  styleUrls: ["./edit-company.component.scss"]
+  styleUrls: ["./edit-company.component.scss"],
 })
 export class EditCompanyComponent implements OnInit {
   companyLogo: any = "";
-  companyDetails: CompanyList;
+  companyDetails: Company;
   companyForm: FormGroup;
 
   constructor(
@@ -30,11 +30,11 @@ export class EditCompanyComponent implements OnInit {
   }
 
   getIdFromRoute(): void {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       if (params.get("id")) {
         this.companyService
           .getCompanyDetails(params.get("id"))
-          .subscribe(res => {
+          .subscribe((res) => {
             this.companyDetails = res.Entity;
             this.companyLogo = this.companyDetails.Logo;
             this.buildCompanyForm();
@@ -47,15 +47,15 @@ export class EditCompanyComponent implements OnInit {
     this.companyForm = this._fb.group({
       companyName: [
         this.companyDetails ? this.companyDetails.Name : "",
-        Validators.required
+        Validators.required,
       ],
       code: [
         this.companyDetails ? this.companyDetails.Code : "",
-        Validators.required
+        Validators.required,
       ],
       address1: [
         this.companyDetails ? this.companyDetails.Address1 : "",
-        Validators.required
+        Validators.required,
       ],
       address2: [this.companyDetails ? this.companyDetails.Address2 : ""],
       city: [this.companyDetails ? this.companyDetails.City : ""],
@@ -69,13 +69,15 @@ export class EditCompanyComponent implements OnInit {
       logo: [this.companyLogo ? this.companyLogo : ""],
       fiscalYear: [this.companyDetails ? this.companyDetails.FYFrom : ""],
       fiscalStyle: ["075/76"],
-      booksBegin: [this.companyDetails ? this.companyDetails.BookBeginFrom : ""]
+      booksBegin: [
+        this.companyDetails ? this.companyDetails.BookBeginFrom : "",
+      ],
     });
   }
 
   public selectEventHandler(e: SelectEvent): void {
     const that = this;
-    e.files.forEach(file => {
+    e.files.forEach((file) => {
       if (!file.validationErrors) {
         var reader = new FileReader();
 
@@ -109,13 +111,13 @@ export class EditCompanyComponent implements OnInit {
       Logo: this.companyLogo ? this.companyLogo : "",
       FYFrom: this.companyForm.get("fiscalYear").value,
       BookBeginFrom: this.companyForm.get("booksBegin").value,
-      FiscalYear: this.companyForm.get("fiscalStyle").value
+      FiscalYear: this.companyForm.get("fiscalStyle").value,
     };
     this.companyService.updateCompany(obj).subscribe(
-      response => {
+      (response) => {
         this.router.navigate(["/company"]);
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {

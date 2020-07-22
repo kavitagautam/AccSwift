@@ -1,3 +1,6 @@
+import { Ledger } from "@app/modules/ledger/models/ledger.models";
+import { Company } from "@app/modules/company/models/company.model";
+
 export interface BalanceSheet {
   Category: number;
   Level: number;
@@ -5,32 +8,6 @@ export interface BalanceSheet {
   ID?: number;
   AccountName: string;
   Amount?: number;
-}
-
-export interface Company {
-  ID: number;
-  Name: string;
-  Code: string;
-  Address1: string;
-  Address2: string;
-  City: string;
-  District: string;
-  Zone: string;
-  Telephone: string;
-  Email: string;
-  Website: string;
-  POBox: string;
-  PAN: string;
-  Logo?: any;
-  FYFrom: Date;
-  BookBeginFrom: Date;
-  FiscalYear: string;
-  CompanyID: number;
-  Remarks: string;
-  CreatedBy?: any;
-  CreatedDate?: any;
-  ModifiedBy: string;
-  ModifiedDate: Date;
 }
 
 export interface BalanceSheetModel {
@@ -63,21 +40,6 @@ export interface BalanceSheetGDetailModel {
   StatusCode: number;
   Message: string;
   Entity: BalanceSheetGroupDetail;
-}
-
-export interface Ledger {
-  TransactDate?: Date;
-  VoucherNo?: any;
-  VoucherType?: any;
-  Balance: string;
-  Type: string;
-  Remarks?: any;
-  RowID?: any;
-  ID?: any;
-  AccountCode?: any;
-  AccountName: string;
-  DebitAmount?: any;
-  CreditAmount?: any;
 }
 
 export interface BalanceSheetLedger {

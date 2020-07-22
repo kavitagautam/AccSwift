@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { SettingsService } from "../../services/settings.service";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { SalesAccounts, PurchaseAccount } from "../../models/settings.model";
+import { PurchaseAccount } from "../../models/settings.model";
+import { SalesAccounts } from "@app/modules/accswift-shared/models/sales-account.model";
 
 @Component({
   selector: "accSwift-setting",

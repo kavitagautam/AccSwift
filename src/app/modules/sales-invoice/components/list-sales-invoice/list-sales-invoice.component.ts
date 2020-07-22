@@ -9,13 +9,10 @@ import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Component, OnInit, TemplateRef } from "@angular/core";
-import {
-  InvoiceDetail,
-  CashParty,
-  SalseInvoice,
-} from "../../models/sales-invoice.model";
+import { InvoiceDetail, SalseInvoice } from "../../models/sales-invoice.model";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
 
 @Component({
   selector: "accSwift-list-sales-invoice",

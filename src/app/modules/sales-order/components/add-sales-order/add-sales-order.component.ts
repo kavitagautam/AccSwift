@@ -8,8 +8,8 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ProductModalPopupComponent } from "@app/modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
 import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { CashParty } from "../../models/sales-order.model";
 import { PreferenceService } from "../../../preference/services/preference.service";
+import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
 
 @Component({
   selector: "accSwift-add-sales-order",

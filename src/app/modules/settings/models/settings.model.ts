@@ -664,34 +664,6 @@ export interface SettingsModel {
   Entity: Settings;
 }
 
-export interface CashAccountsModel {
-  Entity: CashAccountList[];
-}
-
-export interface CashAccountList {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-export interface BankAccountsModel {
-  Status: number;
-  Entity: BankAccounts[];
-}
-
-export interface SalesAccounts {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-
-export interface SalesAccountModel {
-  StatusCode: number;
-  Message: string;
-  Entity: SalesAccounts[];
-}
-
 export interface PurchaseAccount {
   LedgerID: number;
   LedgerCode: string;
@@ -703,25 +675,6 @@ export interface PurchaseAccountModel {
   StatusCode: number;
   Message: string;
   Entity: PurchaseAccount[];
-}
-export interface BankAccounts {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-
-export interface AccountClass {
-  ID: number;
-  Name: string;
-  ParentID: number;
-  Remarks?: any;
-}
-
-export interface AccountClassModel {
-  StatusCode: number;
-  Message: string;
-  Entity: AccountClass[];
 }
 
 export interface DATE_FORMAT {

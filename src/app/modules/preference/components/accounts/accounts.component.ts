@@ -1,13 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { PreferenceService } from "../../services/preference.service";
-import {
-  CashAccountList,
-  Preferences,
-  BankAccounts,
-} from "../../models/preference.model";
+import { Preferences } from "../../models/preference.model";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
+import { BankAccounts } from "@app/modules/accswift-shared/models/bank-account.model";
+import { CashAccounts } from "@app/modules/accswift-shared/models/cash-account.model";
 
 @Component({
   selector: "accSwift-accounts",
@@ -17,8 +15,8 @@ import { Router } from "@angular/router";
 export class AccountsComponent implements OnInit {
   accountFroms: FormGroup;
   preferenceList: Preferences;
-  cashAccountLists: CashAccountList[];
-  bankAccountLists: BankAccounts[];
+  cashAccountLists: CashAccounts[] = [];
+  bankAccountLists: BankAccounts[] = [];
   constructor(
     private _fb: FormBuilder,
     private preferenceService: PreferenceService,

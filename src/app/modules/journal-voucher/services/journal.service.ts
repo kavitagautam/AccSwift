@@ -4,19 +4,24 @@ import { Observable } from "rxjs";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import {
-  ProjectList,
-  ProjectListModel,
-  SeriesList,
-  JournalNavigateModel,
-  JournalDetailsModel,
+  JournalMasterRootModel,
+  JournalEditModel,
 } from "../models/journal.model";
+import {
+  Project,
+  ProjectRootModel,
+} from "@app/modules/accswift-shared/models/project.model";
+import {
+  Series,
+  SeriesRootModel,
+} from "@app/modules/accswift-shared/models/series.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class JournalService {
-  journalSeriesList: SeriesList;
-  projectLists: ProjectList[] = [];
+  journalSeriesList: Series[] = [];
+  projectLists: Project[] = [];
   _api_URL = environment.baseAPI;
   constructor(
     private http: HttpClient,
@@ -26,10 +31,7 @@ export class JournalService {
     this.getSeriesList();
   }
 
-  getMasterJournal(): Observable<JournalNavigateModel[]> {
-    return this.httpService.get(`${this._api_URL}journalmaster`);
-  }
-  getJournalDetails(id): Observable<JournalDetailsModel> {
+  getJournalDetails(id): Observable<JournalEditModel> {
     return this.httpService.get(`${this._api_URL}journalmaster/${id}`);
   }
 
@@ -44,7 +46,7 @@ export class JournalService {
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((response: ProjectListModel) => {
+      .subscribe((response: ProjectRootModel) => {
         this.projectLists = response.Entity;
       });
   }
@@ -53,12 +55,12 @@ export class JournalService {
     const params = new HttpParams().set("VoucherType", "JRNL");
     this.httpService
       .get(`${this._api_URL}series`, null, params)
-      .subscribe((res: any) => {
-        this.journalSeriesList = res.Entity;
+      .subscribe((response: SeriesRootModel) => {
+        this.journalSeriesList = response.Entity;
       });
   }
 
-  getJournalList(body): Observable<JournalNavigateModel> {
+  getJournalList(body): Observable<JournalMasterRootModel> {
     return this.httpService.post(
       `${this._api_URL}JournalMaster/Navigate`,
       body

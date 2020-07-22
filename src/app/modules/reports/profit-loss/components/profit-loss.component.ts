@@ -12,10 +12,10 @@ import { ReportsService } from "../../services/reports.service";
 import { Location } from "@angular/common";
 import {
   ProfitLossLists,
-  Company,
   LedgerDetailList,
   GroupDetailList,
 } from "../../models/profit-loss.model";
+import { Company } from "@app/modules/company/models/company.model";
 
 @Component({
   selector: "accSwift-profit-loss",
@@ -27,9 +27,7 @@ export class ProfitLossComponent implements OnInit, AfterViewInit {
   @ViewChild("groupPLBalance") groupPLBalance;
   @ViewChild("ledgerPLDetails") ledgerPLDetails;
   baseURL: string;
-
   companyInfo: Company;
-
   listLoading: boolean;
   profitLossList: ProfitLossLists[] = [];
   groupBalanceList: GroupDetailList[] = [];

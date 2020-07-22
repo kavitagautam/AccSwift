@@ -1,8 +1,7 @@
 import { Router } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { FormBuilder, Validators, FormArray } from "@angular/forms";
+import { FormBuilder, Validators, FormArray, FormGroup } from "@angular/forms";
 import { BankPaymentService } from "./../../services/bank-payment.service";
-import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { PreferenceService } from "../../../preference/services/preference.service";

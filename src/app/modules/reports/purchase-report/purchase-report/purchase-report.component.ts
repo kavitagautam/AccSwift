@@ -2,13 +2,10 @@ import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ReportsService } from "../../services/reports.service";
-import {
-  DepotList,
-  CashPartyGroup,
-  CashParty,
-  SalesAccount,
-  PurchaseList,
-} from "../../models/sales.report.model";
+import { CashPartyGroup, PurchaseList } from "../../models/sales.report.model";
+import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
+import { Depot } from "@app/modules/depot/models/depot.model";
+import { SalesAccounts } from "@app/modules/accswift-shared/models/sales-account.model";
 
 @Component({
   selector: "accSwift-purchase-report",
@@ -20,8 +17,8 @@ export class PurchaseReportComponent implements OnInit {
   purchaseReportList: PurchaseList[] = [];
   cashPartyList: CashParty[] = [];
   cashPartyGroupList: CashPartyGroup[] = [];
-  depotList: DepotList[] = [];
-  salesAccountList: SalesAccount[] = [];
+  depotList: Depot[] = [];
+  salesAccountList: SalesAccounts[] = [];
   selectType: string;
   @ViewChild("purchaseReportSettings") purchaseReportSettings;
 
@@ -37,7 +34,7 @@ export class PurchaseReportComponent implements OnInit {
   totalVATAmount: number;
   totalNetAmount: number;
   totalDiscountAmount: number;
-  totalAmount:number;
+  totalAmount: number;
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside

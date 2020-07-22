@@ -7,7 +7,10 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { PurchaseInvoiceService } from "./../../services/purchase-invoice.service";
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
-import { PurchaseInvoiceList } from "../../models/purchase-invoice.model";
+import {
+  PurchaseInvoice,
+  PurchInvoiceDetail,
+} from "../../models/purchase-invoice.model";
 
 @Component({
   selector: "accSwift-list-purchase-invoice",
@@ -16,7 +19,7 @@ import { PurchaseInvoiceList } from "../../models/purchase-invoice.model";
 })
 export class ListPurchaseInvoiceComponent implements OnInit {
   purchaseForm: FormGroup;
-  purchaseInvoiceList: PurchaseInvoiceList[] = [];
+  purchaseInvoiceList: PurchaseInvoice[] = [];
   date: Date = new Date();
   listLoading: Boolean;
   public gridView: GridDataResult;
@@ -143,7 +146,7 @@ export class ListPurchaseInvoiceComponent implements OnInit {
     this.router.navigate(["/purchase-invoice/edit", item.ID]);
   }
 
-  productList: PurchaseInvoiceList[] = [];
+  productList: PurchInvoiceDetail[] = [];
 
   openProductModal(template: TemplateRef<any>, dataItem): void {
     this.productList = dataItem.PurchInvoiceDetails;

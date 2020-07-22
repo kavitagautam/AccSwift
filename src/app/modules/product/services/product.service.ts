@@ -4,21 +4,25 @@ import { HttpClientService } from "@app/core/services/http-client/http-client.se
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import {
-  ProductGroupTree,
   ProductDetailModel,
-  ProductGroup,
-  ProductModel,
-  AccountClass,
+  ProductRootModel,
+  ProductTreeViewModel,
 } from "../models/product.models";
+import { Depot } from "@app/modules/depot/models/depot.model";
+import { AccountClass } from "@app/modules/accswift-shared/models/account-class.model";
+import {
+  ProductGroup,
+  ProductGroupModel,
+} from "../models/product-group.models";
 
 @Injectable({
   providedIn: "root",
 })
 export class ProductService {
   _api_URL = environment.baseAPI;
-  productGroupList: ProductGroup;
-  accountClass: AccountClass;
-  depotList: any;
+  productGroupList: ProductGroup[] = [];
+  accountClass: AccountClass[] = [];
+  depotList: Depot[] = [];
   unitList;
   constructor(
     private http: HttpClient,
@@ -30,11 +34,11 @@ export class ProductService {
     this.getAccountClass();
   }
 
-  getProductTree(): Observable<ProductGroupTree> {
+  getProductTree(): Observable<ProductTreeViewModel> {
     return this.httpService.get(`${this._api_URL}ProductGroup/Tree`);
   }
 
-  getProductList(): Observable<ProductModel> {
+  getProductList(): Observable<ProductRootModel> {
     return this.httpService.get(`${this._api_URL}Product`);
   }
 
@@ -55,7 +59,7 @@ export class ProductService {
   getProductGroup(): void {
     this.httpService
       .get(`${this._api_URL}ProductGroup`)
-      .subscribe((response) => {
+      .subscribe((response: ProductGroupModel) => {
         this.productGroupList = response.Entity;
       });
   }

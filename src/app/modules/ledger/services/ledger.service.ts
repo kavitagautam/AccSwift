@@ -3,21 +3,21 @@ import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
 import {
-  LedgerGroupDetailsModel,
   LedgerDetailsModel,
-  LedgerListModel,
-  LedgerGroup,
-  AccountClass
+  LedgerListViewModel,
 } from "../models/ledger.models";
 import { Observable } from "rxjs";
+import { AccountClass } from "@app/modules/accswift-shared/models/account-class.model";
+import { LedgerGroup } from "@app/modules/reports/models/ledger.reports.model";
+import { LedgerGroupDetailsModel } from "../models/ledger-group.model";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class LedgerService {
   _api_URL = environment.baseAPI;
   ledgerGroupLists: LedgerGroup[] = [];
-  accountClass: AccountClass;
+  accountClass: AccountClass[] = [];
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
@@ -27,15 +27,18 @@ export class LedgerService {
   }
 
   getAccountClass(): void {
-    this.httpService.get(`${this._api_URL}AccountClass`).subscribe(response => {
-      this.accountClass = response.Entity;
-    });
+    this.httpService
+      .get(`${this._api_URL}AccountClass`)
+      .subscribe((response) => {
+        this.accountClass = response.Entity;
+      });
   }
 
   getLedgerTreeView(): any {
     return this.httpService.get(`${this._api_URL}LedgerGroup/Tree`);
   }
-  getLedgerListView(): Observable<LedgerListModel> {
+
+  getLedgerListView(): Observable<LedgerListViewModel> {
     return this.httpService.get(`${this._api_URL}Ledger/ListView`);
   }
 
@@ -74,8 +77,10 @@ export class LedgerService {
   }
 
   getLedgerGroupDropDown(): void {
-    this.httpService.get(`${this._api_URL}LedgerGroup`).subscribe(response => {
-      this.ledgerGroupLists = response.Entity;
-    });
+    this.httpService
+      .get(`${this._api_URL}LedgerGroup`)
+      .subscribe((response) => {
+        this.ledgerGroupLists = response.Entity;
+      });
   }
 }

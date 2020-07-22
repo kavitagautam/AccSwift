@@ -1,40 +1,47 @@
 import { HttpParams } from "@angular/common/http";
 import {
-  ProjectList,
   SalesInvoiceDetailsModel,
   SalseInvoiceNavigateModel,
-  SalesAccountModel,
-  CashParty,
-  SalesAccounts,
-  DepotListModel,
-  DepotList,
-  RelatedUnitModel,
-  ProjectListModel,
-  TaxListModel,
-  TaxList,
-  SeriesList,
-  SeriesListModel,
-  ProductMinModel,
-  ProductMinList,
 } from "../models/sales-invoice.model";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@core/services/http-client/http-client.service";
 import { Observable } from "rxjs";
 import { environment } from "@env/environment";
 import { Injectable } from "@angular/core";
+import {
+  Project,
+  ProjectRootModel,
+} from "@app/modules/accswift-shared/models/project.model";
+import {
+  Series,
+  SeriesRootModel,
+} from "@app/modules/accswift-shared/models/series.model";
+import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
+import {
+  SalesAccounts,
+  SalesAccountModel,
+} from "@app/modules/accswift-shared/models/sales-account.model";
+
+import { Tax, TaxModel } from "@app/modules/accswift-shared/models/tax.model";
+import { RelatedUnitModel } from "@app/modules/accswift-shared/models/related-unit.model";
+import { Depot, DepotModel } from "@app/modules/depot/models/depot.model";
+import {
+  ProductMin,
+  ProductMinRootModel,
+} from "@app/modules/product/models/product-min.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class SalesInvoiceService {
   _api_URL = environment.baseAPI;
-  seriesList: SeriesList[] = [];
-  projectList: ProjectList[] = [];
+  seriesList: Series[] = [];
+  projectList: Project[] = [];
   cashPartyList: CashParty[] = [];
-  productList: ProductMinList[] = [];
+  productList: ProductMin[] = [];
   salesAccountList: SalesAccounts[] = [];
-  depotList: DepotList[] = [];
-  taxList: TaxList[] = [];
+  depotList: Depot[] = [];
+  taxList: Tax[] = [];
   constructor(
     private httpService: HttpClientService,
     private http: HttpClient
@@ -52,7 +59,7 @@ export class SalesInvoiceService {
     const params = new HttpParams().set("VoucherType", "SALES");
     this.httpService
       .get(`${this._api_URL}series`, null, params)
-      .subscribe((response: SeriesListModel) => {
+      .subscribe((response: SeriesRootModel) => {
         this.seriesList = response.Entity;
       });
   }
@@ -84,7 +91,7 @@ export class SalesInvoiceService {
   getDepotList(): void {
     this.httpService
       .get(`${this._api_URL}Depot`)
-      .subscribe((response: DepotListModel) => {
+      .subscribe((response: DepotModel) => {
         this.depotList = response.Entity;
       });
   }
@@ -92,7 +99,7 @@ export class SalesInvoiceService {
   getTaxList(): void {
     this.httpService
       .get(`${this._api_URL}Tax/min`)
-      .subscribe((response: TaxListModel) => {
+      .subscribe((response: TaxModel) => {
         this.taxList = response.Entity;
       });
   }
@@ -100,7 +107,7 @@ export class SalesInvoiceService {
   getProjectList(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((response: ProjectListModel) => {
+      .subscribe((response: ProjectRootModel) => {
         this.projectList = response.Entity;
       });
   }
@@ -109,7 +116,7 @@ export class SalesInvoiceService {
     return this.httpService.get(`${this._api_URL}Ledger/cashparty`);
   }
 
-  getProductDD(): Observable<ProductMinModel> {
+  getProductDD(): Observable<ProductMinRootModel> {
     return this.httpService.get(`${this._api_URL}Product/min`);
   }
 

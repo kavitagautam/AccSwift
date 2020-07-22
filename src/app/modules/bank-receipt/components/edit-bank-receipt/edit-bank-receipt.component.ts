@@ -6,8 +6,8 @@ import { BankReceiptService } from "../../services/bank-receipt.service";
 import { LedgerCodeMatchService } from "@app/modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerCodeAsyncValidators } from "@app/modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
-import { BankReceiptDetail } from "../../models/bank-receipt.model";
 import { ToastrService } from "ngx-toastr";
+import { BankReceipt } from "../../models/bank-receipt.model";
 
 @Component({
   selector: "accswift-edit-bank-receipt",
@@ -16,7 +16,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class EditBankReceiptComponent implements OnInit {
   private editedRowIndex: number;
-  bankReceiptDetails: BankReceiptDetail;
+  bankReceiptDetails: BankReceipt;
   currentAmount: string = "0.00";
   bankReceiptForm: FormGroup;
   numericFormat: string = "n2";

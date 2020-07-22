@@ -1,9 +1,4 @@
-import {
-  RelatedUnits,
-  CashParty,
-  SalesInvoiceDetails,
-  ProductMinList,
-} from "../../models/sales-invoice.model";
+import { SalesInvoiceDetails } from "../../models/sales-invoice.model";
 import { SalesInvoiceService } from "./../../services/sales-invoice.service";
 import { ActivatedRoute } from "@angular/router";
 import { FormArray, Validators } from "@angular/forms";
@@ -28,6 +23,9 @@ import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/valid
 import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 import { AddProductComponent } from "@app/modules/accswift-shared/components/add-product/add-product/add-product.component";
 import { IconConst } from "@app/shared/constants/icon.constant";
+import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
+import { RelatedUnits } from "@app/modules/accswift-shared/models/related-unit.model";
+import { ProductMin } from "@app/modules/product/models/product-min.model";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
@@ -58,7 +56,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   vatTotalAmount: number = 0;
   grandTotalAmount: number = 0;
   public cashPartyList: CashParty[] = [];
-  public productList: ProductMinList[] = [];
+  public productList: ProductMin[] = [];
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -275,22 +273,22 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   private showUnitPopup: boolean = true;
   rowPopupIndexUnit: number;
   unitClick = false;
-  taxClick = false;
+  discClick = false;
   public unitPopup(number): void {
     this.unitClick = true;
-    this.taxClick = false;
+    this.discClick = false;
     this.rowPopupIndexUnit = number;
     this.showUnitPopup = !this.showUnitPopup;
   }
 
-  private showTaxPopup: boolean = true;
-  rowPopupIndexTax: number;
+  private showDiscPopup: boolean = true;
+  rowPopupIndexDisc: number;
 
-  public taxPopup(number): void {
+  public discPopup(number): void {
     this.unitClick = false;
-    this.taxClick = true;
-    this.rowPopupIndexTax = number;
-    this.showTaxPopup = !this.showTaxPopup;
+    this.discClick = true;
+    this.rowPopupIndexDisc = number;
+    this.showDiscPopup = !this.showDiscPopup;
   }
 
   @HostListener("document:click", ["$event"])

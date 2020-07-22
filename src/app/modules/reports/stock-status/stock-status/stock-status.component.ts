@@ -4,17 +4,9 @@ import {
   TemplateRef,
   ViewChild,
   AfterViewInit,
-  ChangeDetectorRef,
-  AfterContentChecked,
 } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import {
-  Product,
-  ProductGroup,
-  ProjectList,
-  StockStatusList,
-  AccountClass,
-} from "../models/stock.models";
+import { StockStatusList } from "../models/stock.models";
 import { ReportsService } from "../../services/reports.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 

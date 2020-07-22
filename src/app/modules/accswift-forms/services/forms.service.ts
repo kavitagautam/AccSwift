@@ -2,8 +2,9 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { environment } from "@env/environment";
-import { SeriesListModel, ProjectListModel } from "../models/forms-data.model";
 import { Observable } from "rxjs";
+import { ProjectRootModel } from "@app/modules/accswift-shared/models/project.model";
+import { SeriesRootModel } from "@app/modules/accswift-shared/models/series.model";
 
 @Injectable({
   providedIn: "root",
@@ -15,12 +16,12 @@ export class FormsService {
     private httpService: HttpClientService
   ) {}
 
-  getSeriesList(voucherType): Observable<SeriesListModel> {
+  getSeriesList(voucherType): Observable<SeriesRootModel> {
     const params = new HttpParams().set("VoucherType", voucherType);
     return this.httpService.get(`${this._api_URL}Series`, null, params);
   }
 
-  getProjectLists(): Observable<ProjectListModel> {
+  getProjectLists(): Observable<ProjectRootModel> {
     return this.httpService.get(`${this._api_URL}project`);
   }
 }
