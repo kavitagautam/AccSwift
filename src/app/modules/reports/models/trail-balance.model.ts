@@ -1,3 +1,5 @@
+import { Company } from "@app/modules/company/models/company.model";
+
 export interface Ledger {
   LedgerID: number;
   LedgerCode: string;
@@ -14,32 +16,6 @@ export interface TrailBalance {
   AccountName: string;
   DebitAmount: number;
   CreditAmount: number;
-}
-
-export interface Company {
-  ID: number;
-  Name: string;
-  Code: string;
-  Address1: string;
-  Address2: string;
-  City: string;
-  District: string;
-  Zone: string;
-  Telephone: string;
-  Email: string;
-  Website: string;
-  POBox: string;
-  PAN: string;
-  Logo?: any;
-  FYFrom: Date;
-  BookBeginFrom: Date;
-  FiscalYear: string;
-  CompanyID: number;
-  Remarks: string;
-  CreatedBy?: any;
-  CreatedDate?: any;
-  ModifiedBy: string;
-  ModifiedDate: Date;
 }
 
 export interface Entity {

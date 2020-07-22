@@ -345,11 +345,12 @@
                 [formControl]="
     getInvoiceEntryList.controls[rowIndex].get('SalesRate')
   "
+                (valueChange)="changeInvoiceValues(dataItem,rowIndex)"
               >
               </kendo-numerictextbox>
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="DiscPercentage" title="Disc%" width="100">
+          <kendo-grid-column field="DiscPercentage" title="Disc%" width="80">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -357,83 +358,83 @@
               let-rowIndex="rowIndex"
               let-isNew="isNew"
               let-formGroup="formGroup"
-            >
-              <kendo-numerictextbox
-                [format]="'p'"
-                [step]="0.1"
-                [min]="0"
-                class="form-control"
-                [max]="1"
-                [valuePrimitive]="true"
-                [value]="percentage"
-                [formControl]="
-    getInvoiceEntryList.controls[rowIndex].get('DiscPercentage')
-  "
-                (valueChange)="changeInvoiceValues(dataItem, rowIndex)"
-              ></kendo-numerictextbox>
-            </ng-template>
-          </kendo-grid-column>
-
-          <kendo-grid-column field="TaxID" title="Select Tax" width="80">
-            <ng-template
-              kendoGridCellTemplate
-              let-isNew="isNew"
-              let-dataItem="dataItem"
-              let-rowIndex="rowIndex"
-              let-formGroup="formGroup"
-              let-column="column"
             >
               <button
                 #anchor
                 class="btn-secondary"
-                (click)="taxPopup(rowIndex)"
+                (click)="discPopup(rowIndex)"
               >
-                Calc Tax
+                Discount
               </button>
               <kendo-popup
                 #popup
                 [anchor]="anchor"
-                *ngIf="showTaxPopup && rowPopupIndexTax==rowIndex"
+                *ngIf="showDiscPopup && rowPopupIndexDisc==rowIndex"
               >
                 <div
                   class="contentPopup"
                   style="min-height: 120px; width: fit-content; padding: 15px;"
                 >
                   <div class="form-group">
-                    <label> Tax Percentage</label>
-                    <kendo-dropdownlist
+                    <label> Discount %</label>
+                    <kendo-numerictextbox
+                      [format]="'p'"
+                      [step]="0.1"
+                      [min]="0"
                       class="form-control"
-                      [data]="salesInvoiceService.taxList"
-                      textField="Name"
-                      valueField="ID"
+                      [max]="1"
                       [valuePrimitive]="true"
+                      [value]="percentage"
                       [formControl]="
-    getInvoiceEntryList.controls[rowIndex].get(column.field)
+    getInvoiceEntryList.controls[rowIndex].get('DiscPercentage')
   "
-                      (valueChange)="handleTaxChange($event, rowIndex)"
-                    >
-                      <ng-template kendoDropDownListItemTemplate let-dataItem>
-                        <span class="template">{{ dataItem.Name }}</span>({{
-                        dataItem.Rate }} %)
-                      </ng-template>
-                    </kendo-dropdownlist>
+                      (valueChange)="changeInvoiceValues(dataItem, rowIndex)"
+                    ></kendo-numerictextbox>
                   </div>
                   <div class="form-group">
-                    <label> Tax Amount</label>
+                    <label> Discount Amount</label>
                     <kendo-numerictextbox
                       popupAnchor
                       class="form-control"
                       [decimals]="decimals"
-                      [format]="c0"
                       [spinners]="false"
+                      [format]="c0"
                       [formControl]="
-                  getInvoiceEntryList.controls[rowIndex].get('TaxAmount')
-                "
+    getInvoiceEntryList.controls[rowIndex].get('DiscountAmount')
+  "
                     >
                     </kendo-numerictextbox>
                   </div>
                 </div>
               </kendo-popup>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-column field="TaxID" title="Select Tax" width="110">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
+              let-rowIndex="rowIndex"
+              let-formGroup="formGroup"
+              let-column="column"
+            >
+              <kendo-dropdownlist
+                class="form-control"
+                [data]="salesInvoiceService.taxList"
+                textField="Name"
+                valueField="ID"
+                [valuePrimitive]="true"
+                [formControl]="
+getInvoiceEntryList.controls[rowIndex].get(column.field)
+"
+                (valueChange)="handleTaxChange($event, rowIndex)"
+              >
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <span class="template">{{ dataItem.Name }}</span>({{
+                  dataItem.Rate }} %)
+                </ng-template>
+              </kendo-dropdownlist>
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="Amount" title="Amount" width="100">
@@ -445,17 +446,20 @@
               let-formGroup="formGroup"
               let-column="column"
             >
-              <label style="margin-bottom: 0; display: flex;"
+              <span style="margin-bottom: 0; display: flex;"
                 >Total :&nbsp;
-                &nbsp;{{getInvoiceEntryList.controls[rowIndex].get('Amount').value}}</label
+                &nbsp;{{getInvoiceEntryList.controls[rowIndex].get('Amount').value
+                | number:'3.1-3'}}</span
               >
-              <label style="margin-bottom: 0; display: flex;"
+              <span style="margin-bottom: 0; display: flex;"
                 >Discount :&nbsp;
-                &nbsp;{{getInvoiceEntryList.controls[rowIndex].get('DiscountAmount').value}}</label
+                &nbsp;{{getInvoiceEntryList.controls[rowIndex].get('DiscountAmount').value
+                | number:'3.1-3'}}</span
               >
-              <label style="margin-bottom: 0; display: flex;"
+              <span style="margin-bottom: 0; display: flex;"
                 >Net :&nbsp;
-                &nbsp;{{getInvoiceEntryList.controls[rowIndex].get('NetAmount').value}}</label
+                &nbsp;{{getInvoiceEntryList.controls[rowIndex].get('NetAmount').value
+                | number:'3.1-3'}}</span
               >
             </ng-template>
             <ng-template

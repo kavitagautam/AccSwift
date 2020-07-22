@@ -8,10 +8,8 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 
 import { Subject } from "rxjs";
 import { AddProductComponent } from "../add-product/add-product/add-product.component";
-import {
-  ProductList,
-  ProductlistService,
-} from "../../services/product-list/productlist.service";
+import { ProductlistService } from "../../services/product-list/productlist.service";
+import { ProductMin } from "@app/modules/product/models/product-min.model";
 
 @Component({
   selector: "accSwift-product-modal-popup",
@@ -21,7 +19,7 @@ import {
 export class ProductModalPopupComponent implements OnInit {
   public onClose: Subject<boolean>;
   public onSelected: Subject<boolean>;
-  productList: ProductList[] = [];
+  productList: ProductMin[] = [];
   listLoading: boolean;
 
   //kendo Grid

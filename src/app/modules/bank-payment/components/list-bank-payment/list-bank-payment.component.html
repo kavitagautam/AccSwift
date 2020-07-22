@@ -112,7 +112,7 @@
         >
           <kendo-grid-column field="VoucherNo" title="VoucherNo." width="100">
           </kendo-grid-column>
-          <kendo-grid-column title="Ledger Name" width="250">
+          <kendo-grid-column title="Ledger Name" width="230">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -134,7 +134,7 @@
               </div>
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column title="Ledger Code" width="120">
+          <kendo-grid-column title="Ledger Code" width="100">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -162,10 +162,10 @@
               </div>
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="SeriesName" title="Series" width="100">
+          <!-- <kendo-grid-column field="SeriesName" title="Series" width="100">
           </kendo-grid-column>
           <kendo-grid-column field="ProjectName" title="Project" width="100">
-          </kendo-grid-column>
+          </kendo-grid-column> -->
           <kendo-grid-column
             field="CreatedDate"
             title="Cheque Date"
@@ -178,9 +178,9 @@
               {{ dataItem.CreatedDate | dateStringFormat: "yyyy-MM-dd" }}
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="Remarks" title="Remarks">
+          <kendo-grid-column field="Remarks" title="Remarks" width="120">
           </kendo-grid-column>
-          <kendo-grid-command-column title="Action" width="150">
+          <kendo-grid-command-column title="Action" width="110">
             <ng-template
               kendoGridCellTemplate
               let-isNew="isNew"

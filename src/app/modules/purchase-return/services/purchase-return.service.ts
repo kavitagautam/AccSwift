@@ -2,14 +2,17 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { environment } from "@env/environment";
-import { ProjectList } from "../models/purchase-return.model";
+import {
+  Project,
+  ProjectRootModel,
+} from "@app/modules/accswift-shared/models/project.model";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class PurchaseReturnService {
   _api_URL = environment.baseAPI;
-  projectList: ProjectList;
+  projectList: Project[] = [];
 
   constructor(
     private http: HttpClient,
@@ -21,8 +24,8 @@ export class PurchaseReturnService {
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectList) => {
-        this.projectList = res;
+      .subscribe((res: ProjectRootModel) => {
+        this.projectList = res.Entity;
       });
   }
 

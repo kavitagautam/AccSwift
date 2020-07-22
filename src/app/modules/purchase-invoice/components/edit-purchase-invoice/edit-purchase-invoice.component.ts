@@ -1,7 +1,4 @@
-import {
-  PurchaseInvoiceDetail,
-  RelatedUnits,
-} from "./../../models/purchase-invoice.model";
+import { PurchaseInvoice } from "./../../models/purchase-invoice.model";
 import { PurchaseInvoiceService } from "./../../services/purchase-invoice.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormArray, Validators } from "@angular/forms";
@@ -12,6 +9,7 @@ import { BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { takeUntil, debounceTime } from "rxjs/operators";
+import { RelatedUnits } from "@app/modules/accswift-shared/models/related-unit.model";
 
 @Component({
   selector: "accSwift-edit-purchase-invoice",
@@ -22,7 +20,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
   purchaseInvoiceForm: FormGroup;
   numericFormat: string = "n2";
   public decimals: number = 2;
-  purchaseDetails: PurchaseInvoiceDetail;
+  purchaseDetails: PurchaseInvoice;
   relatedUnits: RelatedUnits[];
   //Total Calculation
   myFormValueChanges$;

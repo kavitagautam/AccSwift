@@ -5,11 +5,11 @@ import { Router } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import {
   BalanceSheet,
-  Ledger,
   GroupList,
-  Company,
 } from "@app/modules/reports/models/balance.sheet.model";
 import { Location } from "@angular/common";
+import { Ledger } from "@app/modules/ledger/models/ledger.models";
+import { Company } from "@app/modules/company/models/company.model";
 
 @Component({
   selector: "accSwift-balance-sheet",

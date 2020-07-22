@@ -10,8 +10,8 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { ProductGroupService } from "../../services/product-group.service";
-import { ProductGroup } from "../../models/product.models";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { ProductGroup } from "../../models/product-group.models";
 
 @Component({
   selector: "accSwift-product-group",

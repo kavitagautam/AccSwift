@@ -1,48 +1,7 @@
-export interface ProjectList {
-  ID: number;
-  ProjectNumber: number;
-  ParentProjectID?: number;
-  EngName: string;
-  NepName: string;
-  Description: string;
-  CreatedBy: string;
-  CreatedDate?: Date;
-  ModifiedBy: string;
-  ModifiedDate?: Date;
-}
-
-export interface ProjectListModel {
-  StatusCode: number;
-  Message: string;
-  Entity: ProjectList[];
-}
-
-export interface CashParty {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-
-export interface CashPartyModel {
-  StatusCode: number;
-  Message: string;
-  Entity: CashParty[];
-}
-
-export interface SeriesList {
-  ID: number;
-  EngName: string;
-  NepName: string;
-  VoucherType: string;
-  AutoNumber: number;
-  BuiltIn: boolean;
-}
-
-export interface PurchaseOrderList {
+export interface PurchaseOrder {
   ID: number;
   Date: Date;
-  OrderDetails?: any;
+  OrderDetails?: OrderDetail[];
   CashPartyLedgerID: number;
   CashPartName: string;
   ProjectID: number;
@@ -57,7 +16,7 @@ export interface PurchaseOrderList {
 }
 
 export interface PurchaseOrderNavigate {
-  Entity: PurchaseOrderList[];
+  Entity: PurchaseOrder[];
   ItemsPerPage: number;
   ItemsReturned: number;
   TotalItemsAvailable: number;
@@ -84,25 +43,8 @@ export interface OrderDetail {
   PenndingQuantity: number;
 }
 
-export interface PurchaseOrderDetail {
-  ID: number;
-  Date: Date;
-  OrderDetails: OrderDetail[];
-  CashPartyLedgerID: number;
-  CashPartName: string;
-  ProjectID: number;
-  ProjectName: string;
-  OrderNo: string;
-  CompanyID: number;
-  Remarks: string;
-  CreatedBy: string;
-  CreatedDate: Date;
-  ModifiedBy?: any;
-  ModifiedDate?: any;
-}
-
 export interface PurchaseOrderDetailModel {
   StatusCode: number;
   Message: string;
-  Entity: PurchaseOrderDetail;
+  Entity: PurchaseOrder;
 }

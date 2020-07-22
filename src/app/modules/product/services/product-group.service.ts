@@ -4,12 +4,12 @@ import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { Observable } from "rxjs";
 import {
-  ProductGroupModel,
-  ProductGroup
+  ProductGroup,
+  ProductGroupDetailModel,
 } from "../models/product-group.models";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class ProductGroupService {
   _api_URL = environment.baseAPI;
@@ -22,15 +22,17 @@ export class ProductGroupService {
   }
 
   // Api for Product Group
-  getProductGroupDetails(id): Observable<ProductGroupModel> {
+  getProductGroupDetails(id): Observable<ProductGroupDetailModel> {
     return this.httpService.get(`${this._api_URL}ProductGroup/${id}`);
   }
 
   // get Product Group DropDown
   getProductGroup(): void {
-    this.httpService.get(`${this._api_URL}ProductGroup`).subscribe(response => {
-      this.productGroupList = response.Entity;
-    });
+    this.httpService
+      .get(`${this._api_URL}ProductGroup`)
+      .subscribe((response) => {
+        this.productGroupList = response.Entity;
+      });
   }
 
   //add Product Group
@@ -38,7 +40,7 @@ export class ProductGroupService {
     const body = {
       ParentGroupID: value.ParentGroupID,
       Name: value.Name,
-      Remarks: value.Remarks
+      Remarks: value.Remarks,
     };
     return this.httpService.post(`${this._api_URL}ProductGroup`, body);
   }
@@ -48,7 +50,7 @@ export class ProductGroupService {
       ID: value.ID,
       ParentGroupID: value.ParentGroupID,
       Name: value.Name,
-      Remarks: value.Remarks
+      Remarks: value.Remarks,
     };
     return this.httpService.put(`${this._api_URL}ProductGroup`, body);
   }

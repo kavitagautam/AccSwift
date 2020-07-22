@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { SettingsService } from "../../services/settings.service";
-import { BankAccounts, CashAccountList } from "../../models/settings.model";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
+import { BankAccounts } from "@app/modules/accswift-shared/models/bank-account.model";
+import { CashAccounts } from "@app/modules/accswift-shared/models/cash-account.model";
 
 @Component({
   selector: "accSwift-accounts",
@@ -12,7 +13,7 @@ import { Router } from "@angular/router";
 })
 export class AccountsComponent implements OnInit {
   accountsForm: FormGroup;
-  cashAccountLists: CashAccountList[];
+  cashAccountLists: CashAccounts[];
   bankAccountLists: BankAccounts[];
   constructor(
     private _fb: FormBuilder,

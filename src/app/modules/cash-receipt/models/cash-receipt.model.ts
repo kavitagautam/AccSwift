@@ -1,44 +1,3 @@
-export interface ProjectList {
-  ID: number;
-  ProjectNumber: number;
-  ParentProjectID?: number;
-  EngName: string;
-  NepName: string;
-  Description: string;
-  CreatedBy: string;
-  CreatedDate?: Date;
-  ModifiedBy: string;
-  ModifiedDate?: Date;
-}
-
-export interface ProjectListModel {
-  StatusCode: number;
-  Message: string;
-  Entity: ProjectList[];
-}
-
-export interface SeriesListModel {
-  Status: number;
-  Entity: SeriesList[];
-}
-
-export interface SeriesList {
-  ID: number;
-  Name: string;
-}
-
-export interface CashPartyListModel {
-  Status: number;
-  Entity: CashPartyList[];
-}
-
-export interface CashPartyList {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-
 export interface Fields {
   Field1: string;
   Field2: string;
@@ -126,15 +85,4 @@ export interface CashReceiptDetailModel {
   StatusCode: number;
   Message: string;
   Entity: CashReceipt;
-}
-
-export interface CashAccountsModel {
-  Entity: CashAccountList[];
-}
-
-export interface CashAccountList {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
 }

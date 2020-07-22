@@ -9,13 +9,13 @@ import {
   TrailBalance,
   GroupBalanceList,
   LedgerList,
-  Company,
 } from "../../models/trail-balance.model";
 import { ReportsService } from "../../services/reports.service";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
+import { Company } from "@app/modules/company/models/company.model";
 @Component({
   selector: "accSwift-trial-balance",
   templateUrl: "./trial-balance.component.html",

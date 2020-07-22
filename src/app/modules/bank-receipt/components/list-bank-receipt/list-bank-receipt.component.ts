@@ -11,8 +11,8 @@ import { ToastrService } from "ngx-toastr";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import {
-  BankReceiptList,
   BankReceiptDetailsList,
+  BankReceipt,
 } from "../../models/bank-receipt.model";
 
 @Component({
@@ -24,7 +24,7 @@ export class ListBankReceiptComponent implements OnInit {
   bankReceiptForm: FormGroup;
   date: Date = new Date();
   listLoading: boolean;
-  bankReceiptList: BankReceiptList[] = [];
+  bankReceiptList: BankReceipt[] = [];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
   public pageSize = 10;

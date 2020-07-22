@@ -11,8 +11,8 @@ import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { CashPaymentService } from "../../services/cash-payment.service";
 import {
-  CashPaymentList,
-  CashPaymentDetail,
+  CashPayment,
+  CashPaymentDetailsList,
 } from "../../models/cash-payment.model";
 
 @Component({
@@ -23,7 +23,7 @@ import {
 export class ListCashPaymentComponent implements OnInit {
   cashPaymentsForm: FormGroup;
   listLoading: boolean;
-  cashPaymentList: CashPaymentList[] = [];
+  cashPaymentList: CashPayment[] = [];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor; //Muliti Column Filter
   date: Date = new Date();
@@ -143,7 +143,7 @@ export class ListCashPaymentComponent implements OnInit {
     this.router.navigate(["/cash-payment/edit", item.ID]);
   }
 
-  ledgerList: CashPaymentDetail[] = [];
+  ledgerList: CashPaymentDetailsList[] = [];
 
   openLedgerModal(template: TemplateRef<any>, dataItem): void {
     this.ledgerList = dataItem.CashPaymentDetailsList;

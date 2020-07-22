@@ -1,4 +1,4 @@
-import { BankPaymentList } from "./../../models/bank-payment.model";
+import { BankPayment } from "./../../models/bank-payment.model";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
@@ -20,7 +20,7 @@ export class EditBankPaymentComponent implements OnInit {
   currentAmount: string = "0.00";
   numericFormat: string = "n2";
   public decimals: number = 2;
-  bankPaymentDetails: BankPaymentList;
+  bankPaymentDetails: BankPayment;
   date: Date = new Date();
   submitted: boolean;
   rowSubmitted: boolean;

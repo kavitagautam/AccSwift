@@ -3,11 +3,9 @@ import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { environment } from "@env/environment";
 import { Observable } from "rxjs";
-import {
-  ProjectListModel,
-  AccountClassModel,
-} from "../../stock-status/models/stock.models";
 import { TransactionVoucherModel } from "../models/day-book.models";
+import { ProjectRootModel } from "@app/modules/accswift-shared/models/project.model";
+import { AccountClassModel } from "@app/modules/accswift-shared/models/account-class.model";
 
 @Injectable({
   providedIn: "root",
@@ -27,7 +25,7 @@ export class DayBookService {
     );
   }
 
-  getProjectLists(): Observable<ProjectListModel> {
+  getProjectLists(): Observable<ProjectRootModel> {
     return this.httpService.get(`${this._api_URL}project`);
   }
 

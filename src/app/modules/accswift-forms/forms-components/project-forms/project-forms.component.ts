@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, forwardRef } from "@angular/core";
 import { FormsService } from "../../services/forms.service";
-import { ProjectList } from "../../models/forms-data.model";
 import {
   ControlValueAccessor,
   FormControl,
@@ -8,6 +7,7 @@ import {
   NG_VALUE_ACCESSOR,
 } from "@angular/forms";
 import { Subscription } from "rxjs";
+import { Project } from "@app/modules/accswift-shared/models/project.model";
 
 @Component({
   selector: "accSwift-project-forms",
@@ -36,7 +36,7 @@ import { Subscription } from "rxjs";
 export class ProjectFormsComponent implements ControlValueAccessor, OnDestroy {
   subscriptions: Subscription[] = [];
   ProjectID = new FormControl();
-  projectList: ProjectList[];
+  projectList: Project[];
 
   // get value(): number {
   //   return this.ProjectID.value;

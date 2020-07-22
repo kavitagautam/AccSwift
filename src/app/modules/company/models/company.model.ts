@@ -1,4 +1,4 @@
-export interface CompanyList {
+export interface Company {
   ID: number;
   Name: string;
   Code: string;
@@ -12,20 +12,20 @@ export interface CompanyList {
   Website: string;
   POBox: string;
   PAN: string;
-  Logo: string;
+  Logo?: string;
   FYFrom: Date;
   BookBeginFrom: Date;
   FiscalYear: string;
   CompanyID: number;
   Remarks: string;
-  CreatedBy: string;
+  CreatedBy?: string;
   CreatedDate?: Date;
   ModifiedBy: string;
   ModifiedDate?: Date;
 }
 
 export interface CompanyModel {
-  Entity: CompanyList[];
+  Entity: Company[];
   ItemsPerPage: number;
   ItemsReturned: number;
   TotalItemsAvailable: number;
@@ -42,5 +42,5 @@ export interface CompanyNavigateModel {
 export interface CompanyDetailsModel {
   StatusCode: number;
   Message: string;
-  Entity: CompanyList;
+  Entity: Company;
 }

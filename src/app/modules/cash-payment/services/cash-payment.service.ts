@@ -4,22 +4,34 @@ import { HttpClientService } from "@app/core/services/http-client/http-client.se
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import {
-  SeriesList,
-  ProjectList,
-  CashAccounts,
-  CashParty,
   CashPaymentNavigateModel,
   CashPaymentDetailModel,
 } from "../models/cash-payment.model";
+import {
+  Project,
+  ProjectRootModel,
+} from "@app/modules/accswift-shared/models/project.model";
+import {
+  SeriesRootModel,
+  Series,
+} from "@app/modules/accswift-shared/models/series.model";
+import {
+  CashAccounts,
+  CashAccountsModel,
+} from "@app/modules/accswift-shared/models/cash-account.model";
+import {
+  CashParty,
+  CashPartyModel,
+} from "@app/modules/accswift-shared/models/cash-party.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class CashPaymentService {
-  seriesLists: SeriesList;
-  cashAccountLists: CashAccounts;
-  cashPartyLists: CashParty;
-  projectLists: ProjectList[] = [];
+  seriesLists: Series[] = [];
+  cashAccountLists: CashAccounts[] = [];
+  cashPartyLists: CashParty[] = [];
+  projectLists: Project[] = [];
   _api_URL = environment.baseAPI;
 
   constructor(
@@ -33,24 +45,26 @@ export class CashPaymentService {
   }
 
   getProjectLists(): void {
-    this.httpService.get(`${this._api_URL}project`).subscribe((res: any) => {
-      this.projectLists = res.Entity;
-    });
+    this.httpService
+      .get(`${this._api_URL}project`)
+      .subscribe((res: ProjectRootModel) => {
+        this.projectLists = res.Entity;
+      });
   }
 
   getSeriesList(): void {
     const params = new HttpParams().set("VoucherType", "CASH_PMNT"); // Series List for Cash Receipt Voucher Type
     this.httpService
       .get(`${this._api_URL}series`, null, params)
-      .subscribe((res: any) => {
-        this.seriesLists = res.Entity;
+      .subscribe((response: SeriesRootModel) => {
+        this.seriesLists = response.Entity;
       });
   }
 
   getCashPaymentAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/CashAccounts`)
-      .subscribe((res: any) => {
+      .subscribe((res: CashAccountsModel) => {
         this.cashAccountLists = res.Entity;
       });
   }
@@ -58,8 +72,8 @@ export class CashPaymentService {
   getCashParty(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/cashparty`)
-      .subscribe((res: any) => {
-        this.cashPartyLists = res.Entity;
+      .subscribe((response: CashPartyModel) => {
+        this.cashPartyLists = response.Entity;
       });
   }
 

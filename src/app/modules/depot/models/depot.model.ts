@@ -1,19 +1,25 @@
-export interface DepotList {
+export interface Depot {
   ID: number;
   DepotName: string;
   City: string;
-  Telephone: number;
+  Telephone: string;
   ContactPerson: string;
-  LicenceNo: number;
+  LicenceNo: string;
   DepotAddress: string;
-  PostalCode: number;
-  Mobile: number;
-  RegNo: number;
+  PostalCode: string;
+  Mobile: string;
+  RegNo: string;
   Remarks: string;
 }
 
+export interface DepotModel {
+  StatusCode: number;
+  Message: string;
+  Entity: Depot[];
+}
+
 export interface Entity {
-  Entity: DepotList[];
+  Entity: Depot[];
   ItemsPerPage: number;
   ItemsReturned: number;
   TotalItemsAvailable: number;
@@ -21,7 +27,7 @@ export interface Entity {
   TotalPages: number;
 }
 
-export interface DepotModel {
+export interface DepotRootModel {
   StatusCode: number;
   Message: string;
   Entity: Entity;
@@ -30,5 +36,5 @@ export interface DepotModel {
 export interface DepotDetailsModel {
   StatusCode: number;
   Message: string;
-  Entity: DepotList;
+  Entity: Depot;
 }

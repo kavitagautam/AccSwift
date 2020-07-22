@@ -13,11 +13,6 @@ import {
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ProductModalPopupComponent } from "@app/modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
-import {
-  RelatedUnits,
-  CashParty,
-  ProductMinList,
-} from "../../models/sales-invoice.model";
 import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
@@ -25,6 +20,9 @@ import { PreferenceService } from "../../../preference/services/preference.servi
 import { AddProductComponent } from "@app/modules/accswift-shared/components/add-product/add-product/add-product.component";
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
+import { RelatedUnits } from "@app/modules/accswift-shared/models/related-unit.model";
+import { ProductMin } from "@app/modules/product/models/product-min.model";
 
 @Component({
   selector: "accSwift-add-sales-invoice",
@@ -39,7 +37,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   private editedRowIndex: number;
   relatedUnits: RelatedUnits[] = [];
   cashPartyList: CashParty[] = [];
-  public productList: ProductMinList[] = [];
+  public productList: ProductMin[] = [];
   //Total Calculation
   myFormValueChanges$;
   private destroyed$ = new Subject<void>();
@@ -170,22 +168,22 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   private showUnitPopup: boolean = true;
   rowPopupIndexUnit: number;
   unitClick = false;
-  taxClick = false;
+  discClick = false;
   public unitPopup(number): void {
     this.unitClick = true;
-    this.taxClick = false;
+    this.discClick = false;
     this.rowPopupIndexUnit = number;
     this.showUnitPopup = !this.showUnitPopup;
   }
 
-  private showTaxPopup: boolean = true;
-  rowPopupIndexTax: number;
+  private showDiscPopup: boolean = true;
+  rowPopupIndexDisc: number;
 
-  public taxPopup(number): void {
+  public discPopup(number): void {
     this.unitClick = false;
-    this.taxClick = true;
-    this.rowPopupIndexTax = number;
-    this.showTaxPopup = !this.showTaxPopup;
+    this.discClick = true;
+    this.rowPopupIndexDisc = number;
+    this.showDiscPopup = !this.showDiscPopup;
   }
 
   @HostListener("document:click", ["$event"])
@@ -413,12 +411,11 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
     this.myFormValueChanges$.subscribe((changes) => {
       this.invoiceValueChange(changes);
+      this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
+      this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
+      this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
+      this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
     });
-
-    this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
-    this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
-    this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
-    this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
   }
 
   //tax Change value calculation
@@ -507,7 +504,10 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       invoiceEntryArray.controls[index].get("TaxID").setValue("");
       invoiceEntryArray.controls[index].get("TaxAmount").setValue("");
       invoiceEntryArray.controls[index].get("Remarks").setValue("");
-      this.getRelatedUnitList(selectedProductValue[0].ProductID);
+      const invoiceEntry = <FormArray>(
+        this.salesInvoiceForm.get("InvoiceDetails")
+      );
+      if (invoiceEntry.invalid) return;
       (<FormArray>this.salesInvoiceForm.get("InvoiceDetails")).push(
         this.addInvoiceEntryList()
       );

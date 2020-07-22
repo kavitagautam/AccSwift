@@ -1,13 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { PreferenceService } from "../../services/preference.service";
-import {
-  SalesAccounts,
-  PurchaseAccount,
-  AccountClass,
-} from "../../models/preference.model";
+import { PurchaseAccount } from "../../models/preference.model";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
+import { SalesAccounts } from "@app/modules/accswift-shared/models/sales-account.model";
+import { AccountClass } from "@app/modules/accswift-shared/models/account-class.model";
 
 @Component({
   selector: "accSwift-settings",
@@ -18,7 +16,7 @@ export class SettingsComponent implements OnInit {
   settingForms: FormGroup;
   salesAccountList: SalesAccounts[];
   purchaseAccountList: PurchaseAccount[];
-  accountClassList: AccountClass[];
+  accountClassList: AccountClass[] = [];
   constructor(
     private _fb: FormBuilder,
     private preferenceService: PreferenceService,

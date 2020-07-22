@@ -8,30 +8,16 @@ import {
   GroupBalanceModel,
   LedgerDetailsModel,
 } from "../models/trail-balance.model";
-import {
-  ProductModel,
-  ProductGroupModel,
-  ProjectListModel,
-  StockStatusReportsModel,
-  AccountClassModel,
-  Product,
-  AccountClass,
-  ProductGroup,
-  ProjectList,
-} from "../stock-status/models/stock.models";
+import { StockStatusReportsModel } from "../stock-status/models/stock.models";
 import {
   SalesReportModel,
-  CashPartyModel,
   CashPartyGroupModel,
-  DepotModel,
-  SalesAccountModel,
   PurchaseReportModel,
 } from "../models/sales.report.model";
 import {
   LedgerReportModel,
   LedgerMinModel,
 } from "../models/ledger.reports.model";
-import { LedgerGroupModel } from "@app/modules/ledger/models/ledger.models";
 import {
   ProfitLossRootModel,
   ProfitLossLDRootModel,
@@ -42,15 +28,35 @@ import {
   BalanceSheetGDetailModel,
   BalanceSheetLDetailRootModel,
 } from "../models/balance.sheet.model";
+import {
+  Project,
+  ProjectRootModel,
+} from "@app/modules/accswift-shared/models/project.model";
+import { CashPartyModel } from "@app/modules/accswift-shared/models/cash-party.model";
+import { DepotModel } from "@app/modules/depot/models/depot.model";
+import { SalesAccountModel } from "@app/modules/accswift-shared/models/sales-account.model";
+import {
+  AccountClass,
+  AccountClassModel,
+} from "@app/modules/accswift-shared/models/account-class.model";
+import {
+  ProductGroup,
+  ProductGroupModel,
+} from "@app/modules/product/models/product-group.models";
+import {
+  ProductMinRootModel,
+  ProductMin,
+} from "@app/modules/product/models/product-min.model";
+import { LedgerGroupModel } from "@app/modules/ledger/models/ledger-group.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class ReportsService {
   _api_URL = environment.baseAPI;
-  productList: Product[];
-  productGroupList: ProductGroup[];
-  projectList: ProjectList[] = [];
+  productList: ProductMin[] = [];
+  productGroupList: ProductGroup[] = [];
+  projectList: Project[] = [];
   accountLists: AccountClass[];
   monthList = [
     {
@@ -143,7 +149,7 @@ export class ReportsService {
   getProductMin(): void {
     this.httpService
       .get(`${this._api_URL}/Product/min`)
-      .subscribe((response: ProductModel) => {
+      .subscribe((response: ProductMinRootModel) => {
         this.productList = response.Entity;
       });
   }
@@ -159,7 +165,7 @@ export class ReportsService {
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((response: ProjectListModel) => {
+      .subscribe((response: ProjectRootModel) => {
         this.projectList = response.Entity;
       });
   }

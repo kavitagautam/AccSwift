@@ -10,10 +10,8 @@ import {
 } from "@progress/kendo-angular-grid";
 import { Subject } from "rxjs";
 import { BsModalRef } from "ngx-bootstrap";
-import {
-  CashPartyService,
-  CashParty,
-} from "../../services/cash-party-list/cash-party.service";
+import { CashPartyService } from "../../services/cash-party-list/cash-party.service";
+import { CashParty } from "../../models/cash-party.model";
 
 @Component({
   selector: "accSwift-cash-party-modal-popup",

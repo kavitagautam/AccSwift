@@ -6,12 +6,16 @@ import { Observable } from "rxjs";
 import {
   SalesOrderNavigateModel,
   SalesOrderDetailModel,
-  ProjectListModel,
-  CashParty,
-  ProjectList,
-  SeriesListModel,
-  SeriesList,
 } from "../models/sales-order.model";
+import {
+  Project,
+  ProjectRootModel,
+} from "@app/modules/accswift-shared/models/project.model";
+import {
+  Series,
+  SeriesRootModel,
+} from "@app/modules/accswift-shared/models/series.model";
+import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
 
 @Injectable({
   providedIn: "root",
@@ -19,8 +23,8 @@ import {
 export class SalesOrderService {
   _api_URL = environment.baseAPI;
   cashPartyList: CashParty[] = [];
-  projectList: ProjectList[] = [];
-  seriesList: SeriesList[] = [];
+  projectList: Project[] = [];
+  seriesList: Series[] = [];
 
   constructor(
     private httpService: HttpClientService,
@@ -43,14 +47,14 @@ export class SalesOrderService {
     const params = new HttpParams().set("VoucherType", "SLS_ORDER");
     this.httpService
       .get(`${this._api_URL}series`, null, params)
-      .subscribe((response: SeriesListModel) => {
+      .subscribe((response: SeriesRootModel) => {
         this.seriesList = response.Entity;
       });
   }
   getProjectList(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((response: ProjectListModel) => {
+      .subscribe((response: ProjectRootModel) => {
         this.projectList = response.Entity;
       });
   }

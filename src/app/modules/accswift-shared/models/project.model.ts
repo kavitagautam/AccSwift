@@ -1,14 +1,4 @@
-export interface SeriesListModel {
-  Status: number;
-  Entity: SeriesList[];
-}
-
-export interface SeriesList {
-  ID: number;
-  Name: string;
-}
-
-export interface ProjectList {
+export interface Project {
   ID: number;
   ProjectNumber: number;
   ParentProjectID?: number;
@@ -21,8 +11,8 @@ export interface ProjectList {
   ModifiedDate?: Date;
 }
 
-export interface ProjectListModel {
+export interface ProjectRootModel {
   StatusCode: number;
   Message: string;
-  Entity: ProjectList[];
+  Entity: Project[];
 }

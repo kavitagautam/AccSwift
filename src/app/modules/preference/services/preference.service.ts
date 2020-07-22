@@ -5,16 +5,16 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import {
   PreferenceModel,
-  CashAccountsModel,
   Preferences,
-  BankAccountsModel,
-  SalesAccountModel,
   PurchaseAccountModel,
-  AccountClassModel,
   DATE_FORMAT_MODEL,
-  SeriesListModel,
 } from "../models/preference.model";
 import { Router } from "@angular/router";
+import { SeriesRootModel } from "@app/modules/accswift-shared/models/series.model";
+import { BankAccountsModel } from "@app/modules/accswift-shared/models/bank-account.model";
+import { CashAccountsModel } from "@app/modules/accswift-shared/models/cash-account.model";
+import { SalesAccountModel } from "@app/modules/accswift-shared/models/sales-account.model";
+import { AccountClassModel } from "@app/modules/accswift-shared/models/account-class.model";
 
 @Injectable({
   providedIn: "root",
@@ -44,7 +44,6 @@ export class PreferenceService {
       .get(`${this._api_URL}UserPreference`)
       .subscribe((response: PreferenceModel) => {
         this.preferences = response.Entity;
-        // console.log("Dsadas dsa" + JSON.stringify(this.preferences));
       });
   }
 
@@ -98,7 +97,7 @@ export class PreferenceService {
     return this.httpService.put(`${this._api_URL}UserPreference`, body);
   }
 
-  getSeriesList(voucherType): Observable<SeriesListModel> {
+  getSeriesList(voucherType): Observable<SeriesRootModel> {
     const params = new HttpParams().set("VoucherType", voucherType);
     return this.httpService.get(`${this._api_URL}Series`, null, params);
   }

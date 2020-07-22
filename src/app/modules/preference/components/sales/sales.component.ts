@@ -1,13 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import {
-  SalesAccounts,
-  PurchaseAccount,
-  AccountClass,
-} from "../../models/preference.model";
+import { PurchaseAccount } from "../../models/preference.model";
 import { PreferenceService } from "../../services/preference.service";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import { SalesAccounts } from "@app/modules/accswift-shared/models/sales-account.model";
+import { AccountClass } from "@app/modules/accswift-shared/models/account-class.model";
 
 @Component({
   selector: "accSwift-sales",
@@ -26,7 +24,7 @@ export class SalesComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildSalesForm();
     this.preferenceService.getSalesAccount().subscribe((response) => {
       this.salesAccountList = response.Entity;
