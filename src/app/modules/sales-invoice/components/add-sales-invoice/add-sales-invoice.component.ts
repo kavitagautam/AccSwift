@@ -478,6 +478,9 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         .get("QtyUnitID")
         .setValue(selectedProductValue[0].QtyUnitID);
       invoiceEntryArray.controls[index]
+        .get("QtyUnitName")
+        .setValue(selectedProductValue[0].QtyUnitName);
+      invoiceEntryArray.controls[index]
         .get("SalesRate")
         .setValue(selectedProductValue[0].SalesRate);
 
@@ -631,6 +634,9 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         invoiceEntryArray.controls[index]
           .get("QtyUnitID")
           .setValue(data.QtyUnitID);
+        invoiceEntryArray.controls[index]
+          .get("QtyUnitName")
+          .setValue(data.QtyUnitName);
         invoiceEntryArray.controls[index]
           .get("SalesRate")
           .setValue(data.SalesRate);
