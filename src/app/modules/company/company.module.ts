@@ -12,12 +12,13 @@ import { AddCompanyComponent } from "./components/add-company/add-company.compon
 import { EditCompanyComponent } from "./components/edit-company/edit-company.component";
 import { SharedModule } from "@app/shared/shared.module";
 import { UploadsModule } from "@progress/kendo-angular-upload";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [
     ListCompanyComponent,
     AddCompanyComponent,
-    EditCompanyComponent
+    EditCompanyComponent,
   ],
   imports: [
     CommonModule,
@@ -25,12 +26,13 @@ import { UploadsModule } from "@progress/kendo-angular-upload";
     ReactiveFormsModule,
     CompanyRoutingModule,
     SharedModule,
+    AccswiftSharedModule,
     GridModule,
     PopupModule,
     InputsModule,
     UploadsModule,
     DropDownListModule,
-    DropDownsModule
-  ]
+    DropDownsModule,
+  ],
 })
 export class CompanyModule {}

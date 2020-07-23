@@ -1,14 +1,13 @@
 import { FormArray } from "@angular/forms";
 import { Validators } from "@angular/forms";
-import { LedgerCodeMatchService } from "@shared/services/ledger-code-match/ledger-code-match.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { BankReconciliationService } from "./../../services/bank-reconciliation.service";
-import { FormBuilder } from "@angular/forms";
-import { FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
-import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerCodeAsyncValidators } from "@app/modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerCodeMatchService } from "@app/modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 
 @Component({
   selector: "accSwift-add-bank-reconciliation",

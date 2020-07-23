@@ -461,15 +461,17 @@
 
   <div class="modal-body">
     <div class="col-md-12">
-      <h2 align="center">{{ companyInfo.Name }}</h2>
+      <h2 align="center">
+        {{ companyInfo?.Name }}
+      </h2>
       <h4 align="center">
-        {{ companyInfo.Address1 }}, {{ companyInfo.City }}
-        {{ companyInfo.District }}
+        {{ companyInfo?.Address1 }}, {{ companyInfo?.City }}
+        {{ companyInfo?.District }}
       </h4>
-      <h5 align="center" *ngIf="companyInfo.Telephone">
+      <h5 align="center" *ngIf="companyInfo && companyInfo.Telephone">
         Contact: {{ companyInfo.Telephone }}
       </h5>
-      <h5 align="center" *ngIf="companyInfo.Website">
+      <h5 align="center" *ngIf="companyInfo && companyInfo.Website">
         WebSite: {{ companyInfo.Website }}
       </h5>
       <h3 align="center">Group Balance</h3>

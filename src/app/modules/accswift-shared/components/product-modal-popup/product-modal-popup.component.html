@@ -1,0 +1,86 @@
+<div class="modal-header">
+  <h3 class="modal-title pull-left">Select Product</h3>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="onCancel()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container-fluid">
+    <div class="row mt-2">
+      <button class="btn-primary m-2" type="button" (click)="addNewProduct()">
+        Add New Product
+      </button>
+      <div class="grid-wrapper">
+        <kendo-grid
+          [kendoGridBinding]="productList"
+          [filterable]="true"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          scrollable="none"
+          (selectedKeysChange)="
+            onSelectedKeysChange($event, modalRef.content?.data)
+          "
+          [kendoGridSelectBy]="'ID'"
+          [selectedKeys]="mySelection"
+        >
+          <kendo-grid-column field="ProductName" title="Name" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-rowIndex="rowIndex"
+            >
+              <a
+                class="a_link"
+                (click)="selectedProduct(dataItem, modalRef.content?.data)"
+                >{{ dataItem.ProductName }}</a
+              >
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="ProductCode" title="Code" width="100">
+          </kendo-grid-column>
+          <kendo-grid-column field="CodeName" title="CodeName" width="180">
+          </kendo-grid-column>
+          <kendo-grid-column field="ClosingQty" title="ClosingQty" width="80">
+          </kendo-grid-column>
+
+          <kendo-grid-column
+            field="PurchaseRate"
+            title="PurchaseRate"
+            width="100"
+          >
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span class="float-right">{{ dataItem.PurchaseRate }}</span>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="SalesRate" title="Sales Rate" width="100">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span class="float-right">{{ dataItem.SalesRate }}</span>
+            </ng-template></kendo-grid-column
+          >
+        </kendo-grid>
+        <div *ngIf="listLoading" class="k-i-loading"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" (click)="onCancel()">
+    Ok
+  </button>
+  <button class="btn btn-secondary ml-2" type="button" (click)="onCancel()">
+    Cancel
+  </button>
+</div>

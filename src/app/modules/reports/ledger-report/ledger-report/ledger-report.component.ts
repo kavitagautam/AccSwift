@@ -23,12 +23,18 @@ import {
 })
 export class LedgerReportComponent implements OnInit, AfterViewInit {
   @ViewChild("ledgerSettings") ledgerSettings;
+  @ViewChild("ledgerDetails") ledgerDetails;
   baseURL: string;
   ledgerReportForms: FormGroup;
   projectName: string;
   toDateSelect: number;
   ledgerReportList: LedgerList[] = [];
+  ledgerDetailsReportList: LedgerList[] = [];
   listLoading: boolean;
+  listLedgerLoading: boolean;
+  totalDebitAmount: number;
+  totalCreditAmount: number;
+  totalClosingBalance: string;
   accountLedger: boolean = false;
   accountGroup: boolean = false;
   ledgerMinList: LedgerMinList[] = [];
@@ -96,8 +102,11 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
   openLedgerSettings(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, this.config);
   }
+  openLedgerDetailsPopUP(template: TemplateRef<any>): void {
+    this.modalRef = this.modalService.show(template, this.config);
+  }
 
-  openLedgerDetails(e, data): void {
+  openVoucherDetails(e, data): void {
     if (data.VoucherType === "JRNL") {
       const url = this.router.serializeUrl(
         this.router.createUrlTree(["/journal/edit", data.RowID])
@@ -153,6 +162,31 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
     if (data.VoucherType === "PURCH_ORDER") {
       window.open(this.baseURL + "purchase-order/edit/" + data.RowID, "_blank");
     }
+  }
+
+  openLedgerDetails(e, data): void {
+    this.openLedgerDetailsPopUP(this.ledgerDetails);
+    const obj = {
+      LedgerID: data.ID,
+      AccountGroupID: this.ledgerReportForms.get("AccountGroupID").value,
+      IsShowRemarks: this.ledgerReportForms.get("IsShowRemarks").value,
+      IsDetails: true,
+      IsShowZeroBalance: this.ledgerReportForms.get("IsShowZeroBalance").value,
+      ProjectID: this.ledgerReportForms.get("ProjectID").value,
+      AccClassID: this.ledgerReportForms.get("AccClassID").value,
+    };
+    this.listLedgerLoading = true;
+    this.reportService.getLedgerReports(obj).subscribe(
+      (response) => {
+        this.ledgerDetailsReportList = response.Entity.Entity;
+      },
+      (error) => {
+        this.listLedgerLoading = false;
+      },
+      () => {
+        this.listLedgerLoading = false;
+      }
+    );
   }
 
   changeProject(): void {
@@ -214,6 +248,9 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
       .subscribe(
         (response) => {
           this.ledgerReportList = response.Entity.Entity;
+          this.totalDebitAmount = response.Entity.TotalDebitAmount;
+          this.totalCreditAmount = response.Entity.TotalCreditAmount;
+          this.totalClosingBalance = response.Entity.ClosingBalance;
         },
         (error) => {
           this.listLoading = false;

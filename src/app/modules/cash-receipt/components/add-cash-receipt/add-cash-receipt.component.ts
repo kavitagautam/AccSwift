@@ -3,9 +3,9 @@ import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { CashReceiptService } from "../../services/cash-receipt.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
-import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerCodeMatchService } from "@app/modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerCodeAsyncValidators } from "@app/modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
 import { PreferenceService } from "../../../preference/services/preference.service";
 

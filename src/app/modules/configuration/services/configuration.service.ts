@@ -5,9 +5,9 @@ import { HttpClientService } from "@app/core/services/http-client/http-client.se
 import {
   SeriesTreeViewModel,
   VoucherConfigurationModel,
-  SeriesListModel,
 } from "../models/configuration.model";
 import { Observable } from "rxjs";
+import { SeriesRootModel } from "@app/modules/accswift-shared/models/series.model";
 
 @Injectable({
   providedIn: "root",
@@ -32,7 +32,7 @@ export class ConfigurationService {
     return this.httpService.put(`${this._api_URL}Series`, body);
   }
 
-  getSeriesList(voucherType): Observable<SeriesListModel> {
+  getSeriesList(voucherType): Observable<SeriesRootModel> {
     const params = new HttpParams().set("VoucherType", voucherType);
     return this.httpService.get(`${this._api_URL}series`, null, params);
   }

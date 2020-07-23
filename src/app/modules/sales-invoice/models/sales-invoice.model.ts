@@ -1,32 +1,3 @@
-export interface ProjectList {
-  ID: number;
-  ProjectNumber: number;
-  ParentProjectID?: number;
-  EngName: string;
-  NepName: string;
-  Description: string;
-  CreatedBy: string;
-  CreatedDate?: Date;
-  ModifiedBy: string;
-  ModifiedDate?: Date;
-}
-
-export interface ProjectListModel {
-  StatusCode: number;
-  Message: string;
-  Entity: ProjectList[];
-}
-
-export interface SeriesListModel {
-  Status: number;
-  Entity: SeriesList[];
-}
-
-export interface SeriesList {
-  ID: number;
-  Name: string;
-}
-
 export interface InvoiceDetail {
   SalesInvoiceID: number;
   Electricity?: any;
@@ -131,6 +102,7 @@ export interface InvoiceDetail {
   ID: number;
   ProductID: number;
   ProductName: string;
+  CodeName: string;
   ProductCode: string;
   Quantity: number;
   Amount: number;
@@ -188,73 +160,4 @@ export interface SalesInvoiceDetailsModel {
   StatusCode: number;
   Message: string;
   Entity: SalesInvoiceDetails;
-}
-
-export interface CashParty {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-
-export interface CashPartyModel {
-  StatusCode: number;
-  Message: string;
-  Entity: CashParty[];
-}
-
-export interface SalesAccounts {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-
-export interface SalesAccountModel {
-  StatusCode: number;
-  Message: string;
-  Entity: SalesAccounts[];
-}
-
-export interface DepotList {
-  ID: number;
-  DepotName: string;
-  City: string;
-  Telephone: string;
-  ContactPerson: string;
-  LicenceNo: string;
-  DepotAddress: string;
-  PostalCode: string;
-  Mobile: string;
-  RegNo: string;
-  Remarks: string;
-}
-
-export interface DepotListModel {
-  StatusCode: number;
-  Message: string;
-  Entity: DepotList[];
-}
-
-export interface RelatedUnits {
-  ID: number;
-  Name: string;
-}
-
-export interface RelatedUnitModel {
-  StatusCode: number;
-  Message: string;
-  Entity: RelatedUnits[];
-}
-
-export interface TaxList {
-  ID: number;
-  Name: string;
-  Rate: number;
-}
-
-export interface TaxListModel {
-  StatusCode: number;
-  Message: string;
-  Entity: TaxList[];
 }

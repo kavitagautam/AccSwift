@@ -8,10 +8,10 @@ import {
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
-import { LedgerGroup } from "../../models/ledger.models";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
+import { LedgerGroup } from "@app/modules/reports/models/ledger.reports.model";
 
 @Component({
   selector: "accSwift-account-group",

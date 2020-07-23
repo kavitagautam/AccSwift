@@ -8,14 +8,14 @@ import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { CompanyService } from "../../services/company.service";
-import { CompanyList } from "../../models/company.model";
+import { Company } from "../../models/company.model";
 @Component({
   selector: "accSwift-list-company",
   templateUrl: "./list-company.component.html",
   styleUrls: ["./list-company.component.scss"],
 })
 export class ListCompanyComponent implements OnInit {
-  companyList: CompanyList[];
+  companyList: Company[] = [];
   companySearchForm: FormGroup;
   listLoading: boolean;
 

@@ -30,19 +30,6 @@ export interface SalesReportModel {
   Entity: SasleReports;
 }
 
-export interface CashParty {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-
-export interface CashPartyModel {
-  StatusCode: number;
-  Message: string;
-  Entity: CashParty[];
-}
-
 export interface CashPartyGroup {
   ID: number;
   LedgerCode: string;
@@ -57,30 +44,6 @@ export interface CashPartyGroupModel {
   StatusCode: number;
   Message: string;
   Entity: CashPartyGroup[];
-}
-
-export interface DepotList {
-  ID: number;
-  Name: string;
-}
-
-export interface DepotModel {
-  StatusCode: number;
-  Message: string;
-  Entity: DepotList[];
-}
-
-export interface SalesAccount {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-
-export interface SalesAccountModel {
-  StatusCode: number;
-  Message: string;
-  Entity: SalesAccount[];
 }
 
 export interface PurchaseList {

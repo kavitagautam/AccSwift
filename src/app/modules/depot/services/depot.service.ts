@@ -1,4 +1,4 @@
-import { DepotDetailsModel, DepotModel } from "./../models/depot.model";
+import { DepotDetailsModel, DepotRootModel } from "./../models/depot.model";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "@env/environment";
@@ -6,7 +6,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class DepotService {
   api_URL = environment.baseAPI;
@@ -16,7 +16,7 @@ export class DepotService {
     private httpService: HttpClientService
   ) {}
 
-  getDepotList(body): Observable<DepotModel> {
+  getDepotList(body): Observable<DepotRootModel> {
     return this.httpService.post(`${this.api_URL}Depot/navigate`, body);
   }
 

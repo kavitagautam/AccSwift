@@ -13,8 +13,9 @@ import {
   DropDownListModule,
   DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
-import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
     DropDownsModule,
     DateInputsModule,
     SharedModule,
+    AccswiftSharedModule,
     BankReceiptRoutingModule,
   ],
 

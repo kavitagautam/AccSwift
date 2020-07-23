@@ -7,12 +7,11 @@ import {
   SortDescriptor,
   CompositeFilterDescriptor,
 } from "@progress/kendo-data-query";
-
 import { JournalService } from "../../services/journal.service";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
-import { JournalMasterList } from "../../models/journal.model";
+import { Journal } from "../../models/journal.model";
 @Component({
   selector: "accSwift-list-journal",
   templateUrl: "./list-journal.component.html",
@@ -20,7 +19,7 @@ import { JournalMasterList } from "../../models/journal.model";
 })
 export class ListJournalComponent implements OnInit {
   journalSearchForm: FormGroup;
-  journalList: JournalMasterList[] = [];
+  journalList: Journal[] = [];
   journalListLoading: boolean;
   date: Date = new Date();
 

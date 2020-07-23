@@ -3,10 +3,10 @@ import { FormGroup, FormBuilder, FormArray, Validators } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { CashPaymentService } from "../../services/cash-payment.service";
-import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
-import { CashPaymentDetail } from "../../models/cash-payment.model";
-import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerCodeAsyncValidators } from "@app/modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerCodeMatchService } from "@app/modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
+import { CashPayment } from "../../models/cash-payment.model";
+import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
@@ -19,7 +19,7 @@ export class EditCashPaymentComponent implements OnInit {
   cashPaymentForm: FormGroup;
   currentAmount: string = "0.00";
 
-  cashPaymentDetail: CashPaymentDetail;
+  cashPaymentDetail: CashPayment;
   submitted: boolean;
   rowSubmitted: boolean;
   date: Date = new Date();
@@ -196,8 +196,6 @@ export class EditCashPaymentComponent implements OnInit {
       LedgerModalPopupComponent,
       this.config
     );
-    this.modalRef.content = index;
-    this.modalRef.content.action = "Select";
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const cashPaymentFormArray = <FormArray>(
@@ -237,7 +235,7 @@ export class EditCashPaymentComponent implements OnInit {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
-          this.toastr.success("Invoice added successfully");
+          this.toastr.success("Cash payment edited successfully");
         }
       );
   }

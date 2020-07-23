@@ -3,23 +3,31 @@ import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import {
-  ProjectList,
-  SeriesList,
-  CashAccountList,
-  CashPartyList,
-  ProjectListModel,
   CashReceiptNavigateModel,
   CashReceiptDetailModel,
 } from "../models/cash-receipt.model";
 import { Observable } from "rxjs";
+import {
+  Project,
+  ProjectRootModel,
+} from "@app/modules/accswift-shared/models/project.model";
+import {
+  Series,
+  SeriesRootModel,
+} from "@app/modules/accswift-shared/models/series.model";
+import { CashAccounts } from "@app/modules/accswift-shared/models/cash-account.model";
+import {
+  CashParty,
+  CashPartyModel,
+} from "@app/modules/accswift-shared/models/cash-party.model";
 @Injectable({
   providedIn: "root",
 })
 export class CashReceiptService {
-  seriesLists: SeriesList;
-  projectLists: ProjectList[];
-  cashAccountLists: CashAccountList;
-  cashPartyLists: CashPartyList;
+  seriesLists: Series[] = [];
+  projectLists: Project[];
+  cashAccountLists: CashAccounts[] = [];
+  cashPartyLists: CashParty[] = [];
   _api_URL = environment.baseAPI;
 
   constructor(
@@ -35,7 +43,7 @@ export class CashReceiptService {
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectListModel) => {
+      .subscribe((res: ProjectRootModel) => {
         this.projectLists = res.Entity;
       });
   }
@@ -44,8 +52,8 @@ export class CashReceiptService {
     const params = new HttpParams().set("VoucherType", "CASH_RCPT"); // Series List for Cash Receipt Voucher Type
     this.httpService
       .get(`${this._api_URL}Series`, null, params)
-      .subscribe((res) => {
-        this.seriesLists = res.Entity;
+      .subscribe((response: SeriesRootModel) => {
+        this.seriesLists = response.Entity;
       });
   }
 
@@ -92,7 +100,7 @@ export class CashReceiptService {
     return this.httpService.delete(`${this._api_URL}CashReceiptMaster/${id}`);
   }
 
-  getCashParty(): Observable<CashPartyList[]> {
-    return this.httpService.get(`${this._api_URL} /Ledger/cashparty`);
+  getCashParty(): Observable<CashPartyModel> {
+    return this.httpService.get(`${this._api_URL}/Ledger/cashparty`);
   }
 }

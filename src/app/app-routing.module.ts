@@ -184,6 +184,22 @@ const routes: Routes = [
         },
       },
       {
+        path: "profit-loss",
+        loadChildren:
+          "@modules/reports/profit-loss/profit-loss.module#ProfitLossModule",
+        data: {
+          breadcrumb: "Profit Loss Report",
+        },
+      },
+      {
+        path: "balance-sheet",
+        loadChildren:
+          "@modules/reports/balance-sheet/balance-sheet.module#BalanceSheetModule",
+        data: {
+          breadcrumb: "Balance Sheet Report",
+        },
+      },
+      {
         path: "purchase-invoice",
         loadChildren:
           "@modules/purchase-invoice/purchase-invoice.module#PurchaseInvoiceModule",

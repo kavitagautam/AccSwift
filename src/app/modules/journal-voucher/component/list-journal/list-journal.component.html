@@ -117,13 +117,13 @@
           <kendo-grid-column field="VoucherNo" title="Voucher No.">
           </kendo-grid-column>
           <kendo-grid-column
-            field="Date"
-            title="Journal Date"
+            field="CreatedDate"
+            title="Date"
             filter="date"
             [filterable]="false"
           >
             <ng-template kendoGridCellTemplate let-dataItem="dataItem">
-              {{ dataItem.Date | dateStringFormat: "yyyy-MM-dd" }}
+              {{ dataItem.CreatedDate | date: "yyyy-MM-dd" }}
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column field="ProjectName" title="Project Name">

@@ -2,24 +2,32 @@ import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import {
-  SeriesList,
-  ProjectList,
-  BankAccounts,
-  ProjectListModel,
   BankReceiptNavigateModel,
-  BankReceiptDetailModel,
+  BankReceiptEditModel,
 } from "../models/bank-receipt.model";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
+import {
+  Project,
+  ProjectRootModel,
+} from "@app/modules/accswift-shared/models/project.model";
+import {
+  Series,
+  SeriesRootModel,
+} from "@app/modules/accswift-shared/models/series.model";
+import {
+  BankAccountsModel,
+  BankAccounts,
+} from "@app/modules/accswift-shared/models/bank-account.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class BankReceiptService {
-  seriesLists: SeriesList;
-  projectLists: ProjectList[] = [];
+  seriesLists: Series[] = [];
+  projectLists: Project[] = [];
   _api_URL = environment.baseAPI;
-  bankAccountLists;
+  bankAccountLists: BankAccounts[] = [];
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
@@ -32,7 +40,7 @@ export class BankReceiptService {
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectListModel) => {
+      .subscribe((res: ProjectRootModel) => {
         this.projectLists = res.Entity;
       });
   }
@@ -40,8 +48,7 @@ export class BankReceiptService {
   getBankReceiptAccounts(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/BankAccounts`)
-      .subscribe((res: BankAccounts) => {
-        console.log(res);
+      .subscribe((res: BankAccountsModel) => {
         this.bankAccountLists = res.Entity;
       });
   }
@@ -50,8 +57,8 @@ export class BankReceiptService {
     const params = new HttpParams().set("VoucherType", "BANK_RCPT"); // Series List for bank Receipt V.Type
     this.httpService
       .get(`${this._api_URL}Series`, null, params)
-      .subscribe((res) => {
-        this.seriesLists = res.Entity;
+      .subscribe((response: SeriesRootModel) => {
+        this.seriesLists = response.Entity;
       });
   }
 
@@ -66,7 +73,7 @@ export class BankReceiptService {
     return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
   }
 
-  getBankReceiptDetails(id): Observable<BankReceiptDetailModel> {
+  getBankReceiptDetails(id): Observable<BankReceiptEditModel> {
     return this.httpService.get(`${this._api_URL}BankReceiptMaster/${id}`);
   }
 

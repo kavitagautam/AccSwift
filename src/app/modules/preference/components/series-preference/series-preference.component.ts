@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { PreferenceService } from "../../services/preference.service";
-import { SeriesList, Preferences } from "../../models/preference.model";
+import { Preferences } from "../../models/preference.model";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import { Series } from "@app/modules/accswift-shared/models/series.model";
 
 @Component({
   selector: "accSwift-series-preference",
@@ -14,25 +15,24 @@ export class SeriesPreferenceComponent implements OnInit {
   seriesForms: FormGroup;
   preferenceData: Preferences;
   // Series List For DropDown
-  bankPaymentSeries: SeriesList[];
-  bankReceiptSeries: SeriesList[];
-  bankReconciliationSeries: SeriesList[];
-  cashPaymentSeries: SeriesList[];
-  cashReceiptSeries: SeriesList[];
-  chequeReceiptSeries: SeriesList[];
-  contraSeries: SeriesList[];
-  creditNoteSeries: SeriesList[];
-  damageSeries: SeriesList[];
-  debitNoteSeries: SeriesList[];
-  journalSeries: SeriesList[];
-  purchaseSeries: SeriesList[];
-  purchaseReturnSeries: SeriesList[];
-  salesSeries: SeriesList[];
-  salesReturnSeries: SeriesList[];
-  stockTransferSeries: SeriesList[];
-
-  salesOrderSeries: SeriesList[];
-  purchaseOrderSeries: SeriesList[];
+  bankPaymentSeries: Series[] = [];
+  bankReceiptSeries: Series[] = [];
+  bankReconciliationSeries: Series[] = [];
+  cashPaymentSeries: Series[] = [];
+  cashReceiptSeries: Series[] = [];
+  chequeReceiptSeries: Series[] = [];
+  contraSeries: Series[] = [];
+  creditNoteSeries: Series[] = [];
+  damageSeries: Series[] = [];
+  debitNoteSeries: Series[] = [];
+  journalSeries: Series[] = [];
+  purchaseSeries: Series[] = [];
+  purchaseReturnSeries: Series[] = [];
+  salesSeries: Series[] = [];
+  salesReturnSeries: Series[] = [];
+  stockTransferSeries: Series[] = [];
+  salesOrderSeries: Series[] = [];
+  purchaseOrderSeries: Series[] = [];
 
   constructor(
     private _fb: FormBuilder,

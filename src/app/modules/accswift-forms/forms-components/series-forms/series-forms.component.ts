@@ -8,7 +8,7 @@ import {
 } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { FormsService } from "../../services/forms.service";
-import { SeriesList } from "../../models/forms-data.model";
+import { Series } from "@app/modules/accswift-shared/models/series.model";
 // describes what the return value of the form control will look like
 
 @Component({
@@ -40,7 +40,7 @@ export class SeriesFormsComponent
   @Input("voucherType") voucherType: string;
   subscriptions: Subscription[] = [];
   SeriesID = new FormControl();
-  seriesList: SeriesList[];
+  seriesList: Series[];
   // get value(): number {
   //   return this.SeriesID.value;
   // }

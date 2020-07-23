@@ -1,22 +1,24 @@
 import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import {
-  ProjectList,
-  ProjectListModel,
-  CashParty,
   PurchaseOrderDetailModel,
   PurchaseOrderNavigateModel,
 } from "../models/purchase-order.model";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { Observable } from "rxjs";
+import {
+  Project,
+  ProjectRootModel,
+} from "@app/modules/accswift-shared/models/project.model";
+import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class PurchaseOrderService {
   _api_URL = environment.baseAPI;
-  projectList: ProjectList[] = [];
+  projectList: Project[] = [];
   cashPartyList: CashParty[] = [];
 
   constructor(
@@ -30,7 +32,7 @@ export class PurchaseOrderService {
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectListModel) => {
+      .subscribe((res: ProjectRootModel) => {
         this.projectList = res.Entity;
       });
   }

@@ -11,7 +11,8 @@
       "@shared/*": ["app/shared/*"],
       "@assets/*": ["assets/*"],
       "@config/*": ["config/*"],
-      "@accSwiftForms/*": ["app/modules/accswift-forms/*"]
+      "@accSwiftForms/*": ["app/modules/accswift-forms/*"],
+      "@accSwiftShared/*": ["app/modules/accswift-shared/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

@@ -1,4 +1,3 @@
-import { BankReconciliationMaster } from "./../models/bank-reconciliation.model";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import {
@@ -12,6 +11,7 @@ import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
+import { BankReconciliationMaster } from "../../models/bank-reconciliation.model";
 
 @Component({
   selector: "accSwift-list-bank-reconciliation",
@@ -84,12 +84,8 @@ export class ListBankReconciliationComponent implements OnInit {
       (response) => {
         this.listLoading = true;
         this.bankReconciliationList = response;
-        console.log(this.bankReconciliationList);
         this.gridView = {
-          data: this.bankReconciliationList.slice(
-            this.skip,
-            this.skip + this.pageSize
-          ),
+          data: this.bankReconciliationList,
           total: this.bankReconciliationList
             ? this.bankReconciliationList.length
             : 0,

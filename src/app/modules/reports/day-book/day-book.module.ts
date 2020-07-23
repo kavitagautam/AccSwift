@@ -13,7 +13,8 @@ import {
   DropDownsModule,
 } from "@progress/kendo-angular-dropdowns";
 import { NepaliDatepickerModule } from "@lib/nepali-datepicker/src/public-api";
-import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { AccswiftSharedModule } from "@app/modules/accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [DayBookComponent],
@@ -23,6 +24,7 @@ import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-p
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    AccswiftSharedModule,
     ReactiveFormsModule,
     CommonModule,
     GridModule,

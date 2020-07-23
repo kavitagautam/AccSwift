@@ -17,6 +17,7 @@ import { ImageCropperModule } from "ngx-image-cropper";
 import { UploadsModule } from "@progress/kendo-angular-upload";
 import { ProductMoreDetailComponent } from "./components/product-more-detail/product-more-detail.component";
 import { ProductImageComponent } from "./components/product-image/product-image.component";
+import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ProductImageComponent } from "./components/product-image/product-image.
     ReactiveFormsModule,
     ProductRoutingModule,
     SharedModule,
+    AccswiftSharedModule,
     GridModule,
     PopupModule,
     InputsModule,

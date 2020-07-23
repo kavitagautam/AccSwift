@@ -8,13 +8,10 @@ import {
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { ReportsService } from "../services/reports.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import {
-  SalesReportList,
-  CashParty,
-  CashPartyGroup,
-  DepotList,
-  SalesAccount,
-} from "../models/sales.report.model";
+import { SalesReportList, CashPartyGroup } from "../models/sales.report.model";
+import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
+import { Depot } from "@app/modules/depot/models/depot.model";
+import { SalesAccounts } from "@app/modules/accswift-shared/models/sales-account.model";
 
 @Component({
   selector: "accSwift-sales-report",
@@ -26,8 +23,8 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   salesReportList: SalesReportList[] = [];
   cashPartyList: CashParty[] = [];
   cashPartyGroupList: CashPartyGroup[] = [];
-  depotList: DepotList[] = [];
-  salesAccountList: SalesAccount[] = [];
+  depotList: Depot[] = [];
+  salesAccountList: SalesAccounts[] = [];
   selectType: string;
   @ViewChild("salesReportSettings") salesReportSettings;
 

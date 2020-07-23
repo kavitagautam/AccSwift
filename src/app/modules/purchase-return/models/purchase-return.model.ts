@@ -1,21 +1,14 @@
-export interface ProjectList {
-  ID: number;
-  ProjectNumber: number;
-  ParentProjectID: number;
-  EngName: string;
-  NepName: string;
-  Description: string;
-  CreatedBy: string;
-  CreatedDate: string;
-  ModifiedBy: string;
-  ModifiedDate: string;
+export interface PurchaseReturnRootModel {
+  StatusCode: number;
+  Message: string;
+  Entity: PurchaseReturnModel;
 }
 
-export interface SeriesList {
-  ID: number;
-  EngName: string;
-  NepName: string;
-  VoucherType: string;
-  AutoNumber: number;
-  BuiltIn: boolean;
+export interface PurchaseReturnModel {
+  Entity: [];
+  ItemsPerPage: number;
+  ItemsReturned: number;
+  TotalItemsAvailable: Number;
+  CurrentPage: Number;
+  TotalPages: number;
 }

@@ -6,17 +6,16 @@ import {
   AfterViewInit,
 } from "@angular/core";
 import {
-  trailBalanceData,
   TrailBalance,
   GroupBalanceList,
   LedgerList,
-  Company,
 } from "../../models/trail-balance.model";
 import { ReportsService } from "../../services/reports.service";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
+import { Company } from "@app/modules/company/models/company.model";
 @Component({
   selector: "accSwift-trial-balance",
   templateUrl: "./trial-balance.component.html",
@@ -37,8 +36,7 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   trailBalanceForms: FormGroup;
   accountsSelect: number;
   totalGroupClosingBalance: string;
-  groupDetailsPopUp: boolean = false;
-  ledgerDetailsPopUp: boolean = false;
+
   projectName: string;
 
   toDateSelect: number;
@@ -168,17 +166,39 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   }
 
   showReport(): void {
-    if (this.groupDetailsPopUp) {
-      this.modalRef.hide();
-      this.openGroupBalance(this.groupBalance);
+    this.modalRef.hide();
+    this.listLoading = true;
+    this.reportService
+      .getTrailBalance(JSON.stringify(this.trailBalanceForms.value))
+      .subscribe(
+        (response) => {
+          this.trailBalnceList = response.Entity.Entity;
+        },
+        (error) => {
+          this.listLoading = false;
+        },
+        () => {
+          this.listLoading = false;
+        }
+      );
+  }
 
+  cancel(): void {
+    this.showReport();
+  }
+
+  openTrailBalance(event, data): void {
+    if (data.Type === "GROUP") {
+      this.trailBalanceForms.get("Type").setValue(data.Type);
+      this.trailBalanceForms.get("ID").setValue(data.ID);
+      this.openGroupBalance(this.groupBalance);
       this.groupLoading = true;
       this.reportService
         .getTrailGroupDetails(this.trailBalanceForms.value)
         .subscribe(
           (response) => {
-            this.groupBalanceList = response.Entity.Entity;
             this.companyInfo = response.Entity.Company;
+            this.groupBalanceList = response.Entity.Entity;
             this.totalGroupClosingBalance = response.Entity.ClosingBalance;
           },
           (error) => {
@@ -189,8 +209,9 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
           }
         );
     }
-    if (this.ledgerDetailsPopUp) {
-      this.modalRef.hide();
+    if (data.Type === "LEDGER") {
+      this.trailBalanceForms.get("Type").setValue(data.Type);
+      this.trailBalanceForms.get("ID").setValue(data.ID);
       this.openLedgerDetails(this.ledgerDetails);
       this.ledgerLoading = true;
 
@@ -207,48 +228,6 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
             this.ledgerLoading = false;
           }
         );
-    }
-    if (!this.ledgerDetailsPopUp && !this.ledgerDetailsPopUp) {
-      this.modalRef.hide();
-      this.listLoading = true;
-      this.reportService
-        .getTrailBalance(JSON.stringify(this.trailBalanceForms.value))
-        .subscribe(
-          (response) => {
-            this.trailBalnceList = response.Entity.Entity;
-          },
-          (error) => {
-            this.listLoading = false;
-          },
-          () => {
-            this.listLoading = false;
-          }
-        );
-    }
-  }
-
-  cancel(): void {
-    if (!this.ledgerDetailsPopUp && !this.ledgerDetailsPopUp) {
-      this.showReport();
-    } else {
-      this.modalRef.hide();
-    }
-  }
-
-  openTrailBalance(event, data): void {
-    if (data.Type === "GROUP") {
-      this.trailBalanceForms.get("Type").setValue(data.Type);
-      this.trailBalanceForms.get("ID").setValue(data.ID);
-      this.groupDetailsPopUp = true;
-      this.ledgerDetailsPopUp = false;
-      this.openTrialBalanceSettings(this.trailBalanceSettings);
-    }
-    if (data.Type === "LEDGER") {
-      this.trailBalanceForms.get("Type").setValue(data.Type);
-      this.trailBalanceForms.get("ID").setValue(data.ID);
-      this.ledgerDetailsPopUp = true;
-      this.groupDetailsPopUp = false;
-      this.openTrialBalanceSettings(this.trailBalanceSettings);
     }
   }
 

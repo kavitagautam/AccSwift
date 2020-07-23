@@ -7,14 +7,15 @@ import {
 } from "@angular/core";
 import { DayBookService } from "../../services/day-book.service";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import {
-  AccountClass,
-  ProjectList,
-  TransactionVoucher,
-} from "../../models/day-book.models";
+import { TransactionVoucher } from "../../models/day-book.models";
 import { Router } from "@angular/router";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Location } from "@angular/common";
+import {
+  Project,
+  ProjectRootModel,
+} from "@app/modules/accswift-shared/models/project.model";
+import { AccountClass } from "@app/modules/accswift-shared/models/account-class.model";
 @Component({
   selector: "accSwift-day-book",
   templateUrl: "./day-book.component.html",
@@ -26,7 +27,7 @@ export class DayBookComponent implements OnInit, AfterViewInit {
   baseURL: string;
   projectName: string;
   accountLists: AccountClass[];
-  projectList: ProjectList[];
+  projectList: Project[];
   transVoucherType: TransactionVoucher[];
   listLoading: boolean;
   dayBookSettingsForms: FormGroup;
@@ -160,9 +161,11 @@ export class DayBookComponent implements OnInit, AfterViewInit {
   }
 
   getProject(): void {
-    this.dayBookService.getProjectLists().subscribe((response) => {
-      this.projectList = response.Entity;
-    });
+    this.dayBookService
+      .getProjectLists()
+      .subscribe((response: ProjectRootModel) => {
+        this.projectList = response.Entity;
+      });
   }
 
   changeProject(): void {

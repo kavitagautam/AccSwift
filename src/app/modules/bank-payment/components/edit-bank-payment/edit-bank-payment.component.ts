@@ -1,13 +1,13 @@
-import { BankPaymentList } from "./../../models/bank-payment.model";
+import { BankPayment } from "./../../models/bank-payment.model";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { BankPaymentService } from "../../services/bank-payment.service";
-import { LedgerCodeMatchService } from "@app/shared/services/ledger-code-match/ledger-code-match.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { LedgerCodeAsyncValidators } from "@app/shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@app/shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
+import { LedgerCodeMatchService } from "@app/modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerCodeAsyncValidators } from "@app/modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 
 @Component({
   selector: "accSwift-edit-bank-payment",
@@ -20,7 +20,7 @@ export class EditBankPaymentComponent implements OnInit {
   currentAmount: string = "0.00";
   numericFormat: string = "n2";
   public decimals: number = 2;
-  bankPaymentDetails: BankPaymentList;
+  bankPaymentDetails: BankPayment;
   date: Date = new Date();
   submitted: boolean;
   rowSubmitted: boolean;

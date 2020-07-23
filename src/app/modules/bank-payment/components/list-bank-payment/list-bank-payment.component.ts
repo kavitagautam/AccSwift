@@ -1,6 +1,6 @@
 import {
-  BankPaymentList,
   BankPaymentDetailsList,
+  BankPayment,
 } from "./../../models/bank-payment.model";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
@@ -20,7 +20,7 @@ import { ConfirmationDialogComponent } from "@app/shared/components/confirmation
 export class ListBankPaymentComponent implements OnInit {
   bankPaymentForm: FormGroup;
   public gridView: GridDataResult;
-  bankPaymentList: BankPaymentList[];
+  bankPaymentList: BankPayment[];
   private toastr: ToastrService;
   modalRef: BsModalRef;
   listLoading: boolean;

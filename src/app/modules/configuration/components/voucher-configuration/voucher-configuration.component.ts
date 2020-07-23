@@ -1,14 +1,11 @@
 import { Component, OnInit, TemplateRef } from "@angular/core";
-import {
-  VoucherConfiguration,
-  Tree,
-  SeriesList,
-} from "../../models/configuration.model";
+import { VoucherConfiguration, Tree } from "../../models/configuration.model";
 import { ConfigurationService } from "../../services/configuration.service";
 import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import { Series } from "@app/modules/accswift-shared/models/series.model";
 
 @Component({
   selector: "accSwift-voucher-configuration",
@@ -20,7 +17,7 @@ export class VoucherConfigurationComponent implements OnInit {
   seriesNode: string[];
   seriesID: number;
   selectedRow: number;
-  seriesDropDownList: SeriesList[];
+  seriesDropDownList: Series[];
   treeViewLoading: boolean;
   configDetails: VoucherConfiguration;
   numberingConfigForm: FormGroup;
