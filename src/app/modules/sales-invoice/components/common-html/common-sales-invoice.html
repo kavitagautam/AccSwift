@@ -230,21 +230,23 @@
                   ></i>
                 </a>
                 <span
+                  *ngIf="getInvoiceEntryList.controls[rowIndex].get('QtyUnitName').value"
                   ><b>Unit : </b>&nbsp;
-                  &nbsp;{{getInvoiceEntryList.controls[rowIndex].get('QtyUnitName').value}}</span
+                  &nbsp;{{getInvoiceEntryList.controls[rowIndex].get('QtyUnitName').value}}
+                  <a
+                    #anchor
+                    style="
+                      color: blue;
+                      font-size: 12px;
+                      cursor: pointer;
+                      margin: 5px;
+                    "
+                    (click)="unitPopup(rowIndex)"
+                  >
+                    Change
+                  </a></span
                 >
-                <a
-                  #anchor
-                  style="
-                    color: blue;
-                    font-size: 12px;
-                    cursor: pointer;
-                    margin: 5px;
-                  "
-                  (click)="unitPopup(rowIndex)"
-                >
-                  Change
-                </a>
+
                 <kendo-popup
                   #popup
                   [anchor]="anchor"

@@ -462,9 +462,14 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
 
-    this.myFormValueChanges$.subscribe((changes) =>
-      this.invoiceValueChange(changes)
+    this.salesInvoiceForm.controls["InvoiceDetails"].valueChanges.subscribe(
+      (changes) => {
+        this.invoiceValueChange(changes);
+      }
     );
+    // this.myFormValueChanges$.subscribe((changes) =>
+    //   this.invoiceValueChange(changes)
+    // );
   }
 
   changeInvoiceValues(dataItem, index): void {
@@ -489,9 +494,15 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
 
-    this.myFormValueChanges$.subscribe((changes) => {
-      this.invoiceValueChange(changes);
-    });
+    // this.myFormValueChanges$.subscribe((changes) => {
+    //      this.invoiceValueChange(changes);
+    // });
+
+    this.salesInvoiceForm.controls["InvoiceDetails"].valueChanges.subscribe(
+      (changes) => {
+        this.invoiceValueChange(changes);
+      }
+    );
 
     this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
     this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
@@ -618,6 +629,9 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         .get("QtyUnitID")
         .setValue(selectedProductValue[0].QtyUnitID);
       invoiceEntryArray.controls[index]
+        .get("QtyUnitName")
+        .setValue(selectedProductValue[0].QtyUnitName);
+      invoiceEntryArray.controls[index]
         .get("SalesRate")
         .setValue(selectedProductValue[0].SalesRate);
 
@@ -697,6 +711,9 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         invoiceEntryArray.controls[index]
           .get("QtyUnitID")
           .setValue(data.QtyUnitID);
+        invoiceEntryArray.controls[index]
+          .get("QtyUnitName")
+          .setValue(data.QtyUnitName);
         invoiceEntryArray.controls[index]
           .get("SalesRate")
           .setValue(data.SalesRate);

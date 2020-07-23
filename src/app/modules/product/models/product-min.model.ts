@@ -7,6 +7,7 @@ export interface ProductMin {
   SalesRate: number;
   ClosingQty: number;
   QtyUnitID: number;
+  QtyUnitName: string;
   IsInventory: boolean;
   IsVAT: boolean;
   GroupID: number;
