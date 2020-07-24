@@ -138,6 +138,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       TotalQty: [0, Validators.required],
       GrossAmount: [0, Validators.required],
       NetAmount: [0, Validators.required],
+      VAT: [0],
       Remarks: [""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
@@ -415,6 +416,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
       this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
       this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
+      this.salesInvoiceForm.get("VAT").setValue(this.vatTotalAmount);
     });
   }
 

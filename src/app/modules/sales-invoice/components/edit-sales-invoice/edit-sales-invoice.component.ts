@@ -127,6 +127,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         Validators.required,
       ],
       NetAmount: [this.salesDetails ? this.salesDetails.NetAmount : 0],
+      VAT: [this.salesDetails ? this.salesDetails.VAT : 0],
       Remarks: [this.salesDetails ? this.salesDetails.Remarks : ""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
@@ -508,6 +509,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
     this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
     this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
+    this.salesInvoiceForm.get("VAT").setValue(this.vatTotalAmount);
   }
 
   handleTaxChange(value, index): void {
