@@ -8,8 +8,8 @@ import {
   ProductRootModel,
   ProductTreeViewModel,
 } from "../models/product.models";
-import { Depot } from "@app/modules/depot/models/depot.model";
-import { AccountClass } from "@app/modules/accswift-shared/models/account-class.model";
+import { Depot } from "@accSwift-modules/depot/models/depot.model";
+import { AccountClass } from "@accSwift-modules/accswift-shared/models/account-class.model";
 import {
   ProductGroup,
   ProductGroupModel,

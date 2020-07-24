@@ -6,7 +6,7 @@ import {
   Validators,
   FormArray,
 } from "@angular/forms";
-import { ProductService } from "@app/modules/product/services/product.service";
+import { ProductService } from "@accSwift-modules/product/services/product.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { SelectEvent } from "@progress/kendo-angular-upload";

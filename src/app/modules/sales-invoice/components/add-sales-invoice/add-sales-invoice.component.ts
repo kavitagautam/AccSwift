@@ -12,17 +12,17 @@ import {
 } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { ProductModalPopupComponent } from "@app/modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
-import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { ProductModalPopupComponent } from "@accSwift-modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
+import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { PreferenceService } from "../../../preference/services/preference.service";
-import { AddProductComponent } from "@app/modules/accswift-shared/components/add-product/add-product/add-product.component";
+import { AddProductComponent } from "@accSwift-modules/accswift-shared/components/add-product/add-product/add-product.component";
 import { IconConst } from "@app/shared/constants/icon.constant";
-import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
-import { RelatedUnits } from "@app/modules/accswift-shared/models/related-unit.model";
-import { ProductMin } from "@app/modules/product/models/product-min.model";
+import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
+import { RelatedUnits } from "@accSwift-modules/accswift-shared/models/related-unit.model";
+import { ProductMin } from "@accSwift-modules/product/models/product-min.model";
 
 @Component({
   selector: "accSwift-add-sales-invoice",

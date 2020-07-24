@@ -8,7 +8,7 @@ import {
 } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { FormsService } from "../../services/forms.service";
-import { Series } from "@app/modules/accswift-shared/models/series.model";
+import { Series } from "@accSwift-modules/accswift-shared/models/series.model";
 // describes what the return value of the form control will look like
 
 @Component({

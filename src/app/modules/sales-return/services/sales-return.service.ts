@@ -10,19 +10,22 @@ import { Observable } from "rxjs";
 import {
   Project,
   ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
+} from "@accSwift-modules/accswift-shared/models/project.model";
 import {
   Series,
   SeriesRootModel,
-} from "@app/modules/accswift-shared/models/series.model";
-import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
+} from "@accSwift-modules/accswift-shared/models/series.model";
+import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 import {
   SalesAccounts,
   SalesAccountModel,
-} from "@app/modules/accswift-shared/models/sales-account.model";
-import { Tax, TaxModel } from "@app/modules/accswift-shared/models/tax.model";
-import { RelatedUnitModel } from "@app/modules/accswift-shared/models/related-unit.model";
-import { Depot, DepotModel } from "@app/modules/depot/models/depot.model";
+} from "@accSwift-modules/accswift-shared/models/sales-account.model";
+import {
+  Tax,
+  TaxModel,
+} from "@accSwift-modules/accswift-shared/models/tax.model";
+import { RelatedUnitModel } from "@accSwift-modules/accswift-shared/models/related-unit.model";
+import { Depot, DepotModel } from "@accSwift-modules/depot/models/depot.model";
 
 @Injectable({
   providedIn: "root",

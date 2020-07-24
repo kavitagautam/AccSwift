@@ -5,7 +5,7 @@ import { PurchaseReportRoutingModule } from "./purchase-report-routing.module";
 import { PurchaseReportComponent } from "./purchase-report/purchase-report.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "@app/shared/shared.module";
-import { AccswiftSharedModule } from "@app/modules/accswift-shared/accswift-shared.module";
+import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [PurchaseReportComponent],

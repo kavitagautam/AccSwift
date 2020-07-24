@@ -4,10 +4,10 @@ import { Router } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe } from "@angular/common";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { LedgerCodeMatchService } from "@app/modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { ToastrService } from "ngx-toastr";
-import { LedgerCodeAsyncValidators } from "@app/modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { Preferences } from "../../../preference/models/preference.model";
 

@@ -5,12 +5,12 @@ import { JournalService } from "../../services/journal.service";
 import { DatePipe } from "@angular/common";
 import { Journal } from "../../models/journal.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { LedgerCodeMatchService } from "@app/modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { IntlService } from "@progress/kendo-angular-intl";
 import { LocaleService } from "@app/core/services/locale/locale.services";
 import { ToastrService } from "ngx-toastr";
-import { LedgerCodeAsyncValidators } from "@app/modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-edit-journal",

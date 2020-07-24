@@ -5,7 +5,7 @@ import { BalanceSheetRoutingModule } from "./balance-sheet-routing.module";
 import { BalanceSheetComponent } from "./component/balance-sheet/balance-sheet.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "@app/shared/shared.module";
-import { AccswiftSharedModule } from "@app/modules/accswift-shared/accswift-shared.module";
+import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [BalanceSheetComponent],

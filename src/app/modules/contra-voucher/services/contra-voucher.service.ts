@@ -7,19 +7,19 @@ import { Observable } from "rxjs";
 import {
   Project,
   ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
+} from "@accSwift-modules/accswift-shared/models/project.model";
 import {
   Series,
   SeriesRootModel,
-} from "@app/modules/accswift-shared/models/series.model";
+} from "@accSwift-modules/accswift-shared/models/series.model";
 import {
   CashAccountsModel,
   CashAccounts,
-} from "@app/modules/accswift-shared/models/cash-account.model";
+} from "@accSwift-modules/accswift-shared/models/cash-account.model";
 import {
   CashPartyModel,
   CashParty,
-} from "@app/modules/accswift-shared/models/cash-party.model";
+} from "@accSwift-modules/accswift-shared/models/cash-party.model";
 
 @Injectable({
   providedIn: "root",

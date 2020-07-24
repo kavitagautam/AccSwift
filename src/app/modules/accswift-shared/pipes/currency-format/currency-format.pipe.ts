@@ -7,7 +7,7 @@ import {
   SafeUrl,
   SafeResourceUrl,
 } from "@angular/platform-browser";
-import { SettingsService } from "@app/modules/settings/services/settings.service";
+import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 
 @Pipe({
   name: "currencyFormat",

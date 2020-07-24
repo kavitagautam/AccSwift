@@ -9,10 +9,10 @@ import {
   DATE_FORMAT_MODEL,
 } from "../models/settings.model";
 import { Observable } from "rxjs";
-import { BankAccountsModel } from "@app/modules/accswift-shared/models/bank-account.model";
-import { CashAccountsModel } from "@app/modules/accswift-shared/models/cash-account.model";
-import { SalesAccountModel } from "@app/modules/accswift-shared/models/sales-account.model";
-import { AccountClassModel } from "@app/modules/accswift-shared/models/account-class.model";
+import { BankAccountsModel } from "@accSwift-modules/accswift-shared/models/bank-account.model";
+import { CashAccountsModel } from "@accSwift-modules/accswift-shared/models/cash-account.model";
+import { SalesAccountModel } from "@accSwift-modules/accswift-shared/models/sales-account.model";
+import { AccountClassModel } from "@accSwift-modules/accswift-shared/models/account-class.model";
 
 @Injectable({
   providedIn: "root",

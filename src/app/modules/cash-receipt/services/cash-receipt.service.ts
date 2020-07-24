@@ -10,16 +10,16 @@ import { Observable } from "rxjs";
 import {
   Project,
   ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
+} from "@accSwift-modules/accswift-shared/models/project.model";
 import {
   Series,
   SeriesRootModel,
-} from "@app/modules/accswift-shared/models/series.model";
-import { CashAccounts } from "@app/modules/accswift-shared/models/cash-account.model";
+} from "@accSwift-modules/accswift-shared/models/series.model";
+import { CashAccounts } from "@accSwift-modules/accswift-shared/models/cash-account.model";
 import {
   CashParty,
   CashPartyModel,
-} from "@app/modules/accswift-shared/models/cash-party.model";
+} from "@accSwift-modules/accswift-shared/models/cash-party.model";
 @Injectable({
   providedIn: "root",
 })

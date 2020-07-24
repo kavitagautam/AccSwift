@@ -6,11 +6,12 @@ import { AuthGuard } from "./core/services/auth.guard/auth.guard";
 const routes: Routes = [
   {
     path: "login",
-    loadChildren: "@modules/auth/login/login.module#LoginModule",
+    loadChildren: "@accSwift-modules/auth/login/login.module#LoginModule",
   },
   {
     path: "register",
-    loadChildren: "@modules/auth/register/register.module#RegisterModule",
+    loadChildren:
+      "@accSwift-modules/auth/register/register.module#RegisterModule",
   },
   {
     path: "",
@@ -20,13 +21,14 @@ const routes: Routes = [
       { path: "", redirectTo: "dashboard", pathMatch: "full" },
       {
         path: "dashboard",
-        loadChildren: "@modules/dashboard/dashboard.module#DashboardModule",
+        loadChildren:
+          "@accSwift-modules/dashboard/dashboard.module#DashboardModule",
       },
 
       {
         path: "stock-transfer",
         loadChildren:
-          "@modules/stock-transfer/stock-transfer.module#StockTransferModule",
+          "@accSwift-modules/stock-transfer/stock-transfer.module#StockTransferModule",
         data: {
           breadcrumb: "Stock Transfer",
         },
@@ -34,7 +36,7 @@ const routes: Routes = [
       {
         path: "journal",
         loadChildren:
-          "@modules/journal-voucher/journal-voucher.module#JournalVoucherModule",
+          "@accSwift-modules/journal-voucher/journal-voucher.module#JournalVoucherModule",
         data: {
           breadcrumb: "Journal",
         },
@@ -42,7 +44,7 @@ const routes: Routes = [
       {
         path: "cash-receipt",
         loadChildren:
-          "@modules/cash-receipt/cash-receipt.module#CashReceiptModule",
+          "@accSwift-modules/cash-receipt/cash-receipt.module#CashReceiptModule",
         data: {
           breadcrumb: "Cash Receipt",
         },
@@ -51,7 +53,7 @@ const routes: Routes = [
       {
         path: "cash-payment",
         loadChildren:
-          "@modules/cash-payment/cash-payment.module#CashPaymentModule",
+          "@accSwift-modules/cash-payment/cash-payment.module#CashPaymentModule",
         data: {
           breadcrumb: "Cash Payment",
         },
@@ -59,7 +61,7 @@ const routes: Routes = [
       {
         path: "bank-receipt",
         loadChildren:
-          "@modules/bank-receipt/bank-receipt.module#BankReceiptModule",
+          "@accSwift-modules/bank-receipt/bank-receipt.module#BankReceiptModule",
         data: {
           breadcrumb: "Bank Receipt",
         },
@@ -67,7 +69,7 @@ const routes: Routes = [
       {
         path: "bank-payment",
         loadChildren:
-          "@modules/bank-payment/bank-payment.module#BankPaymentModule",
+          "@accSwift-modules/bank-payment/bank-payment.module#BankPaymentModule",
         data: {
           breadcrumb: "Bank Payment",
         },
@@ -75,14 +77,14 @@ const routes: Routes = [
       {
         path: "contra-voucher",
         loadChildren:
-          "@modules/contra-voucher/contra-voucher.module#ContraVoucherModule",
+          "@accSwift-modules/contra-voucher/contra-voucher.module#ContraVoucherModule",
         data: {
           breadcrumb: "Contra Voucher",
         },
       },
       {
         path: "depot",
-        loadChildren: "@modules/depot/depot.module#DepotModule",
+        loadChildren: "@accSwift-modules/depot/depot.module#DepotModule",
         data: {
           breadcrumb: "Depot",
         },
@@ -90,35 +92,35 @@ const routes: Routes = [
       {
         path: "bank-reconciliation",
         loadChildren:
-          "@modules/bank-reconciliation/bank-reconciliation.module#BankReconciliationModule",
+          "@accSwift-modules/bank-reconciliation/bank-reconciliation.module#BankReconciliationModule",
         data: {
           breadcrumb: "Bank Reconciliation",
         },
       },
       {
         path: "product",
-        loadChildren: "@modules/product/product.module#ProductModule",
+        loadChildren: "@accSwift-modules/product/product.module#ProductModule",
         data: {
           breadcrumb: "Product",
         },
       },
       {
         path: "budget",
-        loadChildren: "@modules/budget/budget.module#BudgetModule",
+        loadChildren: "@accSwift-modules/budget/budget.module#BudgetModule",
         data: {
           breadcrumb: "Budget",
         },
       },
       {
         path: "company",
-        loadChildren: "@modules/company/company.module#CompanyModule",
+        loadChildren: "@accSwift-modules/company/company.module#CompanyModule",
         data: {
           breadcrumb: "Company",
         },
       },
       {
         path: "ledger",
-        loadChildren: "@modules/ledger/ledger.module#LedgerModule",
+        loadChildren: "@accSwift-modules/ledger/ledger.module#LedgerModule",
         data: {
           breadcrumb: "Chart Of Account",
         },
@@ -126,27 +128,28 @@ const routes: Routes = [
       {
         path: "compound-unit",
         loadChildren:
-          "@modules/compound-unit/compound-unit.module#CompoundUnitModule",
+          "@accSwift-modules/compound-unit/compound-unit.module#CompoundUnitModule",
         data: { breadcrumb: "Compound Unit" },
       },
       {
         path: "unit-maintenance",
         loadChildren:
-          "@modules/unit-maintenance/unit-maintenance.module#UnitMaintenanceModule",
+          "@accSwift-modules/unit-maintenance/unit-maintenance.module#UnitMaintenanceModule",
         data: {
           breadcrumb: "Unit Maintenance",
         },
       },
       {
         path: "trail-balance",
-        loadChildren: "@modules/reports/reports.module#ReportsModule",
+        loadChildren: "@accSwift-modules/reports/reports.module#ReportsModule",
         data: {
           breadcrumb: "Trail Balance Report",
         },
       },
       {
         path: "day-book",
-        loadChildren: "@modules/reports/day-book/day-book.module#DayBookModule",
+        loadChildren:
+          "@accSwift-modules/reports/day-book/day-book.module#DayBookModule",
         data: {
           breadcrumb: "Day Book",
         },
@@ -154,7 +157,7 @@ const routes: Routes = [
       {
         path: "stock-status",
         loadChildren:
-          "@modules/reports/stock-status/stock-status.module#StockStatusModule",
+          "@accSwift-modules/reports/stock-status/stock-status.module#StockStatusModule",
         data: {
           breadcrumb: "Stock Status",
         },
@@ -162,7 +165,7 @@ const routes: Routes = [
       {
         path: "sales-report",
         loadChildren:
-          "@modules/reports/sales-report/sales-report.module#SalesReportModule",
+          "@accSwift-modules/reports/sales-report/sales-report.module#SalesReportModule",
         data: {
           breadcrumb: "Sales Report",
         },
@@ -170,7 +173,7 @@ const routes: Routes = [
       {
         path: "purchase-report",
         loadChildren:
-          "@modules/reports/purchase-report/purchase-report.module#PurchaseReportModule",
+          "@accSwift-modules/reports/purchase-report/purchase-report.module#PurchaseReportModule",
         data: {
           breadcrumb: "Purchase Report",
         },
@@ -178,7 +181,7 @@ const routes: Routes = [
       {
         path: "ledger-report",
         loadChildren:
-          "@modules/reports/ledger-report/ledger-report.module#LedgerReportModule",
+          "@accSwift-modules/reports/ledger-report/ledger-report.module#LedgerReportModule",
         data: {
           breadcrumb: "Ledger Report",
         },
@@ -186,7 +189,7 @@ const routes: Routes = [
       {
         path: "profit-loss",
         loadChildren:
-          "@modules/reports/profit-loss/profit-loss.module#ProfitLossModule",
+          "@accSwift-modules/reports/profit-loss/profit-loss.module#ProfitLossModule",
         data: {
           breadcrumb: "Profit Loss Report",
         },
@@ -194,7 +197,7 @@ const routes: Routes = [
       {
         path: "balance-sheet",
         loadChildren:
-          "@modules/reports/balance-sheet/balance-sheet.module#BalanceSheetModule",
+          "@accSwift-modules/reports/balance-sheet/balance-sheet.module#BalanceSheetModule",
         data: {
           breadcrumb: "Balance Sheet Report",
         },
@@ -202,7 +205,7 @@ const routes: Routes = [
       {
         path: "purchase-invoice",
         loadChildren:
-          "@modules/purchase-invoice/purchase-invoice.module#PurchaseInvoiceModule",
+          "@accSwift-modules/purchase-invoice/purchase-invoice.module#PurchaseInvoiceModule",
         data: {
           breadcrumb: "Purchase Invoice",
         },
@@ -210,7 +213,7 @@ const routes: Routes = [
       {
         path: "purchase-order",
         loadChildren:
-          "@modules/purchase-order/purchase-order.module#PurchaseOrderModule",
+          "@accSwift-modules/purchase-order/purchase-order.module#PurchaseOrderModule",
         data: {
           breadcrumb: "Purchase Order",
         },
@@ -218,7 +221,7 @@ const routes: Routes = [
       {
         path: "purchase-return",
         loadChildren:
-          "@modules/purchase-return/purchase-return.module#PurchaseReturnModule",
+          "@accSwift-modules/purchase-return/purchase-return.module#PurchaseReturnModule",
         data: {
           breadcrumb: "Purchase Return",
         },
@@ -226,7 +229,7 @@ const routes: Routes = [
       {
         path: "sales-invoice",
         loadChildren:
-          "@modules/sales-invoice/sales-invoice.module#SalesInvoiceModule",
+          "@accSwift-modules/sales-invoice/sales-invoice.module#SalesInvoiceModule",
         data: {
           breadcrumb: "Sales Invoice",
         },
@@ -234,7 +237,7 @@ const routes: Routes = [
       {
         path: "sales-order",
         loadChildren:
-          "@modules/sales-order/sales-order.module#SalesOrderModule",
+          "@accSwift-modules/sales-order/sales-order.module#SalesOrderModule",
         data: {
           breadcrumb: "Sales Order",
         },
@@ -242,21 +245,23 @@ const routes: Routes = [
       {
         path: "sales-return",
         loadChildren:
-          "@modules/sales-return/sales-return.module#SalesReturnModule",
+          "@accSwift-modules/sales-return/sales-return.module#SalesReturnModule",
         data: {
           breadcrumb: "Sales Return",
         },
       },
       {
         path: "settings",
-        loadChildren: "@modules/settings/settings.module#SettingsModule",
+        loadChildren:
+          "@accSwift-modules/settings/settings.module#SettingsModule",
         data: {
           breadcrumb: "Settings",
         },
       },
       {
         path: "preference",
-        loadChildren: "@modules/preference/preference.module#PreferenceModule",
+        loadChildren:
+          "@accSwift-modules/preference/preference.module#PreferenceModule",
         data: {
           breadcrumb: "Preference",
         },
@@ -264,7 +269,7 @@ const routes: Routes = [
       {
         path: "voucher-configuration",
         loadChildren:
-          "@modules/configuration/configuration.module#ConfigurationModule",
+          "@accSwift-modules/configuration/configuration.module#ConfigurationModule",
         data: {
           breadcrumb: "Configuration",
         },

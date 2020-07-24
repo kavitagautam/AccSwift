@@ -9,7 +9,7 @@ import {
   FormGroup,
   AbstractControl,
 } from "@angular/forms";
-import { ValidationMessageService } from "@app/modules/accswift-shared/services/validation-message/validation-message.service";
+import { ValidationMessageService } from "@accSwift-modules/accswift-shared/services/validation-message/validation-message.service";
 
 @Component({
   selector: "accSwift-login",

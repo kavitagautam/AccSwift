@@ -15,7 +15,7 @@ import {
   LedgerDetailList,
   GroupDetailList,
 } from "../../models/profit-loss.model";
-import { Company } from "@app/modules/company/models/company.model";
+import { Company } from "@accSwift-modules/company/models/company.model";
 
 @Component({
   selector: "accSwift-profit-loss",

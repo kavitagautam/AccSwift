@@ -3,9 +3,9 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ReportsService } from "../../services/reports.service";
 import { CashPartyGroup, PurchaseList } from "../../models/sales.report.model";
-import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
-import { Depot } from "@app/modules/depot/models/depot.model";
-import { SalesAccounts } from "@app/modules/accswift-shared/models/sales-account.model";
+import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
+import { Depot } from "@accSwift-modules/depot/models/depot.model";
+import { SalesAccounts } from "@accSwift-modules/accswift-shared/models/sales-account.model";
 
 @Component({
   selector: "accSwift-purchase-report",

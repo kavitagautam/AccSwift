@@ -5,7 +5,7 @@ import { environment } from "@env/environment";
 import {
   Project,
   ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
+} from "@accSwift-modules/accswift-shared/models/project.model";
 
 @Injectable({
   providedIn: "root",
