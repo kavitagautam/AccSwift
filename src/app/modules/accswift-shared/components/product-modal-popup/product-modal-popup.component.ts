@@ -9,7 +9,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Subject } from "rxjs";
 import { AddProductComponent } from "../add-product/add-product/add-product.component";
 import { ProductlistService } from "../../services/product-list/productlist.service";
-import { ProductMin } from "@app/modules/product/models/product-min.model";
+import { ProductMin } from "@accSwift-modules/product/models/product-min.model";
 
 @Component({
   selector: "accSwift-product-modal-popup",

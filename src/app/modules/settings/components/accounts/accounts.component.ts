@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { SettingsService } from "../../services/settings.service";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
-import { BankAccounts } from "@app/modules/accswift-shared/models/bank-account.model";
-import { CashAccounts } from "@app/modules/accswift-shared/models/cash-account.model";
+import { BankAccounts } from "@accSwift-modules/accswift-shared/models/bank-account.model";
+import { CashAccounts } from "@accSwift-modules/accswift-shared/models/cash-account.model";
 
 @Component({
   selector: "accSwift-accounts",

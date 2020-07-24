@@ -7,9 +7,9 @@ import { Component, OnInit } from "@angular/core";
 import { Subject } from "rxjs";
 import { BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { takeUntil, debounceTime } from "rxjs/operators";
-import { RelatedUnits } from "@app/modules/accswift-shared/models/related-unit.model";
+import { RelatedUnits } from "@accSwift-modules/accswift-shared/models/related-unit.model";
 
 @Component({
   selector: "accSwift-edit-purchase-invoice",

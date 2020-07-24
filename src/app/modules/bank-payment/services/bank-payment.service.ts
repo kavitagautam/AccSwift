@@ -10,15 +10,15 @@ import { HttpClientService } from "@app/core/services/http-client/http-client.se
 import {
   Project,
   ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
+} from "@accSwift-modules/accswift-shared/models/project.model";
 import {
   Series,
   SeriesRootModel,
-} from "@app/modules/accswift-shared/models/series.model";
+} from "@accSwift-modules/accswift-shared/models/series.model";
 import {
   BankAccounts,
   BankAccountsModel,
-} from "@app/modules/accswift-shared/models/bank-account.model";
+} from "@accSwift-modules/accswift-shared/models/bank-account.model";
 
 @Injectable({
   providedIn: "root",

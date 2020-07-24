@@ -7,7 +7,7 @@ import {
   NG_VALUE_ACCESSOR,
 } from "@angular/forms";
 import { Subscription } from "rxjs";
-import { Project } from "@app/modules/accswift-shared/models/project.model";
+import { Project } from "@accSwift-modules/accswift-shared/models/project.model";
 
 @Component({
   selector: "accSwift-project-forms",

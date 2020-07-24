@@ -7,7 +7,7 @@
       "@env/*": ["environments/*"],
       "@core/*": ["app/core/*"],
       "@lib/*": ["./../lib/*"],
-      "@modules/*": ["app/modules/*"],
+      "@accSwift-modules/*": ["app/modules/*"],
       "@shared/*": ["app/shared/*"],
       "@assets/*": ["assets/*"],
       "@config/*": ["config/*"],

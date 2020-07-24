@@ -14,8 +14,8 @@ import { Location } from "@angular/common";
 import {
   Project,
   ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
-import { AccountClass } from "@app/modules/accswift-shared/models/account-class.model";
+} from "@accSwift-modules/accswift-shared/models/project.model";
+import { AccountClass } from "@accSwift-modules/accswift-shared/models/account-class.model";
 @Component({
   selector: "accSwift-day-book",
   templateUrl: "./day-book.component.html",

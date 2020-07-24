@@ -14,8 +14,8 @@ import { SalesOrderRoutingModule } from "./sales-order-routing.module";
 import { ListSalesOrderComponent } from "./components/list-sales-order/list-sales-order.component";
 import { AddSalesOrderComponent } from "./components/add-sales-order/add-sales-order.component";
 import { EditSalesOrderComponent } from "./components/edit-sales-order/edit-sales-order.component";
-import { ProductModalPopupComponent } from "@app/modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
-import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { ProductModalPopupComponent } from "@accSwift-modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
+import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 
 @NgModule({

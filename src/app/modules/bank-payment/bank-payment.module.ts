@@ -12,7 +12,7 @@ import { BankPaymentRoutingModule } from "./bank-payment-routing.module";
 import { ListBankPaymentComponent } from "./components/list-bank-payment/list-bank-payment.component";
 import { EditBankPaymentComponent } from "./components/edit-bank-payment/edit-bank-payment.component";
 import { AddBankPaymentComponent } from "./components/add-bank-payment/add-bank-payment.component";
-import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { SharedModule } from "@app/shared/shared.module";
 import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";

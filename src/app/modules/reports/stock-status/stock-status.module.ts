@@ -4,7 +4,7 @@ import { StockStatusRoutingModule } from "./stock-status-routing.module";
 import { StockStatusComponent } from "./stock-status/stock-status.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "@app/shared/shared.module";
-import { AccswiftSharedModule } from "@app/modules/accswift-shared/accswift-shared.module";
+import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift-shared.module";
 
 @NgModule({
   declarations: [StockStatusComponent],

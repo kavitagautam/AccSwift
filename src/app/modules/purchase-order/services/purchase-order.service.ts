@@ -10,8 +10,8 @@ import { Observable } from "rxjs";
 import {
   Project,
   ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
-import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
+} from "@accSwift-modules/accswift-shared/models/project.model";
+import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 
 @Injectable({
   providedIn: "root",

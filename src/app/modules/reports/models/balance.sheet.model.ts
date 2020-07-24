@@ -1,5 +1,5 @@
-import { Ledger } from "@app/modules/ledger/models/ledger.models";
-import { Company } from "@app/modules/company/models/company.model";
+import { Ledger } from "@accSwift-modules/ledger/models/ledger.models";
+import { Company } from "@accSwift-modules/company/models/company.model";
 
 export interface BalanceSheet {
   Category: number;

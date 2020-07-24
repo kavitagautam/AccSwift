@@ -10,12 +10,12 @@ import {
 import {
   Project,
   ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
+} from "@accSwift-modules/accswift-shared/models/project.model";
 import {
   Series,
   SeriesRootModel,
-} from "@app/modules/accswift-shared/models/series.model";
-import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
+} from "@accSwift-modules/accswift-shared/models/series.model";
+import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 
 @Injectable({
   providedIn: "root",

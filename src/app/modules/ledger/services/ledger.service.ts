@@ -7,8 +7,8 @@ import {
   LedgerListViewModel,
 } from "../models/ledger.models";
 import { Observable } from "rxjs";
-import { AccountClass } from "@app/modules/accswift-shared/models/account-class.model";
-import { LedgerGroup } from "@app/modules/reports/models/ledger.reports.model";
+import { AccountClass } from "@accSwift-modules/accswift-shared/models/account-class.model";
+import { LedgerGroup } from "@accSwift-modules/reports/models/ledger.reports.model";
 import { LedgerGroupDetailsModel } from "../models/ledger-group.model";
 
 @Injectable({

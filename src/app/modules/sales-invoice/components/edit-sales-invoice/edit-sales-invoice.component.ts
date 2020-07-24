@@ -15,17 +15,17 @@ import {
   HostListener,
 } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ProductModalPopupComponent } from "@app/modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
+import { ProductModalPopupComponent } from "@accSwift-modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
 import { Subject, Subscription, fromEvent } from "rxjs";
 import { takeUntil, debounceTime, tap, take } from "rxjs/operators";
-import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
-import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { AddProductComponent } from "@app/modules/accswift-shared/components/add-product/add-product/add-product.component";
+import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { AddProductComponent } from "@accSwift-modules/accswift-shared/components/add-product/add-product/add-product.component";
 import { IconConst } from "@app/shared/constants/icon.constant";
-import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
-import { RelatedUnits } from "@app/modules/accswift-shared/models/related-unit.model";
-import { ProductMin } from "@app/modules/product/models/product-min.model";
+import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
+import { RelatedUnits } from "@accSwift-modules/accswift-shared/models/related-unit.model";
+import { ProductMin } from "@accSwift-modules/product/models/product-min.model";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
@@ -127,6 +127,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         Validators.required,
       ],
       NetAmount: [this.salesDetails ? this.salesDetails.NetAmount : 0],
+      VAT: [this.salesDetails ? this.salesDetails.VAT : 0],
       Remarks: [this.salesDetails ? this.salesDetails.Remarks : ""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
@@ -508,6 +509,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
     this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
     this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
+    this.salesInvoiceForm.get("VAT").setValue(this.vatTotalAmount);
   }
 
   handleTaxChange(value, index): void {

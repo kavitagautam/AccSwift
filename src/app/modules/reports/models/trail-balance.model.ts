@@ -1,4 +1,4 @@
-import { Company } from "@app/modules/company/models/company.model";
+import { Company } from "@accSwift-modules/company/models/company.model";
 
 export interface Ledger {
   LedgerID: number;

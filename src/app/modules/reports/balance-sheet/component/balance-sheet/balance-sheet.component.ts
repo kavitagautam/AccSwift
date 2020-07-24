@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { ReportsService } from "@app/modules/reports/services/reports.service";
+import { ReportsService } from "@accSwift-modules/reports/services/reports.service";
 import { Router } from "@angular/router";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import {
   BalanceSheet,
   GroupList,
-} from "@app/modules/reports/models/balance.sheet.model";
+} from "@accSwift-modules/reports/models/balance.sheet.model";
 import { Location } from "@angular/common";
-import { Ledger } from "@app/modules/ledger/models/ledger.models";
-import { Company } from "@app/modules/company/models/company.model";
+import { Ledger } from "@accSwift-modules/ledger/models/ledger.models";
+import { Company } from "@accSwift-modules/company/models/company.model";
 
 @Component({
   selector: "accSwift-balance-sheet",
