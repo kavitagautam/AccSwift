@@ -259,6 +259,8 @@
                     name="IsDateRange"
                     value="true"
                     formControlName="IsDateRange"
+                    (change)="enableDate()"
+
                   />
                   <label>Click For Date Selection</label>
                 </label>
@@ -296,6 +298,7 @@
                     class="form-control"
                     [(ngModel)]="toDateSelect"
                     [ngModelOptions]="{ standalone: true }"
+                    [disabled]="dateCheckbox"
                     (change)="endOfMonth()"
                   >
                     <option [ngValue]="null">Choose Option..</option>
