@@ -166,47 +166,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
-  private showUnitPopup: boolean = true;
-  rowPopupIndexUnit: number;
-  unitClick = false;
-  discClick = false;
-  public unitPopup(number): void {
-    this.unitClick = true;
-    this.discClick = false;
-    this.rowPopupIndexUnit = number;
-    this.showUnitPopup = !this.showUnitPopup;
-  }
-
-  private showDiscPopup: boolean = true;
-  rowPopupIndexDisc: number;
-
-  public discPopup(number): void {
-    this.unitClick = false;
-    this.discClick = true;
-    this.rowPopupIndexDisc = number;
-    this.showDiscPopup = !this.showDiscPopup;
-  }
-
-  @HostListener("document:click", ["$event"])
-  public documentClick(event: any): void {
-    if (!this.contains(event.target)) {
-      // //
-      // if (this.unitClick) {
-      //   this.showUnitPopup = !this.showUnitPopup;
-      // }
-      // if (this.taxClick) {
-      //   this.showTaxPopup = !this.showTaxPopup;
-      // }
-    }
-  }
-
-  private contains(target: any): boolean {
-    return (
-      this.anchor.nativeElement.contains(target) ||
-      (this.popup ? this.popup.nativeElement.contains(target) : false)
-    );
-  }
-
   tenderForm: FormGroup;
   buildTenderForm(): void {
     this.tenderForm = this._fb.group({
@@ -353,6 +312,83 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       });
   }
 
+  // Filterable Cash Party Drop-down
+  cashPartyDDFilter(value): void {
+    this.cashPartyList = this.salesInvoiceService.cashPartyList.filter(
+      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
+  openCashPartyModel(): void {
+    this.modalRef = this.modalService.show(
+      CashPartyModalPopupComponent,
+      this.config
+    );
+    this.modalRef.content.action = "Select";
+
+    this.modalRef.content.onSelected.subscribe((data) => {
+      if (data) {
+        // Do After the the sucess
+        this.salesInvoiceForm.get("CashPartyLedgerID").setValue(data.LedgerID);
+      }
+    });
+    this.modalRef.content.onClose.subscribe((data) => {
+      //Do after Close the Modal
+    });
+  }
+
+  openTender(template: TemplateRef<any>): void {
+    this.buildTenderForm();
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      centered: true,
+      class: "modal-sm",
+    };
+    this.modalRef = this.modalService.show(template, config);
+  }
+
+  private showUnitPopup: boolean = true;
+  rowPopupIndexUnit: number;
+  unitClick = false;
+  discClick = false;
+  public unitPopup(number): void {
+    this.unitClick = true;
+    this.discClick = false;
+    this.rowPopupIndexUnit = number;
+    this.showUnitPopup = !this.showUnitPopup;
+  }
+
+  private showDiscPopup: boolean = true;
+  rowPopupIndexDisc: number;
+
+  public discPopup(number): void {
+    this.unitClick = false;
+    this.discClick = true;
+    this.rowPopupIndexDisc = number;
+    this.showDiscPopup = !this.showDiscPopup;
+  }
+
+  @HostListener("document:click", ["$event"])
+  public documentClick(event: any): void {
+    if (!this.contains(event.target)) {
+      // //
+      // if (this.unitClick) {
+      //   this.showUnitPopup = !this.showUnitPopup;
+      // }
+      // if (this.taxClick) {
+      //   this.showTaxPopup = !this.showTaxPopup;
+      // }
+    }
+  }
+
+  private contains(target: any): boolean {
+    return (
+      this.anchor.nativeElement.contains(target) ||
+      (this.popup ? this.popup.nativeElement.contains(target) : false)
+    );
+  }
+
   //Change Discount Value
   changeDiscountValue(dataItem, index): void {
     const invoiceEntryArray = <FormArray>(
@@ -436,13 +472,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     }
     this.myFormValueChanges$.subscribe((changes) =>
       this.invoiceValueChange(changes)
-    );
-  }
-
-  // Filterable Cash Party Drop-down
-  cashPartyDDFilter(value): void {
-    this.cashPartyList = this.salesInvoiceService.cashPartyList.filter(
-      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
   }
 
@@ -585,24 +614,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     }
   }
 
-  openCashPartyModel(): void {
-    this.modalRef = this.modalService.show(
-      CashPartyModalPopupComponent,
-      this.config
-    );
-    this.modalRef.content.action = "Select";
-
-    this.modalRef.content.onSelected.subscribe((data) => {
-      if (data) {
-        // Do After the the sucess
-        this.salesInvoiceForm.get("CashPartyLedgerID").setValue(data.LedgerID);
-      }
-    });
-    this.modalRef.content.onClose.subscribe((data) => {
-      //Do after Close the Modal
-    });
-  }
-
   addNewProduct(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(AddProductComponent, this.config);
     this.modalRef.content.action = "Select";
@@ -685,17 +696,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       .subscribe((response) => {
         this.relatedUnits = response.Entity;
       });
-  }
-
-  openTender(template: TemplateRef<any>): void {
-    this.buildTenderForm();
-    const config = {
-      backdrop: true,
-      ignoreBackdropClick: true,
-      centered: true,
-      class: "modal-sm",
-    };
-    this.modalRef = this.modalService.show(template, config);
   }
 
   private closeEditor(grid, rowIndex = 1) {

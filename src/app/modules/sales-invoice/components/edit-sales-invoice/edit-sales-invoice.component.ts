@@ -33,7 +33,7 @@ import { ProductMin } from "@accSwift-modules/product/models/product-min.model";
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
-  salesInvoiceForm: FormGroup;
+  public salesInvoiceForm: FormGroup;
   salesDetails: SalesInvoiceDetails;
   editedRowIndex: any;
   submitted: boolean;
