@@ -1,4 +1,5 @@
-<div class="col-md-12 p-0">
+<div class="col-md-12 p-0" formArrayName="InvoiceDetails">
+  <h5>Data :: &nbsp;{{ InvoiceDetails | json }}</h5>
   <kendo-grid
     [data]="entryArray.value"
     (cancel)="cancelHandler($event)"

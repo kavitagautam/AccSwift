@@ -91,6 +91,8 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     ].valueChanges;
 
     this.myFormValueChanges$.subscribe((changes) => {
+      console.log("Changes " + JSON.stringify(changes));
+
       this.invoiceValueChange(changes);
     });
   }
@@ -359,35 +361,35 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.showUnitPopup = !this.showUnitPopup;
   }
 
-  private showDiscPopup: boolean = true;
-  rowPopupIndexDisc: number;
+  // private showDiscPopup: boolean = true;
+  // rowPopupIndexDisc: number;
 
-  public discPopup(number): void {
-    this.unitClick = false;
-    this.discClick = true;
-    this.rowPopupIndexDisc = number;
-    this.showDiscPopup = !this.showDiscPopup;
-  }
+  // public discPopup(number): void {
+  //   this.unitClick = false;
+  //   this.discClick = true;
+  //   this.rowPopupIndexDisc = number;
+  //   this.showDiscPopup = !this.showDiscPopup;
+  // }
 
-  @HostListener("document:click", ["$event"])
-  public documentClick(event: any): void {
-    if (!this.contains(event.target)) {
-      // //
-      // if (this.unitClick) {
-      //   this.showUnitPopup = !this.showUnitPopup;
-      // }
-      // if (this.taxClick) {
-      //   this.showTaxPopup = !this.showTaxPopup;
-      // }
-    }
-  }
+  // @HostListener("document:click", ["$event"])
+  // public documentClick(event: any): void {
+  //   if (!this.contains(event.target)) {
+  //     // //
+  //     // if (this.unitClick) {
+  //     //   this.showUnitPopup = !this.showUnitPopup;
+  //     // }
+  //     // if (this.taxClick) {
+  //     //   this.showTaxPopup = !this.showTaxPopup;
+  //     // }
+  //   }
+  // }
 
-  private contains(target: any): boolean {
-    return (
-      this.anchor.nativeElement.contains(target) ||
-      (this.popup ? this.popup.nativeElement.contains(target) : false)
-    );
-  }
+  // private contains(target: any): boolean {
+  //   return (
+  //     this.anchor.nativeElement.contains(target) ||
+  //     (this.popup ? this.popup.nativeElement.contains(target) : false)
+  //   );
+  // }
 
   //Change Discount Value
   changeDiscountValue(dataItem, index): void {

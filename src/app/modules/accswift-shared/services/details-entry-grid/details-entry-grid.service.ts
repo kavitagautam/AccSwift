@@ -23,6 +23,7 @@ export class DetailsEntryGridService {
     private http: HttpClient
   ) {
     this.getTaxList();
+    this.getProductList();
   }
   getTaxList(): void {
     this.httpService

@@ -6,8 +6,15 @@ import {
   ViewChild,
   ElementRef,
   HostListener,
+  Output,
+  EventEmitter,
 } from "@angular/core";
-import { FormArray, FormGroup, ControlContainer } from "@angular/forms";
+import {
+  FormArray,
+  FormGroup,
+  ControlContainer,
+  FormGroupDirective,
+} from "@angular/forms";
 import { DetailsEntryGridService } from "../../services/details-entry-grid/details-entry-grid.service";
 import { AddProductComponent } from "../add-product/add-product/add-product.component";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
@@ -21,6 +28,9 @@ import { ProductModalPopupComponent } from "../product-modal-popup/product-modal
   selector: "accSwift-details-entry-grid",
   templateUrl: "./details-entry-grid.component.html",
   styleUrls: ["./details-entry-grid.component.scss"],
+  viewProviders: [
+    { provide: ControlContainer, useExisting: FormGroupDirective },
+  ],
 })
 export class DetailsEntryGridComponent implements OnInit {
   relatedUnits: RelatedUnits[] = [];
@@ -31,6 +41,12 @@ export class DetailsEntryGridComponent implements OnInit {
   public productList: ProductMin[] = [];
   @Input("entryArray")
   public entryArray: FormArray;
+  @Output() onChange = new EventEmitter();
+
+  @Output() onComponentReady: EventEmitter<FormGroup> = new EventEmitter<
+    FormGroup
+  >();
+
   submitted: boolean;
   rowSubmitted: boolean;
   IsAutomatic: boolean = false;
@@ -59,6 +75,10 @@ export class DetailsEntryGridComponent implements OnInit {
   ngOnInit() {
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
+    });
+    this.entryArray.valueChanges.subscribe((data) => {
+      console.log("changes entry array");
+      this.onChange.emit(this.entryArray);
     });
     console.log(
       "DAta Entry of the Array" + JSON.stringify(this.entryArray.value)
@@ -108,8 +128,7 @@ export class DetailsEntryGridComponent implements OnInit {
 
   //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
-    const invoiceEntryArray = <FormArray>this.entryArray.value;
-
+    const invoiceEntryArray = this.entryArray as FormArray;
     let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
 
     let salesRateValue = invoiceEntryArray.controls[index].get("SalesRate")
@@ -127,6 +146,7 @@ export class DetailsEntryGridComponent implements OnInit {
     invoiceEntryArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
+    this.onChange.emit(this.entryArray);
 
     // this.myFormValueChanges$.subscribe((changes) => {
     //   this.invoiceValueChange(changes);
@@ -143,7 +163,7 @@ export class DetailsEntryGridComponent implements OnInit {
     const selectedTaxValue = this.gridServices.taxList.filter(
       (s) => s.ID === value
     );
-    const invoiceEntryArray = <FormArray>this.entryArray.value;
+    const invoiceEntryArray = this.entryArray as FormArray;
     let netAmountV = invoiceEntryArray.controls[index].get("NetAmount").value;
     if (selectedTaxValue) {
       invoiceEntryArray.controls[index]
@@ -159,7 +179,11 @@ export class DetailsEntryGridComponent implements OnInit {
     const selectedProductValue = this.gridServices.productList.filter(
       (s) => s.ProductID === value
     );
-    const invoiceEntryArray = <FormArray>this.entryArray.value;
+
+    console.log(
+      "Selected Oriduct Value" + JSON.stringify(selectedProductValue)
+    );
+    const invoiceEntryArray = <FormArray>this.entryArray;
     if (selectedProductValue && selectedProductValue.length > 0) {
       invoiceEntryArray.controls[index]
         .get("ProductCode")
@@ -231,7 +255,8 @@ export class DetailsEntryGridComponent implements OnInit {
     this.modalRef.content.action = "Select";
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
-        const invoiceEntryArray = <FormArray>this.entryArray.value;
+        console.log(JSON.stringify(data));
+        const invoiceEntryArray = this.entryArray as FormArray;
         invoiceEntryArray.controls[index]
           .get("ProductCode")
           .setValue(data.ProductCode);
@@ -303,7 +328,7 @@ export class DetailsEntryGridComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    const invoiceEntry = <FormArray>this.entryArray.value;
+    const invoiceEntry = <FormArray>this.entryArray;
     if (invoiceEntry.invalid) return;
     // (<FormArray>this.entryArray.push(
     //   this.addEntryList()
@@ -320,11 +345,12 @@ export class DetailsEntryGridComponent implements OnInit {
       (s) => s.ProductID === value
     );
   }
+
   public editHandler({ sender, rowIndex, dataItem }) {
     this.closeEditor(sender);
 
     this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.entryArray.value);
+    sender.editRow(rowIndex, this.entryArray);
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
