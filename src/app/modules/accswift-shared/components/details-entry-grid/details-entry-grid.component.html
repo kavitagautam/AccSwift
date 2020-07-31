@@ -176,13 +176,22 @@ entryArray.controls[rowIndex].get('QtyUnitID')
         let-isNew="isNew"
         let-formGroup="formGroup"
       >
-        <button #anchor class="btn-secondary" (click)="discountToggle(true,rowIndex)">
+        <!-- <button #anchor class="btn-secondary" (click)="discountToggle(true,rowIndex)">
+          Discount
+          *ngIf="showDiscPopup && rowPopupIndexDisc == rowIndex"  
+        </button> -->
+        <button
+          #anchor
+          class="btn-secondary"
+          (click)="discountToggle(rowIndex)"
+        >
           Discount
         </button>
         <kendo-popup
           #popup
           [anchor]="anchor"
-          *ngIf="showDiscPopup && rowPopupIndexDisc == rowIndex"  
+          *ngIf="showDiscPopup && rowPopupIndexDisc == rowIndex"
+          [animate]="animate"
         >
           <div
             class="contentPopup"

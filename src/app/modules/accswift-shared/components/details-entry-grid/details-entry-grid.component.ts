@@ -46,6 +46,12 @@ export class DetailsEntryGridComponent implements OnInit {
   @Input("entryArray")
   public entryArray: FormArray;
 
+  private showDiscPopup: boolean = false;
+  rowPopupIndexDisc: number;
+
+  private showUnitPopup: boolean = false;
+  rowPopupIndexUnit: number;
+
   submitted: boolean;
   rowSubmitted: boolean;
   IsAutomatic: boolean = false;
@@ -68,49 +74,53 @@ export class DetailsEntryGridComponent implements OnInit {
     private _fb: FormBuilder
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
     });
-    this.entryArray.valueChanges.subscribe((data) => {
-      console.log("changes entry array");
-    });
+    console.log(this.entryArray.getRawValue());
+    this.calculateTotal(this.entryArray.value);
   }
 
   @HostListener("keydown", ["$event"])
   public keydown(event: any): void {
     if (event.keyCode === 27) {
-      this.toggle(false);
+      // this.toggle(false);
     }
   }
-
-  private toggleText = "Show";
-  private show = false;
 
   @HostListener("document:click", ["$event"])
   public documentClick(event: any): void {
     if (!this.contains(event.target)) {
-      //this.discountToggle(false, null);
+      //  console.log(JSON.stringify(event.target));
+      // this.discountToggle(null);
     }
   }
 
-  public toggle(show?: boolean): void {
-    this.show = show !== undefined ? show : !this.show;
-    this.toggleText = this.show ? "Hide" : "Show";
+  public enabled: boolean = true;
+  public duration: number = 200;
+  public type: string = "slide";
+  public direction: string = "down";
+
+  public get animate(): any {
+    if (this.enabled) {
+      return {
+        type: this.type,
+        direction: this.direction,
+        duration: this.duration,
+      };
+    }
+
+    return false;
   }
 
-  public discountToggle(showDiscPopup, rowIndex) {
-    console.log("Show  ;; " + showDiscPopup + "  row iNdex " + rowIndex);
-    // this.showDiscPopup =
-    //   showDiscPopup !== undefined ? showDiscPopup : !this.showDiscPopup;
+  public get hasDirection(): boolean {
+    return this.type === "slide" || this.type === "expand";
+  }
+
+  public discountToggle(rowIndex) {
     this.showDiscPopup = !this.showDiscPopup;
     this.rowPopupIndexDisc = rowIndex;
-    console.log(
-      "after data   " +
-        this.showDiscPopup +
-        "  row iNdex " +
-        this.rowPopupIndexDisc
-    );
   }
 
   private contains(target: any): boolean {
@@ -120,47 +130,50 @@ export class DetailsEntryGridComponent implements OnInit {
     );
   }
 
-  private showUnitPopup: boolean = true;
-  rowPopupIndexUnit: number;
-  unitClick = false;
-  discClick = false;
-  public unitPopup(number): void {
-    this.unitClick = true;
-    this.discClick = false;
-    this.rowPopupIndexUnit = number;
+  public unitPopup(rowindex): void {
+    this.rowPopupIndexUnit = rowindex;
     this.showUnitPopup = !this.showUnitPopup;
   }
 
-  private showDiscPopup: boolean = true;
-  rowPopupIndexDisc: number;
+  calculateTotal(invoices): void {
+    console.log("invoices" + JSON.stringify(invoices));
+    let sumQty = 0;
+    let sumNetAmount = 0;
+    let sumGrossAmount = 0;
+    let sumDiscountAmount = 0;
+    let sumTotalDiscountPer = 0;
+    let sumTaxAmount = 0;
+    for (let i = 0; i < invoices.length; i++) {
+      if (invoices && invoices[i].Quantity) {
+        sumQty = sumQty + invoices[i].Quantity;
+      }
+      if (invoices && invoices[i].Amount) {
+        sumGrossAmount = sumGrossAmount + invoices[i].Amount;
+      }
+      if (invoices && invoices[i].NetAmount) {
+        sumNetAmount = sumNetAmount + invoices[i].NetAmount;
+      }
+      if (invoices && invoices[i].DiscountAmount) {
+        sumDiscountAmount = sumDiscountAmount + invoices[i].DiscountAmount;
+      }
+      if (invoices && invoices[i].DiscPercentage) {
+        sumTotalDiscountPer = sumTotalDiscountPer + invoices[i].DiscPercentage;
+      }
+      if (invoices && invoices[i].TaxAmount) {
+        sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
+      }
+    }
 
-  public discPopup(number): void {
-    this.unitClick = false;
-    this.discClick = true;
-    this.rowPopupIndexDisc = number;
-    this.showDiscPopup = !this.showDiscPopup;
+    this.totalQty = sumQty;
+    this.totalGrossAmount = sumGrossAmount;
+    this.totalNetAmount = sumNetAmount;
   }
 
-  // @HostListener("document:click", ["$event"])
-  // public documentClick(event: any): void {
-  //   if (!this.contains(event.target)) {
-  //     // //
-  //     // if (this.unitClick) {
-  //     //   this.showUnitPopup = !this.showUnitPopup;
-  //     // }
-  //     // if (this.taxClick) {
-  //     //   this.showTaxPopup = !this.showTaxPopup;
-  //     // }
-  //   }
-  // }
-
-  // private contains(target: any): boolean {
-  //   return (
-  //     this.anchor.nativeElement.contains(target) ||
-  //     (this.popup ? this.popup.nativeElement.contains(target) : false)
-  //   );
-  // }
-
+  private gridValueChange(): void {
+    this.entryArray.valueChanges.subscribe((invoices) => {
+      this.calculateTotal(invoices);
+    });
+  }
   //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
     const entrtListArray = this.entryArray as FormArray;
@@ -180,15 +193,9 @@ export class DetailsEntryGridComponent implements OnInit {
     entrtListArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
-
-    // this.myFormValueChanges$.subscribe((changes) => {
-    //   this.invoiceValueChange(changes);
-    //   this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
-    //   this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
-    //   this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
-    //   this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
-    //   this.salesInvoiceForm.get("VAT").setValue(this.vatTotalAmount);
-    // });
+    entrtListArray.valueChanges.subscribe((data) => {
+      this.gridValueChange();
+    });
   }
 
   //tax Change value calculation
@@ -203,9 +210,9 @@ export class DetailsEntryGridComponent implements OnInit {
         .get("TaxAmount")
         .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
     }
-    // this.myFormValueChanges$.subscribe((changes) =>
-    //   this.invoiceValueChange(changes)
-    // );
+    entrtListArray.valueChanges.subscribe((data) => {
+      this.gridValueChange();
+    });
   }
 
   handleProductChange(value, index): void {
@@ -213,9 +220,6 @@ export class DetailsEntryGridComponent implements OnInit {
       (s) => s.ProductID === value
     );
 
-    console.log(
-      "Selected Oriduct Value" + JSON.stringify(selectedProductValue)
-    );
     const entrtListArray = <FormArray>this.entryArray;
     if (selectedProductValue && selectedProductValue.length > 0) {
       entrtListArray.controls[index]
