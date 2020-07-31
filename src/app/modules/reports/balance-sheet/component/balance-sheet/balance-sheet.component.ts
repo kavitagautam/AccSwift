@@ -32,6 +32,7 @@ export class BalanceSheetComponent implements OnInit {
   projectName: string;
   balanceSheetForms: FormGroup;
   listLoading: boolean;
+  dateCheckbox: boolean = true;
   balanceSheetList: BalanceSheet[] = [];
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -71,14 +72,26 @@ export class BalanceSheetComponent implements OnInit {
       LedgerID: [null],
       AccountGroupID: [null],
       IsShowRemarks: [false],
-      FromDate: [""],
-      ToDate: [""],
+      FromDate: [{ value: "", disabled: true }],
+      ToDate: [{ value: "", disabled: true }],
       IsDateRange: [false],
       IsDetails: [false],
       IsShowZeroBalance: [false],
       ProjectID: [null],
       AccClassID: [""],
     });
+  }
+
+  enableDate(): void {
+    if (this.balanceSheetForms.get("IsDateRange").value) {
+      this.dateCheckbox = false;
+      this.balanceSheetForms.get("ToDate").enable();
+      this.balanceSheetForms.get("FromDate").enable();
+    } else {
+      this.dateCheckbox = true;
+      this.balanceSheetForms.get("ToDate").disable();
+      this.balanceSheetForms.get("FromDate").disable();
+    }
   }
 
   endOfMonth(): void {

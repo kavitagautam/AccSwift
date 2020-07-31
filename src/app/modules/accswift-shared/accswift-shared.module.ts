@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { LedgerFilterPipe } from "./pipes/ledger-filter/ledger-filter.pipe";
 import { LedgerModalPopupComponent } from "./components/ledger-modal-popup/ledger-modal-popup.component";
@@ -23,6 +23,7 @@ import { FormSubmitValidationMsgDirective } from "./directives/form-validators/s
 import { FormControlValidationMsgDirective } from "./directives/form-validators/validation-message.directive";
 import { ValidationMsgService } from "./services/form-validators/validation-message.service";
 import { SharedModule } from "@app/shared/shared.module";
+import { DetailsEntryGridComponent } from "./components/details-entry-grid/details-entry-grid.component";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { SharedModule } from "@app/shared/shared.module";
     CurrencyFormatPipe,
     FormSubmitValidationMsgDirective,
     FormControlValidationMsgDirective,
+    DetailsEntryGridComponent,
   ],
   imports: [
     FormsModule,
@@ -61,7 +63,9 @@ import { SharedModule } from "@app/shared/shared.module";
     CurrencyFormatPipe,
     FormSubmitValidationMsgDirective,
     FormControlValidationMsgDirective,
+    DetailsEntryGridComponent,
   ],
   providers: [ValidationMsgService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AccswiftSharedModule {}

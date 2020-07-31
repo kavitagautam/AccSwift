@@ -37,6 +37,7 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
   totalClosingBalance: string;
   accountLedger: boolean = false;
   accountGroup: boolean = false;
+  dateCheckbox: boolean = true;
   ledgerMinList: LedgerMinList[] = [];
   ledgerGroupList: LedgerGroup[] = [];
   //Open the Ledger List Modal on PopUp
@@ -85,6 +86,18 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
     });
     this.ledgerReportForms.get("LedgerID").disable();
     this.ledgerReportForms.get("AccountGroupID").disable();
+  }
+
+  enableDate(): void {
+    if (this.ledgerReportForms.get("IsDateRange").value) {
+      this.dateCheckbox = false;
+      this.ledgerReportForms.get("ToDate").enable();
+      this.ledgerReportForms.get("FromDate").enable();
+    } else {
+      this.dateCheckbox = true;
+      this.ledgerReportForms.get("ToDate").disable();
+      this.ledgerReportForms.get("FromDate").disable();
+    }
   }
 
   getLedger(): void {

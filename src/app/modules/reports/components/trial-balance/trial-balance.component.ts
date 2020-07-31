@@ -40,6 +40,7 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   projectName: string;
 
   toDateSelect: number;
+  dateCheckbox: boolean = true;
 
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
@@ -90,8 +91,18 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
       ProjectID: [null],
       AccClassID: [],
       FromDate: [""],
-      ToDate: [""],
+      ToDate: [{ value: "", disabled: true }],
     });
+  }
+
+  enableDate(): void {
+    if (this.trailBalanceForms.get("IsDateRange").value) {
+      this.dateCheckbox = false;
+      this.trailBalanceForms.get("ToDate").enable();
+    } else {
+      this.dateCheckbox = true;
+      this.trailBalanceForms.get("ToDate").disable();
+    }
   }
 
   openTrialBalanceSettings(template: TemplateRef<any>): void {

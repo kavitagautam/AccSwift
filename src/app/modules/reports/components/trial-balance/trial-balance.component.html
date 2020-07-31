@@ -118,7 +118,13 @@
               <div class="form-group">
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" name="selectDate" value="true" />
+                    <input
+                      type="checkbox"
+                      name="selectDate"
+                      value="true"
+                      formControlName="IsDateRange"
+                      (change)="enableDate()"
+                    />
                     <label>Click For Date Selection</label>
                   </label>
                 </div>
@@ -130,6 +136,7 @@
                     class="form-control"
                     [(ngModel)]="toDateSelect"
                     [ngModelOptions]="{ standalone: true }"
+                    [disabled]="dateCheckbox"
                     (change)="endOfMonth()"
                   >
                     <option [ngValue]="null">Choose Option..</option>
