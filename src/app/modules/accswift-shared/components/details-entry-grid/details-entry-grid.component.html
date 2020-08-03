@@ -10,7 +10,12 @@
       <button kendoGridAddCommand>Add New</button>
     </ng-template>
 
-    <kendo-grid-column field="ProductID" title="Product" width="280">
+    <kendo-grid-column
+      field="ProductID"
+      title="Product"
+      width="280"
+      [hidden]="columns.ProductID !=== field"
+    >
       <ng-template
         kendoGridCellTemplate
         let-dataItem="dataItem"
@@ -19,6 +24,7 @@
         let-isNew="isNew"
         let-rowIndex="rowIndex"
       >
+        <span>{{ columns.indexOf(field) | json }}</span>
         <div class="form-group mt-5">
           <kendo-dropdownlist
             class="form-control"
@@ -74,9 +80,13 @@
           <kendo-popup
             #popup
             [anchor]="anchor"
-            *ngIf="showUnitPopup && rowPopupIndexUnit == rowIndex"
+            *ngIf="showUnitPopup && rowPopupIndexUnit === rowIndex"
+            [animate]="animate"
           >
-            <div class="contentPopup" style="min-height: 70px; padding: 15px;">
+            <div
+              class="contentPopup"
+              style="min-height: 120px; width: fit-content; padding: 15px;"
+            >
               <div class="form-group">
                 <label>Unit</label>
                 <kendo-dropdownlist
@@ -117,7 +127,12 @@ entryArray.controls[rowIndex].get('QtyUnitID')
       </kendo-dropdownlist>
     </ng-template>
   </kendo-grid-column> -->
-    <kendo-grid-column field="Quantity" title="Quantity" width="80">
+    <kendo-grid-column
+      field="Quantity"
+      title="Quantity"
+      width="80"
+      [hidden]="columns.Quantity === field ? false : true"
+    >
       <ng-template
         kendoGridCellTemplate
         let-dataItem="dataItem"
@@ -142,10 +157,15 @@ entryArray.controls[rowIndex].get('QtyUnitID')
         let-column
         let-columnIndex="columnIndex"
       >
-        <span class="pull-right"> Total QTY: {{ totalQty }} </span>
+        <span class="pull-right"> Total QTY: {{ calculateQtyTotal() }} </span>
       </ng-template>
     </kendo-grid-column>
-    <kendo-grid-column field="SalesRate" title="Sales Rate" width="80">
+    <kendo-grid-column
+      field="SalesRate"
+      title="Sales Rate"
+      width="80"
+      *ngIf="!columns?.SalesRate"
+    >
       <ng-template
         kendoGridCellTemplate
         let-dataItem="dataItem"
@@ -167,7 +187,12 @@ entryArray.controls[rowIndex].get('QtyUnitID')
         </kendo-numerictextbox>
       </ng-template>
     </kendo-grid-column>
-    <kendo-grid-column field="DiscPercentage" title="Disc%" width="80">
+    <kendo-grid-column
+      field="DiscPercentage"
+      title="Disc%"
+      width="80"
+      *ngIf="!columns?.DiscPercentage"
+    >
       <ng-template
         kendoGridCellTemplate
         let-dataItem="dataItem"
@@ -232,7 +257,12 @@ entryArray.controls[rowIndex].get('QtyUnitID')
       </ng-template>
     </kendo-grid-column>
 
-    <kendo-grid-column field="TaxID" title="Select Tax" width="110">
+    <kendo-grid-column
+      field="TaxID"
+      title="Select Tax"
+      width="110"
+      *ngIf="!columns?.TaxID"
+    >
       <ng-template
         kendoGridCellTemplate
         let-isNew="isNew"
@@ -267,10 +297,14 @@ entryArray.controls[rowIndex].get('QtyUnitID')
         let-column="column"
       >
         <span style="margin-bottom: 0; display: flex;"
-          >Total :&nbsp; &nbsp;{{
-            entryArray.controls[rowIndex].get("Amount").value | number: "3.1-3"
-          }}</span
-        >
+          >Total :&nbsp; &nbsp;
+          <span
+            [innerHTML]="
+              entryArray.controls[rowIndex].get('Amount').value | currencyFormat
+            "
+          ></span
+        ></span>
+
         <span style="margin-bottom: 0; display: flex;"
           >Discount :&nbsp; &nbsp;{{
             entryArray.controls[rowIndex].get("DiscountAmount").value
@@ -289,9 +323,14 @@ entryArray.controls[rowIndex].get('QtyUnitID')
         let-column
         let-columnIndex="columnIndex"
       >
-        <label> Gross : {{ totalGrossAmount }} </label>
+        <label>
+          Gross :
+          <span [innerHTML]="calculateGrossTotal() | currencyFormat"></span>
+        </label>
 
-        <label> Net : {{ totalNetAmount }} </label>
+        <label>
+          Net : <span [innerHTML]="calculateNetTotal | currencyFormat"></span>
+        </label>
       </ng-template>
     </kendo-grid-column>
 
@@ -313,7 +352,28 @@ entryArray.controls[rowIndex].get('QtyUnitID')
         />
       </ng-template>
     </kendo-grid-column>
-
+    <kendo-grid-column
+      title="Hide Column"
+      width="120"
+      *ngIf="columns?.ProductName"
+    >
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-rowIndex="rowIndex"
+        let-isNew="isNew"
+        let-formGroup="formGroup"
+      >
+        <input
+          #ntb="popupAnchor"
+          popupAnchor
+          class="k-textbox"
+          class="form-control"
+          [formControl]="entryArray.controls[rowIndex].get(column.field)"
+        />
+      </ng-template>
+    </kendo-grid-column>
     <kendo-grid-command-column title="Action" width="60">
       <ng-template kendoGridCellTemplate let-isNew="isNew">
         <!-- <button class="k-button" kendoGridAddCommand>

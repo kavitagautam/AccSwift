@@ -8,6 +8,9 @@ import {
   HostListener,
   Output,
   EventEmitter,
+  AfterViewInit,
+  OnChanges,
+  ChangeDetectionStrategy,
 } from "@angular/core";
 import {
   FormArray,
@@ -30,11 +33,12 @@ import { ProductModalPopupComponent } from "../product-modal-popup/product-modal
   selector: "accSwift-details-entry-grid",
   templateUrl: "./details-entry-grid.component.html",
   styleUrls: ["./details-entry-grid.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective },
   ],
 })
-export class DetailsEntryGridComponent implements OnInit {
+export class DetailsEntryGridComponent implements OnInit, OnChanges {
   relatedUnits: RelatedUnits[] = [];
   cashPartyList: CashParty[] = [];
   @ViewChild("anchor") public anchor: ElementRef;
@@ -48,7 +52,7 @@ export class DetailsEntryGridComponent implements OnInit {
 
   private showDiscPopup: boolean = false;
   rowPopupIndexDisc: number;
-
+  columnField = [];
   private showUnitPopup: boolean = false;
   rowPopupIndexUnit: number;
 
@@ -67,7 +71,6 @@ export class DetailsEntryGridComponent implements OnInit {
     class: "modal-lg",
   };
   constructor(
-    // public controlContainer: ControlContainer,
     public gridServices: DetailsEntryGridService,
     private toastr: ToastrService,
     private modalService: BsModalService,
@@ -78,8 +81,45 @@ export class DetailsEntryGridComponent implements OnInit {
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
     });
-    console.log(this.entryArray.getRawValue());
-    this.calculateTotal(this.entryArray.value);
+    this.columnField = this.entryArray.value[0];
+    console.log("Column Field" + JSON.stringify(this.columnField));
+  }
+
+  ngOnChanges(changes): void {
+    console.log("Changes" + changes);
+    // changes.entryArray.currentValue.valueChanges((data) => {
+    //   console.log("After View Init " + JSON.stringify(data));
+    // });
+    this.entryArray.valueChanges.subscribe((data) => {
+      console.log("After View Init " + JSON.stringify(data));
+    });
+  }
+
+  //Hidden Grid Column
+  public hiddenColumns: string[] = [];
+
+  public columns: string[] = ["ProductID", "TaxID"];
+
+  public isHidden(columnName: string): boolean {
+    return this.hiddenColumns.indexOf(columnName) > -1;
+  }
+
+  public isDisabled(columnName: string): boolean {
+    return (
+      this.columns.length - this.hiddenColumns.length === 1 &&
+      !this.isHidden(columnName)
+    );
+  }
+
+  public hideColumn(): void {
+    const hiddenColumns = this.hiddenColumns;
+    for (let i = 0; this.columns.length; i++) {
+      if (!this.isHidden(this.columns[i])) {
+        hiddenColumns.push(this.columns[i]);
+      } else {
+        hiddenColumns.splice(hiddenColumns.indexOf(this.columns[i]), 1);
+      }
+    }
   }
 
   @HostListener("keydown", ["$event"])
@@ -123,6 +163,10 @@ export class DetailsEntryGridComponent implements OnInit {
     this.rowPopupIndexDisc = rowIndex;
   }
 
+  public unitPopup(rowIndex): void {
+    this.showUnitPopup = !this.showUnitPopup;
+    this.rowPopupIndexUnit = rowIndex;
+  }
   private contains(target: any): boolean {
     return (
       this.anchor.nativeElement.contains(target) ||
@@ -130,50 +174,45 @@ export class DetailsEntryGridComponent implements OnInit {
     );
   }
 
-  public unitPopup(rowindex): void {
-    this.rowPopupIndexUnit = rowindex;
-    this.showUnitPopup = !this.showUnitPopup;
+  productChange(dataItem, rowIndex): Array<any> {
+    console.log("DataItem  " + JSON.stringify(dataItem));
+    this.getRelatedUnitList(dataItem.ProductID);
+    return this.relatedUnits;
   }
 
-  calculateTotal(invoices): void {
-    console.log("invoices" + JSON.stringify(invoices));
+  calculateQtyTotal(): number {
+    const entrtListArray = this.entryArray.value;
     let sumQty = 0;
-    let sumNetAmount = 0;
-    let sumGrossAmount = 0;
-    let sumDiscountAmount = 0;
-    let sumTotalDiscountPer = 0;
-    let sumTaxAmount = 0;
-    for (let i = 0; i < invoices.length; i++) {
-      if (invoices && invoices[i].Quantity) {
-        sumQty = sumQty + invoices[i].Quantity;
-      }
-      if (invoices && invoices[i].Amount) {
-        sumGrossAmount = sumGrossAmount + invoices[i].Amount;
-      }
-      if (invoices && invoices[i].NetAmount) {
-        sumNetAmount = sumNetAmount + invoices[i].NetAmount;
-      }
-      if (invoices && invoices[i].DiscountAmount) {
-        sumDiscountAmount = sumDiscountAmount + invoices[i].DiscountAmount;
-      }
-      if (invoices && invoices[i].DiscPercentage) {
-        sumTotalDiscountPer = sumTotalDiscountPer + invoices[i].DiscPercentage;
-      }
-      if (invoices && invoices[i].TaxAmount) {
-        sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
+    for (let i = 0; i < entrtListArray.length; i++) {
+      if (entrtListArray && entrtListArray[i].Quantity) {
+        sumQty = sumQty + entrtListArray[i].Quantity;
       }
     }
-
-    this.totalQty = sumQty;
-    this.totalGrossAmount = sumGrossAmount;
-    this.totalNetAmount = sumNetAmount;
+    return sumQty;
   }
 
-  private gridValueChange(): void {
-    this.entryArray.valueChanges.subscribe((invoices) => {
-      this.calculateTotal(invoices);
-    });
+  public calculateNetTotal(): number {
+    const entrtListArray = this.entryArray.value;
+    let sumNet = 0;
+    for (let i = 0; i < entrtListArray.length; i++) {
+      if (entrtListArray && entrtListArray[i].NetAmount) {
+        sumNet = sumNet + entrtListArray[i].NetAmount;
+      }
+    }
+    return sumNet;
   }
+
+  public calculateGrossTotal(): number {
+    const entrtListArray = this.entryArray.value;
+    let sumGrossAmount = 0;
+    for (let i = 0; i < entrtListArray.length; i++) {
+      if (entrtListArray && entrtListArray[i].Amount) {
+        sumGrossAmount = sumGrossAmount + entrtListArray[i].Amount;
+      }
+    }
+    return sumGrossAmount;
+  }
+
   //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
     const entrtListArray = this.entryArray as FormArray;
@@ -193,9 +232,6 @@ export class DetailsEntryGridComponent implements OnInit {
     entrtListArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
-    entrtListArray.valueChanges.subscribe((data) => {
-      this.gridValueChange();
-    });
   }
 
   //tax Change value calculation
@@ -210,9 +246,6 @@ export class DetailsEntryGridComponent implements OnInit {
         .get("TaxAmount")
         .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
     }
-    entrtListArray.valueChanges.subscribe((data) => {
-      this.gridValueChange();
-    });
   }
 
   handleProductChange(value, index): void {
@@ -268,9 +301,8 @@ export class DetailsEntryGridComponent implements OnInit {
       entrtListArray.controls[index].get("TaxID").setValue("");
       entrtListArray.controls[index].get("TaxAmount").setValue("");
       entrtListArray.controls[index].get("Remarks").setValue("");
-      // const invoiceEntry = <FormArray>this.entryArray;
-      if (entrtListArray.invalid) return;
-
+      const length = this.entryArray.value.length;
+      if (entrtListArray.controls[length - 1].invalid) return;
       this.entryArray.push(this.addEntryList());
     }
   }
@@ -334,7 +366,9 @@ export class DetailsEntryGridComponent implements OnInit {
         entrtListArray.controls[index].get("TaxID").setValue("");
         entrtListArray.controls[index].get("TaxAmount").setValue("");
         entrtListArray.controls[index].get("Remarks").setValue("");
-
+        const length = this.entryArray.value.length;
+        if (entrtListArray.controls[length - 1].invalid) return;
+        this.entryArray.push(this.addEntryList());
         this.getRelatedUnitList(data.ProductID);
       }
     });
@@ -403,7 +437,9 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    <FormArray>this.entryArray.value.removeAt(rowIndex);
+    const entrtListArray = <FormArray>this.entryArray;
+    // Remove the Row
+    this.entryArray.removeAt(rowIndex);
   }
 
   public cancelHandler({ sender, rowIndex }) {
