@@ -28,18 +28,16 @@
           <kendo-dropdownlist
             class="form-control"
             [data]="productList"
+            [filterable]="true"
             [textField]="'CodeName'"
             [valueField]="'ProductID'"
-            [filterable]="true"
             [valuePrimitive]="true"
-            [formControl]="entryArray.controls[rowIndex].get(column.field)"
+            [formControl]="entryArray.controls[rowIndex].get('ProductID')"
             (filterChange)="productDDFilter($event, rowIndex)"
             (valueChange)="handleProductChange($event, rowIndex)"
           >
             <ng-template kendoDropDownListItemTemplate let-dataItem>
-              <span class="template"
-                >{{ dataItem.ProductCode }} ({{ dataItem.ProductName }})</span
-              >
+              <span class="template">{{ dataItem.CodeName }} </span>
             </ng-template>
             <ng-template kendoDropDownListNoDataTemplate>
               <div>
@@ -62,30 +60,23 @@
             ><b>Unit : </b>&nbsp; &nbsp;{{
               entryArray.controls[rowIndex].get("QtyUnitName").value
             }}
-            <button
-              class="btn"
-              #anchor
-              style="
-                color: blue;
-                font-size: 12px;
-                cursor: pointer;
-                margin: 5px;
-              "
-              (click)="unitToggle(rowIndex)"
-            >
-              Change
-            </button></span
+          </span>
+          <button
+            class="btn"
+            #anchor
+            style="color: blue; font-size: 12px; cursor: pointer; padding: 0px;"
+            (click)="unitToggle(rowIndex)"
           >
-
+            Change
+          </button>
           <kendo-popup
             #popup
             [anchor]="anchor"
             *ngIf="showUnitPopup && rowPopupIndexUnit == rowIndex"
-            [animate]="animate"
           >
             <div
               class="contentPopup"
-              style="min-height: 120px; width: fit-content; padding: 15px;"
+              style="min-height: 100px; width: fit-content; padding: 15px;"
             >
               <div class="form-group">
                 <label>Unit</label>

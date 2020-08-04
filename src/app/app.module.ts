@@ -16,6 +16,8 @@ import { Observable } from "rxjs";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { SettingsService } from "./modules/settings/services/settings.service";
 import { SettingsModel } from "./modules/settings/models/settings.model";
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+
 
 export function initPreferenceData(preferenceService: PreferenceService) {
   return (): Observable<PreferenceModel> => {
@@ -36,6 +38,7 @@ export function initSettingsData(settingsService: SettingsService) {
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    DropDownsModule,
   ],
   providers: [
     PreferenceService,

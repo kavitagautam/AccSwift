@@ -6,11 +6,6 @@ import {
   ViewChild,
   ElementRef,
   HostListener,
-  Output,
-  EventEmitter,
-  AfterViewInit,
-  OnChanges,
-  ChangeDetectionStrategy,
 } from "@angular/core";
 import {
   FormArray,
@@ -34,12 +29,8 @@ import { LedgerModalPopupComponent } from "../ledger-modal-popup/ledger-modal-po
   selector: "accSwift-details-entry-grid",
   templateUrl: "./details-entry-grid.component.html",
   styleUrls: ["./details-entry-grid.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [
-    { provide: ControlContainer, useExisting: FormGroupDirective },
-  ],
 })
-export class DetailsEntryGridComponent implements OnInit, OnChanges {
+export class DetailsEntryGridComponent implements OnInit {
   relatedUnits: RelatedUnits[] = [];
   cashPartyList: CashParty[] = [];
   @ViewChild("anchor") public anchor: ElementRef;
@@ -87,13 +78,6 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges(changes): void {
-    this.entryArray.valueChanges.subscribe((data) => {
-      console.log("After View Init " + JSON.stringify(data));
-    });
-    this.voucherType = this.voucherType;
-  }
-
   @HostListener("keydown", ["$event"])
   public keydown(event: any): void {
     if (event.keyCode === 27) {
@@ -106,6 +90,9 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
     if (!this.contains(event.target)) {
       //  this.discountToggle(null);
       //this.unitPopup(null);
+    }
+    if (this.anchor.nativeElement) {
+      console.log("dsadsa ");
     }
   }
 
