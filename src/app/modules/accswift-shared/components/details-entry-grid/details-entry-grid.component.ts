@@ -8,6 +8,9 @@ import {
   HostListener,
   Output,
   EventEmitter,
+  AfterViewInit,
+  OnChanges,
+  ChangeDetectionStrategy,
 } from "@angular/core";
 import {
   FormArray,
@@ -25,16 +28,18 @@ import { RelatedUnits } from "../../models/related-unit.model";
 import { CashParty } from "../../models/cash-party.model";
 import { ProductMin } from "@app/modules/product/models/product-min.model";
 import { ProductModalPopupComponent } from "../product-modal-popup/product-modal-popup.component";
+import { LedgerModalPopupComponent } from "../ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-details-entry-grid",
   templateUrl: "./details-entry-grid.component.html",
   styleUrls: ["./details-entry-grid.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective },
   ],
 })
-export class DetailsEntryGridComponent implements OnInit {
+export class DetailsEntryGridComponent implements OnInit, OnChanges {
   relatedUnits: RelatedUnits[] = [];
   cashPartyList: CashParty[] = [];
   @ViewChild("anchor") public anchor: ElementRef;
@@ -45,13 +50,13 @@ export class DetailsEntryGridComponent implements OnInit {
   public productList: ProductMin[] = [];
   @Input("entryArray")
   public entryArray: FormArray;
-
+  @Input("voucherType") public voucherType: string;
   private showDiscPopup: boolean = false;
   rowPopupIndexDisc: number;
-
+  columnField = [];
   private showUnitPopup: boolean = false;
   rowPopupIndexUnit: number;
-
+  columns = [];
   submitted: boolean;
   rowSubmitted: boolean;
   IsAutomatic: boolean = false;
@@ -67,7 +72,6 @@ export class DetailsEntryGridComponent implements OnInit {
     class: "modal-lg",
   };
   constructor(
-    // public controlContainer: ControlContainer,
     public gridServices: DetailsEntryGridService,
     private toastr: ToastrService,
     private modalService: BsModalService,
@@ -78,8 +82,16 @@ export class DetailsEntryGridComponent implements OnInit {
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
     });
-    console.log(this.entryArray.getRawValue());
-    this.calculateTotal(this.entryArray.value);
+    for (const key in this.entryArray.value[0]) {
+      this.columns.push(key);
+    }
+  }
+
+  ngOnChanges(changes): void {
+    this.entryArray.valueChanges.subscribe((data) => {
+      console.log("After View Init " + JSON.stringify(data));
+    });
+    this.voucherType = this.voucherType;
   }
 
   @HostListener("keydown", ["$event"])
@@ -92,8 +104,8 @@ export class DetailsEntryGridComponent implements OnInit {
   @HostListener("document:click", ["$event"])
   public documentClick(event: any): void {
     if (!this.contains(event.target)) {
-      //  console.log(JSON.stringify(event.target));
-      // this.discountToggle(null);
+      //  this.discountToggle(null);
+      //this.unitPopup(null);
     }
   }
 
@@ -123,79 +135,80 @@ export class DetailsEntryGridComponent implements OnInit {
     this.rowPopupIndexDisc = rowIndex;
   }
 
+  public unitToggle(rowIndex): void {
+    this.getRelatedUnitList(this.entryArray.value[rowIndex].ProductID);
+    this.showUnitPopup = !this.showUnitPopup;
+    this.rowPopupIndexUnit = rowIndex;
+    console.log(
+      "Popup Show" + this.showUnitPopup + " Unit Id " + this.rowPopupIndexUnit
+    );
+  }
+
   private contains(target: any): boolean {
+    if (!this.anchor) return;
     return (
       this.anchor.nativeElement.contains(target) ||
       (this.popup ? this.popup.nativeElement.contains(target) : false)
     );
   }
 
-  public unitPopup(rowindex): void {
-    this.rowPopupIndexUnit = rowindex;
-    this.showUnitPopup = !this.showUnitPopup;
+  productChange(dataItem, rowIndex): Array<any> {
+    this.getRelatedUnitList(dataItem.ProductID);
+    return this.relatedUnits;
   }
 
-  calculateTotal(invoices): void {
-    console.log("invoices" + JSON.stringify(invoices));
+  calculateQtyTotal(): number {
+    const entryListArray = this.entryArray.value;
     let sumQty = 0;
-    let sumNetAmount = 0;
-    let sumGrossAmount = 0;
-    let sumDiscountAmount = 0;
-    let sumTotalDiscountPer = 0;
-    let sumTaxAmount = 0;
-    for (let i = 0; i < invoices.length; i++) {
-      if (invoices && invoices[i].Quantity) {
-        sumQty = sumQty + invoices[i].Quantity;
-      }
-      if (invoices && invoices[i].Amount) {
-        sumGrossAmount = sumGrossAmount + invoices[i].Amount;
-      }
-      if (invoices && invoices[i].NetAmount) {
-        sumNetAmount = sumNetAmount + invoices[i].NetAmount;
-      }
-      if (invoices && invoices[i].DiscountAmount) {
-        sumDiscountAmount = sumDiscountAmount + invoices[i].DiscountAmount;
-      }
-      if (invoices && invoices[i].DiscPercentage) {
-        sumTotalDiscountPer = sumTotalDiscountPer + invoices[i].DiscPercentage;
-      }
-      if (invoices && invoices[i].TaxAmount) {
-        sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
+    for (let i = 0; i < entryListArray.length; i++) {
+      if (entryListArray && entryListArray[i].Quantity) {
+        sumQty = sumQty + entryListArray[i].Quantity;
       }
     }
-
-    this.totalQty = sumQty;
-    this.totalGrossAmount = sumGrossAmount;
-    this.totalNetAmount = sumNetAmount;
+    return sumQty;
   }
 
-  private gridValueChange(): void {
-    this.entryArray.valueChanges.subscribe((invoices) => {
-      this.calculateTotal(invoices);
-    });
+  public calculateNetTotal(): number {
+    const entryListArray = this.entryArray.value;
+    let sumNet = 0;
+    for (let i = 0; i < entryListArray.length; i++) {
+      if (entryListArray && entryListArray[i].NetAmount) {
+        sumNet = sumNet + entryListArray[i].NetAmount;
+      }
+    }
+    return sumNet;
   }
+
+  public calculateGrossTotal(): number {
+    const entryListArray = this.entryArray.value;
+    let sumGrossAmount = 0;
+    for (let i = 0; i < entryListArray.length; i++) {
+      if (entryListArray && entryListArray[i].Amount) {
+        sumGrossAmount = sumGrossAmount + entryListArray[i].Amount;
+      }
+    }
+    return sumGrossAmount;
+  }
+
   //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
-    const entrtListArray = this.entryArray as FormArray;
-    let qunatityValue = entrtListArray.controls[index].get("Quantity").value;
+    const entryListArray = this.entryArray as FormArray;
+    let qunatityValue = entryListArray.controls[index].get("Quantity").value;
 
-    let salesRateValue = entrtListArray.controls[index].get("SalesRate").value;
-    let discountPer = entrtListArray.controls[index].get("DiscPercentage")
+    let salesRateValue = entryListArray.controls[index].get("SalesRate").value;
+    let discountPer = entryListArray.controls[index].get("DiscPercentage")
       .value;
 
     let amountC = qunatityValue * salesRateValue;
     let discountAmountC = discountPer * amountC;
-    entrtListArray.controls[index]
+    entryListArray.controls[index]
       .get("DiscountAmount")
       .setValue(discountAmountC);
 
-    entrtListArray.controls[index].get("Amount").setValue(amountC);
-    entrtListArray.controls[index]
+    entryListArray.controls[index].get("Amount").setValue(amountC);
+    entryListArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
-    entrtListArray.valueChanges.subscribe((data) => {
-      this.gridValueChange();
-    });
   }
 
   //tax Change value calculation
@@ -203,16 +216,13 @@ export class DetailsEntryGridComponent implements OnInit {
     const selectedTaxValue = this.gridServices.taxList.filter(
       (s) => s.ID === value
     );
-    const entrtListArray = this.entryArray as FormArray;
-    let netAmountV = entrtListArray.controls[index].get("NetAmount").value;
+    const entryListArray = this.entryArray as FormArray;
+    let netAmountV = entryListArray.controls[index].get("NetAmount").value;
     if (selectedTaxValue) {
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("TaxAmount")
         .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
     }
-    entrtListArray.valueChanges.subscribe((data) => {
-      this.gridValueChange();
-    });
   }
 
   handleProductChange(value, index): void {
@@ -220,57 +230,56 @@ export class DetailsEntryGridComponent implements OnInit {
       (s) => s.ProductID === value
     );
 
-    const entrtListArray = <FormArray>this.entryArray;
+    const entryListArray = <FormArray>this.entryArray;
     if (selectedProductValue && selectedProductValue.length > 0) {
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("ProductCode")
         .setValue(selectedProductValue[0].ProductCode);
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("ProductID")
         .setValue(selectedProductValue[0].ProductID);
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("CodeName")
         .setValue(selectedProductValue[0].CodeName);
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("ProductName")
         .setValue(selectedProductValue[0].ProductName);
-      entrtListArray.controls[index].get("Quantity").setValue(1);
-      entrtListArray.controls[index]
+      entryListArray.controls[index].get("Quantity").setValue(1);
+      entryListArray.controls[index]
         .get("QtyUnitID")
         .setValue(selectedProductValue[0].QtyUnitID);
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("QtyUnitName")
         .setValue(selectedProductValue[0].QtyUnitName);
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("SalesRate")
         .setValue(selectedProductValue[0].SalesRate);
 
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("Amount")
         .setValue(
-          entrtListArray.controls[index].get("SalesRate").value *
-            entrtListArray.controls[index].get("Quantity").value
+          entryListArray.controls[index].get("SalesRate").value *
+            entryListArray.controls[index].get("Quantity").value
         );
-      entrtListArray.controls[index].get("DiscPercentage").setValue(0);
-      entrtListArray.controls[index]
+      entryListArray.controls[index].get("DiscPercentage").setValue(0);
+      entryListArray.controls[index]
         .get("DiscountAmount")
         .setValue(
-          entrtListArray.controls[index].get("DiscPercentage").value *
-            entrtListArray.controls[index].get("Amount").value
+          entryListArray.controls[index].get("DiscPercentage").value *
+            entryListArray.controls[index].get("Amount").value
         );
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("NetAmount")
         .setValue(
-          entrtListArray.controls[index].get("Amount").value -
-            entrtListArray.controls[index].get("DiscountAmount").value
+          entryListArray.controls[index].get("Amount").value -
+            entryListArray.controls[index].get("DiscountAmount").value
         );
 
-      entrtListArray.controls[index].get("TaxID").setValue("");
-      entrtListArray.controls[index].get("TaxAmount").setValue("");
-      entrtListArray.controls[index].get("Remarks").setValue("");
-      // const invoiceEntry = <FormArray>this.entryArray;
-      if (entrtListArray.invalid) return;
-
+      entryListArray.controls[index].get("TaxID").setValue("");
+      entryListArray.controls[index].get("TaxAmount").setValue("");
+      entryListArray.controls[index].get("Remarks").setValue("");
+      const length = this.entryArray.value.length;
+      if (entryListArray.controls[length - 1].invalid) return;
       this.entryArray.push(this.addEntryList());
     }
   }
@@ -280,7 +289,7 @@ export class DetailsEntryGridComponent implements OnInit {
     this.modalRef.content.action = "Select";
   }
 
-  openModal(index: number): void {
+  openProductModal(index: number): void {
     this.modalRef = this.modalService.show(
       ProductModalPopupComponent,
       this.config
@@ -289,54 +298,90 @@ export class DetailsEntryGridComponent implements OnInit {
     this.modalRef.content.action = "Select";
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
-        console.log(JSON.stringify(data));
-        const entrtListArray = this.entryArray as FormArray;
-        entrtListArray.controls[index]
+        const entryListArray = this.entryArray as FormArray;
+        entryListArray.controls[index]
           .get("ProductCode")
           .setValue(data.ProductCode);
-        entrtListArray.controls[index].get("CodeName").setValue(data.CodeName);
-        entrtListArray.controls[index]
+        entryListArray.controls[index].get("CodeName").setValue(data.CodeName);
+        entryListArray.controls[index]
           .get("ProductID")
           .setValue(data.ProductID);
-        entrtListArray.controls[index]
+        entryListArray.controls[index]
           .get("ProductName")
           .setValue(data.ProductName);
-        entrtListArray.controls[index].get("Quantity").setValue(1);
-        entrtListArray.controls[index]
+        entryListArray.controls[index].get("Quantity").setValue(1);
+        entryListArray.controls[index]
           .get("QtyUnitID")
           .setValue(data.QtyUnitID);
-        entrtListArray.controls[index]
+        entryListArray.controls[index]
           .get("QtyUnitName")
           .setValue(data.QtyUnitName);
-        entrtListArray.controls[index]
+        entryListArray.controls[index]
           .get("SalesRate")
           .setValue(data.SalesRate);
-        entrtListArray.controls[index]
+        entryListArray.controls[index]
           .get("Amount")
           .setValue(
-            entrtListArray.controls[index].get("SalesRate").value *
-              entrtListArray.controls[index].get("Quantity").value
+            entryListArray.controls[index].get("SalesRate").value *
+              entryListArray.controls[index].get("Quantity").value
           );
-        entrtListArray.controls[index].get("DiscPercentage").setValue(0);
-        entrtListArray.controls[index]
+        entryListArray.controls[index].get("DiscPercentage").setValue(0);
+        entryListArray.controls[index]
           .get("DiscountAmount")
           .setValue(
-            entrtListArray.controls[index].get("DiscPercentage").value *
-              entrtListArray.controls[index].get("Amount").value
+            entryListArray.controls[index].get("DiscPercentage").value *
+              entryListArray.controls[index].get("Amount").value
           );
-        entrtListArray.controls[index]
+        entryListArray.controls[index]
           .get("NetAmount")
           .setValue(
-            entrtListArray.controls[index].get("Amount").value -
-              entrtListArray.controls[index].get("DiscountAmount").value
+            entryListArray.controls[index].get("Amount").value -
+              entryListArray.controls[index].get("DiscountAmount").value
           );
 
-        entrtListArray.controls[index].get("TaxID").setValue("");
-        entrtListArray.controls[index].get("TaxAmount").setValue("");
-        entrtListArray.controls[index].get("Remarks").setValue("");
-
+        entryListArray.controls[index].get("TaxID").setValue("");
+        entryListArray.controls[index].get("TaxAmount").setValue("");
+        entryListArray.controls[index].get("Remarks").setValue("");
+        const length = this.entryArray.value.length;
+        if (entryListArray.controls[length - 1].invalid) return;
+        this.entryArray.push(this.addEntryList());
         this.getRelatedUnitList(data.ProductID);
       }
+    });
+    this.modalRef.content.onClose.subscribe((data) => {
+      //Do after Close the Modal
+    });
+  }
+
+  openLedgerModal(index: number): void {
+    this.modalRef = this.modalService.show(
+      LedgerModalPopupComponent,
+      this.config
+    );
+    this.modalRef.content.data = index;
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe((data) => {
+      if (data) {
+        const entryListArray = this.entryArray as FormArray;
+
+        entryListArray.controls[index]
+          .get("LedgerBalance")
+          .setValue(data.ActualBalance);
+        entryListArray.controls[index]
+          .get("LedgerName")
+          .setValue(data.LedgerName);
+        entryListArray.controls[index]
+          .get("LedgerCode")
+          .setValue(data.LedgerCode);
+        entryListArray.controls[index].get("LedgerID").setValue(data.LedgerID);
+        const length = this.entryArray.value.length;
+        if (entryListArray.controls[length - 1].invalid) return;
+        this.entryArray.push(this.addEntryList());
+      }
+
+      // (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).push(
+      //   this.addCashReceiptEntryFormGroup()
+      // );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
@@ -358,32 +403,48 @@ export class DetailsEntryGridComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    const entrtListArray = <FormArray>this.entryArray;
-    if (entrtListArray.invalid) return;
+    const entryListArray = <FormArray>this.entryArray;
+    if (entryListArray.invalid) return;
     this.entryArray.push(this.addEntryList());
     this.rowSubmitted = false;
     this.rowSubmitted = false;
   }
 
   addEntryList(): FormGroup {
-    return this._fb.group({
-      ID: [0],
-      ProductCode: [""],
-      ProductID: [""],
-      ProductName: [""],
-      CodeName: [""],
-      Quantity: ["", Validators.required],
-      QtyUnitID: ["", Validators.required],
-      QtyUnitName: [""],
-      SalesRate: ["", Validators.required],
-      Amount: ["", Validators.required],
-      DiscPercentage: [0, Validators.required],
-      DiscountAmount: [0, Validators.required],
-      NetAmount: [0, Validators.required],
-      TaxID: [""],
-      TaxAmount: [""],
-      Remarks: [""],
-    });
+    if (this.voucherType == "SALES") {
+      return this._fb.group({
+        ID: [0],
+        ProductCode: [""],
+        ProductID: [""],
+        ProductName: [""],
+        CodeName: [""],
+        Quantity: ["", Validators.required],
+        QtyUnitID: ["", Validators.required],
+        QtyUnitName: [""],
+        SalesRate: ["", Validators.required],
+        Amount: ["", Validators.required],
+        DiscPercentage: [0, Validators.required],
+        DiscountAmount: [0, Validators.required],
+        NetAmount: [0, Validators.required],
+        TaxID: [""],
+        TaxAmount: [""],
+        Remarks: [""],
+      });
+    }
+    if (this.voucherType == "CASH_RCPT") {
+      return this._fb.group({
+        ID: [0],
+        MasterID: [0],
+        LedgerID: [0],
+        LedgerCode: [""],
+        LedgerName: ["", Validators.required],
+        VoucherNumber: [""],
+        Amount: [""],
+        LedgerBalance: [""],
+        VoucherType: [""],
+        Remarks: [""],
+      });
+    }
   }
 
   productDDFilter(value, i): void {
@@ -403,7 +464,9 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    <FormArray>this.entryArray.value.removeAt(rowIndex);
+    const entryListArray = <FormArray>this.entryArray;
+    // Remove the Row
+    this.entryArray.removeAt(rowIndex);
   }
 
   public cancelHandler({ sender, rowIndex }) {
