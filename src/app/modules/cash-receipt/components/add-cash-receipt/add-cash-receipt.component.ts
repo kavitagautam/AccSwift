@@ -67,6 +67,7 @@ export class AddCashReceiptComponent implements OnInit {
         [Validators.required],
       ],
       Date: [new Date()],
+      Remarks: [""],
       CashReceiptDetails: this._fb.array([this.addCashReceiptEntryFormGroup()]),
     });
   }

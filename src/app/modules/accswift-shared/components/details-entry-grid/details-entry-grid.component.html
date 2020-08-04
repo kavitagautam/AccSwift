@@ -10,7 +10,12 @@
       <button kendoGridAddCommand>Add New</button>
     </ng-template>
 
-    <kendo-grid-column field="ProductID" title="Product" width="280">
+    <kendo-grid-column
+      field="ProductID"
+      title="Product"
+      width="280"
+      [hidden]="!columns.includes('ProductID')"
+    >
       <ng-template
         kendoGridCellTemplate
         let-dataItem="dataItem"
@@ -46,7 +51,7 @@
               </div>
             </ng-template>
           </kendo-dropdownlist>
-          <a (click)="openModal(rowIndex)"
+          <a (click)="openProductModal(rowIndex)"
             ><i
               class="fa fa-eye pull-right ledgerSelectIcon"
               style="margin: 0px; font-size: 16px; position: relative;"
@@ -57,7 +62,8 @@
             ><b>Unit : </b>&nbsp; &nbsp;{{
               entryArray.controls[rowIndex].get("QtyUnitName").value
             }}
-            <a
+            <button
+              class="btn"
               #anchor
               style="
                 color: blue;
@@ -65,18 +71,22 @@
                 cursor: pointer;
                 margin: 5px;
               "
-              (click)="unitPopup(rowIndex)"
+              (click)="unitToggle(rowIndex)"
             >
               Change
-            </a></span
+            </button></span
           >
 
           <kendo-popup
             #popup
             [anchor]="anchor"
             *ngIf="showUnitPopup && rowPopupIndexUnit == rowIndex"
+            [animate]="animate"
           >
-            <div class="contentPopup" style="min-height: 70px; padding: 15px;">
+            <div
+              class="contentPopup"
+              style="min-height: 120px; width: fit-content; padding: 15px;"
+            >
               <div class="form-group">
                 <label>Unit</label>
                 <kendo-dropdownlist
@@ -94,30 +104,103 @@
         </div>
       </ng-template>
     </kendo-grid-column>
-    <!-- <kendo-grid-column field="QtyUnitID" title="Unit" width="100">
-    <ng-template
-      kendoGridCellTemplate
-      let-dataItem="dataItem"
-      let-column="column"
-      let-formGroup="formGroup"
-      let-isNew="isNew"
-      let-column="column"
-      let-rowIndex="rowIndex"
+
+    <kendo-grid-column
+      field="LedgerName"
+      title="Particulars Or Accounting Head"
+      width="300"
+      [hidden]="!columns.includes('LedgerName')"
     >
-      <kendo-dropdownlist
-        class="form-control"
-        [data]="relatedUnits"
-        textField="Name"
-        valueField="ID"
-        [valuePrimitive]="true"
-        [formControl]="
-entryArray.controls[rowIndex].get('QtyUnitID')
-"
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-formGroup="formGroup"
+        let-isNew="isNew"
+        let-rowIndex="rowIndex"
       >
-      </kendo-dropdownlist>
-    </ng-template>
-  </kendo-grid-column> -->
-    <kendo-grid-column field="Quantity" title="Quantity" width="80">
+        <div class="col-xs-12 col-md-12 p-0">
+          <div class="col-md-4 pl-0">
+            <input
+              #input
+              class="k-textbox"
+              style="width: 100px;"
+              placeholder="Ledger Code"
+              [formControl]="entryArray.controls[rowIndex].get('LedgerCode')"
+              (change)="changeLedgerValue(dataItem, rowIndex)"
+            />
+            <kendo-popup
+              [anchor]="input"
+              *ngIf="entryArray.controls[rowIndex].get('LedgerCode').invalid"
+              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+            >
+              <span class="k-icon k-i-warning"></span>
+              Ledger Code is invalid
+            </kendo-popup>
+          </div>
+          <div class="col-md-8 pr-0">
+            <input
+              #input
+              class="k-textbox"
+              [readonly]="true"
+              [formControl]="entryArray.controls[rowIndex].get('LedgerName')"
+            />
+            <a (click)="openLedgerModal(rowIndex)"
+              ><i
+                class="fa fa-eye pull-right ledgerSelectIcon"
+                aria-hidden="true"
+              ></i>
+            </a>
+            <kendo-popup
+              [anchor]="input"
+              *ngIf="
+                entryArray.controls[rowIndex].get('LedgerName').invalid &&
+                rowSubmitted &&
+                !(
+                  isNew &&
+                  entryArray.controls[rowIndex].get('LedgerName').untouched
+                ) &&
+                !entryArray.controls[rowIndex].get('LedgerCode')
+              "
+              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+            >
+              <span class="k-icon k-i-warning"></span>
+              Ledger name is required
+            </kendo-popup>
+          </div>
+        </div>
+      </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column
+      field="VoucherNumber"
+      title="Voucher No"
+      width="150"
+      [hidden]="!columns.includes('VoucherNumber')"
+    >
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-formGroup="formGroup"
+        let-isNew="isNew"
+        let-rowIndex="rowIndex"
+      >
+        <input
+          #ntb="popupAnchor"
+          class="k-textbox"
+          popupAnchor
+          style="width: 130px;"
+          [formControl]="entryArray.controls[rowIndex].get(column.field)"
+        />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column
+      field="Quantity"
+      title="Quantity"
+      width="80"
+      [hidden]="!columns.includes('Quantity')"
+    >
       <ng-template
         kendoGridCellTemplate
         let-dataItem="dataItem"
@@ -142,10 +225,15 @@ entryArray.controls[rowIndex].get('QtyUnitID')
         let-column
         let-columnIndex="columnIndex"
       >
-        <span class="pull-right"> Total QTY: {{ totalQty }} </span>
+        <span class="pull-right"> Total QTY: {{ calculateQtyTotal() }} </span>
       </ng-template>
     </kendo-grid-column>
-    <kendo-grid-column field="SalesRate" title="Sales Rate" width="80">
+    <kendo-grid-column
+      field="SalesRate"
+      title="Sales Rate"
+      width="80"
+      [hidden]="!columns.includes('SalesRate')"
+    >
       <ng-template
         kendoGridCellTemplate
         let-dataItem="dataItem"
@@ -167,7 +255,12 @@ entryArray.controls[rowIndex].get('QtyUnitID')
         </kendo-numerictextbox>
       </ng-template>
     </kendo-grid-column>
-    <kendo-grid-column field="DiscPercentage" title="Disc%" width="80">
+    <kendo-grid-column
+      field="DiscPercentage"
+      title="Disc%"
+      width="80"
+      [hidden]="!columns.includes('DiscPercentage')"
+    >
       <ng-template
         kendoGridCellTemplate
         let-dataItem="dataItem"
@@ -176,10 +269,6 @@ entryArray.controls[rowIndex].get('QtyUnitID')
         let-isNew="isNew"
         let-formGroup="formGroup"
       >
-        <!-- <button #anchor class="btn-secondary" (click)="discountToggle(true,rowIndex)">
-          Discount
-          *ngIf="showDiscPopup && rowPopupIndexDisc == rowIndex"  
-        </button> -->
         <button
           #anchor
           class="btn-secondary"
@@ -232,7 +321,12 @@ entryArray.controls[rowIndex].get('QtyUnitID')
       </ng-template>
     </kendo-grid-column>
 
-    <kendo-grid-column field="TaxID" title="Select Tax" width="110">
+    <kendo-grid-column
+      field="TaxID"
+      title="Select Tax"
+      width="110"
+      [hidden]="!columns.includes('TaxID')"
+    >
       <ng-template
         kendoGridCellTemplate
         let-isNew="isNew"
@@ -257,7 +351,12 @@ entryArray.controls[rowIndex].get('QtyUnitID')
         </kendo-dropdownlist>
       </ng-template>
     </kendo-grid-column>
-    <kendo-grid-column field="Amount" title="Amount" width="100">
+    <kendo-grid-column
+      field="Amount"
+      title="Amount"
+      width="100"
+      [hidden]="!columns.includes('Amount')"
+    >
       <ng-template
         kendoGridCellTemplate
         let-isNew="isNew"
@@ -266,36 +365,110 @@ entryArray.controls[rowIndex].get('QtyUnitID')
         let-formGroup="formGroup"
         let-column="column"
       >
-        <span style="margin-bottom: 0; display: flex;"
-          >Total :&nbsp; &nbsp;{{
-            entryArray.controls[rowIndex].get("Amount").value | number: "3.1-3"
-          }}</span
-        >
-        <span style="margin-bottom: 0; display: flex;"
-          >Discount :&nbsp; &nbsp;{{
-            entryArray.controls[rowIndex].get("DiscountAmount").value
-              | number: "3.1-3"
-          }}</span
-        >
-        <span style="margin-bottom: 0; display: flex;"
-          >Net :&nbsp; &nbsp;{{
-            entryArray.controls[rowIndex].get("NetAmount").value
-              | number: "3.1-3"
-          }}</span
-        >
+        <kendo-numerictextbox
+          *ngIf="voucherType == 'CASH_RCPT'"
+          #ntb="popupAnchor"
+          popupAnchor
+          class="form-control"
+          [decimals]="decimals"
+          [spinners]="false"
+          [format]="'c0'"
+          [formControl]="entryArray.controls[rowIndex].get(column.field)"
+        ></kendo-numerictextbox>
+        <div *ngIf="voucherType == 'SALES'">
+          <span style="margin-bottom: 0; display: flex;"
+            >Total :&nbsp; &nbsp;
+            <span
+              [innerHTML]="
+                entryArray.controls[rowIndex].get('Amount').value
+                  | currencyFormat
+              "
+            ></span
+          ></span>
+
+          <span style="margin-bottom: 0; display: flex;"
+            >Discount :&nbsp; &nbsp;{{
+              entryArray.controls[rowIndex].get("DiscountAmount").value
+                | number: "3.1-3"
+            }}</span
+          >
+          <span style="margin-bottom: 0; display: flex;"
+            >Net :&nbsp; &nbsp;{{
+              entryArray.controls[rowIndex].get("NetAmount").value
+                | number: "3.1-3"
+            }}</span
+          >
+        </div>
       </ng-template>
       <ng-template
         kendoGridFooterTemplate
         let-column
         let-columnIndex="columnIndex"
+        *ngIf="voucherType == 'SALES'"
       >
-        <label> Gross : {{ totalGrossAmount }} </label>
+        <label>
+          Gross :
+          <span [innerHTML]="calculateGrossTotal() | currencyFormat"></span>
+        </label>
 
-        <label> Net : {{ totalNetAmount }} </label>
+        <label>
+          Net : <span [innerHTML]="calculateNetTotal | currencyFormat"></span>
+        </label>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column
+      field="LedgerBalance"
+      title="Ledger Balance"
+      width="150"
+      [hidden]="!columns.includes('LedgerBalance')"
+    >
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-formGroup="formGroup"
+        let-isNew="isNew"
+        let-rowIndex="rowIndex"
+      >
+        <input
+          #input
+          class="k-textbox"
+          style="text-align: right;"
+          class="form-control"
+          [readonly]="true"
+          [formControl]="entryArray.controls[rowIndex].get(column.field)"
+        />
       </ng-template>
     </kendo-grid-column>
 
-    <kendo-grid-column field="Remarks" title="Remarks" width="120">
+    <kendo-grid-column
+      field="VoucherType"
+      title="V. Type"
+      width="150"
+      [hidden]="!columns.includes('VoucherType')"
+    >
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-formGroup="formGroup"
+        let-isNew="isNew"
+        let-rowIndex="rowIndex"
+      >
+        <input
+          #input
+          class="k-textbox"
+          class="form-control"
+          [formControl]="entryArray.controls[rowIndex].get(column.field)"
+        />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column
+      field="Remarks"
+      title="Remarks"
+      width="120"
+      [hidden]="!columns.includes('Remarks')"
+    >
       <ng-template
         kendoGridCellTemplate
         let-dataItem="dataItem"

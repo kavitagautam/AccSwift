@@ -174,6 +174,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
               this.totalDiscountAmount =
                 this.salesDetails.GrossAmount - this.salesDetails.NetAmount;
               this.grandTotalAmount = this.salesDetails.TotalAmount;
+              //this.salesInvoiceForm.patchValue(this.salesDetails);
               this.assignFormsValue();
               this.setInvoiceList();
             }
