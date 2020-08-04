@@ -46,8 +46,8 @@ export class EditCashReceiptComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.buildCashReceiptForm(); // Initialize the form
     this.getIdFromRoute(); // Get Id From the Route URL and get the Details
+    this.buildCashReceiptForm(); // Initialize the form
   }
 
   buildCashReceiptForm(): void {
@@ -72,6 +72,7 @@ export class EditCashReceiptComponent implements OnInit {
           ? new Date(this.cashReceiptDetails.CreatedDate)
           : "",
       ],
+      Remarks: [this.cashReceiptDetails ? this.cashReceiptDetails.Remarks : ""],
       CashReceiptDetails: this._fb.array([this.addCashReceiptEntryFormGroup()]),
     });
   }
@@ -98,14 +99,19 @@ export class EditCashReceiptComponent implements OnInit {
           .getCashReceiptDetails(params.get("id"))
           .subscribe((response) => {
             this.cashReceiptDetails = response.Entity;
-            this.assignFormsValue();
-            this.setCashReceiptList();
+            if (this.cashReceiptDetails) {
+              this.assignFormsValue();
+              this.setCashReceiptList();
+            }
           });
       }
     });
   }
 
   assignFormsValue(): void {
+    console.log(
+      "this.Cash Receipt Details " + JSON.stringify(this.cashReceiptDetails)
+    );
     this.cashReceiptForm.get("ID").setValue(this.cashReceiptDetails.ID);
     this.cashReceiptForm
       .get("SeriesID")
@@ -117,11 +123,9 @@ export class EditCashReceiptComponent implements OnInit {
     this.cashReceiptForm
       .get("ProjectID")
       .setValue(this.cashReceiptDetails.ProjectID);
-
     this.cashReceiptForm
       .get("Date")
       .setValue(new Date(this.cashReceiptDetails.CreatedDate));
-
     this.cashReceiptForm
       .get("LedgerID")
       .setValue(this.cashReceiptDetails.LedgerID);

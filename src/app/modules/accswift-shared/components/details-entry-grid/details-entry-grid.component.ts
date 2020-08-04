@@ -374,7 +374,11 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
           .get("LedgerCode")
           .setValue(data.LedgerCode);
         entryListArray.controls[index].get("LedgerID").setValue(data.LedgerID);
+        const length = this.entryArray.value.length;
+        if (entryListArray.controls[length - 1].invalid) return;
+        this.entryArray.push(this.addEntryList());
       }
+
       // (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).push(
       //   this.addCashReceiptEntryFormGroup()
       // );
@@ -407,24 +411,40 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
   }
 
   addEntryList(): FormGroup {
-    return this._fb.group({
-      ID: [0],
-      ProductCode: [""],
-      ProductID: [""],
-      ProductName: [""],
-      CodeName: [""],
-      Quantity: ["", Validators.required],
-      QtyUnitID: ["", Validators.required],
-      QtyUnitName: [""],
-      SalesRate: ["", Validators.required],
-      Amount: ["", Validators.required],
-      DiscPercentage: [0, Validators.required],
-      DiscountAmount: [0, Validators.required],
-      NetAmount: [0, Validators.required],
-      TaxID: [""],
-      TaxAmount: [""],
-      Remarks: [""],
-    });
+    if (this.voucherType == "SALES") {
+      return this._fb.group({
+        ID: [0],
+        ProductCode: [""],
+        ProductID: [""],
+        ProductName: [""],
+        CodeName: [""],
+        Quantity: ["", Validators.required],
+        QtyUnitID: ["", Validators.required],
+        QtyUnitName: [""],
+        SalesRate: ["", Validators.required],
+        Amount: ["", Validators.required],
+        DiscPercentage: [0, Validators.required],
+        DiscountAmount: [0, Validators.required],
+        NetAmount: [0, Validators.required],
+        TaxID: [""],
+        TaxAmount: [""],
+        Remarks: [""],
+      });
+    }
+    if (this.voucherType == "CASH_RCPT") {
+      return this._fb.group({
+        ID: [0],
+        MasterID: [0],
+        LedgerID: [0],
+        LedgerCode: [""],
+        LedgerName: ["", Validators.required],
+        VoucherNumber: [""],
+        Amount: [""],
+        LedgerBalance: [""],
+        VoucherType: [""],
+        Remarks: [""],
+      });
+    }
   }
 
   productDDFilter(value, i): void {

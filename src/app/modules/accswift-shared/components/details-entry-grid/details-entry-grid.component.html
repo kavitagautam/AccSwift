@@ -369,7 +369,7 @@
           *ngIf="voucherType == 'CASH_RCPT'"
           #ntb="popupAnchor"
           popupAnchor
-          style="width: 130px;"
+          class="form-control"
           [decimals]="decimals"
           [spinners]="false"
           [format]="'c0'"
@@ -433,7 +433,8 @@
         <input
           #input
           class="k-textbox"
-          style="width: 130px; text-align: right;"
+          style="text-align: right;"
+          class="form-control"
           [readonly]="true"
           [formControl]="entryArray.controls[rowIndex].get(column.field)"
         />
@@ -457,6 +458,7 @@
         <input
           #input
           class="k-textbox"
+          class="form-control"
           [formControl]="entryArray.controls[rowIndex].get(column.field)"
         />
       </ng-template>
