@@ -28,6 +28,7 @@ import { RelatedUnits } from "../../models/related-unit.model";
 import { CashParty } from "../../models/cash-party.model";
 import { ProductMin } from "@app/modules/product/models/product-min.model";
 import { ProductModalPopupComponent } from "../product-modal-popup/product-modal-popup.component";
+import { LedgerModalPopupComponent } from "../ledger-modal-popup/ledger-modal-popup.component";
 
 @Component({
   selector: "accSwift-details-entry-grid",
@@ -49,13 +50,13 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
   public productList: ProductMin[] = [];
   @Input("entryArray")
   public entryArray: FormArray;
-
+  @Input("voucherType") public voucherType: string;
   private showDiscPopup: boolean = false;
   rowPopupIndexDisc: number;
   columnField = [];
   private showUnitPopup: boolean = false;
   rowPopupIndexUnit: number;
-
+  columns = [];
   submitted: boolean;
   rowSubmitted: boolean;
   IsAutomatic: boolean = false;
@@ -81,45 +82,16 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
     });
-    this.columnField = this.entryArray.value[0];
-    console.log("Column Field" + JSON.stringify(this.columnField));
+    for (const key in this.entryArray.value[0]) {
+      this.columns.push(key);
+    }
   }
 
   ngOnChanges(changes): void {
-    console.log("Changes" + changes);
-    // changes.entryArray.currentValue.valueChanges((data) => {
-    //   console.log("After View Init " + JSON.stringify(data));
-    // });
     this.entryArray.valueChanges.subscribe((data) => {
       console.log("After View Init " + JSON.stringify(data));
     });
-  }
-
-  //Hidden Grid Column
-  public hiddenColumns: string[] = [];
-
-  public columns: string[] = ["ProductID", "TaxID"];
-
-  public isHidden(columnName: string): boolean {
-    return this.hiddenColumns.indexOf(columnName) > -1;
-  }
-
-  public isDisabled(columnName: string): boolean {
-    return (
-      this.columns.length - this.hiddenColumns.length === 1 &&
-      !this.isHidden(columnName)
-    );
-  }
-
-  public hideColumn(): void {
-    const hiddenColumns = this.hiddenColumns;
-    for (let i = 0; this.columns.length; i++) {
-      if (!this.isHidden(this.columns[i])) {
-        hiddenColumns.push(this.columns[i]);
-      } else {
-        hiddenColumns.splice(hiddenColumns.indexOf(this.columns[i]), 1);
-      }
-    }
+    this.voucherType = this.voucherType;
   }
 
   @HostListener("keydown", ["$event"])
@@ -132,8 +104,8 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
   @HostListener("document:click", ["$event"])
   public documentClick(event: any): void {
     if (!this.contains(event.target)) {
-      //  console.log(JSON.stringify(event.target));
-      // this.discountToggle(null);
+      //  this.discountToggle(null);
+      //this.unitPopup(null);
     }
   }
 
@@ -163,11 +135,17 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
     this.rowPopupIndexDisc = rowIndex;
   }
 
-  public unitPopup(rowIndex): void {
+  public unitToggle(rowIndex): void {
+    this.getRelatedUnitList(this.entryArray.value[rowIndex].ProductID);
     this.showUnitPopup = !this.showUnitPopup;
     this.rowPopupIndexUnit = rowIndex;
+    console.log(
+      "Popup Show" + this.showUnitPopup + " Unit Id " + this.rowPopupIndexUnit
+    );
   }
+
   private contains(target: any): boolean {
+    if (!this.anchor) return;
     return (
       this.anchor.nativeElement.contains(target) ||
       (this.popup ? this.popup.nativeElement.contains(target) : false)
@@ -175,39 +153,38 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
   }
 
   productChange(dataItem, rowIndex): Array<any> {
-    console.log("DataItem  " + JSON.stringify(dataItem));
     this.getRelatedUnitList(dataItem.ProductID);
     return this.relatedUnits;
   }
 
   calculateQtyTotal(): number {
-    const entrtListArray = this.entryArray.value;
+    const entryListArray = this.entryArray.value;
     let sumQty = 0;
-    for (let i = 0; i < entrtListArray.length; i++) {
-      if (entrtListArray && entrtListArray[i].Quantity) {
-        sumQty = sumQty + entrtListArray[i].Quantity;
+    for (let i = 0; i < entryListArray.length; i++) {
+      if (entryListArray && entryListArray[i].Quantity) {
+        sumQty = sumQty + entryListArray[i].Quantity;
       }
     }
     return sumQty;
   }
 
   public calculateNetTotal(): number {
-    const entrtListArray = this.entryArray.value;
+    const entryListArray = this.entryArray.value;
     let sumNet = 0;
-    for (let i = 0; i < entrtListArray.length; i++) {
-      if (entrtListArray && entrtListArray[i].NetAmount) {
-        sumNet = sumNet + entrtListArray[i].NetAmount;
+    for (let i = 0; i < entryListArray.length; i++) {
+      if (entryListArray && entryListArray[i].NetAmount) {
+        sumNet = sumNet + entryListArray[i].NetAmount;
       }
     }
     return sumNet;
   }
 
   public calculateGrossTotal(): number {
-    const entrtListArray = this.entryArray.value;
+    const entryListArray = this.entryArray.value;
     let sumGrossAmount = 0;
-    for (let i = 0; i < entrtListArray.length; i++) {
-      if (entrtListArray && entrtListArray[i].Amount) {
-        sumGrossAmount = sumGrossAmount + entrtListArray[i].Amount;
+    for (let i = 0; i < entryListArray.length; i++) {
+      if (entryListArray && entryListArray[i].Amount) {
+        sumGrossAmount = sumGrossAmount + entryListArray[i].Amount;
       }
     }
     return sumGrossAmount;
@@ -215,21 +192,21 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
 
   //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
-    const entrtListArray = this.entryArray as FormArray;
-    let qunatityValue = entrtListArray.controls[index].get("Quantity").value;
+    const entryListArray = this.entryArray as FormArray;
+    let qunatityValue = entryListArray.controls[index].get("Quantity").value;
 
-    let salesRateValue = entrtListArray.controls[index].get("SalesRate").value;
-    let discountPer = entrtListArray.controls[index].get("DiscPercentage")
+    let salesRateValue = entryListArray.controls[index].get("SalesRate").value;
+    let discountPer = entryListArray.controls[index].get("DiscPercentage")
       .value;
 
     let amountC = qunatityValue * salesRateValue;
     let discountAmountC = discountPer * amountC;
-    entrtListArray.controls[index]
+    entryListArray.controls[index]
       .get("DiscountAmount")
       .setValue(discountAmountC);
 
-    entrtListArray.controls[index].get("Amount").setValue(amountC);
-    entrtListArray.controls[index]
+    entryListArray.controls[index].get("Amount").setValue(amountC);
+    entryListArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
   }
@@ -239,10 +216,10 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
     const selectedTaxValue = this.gridServices.taxList.filter(
       (s) => s.ID === value
     );
-    const entrtListArray = this.entryArray as FormArray;
-    let netAmountV = entrtListArray.controls[index].get("NetAmount").value;
+    const entryListArray = this.entryArray as FormArray;
+    let netAmountV = entryListArray.controls[index].get("NetAmount").value;
     if (selectedTaxValue) {
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("TaxAmount")
         .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
     }
@@ -253,56 +230,56 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
       (s) => s.ProductID === value
     );
 
-    const entrtListArray = <FormArray>this.entryArray;
+    const entryListArray = <FormArray>this.entryArray;
     if (selectedProductValue && selectedProductValue.length > 0) {
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("ProductCode")
         .setValue(selectedProductValue[0].ProductCode);
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("ProductID")
         .setValue(selectedProductValue[0].ProductID);
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("CodeName")
         .setValue(selectedProductValue[0].CodeName);
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("ProductName")
         .setValue(selectedProductValue[0].ProductName);
-      entrtListArray.controls[index].get("Quantity").setValue(1);
-      entrtListArray.controls[index]
+      entryListArray.controls[index].get("Quantity").setValue(1);
+      entryListArray.controls[index]
         .get("QtyUnitID")
         .setValue(selectedProductValue[0].QtyUnitID);
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("QtyUnitName")
         .setValue(selectedProductValue[0].QtyUnitName);
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("SalesRate")
         .setValue(selectedProductValue[0].SalesRate);
 
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("Amount")
         .setValue(
-          entrtListArray.controls[index].get("SalesRate").value *
-            entrtListArray.controls[index].get("Quantity").value
+          entryListArray.controls[index].get("SalesRate").value *
+            entryListArray.controls[index].get("Quantity").value
         );
-      entrtListArray.controls[index].get("DiscPercentage").setValue(0);
-      entrtListArray.controls[index]
+      entryListArray.controls[index].get("DiscPercentage").setValue(0);
+      entryListArray.controls[index]
         .get("DiscountAmount")
         .setValue(
-          entrtListArray.controls[index].get("DiscPercentage").value *
-            entrtListArray.controls[index].get("Amount").value
+          entryListArray.controls[index].get("DiscPercentage").value *
+            entryListArray.controls[index].get("Amount").value
         );
-      entrtListArray.controls[index]
+      entryListArray.controls[index]
         .get("NetAmount")
         .setValue(
-          entrtListArray.controls[index].get("Amount").value -
-            entrtListArray.controls[index].get("DiscountAmount").value
+          entryListArray.controls[index].get("Amount").value -
+            entryListArray.controls[index].get("DiscountAmount").value
         );
 
-      entrtListArray.controls[index].get("TaxID").setValue("");
-      entrtListArray.controls[index].get("TaxAmount").setValue("");
-      entrtListArray.controls[index].get("Remarks").setValue("");
+      entryListArray.controls[index].get("TaxID").setValue("");
+      entryListArray.controls[index].get("TaxAmount").setValue("");
+      entryListArray.controls[index].get("Remarks").setValue("");
       const length = this.entryArray.value.length;
-      if (entrtListArray.controls[length - 1].invalid) return;
+      if (entryListArray.controls[length - 1].invalid) return;
       this.entryArray.push(this.addEntryList());
     }
   }
@@ -312,7 +289,7 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
     this.modalRef.content.action = "Select";
   }
 
-  openModal(index: number): void {
+  openProductModal(index: number): void {
     this.modalRef = this.modalService.show(
       ProductModalPopupComponent,
       this.config
@@ -321,56 +298,86 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
     this.modalRef.content.action = "Select";
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
-        console.log(JSON.stringify(data));
-        const entrtListArray = this.entryArray as FormArray;
-        entrtListArray.controls[index]
+        const entryListArray = this.entryArray as FormArray;
+        entryListArray.controls[index]
           .get("ProductCode")
           .setValue(data.ProductCode);
-        entrtListArray.controls[index].get("CodeName").setValue(data.CodeName);
-        entrtListArray.controls[index]
+        entryListArray.controls[index].get("CodeName").setValue(data.CodeName);
+        entryListArray.controls[index]
           .get("ProductID")
           .setValue(data.ProductID);
-        entrtListArray.controls[index]
+        entryListArray.controls[index]
           .get("ProductName")
           .setValue(data.ProductName);
-        entrtListArray.controls[index].get("Quantity").setValue(1);
-        entrtListArray.controls[index]
+        entryListArray.controls[index].get("Quantity").setValue(1);
+        entryListArray.controls[index]
           .get("QtyUnitID")
           .setValue(data.QtyUnitID);
-        entrtListArray.controls[index]
+        entryListArray.controls[index]
           .get("QtyUnitName")
           .setValue(data.QtyUnitName);
-        entrtListArray.controls[index]
+        entryListArray.controls[index]
           .get("SalesRate")
           .setValue(data.SalesRate);
-        entrtListArray.controls[index]
+        entryListArray.controls[index]
           .get("Amount")
           .setValue(
-            entrtListArray.controls[index].get("SalesRate").value *
-              entrtListArray.controls[index].get("Quantity").value
+            entryListArray.controls[index].get("SalesRate").value *
+              entryListArray.controls[index].get("Quantity").value
           );
-        entrtListArray.controls[index].get("DiscPercentage").setValue(0);
-        entrtListArray.controls[index]
+        entryListArray.controls[index].get("DiscPercentage").setValue(0);
+        entryListArray.controls[index]
           .get("DiscountAmount")
           .setValue(
-            entrtListArray.controls[index].get("DiscPercentage").value *
-              entrtListArray.controls[index].get("Amount").value
+            entryListArray.controls[index].get("DiscPercentage").value *
+              entryListArray.controls[index].get("Amount").value
           );
-        entrtListArray.controls[index]
+        entryListArray.controls[index]
           .get("NetAmount")
           .setValue(
-            entrtListArray.controls[index].get("Amount").value -
-              entrtListArray.controls[index].get("DiscountAmount").value
+            entryListArray.controls[index].get("Amount").value -
+              entryListArray.controls[index].get("DiscountAmount").value
           );
 
-        entrtListArray.controls[index].get("TaxID").setValue("");
-        entrtListArray.controls[index].get("TaxAmount").setValue("");
-        entrtListArray.controls[index].get("Remarks").setValue("");
+        entryListArray.controls[index].get("TaxID").setValue("");
+        entryListArray.controls[index].get("TaxAmount").setValue("");
+        entryListArray.controls[index].get("Remarks").setValue("");
         const length = this.entryArray.value.length;
-        if (entrtListArray.controls[length - 1].invalid) return;
+        if (entryListArray.controls[length - 1].invalid) return;
         this.entryArray.push(this.addEntryList());
         this.getRelatedUnitList(data.ProductID);
       }
+    });
+    this.modalRef.content.onClose.subscribe((data) => {
+      //Do after Close the Modal
+    });
+  }
+
+  openLedgerModal(index: number): void {
+    this.modalRef = this.modalService.show(
+      LedgerModalPopupComponent,
+      this.config
+    );
+    this.modalRef.content.data = index;
+    this.modalRef.content.action = "Select";
+    this.modalRef.content.onSelected.subscribe((data) => {
+      if (data) {
+        const entryListArray = this.entryArray as FormArray;
+
+        entryListArray.controls[index]
+          .get("LedgerBalance")
+          .setValue(data.ActualBalance);
+        entryListArray.controls[index]
+          .get("LedgerName")
+          .setValue(data.LedgerName);
+        entryListArray.controls[index]
+          .get("LedgerCode")
+          .setValue(data.LedgerCode);
+        entryListArray.controls[index].get("LedgerID").setValue(data.LedgerID);
+      }
+      // (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).push(
+      //   this.addCashReceiptEntryFormGroup()
+      // );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
@@ -392,8 +399,8 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    const entrtListArray = <FormArray>this.entryArray;
-    if (entrtListArray.invalid) return;
+    const entryListArray = <FormArray>this.entryArray;
+    if (entryListArray.invalid) return;
     this.entryArray.push(this.addEntryList());
     this.rowSubmitted = false;
     this.rowSubmitted = false;
@@ -437,7 +444,7 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
-    const entrtListArray = <FormArray>this.entryArray;
+    const entryListArray = <FormArray>this.entryArray;
     // Remove the Row
     this.entryArray.removeAt(rowIndex);
   }

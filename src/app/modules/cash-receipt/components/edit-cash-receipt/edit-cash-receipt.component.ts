@@ -98,11 +98,36 @@ export class EditCashReceiptComponent implements OnInit {
           .getCashReceiptDetails(params.get("id"))
           .subscribe((response) => {
             this.cashReceiptDetails = response.Entity;
-            this.buildCashReceiptForm();
+            this.assignFormsValue();
             this.setCashReceiptList();
           });
       }
     });
+  }
+
+  assignFormsValue(): void {
+    this.cashReceiptForm.get("ID").setValue(this.cashReceiptDetails.ID);
+    this.cashReceiptForm
+      .get("SeriesID")
+      .setValue(this.cashReceiptDetails.SeriesID);
+    this.cashReceiptForm
+      .get("VoucherNo")
+      .setValue(this.cashReceiptDetails.VoucherNo);
+
+    this.cashReceiptForm
+      .get("ProjectID")
+      .setValue(this.cashReceiptDetails.ProjectID);
+
+    this.cashReceiptForm
+      .get("Date")
+      .setValue(new Date(this.cashReceiptDetails.CreatedDate));
+
+    this.cashReceiptForm
+      .get("LedgerID")
+      .setValue(this.cashReceiptDetails.LedgerID);
+    this.cashReceiptForm
+      .get("Remarks")
+      .setValue(this.cashReceiptDetails.Remarks);
   }
 
   get getCashReceiptEntryList(): FormArray {

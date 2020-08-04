@@ -100,13 +100,14 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="col-md-12">
         <accSwift-details-entry-grid
           [entryArray]="cashReceiptForm.controls.CashReceiptDetails"
+          [voucherType]="'CASH_RCPT'"
         ></accSwift-details-entry-grid>
       </div>
 
-      <div class="col-md-12 p-0">
+      <!-- <div class="col-md-12 p-0">
         <div class="box-body">
           <kendo-grid
             [data]="getCashReceiptEntryList.value"
@@ -343,7 +344,7 @@
             </kendo-grid-command-column>
           </kendo-grid>
         </div>
-      </div>
+      </div> -->
     </div>
   </form>
   <div class="box-footer">
