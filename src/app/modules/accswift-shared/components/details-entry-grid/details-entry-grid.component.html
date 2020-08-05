@@ -62,6 +62,7 @@
             }}
           </span>
           <button
+            *ngIf="entryArray.controls[rowIndex].get('QtyUnitName').value"
             class="btn"
             #anchor
             style="color: blue; font-size: 12px; cursor: pointer; padding: 0px;"
@@ -73,11 +74,9 @@
             #popup
             [anchor]="anchor"
             *ngIf="showUnitPopup && rowPopupIndexUnit == rowIndex"
+            (anchorViewportLeave)="unitToggle(null)"
           >
-            <div
-              class="contentPopup"
-              style="min-height: 100px; width: fit-content; padding: 15px;"
-            >
+            <div class="contentPopup">
               <div class="form-group">
                 <label>Unit</label>
                 <kendo-dropdownlist
@@ -90,6 +89,13 @@
                 >
                 </kendo-dropdownlist>
               </div>
+              <button
+                class="btn btn-primary"
+                style="margin: auto; display: table;"
+                (click)="unitToggle(null)"
+              >
+                Ok
+              </button>
             </div>
           </kendo-popup>
         </div>
@@ -239,7 +245,7 @@
           class="form-control"
           [decimals]="decimals"
           [spinners]="false"
-          [format]="c0"
+          [format]="'c0'"
           [formControl]="entryArray.controls[rowIndex].get('SalesRate')"
           (valueChange)="changeInvoiceValues(dataItem, rowIndex)"
         >
@@ -272,19 +278,16 @@
           [anchor]="anchor"
           *ngIf="showDiscPopup && rowPopupIndexDisc == rowIndex"
           [animate]="animate"
+          (anchorViewportLeave)="discountToggle(null)"
         >
-          <div
-            class="contentPopup"
-            style="min-height: 120px; width: fit-content; padding: 15px;"
-          >
+          <div class="contentPopup">
             <div class="form-group">
               <label> Discount %</label>
               <kendo-numerictextbox
-                [format]="'p'"
-                [step]="0.1"
+                [step]="1"
                 [min]="0"
                 class="form-control"
-                [max]="1"
+                [max]="100"
                 [valuePrimitive]="true"
                 [value]="percentage"
                 [formControl]="
@@ -300,13 +303,21 @@
                 class="form-control"
                 [decimals]="decimals"
                 [spinners]="false"
-                [format]="c0"
+                [format]="'c0'"
                 [formControl]="
                   entryArray.controls[rowIndex].get('DiscountAmount')
                 "
+                (valueChange)="discountAmountCalc(dataItem, rowIndex)"
               >
               </kendo-numerictextbox>
             </div>
+            <button
+              class="btn-primary btn"
+              style="margin: auto; display: table;"
+              (click)="discountToggle(null)"
+            >
+              Ok
+            </button>
           </div>
         </kendo-popup>
       </ng-template>
@@ -367,7 +378,7 @@
           [formControl]="entryArray.controls[rowIndex].get(column.field)"
         ></kendo-numerictextbox>
         <div *ngIf="voucherType == 'SALES'">
-          <span style="margin-bottom: 0; display: flex;"
+          <span class="small_text"
             >Total :&nbsp; &nbsp;
             <span
               [innerHTML]="
@@ -377,18 +388,24 @@
             ></span
           ></span>
 
-          <span style="margin-bottom: 0; display: flex;"
-            >Discount :&nbsp; &nbsp;{{
-              entryArray.controls[rowIndex].get("DiscountAmount").value
-                | number: "3.1-3"
-            }}</span
-          >
-          <span style="margin-bottom: 0; display: flex;"
-            >Net :&nbsp; &nbsp;{{
-              entryArray.controls[rowIndex].get("NetAmount").value
-                | number: "3.1-3"
-            }}</span
-          >
+          <span class="small_text"
+            >Discount :&nbsp; &nbsp;
+            <span
+              [innerHTML]="
+                entryArray.controls[rowIndex].get('DiscountAmount').value
+                  | currencyFormat
+              "
+            ></span
+          ></span>
+          <span class="small_text"
+            >Net :&nbsp; &nbsp;
+            <span
+              [innerHTML]="
+                entryArray.controls[rowIndex].get('NetAmount').value
+                  | currencyFormat
+              "
+            ></span
+          ></span>
         </div>
       </ng-template>
       <ng-template

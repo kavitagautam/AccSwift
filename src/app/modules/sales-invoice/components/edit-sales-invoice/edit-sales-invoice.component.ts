@@ -14,6 +14,7 @@ import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { LocaleService } from "@app/core/services/locale/locale.services";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
@@ -60,7 +61,8 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     public salesInvoiceService: SalesInvoiceService,
     private modalService: BsModalService,
     private toastr: ToastrService,
-    private productCodeMatch: ProductCodeValidatorsService
+    private productCodeMatch: ProductCodeValidatorsService,
+    private localeService: LocaleService
   ) {
     this.salesInvoiceService.getCashPartyAccountDD().subscribe((response) => {
       this.cashPartyList = response.Entity;
@@ -68,6 +70,8 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.localeService.set("en_US");
+
     this.getIdFromRoute();
     this.buildSalesInvoiceForm();
     this.salesInvoiceForm.valueChanges.subscribe((changes) => {

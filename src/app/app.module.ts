@@ -3,6 +3,7 @@ import {
   NgModule,
   CUSTOM_ELEMENTS_SCHEMA,
   APP_INITIALIZER,
+  LOCALE_ID,
 } from "@angular/core";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -16,8 +17,11 @@ import { Observable } from "rxjs";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { SettingsService } from "./modules/settings/services/settings.service";
 import { SettingsModel } from "./modules/settings/models/settings.model";
-import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
-
+import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
+import "@progress/kendo-angular-intl/locales/ne/all"; // For Kendo Nepali Input
+import { registerLocaleData } from "@angular/common";
+import localeNe from "@angular/common/locales/ne";
+registerLocaleData(localeNe, "ne");
 
 export function initPreferenceData(preferenceService: PreferenceService) {
   return (): Observable<PreferenceModel> => {
@@ -61,8 +65,8 @@ export function initSettingsData(settingsService: SettingsService) {
       multi: true,
     },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: LOCALE_ID, useValue: "ne" },
   ],
-
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
 })

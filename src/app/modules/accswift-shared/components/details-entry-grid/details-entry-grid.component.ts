@@ -6,6 +6,8 @@ import {
   ViewChild,
   ElementRef,
   HostListener,
+  LOCALE_ID,
+  Inject,
 } from "@angular/core";
 import {
   FormArray,
@@ -17,13 +19,16 @@ import {
 } from "@angular/forms";
 import { DetailsEntryGridService } from "../../services/details-entry-grid/details-entry-grid.service";
 import { AddProductComponent } from "../add-product/add-product/add-product.component";
-import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { BsModalRef, BsModalService, BsLocaleService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { RelatedUnits } from "../../models/related-unit.model";
 import { CashParty } from "../../models/cash-party.model";
 import { ProductMin } from "@app/modules/product/models/product-min.model";
 import { ProductModalPopupComponent } from "../product-modal-popup/product-modal-popup.component";
 import { LedgerModalPopupComponent } from "../ledger-modal-popup/ledger-modal-popup.component";
+import { LocaleService } from "@app/core/services/locale/locale.services";
+import { SettingsService } from "@app/modules/settings/services/settings.service";
+import { IntlService, CldrIntlService } from "@progress/kendo-angular-intl";
 
 @Component({
   selector: "accSwift-details-entry-grid",
@@ -66,8 +71,21 @@ export class DetailsEntryGridComponent implements OnInit {
     public gridServices: DetailsEntryGridService,
     private toastr: ToastrService,
     private modalService: BsModalService,
-    private _fb: FormBuilder
-  ) {}
+    private _fb: FormBuilder,
+    @Inject(LOCALE_ID) public localeId: string,
+    public intlService: IntlService,
+    private settingsService: SettingsService
+  ) {
+    if (this.settingsService.settings.DEFAULT_LANGUAGE.Value === "English") {
+      this.localeId = "en_US";
+    } else {
+      this.localeId = "ne-NP";
+      (<CldrIntlService>this.intlService).localeId = localeId;
+    }
+
+    // locale === "Nepali" ? "ne-NP" : "en_US"
+    // this.localeService.set("en_US");
+  }
 
   ngOnInit(): void {
     this.gridServices.getProductDD().subscribe((response) => {
@@ -187,12 +205,39 @@ export class DetailsEntryGridComponent implements OnInit {
       .value;
 
     let amountC = qunatityValue * salesRateValue;
-    let discountAmountC = discountPer * amountC;
+    let discountAmountC = (discountPer / 100) * amountC;
     entryListArray.controls[index]
       .get("DiscountAmount")
       .setValue(discountAmountC);
 
     entryListArray.controls[index].get("Amount").setValue(amountC);
+    entryListArray.controls[index]
+      .get("NetAmount")
+      .setValue(amountC - discountAmountC);
+  }
+
+  //Change Discount Value
+  discountAmountCalc(dataItem, index): void {
+    const entryListArray = this.entryArray as FormArray;
+
+    let discountAmountValue = entryListArray.controls[index].get(
+      "DiscountAmount"
+    ).value;
+    let qunatityValue = entryListArray.controls[index].get("Quantity").value;
+
+    let salesRateValue = entryListArray.controls[index].get("SalesRate").value;
+
+    let amountC = qunatityValue * salesRateValue;
+    let calculatePercentage = (discountAmountValue / amountC) * 100;
+    entryListArray.controls[index]
+      .get("DiscPercentage")
+      .setValue(calculatePercentage);
+    let discountPer = entryListArray.controls[index].get("DiscPercentage")
+      .value;
+    let discountAmountC = discountPer * amountC;
+
+    discountPer = calculatePercentage;
+    discountAmountC = amountC * discountPer;
     entryListArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
