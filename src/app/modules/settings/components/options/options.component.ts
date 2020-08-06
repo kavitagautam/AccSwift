@@ -79,6 +79,9 @@ export class OptionsComponent implements OnInit {
     this.settingsService.updateSettings(this.settingsForm.value).subscribe(
       (response) => {
         this.router.navigate(["/settings"]);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       },
       (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));

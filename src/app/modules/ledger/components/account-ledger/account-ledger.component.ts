@@ -133,7 +133,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         },
       ],
       openingBalance: [
-        this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBal : "",
+        this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBal : 0,
       ],
       balanceType: [
         this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBalDrCr : "",
@@ -149,7 +149,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
           : "",
       ],
       PreviousYearBalance: [
-        this.ledgerDetails ? this.ledgerDetails.PreviousYearBalance : "",
+        this.ledgerDetails ? this.ledgerDetails.PreviousYearBalance : 0,
       ],
     });
   }

@@ -18,9 +18,10 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { SettingsService } from "./modules/settings/services/settings.service";
 import { SettingsModel } from "./modules/settings/models/settings.model";
 import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
-import "@progress/kendo-angular-intl/locales/ne/all"; // For Kendo Nepali Input
+import "@lib/ne/all"; // For Kendo Nepali Input
 import { registerLocaleData } from "@angular/common";
 import localeNe from "@angular/common/locales/ne";
+import { LocaleService } from "./core/services/locale/locale.services";
 registerLocaleData(localeNe, "ne");
 
 export function initPreferenceData(preferenceService: PreferenceService) {
@@ -32,6 +33,19 @@ export function initSettingsData(settingsService: SettingsService) {
   return (): Observable<SettingsModel> => {
     return settingsService.getSettingsData();
   };
+}
+
+export function localFunction(settingsService: SettingsService) {
+  var localeId: string;
+  if (
+    settingsService &&
+    settingsService.settings.DEFAULT_LANGUAGE.Value === "English"
+  ) {
+    localeId = "en_US";
+  } else {
+    localeId = "ne";
+  }
+  return localeId;
 }
 
 @NgModule({
@@ -65,7 +79,12 @@ export function initSettingsData(settingsService: SettingsService) {
       multi: true,
     },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: LOCALE_ID, useValue: "ne" },
+    // { provide: LOCALE_ID, useValue: "ne" },
+    {
+      provide: LOCALE_ID,
+      deps: [],
+      useFactory: localFunction,
+    },
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],

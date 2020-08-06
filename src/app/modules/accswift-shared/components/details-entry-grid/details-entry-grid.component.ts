@@ -76,18 +76,21 @@ export class DetailsEntryGridComponent implements OnInit {
     public intlService: IntlService,
     private settingsService: SettingsService
   ) {
-    if (this.settingsService.settings.DEFAULT_LANGUAGE.Value === "English") {
-      this.localeId = "en_US";
-    } else {
-      this.localeId = "ne-NP";
-      (<CldrIntlService>this.intlService).localeId = localeId;
-    }
-
     // locale === "Nepali" ? "ne-NP" : "en_US"
     // this.localeService.set("en_US");
   }
 
   ngOnInit(): void {
+    if (
+      this.settingsService &&
+      this.settingsService.settings.DEFAULT_LANGUAGE.Value === "English"
+    ) {
+      this.localeId = "en_US";
+    } else {
+      this.localeId = "ne";
+    }
+    (<CldrIntlService>this.intlService).localeId = this.localeId;
+
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
     });
@@ -96,23 +99,21 @@ export class DetailsEntryGridComponent implements OnInit {
     }
   }
 
-  @HostListener("keydown", ["$event"])
-  public keydown(event: any): void {
-    if (event.keyCode === 27) {
-      // this.toggle(false);
-    }
-  }
+  // @HostListener("keydown", ["$event"])
+  // public keydown(event: any): void {
+  //   if (event.keyCode === 27) {
+  //     // this.toggle(false);
+  //   }
+  // }
 
-  @HostListener("document:click", ["$event"])
-  public documentClick(event: any): void {
-    if (!this.contains(event.target)) {
-      //  this.discountToggle(null);
-      //this.unitPopup(null);
-    }
-    if (this.anchor.nativeElement) {
-      console.log("dsadsa ");
-    }
-  }
+  // @HostListener("document:click", ["$event"])
+  // public documentClick(event: any): void {
+  //   if (!this.contains(event.target)) {
+  //     //  this.discountToggle(null);
+  //     //this.unitPopup(null);
+  //   }
+
+  // }
 
   public enabled: boolean = true;
   public duration: number = 200;
@@ -144,9 +145,6 @@ export class DetailsEntryGridComponent implements OnInit {
     this.getRelatedUnitList(this.entryArray.value[rowIndex].ProductID);
     this.showUnitPopup = !this.showUnitPopup;
     this.rowPopupIndexUnit = rowIndex;
-    console.log(
-      "Popup Show" + this.showUnitPopup + " Unit Id " + this.rowPopupIndexUnit
-    );
   }
 
   private contains(target: any): boolean {
@@ -307,7 +305,9 @@ export class DetailsEntryGridComponent implements OnInit {
             entryListArray.controls[index].get("DiscountAmount").value
         );
 
-      entryListArray.controls[index].get("TaxID").setValue("");
+      entryListArray.controls[index]
+        .get("TaxID")
+        .setValue(selectedProductValue[0].TaxID);
       entryListArray.controls[index].get("TaxAmount").setValue("");
       entryListArray.controls[index].get("Remarks").setValue("");
       const length = this.entryArray.value.length;
@@ -371,8 +371,10 @@ export class DetailsEntryGridComponent implements OnInit {
               entryListArray.controls[index].get("DiscountAmount").value
           );
 
-        entryListArray.controls[index].get("TaxID").setValue("");
-        entryListArray.controls[index].get("TaxAmount").setValue("");
+        entryListArray.controls[index].get("TaxID").setValue(data.TaxID);
+        entryListArray.controls[index]
+          .get("TaxAmount")
+          .setValue(data.TaxAmount);
         entryListArray.controls[index].get("Remarks").setValue("");
         const length = this.entryArray.value.length;
         if (entryListArray.controls[length - 1].invalid) return;
