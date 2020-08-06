@@ -112,6 +112,13 @@
         <span *ngIf="editMode">Update</span>
         <span *ngIf="addMode">Save</span>
       </button>
+      <button
+        class="btn btn-danger ml-2"
+        [disabled]="!selectedLedgerId"
+        (click)="deleteAccountLedger()"
+      >
+        <i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;Delete
+      </button>
       <button class="btn btn-secondary ml-2" (click)="cancel($event)">
         Cancel
       </button>
@@ -119,7 +126,7 @@
   </div>
 </form>
 
-<div class="col-md-12 m-2">
+<!-- <div class="col-md-12 m-2">
   <button class="btn btn-primary mr-3" (click)="addAccountLedger()">
     <i class="fa fa-plus" aria-hidden="true"></i> Add
   </button>
@@ -130,7 +137,7 @@
   >
     <i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;Delete
   </button>
-</div>
+</div> -->
 
 <!--Modal PopUp Opening Balance Modal-->
 <div

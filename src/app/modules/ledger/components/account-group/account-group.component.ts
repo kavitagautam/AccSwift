@@ -44,6 +44,9 @@ export class AccountGroupComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.buildAccountGroupForm();
+    if (this.selectedItem == null) {
+      this.addLedgerGroup();
+    }
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {

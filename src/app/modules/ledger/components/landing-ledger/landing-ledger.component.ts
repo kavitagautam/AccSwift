@@ -17,6 +17,7 @@ import { Router } from "@angular/router";
 })
 export class LandingLedgerComponent implements OnInit {
   @Output("selectedItem") selectedItem = new EventEmitter();
+  @Output("addNew") addNew: boolean;
   selectedGroupTab: boolean;
   selectedLedgerTab: boolean;
   ledgerTreeList: any;
@@ -107,5 +108,13 @@ export class LandingLedgerComponent implements OnInit {
 
   collapseAllNode(): void {
     this.expandedKeys = [];
+  }
+
+  add(): void {
+    this.selectedItem = null;
+    this.selectedGroupTab = true;
+    this.selectedLedgerTab = false;
+    this.disabledLedgerTab = false;
+    this.disabledGroupTab = false;
   }
 }
