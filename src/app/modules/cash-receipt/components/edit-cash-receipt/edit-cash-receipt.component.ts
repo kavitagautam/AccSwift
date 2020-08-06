@@ -109,9 +109,6 @@ export class EditCashReceiptComponent implements OnInit {
   }
 
   assignFormsValue(): void {
-    console.log(
-      "this.Cash Receipt Details " + JSON.stringify(this.cashReceiptDetails)
-    );
     this.cashReceiptForm.get("ID").setValue(this.cashReceiptDetails.ID);
     this.cashReceiptForm
       .get("SeriesID")

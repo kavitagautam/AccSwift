@@ -50,11 +50,11 @@ export class EditJournalComponent implements OnInit {
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
+    @Inject(LOCALE_ID) public localeId: string,
     public intlService: IntlService,
-    private localeService: LocaleService,
     private toastr: ToastrService
   ) {
-    this.localeService.set("ne-NP");
+    //this.localeService.set("en-US");
   }
 
   ngOnInit() {

@@ -6,11 +6,8 @@ import {
   ViewChild,
   ElementRef,
   HostListener,
-  Output,
-  EventEmitter,
-  AfterViewInit,
-  OnChanges,
-  ChangeDetectionStrategy,
+  LOCALE_ID,
+  Inject,
 } from "@angular/core";
 import {
   FormArray,
@@ -22,24 +19,23 @@ import {
 } from "@angular/forms";
 import { DetailsEntryGridService } from "../../services/details-entry-grid/details-entry-grid.service";
 import { AddProductComponent } from "../add-product/add-product/add-product.component";
-import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { BsModalRef, BsModalService, BsLocaleService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { RelatedUnits } from "../../models/related-unit.model";
 import { CashParty } from "../../models/cash-party.model";
 import { ProductMin } from "@app/modules/product/models/product-min.model";
 import { ProductModalPopupComponent } from "../product-modal-popup/product-modal-popup.component";
 import { LedgerModalPopupComponent } from "../ledger-modal-popup/ledger-modal-popup.component";
+import { LocaleService } from "@app/core/services/locale/locale.services";
+import { SettingsService } from "@app/modules/settings/services/settings.service";
+import { IntlService, CldrIntlService } from "@progress/kendo-angular-intl";
 
 @Component({
   selector: "accSwift-details-entry-grid",
   templateUrl: "./details-entry-grid.component.html",
   styleUrls: ["./details-entry-grid.component.scss"],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [
-    { provide: ControlContainer, useExisting: FormGroupDirective },
-  ],
 })
-export class DetailsEntryGridComponent implements OnInit, OnChanges {
+export class DetailsEntryGridComponent implements OnInit {
   relatedUnits: RelatedUnits[] = [];
   cashPartyList: CashParty[] = [];
   @ViewChild("anchor") public anchor: ElementRef;
@@ -75,10 +71,26 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
     public gridServices: DetailsEntryGridService,
     private toastr: ToastrService,
     private modalService: BsModalService,
-    private _fb: FormBuilder
-  ) {}
+    private _fb: FormBuilder,
+    @Inject(LOCALE_ID) public localeId: string,
+    public intlService: IntlService,
+    private settingsService: SettingsService
+  ) {
+    // locale === "Nepali" ? "ne-NP" : "en_US"
+    // this.localeService.set("en_US");
+  }
 
   ngOnInit(): void {
+    if (
+      this.settingsService &&
+      this.settingsService.settings.DEFAULT_LANGUAGE.Value === "English"
+    ) {
+      this.localeId = "en_US";
+    } else {
+      this.localeId = "ne";
+    }
+    (<CldrIntlService>this.intlService).localeId = this.localeId;
+
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
     });
@@ -87,27 +99,21 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges(changes): void {
-    this.entryArray.valueChanges.subscribe((data) => {
-      console.log("After View Init " + JSON.stringify(data));
-    });
-    this.voucherType = this.voucherType;
-  }
+  // @HostListener("keydown", ["$event"])
+  // public keydown(event: any): void {
+  //   if (event.keyCode === 27) {
+  //     // this.toggle(false);
+  //   }
+  // }
 
-  @HostListener("keydown", ["$event"])
-  public keydown(event: any): void {
-    if (event.keyCode === 27) {
-      // this.toggle(false);
-    }
-  }
+  // @HostListener("document:click", ["$event"])
+  // public documentClick(event: any): void {
+  //   if (!this.contains(event.target)) {
+  //     //  this.discountToggle(null);
+  //     //this.unitPopup(null);
+  //   }
 
-  @HostListener("document:click", ["$event"])
-  public documentClick(event: any): void {
-    if (!this.contains(event.target)) {
-      //  this.discountToggle(null);
-      //this.unitPopup(null);
-    }
-  }
+  // }
 
   public enabled: boolean = true;
   public duration: number = 200;
@@ -139,9 +145,6 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
     this.getRelatedUnitList(this.entryArray.value[rowIndex].ProductID);
     this.showUnitPopup = !this.showUnitPopup;
     this.rowPopupIndexUnit = rowIndex;
-    console.log(
-      "Popup Show" + this.showUnitPopup + " Unit Id " + this.rowPopupIndexUnit
-    );
   }
 
   private contains(target: any): boolean {
@@ -200,12 +203,39 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
       .value;
 
     let amountC = qunatityValue * salesRateValue;
-    let discountAmountC = discountPer * amountC;
+    let discountAmountC = (discountPer / 100) * amountC;
     entryListArray.controls[index]
       .get("DiscountAmount")
       .setValue(discountAmountC);
 
     entryListArray.controls[index].get("Amount").setValue(amountC);
+    entryListArray.controls[index]
+      .get("NetAmount")
+      .setValue(amountC - discountAmountC);
+  }
+
+  //Change Discount Value
+  discountAmountCalc(dataItem, index): void {
+    const entryListArray = this.entryArray as FormArray;
+
+    let discountAmountValue = entryListArray.controls[index].get(
+      "DiscountAmount"
+    ).value;
+    let qunatityValue = entryListArray.controls[index].get("Quantity").value;
+
+    let salesRateValue = entryListArray.controls[index].get("SalesRate").value;
+
+    let amountC = qunatityValue * salesRateValue;
+    let calculatePercentage = (discountAmountValue / amountC) * 100;
+    entryListArray.controls[index]
+      .get("DiscPercentage")
+      .setValue(calculatePercentage);
+    let discountPer = entryListArray.controls[index].get("DiscPercentage")
+      .value;
+    let discountAmountC = discountPer * amountC;
+
+    discountPer = calculatePercentage;
+    discountAmountC = amountC * discountPer;
     entryListArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
@@ -275,7 +305,9 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
             entryListArray.controls[index].get("DiscountAmount").value
         );
 
-      entryListArray.controls[index].get("TaxID").setValue("");
+      entryListArray.controls[index]
+        .get("TaxID")
+        .setValue(selectedProductValue[0].TaxID);
       entryListArray.controls[index].get("TaxAmount").setValue("");
       entryListArray.controls[index].get("Remarks").setValue("");
       const length = this.entryArray.value.length;
@@ -339,8 +371,10 @@ export class DetailsEntryGridComponent implements OnInit, OnChanges {
               entryListArray.controls[index].get("DiscountAmount").value
           );
 
-        entryListArray.controls[index].get("TaxID").setValue("");
-        entryListArray.controls[index].get("TaxAmount").setValue("");
+        entryListArray.controls[index].get("TaxID").setValue(data.TaxID);
+        entryListArray.controls[index]
+          .get("TaxAmount")
+          .setValue(data.TaxAmount);
         entryListArray.controls[index].get("Remarks").setValue("");
         const length = this.entryArray.value.length;
         if (entryListArray.controls[length - 1].invalid) return;
