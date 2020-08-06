@@ -7,10 +7,8 @@ import {
   SelectAllCheckboxState,
   PageChangeEvent,
 } from "@progress/kendo-angular-grid";
-import {
-  LedgerList,
-  LedgerListService,
-} from "../../services/ledger-list/ledger-list.service";
+import { LedgerListService } from "../../services/ledger-list/ledger-list.service";
+import { LedgerLov } from "@app/modules/ledger/models/ledger.models";
 
 @Component({
   selector: "accSwift-ledger-modal-popup",
@@ -20,7 +18,7 @@ import {
 export class LedgerModalPopupComponent implements OnInit {
   public onClose: Subject<boolean>;
   public onSelected: Subject<boolean>;
-  ledgerList: LedgerList[] = [];
+  ledgerList: LedgerLov[] = [];
   ledgerListLoading: boolean;
 
   //kendo Grid
