@@ -59,6 +59,9 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.buildAccountLedgerForm();
+    if (this.selectedItem == null) {
+      this.addAccountLedger();
+    }
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {

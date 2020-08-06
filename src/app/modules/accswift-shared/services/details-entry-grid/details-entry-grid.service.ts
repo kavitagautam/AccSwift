@@ -9,6 +9,7 @@ import {
   ProductMin,
 } from "@app/modules/product/models/product-min.model";
 import { RelatedUnitModel } from "../../models/related-unit.model";
+import { LedgerMin } from "@app/modules/ledger/models/ledger.models";
 
 @Injectable({
   providedIn: "root",
@@ -16,7 +17,7 @@ import { RelatedUnitModel } from "../../models/related-unit.model";
 export class DetailsEntryGridService {
   _api_URL = environment.baseAPI;
   productList: ProductMin[] = [];
-
+  ledgerList: LedgerMin[] = [];
   taxList: Tax[] = [];
   constructor(
     private httpService: HttpClientService,
