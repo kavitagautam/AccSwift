@@ -12,6 +12,7 @@ export interface ProductMin {
   IsVAT: boolean;
   GroupID: number;
   GroupName: string;
+  TaxID:number;
 }
 
 export interface ProductMinRootModel {

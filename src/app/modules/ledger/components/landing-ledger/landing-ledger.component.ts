@@ -22,7 +22,8 @@ export class LandingLedgerComponent implements OnInit {
   ledgerTreeList: any;
   ledgerTreeNode: any;
   ledgerListView: any;
-
+  disabledLedgerTab: boolean;
+  disabledGroupTab: boolean;
   treeViewLoading: boolean;
   listViewLoading: boolean;
 
@@ -83,10 +84,14 @@ export class LandingLedgerComponent implements OnInit {
       this.selectedItem = dataItem;
       this.selectedGroupTab = true;
       this.selectedLedgerTab = false;
+      this.disabledLedgerTab = true;
+      this.disabledGroupTab = false;
     } else {
       this.selectedItem = dataItem;
       this.selectedLedgerTab = true;
       this.selectedGroupTab = false;
+      this.disabledLedgerTab = false;
+      this.disabledGroupTab = true;
     }
   }
 
