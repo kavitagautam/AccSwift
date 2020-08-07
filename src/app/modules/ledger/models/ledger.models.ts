@@ -100,7 +100,7 @@ export interface LedgerMin {
   GroupID: number;
 }
 
-export interface LedgerMinListModel {
+export interface LedgerMinModel {
   StatusCode: number;
   Message: string;
   Entity: LedgerMin[];

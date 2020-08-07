@@ -24,80 +24,96 @@
         let-isNew="isNew"
         let-rowIndex="rowIndex"
       >
-        <div class="form-group mt-5">
-          <kendo-dropdownlist
-            class="form-control"
-            [data]="productList"
-            [filterable]="true"
-            [textField]="'CodeName'"
-            [valueField]="'ProductID'"
-            [valuePrimitive]="true"
-            [formControl]="entryArray.controls[rowIndex].get('ProductID')"
-            (filterChange)="productDDFilter($event, rowIndex)"
-            (valueChange)="handleProductChange($event, rowIndex)"
+        <div class="form-group mt-4">
+          <div class="col-md-11 pl-0">
+            <kendo-dropdownlist
+              class="form-control"
+              [data]="productList"
+              [filterable]="true"
+              [textField]="'CodeName'"
+              [valueField]="'ProductID'"
+              [valuePrimitive]="true"
+              [formControl]="entryArray.controls[rowIndex].get('ProductID')"
+              (filterChange)="productDDFilter($event, rowIndex)"
+              (valueChange)="handleProductChange($event, rowIndex)"
+            >
+              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                <span class="template">{{ dataItem.CodeName }} </span>
+              </ng-template>
+              <ng-template kendoDropDownListNoDataTemplate>
+                <div>
+                  No data found.
+                  <br />
+                  <button class="k-button" (click)="addNewProduct(addProduct)">
+                    Add new product
+                  </button>
+                </div>
+              </ng-template>
+            </kendo-dropdownlist>
+          </div>
+          <div class="col-md-1 p-0">
+            <a (click)="openProductModal(rowIndex)"
+              ><i
+                class="fa fa-eye pull-right ledgerSelectIcon"
+                style="margin: 0px; font-size: 16px; position: relative;"
+                aria-hidden="true"
+              ></i>
+            </a>
+          </div>
+
+          <div
+            class="col-md-12"
+            *ngIf="entryArray.controls[rowIndex].get('QtyUnitName').value"
           >
-            <ng-template kendoDropDownListItemTemplate let-dataItem>
-              <span class="template">{{ dataItem.CodeName }} </span>
-            </ng-template>
-            <ng-template kendoDropDownListNoDataTemplate>
-              <div>
-                No data found.
-                <br />
-                <button class="k-button" (click)="addNewProduct(addProduct)">
-                  Add new product
+            <span
+              ><b>Unit : </b>&nbsp; &nbsp;{{
+                entryArray.controls[rowIndex].get("QtyUnitName").value
+              }}
+            </span>
+            <button
+              #anchor
+              style="
+                color: blue;
+                font-size: 12px;
+                cursor: pointer;
+                padding: 0px;
+              "
+              class="btn"
+              (click)="unitToggle(rowIndex)"
+            >
+              Change
+            </button>
+            <kendo-popup
+              #popup
+              [anchor]="anchor"
+              *ngIf="showUnitPopup && rowPopupIndexUnit == rowIndex"
+              (anchorViewportLeave)="unitToggle(null)"
+            >
+              <div class="contentPopup">
+                <div class="form-group">
+                  <label>Unit</label>
+                  <kendo-dropdownlist
+                    class="form-control"
+                    [data]="relatedUnits"
+                    textField="Name"
+                    valueField="ID"
+                    [valuePrimitive]="true"
+                    [formControl]="
+                      entryArray.controls[rowIndex].get('QtyUnitID')
+                    "
+                  >
+                  </kendo-dropdownlist>
+                </div>
+                <button
+                  class="btn btn-primary"
+                  style="margin: auto; display: table;"
+                  (click)="unitToggle(null)"
+                >
+                  Ok
                 </button>
               </div>
-            </ng-template>
-          </kendo-dropdownlist>
-          <a (click)="openProductModal(rowIndex)"
-            ><i
-              class="fa fa-eye pull-right ledgerSelectIcon"
-              style="margin: 0px; font-size: 16px; position: relative;"
-              aria-hidden="true"
-            ></i>
-          </a>
-          <span *ngIf="entryArray.controls[rowIndex].get('QtyUnitName').value"
-            ><b>Unit : </b>&nbsp; &nbsp;{{
-              entryArray.controls[rowIndex].get("QtyUnitName").value
-            }}
-          </span>
-          <button
-            *ngIf="entryArray.controls[rowIndex].get('QtyUnitName').value"
-            class="btn"
-            #anchor
-            style="color: blue; font-size: 12px; cursor: pointer; padding: 0px;"
-            (click)="unitToggle(rowIndex)"
-          >
-            Change
-          </button>
-          <kendo-popup
-            #popup
-            [anchor]="anchor"
-            *ngIf="showUnitPopup && rowPopupIndexUnit == rowIndex"
-            (anchorViewportLeave)="unitToggle(null)"
-          >
-            <div class="contentPopup">
-              <div class="form-group">
-                <label>Unit</label>
-                <kendo-dropdownlist
-                  class="form-control"
-                  [data]="relatedUnits"
-                  textField="Name"
-                  valueField="ID"
-                  [valuePrimitive]="true"
-                  [formControl]="entryArray.controls[rowIndex].get('QtyUnitID')"
-                >
-                </kendo-dropdownlist>
-              </div>
-              <button
-                class="btn btn-primary"
-                style="margin: auto; display: table;"
-                (click)="unitToggle(null)"
-              >
-                Ok
-              </button>
-            </div>
-          </kendo-popup>
+            </kendo-popup>
+          </div>
         </div>
       </ng-template>
     </kendo-grid-column>
