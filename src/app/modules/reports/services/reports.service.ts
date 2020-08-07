@@ -14,10 +14,7 @@ import {
   CashPartyGroupModel,
   PurchaseReportModel,
 } from "../models/sales.report.model";
-import {
-  LedgerReportModel,
-  LedgerMinModel,
-} from "../models/ledger.reports.model";
+import { LedgerReportModel } from "../models/ledger.reports.model";
 import {
   ProfitLossRootModel,
   ProfitLossLDRootModel,
@@ -48,6 +45,7 @@ import {
   ProductMin,
 } from "@accSwift-modules/product/models/product-min.model";
 import { LedgerGroupModel } from "@accSwift-modules/ledger/models/ledger-group.model";
+import { LedgerMinModel } from "@accSwift-modules/ledger/models/ledger.models";
 
 @Injectable({
   providedIn: "root",

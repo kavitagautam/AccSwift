@@ -82,7 +82,7 @@ export class DetailsEntryGridComponent implements OnInit {
 
   ngOnInit(): void {
     if (
-      this.settingsService &&
+      this.settingsService.settings &&
       this.settingsService.settings.DEFAULT_LANGUAGE.Value === "English"
     ) {
       this.localeId = "en_US";
@@ -142,9 +142,9 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   public unitToggle(rowIndex): void {
-    this.getRelatedUnitList(this.entryArray.value[rowIndex].ProductID);
     this.showUnitPopup = !this.showUnitPopup;
     this.rowPopupIndexUnit = rowIndex;
+    this.getRelatedUnitList(this.entryArray.value[rowIndex].ProductID);
   }
 
   private contains(target: any): boolean {

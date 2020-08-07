@@ -3,14 +3,14 @@
     More Details
   </h5>
 
-  <form [formGroup]="ledgerMoreDetailsForm" novalidate>
+  <div [formGroup]="moreDetailsLedger">
     <div class="row clearfix mt-3">
       <div class="col-md-6">
         <div class="form-group">
           <label>Contact Person</label>
           <input
             class="form-control"
-            formControlName="contactPerson"
+            formControlName="PersonName"
             accSwiftFormValidator
           />
         </div>
@@ -18,7 +18,7 @@
           <label>Address 1 </label>
           <input
             class="form-control"
-            formControlName="address1"
+            formControlName="Address1"
             accSwiftFormValidator
           />
         </div>
@@ -26,7 +26,7 @@
           <label>Address 2</label>
           <input
             class="form-control"
-            formControlName="address2"
+            formControlName="Address2"
             accSwiftFormValidator
           />
         </div>
@@ -34,13 +34,13 @@
           <label>City </label>
           <input
             class="form-control"
-            formControlName="city"
+            formControlName="City"
             accSwiftFormValidator
           />
         </div>
         <div class="form-group">
           <label>Company</label>
-          <input class="form-control" formControlName="company" />
+          <input class="form-control" formControlName="Company" />
         </div>
       </div>
       <div class="col-md-6">
@@ -49,37 +49,37 @@
           <input
             class="form-control"
             type="number"
-            formControlName="telephone"
+            formControlName="Phone"
             accSwiftFormValidator
           />
         </div>
         <div class="form-group">
           <label>E-mail</label>
-          <input class="form-control" formControlName="email" />
+          <input class="form-control" formControlName="Email" />
         </div>
 
         <div class="form-group">
           <label>WebSite</label>
-          <input class="form-control" formControlName="webSite" />
+          <input class="form-control" formControlName="Website" />
         </div>
         <div class="form-group">
           <label>VAT/PAN No</label>
           <input
             class="form-control"
             type="number"
-            formControlName="VATPANNo"
+            formControlName="VatPanNo"
           />
         </div>
 
         <div class="form-group">
           <div class="checkbox">
             <label>
-              <input type="checkbox" formControlName="autoCalculate" />
+              <input type="checkbox" formControlName="IsActive" />
               Auto Calculate
             </label>
           </div>
         </div>
       </div>
     </div>
-  </form>
+  </div>
 </div>

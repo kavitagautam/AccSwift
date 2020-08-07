@@ -32,7 +32,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   @Input("selectedItem") selectedItem;
   date: Date = new Date();
   selectedLedgerId: number;
-  accoutLedgerForm: FormGroup;
+  accountLedgerForm: FormGroup;
   ledgerDetails: LedgerDetails;
 
   editMode: boolean;
@@ -83,9 +83,9 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     }
   }
 
-  public balanceType: Array<{ type: string; id: number }> = [
-    { type: "DEBIT", id: 1 },
-    { type: "CREDIT", id: 2 },
+  public balanceType: Array<{ type: string; Name: string; id: number }> = [
+    { type: "DEBIT", Name: "DEBIT", id: 1 },
+    { type: "CREDIT", Name: "CREDIT", id: 2 },
   ];
 
   getLedgerDetails(): void {
@@ -93,185 +93,137 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       .getLedgerDetails(this.selectedLedgerId)
       .subscribe((res) => {
         this.ledgerDetails = res.Entity;
+        // this.accountLedgerForm.setControl(
+        //   "OpeningBalance",
+        //   this.ledgerDetails.OpeningBalance
+        // );
+        //this.accountLedgerForm.patchValue(this.ledgerDetails);
         this.buildAccountLedgerForm();
       });
   }
 
   buildAccountLedgerForm(): void {
-    this.accoutLedgerForm = this._fb.group({
-      ledgerCode: [
+    this.accountLedgerForm = this._fb.group({
+      ID: [this.ledgerDetails ? this.ledgerDetails.ID : null],
+      LedgerCode: [
         this.ledgerDetails ? this.ledgerDetails.LedgerCode : "",
         Validators.required,
       ],
-      ledgerName: [
+      Name: [
         this.ledgerDetails ? this.ledgerDetails.Name : "",
         Validators.required,
       ],
-      groupID: [this.ledgerDetails ? this.ledgerDetails.GroupID : null],
-      remarks: [this.ledgerDetails ? this.ledgerDetails.Remarks : ""],
-      currency: [this.ledgerDetails ? this.ledgerDetails.Currency : ""],
-      date: [this.ledgerDetails ? new Date() : ""],
-      openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
-      previousYearBalanceList: this._fb.array([
-        this.addPreviousYearBalanceFormGroup(),
-      ]),
-      moreDetails: new FormControl(""),
-    });
-  }
-
-  addOpeningBalanceFormGroup(): FormGroup {
-    return this._fb.group({
-      ID: [""],
-      accountClassId: [
-        this.ledgerService.accountClass
-          ? this.ledgerService.accountClass[0].ID
-          : null,
+      PreviousYearBalance: [
+        this.ledgerDetails ? this.ledgerDetails.PreviousYearBalance : 0,
       ],
-      accountClassName: [
-        {
-          value: this.ledgerService.accountClass
-            ? this.ledgerService.accountClass[0].Name
-            : "",
-          disabled: true,
-        },
-      ],
-      openingBalance: [
-        this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBal : 0,
-      ],
-      balanceType: [
-        this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBalDrCr : "",
-      ],
-    });
-  }
-
-  addPreviousYearBalanceFormGroup(): FormGroup {
-    return this._fb.group({
       PreviousYearBalanceDebitCredit: [
         this.ledgerDetails
           ? this.ledgerDetails.PreviousYearBalanceDebitCredit
           : "",
       ],
-      PreviousYearBalance: [
-        this.ledgerDetails ? this.ledgerDetails.PreviousYearBalance : 0,
-      ],
+      Currency: [this.ledgerDetails ? this.ledgerDetails.Currency : ""],
+      DrCr: [this.ledgerDetails ? this.ledgerDetails.DrCr : ""],
+      GroupID: [this.ledgerDetails ? this.ledgerDetails.GroupID : null],
+      PersonName: [this.ledgerDetails ? this.ledgerDetails.PersonName : ""],
+      Address1: [this.ledgerDetails ? this.ledgerDetails.Address1 : ""],
+      Address2: [this.ledgerDetails ? this.ledgerDetails.Address2 : ""],
+      City: [this.ledgerDetails ? this.ledgerDetails.City : ""],
+      Phone: [this.ledgerDetails ? this.ledgerDetails.Phone : ""],
+      Email: [this.ledgerDetails ? this.ledgerDetails.Email : ""],
+      Company: [this.ledgerDetails ? this.ledgerDetails.Company : ""],
+      Website: [this.ledgerDetails ? this.ledgerDetails.Website : ""],
+      VatPanNo: [this.ledgerDetails ? this.ledgerDetails.VatPanNo : ""],
+      CreditLimit: [this.ledgerDetails ? this.ledgerDetails.CreditLimit : ""],
+      IsActive: [this.ledgerDetails ? this.ledgerDetails.IsActive : ""],
+      OpeningBalance: this._fb.group({
+        ID: [this.ledgerDetails ? this.ledgerDetails.OpeningBalance.ID : null],
+        AccClassID: [
+          this.ledgerService.accountClass.length > 0
+            ? this.ledgerService.accountClass[0].ID
+            : null,
+        ],
+        OpenBal: [
+          this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBal : 0,
+        ],
+        OpenBalDrCr: [
+          this.ledgerDetails
+            ? this.ledgerDetails.OpeningBalance.OpenBalDrCr
+            : "",
+        ],
+      }),
+      Remarks: [this.ledgerDetails ? this.ledgerDetails.Remarks : ""],
     });
   }
 
-  get getOpeningBalanceList(): FormArray {
-    return <FormArray>this.accoutLedgerForm.get("openingBalanceList");
+  changeAccountHead(): void {
+    const groupId = this.accountLedgerForm.get("GroupID").value;
+    const selectedItem = this.ledgerService.ledgerGroupLists.filter(
+      (x) => x.ID == groupId
+    );
+    this.accountLedgerForm
+      .get("PreviousYearBalanceDebitCredit")
+      .setValue(selectedItem[0].DrCr === "DR" ? "DEBIT" : "CREDIT");
+    this.accountLedgerForm.get("DrCr").setValue(selectedItem[0].DrCr);
+    this.accountLedgerForm
+      .get("OpeningBalance")
+      .get("OpenBalDrCr")
+      .setValue(selectedItem[0].DrCr === "DR" ? "DEBIT" : "CREDIT");
   }
-
-  get getPreviousYearBalanceList(): FormArray {
-    return <FormArray>this.accoutLedgerForm.get("previousYearBalanceList");
-  }
-
-  openModal(index: number): void {}
 
   save(): void {
-    const openingBalanceArray = <FormArray>(
-      this.accoutLedgerForm.get("openingBalanceList")
-    );
-    const previousYearBalanceArray = <FormArray>(
-      this.accoutLedgerForm.get("previousYearBalanceList")
-    );
-    const moreDetails = this.accoutLedgerForm.get("moreDetails");
     if (this.addMode) {
-      if (this.accoutLedgerForm.invalid) return;
+      if (this.accountLedgerForm.invalid) return;
 
-      const obj = {
-        LedgerCode: this.accoutLedgerForm.get("ledgerCode").value,
-        Name: this.accoutLedgerForm.get("ledgerName").value,
-        PreviousYearBalance: previousYearBalanceArray.controls[0].get(
-          "PreviousYearBalance"
-        ).value,
-        PreviousYearBalanceDebitCredit: previousYearBalanceArray.controls[0].get(
-          "PreviousYearBalanceDebitCredit"
-        ).value,
-        DrCr: "DR",
-        GroupID: this.accoutLedgerForm.get("groupID").value,
-        OpCCYID: 1,
-        PersonName: moreDetails ? moreDetails.value.contactPerson : "",
-        Address1: moreDetails ? moreDetails.value.address1 : "",
-        Address2: moreDetails ? moreDetails.value.address2 : "",
-        City: moreDetails ? moreDetails.value.city : "",
-        Phone: moreDetails ? moreDetails.value.phone : "",
-        Email: moreDetails ? moreDetails.value.email : "",
-        Company: moreDetails ? moreDetails.value.company : "",
-        Website: moreDetails ? moreDetails.value.website : "",
-        VatPanNo: moreDetails ? moreDetails.value.VATPANNo : "",
-        IsActive: moreDetails ? moreDetails.value.autoCalculate : false,
-        OpeningBalance: {
-          AccClassID: openingBalanceArray.controls[0].get("accountClassId")
-            .value,
-          OpenBal: openingBalanceArray.controls[0].get("openingBalance").value,
-          OpenBalDrCr: openingBalanceArray.controls[0].get("balanceType").value,
-          OpenBalCCYID: 1,
-        },
-        Remarks: this.accoutLedgerForm.get("remarks").value,
-      };
-      this.ledgerService.addLedgerAccount(obj).subscribe(
-        (response) => {
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-        },
-        (error) => {
-          this.toastr.error(JSON.stringify(error.error.Message));
-        },
-        () => {
-          this.toastr.success("Ledger Account added successfully");
-        }
-      );
+      this.ledgerService
+        .addLedgerAccount(this.accountLedgerForm.value)
+        .subscribe(
+          (response) => {
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+          },
+          (error) => {
+            this.toastr.error(JSON.stringify(error.error.Message));
+          },
+          () => {
+            this.toastr.success("Ledger Account added successfully");
+          }
+        );
     } else {
-      const obj = {
-        ID: this.ledgerDetails.ID,
-        LedgerCode: this.accoutLedgerForm.get("ledgerCode").value,
-        Name: this.accoutLedgerForm.get("ledgerName").value,
-        PreviousYearBalance: previousYearBalanceArray.controls[0].get(
-          "PreviousYearBalance"
-        ).value,
-        PreviousYearBalanceDebitCredit: previousYearBalanceArray.controls[0].get(
-          "PreviousYearBalanceDebitCredit"
-        ).value,
-        DrCr: "DR",
-        GroupID: 1,
-        OpCCYID: 1,
-        PersonName: moreDetails ? moreDetails.value.contactPerson : "",
-        Address1: moreDetails ? moreDetails.value.address1 : "",
-        Address2: moreDetails ? moreDetails.value.address2 : "",
-        City: moreDetails ? moreDetails.value.city : "",
-        Phone: moreDetails ? moreDetails.value.phone : "",
-        Email: moreDetails ? moreDetails.value.email : "",
-        Company: moreDetails ? moreDetails.value.company : "",
-        Website: moreDetails ? moreDetails.value.website : "",
-        VatPanNo: moreDetails ? moreDetails.value.VATPANNo : "",
-        IsActive: moreDetails ? moreDetails.value.autoCalculate : false,
-        OpeningBalance: {
-          AccClassID: openingBalanceArray.controls[0].get("accountClassId")
-            .value,
-          OpenBal: openingBalanceArray.controls[0].get("openingBalance").value,
-          OpenBalDrCr: openingBalanceArray.controls[0].get("balanceType").value,
-          OpenBalCCYID: 1,
-        },
-        Remarks: this.accoutLedgerForm.get("remarks").value,
-      };
-      this.ledgerService.updateLedgerAccount(obj).subscribe(
-        (response) => {
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-        },
-        (error) => {
-          this.toastr.error(JSON.stringify(error.error.Message));
-        },
-        () => {
-          this.toastr.success("Ledger Account edited successfully");
-        }
-      );
+      this.ledgerService
+        .updateLedgerAccount(this.accountLedgerForm.value)
+        .subscribe(
+          (response) => {
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+          },
+          (error) => {
+            this.toastr.error(JSON.stringify(error.error.Message));
+          },
+          () => {
+            this.toastr.success("Ledger Account edited successfully");
+          }
+        );
     }
   }
 
-  cancel(event): void {}
+  addNewLedger(): void {
+    this.addMode = true;
+    this.editMode = false;
+    this.title = "Add New Ledger ";
+    this.accountLedgerForm.reset();
+    this.accountLedgerForm
+      .get("GroupID")
+      .setValue(this.ledgerDetails ? this.ledgerDetails.GroupID : null);
+    this.ledgerDetails = null;
+  }
+
+  cancel(event): void {
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
 
   addAccountLedger(): void {
     this.ledgerDetails = null;
