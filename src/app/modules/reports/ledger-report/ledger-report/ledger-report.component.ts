@@ -10,11 +10,9 @@ import { ReportsService } from "../../services/reports.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
-import {
-  LedgerList,
-  LedgerMinList,
-  LedgerGroup,
-} from "../../models/ledger.reports.model";
+import { LedgerList } from "../../models/ledger.reports.model";
+import { LedgerMin } from "@app/modules/ledger/models/ledger.models";
+import { LedgerGroup } from "@app/modules/ledger/models/ledger-group.model";
 
 @Component({
   selector: "accSwift-ledger-report",
@@ -38,7 +36,7 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
   accountLedger: boolean = false;
   accountGroup: boolean = false;
   dateCheckbox: boolean = true;
-  ledgerMinList: LedgerMinList[] = [];
+  ledgerMinList: LedgerMin[] = [];
   ledgerGroupList: LedgerGroup[] = [];
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;

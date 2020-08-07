@@ -4,14 +4,14 @@ import {
   EventEmitter,
   Output,
   forwardRef,
-  Input
+  Input,
 } from "@angular/core";
 import {
   ControlValueAccessor,
   FormGroup,
   FormBuilder,
   Validators,
-  NG_VALUE_ACCESSOR
+  NG_VALUE_ACCESSOR,
 } from "@angular/forms";
 import { LedgerDetails } from "../../models/ledger.models";
 
@@ -23,35 +23,20 @@ import { LedgerDetails } from "../../models/ledger.models";
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => AccountLedgerMoreDetailsComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class AccountLedgerMoreDetailsComponent
   implements OnInit, ControlValueAccessor {
   @Output() formReady = new EventEmitter<FormGroup>();
   ledgerMoreDetailsForm: FormGroup;
   @Input("ledgerDetails") ledgerDetails: LedgerDetails;
+  @Input("") moreDetailsLedger: FormGroup;
+
   constructor(private _fb: FormBuilder) {}
 
-  ngOnInit() {
-    this.buildLedgerMoreDetailsForm();
-  }
-
-  buildLedgerMoreDetailsForm(): void {
-    this.ledgerMoreDetailsForm = this._fb.group({
-      contactPerson: [this.ledgerDetails ? this.ledgerDetails.PersonName : ""],
-      address1: [this.ledgerDetails ? this.ledgerDetails.Address1 : ""],
-      address2: [this.ledgerDetails ? this.ledgerDetails.Address2 : ""],
-      city: [this.ledgerDetails ? this.ledgerDetails.City : ""],
-      telephone: [this.ledgerDetails ? this.ledgerDetails.Phone : ""],
-      email: [this.ledgerDetails ? this.ledgerDetails.Email : ""],
-      company: [this.ledgerDetails ? this.ledgerDetails.Company : ""],
-      webSite: [this.ledgerDetails ? this.ledgerDetails.Website : ""],
-      VATPANNo: [this.ledgerDetails ? this.ledgerDetails.VatPanNo : ""],
-      autoCalculate: [this.ledgerDetails ? this.ledgerDetails.IsActive : false]
-    });
-  }
+  ngOnInit() {}
 
   public onTouched: () => void = () => {};
 

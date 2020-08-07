@@ -37,35 +37,6 @@ export interface RootObject {
   Entity: Entity;
 }
 
-export interface LedgerMinList {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-
-export interface LedgerMinModel {
-  StatusCode: number;
-  Message: string;
-  Entity: LedgerMinList[];
-}
-
-export interface LedgerGroup {
-  ID: number;
-  LedgerCode: string;
-  ParentGroupID?: number;
-  Name: string;
-  DrCr: string;
-  IsBuiltIn: boolean;
-  Remarks: string;
-}
-
-export interface LedgerGroupModel {
-  StatusCode: number;
-  Message: string;
-  Entity: LedgerGroup[];
-}
-
 export interface LedgerList {
   Type: string;
   Opening: string;

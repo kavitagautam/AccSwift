@@ -68,11 +68,34 @@
   <div class="col-md-6 p-0">
     <div class="row">
       <div class="col-md-12 mr-2">
+        <div class="row">
+          <div
+            class="btn-group pull-right"
+            style="top: 30px; right: 50px; position: relative; z-index: 100000;"
+          >
+            <button
+              class="btn btn-primary btn-sm dropdown-toggle"
+              type="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i> Add New
+            </button>
+            <div class="dropdown-menu" style="min-width: 80px;">
+              <button class="dropdown-item btn" (click)="add('group')">
+                Add Group
+              </button>
+              <button class="dropdown-item btn" (click)="add('ledger')">
+                Add Ledger
+              </button>
+            </div>
+          </div>
+        </div>
         <kendo-tabstrip>
           <kendo-tabstrip-tab
             [title]="'Account Group'"
             [selected]="selectedGroupTab ? true : false"
-            [disabled]="disabledGroupTab"
           >
             <ng-template kendoTabContent>
               <accSwift-account-group
@@ -83,7 +106,6 @@
           <kendo-tabstrip-tab
             [title]="'Account Ledger'"
             [selected]="selectedLedgerTab ? true : false"
-            [disabled]="disabledLedgerTab"
           >
             <ng-template kendoTabContent>
               <accSwift-account-ledger
@@ -93,11 +115,6 @@
           </kendo-tabstrip-tab>
         </kendo-tabstrip>
       </div>
-    </div>
-    <div class="col-md-12 m-2">
-      <button class="btn btn-primary mr-3" (click)="add()">
-        <i class="fa fa-plus" aria-hidden="true"></i> Add
-      </button>
     </div>
   </div>
 </div>

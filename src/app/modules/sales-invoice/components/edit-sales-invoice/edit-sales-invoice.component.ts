@@ -61,8 +61,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     public salesInvoiceService: SalesInvoiceService,
     private modalService: BsModalService,
     private toastr: ToastrService,
-    private productCodeMatch: ProductCodeValidatorsService,
-    private localeService: LocaleService
+    private productCodeMatch: ProductCodeValidatorsService
   ) {
     this.salesInvoiceService.getCashPartyAccountDD().subscribe((response) => {
       this.cashPartyList = response.Entity;
@@ -70,8 +69,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.localeService.set("en_US");
-
     this.getIdFromRoute();
     this.buildSalesInvoiceForm();
     this.salesInvoiceForm.valueChanges.subscribe((changes) => {
