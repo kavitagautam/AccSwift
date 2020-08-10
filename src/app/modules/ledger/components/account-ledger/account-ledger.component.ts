@@ -7,13 +7,7 @@ import {
   OnChanges,
   SimpleChange,
 } from "@angular/core";
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  FormArray,
-  FormControl,
-} from "@angular/forms";
+import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
 import { LedgerDetails } from "../../models/ledger.models";
@@ -34,14 +28,13 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   selectedLedgerId: number;
   accountLedgerForm: FormGroup;
   ledgerDetails: LedgerDetails;
-
   editMode: boolean;
   addMode: boolean;
   title: string;
   rowSubmitted: boolean;
   submitted: boolean;
   private editedRowIndex: number;
-
+  balanceDrCr: string;
   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
@@ -71,7 +64,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       this.selectedItem = c.currentValue;
       if (this.selectedItem) {
         this.selectedLedgerId = this.selectedItem.ID;
-        if (this.selectedLedgerId) {
+        if (this.selectedLedgerId && this.selectedItem.TypeOf == 1) {
           this.editMode = true;
           this.addMode = false;
           this.title = "Edit ";
@@ -97,8 +90,10 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         //   "OpeningBalance",
         //   this.ledgerDetails.OpeningBalance
         // );
-        //this.accountLedgerForm.patchValue(this.ledgerDetails);
-        this.buildAccountLedgerForm();
+        //  this.accountLedgerForm.patchValue(this.ledgerDetails);
+        this.setOpeningBalanceList();
+        this.accountLedgerForm.patchValue(this.ledgerDetails);
+        // this.buildAccountLedgerForm();
       });
   }
 
@@ -135,24 +130,74 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       VatPanNo: [this.ledgerDetails ? this.ledgerDetails.VatPanNo : ""],
       CreditLimit: [this.ledgerDetails ? this.ledgerDetails.CreditLimit : ""],
       IsActive: [this.ledgerDetails ? this.ledgerDetails.IsActive : ""],
-      OpeningBalance: this._fb.group({
-        ID: [this.ledgerDetails ? this.ledgerDetails.OpeningBalance.ID : null],
-        AccClassID: [
-          this.ledgerService.accountClass.length > 0
-            ? this.ledgerService.accountClass[0].ID
-            : null,
-        ],
-        OpenBal: [
-          this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBal : 0,
-        ],
-        OpenBalDrCr: [
-          this.ledgerDetails
-            ? this.ledgerDetails.OpeningBalance.OpenBalDrCr
-            : "",
-        ],
-      }),
+      OpeningBalance: this._fb.array([this.addOpeningBalanceFormGroup()]),
       Remarks: [this.ledgerDetails ? this.ledgerDetails.Remarks : ""],
     });
+  }
+
+  get getOpeningBalanceList(): FormArray {
+    return <FormArray>this.accountLedgerForm.get("OpeningBalance");
+  }
+
+  addOpeningBalanceFormGroup(): FormGroup {
+    return this._fb.group({
+      ID: [this.ledgerDetails ? this.ledgerDetails.OpeningBalance.ID : null],
+      AccClassID: [
+        this.ledgerService.accountClass.length > 0
+          ? this.ledgerService.accountClass[0].ID
+          : null,
+        Validators.required,
+      ],
+      OpenBal: [
+        this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBal : "",
+        Validators.required,
+      ],
+      OpenBalDrCr: [this.balanceDrCr ? this.balanceDrCr : ""],
+    });
+  }
+
+  setOpeningBalanceList(): void {
+    this.accountLedgerForm.setControl(
+      "OpeningBalance",
+      this.setOpeningBalanceArray(this.ledgerDetails.OpeningBalance)
+    );
+  }
+
+  // this block of code is used to show form array data in the template.....
+  setOpeningBalanceArray(openingBalance): FormArray {
+    const openingList = new FormArray([]);
+    if (openingBalance && openingBalance.length > 0) {
+      openingBalance.forEach((element) => {
+        openingList.push(
+          this._fb.group({
+            ID: [element.ID],
+            AccClassID: [element.AccClassID],
+            OpenBal: [element.OpenBal],
+            OpenBalDrCr: [element.OpenBalDrCr],
+          })
+        );
+      });
+    } else {
+      openingList.push(
+        this._fb.group({
+          ID: [
+            this.ledgerDetails ? this.ledgerDetails.OpeningBalance.ID : null,
+          ],
+          AccClassID: [
+            this.ledgerService.accountClass.length > 0
+              ? this.ledgerService.accountClass[0].ID
+              : null,
+            Validators.required,
+          ],
+          OpenBal: [
+            this.ledgerDetails ? this.ledgerDetails.OpeningBalance.OpenBal : "",
+            Validators.required,
+          ],
+          OpenBalDrCr: [this.balanceDrCr ? this.balanceDrCr : ""],
+        })
+      );
+    }
+    return openingList;
   }
 
   changeAccountHead(): void {
@@ -160,14 +205,19 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     const selectedItem = this.ledgerService.ledgerGroupLists.filter(
       (x) => x.ID == groupId
     );
+    if (selectedItem[0].DrCr === "DR") {
+      this.balanceDrCr = "DEBIT";
+    } else {
+      this.balanceDrCr = "CREDIT";
+    }
     this.accountLedgerForm
       .get("PreviousYearBalanceDebitCredit")
       .setValue(selectedItem[0].DrCr === "DR" ? "DEBIT" : "CREDIT");
-    this.accountLedgerForm.get("DrCr").setValue(selectedItem[0].DrCr);
-    this.accountLedgerForm
-      .get("OpeningBalance")
-      .get("OpenBalDrCr")
-      .setValue(selectedItem[0].DrCr === "DR" ? "DEBIT" : "CREDIT");
+    this.accountLedgerForm.get("DrCr").setValue(this.balanceDrCr);
+    const openingBalance = <FormArray>(
+      this.accountLedgerForm.get("OpeningBalance")
+    );
+    openingBalance.controls[0].get("OpenBalDrCr").setValue(this.balanceDrCr);
   }
 
   save(): void {
@@ -261,5 +311,28 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         this.toastr.success("Product deleted successfully");
       }
     );
+  }
+
+  public removeHandler({ dataItem, rowIndex }): void {
+    const openingList = <FormArray>this.accountLedgerForm.get("OpeningBalance");
+    // Remove the Row
+    openingList.removeAt(rowIndex);
+  }
+
+  public addHandler({ sender }) {
+    this.closeEditor(sender);
+    this.submitted = true;
+    this.rowSubmitted = true;
+    if (this.accountLedgerForm.get("OpeningBalance").invalid) return;
+    (<FormArray>this.accountLedgerForm.get("OpeningBalance")).push(
+      this.addOpeningBalanceFormGroup()
+    );
+    this.rowSubmitted = false;
+    this.rowSubmitted = false;
+  }
+
+  private closeEditor(grid, rowIndex = 1) {
+    grid.closeRow(rowIndex);
+    this.editedRowIndex = undefined;
   }
 }

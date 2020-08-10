@@ -412,10 +412,6 @@ export class DetailsEntryGridComponent implements OnInit {
         if (entryListArray.controls[length - 1].invalid) return;
         this.entryArray.push(this.addEntryList());
       }
-
-      // (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).push(
-      //   this.addCashReceiptEntryFormGroup()
-      // );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal

@@ -56,7 +56,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
       this.selectedItem = c.currentValue;
       if (this.selectedItem) {
         this.selectedLedgerGroupId = this.selectedItem.ID;
-        if (this.selectedLedgerGroupId) {
+        if (this.selectedLedgerGroupId && this.selectedItem.TypeOf == 0) {
           this.editMode = true;
           this.addMode = false;
           this.title = "Edit ";
@@ -102,26 +102,6 @@ export class AccountGroupComponent implements OnInit, OnChanges {
       ],
       DrCr: [this.ledgerGroupDetails ? this.ledgerGroupDetails.DrCr : ""],
       Remarks: [this.ledgerGroupDetails ? this.ledgerGroupDetails.Remarks : ""],
-      // ledgerGroupCode: [
-      //   this.ledgerGroupDetails ? this.ledgerGroupDetails.LedgerCode : "",
-      //   Validators.required,
-      // ],
-      // ledgerGroupName: [
-      //   this.ledgerGroupDetails ? this.ledgerGroupDetails.Name : "",
-      //   Validators.required,
-      // ],
-      // parentGroupId: [
-      //   {
-      //     value: this.ledgerGroupDetails
-      //       ? this.ledgerGroupDetails.ParentGroupID
-      //       : null,
-      //     disabled: this.ledgerGroupDetails
-      //       ? this.ledgerGroupDetails.IsBuiltIn
-      //       : false,
-      //   },
-      //   Validators.required,
-      // ],
-      // remarks: [this.ledgerGroupDetails ? this.ledgerGroupDetails.Remarks : ""],
     });
   }
 
