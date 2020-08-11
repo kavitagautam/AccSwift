@@ -69,7 +69,7 @@
     <div class="mb-2">
       <button
         class="btn btn-primary mr-2"
-        *ngIf="addMode && !selectedLedgerGroupId"
+        *ngIf="!addMode"
         (click)="addNewGroup()"
       >
         <i class="fa fa-plus" aria-hidden="true"></i> New

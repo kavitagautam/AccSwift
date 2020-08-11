@@ -5,6 +5,7 @@ import { environment } from "@env/environment";
 import { Observable } from "rxjs";
 import { ProjectRootModel } from "@accSwift-modules/accswift-shared/models/project.model";
 import { SeriesRootModel } from "@accSwift-modules/accswift-shared/models/series.model";
+import { CashAccountsModel } from "@app/modules/accswift-shared/models/cash-account.model";
 
 @Injectable({
   providedIn: "root",
@@ -23,5 +24,13 @@ export class FormsService {
 
   getProjectLists(): Observable<ProjectRootModel> {
     return this.httpService.get(`${this._api_URL}project`);
+  }
+
+  getLedgerDetails(id): Observable<any> {
+    return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
+  }
+
+  getCashReceiptAccounts(): Observable<CashAccountsModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/CashAccounts`);
   }
 }
