@@ -29,6 +29,7 @@ import { LedgerModalPopupComponent } from "../ledger-modal-popup/ledger-modal-po
 import { LocaleService } from "@app/core/services/locale/locale.services";
 import { SettingsService } from "@app/modules/settings/services/settings.service";
 import { IntlService, CldrIntlService } from "@progress/kendo-angular-intl";
+import { LedgerMin } from "@app/modules/ledger/models/ledger.models";
 
 @Component({
   selector: "accSwift-details-entry-grid",
@@ -44,6 +45,7 @@ export class DetailsEntryGridComponent implements OnInit {
   totalGrossAmount: number = 0;
   totalNetAmount: number = 0;
   public productList: ProductMin[] = [];
+  public ledgerList: LedgerMin[] = [];
   @Input("entryArray")
   public entryArray: FormArray;
   @Input("voucherType") public voucherType: string;
@@ -93,6 +95,9 @@ export class DetailsEntryGridComponent implements OnInit {
 
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
+    });
+    this.gridServices.getLedgerDD().subscribe((response) => {
+      this.ledgerList = response.Entity;
     });
     for (const key in this.entryArray.value[0]) {
       this.columns.push(key);
@@ -316,6 +321,31 @@ export class DetailsEntryGridComponent implements OnInit {
     }
   }
 
+  handleLedgerChange(value, index): void {
+    const selectedLedgerValue = this.gridServices.ledgerList.filter(
+      (s) => s.LedgerID === value
+    );
+    console.log("selectLedger" + JSON.stringify(selectedLedgerValue));
+    const entryListArray = <FormArray>this.entryArray;
+    if (selectedLedgerValue && selectedLedgerValue.length > 0) {
+      entryListArray.controls[index]
+        .get("LedgerBalance")
+        .setValue(selectedLedgerValue[0].LedgerBalance);
+      entryListArray.controls[index]
+        .get("LedgerName")
+        .setValue(selectedLedgerValue[0].LedgerName);
+      entryListArray.controls[index]
+        .get("LedgerCode")
+        .setValue(selectedLedgerValue[0].LedgerCode);
+      entryListArray.controls[index]
+        .get("LedgerID")
+        .setValue(selectedLedgerValue[0].LedgerID);
+      const length = this.entryArray.value.length;
+      if (entryListArray.controls[length - 1].invalid) return;
+      this.entryArray.push(this.addEntryList());
+    }
+  }
+
   addNewProduct(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(AddProductComponent, this.config);
     this.modalRef.content.action = "Select";
@@ -412,10 +442,6 @@ export class DetailsEntryGridComponent implements OnInit {
         if (entryListArray.controls[length - 1].invalid) return;
         this.entryArray.push(this.addEntryList());
       }
-
-      // (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).push(
-      //   this.addCashReceiptEntryFormGroup()
-      // );
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
@@ -487,6 +513,15 @@ export class DetailsEntryGridComponent implements OnInit {
     );
     const selectedTaxValue = this.gridServices.productList.filter(
       (s) => s.ProductID === value
+    );
+  }
+
+  ledgerDDFilter(value, i): void {
+    this.ledgerList = this.gridServices.ledgerList.filter(
+      (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+    const selectedTaxValue = this.gridServices.ledgerList.filter(
+      (s) => s.LedgerID === value
     );
   }
 

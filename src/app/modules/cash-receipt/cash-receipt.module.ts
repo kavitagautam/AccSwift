@@ -15,6 +15,7 @@ import {
 } from "@progress/kendo-angular-dropdowns";
 import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
+import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module"
     SharedModule,
     CashReceiptRoutingModule,
     AccswiftSharedModule,
+    AccswiftFormsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [LedgerModalPopupComponent],
