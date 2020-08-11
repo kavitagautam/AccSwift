@@ -9,7 +9,11 @@ import {
   ProductMin,
 } from "@app/modules/product/models/product-min.model";
 import { RelatedUnitModel } from "../../models/related-unit.model";
-import { LedgerMin } from "@app/modules/ledger/models/ledger.models";
+import {
+  LedgerMin,
+  LedgerMinModel,
+} from "@app/modules/ledger/models/ledger.models";
+import { VoucherType, VoucherTypeModel } from "../../models/voucher-type.model";
 
 @Injectable({
   providedIn: "root",
@@ -18,6 +22,7 @@ export class DetailsEntryGridService {
   _api_URL = environment.baseAPI;
   productList: ProductMin[] = [];
   ledgerList: LedgerMin[] = [];
+  voucherType: VoucherType[] = [];
   taxList: Tax[] = [];
   constructor(
     private httpService: HttpClientService,
@@ -25,6 +30,8 @@ export class DetailsEntryGridService {
   ) {
     this.getTaxList();
     this.getProductList();
+    this.getLedgerList();
+    this.getVoucherType();
   }
   getTaxList(): void {
     this.httpService
@@ -42,8 +49,28 @@ export class DetailsEntryGridService {
       });
   }
 
+  getLedgerList(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/min`)
+      .subscribe((response: any) => {
+        this.ledgerList = response.Entity;
+      });
+  }
+
+  getVoucherType(): void {
+    this.httpService
+      .get(`${this._api_URL}Utility/TransactVoucherType`)
+      .subscribe((response: VoucherTypeModel) => {
+        this.voucherType = response.Entity;
+      });
+  }
+
   getProductDD(): Observable<ProductMinRootModel> {
     return this.httpService.get(`${this._api_URL}Product/min`);
+  }
+
+  getLedgerDD(): Observable<LedgerMinModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/min`);
   }
 
   getRelatedUnits(id: any): Observable<RelatedUnitModel> {

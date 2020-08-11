@@ -132,7 +132,44 @@
         let-isNew="isNew"
         let-rowIndex="rowIndex"
       >
-        <div class="col-xs-12 col-md-12 p-0">
+        <div class="form-group mt-4">
+          <div class="col-md-11 pl-0">
+            <kendo-dropdownlist
+              class="form-control"
+              [data]="ledgerList"
+              [filterable]="true"
+              [textField]="'CodeName'"
+              [valueField]="'LedgerID'"
+              [valuePrimitive]="true"
+              [formControl]="entryArray.controls[rowIndex].get('LedgerID')"
+              (filterChange)="ledgerDDFilter($event, rowIndex)"
+              (valueChange)="handleLedgerChange($event, rowIndex)"
+            >
+              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                <span class="template">{{ dataItem.CodeName }} </span>
+              </ng-template>
+              <ng-template kendoDropDownListNoDataTemplate>
+                <div>
+                  No data found.
+                  <br />
+                  <!-- <button class="k-button" (click)="addNewProduct(addProduct)">
+                  Add new product
+                </button> -->
+                </div>
+              </ng-template>
+            </kendo-dropdownlist>
+          </div>
+          <div class="col-md-1 p-0">
+            <a (click)="openLedgerModal(rowIndex)"
+              ><i
+                class="fa fa-eye pull-right ledgerSelectIcon"
+                style="margin: 0px; font-size: 16px; position: relative;"
+                aria-hidden="true"
+              ></i>
+            </a>
+          </div>
+        </div>
+        <!-- <div class="col-xs-12 col-md-12 p-0">
           <div class="col-md-4 pl-0">
             <input
               #input
@@ -181,7 +218,7 @@
               Ledger name is required
             </kendo-popup>
           </div>
-        </div>
+        </div> -->
       </ng-template>
     </kendo-grid-column>
 
@@ -479,12 +516,15 @@
         let-isNew="isNew"
         let-rowIndex="rowIndex"
       >
-        <input
-          #input
-          class="k-textbox"
+        <kendo-dropdownlist
           class="form-control"
+          [data]="gridServices.voucherType"
+          textField="VouchName"
+          valueField="VouchType"
+          [valuePrimitive]="true"
           [formControl]="entryArray.controls[rowIndex].get(column.field)"
-        />
+        >
+        </kendo-dropdownlist>
       </ng-template>
     </kendo-grid-column>
     <kendo-grid-column

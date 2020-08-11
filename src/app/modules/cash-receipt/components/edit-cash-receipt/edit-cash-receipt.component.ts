@@ -197,12 +197,7 @@ export class EditCashReceiptComponent implements OnInit {
     this.submitted = false;
   }
 
-  changeAccount(event, ledgerId): void {
-    this.cashReceiptService.getLedgerDetails(ledgerId).subscribe((response) => {
-      this.currentAmount = response;
-    });
-  }
-
+  //Ledger Code entirng Filed -- not used recently
   changeLedgerValue(dataItem, selectedRow): void {
     const cashReceiptFormArray = <FormArray>(
       this.cashReceiptForm.get("CashReceiptDetails")
@@ -258,102 +253,5 @@ export class EditCashReceiptComponent implements OnInit {
   public cancel(): void {
     this.cashReceiptForm.reset();
     this.router.navigate(["/cash-receipt"]);
-  }
-
-  public addHandler({ sender }) {
-    this.closeEditor(sender);
-    this.submitted = true;
-    this.rowSubmitted = true;
-    if (this.cashReceiptForm.get("CashReceiptDetails").invalid) return;
-    (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).push(
-      this.addCashReceiptEntryFormGroup()
-    );
-    this.rowSubmitted = false;
-    this.submitted = false;
-  }
-
-  public editHandler({ sender, rowIndex, dataItem }) {
-    this.closeEditor(sender);
-    const cashReceiptEntry = <FormArray>(
-      this.cashReceiptForm.get("CashReceiptDetails")
-    );
-    cashReceiptEntry.controls[rowIndex]
-      .get("LedgerName")
-      .setValue(dataItem.particularsOraccountingHead);
-    cashReceiptEntry.controls[rowIndex]
-      .get("VoucherNo")
-      .setValue(dataItem.voucherNo);
-    cashReceiptEntry.controls[rowIndex]
-      .get("LedgerBalance")
-      .setValue(dataItem.currentAmount);
-    cashReceiptEntry.controls[rowIndex]
-      .get("VoucherType")
-      .setValue(dataItem.vType);
-    cashReceiptEntry.controls[rowIndex]
-      .get("Remarks")
-      .setValue(dataItem.remarks);
-    this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.cashReceiptForm.get("CashReceiptDetails"));
-  }
-
-  openModal(index: number): void {
-    this.modalRef = this.modalService.show(
-      LedgerModalPopupComponent,
-      this.config
-    );
-    this.modalRef.content.data = index;
-    this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe((data) => {
-      if (data) {
-        const cashReceiptFormArray = <FormArray>(
-          this.cashReceiptForm.get("CashReceiptDetails")
-        );
-        cashReceiptFormArray.controls[index]
-          .get("LedgerBalance")
-          .setValue(data.ActualBalance);
-        cashReceiptFormArray.controls[index]
-          .get("LedgerName")
-          .setValue(data.LedgerName);
-        cashReceiptFormArray.controls[index]
-          .get("LedgerCode")
-          .setValue(data.LedgerCode);
-        cashReceiptFormArray.controls[index]
-          .get("LedgerID")
-          .setValue(data.LedgerID);
-      }
-      (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).push(
-        this.addCashReceiptEntryFormGroup()
-      );
-    });
-    this.modalRef.content.onClose.subscribe((data) => {
-      //Do after Close the Modal
-    });
-  }
-
-  public cancelHandler({ sender, rowIndex }) {
-    this.closeEditor(sender, rowIndex);
-  }
-
-  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
-    //Save code
-    sender.closeRow(rowIndex);
-  }
-
-  public removeHandler({ dataItem, rowIndex }): void {
-    // Calculation on Debit Total and Credit Total on Rows Removed
-    const cashReceiptEntry = <FormArray>(
-      this.cashReceiptForm.get("CashReceiptDetails")
-    );
-
-    // Remove the Row
-    (<FormArray>this.cashReceiptForm.get("CashReceiptDetails")).removeAt(
-      rowIndex
-    );
-  }
-
-  private closeEditor(grid, rowIndex = 1) {
-    grid.closeRow(rowIndex);
-    this.editedRowIndex = undefined;
-    // this.formGroup = undefined;
   }
 }
