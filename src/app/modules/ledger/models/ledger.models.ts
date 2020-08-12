@@ -92,6 +92,10 @@ export interface Ledger {
 }
 
 export interface LedgerMin {
+  GroupName: string;
+  Balance: string;
+  ActualBalance: number;
+  LedgerType: string;
   LedgerID: number;
   LedgerCode: string;
   LedgerName: string;
