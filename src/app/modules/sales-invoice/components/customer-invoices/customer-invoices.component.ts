@@ -5,7 +5,7 @@ import { ExportToCsvService } from "@app/shared/services/export-to-csv/export-to
 import { IconConst } from "@shared/constants/icon.constant";
 import { MapCustomerInvoiceExportData } from "@app/shared/data/map-customer-invoice-export-data";
 import { CustomerInvoiceExportColumnHeaders } from "@app/shared/models/customer-invoice-export-column-headers.model";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 @Component({
   selector: "simpliflysaas-customer-invoices",
   templateUrl: "./customer-invoices.component.html",
@@ -14,6 +14,14 @@ import { ActivatedRoute } from "@angular/router";
 export class CustomerInvoicesComponent implements OnInit {
   defaultImageUrl = environment.defaultImageUrl;
   iconConst = IconConst;
+  totalQty: number = 0;
+  totalGrossAmount: number = 0;
+  totalNetAmount: number = 0;
+  totalDiscountAmount: number = 0;
+  totalDiscountPercentage: number = 0;
+  totalTaxAmount: number = 0;
+  vatTotalAmount: number = 0;
+  grandTotalAmount: number = 0;
   // select dropdown
   payrollInvoiceList = [
     {
@@ -25,12 +33,65 @@ export class CustomerInvoicesComponent implements OnInit {
       name: 3222,
     },
   ];
-
+  invoiceDetails = [];
   customerDescription: any[];
   constructor(
     private exportService: ExportToCsvService,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    //   console.log("route --->", this.router.getCurrentNavigation().extras.state);
+    //const data = this.router.getCurrentNavigation().extras.state;
+    const data = JSON.parse(localStorage.getItem("invoices"));
+    if (data) {
+      // this.invoiceDetails = this.router.getCurrentNavigation().extras.state.InvoiceDetails;
+      this.invoiceDetails = data.InvoiceDetails;
+      this.calculateTotal(this.invoiceDetails);
+    }
+  }
+
+  calculateTotal(invoices): void {
+    let sumQty = 0;
+    let sumNetAmount = 0;
+    let sumGrossAmount = 0;
+    let sumDiscountAmount = 0;
+    let sumTotalDiscountPer = 0;
+    let sumTaxAmount = 0;
+    for (let i = 0; i < invoices.length; i++) {
+      if (invoices && invoices[i].Quantity) {
+        sumQty = sumQty + invoices[i].Quantity;
+      }
+      if (invoices && invoices[i].Amount) {
+        sumGrossAmount = sumGrossAmount + invoices[i].Amount;
+      }
+      if (invoices && invoices[i].NetAmount) {
+        sumNetAmount = sumNetAmount + invoices[i].NetAmount;
+      }
+      if (invoices && invoices[i].DiscountAmount) {
+        sumDiscountAmount = sumDiscountAmount + invoices[i].DiscountAmount;
+      }
+      if (invoices && invoices[i].DiscPercentage) {
+        sumTotalDiscountPer = sumTotalDiscountPer + invoices[i].DiscPercentage;
+      }
+      if (invoices && invoices[i].TaxAmount) {
+        sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
+      }
+    }
+
+    this.totalQty = sumQty;
+    this.totalGrossAmount = sumGrossAmount;
+    this.totalNetAmount = sumNetAmount;
+    this.totalDiscountAmount = sumDiscountAmount;
+    this.totalDiscountPercentage = sumTotalDiscountPer;
+    this.totalTaxAmount = sumTaxAmount;
+
+    this.vatTotalAmount = this.totalNetAmount * 0.13;
+    this.grandTotalAmount =
+      this.totalGrossAmount -
+      this.totalDiscountAmount +
+      this.vatTotalAmount +
+      this.totalTaxAmount;
+  }
 
   ngOnInit() {
     this.getIdFromRoute();
@@ -38,11 +99,18 @@ export class CustomerInvoicesComponent implements OnInit {
 
   getIdFromRoute(): void {
     this.route.paramMap.subscribe((params) => {
+      console.log(JSON.stringify(params));
       const param = params.get("id");
       console.log("Invoice ID" + JSON.stringify(param));
       if (param) {
       }
     });
+    const param = this.route.snapshot.queryParamMap;
+    if (param.get("data")) {
+      const data = param.get("data");
+
+      console.log("data of params" + JSON.stringify(data));
+    }
   }
 
   exportToCSV() {

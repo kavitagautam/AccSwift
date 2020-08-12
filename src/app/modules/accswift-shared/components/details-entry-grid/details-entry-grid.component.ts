@@ -325,7 +325,6 @@ export class DetailsEntryGridComponent implements OnInit {
     const selectedLedgerValue = this.gridServices.ledgerList.filter(
       (s) => s.LedgerID === value
     );
-    console.log("selectLedger" + JSON.stringify(selectedLedgerValue));
     const entryListArray = <FormArray>this.entryArray;
     if (selectedLedgerValue && selectedLedgerValue.length > 0) {
       entryListArray.controls[index]

@@ -44,6 +44,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.buildAccountGroupForm();
+    this.addMode = true;
     if (this.selectedItem == null) {
       this.addLedgerGroup();
     }
@@ -54,9 +55,9 @@ export class AccountGroupComponent implements OnInit, OnChanges {
     for (let p in changes) {
       let c = changes[p];
       this.selectedItem = c.currentValue;
-      if (this.selectedItem) {
+      if (this.selectedItem && this.selectedItem.TypeOf == 0) {
         this.selectedLedgerGroupId = this.selectedItem.ID;
-        if (this.selectedLedgerGroupId && this.selectedItem.TypeOf == 0) {
+        if (this.selectedLedgerGroupId) {
           this.editMode = true;
           this.addMode = false;
           this.title = "Edit ";
@@ -162,11 +163,17 @@ export class AccountGroupComponent implements OnInit, OnChanges {
     this.editMode = false;
     this.title = "Add New Group ";
     this.accountGroupForm.reset();
-    this.accountGroupForm
-      .get("ParentGroupID")
-      .setValue(
-        this.ledgerGroupDetails ? this.ledgerGroupDetails.ParentGroupID : null
-      );
+    if (this.selectedLedgerGroupId) {
+      this.accountGroupForm
+        .get("ParentGroupID")
+        .setValue(this.selectedLedgerGroupId);
+    } else {
+      this.accountGroupForm
+        .get("ParentGroupID")
+        .setValue(
+          this.ledgerGroupDetails ? this.ledgerGroupDetails.ParentGroupID : null
+        );
+    }
     this.ledgerGroupDetails = null;
   }
 

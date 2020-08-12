@@ -243,7 +243,7 @@
 
     <br />
     <div style="font-size: 11px; font-weight: bold;"></div>
-
+    <!-- 
     <table
       width="100%"
       border="0"
@@ -302,9 +302,9 @@
           style="border: #000000 1px solid; font-size: 11px;"
         ></td>
       </tr>
-    </table>
+    </table> -->
 
-    <table
+    <!-- <table
       width="100%"
       border="0"
       style="
@@ -702,6 +702,62 @@
           </table>
         </td>
       </tr>
+    </table> -->
+    <table
+      id="header-fixed"
+      class="table table-hover table-fixed"
+      width="80"
+      align="center"
+    >
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Particulars</th>
+          <th>Quantity</th>
+          <th>Rate</th>
+          <th>Amount</th>
+          <th>Disc</th>
+          <th>Net Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let invoice of invoiceDetails; index as i">
+          <td *ngIf="invoice.ProductName">{{ i + 1 }}</td>
+          <td *ngIf="invoice.ProductName">{{ invoice.ProductName }}</td>
+          <td *ngIf="invoice.ProductName">{{ invoice.Quantity }}</td>
+          <td *ngIf="invoice.ProductName">{{ invoice.SalesRate }}</td>
+          <td *ngIf="invoice.ProductName">{{ invoice.Amount }}</td>
+          <td *ngIf="invoice.ProductName">{{ invoice.DiscountAmount }}</td>
+          <td *ngIf="invoice.ProductName">{{ invoice.NetAmount }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4">Amount In Words</td>
+          <td colspan="2" align="right">Gross Total</td>
+          <td colspan="1" align="right">{{ totalGrossAmount }}</td>
+        </tr>
+        <tr>
+          <td colspan="4"></td>
+          <td colspan="2" align="right">Discount</td>
+          <td colspan="1" align="right">{{ totalDiscountAmount }}</td>
+        </tr>
+        <tr>
+          <td colspan="4"></td>
+          <td colspan="2" align="right">Net Amount</td>
+          <td colspan="1" align="right">{{ totalNetAmount }}</td>
+        </tr>
+        <tr>
+          <td colspan="4"></td>
+          <td colspan="2" align="right">VAT</td>
+          <td colspan="1" align="right">{{ vatTotalAmount }}</td>
+        </tr>
+        <tr>
+          <td colspan="4"></td>
+          <td colspan="2" align="right">Grand Total</td>
+          <td colspan="1" align="right">{{ grandTotalAmount }}</td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </kendo-pdf-export>

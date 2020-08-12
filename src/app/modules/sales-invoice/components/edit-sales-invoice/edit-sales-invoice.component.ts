@@ -410,6 +410,21 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.router.navigate(["/sales-invoice"]);
   }
 
+  invoiceBilling(): void {
+    this.router.navigate(
+      [
+        `/sales-invoice/edit/${
+          this.salesInvoiceForm.get("ID").value
+        }/invoice-billing`,
+      ],
+      { state: this.salesInvoiceForm.value }
+    );
+    localStorage.setItem(
+      "invoices",
+      JSON.stringify(this.salesInvoiceForm.value)
+    );
+  }
+
   cashPartyDDFilter(value): void {
     this.cashPartyList = this.salesInvoiceService.cashPartyList.filter(
       (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
