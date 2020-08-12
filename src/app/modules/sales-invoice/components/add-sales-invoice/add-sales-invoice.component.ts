@@ -84,6 +84,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   buildAddSalesInvoiceForm(): void {
     this.salesInvoiceForm = this._fb.group({
+      ID:[null],
       SeriesID: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_SERIES_SALES.Value
@@ -199,6 +200,21 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           }
         });
     }
+  }
+
+  invoiceBilling(): void {
+    this.router.navigate(
+      [
+        `/sales-invoice/edit/${
+          this.salesInvoiceForm.get("ID").value
+        }/invoice-billing`,
+      ],
+      { state: this.salesInvoiceForm.value }
+    );
+    localStorage.setItem(
+      "invoices",
+      JSON.stringify(this.salesInvoiceForm.value)
+    );
   }
 
   payInvoice(): void {

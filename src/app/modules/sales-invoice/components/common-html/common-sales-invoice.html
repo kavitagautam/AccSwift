@@ -1,7 +1,7 @@
 <div class="box box-default">
   <div class="col-md-12 col-xs-12" style="margin-top: 18px;">
     <div class="move-right">
-      <button class="btn btn-default mr-2 mt-2" tooltip="Generate Pdf">
+      <button class="btn btn-default mr-2 mt-2" tooltip="Generate Pdf" disabled>
         <i class="{{ iconConst.EXPORT_TO_PDF }}"></i>
       </button>
       <button class="btn btn-default mr-2 mt-2" tooltip="CSV Export" disabled>
@@ -10,13 +10,24 @@
       <button
         class="btn btn-default mr-2 mt-2"
         tooltip="Print"
-        printSectionId="print-section"
-        ngxPrint
-        [useExistingCss]="true"
-        [routerLink]="['invoice-billing']"
+        (click)="invoiceBilling()"
       >
         <i class="{{ iconConst.PRINT }}"></i>
       </button>
+      <!-- <button
+        class="btn btn-default mr-2 mt-2"
+        tooltip="Print"
+        printSectionId="print-section"
+        ngxPrint
+        [useExistingCss]="true"
+        (click)="invoiceBilling()"
+      >
+       
+       //  (click)="invoiceBilling()"
+         //[routerLink]="['invoice-billing']" 
+
+        <i class="{{ iconConst.PRINT }}"></i>
+      </button> -->
       <button class="btn btn-default mr-2 mt-2" disabled tooltip="Email">
         <i class="{{ iconConst.EMAIL }}"></i>
       </button>

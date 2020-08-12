@@ -3,6 +3,15 @@
     <kendo-tabstrip-tab [title]="'Ledger Details'" [selected]="true">
       <ng-template kendoTabContent>
         <div class="box box-default">
+          <div class="col-md-12">
+            <button
+              class="btn btn-primary mr-2 pull-right"
+              style="margin-top: -10px;"
+              (click)="addNewLedger()"
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i> New
+            </button>
+          </div>
           <h5 class="form_heading">
             {{ title }}
             <span *ngIf="ledgerDetails">{{ ledgerDetails.Name }}</span>
@@ -93,13 +102,6 @@
 
   <div class="box-footer" style="display: table; margin: auto;">
     <div class="mb-2">
-      <button
-        class="btn btn-primary mr-2"
-        *ngIf="!addMode"
-        (click)="addNewLedger()"
-      >
-        <i class="fa fa-plus" aria-hidden="true"></i> New
-      </button>
       <button
         class="btn btn-primary"
         [disabled]="accountLedgerForm.invalid"

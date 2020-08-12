@@ -104,15 +104,4 @@ export class LandingLedgerComponent implements OnInit {
   collapseAllNode(): void {
     this.expandedKeys = [];
   }
-
-  add(type): void {
-    this.selectedItem = null;
-    if (type == "group") {
-      this.selectedGroupTab = true;
-      this.selectedLedgerTab = false;
-    } else {
-      this.selectedGroupTab = false;
-      this.selectedLedgerTab = true;
-    }
-  }
 }
