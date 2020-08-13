@@ -268,7 +268,7 @@
       >
         <span class="pull-right">
           Debit Total:
-          <span [innerHTML]="debitTotal | currencyFormat"></span>
+          <span [innerHTML]="calculateDebitTotal() | currencyFormat"></span>
         </span>
       </ng-template>
     </kendo-grid-column>
@@ -320,7 +320,7 @@
       >
         <span class="pull-right">
           Credit Total:
-          <span [innerHTML]="creditTotal | currencyFormat"></span>
+          <span [innerHTML]="calculateDebitTotal() | currencyFormat"></span>
         </span>
       </ng-template>
     </kendo-grid-column>

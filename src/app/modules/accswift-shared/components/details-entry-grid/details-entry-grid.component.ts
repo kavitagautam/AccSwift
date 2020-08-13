@@ -201,6 +201,38 @@ export class DetailsEntryGridComponent implements OnInit {
     return sumGrossAmount;
   }
 
+  public calculateDebitTotal(): number {
+    const entryListArray = this.entryArray.value;
+    let debitTotalAmount = 0;
+    for (let i = 0; i < entryListArray.length; i++) {
+      if (
+        entryListArray &&
+        entryListArray[i].Amount &&
+        entryListArray[i].DebitCredit == "Debit"
+      ) {
+        debitTotalAmount = debitTotalAmount + entryListArray[i].Amount;
+      }
+    }
+    this.debitTotal = debitTotalAmount;
+    return debitTotalAmount;
+  }
+  public calculateCreditTotal(): number {
+    const entryListArray = this.entryArray.value;
+    let creditTotalAmount = 0;
+    for (let i = 0; i < entryListArray.length; i++) {
+      if (
+        entryListArray &&
+        entryListArray[i].Amount &&
+        entryListArray[i].DebitCredit == "Credit"
+      ) {
+        creditTotalAmount = creditTotalAmount + entryListArray[i].Amount;
+      }
+    }
+    this.creditTotal = creditTotalAmount;
+
+    return creditTotalAmount;
+  }
+
   checkDebitValue(event: Event, index: number): void {
     let debitValue = 0;
     const entryListArray = this.entryArray as FormArray;
