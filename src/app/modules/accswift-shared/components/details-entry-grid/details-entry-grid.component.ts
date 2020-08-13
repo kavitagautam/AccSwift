@@ -44,6 +44,9 @@ export class DetailsEntryGridComponent implements OnInit {
   totalQty: number = 0;
   totalGrossAmount: number = 0;
   totalNetAmount: number = 0;
+  debitTotal: number = 0;
+  creditTotal: number = 0;
+  differenceTotal: number = 0;
   public productList: ProductMin[] = [];
   public ledgerList: LedgerMin[] = [];
   @Input("entryArray")
@@ -196,6 +199,73 @@ export class DetailsEntryGridComponent implements OnInit {
       }
     }
     return sumGrossAmount;
+  }
+
+  public calculateDebitTotal(): number {
+    const entryListArray = this.entryArray.value;
+    let debitTotalAmount = 0;
+    for (let i = 0; i < entryListArray.length; i++) {
+      if (
+        entryListArray &&
+        entryListArray[i].Amount &&
+        entryListArray[i].DebitCredit == "Debit"
+      ) {
+        debitTotalAmount = debitTotalAmount + entryListArray[i].Amount;
+      }
+    }
+    this.debitTotal = debitTotalAmount;
+    return debitTotalAmount;
+  }
+  public calculateCreditTotal(): number {
+    const entryListArray = this.entryArray.value;
+    let creditTotalAmount = 0;
+    for (let i = 0; i < entryListArray.length; i++) {
+      if (
+        entryListArray &&
+        entryListArray[i].Amount &&
+        entryListArray[i].DebitCredit == "Credit"
+      ) {
+        creditTotalAmount = creditTotalAmount + entryListArray[i].Amount;
+      }
+    }
+    this.creditTotal = creditTotalAmount;
+
+    return creditTotalAmount;
+  }
+
+  checkDebitValue(event: Event, index: number): void {
+    let debitValue = 0;
+    const entryListArray = this.entryArray as FormArray;
+    const updatedValue = entryListArray.controls[index].get("Amount").value;
+    if (updatedValue) {
+      entryListArray.controls[index].get("DebitCredit").setValue("Debit");
+    }
+    for (let j = 0; j < entryListArray.controls.length; j++) {
+      if (entryListArray.controls[j].get("DebitCredit").value == "Debit") {
+        debitValue =
+          debitValue +
+          (parseFloat(entryListArray.controls[j].get("Amount").value) || 0);
+      }
+    }
+    this.debitTotal = debitValue;
+  }
+
+  checkCreditValue(event: Event, index: number): void {
+    let creditValue = 0;
+    const entryListArray = this.entryArray as FormArray;
+
+    const updatedValue = entryListArray.controls[index].get("Amount").value;
+    if (parseFloat(updatedValue)) {
+      entryListArray.controls[index].get("DebitCredit").setValue("Credit");
+    }
+    for (let j = 0; j < entryListArray.controls.length; j++) {
+      if (entryListArray.controls[j].get("DebitCredit").value == "Credit") {
+        creditValue =
+          creditValue +
+          (parseFloat(entryListArray.controls[j].get("Amount").value) || 0);
+      }
+    }
+    this.creditTotal = creditValue;
   }
 
   //Invoice Column value changes
@@ -501,6 +571,19 @@ export class DetailsEntryGridComponent implements OnInit {
         Amount: [""],
         LedgerBalance: [""],
         VoucherType: [""],
+        Remarks: [""],
+      });
+    }
+    if (this.voucherType == "JRNL") {
+      return this._fb.group({
+        ID: [0],
+        MasterID: [0],
+        LedgerCode: [""],
+        LedgerName: ["", Validators.required],
+        LedgerID: [""],
+        DebitCredit: [""],
+        Amount: ["", Validators.required],
+        LedgerBalance: [""],
         Remarks: [""],
       });
     }

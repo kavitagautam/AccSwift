@@ -5,7 +5,6 @@ import { CashReceiptService } from "../../services/cash-receipt.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { CashReceipt } from "../../models/cash-receipt.model";
 import { ToastrService } from "ngx-toastr";
 
