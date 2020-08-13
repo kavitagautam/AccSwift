@@ -74,7 +74,6 @@ export class AccountGroupComponent implements OnInit, OnChanges {
       .getLedgerGroupDetails(this.selectedLedgerGroupId)
       .subscribe((res) => {
         this.ledgerGroupDetails = res.Entity;
-
         this.buildAccountGroupForm();
       });
   }
@@ -158,11 +157,12 @@ export class AccountGroupComponent implements OnInit, OnChanges {
     this.buildAccountGroupForm();
   }
 
-  addNewGroup(): void {
+  addLedgerGroup(): void {
     this.addMode = true;
     this.editMode = false;
     this.title = "Add New Group ";
     this.accountGroupForm.reset();
+    console.log("selected" + this.selectedLedgerGroupId);
     if (this.selectedLedgerGroupId) {
       this.accountGroupForm
         .get("ParentGroupID")
@@ -175,14 +175,6 @@ export class AccountGroupComponent implements OnInit, OnChanges {
         );
     }
     this.ledgerGroupDetails = null;
-  }
-
-  addLedgerGroup(): void {
-    this.ledgerGroupDetails = null;
-    this.editMode = false;
-    this.addMode = true;
-    this.title = "Add Account Group ";
-    this.buildAccountGroupForm();
   }
 
   public deleteLedgerGroupByID(id): void {
