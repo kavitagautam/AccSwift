@@ -223,6 +223,108 @@
     </kendo-grid-column>
 
     <kendo-grid-column
+      field="DebitCredit"
+      title="Debit"
+      width="150"
+      [hidden]="!columns.includes('DebitCredit')"
+    >
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-formGroup="formGroup"
+        let-isNew="isNew"
+        let-rowIndex="rowIndex"
+      >
+        <kendo-numerictextbox
+          #ntb="popupAnchor"
+          popupAnchor
+          class="form-control"
+          [decimals]="decimals"
+          [format]="'c0'"
+          [disabled]="
+            entryArray.controls[rowIndex].get('DebitCredit').value == 'Credit'
+          "
+          [formControl]="entryArray.controls[rowIndex].get('Amount')"
+          (change)="checkDebitValue(dataItem, rowIndex)"
+        ></kendo-numerictextbox>
+        <kendo-popup
+          [anchor]="ntb.element"
+          *ngIf="
+            entryArray.controls[rowIndex].get('Amount').invalid &&
+            rowSubmitted &&
+            !entryArray.controls[rowIndex].get('Amount').untouched
+          "
+          popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+        >
+          <span class="k-icon k-i-warning"></span>
+          Debit Amount is required
+        </kendo-popup>
+      </ng-template>
+      <ng-template
+        kendoGridFooterTemplate
+        let-column
+        let-columnIndex="columnIndex"
+      >
+        <span class="pull-right">
+          Debit Total:
+          <span [innerHTML]="debitTotal | currencyFormat"></span>
+        </span>
+      </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column
+      field="DebitCredit"
+      title="Credit"
+      width="150"
+      [hidden]="!columns.includes('DebitCredit')"
+    >
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-formGroup="formGroup"
+        let-isNew="isNew"
+        let-rowIndex="rowIndex"
+      >
+        <kendo-numerictextbox
+          #ntb="popupAnchor"
+          popupAnchor
+          class="form-control"
+          [decimals]="decimals"
+          [format]="'c0'"
+          [disabled]="
+            entryArray.controls[rowIndex].get('DebitCredit').value == 'Debit'
+          "
+          [formControl]="entryArray.controls[rowIndex].get('Amount')"
+          (change)="checkCreditValue(dataItem, rowIndex)"
+        ></kendo-numerictextbox>
+
+        <kendo-popup
+          [anchor]="ntb.element"
+          *ngIf="
+            entryArray.controls[rowIndex].get('Amount').invalid &&
+            rowSubmitted &&
+            !(isNew && entryArray.controls[rowIndex].get('Amount').untouched)
+          "
+          popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+        >
+          <span class="k-icon k-i-warning"></span>
+          Credit Amount is required
+        </kendo-popup>
+      </ng-template>
+      <ng-template
+        kendoGridFooterTemplate
+        let-column
+        let-columnIndex="columnIndex"
+      >
+        <span class="pull-right">
+          Credit Total:
+          <span [innerHTML]="creditTotal | currencyFormat"></span>
+        </span>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column
       field="VoucherNumber"
       title="Voucher No"
       width="150"
@@ -410,7 +512,7 @@
       field="Amount"
       title="Amount"
       width="120"
-      [hidden]="!columns.includes('Amount')"
+      [hidden]="!columns.includes('Amount') || voucherType == 'JRNL'"
     >
       <ng-template
         kendoGridCellTemplate
@@ -499,6 +601,17 @@
           [readonly]="true"
           [formControl]="entryArray.controls[rowIndex].get(column.field)"
         />
+      </ng-template>
+      <ng-template
+        kendoGridFooterTemplate
+        let-column
+        let-columnIndex="columnIndex"
+        *ngIf="voucherType == 'JRNL'"
+      >
+        <span class="pull-right">
+          Difference :
+          <span [innerHTML]="debitTotal - creditTotal | currencyFormat"></span>
+        </span>
       </ng-template>
     </kendo-grid-column>
 
