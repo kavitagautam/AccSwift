@@ -4,7 +4,7 @@ import { SeriesFormsComponent } from "./forms-components/series-forms/series-for
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { ProjectFormsComponent } from "./forms-components/project-forms/project-forms.component";
 import { CashAccountComponent } from "./forms-components/cash-account/cash-account.component";
-import { BankAccountComponent } from './forms-components/bank-account/bank-account.component';
+import { BankAccountComponent } from "./forms-components/bank-account/bank-account.component";
 
 @NgModule({
   declarations: [
@@ -14,6 +14,11 @@ import { BankAccountComponent } from './forms-components/bank-account/bank-accou
     BankAccountComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  exports: [SeriesFormsComponent, ProjectFormsComponent, CashAccountComponent],
+  exports: [
+    SeriesFormsComponent,
+    ProjectFormsComponent,
+    CashAccountComponent,
+    BankAccountComponent,
+  ],
 })
 export class AccswiftFormsModule {}

@@ -196,12 +196,6 @@ export class EditBankReceiptComponent implements OnInit {
     this.submitted = false;
   }
 
-  changeAccount(event, ledgerId): void {
-    this.bankReceiptService.getLedgerDetails(ledgerId).subscribe((response) => {
-      this.currentAmount = response;
-    });
-  }
-
   changeLedgerValue(dataItem, selectedRow): void {
     const bankReceiptFormArray = <FormArray>(
       this.bankReceiptForm.get("BankReceiptDetailsList")

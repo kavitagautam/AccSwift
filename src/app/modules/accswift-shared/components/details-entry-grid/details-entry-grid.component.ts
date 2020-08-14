@@ -496,7 +496,6 @@ export class DetailsEntryGridComponent implements OnInit {
     this.modalRef.content.onSelected.subscribe((data) => {
       if (data) {
         const entryListArray = this.entryArray as FormArray;
-
         entryListArray.controls[index]
           .get("LedgerBalance")
           .setValue(data.ActualBalance);
@@ -507,6 +506,21 @@ export class DetailsEntryGridComponent implements OnInit {
           .get("LedgerCode")
           .setValue(data.LedgerCode);
         entryListArray.controls[index].get("LedgerID").setValue(data.LedgerID);
+        if (this.voucherType == "BANK_RCPT") {
+          entryListArray.controls[index]
+            .get("VoucherNumber")
+            .setValue(data.VoucherNumber);
+          entryListArray.controls[index]
+            .get("ChequeNumber")
+            .setValue(data.ChequeNumber);
+          entryListArray.controls[index]
+            .get("VoucherType")
+            .setValue(data.VoucherType);
+          entryListArray.controls[index]
+            .get("ChequeDate")
+            .setValue(new Date(data.ChequeDate));
+        }
+
         const length = this.entryArray.value.length;
         if (entryListArray.controls[length - 1].invalid) return;
         this.entryArray.push(this.addEntryList());
@@ -574,6 +588,20 @@ export class DetailsEntryGridComponent implements OnInit {
         Remarks: [""],
       });
     }
+
+    if (this.voucherType == "CASH_PMNT") {
+      return this._fb.group({
+        ID: [0],
+        MasterID: [0],
+        LedgerID: [0],
+        LedgerCode: [""],
+        LedgerName: [""],
+        LedgerBalance: [""],
+        Amount: [""],
+        Remarks: [""],
+      });
+    }
+
     if (this.voucherType == "JRNL") {
       return this._fb.group({
         ID: [0],
@@ -584,6 +612,33 @@ export class DetailsEntryGridComponent implements OnInit {
         DebitCredit: [""],
         Amount: ["", Validators.required],
         LedgerBalance: [""],
+        Remarks: [""],
+      });
+    }
+
+    if (this.voucherType == "BANK_PMNT") {
+      return this._fb.group({
+        ID: [""],
+        MasterID: [""],
+        LedgerID: [""],
+        LedgerCode: [""],
+        LedgerName: ["", Validators.required],
+        ChequeNumber: [""],
+        ChequeDate: [""],
+        LedgerBalance: [""],
+        Amount: [""],
+        Remarks: [""],
+      });
+    }
+    if (this.voucherType == "BANK_RCPT") {
+      return this._fb.group({
+        ID: [0],
+        MasterID: [0],
+        LedgerID: [""],
+        LedgerCode: [""],
+        LedgerName: [""],
+        LedgerBalance: [""],
+        Amount: [""],
         Remarks: [""],
       });
     }

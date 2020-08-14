@@ -324,6 +324,52 @@
         </span>
       </ng-template>
     </kendo-grid-column>
+
+    <kendo-grid-column
+      field="ChequeNumber"
+      title="Cheque Number"
+      width="120"
+      [hidden]="!columns.includes('ChequeNumber')"
+    >
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-formGroup="formGroup"
+        let-isNew="isNew"
+        let-rowIndex="rowIndex"
+      >
+        <input
+          #input
+          class="k-textbox"
+          class="form-control"
+          [formControl]="entryArray.controls[rowIndex].get(column.field)"
+        />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column
+      field="ChequeDate"
+      title="Cheque Date"
+      width="150"
+      [hidden]="!columns.includes('ChequeDate')"
+    >
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-formGroup="formGroup"
+        let-isNew="isNew"
+        let-rowIndex="rowIndex"
+      >
+        <kendo-datepicker
+          [valuePrimitive]="true"
+          [formControl]="entryArray.controls[rowIndex].get(column.field)"
+          [min]="min"
+          [max]="max"
+          class="form-control"
+        ></kendo-datepicker>
+      </ng-template>
+    </kendo-grid-column>
     <kendo-grid-column
       field="VoucherNumber"
       title="Voucher No"
@@ -342,7 +388,7 @@
           #ntb="popupAnchor"
           class="k-textbox"
           popupAnchor
-          style="width: 130px;"
+          class="form-control"
           [formControl]="entryArray.controls[rowIndex].get(column.field)"
         />
       </ng-template>
@@ -523,7 +569,11 @@
         let-column="column"
       >
         <kendo-numerictextbox
-          *ngIf="voucherType == 'CASH_RCPT'"
+          *ngIf="
+            voucherType == 'CASH_RCPT' ||
+            voucherType == 'CASH_PMNT' ||
+            voucherType == 'BANK_RCPT'
+          "
           #ntb="popupAnchor"
           popupAnchor
           class="form-control"

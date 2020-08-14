@@ -19,7 +19,6 @@ export class AddBankReceiptComponent implements OnInit {
   numericFormat: string = "n2";
   public decimals: number = 2;
   date: Date = new Date();
-  currentAmount: string = "0.00";
   bankReceiptForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -102,12 +101,6 @@ export class AddBankReceiptComponent implements OnInit {
       this.addBankReceiptEntryList()
     );
     this.submitted = false;
-  }
-
-  changeAccount(event, ledgerId): void {
-    this.bankReceiptService.getLedgerDetails(ledgerId).subscribe((response) => {
-      this.currentAmount = response;
-    });
   }
 
   changeLedgerValue(dataItem, selectedRow): void {

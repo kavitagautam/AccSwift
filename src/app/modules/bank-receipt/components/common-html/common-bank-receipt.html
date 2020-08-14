@@ -18,26 +18,9 @@
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Bank Account </label>
-            <select
-              class="form-control"
-              formControlName="LedgerID"
-              (change)="changeAccount($event, bankReceiptForm.get('LedgerID').value)"
-              accSwiftFormValidator
-            >
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let account of bankReceiptService.bankAccountLists"
-                [ngValue]="account.LedgerID"
-              >
-                {{ account.LedgerName }}
-              </option>
-            </select>
-            <span class="current-balance"
-              >Current Amount : {{currentAmount}}</span
-            >
-          </div>
+          <accSwift-bank-account
+            formControlName="LedgerID"
+          ></accSwift-bank-account>
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -85,7 +68,11 @@
     </div>
     <div class="col-md-12 p-0">
       <div class="box-body">
-        <kendo-grid
+        <accSwift-details-entry-grid
+          [entryArray]="bankReceiptForm.controls.BankReceiptDetailsList"
+          [voucherType]="'BANK_RCPT'"
+        ></accSwift-details-entry-grid>
+        <!-- <kendo-grid
           [data]="getBankReceiptEntryList.value"
           (edit)="editHandler($event)"
           scrollable="false"
@@ -281,7 +268,7 @@
               </div>
             </ng-template>
           </kendo-grid-column>
-          <!-- <kendo-grid-column field="ChequeDate" title="Cheque Date" width="150">
+          <kendo-grid-column field="ChequeDate" title="Cheque Date" width="150">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -300,7 +287,7 @@
                 style="width: 130px;"
               ></kendo-datepicker>
             </ng-template>
-          </kendo-grid-column> -->
+          </kendo-grid-column>
           <kendo-grid-column field="ChequeBank" title="Cheque Bank" width="120">
             <ng-template
               kendoGridCellTemplate
@@ -384,7 +371,7 @@
               </button>
             </ng-template>
           </kendo-grid-command-column>
-        </kendo-grid>
+        </kendo-grid> -->
       </div>
     </div>
   </form>

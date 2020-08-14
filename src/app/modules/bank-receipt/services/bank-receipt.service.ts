@@ -34,7 +34,6 @@ export class BankReceiptService {
   ) {
     this.getProjectLists();
     this.getSeriesList();
-    this.getBankReceiptAccounts();
   }
 
   getProjectLists(): void {
@@ -42,14 +41,6 @@ export class BankReceiptService {
       .get(`${this._api_URL}project`)
       .subscribe((res: ProjectRootModel) => {
         this.projectLists = res.Entity;
-      });
-  }
-
-  getBankReceiptAccounts(): void {
-    this.httpService
-      .get(`${this._api_URL}Ledger/BankAccounts`)
-      .subscribe((res: BankAccountsModel) => {
-        this.bankAccountLists = res.Entity;
       });
   }
 
@@ -67,10 +58,6 @@ export class BankReceiptService {
       `${this._api_URL}BankReceiptMaster/navigate`,
       body
     );
-  }
-
-  getLedgerDetails(id): Observable<any> {
-    return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
   }
 
   getBankReceiptDetails(id): Observable<BankReceiptEditModel> {

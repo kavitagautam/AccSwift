@@ -35,7 +35,6 @@ export class BankPaymentService {
   ) {
     this.getProjectList();
     this.getSeriesList();
-    this.getBankPaymentAccounts();
   }
 
   getProjectList(): void {
@@ -52,14 +51,6 @@ export class BankPaymentService {
       .get(`${this._api_URL}series`, null, params)
       .subscribe((response: SeriesRootModel) => {
         this.seriesList = response.Entity;
-      });
-  }
-
-  getBankPaymentAccounts(): void {
-    this.httpService
-      .get(`${this._api_URL}Ledger/BankAccounts`)
-      .subscribe((res: BankAccountsModel) => {
-        this.bankAccountList = res.Entity;
       });
   }
 

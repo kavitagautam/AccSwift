@@ -53,7 +53,7 @@ export class CashAccountComponent implements ControlValueAccessor, OnDestroy {
   LedgerID = new FormControl();
   cashAccountLists: CashAccounts[] = [];
   constructor(private formService: FormsService) {
-    this.formService.getCashReceiptAccounts().subscribe((response) => {
+    this.formService.getCashAccounts().subscribe((response) => {
       this.cashAccountLists = response.Entity;
     });
 

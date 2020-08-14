@@ -40,7 +40,6 @@ export class CashPaymentService {
   ) {
     this.getProjectLists();
     this.getSeriesList();
-    this.getCashPaymentAccounts();
     this.getCashParty();
   }
 
@@ -61,14 +60,6 @@ export class CashPaymentService {
       });
   }
 
-  getCashPaymentAccounts(): void {
-    this.httpService
-      .get(`${this._api_URL}Ledger/CashAccounts`)
-      .subscribe((res: CashAccountsModel) => {
-        this.cashAccountLists = res.Entity;
-      });
-  }
-
   getCashParty(): void {
     this.httpService
       .get(`${this._api_URL}Ledger/cashparty`)
@@ -82,10 +73,6 @@ export class CashPaymentService {
       `${this._api_URL}CashPaymentMaster/navigate`,
       body
     );
-  }
-
-  getLedgerDetails(id): Observable<any> {
-    return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
   }
 
   getCashPaymentDetails(id): Observable<CashPaymentDetailModel> {
