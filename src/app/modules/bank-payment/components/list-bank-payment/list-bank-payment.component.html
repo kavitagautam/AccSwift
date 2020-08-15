@@ -32,18 +32,9 @@
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Bank Account </label>
-                <select class="form-control" formControlName="LedgerID">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let account of bankPaymentService.bankAccountList"
-                    [ngValue]="account.LedgerID"
-                  >
-                    {{ account.LedgerName }}
-                  </option>
-                </select>
-              </div>
+              <accSwift-bank-account
+                formControlName="LedgerID"
+              ></accSwift-bank-account>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
@@ -52,18 +43,9 @@
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Project</label>
-                <select class="form-control" formControlName="ProjectID">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let project of bankPaymentService.projectList"
-                    [ngValue]="project.ID"
-                  >
-                    {{ project.EngName }}</option
-                  >
-                </select>
-              </div>
+              <accSwift-project-forms
+                formControlName="ProjectID"
+              ></accSwift-project-forms>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">

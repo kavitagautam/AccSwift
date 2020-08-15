@@ -9,13 +9,12 @@ import {
 } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { map, catchError } from "rxjs/operators";
-import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root",
 })
 export class HttpInterceptorsService implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor() {}
 
   intercept(
     req: HttpRequest<any>,
@@ -39,7 +38,6 @@ export class HttpInterceptorsService implements HttpInterceptor {
       }),
       catchError((error: HttpErrorResponse) => {
         if (error.status == 403) {
-          this.router.navigate([""]);
         }
         //use error dialog services
         return throwError(error);

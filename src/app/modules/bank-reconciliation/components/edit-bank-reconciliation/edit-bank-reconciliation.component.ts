@@ -8,7 +8,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
-import { BankReconciliationMaster } from "../../models/bank-reconciliation.model";
+import { BankReconciliation } from "../../models/bank-reconciliation.model";
 
 @Component({
   selector: "accSwift-edit-bank-reconciliation",
@@ -18,7 +18,7 @@ import { BankReconciliationMaster } from "../../models/bank-reconciliation.model
 export class EditBankReconciliationComponent implements OnInit {
   editReconciliationForm: FormGroup;
   date: Date = new Date();
-  reconciliationDetails: BankReconciliationMaster;
+  reconciliationDetails: BankReconciliation;
   numericFormat: string = "n2";
   public decimals: number = 2;
   submitted: boolean;

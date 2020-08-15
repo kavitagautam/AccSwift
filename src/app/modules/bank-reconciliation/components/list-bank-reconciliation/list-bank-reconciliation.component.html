@@ -21,7 +21,7 @@
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Series</label>
-                <select class="form-control" formControlName="seriesId">
+                <select class="form-control" formControlName="SeriesID">
                   <option [ngValue]="null">Choose Option....</option>
                   <option
                     *ngFor="let series of reconciliationService.seriesLists"
@@ -33,37 +33,20 @@
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Bank Account </label>
-                <select class="form-control" formControlName="bankAccountId">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let bank of reconciliationService.bankAccountLists"
-                    [ngValue]="bank.LedgerID"
-                    >{{ bank.LedgerName }}</option
-                  >
-                </select>
-              </div>
+              <accSwift-bank-account
+                formControlName="LedgerID"
+              ></accSwift-bank-account>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Voucher</label>
-                <input class="form-control" formControlName="voucherNo" />
+                <input class="form-control" formControlName="VoucherNo" />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Project</label>
-                <select class="form-control" formControlName="projectId">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let project of reconciliationService.projectLists"
-                    [ngValue]="project.ID"
-                  >
-                    {{ project.EngName }}</option
-                  >
-                </select>
-              </div>
+              <accSwift-project-forms
+                formControlName="ProjectID"
+              ></accSwift-project-forms>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
@@ -71,7 +54,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  formControlName="date"
+                  formControlName="Date"
                   bsDatepicker
                   [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                 />
