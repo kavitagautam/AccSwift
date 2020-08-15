@@ -20,22 +20,9 @@
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-5">
-          <div class="form-group">
-            <label>Project</label>
-            <select
-              class="form-control"
-              id="projectId"
-              formControlName="ProjectID"
-            >
-              <option [ngValue]="null">Choose option..</option>
-              <option
-                *ngFor="let project of journalService.projectLists"
-                [value]="project.ID"
-              >
-                {{ project.EngName }}</option
-              >
-            </select>
-          </div>
+          <accSwift-project-forms
+            formControlName="ProjectID"
+          ></accSwift-project-forms>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">

@@ -8,17 +8,9 @@ import {
   CashPaymentDetailModel,
 } from "../models/cash-payment.model";
 import {
-  Project,
-  ProjectRootModel,
-} from "@accSwift-modules/accswift-shared/models/project.model";
-import {
   SeriesRootModel,
   Series,
 } from "@accSwift-modules/accswift-shared/models/series.model";
-import {
-  CashAccounts,
-  CashAccountsModel,
-} from "@accSwift-modules/accswift-shared/models/cash-account.model";
 import {
   CashParty,
   CashPartyModel,
@@ -28,27 +20,16 @@ import {
   providedIn: "root",
 })
 export class CashPaymentService {
-  seriesLists: Series[] = [];
-  cashAccountLists: CashAccounts[] = [];
-  cashPartyLists: CashParty[] = [];
-  projectLists: Project[] = [];
   _api_URL = environment.baseAPI;
+  seriesLists: Series[] = [];
+  cashPartyLists: CashParty[] = [];
 
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
   ) {
-    this.getProjectLists();
     this.getSeriesList();
     this.getCashParty();
-  }
-
-  getProjectLists(): void {
-    this.httpService
-      .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectRootModel) => {
-        this.projectLists = res.Entity;
-      });
   }
 
   getSeriesList(): void {

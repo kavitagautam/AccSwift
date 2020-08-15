@@ -7,42 +7,24 @@ import {
 } from "../models/bank-payment.model";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
-import {
-  Project,
-  ProjectRootModel,
-} from "@accSwift-modules/accswift-shared/models/project.model";
+
 import {
   Series,
   SeriesRootModel,
 } from "@accSwift-modules/accswift-shared/models/series.model";
-import {
-  BankAccounts,
-  BankAccountsModel,
-} from "@accSwift-modules/accswift-shared/models/bank-account.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class BankPaymentService {
   _api_URL = environment.baseAPI;
-  projectList: Project[] = [];
   seriesList: Series[] = [];
-  bankAccountList: BankAccounts[] = [];
 
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
   ) {
-    this.getProjectList();
     this.getSeriesList();
-  }
-
-  getProjectList(): void {
-    this.httpService
-      .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectRootModel) => {
-        this.projectList = res.Entity;
-      });
   }
 
   getSeriesList(): void {

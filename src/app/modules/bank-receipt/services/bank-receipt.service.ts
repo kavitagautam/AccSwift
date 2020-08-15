@@ -8,40 +8,21 @@ import {
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import {
-  Project,
-  ProjectRootModel,
-} from "@accSwift-modules/accswift-shared/models/project.model";
-import {
   Series,
   SeriesRootModel,
 } from "@accSwift-modules/accswift-shared/models/series.model";
-import {
-  BankAccountsModel,
-  BankAccounts,
-} from "@accSwift-modules/accswift-shared/models/bank-account.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class BankReceiptService {
   seriesLists: Series[] = [];
-  projectLists: Project[] = [];
   _api_URL = environment.baseAPI;
-  bankAccountLists: BankAccounts[] = [];
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
   ) {
-    this.getProjectLists();
     this.getSeriesList();
-  }
-
-  getProjectLists(): void {
-    this.httpService
-      .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectRootModel) => {
-        this.projectLists = res.Entity;
-      });
   }
 
   getSeriesList(): void {

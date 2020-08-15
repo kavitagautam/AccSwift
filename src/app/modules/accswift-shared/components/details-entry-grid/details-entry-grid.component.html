@@ -343,7 +343,7 @@
           #input
           class="k-textbox"
           class="form-control"
-          [formControl]="entryArray.controls[rowIndex].get(column.field)"
+          [formControl]="entryArray.controls[rowIndex].get('ChequeNumber')"
         />
       </ng-template>
     </kendo-grid-column>
@@ -363,7 +363,7 @@
       >
         <kendo-datepicker
           [valuePrimitive]="true"
-          [formControl]="entryArray.controls[rowIndex].get(column.field)"
+          [formControl]="entryArray.controls[rowIndex].get('ChequeDate')"
           [min]="min"
           [max]="max"
           class="form-control"

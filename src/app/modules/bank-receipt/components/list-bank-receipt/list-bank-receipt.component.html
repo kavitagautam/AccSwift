@@ -46,18 +46,9 @@
             </div>
 
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Project</label>
-                <select class="form-control" formControlName="ProjectID">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let project of bankReceiptService.projectLists"
-                    [ngValue]="project.ID"
-                  >
-                    {{ project.EngName }}</option
-                  >
-                </select>
-              </div>
+              <accSwift-project-forms
+                formControlName="ProjectID"
+              ></accSwift-project-forms>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">

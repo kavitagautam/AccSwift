@@ -409,6 +409,13 @@ export class DetailsEntryGridComponent implements OnInit {
       entryListArray.controls[index]
         .get("LedgerID")
         .setValue(selectedLedgerValue[0].LedgerID);
+      if (this.voucherType == "BANK_RCPT") {
+        entryListArray.controls[index].get("VoucherNumber").setValue(0);
+        entryListArray.controls[index].get("ChequeNumber").setValue("45454");
+        entryListArray.controls[index].get("VoucherType").setValue("BANK_RCPT");
+        entryListArray.controls[index].get("ChequeDate").setValue(new Date());
+      }
+
       const length = this.entryArray.value.length;
       if (entryListArray.controls[length - 1].invalid) return;
       this.entryArray.push(this.addEntryList());
@@ -634,11 +641,16 @@ export class DetailsEntryGridComponent implements OnInit {
       return this._fb.group({
         ID: [0],
         MasterID: [0],
-        LedgerID: [""],
+        LedgerID: [0],
         LedgerCode: [""],
         LedgerName: [""],
-        LedgerBalance: [""],
+        VoucherNumber: [""],
+        ChequeNumber: [""],
+        ChequeBank: [""],
+        ChequeDate: [""],
         Amount: [""],
+        LedgerBalance: [""],
+        VoucherType: [""],
         Remarks: [""],
       });
     }
