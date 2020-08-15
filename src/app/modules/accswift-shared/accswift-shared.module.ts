@@ -24,6 +24,7 @@ import { FormControlValidationMsgDirective } from "./directives/form-validators/
 import { ValidationMsgService } from "./services/form-validators/validation-message.service";
 import { SharedModule } from "@app/shared/shared.module";
 import { DetailsEntryGridComponent } from "./components/details-entry-grid/details-entry-grid.component";
+import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { DetailsEntryGridComponent } from "./components/details-entry-grid/detai
     InputsModule,
     LayoutModule,
     DropDownListModule,
+    DateInputsModule,
     DropDownsModule,
   ],
   exports: [

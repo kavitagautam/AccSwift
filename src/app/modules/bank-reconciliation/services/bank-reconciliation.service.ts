@@ -16,7 +16,7 @@ import {
   BankAccounts,
   BankAccountsModel,
 } from "@accSwift-modules/accswift-shared/models/bank-account.model";
-import { BankReconciliationMaster } from "../models/bank-reconciliation.model";
+import { BankReconciliation } from "../models/bank-reconciliation.model";
 
 @Injectable({
   providedIn: "root",
@@ -60,11 +60,11 @@ export class BankReconciliationService {
       });
   }
 
-  getBankReconciliationMaster(): Observable<BankReconciliationMaster[]> {
+  getBankReconciliationMaster(): Observable<BankReconciliation[]> {
     return this.httpService.get(`${this._api_URL}BankReconciliationMaster`);
   }
 
-  getBankReconciliationDetails(id): Observable<BankReconciliationMaster> {
+  getBankReconciliationDetails(id): Observable<BankReconciliation> {
     return this.httpService.get(
       `${this._api_URL}BankReconciliationMaster/${id}`
     );

@@ -16,6 +16,7 @@ import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/com
 import { SharedModule } from "@app/shared/shared.module";
 import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
+import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module"
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    AccswiftFormsModule,
     GridModule,
     PopupModule,
     InputsModule,
