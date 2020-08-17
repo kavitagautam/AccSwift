@@ -25,7 +25,11 @@
           ></accSwift-project-forms>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
+          <accSwift-voucher-forms
+            formControlName="VoucherNo"
+            [series]="journalVoucherForms.get('VoucherNo').value"
+          ></accSwift-voucher-forms>
+          <!-- <div class="form-group">
             <label>Voucher #</label>
             <input
               class="form-control"
@@ -33,7 +37,7 @@
               id="voucherNo"
               accSwiftFormValidator
             />
-          </div>
+          </div> -->
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">

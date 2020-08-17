@@ -41,33 +41,23 @@ export class SeriesFormsComponent
   subscriptions: Subscription[] = [];
   SeriesID = new FormControl();
   seriesList: Series[];
-  // get value(): number {
-  //   return this.SeriesID.value;
-  // }
 
-  // set value(value) {
-  //   this.SeriesID.setValue(value);
-  //   this.onChange(value);
-  //   this.onTouched();
-  // }
-
-  constructor(private seriesServices: FormsService) {
+  constructor(private formSerivice: FormsService) {
     this.subscriptions.push(
       this.SeriesID.valueChanges.subscribe((value: number) => {
         this.registerOnChange(value);
-
-        //   this.onChange(value);
+        this.formSerivice.seriesSelect(value);
         this.onTouched();
       })
     );
   }
+
   ngOnInit(): void {
-    this.seriesServices
-      .getSeriesList(this.voucherType)
-      .subscribe((response) => {
-        this.seriesList = response.Entity;
-      });
+    this.formSerivice.getSeriesList(this.voucherType).subscribe((response) => {
+      this.seriesList = response.Entity;
+    });
   }
+
   ngOnDestroy() {
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
@@ -82,10 +72,11 @@ export class SeriesFormsComponent
   writeValue(value: number) {
     if (value) {
       this.SeriesID.setValue(value);
+      this.formSerivice.seriesSelect(value);
     }
-    // if (value === null) {
-    //   this.SeriesID.reset();
-    // }
+    if (value === null) {
+      this.SeriesID.reset();
+    }
   }
 
   registerOnTouched(fn: number) {
