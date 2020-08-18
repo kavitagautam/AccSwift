@@ -22,10 +22,10 @@ import { FormsService } from "../../services/forms.service";
     <label>Voucher No. <sup>*</sup></label>
     <input type="text" class="form-control" [formControl]="VoucherNo" />
     <span
-      *ngIf="IsAutomatic"
+      *ngIf="IsAutomatic.value"
       style="
       top: 32px;
-      margin-left: 172px;
+      margin-left: 155px;
       display: inline-block;
       position: absolute;
     "
@@ -50,22 +50,23 @@ export class VoucherFormsComponent
   implements ControlValueAccessor, OnDestroy, OnChanges {
   subscriptions: Subscription[] = [];
   VoucherNo = new FormControl();
-  @Input("seriesID") seriesID;
-  IsAutomatic: boolean;
+  IsAutomatic = new FormControl();
+  @Input("series") seriesID;
+
   constructor(private formService: FormsService) {
     this.subscriptions.push(
       this.VoucherNo.valueChanges.subscribe((value: number) => {
         this.registerOnChange(value);
+        this.seriesID = null;
+        this.IsAutomatic.setValue(true);
         this.onTouched();
       })
     );
-    console.log("series " + this.seriesID);
 
     formService.seriesSelect$.subscribe((value) => {
       this.seriesID = value;
       this.seriesValueChange(value);
     });
-    this.seriesValueChange(this.seriesID);
   }
 
   ngOnDestroy() {
@@ -73,8 +74,9 @@ export class VoucherFormsComponent
   }
 
   ngOnChanges(changes): void {
-    console.log("changes :: " + changes);
-    console.log("series " + this.seriesID);
+    if (this.seriesID) {
+      this.seriesValueChange(this.seriesID);
+    }
   }
 
   seriesValueChange(value): void {
@@ -82,16 +84,18 @@ export class VoucherFormsComponent
       this.formService
         .getVoucherNoWithSeriesChange(value)
         .subscribe((response) => {
+          this.IsAutomatic.setValue(
+            response.VoucherNoType === "Automatic" ? true : false
+          );
           this.VoucherNo.setValue(response.VoucherNO);
           if (response.IsEnabled) {
             this.VoucherNo.enable();
           } else {
             this.VoucherNo.disable();
           }
-          if (response.VoucherNoType === "Automatic") {
-            this.IsAutomatic = true;
-          }
         });
+    } else {
+      this.VoucherNo.reset();
     }
   }
 
@@ -105,11 +109,6 @@ export class VoucherFormsComponent
   writeValue(value: number) {
     if (value) {
       this.VoucherNo.setValue(value);
-      this.formService.seriesSelect$.subscribe((res) => {
-        console.log("dsd" + res);
-        this.seriesID = res;
-        this.seriesValueChange(res);
-      });
     }
 
     if (value === null) {

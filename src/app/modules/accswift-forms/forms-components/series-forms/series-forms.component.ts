@@ -76,6 +76,7 @@ export class SeriesFormsComponent
     }
     if (value === null) {
       this.SeriesID.reset();
+      this.formSerivice.seriesSelect(value);
     }
   }
 

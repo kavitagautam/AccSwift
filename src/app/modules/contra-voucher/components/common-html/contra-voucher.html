@@ -1,0 +1,135 @@
+<div class="box box-default">
+  <form [formGroup]="contraVoucherForm" novalidate>
+    <div class="col-md-12 mt-5 mr-2">
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Series</label>
+              <select class="form-control" formControlName="SeriesID">
+                <option [ngValue]="null">Choose Option....</option>
+                <option
+                  *ngFor="let series of contraVoucherService.seriesLists"
+                  [ngValue]="series.ID"
+                >
+                  {{ series.Name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Cash Account</label>
+              <select
+                class="form-control"
+                id="cashAccountNo"
+                formControlName="cashAccountId"
+                accSwiftFormValidator
+              >
+                <option [ngValue]="null">Choose Option....</option>
+                <option
+                  *ngFor="let cash of contraVoucherService.cashAccountLists"
+                >
+                  {{ cash.LedgerName }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Cash Party / Customer</label>
+              <select
+                class="form-control"
+                formControlName="cashPartyId"
+                accSwiftFormValidator
+              >
+                <option [ngValue]="null">Choose Option....</option>
+                <option
+                  *ngFor="let cash of contraVoucherService.cashPartyLists"
+                  [ngValue]="cash.LedgerID"
+                >
+                  {{ cash.LedgerName }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Voucher#</label>
+              <input
+                class="form-control"
+                formControlName="VoucherNo"
+                accSwiftFormValidator
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Project</label>
+              <select
+                class="form-control"
+                id="project"
+                formControlName="ProjectID"
+              >
+                <option [ngValue]="null">Choose Option....</option>
+                <option
+                  *ngFor="let project of contraVoucherService.projectLists"
+                >
+                  {{ project.EngName }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Date</label>
+              <input class="form-control" formControlName="Date" bsDatepicker />
+            </div>
+          </div>
+
+          <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Current Balance</label>
+              <div class="row clearfix ml-2 mt-3">
+                <span>0.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="box-body">
+        <accSwift-details-entry-grid
+          [entryArray]="contraVoucherForm.controls.ContraVoucherDetails"
+          [voucherType]="'CNTR'"
+        ></accSwift-details-entry-grid>
+      </div>
+    </div>
+  </form>
+  <div class="box-footer">
+    <div class="mb-2">
+      <button
+        class="btn btn-primary"
+        (click)="save()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="contraVoucherForm"
+      >
+        Save
+      </button>
+      <button class="btn btn-secondary ml-2" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

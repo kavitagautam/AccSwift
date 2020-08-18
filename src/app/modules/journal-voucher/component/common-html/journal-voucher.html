@@ -26,8 +26,14 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <accSwift-voucher-forms
+            *ngIf="!journalVoucherForms.get('VoucherNo').value"
             formControlName="VoucherNo"
-            [series]="journalVoucherForms.get('VoucherNo').value"
+            [series]="journalVoucherForms.get('SeriesID').value"
+          ></accSwift-voucher-forms>
+          <accSwift-voucher-forms
+            *ngIf="journalVoucherForms.get('VoucherNo').value"
+            formControlName="VoucherNo"
+            [series]="null"
           ></accSwift-voucher-forms>
           <!-- <div class="form-group">
             <label>Voucher #</label>
