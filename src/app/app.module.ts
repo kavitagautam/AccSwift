@@ -3,6 +3,7 @@ import {
   NgModule,
   CUSTOM_ELEMENTS_SCHEMA,
   APP_INITIALIZER,
+  LOCALE_ID,
 } from "@angular/core";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -16,6 +17,12 @@ import { Observable } from "rxjs";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { SettingsService } from "./modules/settings/services/settings.service";
 import { SettingsModel } from "./modules/settings/models/settings.model";
+import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
+import "@lib/ne/all"; // For Kendo Nepali Input
+import { registerLocaleData } from "@angular/common";
+import localeNe from "@angular/common/locales/ne";
+import { LocaleService } from "./core/services/locale/locale.services";
+registerLocaleData(localeNe, "ne");
 
 export function initPreferenceData(preferenceService: PreferenceService) {
   return (): Observable<PreferenceModel> => {
@@ -28,6 +35,19 @@ export function initSettingsData(settingsService: SettingsService) {
   };
 }
 
+export function localFunction(settingsService: SettingsService) {
+  var localeId: string;
+  if (
+    settingsService &&
+    settingsService.settings.DEFAULT_LANGUAGE.Value === "English"
+  ) {
+    localeId = "en_US";
+  } else {
+    localeId = "ne";
+  }
+  return localeId;
+}
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -36,6 +56,7 @@ export function initSettingsData(settingsService: SettingsService) {
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    DropDownsModule,
   ],
   providers: [
     PreferenceService,
@@ -58,8 +79,13 @@ export function initSettingsData(settingsService: SettingsService) {
       multi: true,
     },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
+    // { provide: LOCALE_ID, useValue: "ne" },
+    {
+      provide: LOCALE_ID,
+      deps: [],
+      useFactory: localFunction,
+    },
   ],
-
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
 })

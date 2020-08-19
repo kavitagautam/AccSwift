@@ -4,8 +4,8 @@ import { PreferenceService } from "../../services/preference.service";
 import { PurchaseAccount } from "../../models/preference.model";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
-import { SalesAccounts } from "@app/modules/accswift-shared/models/sales-account.model";
-import { AccountClass } from "@app/modules/accswift-shared/models/account-class.model";
+import { SalesAccounts } from "@accSwift-modules/accswift-shared/models/sales-account.model";
+import { AccountClass } from "@accSwift-modules/accswift-shared/models/account-class.model";
 
 @Component({
   selector: "accSwift-settings",

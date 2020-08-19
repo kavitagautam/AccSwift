@@ -6,13 +6,13 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { SalesReturnDetail } from "../../models/sales-return.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
-import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { ProductModalPopupComponent } from "@app/modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
+import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { ProductModalPopupComponent } from "@accSwift-modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
-import { RelatedUnits } from "@app/modules/accswift-shared/models/related-unit.model";
+import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
+import { RelatedUnits } from "@accSwift-modules/accswift-shared/models/related-unit.model";
 
 @Component({
   selector: "accSwift-edit-sales-return",

@@ -17,6 +17,7 @@ import { Router } from "@angular/router";
 })
 export class LandingLedgerComponent implements OnInit {
   @Output("selectedItem") selectedItem = new EventEmitter();
+  @Output("addNew") addNew: boolean;
   selectedGroupTab: boolean;
   selectedLedgerTab: boolean;
   ledgerTreeList: any;

@@ -8,49 +8,21 @@ import {
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import {
-  Project,
-  ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
-import {
   Series,
   SeriesRootModel,
-} from "@app/modules/accswift-shared/models/series.model";
-import {
-  BankAccountsModel,
-  BankAccounts,
-} from "@app/modules/accswift-shared/models/bank-account.model";
+} from "@accSwift-modules/accswift-shared/models/series.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class BankReceiptService {
   seriesLists: Series[] = [];
-  projectLists: Project[] = [];
   _api_URL = environment.baseAPI;
-  bankAccountLists: BankAccounts[] = [];
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
   ) {
-    this.getProjectLists();
     this.getSeriesList();
-    this.getBankReceiptAccounts();
-  }
-
-  getProjectLists(): void {
-    this.httpService
-      .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectRootModel) => {
-        this.projectLists = res.Entity;
-      });
-  }
-
-  getBankReceiptAccounts(): void {
-    this.httpService
-      .get(`${this._api_URL}Ledger/BankAccounts`)
-      .subscribe((res: BankAccountsModel) => {
-        this.bankAccountLists = res.Entity;
-      });
   }
 
   getSeriesList(): void {
@@ -67,10 +39,6 @@ export class BankReceiptService {
       `${this._api_URL}BankReceiptMaster/navigate`,
       body
     );
-  }
-
-  getLedgerDetails(id): Observable<any> {
-    return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
   }
 
   getBankReceiptDetails(id): Observable<BankReceiptEditModel> {

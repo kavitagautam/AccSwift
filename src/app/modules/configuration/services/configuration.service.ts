@@ -7,7 +7,7 @@ import {
   VoucherConfigurationModel,
 } from "../models/configuration.model";
 import { Observable } from "rxjs";
-import { SeriesRootModel } from "@app/modules/accswift-shared/models/series.model";
+import { SeriesRootModel } from "@accSwift-modules/accswift-shared/models/series.model";
 
 @Injectable({
   providedIn: "root",

@@ -1,4 +1,4 @@
-import { Ledger } from "@app/modules/ledger/models/ledger.models";
+import { Ledger } from "@accSwift-modules/ledger/models/ledger.models";
 
 export interface DayBook {
   Entity: Ledger[];

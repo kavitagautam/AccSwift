@@ -7,16 +7,16 @@ import { HttpClientService } from "@app/core/services/http-client/http-client.se
 import {
   Project,
   ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
+} from "@accSwift-modules/accswift-shared/models/project.model";
 import {
   SeriesRootModel,
   Series,
-} from "@app/modules/accswift-shared/models/series.model";
+} from "@accSwift-modules/accswift-shared/models/series.model";
 import {
   BankAccounts,
   BankAccountsModel,
-} from "@app/modules/accswift-shared/models/bank-account.model";
-import { BankReconciliationMaster } from "../models/bank-reconciliation.model";
+} from "@accSwift-modules/accswift-shared/models/bank-account.model";
+import { BankReconciliation } from "../models/bank-reconciliation.model";
 
 @Injectable({
   providedIn: "root",
@@ -60,11 +60,11 @@ export class BankReconciliationService {
       });
   }
 
-  getBankReconciliationMaster(): Observable<BankReconciliationMaster[]> {
+  getBankReconciliationMaster(): Observable<BankReconciliation[]> {
     return this.httpService.get(`${this._api_URL}BankReconciliationMaster`);
   }
 
-  getBankReconciliationDetails(id): Observable<BankReconciliationMaster> {
+  getBankReconciliationDetails(id): Observable<BankReconciliation> {
     return this.httpService.get(
       `${this._api_URL}BankReconciliationMaster/${id}`
     );

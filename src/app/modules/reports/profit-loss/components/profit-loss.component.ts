@@ -15,7 +15,7 @@ import {
   LedgerDetailList,
   GroupDetailList,
 } from "../../models/profit-loss.model";
-import { Company } from "@app/modules/company/models/company.model";
+import { Company } from "@accSwift-modules/company/models/company.model";
 
 @Component({
   selector: "accSwift-profit-loss",
@@ -36,6 +36,7 @@ export class ProfitLossComponent implements OnInit, AfterViewInit {
   groupLoading: boolean;
   ledgerLoading: boolean;
   toDateSelect: number;
+  dateCheckbox: boolean = true;
   projectName: string;
   //Open the Ledger List Modal on PopUp
   profitLossForms: FormGroup;
@@ -78,6 +79,18 @@ export class ProfitLossComponent implements OnInit, AfterViewInit {
       FromDate: [""],
       ToDate: [""],
     });
+  }
+
+  enableDate(): void {
+    if (this.profitLossForms.get("IsDateRange").value) {
+      this.dateCheckbox = false;
+      this.profitLossForms.get("ToDate").enable();
+      this.profitLossForms.get("FromDate").enable();
+    } else {
+      this.dateCheckbox = true;
+      this.profitLossForms.get("ToDate").disable();
+      this.profitLossForms.get("FromDate").disable();
+    }
   }
 
   endOfMonth(): void {

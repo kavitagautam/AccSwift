@@ -10,11 +10,9 @@ import { ReportsService } from "../../services/reports.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
-import {
-  LedgerList,
-  LedgerMinList,
-  LedgerGroup,
-} from "../../models/ledger.reports.model";
+import { LedgerList } from "../../models/ledger.reports.model";
+import { LedgerMin } from "@app/modules/ledger/models/ledger.models";
+import { LedgerGroup } from "@app/modules/ledger/models/ledger-group.model";
 
 @Component({
   selector: "accSwift-ledger-report",
@@ -37,7 +35,8 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
   totalClosingBalance: string;
   accountLedger: boolean = false;
   accountGroup: boolean = false;
-  ledgerMinList: LedgerMinList[] = [];
+  dateCheckbox: boolean = true;
+  ledgerMinList: LedgerMin[] = [];
   ledgerGroupList: LedgerGroup[] = [];
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
@@ -85,6 +84,18 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
     });
     this.ledgerReportForms.get("LedgerID").disable();
     this.ledgerReportForms.get("AccountGroupID").disable();
+  }
+
+  enableDate(): void {
+    if (this.ledgerReportForms.get("IsDateRange").value) {
+      this.dateCheckbox = false;
+      this.ledgerReportForms.get("ToDate").enable();
+      this.ledgerReportForms.get("FromDate").enable();
+    } else {
+      this.dateCheckbox = true;
+      this.ledgerReportForms.get("ToDate").disable();
+      this.ledgerReportForms.get("FromDate").disable();
+    }
   }
 
   getLedger(): void {

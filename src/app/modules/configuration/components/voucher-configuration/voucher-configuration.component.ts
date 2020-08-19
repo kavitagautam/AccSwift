@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder, FormArray } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { Series } from "@app/modules/accswift-shared/models/series.model";
+import { Series } from "@accSwift-modules/accswift-shared/models/series.model";
 
 @Component({
   selector: "accSwift-voucher-configuration",

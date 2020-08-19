@@ -8,48 +8,28 @@ import {
   CashPaymentDetailModel,
 } from "../models/cash-payment.model";
 import {
-  Project,
-  ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
-import {
   SeriesRootModel,
   Series,
-} from "@app/modules/accswift-shared/models/series.model";
-import {
-  CashAccounts,
-  CashAccountsModel,
-} from "@app/modules/accswift-shared/models/cash-account.model";
+} from "@accSwift-modules/accswift-shared/models/series.model";
 import {
   CashParty,
   CashPartyModel,
-} from "@app/modules/accswift-shared/models/cash-party.model";
+} from "@accSwift-modules/accswift-shared/models/cash-party.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class CashPaymentService {
-  seriesLists: Series[] = [];
-  cashAccountLists: CashAccounts[] = [];
-  cashPartyLists: CashParty[] = [];
-  projectLists: Project[] = [];
   _api_URL = environment.baseAPI;
+  seriesLists: Series[] = [];
+  cashPartyLists: CashParty[] = [];
 
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
   ) {
-    this.getProjectLists();
     this.getSeriesList();
-    this.getCashPaymentAccounts();
     this.getCashParty();
-  }
-
-  getProjectLists(): void {
-    this.httpService
-      .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectRootModel) => {
-        this.projectLists = res.Entity;
-      });
   }
 
   getSeriesList(): void {
@@ -58,14 +38,6 @@ export class CashPaymentService {
       .get(`${this._api_URL}series`, null, params)
       .subscribe((response: SeriesRootModel) => {
         this.seriesLists = response.Entity;
-      });
-  }
-
-  getCashPaymentAccounts(): void {
-    this.httpService
-      .get(`${this._api_URL}Ledger/CashAccounts`)
-      .subscribe((res: CashAccountsModel) => {
-        this.cashAccountLists = res.Entity;
       });
   }
 
@@ -82,10 +54,6 @@ export class CashPaymentService {
       `${this._api_URL}CashPaymentMaster/navigate`,
       body
     );
-  }
-
-  getLedgerDetails(id): Observable<any> {
-    return this.httpService.get(`${this._api_URL}Ledger/Balance/${id}`);
   }
 
   getCashPaymentDetails(id): Observable<CashPaymentDetailModel> {

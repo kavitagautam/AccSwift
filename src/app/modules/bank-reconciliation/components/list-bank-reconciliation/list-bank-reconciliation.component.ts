@@ -11,7 +11,7 @@ import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
-import { BankReconciliationMaster } from "../../models/bank-reconciliation.model";
+import { BankReconciliation } from "../../models/bank-reconciliation.model";
 
 @Component({
   selector: "accSwift-list-bank-reconciliation",
@@ -22,7 +22,7 @@ export class ListBankReconciliationComponent implements OnInit {
   bankReconciliationForm: FormGroup;
   date: Date = new Date();
   listLoading: Boolean;
-  bankReconciliationList: BankReconciliationMaster[];
+  bankReconciliationList: BankReconciliation[];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
   public pageSize = 10;
@@ -59,11 +59,11 @@ export class ListBankReconciliationComponent implements OnInit {
 
   buildBankReconciliationForm(): void {
     this.bankReconciliationForm = this.fb.group({
-      seriesId: [null],
-      projectId: [null],
-      voucherNo: [""],
-      bankAccountId: [null],
-      date: [new Date()],
+      SeriesID: [null],
+      ProjectID: [null],
+      VoucherNo: [""],
+      LedgerID: [null],
+      Date: [new Date()],
     });
   }
 

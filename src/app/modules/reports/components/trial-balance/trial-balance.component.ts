@@ -15,7 +15,7 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
-import { Company } from "@app/modules/company/models/company.model";
+import { Company } from "@accSwift-modules/company/models/company.model";
 @Component({
   selector: "accSwift-trial-balance",
   templateUrl: "./trial-balance.component.html",
@@ -40,6 +40,7 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   projectName: string;
 
   toDateSelect: number;
+  dateCheckbox: boolean = true;
 
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
@@ -90,8 +91,18 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
       ProjectID: [null],
       AccClassID: [],
       FromDate: [""],
-      ToDate: [""],
+      ToDate: [{ value: "", disabled: true }],
     });
+  }
+
+  enableDate(): void {
+    if (this.trailBalanceForms.get("IsDateRange").value) {
+      this.dateCheckbox = false;
+      this.trailBalanceForms.get("ToDate").enable();
+    } else {
+      this.dateCheckbox = true;
+      this.trailBalanceForms.get("ToDate").disable();
+    }
   }
 
   openTrialBalanceSettings(template: TemplateRef<any>): void {

@@ -4,8 +4,8 @@ import { HttpClientService } from "@app/core/services/http-client/http-client.se
 import { environment } from "@env/environment";
 import { Observable } from "rxjs";
 import { TransactionVoucherModel } from "../models/day-book.models";
-import { ProjectRootModel } from "@app/modules/accswift-shared/models/project.model";
-import { AccountClassModel } from "@app/modules/accswift-shared/models/account-class.model";
+import { ProjectRootModel } from "@accSwift-modules/accswift-shared/models/project.model";
+import { AccountClassModel } from "@accSwift-modules/accswift-shared/models/account-class.model";
 
 @Injectable({
   providedIn: "root",

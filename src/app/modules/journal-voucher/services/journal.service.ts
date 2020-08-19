@@ -7,27 +7,22 @@ import {
   JournalMasterRootModel,
   JournalEditModel,
 } from "../models/journal.model";
-import {
-  Project,
-  ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
+
 import {
   Series,
   SeriesRootModel,
-} from "@app/modules/accswift-shared/models/series.model";
+} from "@accSwift-modules/accswift-shared/models/series.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class JournalService {
   journalSeriesList: Series[] = [];
-  projectLists: Project[] = [];
   _api_URL = environment.baseAPI;
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
   ) {
-    this.getProjectLists();
     this.getSeriesList();
   }
 
@@ -41,14 +36,6 @@ export class JournalService {
 
   updateJournalVoucher(body): Observable<any> {
     return this.httpService.put(`${this._api_URL}JournalMaster`, body);
-  }
-
-  getProjectLists(): void {
-    this.httpService
-      .get(`${this._api_URL}project`)
-      .subscribe((response: ProjectRootModel) => {
-        this.projectLists = response.Entity;
-      });
   }
 
   getSeriesList(): void {

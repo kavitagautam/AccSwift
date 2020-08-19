@@ -7,43 +7,24 @@ import {
 } from "../models/bank-payment.model";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
-import {
-  Project,
-  ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
+
 import {
   Series,
   SeriesRootModel,
-} from "@app/modules/accswift-shared/models/series.model";
-import {
-  BankAccounts,
-  BankAccountsModel,
-} from "@app/modules/accswift-shared/models/bank-account.model";
+} from "@accSwift-modules/accswift-shared/models/series.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class BankPaymentService {
   _api_URL = environment.baseAPI;
-  projectList: Project[] = [];
   seriesList: Series[] = [];
-  bankAccountList: BankAccounts[] = [];
 
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
   ) {
-    this.getProjectList();
     this.getSeriesList();
-    this.getBankPaymentAccounts();
-  }
-
-  getProjectList(): void {
-    this.httpService
-      .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectRootModel) => {
-        this.projectList = res.Entity;
-      });
   }
 
   getSeriesList(): void {
@@ -52,14 +33,6 @@ export class BankPaymentService {
       .get(`${this._api_URL}series`, null, params)
       .subscribe((response: SeriesRootModel) => {
         this.seriesList = response.Entity;
-      });
-  }
-
-  getBankPaymentAccounts(): void {
-    this.httpService
-      .get(`${this._api_URL}Ledger/BankAccounts`)
-      .subscribe((res: BankAccountsModel) => {
-        this.bankAccountList = res.Entity;
       });
   }
 

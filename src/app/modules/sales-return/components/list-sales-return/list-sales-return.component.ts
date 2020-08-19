@@ -12,8 +12,8 @@ import { FormGroup } from "@angular/forms";
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { SalesReturnList, ReturnDetail } from "../../models/sales-return.model";
-import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
+import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 
 @Component({
   selector: "accSwift-list-sales-return",

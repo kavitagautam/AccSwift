@@ -4,10 +4,9 @@ import { Router } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
 import { DatePipe } from "@angular/common";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { LedgerCodeMatchService } from "@app/modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
+import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { ToastrService } from "ngx-toastr";
-import { LedgerCodeAsyncValidators } from "@app/modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { Preferences } from "../../../preference/models/preference.model";
 
@@ -51,7 +50,7 @@ export class AddJournalComponent implements OnInit {
     private preferenceService: PreferenceService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.buildjournalVoucherForms();
     this.getPreferences();
   }
@@ -65,112 +64,41 @@ export class AddJournalComponent implements OnInit {
 
   buildjournalVoucherForms(): void {
     this.journalVoucherForms = this._fb.group({
-      seriesId: [
+      SeriesID: [
         this.preferenceData
           ? this.preferenceData.DEFAULT_SERIES_JRNL.Value
           : null,
       ],
-      voucherNo: ["", [Validators.required]],
-      date: [new Date()],
-      projectId: [
+      VoucherNo: ["", [Validators.required]],
+      Date: [new Date()],
+      ProjectID: [
         this.preferenceData ? this.preferenceData.DEFAULT_PROJECT.Value : null,
       ],
-      narration: [""],
-      journalEntryList: this._fb.array([this.addJournalEntryFormGroup()]),
+      Remarks: [""],
+      Journaldetails: this._fb.array([this.addJournalEntryFormGroup()]),
     });
   }
 
   addJournalEntryFormGroup(): FormGroup {
     return this._fb.group({
-      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
-      particularsOraccountingHead: ["", Validators.required],
-      ledgerID: [""],
-      debit: ["", Validators.required],
-      credit: [""],
-      balance: [""],
-      remarks: [""],
+      LedgerCode: [""],
+      LedgerName: ["", Validators.required],
+      LedgerID: [""],
+      DebitCredit: [""],
+      Amount: ["", Validators.required],
+      LedgerBalance: [""],
+      Remarks: [""],
     });
   }
+
   get getjournalEntryList(): FormArray {
-    return <FormArray>this.journalVoucherForms.get("journalEntryList");
+    return <FormArray>this.journalVoucherForms.get("Journaldetails");
   }
 
-  checkDebitValue(event: Event, index: number): void {
-    let debitValue = 0;
-    const journalEntryFormArray = <FormArray>(
-      this.journalVoucherForms.get("journalEntryList")
-    );
-    const updatedValue = journalEntryFormArray.controls[index].get("debit")
-      .value;
-    if (parseFloat(updatedValue)) {
-      journalEntryFormArray.controls[index].get("credit").disable();
-    } else {
-      journalEntryFormArray.controls[index].get("credit").enable();
-    }
-    // calculate the total debit
-    for (let j = 0; j < journalEntryFormArray.controls.length; j++) {
-      debitValue =
-        debitValue +
-        (parseFloat(journalEntryFormArray.controls[j].get("debit").value) || 0);
-    }
-    this.debitTotal = debitValue;
-  }
-
-  checkCreditValue(event: Event, index: number): void {
-    let creditValue = 0;
-    const journalEntryFormArray = <FormArray>(
-      this.journalVoucherForms.get("journalEntryList")
-    );
-    const updatedValue = journalEntryFormArray.controls[index].get("credit")
-      .value;
-    if (parseFloat(updatedValue)) {
-      journalEntryFormArray.controls[index].get("debit").disable();
-    } else {
-      journalEntryFormArray.controls[index].get("debit").enable();
-    }
-    for (let j = 0; j < journalEntryFormArray.controls.length; j++) {
-      creditValue =
-        creditValue +
-        (parseFloat(journalEntryFormArray.controls[j].get("credit").value) ||
-          0);
-    }
-    this.creditTotal = creditValue;
-  }
-
-  addJournalEntry(): FormArray {
-    this.submitted = true;
-    if (this.journalVoucherForms.get("journalEntryList").invalid) return;
-
-    (<FormArray>this.journalVoucherForms.get("journalEntryList")).push(
-      this.addJournalEntryFormGroup()
-    );
-    this.submitted = false;
-  }
-
-  deleteJournalEntryRow(index: number): void {
-    // Calculation on Debit Total and Credit Total on Rows Removed
-    const journalEntryFormArray = <FormArray>(
-      this.journalVoucherForms.get("journalEntryList")
-    );
-    const deletedCreditValue =
-      journalEntryFormArray.controls[index].get("credit").value || 0;
-    if (parseFloat(deletedCreditValue) > 0) {
-      this.creditTotal = this.creditTotal - parseFloat(deletedCreditValue) || 0;
-    }
-    const deletedDebitValue =
-      journalEntryFormArray.controls[index].get("debit").value || 0;
-    if (parseFloat(deletedDebitValue) > 0) {
-      this.debitTotal = this.debitTotal - parseFloat(deletedDebitValue) || 0;
-    }
-    // Remove the Row
-    (<FormArray>this.journalVoucherForms.get("journalEntryList")).removeAt(
-      index
-    );
-  }
-
+  //This ledger code input has not been used
   changeLedgerValue(dataItem, selectedRow): void {
     const journalEntryFormArray = <FormArray>(
-      this.journalVoucherForms.get("journalEntryList")
+      this.journalVoucherForms.get("Journaldetails")
     );
 
     const ledgerCode = journalEntryFormArray.controls[selectedRow].get(
@@ -198,168 +126,25 @@ export class AddJournalComponent implements OnInit {
     }
   }
 
-  journalEntryList = [];
-
   public save(): void {
-    this.journalEntryList = [];
-    const journalEntryFormArray = <FormArray>(
-      this.journalVoucherForms.get("journalEntryList")
-    );
-
-    for (const key in journalEntryFormArray.value) {
-      if (journalEntryFormArray.value[key]) {
-        this.journalEntryList.push({
-          DebitCredit: journalEntryFormArray.value[key].debit
-            ? "Debit"
-            : "Credit",
-          LedgerID: journalEntryFormArray.value[key].ledgerID,
-          LedgerCode: journalEntryFormArray.value[key].ledgerCode,
-          LedgerBalance: journalEntryFormArray.value[key].balance,
-          Amount: journalEntryFormArray.value[key].debit
-            ? journalEntryFormArray.value[key].debit
-            : journalEntryFormArray.value[key].credit,
-          Remarks: journalEntryFormArray.value[key].remarks,
-        });
-      }
-    }
-
-    if (this.journalVoucherForms.invalid) return;
-    const obj = {
-      Date: this.journalVoucherForms.get("date").value,
-      Journaldetails: this.journalEntryList,
-      SeriesID: this.journalVoucherForms.get("seriesId").value,
-      Fields: {
-        Field1: "",
-        Field2: "",
-        Field3: "",
-        Field4: "",
-        Field5: "",
-      },
-      VoucherNo: this.journalVoucherForms.get("voucherNo").value,
-      ProjectID: this.journalVoucherForms.get("projectId").value,
-      Remarks: this.journalVoucherForms.get("narration").value,
-    };
-    this.journalService.addJournalVoucher(obj).subscribe(
-      (response) => {
-        this.router.navigate(["/journal"]);
-      },
-      (error) => {
-        this.toastr.error(JSON.stringify(error.error.Message));
-      },
-      () => {
-        this.toastr.success("Journal added successfully");
-      }
-    );
+    // if (this.journalVoucherForms.invalid) return;
+    this.journalService
+      .addJournalVoucher(this.journalVoucherForms.value)
+      .subscribe(
+        (response) => {
+          this.router.navigate(["/journal"]);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Journal added successfully");
+        }
+      );
   }
 
   public cancel(): void {
     this.journalVoucherForms.reset();
     this.router.navigate(["/journal"]);
-  }
-
-  openModal(index: number): void {
-    this.modalRef = this.modalService.show(
-      LedgerModalPopupComponent,
-      this.config
-    );
-    this.modalRef.content.data = index;
-    this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe((data) => {
-      if (data) {
-        const journalEntryFormArray = <FormArray>(
-          this.journalVoucherForms.get("journalEntryList")
-        );
-        journalEntryFormArray.controls[index]
-          .get("balance")
-          .setValue(data.ActualBalance);
-        journalEntryFormArray.controls[index]
-          .get("particularsOraccountingHead")
-          .setValue(data.LedgerName);
-        journalEntryFormArray.controls[index]
-          .get("ledgerID")
-          .setValue(data.LedgerID);
-        journalEntryFormArray.controls[index]
-          .get("ledgerCode")
-          .setValue(data.LedgerCode);
-      }
-    });
-    this.modalRef.content.onClose.subscribe((data) => {
-      //Do after Close the Modal
-    });
-  }
-
-  // knedo uI
-  public addHandler({ sender }) {
-    this.closeEditor(sender);
-    this.submitted = true;
-    this.rowSubmitted = true;
-    if (this.journalVoucherForms.get("journalEntryList").invalid) return;
-    (<FormArray>this.journalVoucherForms.get("journalEntryList")).push(
-      this.addJournalEntryFormGroup()
-    );
-    this.rowSubmitted = false;
-    this.submitted = false;
-  }
-
-  public editHandler({ sender, rowIndex, dataItem }) {
-    this.closeEditor(sender);
-    const journalEntryFormArray = <FormArray>(
-      this.journalVoucherForms.get("journalEntryList")
-    );
-    journalEntryFormArray.controls[rowIndex]
-      .get("particularsOraccountingHead")
-      .setValue(dataItem.particularsOraccountingHead);
-    journalEntryFormArray.controls[rowIndex]
-      .get("ledgerID")
-      .setValue(dataItem.ledgerID);
-    journalEntryFormArray.controls[rowIndex]
-      .get("debit")
-      .setValue(dataItem.debit);
-    journalEntryFormArray.controls[rowIndex]
-      .get("credit")
-      .setValue(dataItem.credit);
-    journalEntryFormArray.controls[rowIndex]
-      .get("balance")
-      .setValue(dataItem.balance);
-    journalEntryFormArray.controls[rowIndex]
-      .get("remarks")
-      .setValue(dataItem.remarks);
-    this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.journalVoucherForms.get("journalEntryList"));
-  }
-
-  public cancelHandler({ sender, rowIndex }) {
-    this.closeEditor(sender, rowIndex);
-  }
-
-  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
-    //Save Code
-    sender.closeRow(rowIndex);
-  }
-
-  public removeHandler({ dataItem, rowIndex }): void {
-    // Calculation on Debit Total and Credit Total on Rows Removed
-    const journalEntryFormArray = <FormArray>(
-      this.journalVoucherForms.get("journalEntryList")
-    );
-    const deletedCreditValue =
-      journalEntryFormArray.controls[rowIndex].get("credit").value || 0;
-    if (parseFloat(deletedCreditValue) > 0) {
-      this.creditTotal = this.creditTotal - parseFloat(deletedCreditValue) || 0;
-    }
-    const deletedDebitValue =
-      journalEntryFormArray.controls[rowIndex].get("debit").value || 0;
-    if (parseFloat(deletedDebitValue) > 0) {
-      this.debitTotal = this.debitTotal - parseFloat(deletedDebitValue) || 0;
-    }
-    // Remove the Row
-    (<FormArray>this.journalVoucherForms.get("journalEntryList")).removeAt(
-      rowIndex
-    );
-  }
-
-  private closeEditor(grid, rowIndex = 1) {
-    grid.closeRow(rowIndex);
-    this.editedRowIndex = undefined;
   }
 }

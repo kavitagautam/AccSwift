@@ -25,7 +25,7 @@
                   childrenField="Child"
                   [expandBy]="'Title'"
                   [(expandedKeys)]="expandedKeys"
-                  style="height: 76vh ; overflow:scroll"
+                  style="height: 76vh; overflow: scroll;"
                 >
                   <ng-template kendoTreeViewNodeTemplate let-dataItem>
                     <span
@@ -68,6 +68,12 @@
   <div class="col-md-6 p-0">
     <div class="row">
       <div class="col-md-12 mr-2">
+        <div class="row">
+          <div
+            class="btn-group pull-right"
+            style="top: 30px; right: 50px; position: relative; z-index: 100000;"
+          ></div>
+        </div>
         <kendo-tabstrip>
           <kendo-tabstrip-tab
             [title]="'Account Group'"

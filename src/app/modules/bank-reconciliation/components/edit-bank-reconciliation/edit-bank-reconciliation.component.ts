@@ -5,20 +5,18 @@ import { FormBuilder } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { LedgerCodeAsyncValidators } from "@app/modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
-import { LedgerCodeMatchService } from "@app/modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
-import { BankReconciliationMaster } from '../../models/bank-reconciliation.model';
+import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
+import { BankReconciliation } from "../../models/bank-reconciliation.model";
 
 @Component({
   selector: "accSwift-edit-bank-reconciliation",
-  templateUrl: "./edit-bank-reconciliation.component.html",
-  styleUrls: ["./edit-bank-reconciliation.component.scss"],
+  templateUrl: "../common-html/bank-reconciliation.html",
 })
 export class EditBankReconciliationComponent implements OnInit {
-  editReconciliationForm: FormGroup;
+  bankReconciliationForm: FormGroup;
   date: Date = new Date();
-  reconciliationDetails: BankReconciliationMaster;
+  reconciliationDetails: BankReconciliation;
   numericFormat: string = "n2";
   public decimals: number = 2;
   submitted: boolean;
@@ -42,34 +40,34 @@ export class EditBankReconciliationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.buildeditReconciliationForm();
+    this.buildbankReconciliationForm();
     this.getIdFromRoute();
   }
 
-  buildeditReconciliationForm() {
-    this.editReconciliationForm = this._fb.group({
-      seriesId: [
+  buildbankReconciliationForm() {
+    this.bankReconciliationForm = this._fb.group({
+      SeriesID: [
         this.reconciliationDetails ? this.reconciliationDetails.SeriesID : null,
       ],
-      projectId: [
+      ProjectID: [
         this.reconciliationDetails
           ? this.reconciliationDetails.ProjectID
           : null,
       ],
-      voucherNo: [
+      VoucherNo: [
         this.reconciliationDetails ? this.reconciliationDetails.VoucherNo : "",
         [Validators.required],
       ],
-      bankAccountId: [
+      LedgerID: [
         this.reconciliationDetails ? this.reconciliationDetails.LedgerID : null,
         [Validators.required],
       ],
-      date: [
+      Date: [
         this.reconciliationDetails
           ? new Date(this.reconciliationDetails.CreatedDate)
           : "",
       ],
-      reconciliationEntryList: this._fb.array([
+      BankReconciliationDetailsList: this._fb.array([
         this.addReconciliationEntryList(),
       ]),
     });
@@ -77,16 +75,15 @@ export class EditBankReconciliationComponent implements OnInit {
 
   addReconciliationEntryList(): FormGroup {
     return this._fb.group({
-      ledgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
-      particularsOrAccountingHead: ["", Validators.required],
-      voucherNo: [""],
-      chequeNo: [""],
-      chequeBank: [""],
-      chequeDate: [""],
-      amount: [""],
-      currentBalance: [""],
-      vType: [""],
-      remarks: [""],
+      ID: [0],
+      MasterID: [null],
+      LedgerID: [null, Validators.required],
+      LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
+      LedgerName: ["", Validators.required],
+      DrCr: [""],
+      LedgerBalance: [""],
+      Amount: [0],
+      Remarks: [""],
     });
   }
 
@@ -98,7 +95,7 @@ export class EditBankReconciliationComponent implements OnInit {
           .getBankReconciliationDetails(param)
           .subscribe((res) => {
             this.reconciliationDetails = res;
-            this.buildeditReconciliationForm();
+            this.buildbankReconciliationForm();
             this.setReconciliationList();
           });
       }
@@ -106,8 +103,8 @@ export class EditBankReconciliationComponent implements OnInit {
   }
 
   setReconciliationList(): void {
-    this.editReconciliationForm.setControl(
-      "reconciliationEntryList",
+    this.bankReconciliationForm.setControl(
+      "BankReconciliationDetailsList",
       this.setReconciliationFormArray(
         this.reconciliationDetails.BankReconciliationDetailsList
       )
@@ -116,7 +113,7 @@ export class EditBankReconciliationComponent implements OnInit {
 
   get getreconciliationEntryList(): FormArray {
     return <FormArray>(
-      this.editReconciliationForm.get("reconciliationEntryList")
+      this.bankReconciliationForm.get("BankReconciliationDetailsList")
     );
   }
 
@@ -126,34 +123,38 @@ export class EditBankReconciliationComponent implements OnInit {
       reconciliationDetails.forEach((element) => {
         reconciliationFormArray.push(
           this._fb.group({
-            ledgerCode: [element.Ledger.Code ? element.Ledger.Code : ""],
-            particularsOrAccountingHead: [
-              element.Ledger.EngName,
-              Validators.required,
+            ID: [element.ID],
+            MasterID: [element.MasterID],
+            LedgerID: [element.LedgerID],
+            LedgerCode: [
+              element.LedgerCode,
+              null,
+              this.ledgerCodeMatchValidators.ledgerCodeMatch(),
             ],
-            voucherNo: [element.VoucherNumber],
-            chequeNo: [element.ChequeNumber],
-            chequeBank: [element.ChequeBank],
-            chequeDate: [new Date(element.ChequeDate)],
-            amount: [element.Amount],
-            currentBalance: [element.Amount],
-            vType: [element.VoucherType],
-            remarks: [element.Remarks],
+            LedgerName: [element.LedgerName, Validators.required],
+            DrCr: [element.DrCr],
+            LedgerBalance: [element.LedgerBalance],
+            Amount: [element.Amount],
+            Remarks: [element.Remarks],
           })
         );
       });
     } else {
       reconciliationFormArray.push(
         this._fb.group({
-          particularsOrAccountingHead: ["", Validators.required],
-          voucherNo: [""],
-          chequeNo: [""],
-          chequeBank: [""],
-          chequeDate: [""],
-          amount: [""],
-          currentBalance: [""],
-          vType: [""],
-          remarks: [""],
+          ID: [0],
+          MasterID: [null],
+          LedgerID: [null, Validators.required],
+          LedgerCode: [
+            "",
+            null,
+            this.ledgerCodeMatchValidators.ledgerCodeMatch(),
+          ],
+          LedgerName: ["", Validators.required],
+          DrCr: [""],
+          LedgerBalance: [""],
+          Amount: [0],
+          Remarks: [""],
         })
       );
     }
@@ -162,138 +163,26 @@ export class EditBankReconciliationComponent implements OnInit {
 
   addreconciliationEntry(): void {
     this.submitted = true;
-    if (this.editReconciliationForm.get("reconciliationEntryList").invalid)
+    if (
+      this.bankReconciliationForm.get("BankReconciliationDetailsList").invalid
+    )
       return;
 
     (<FormArray>(
-      this.editReconciliationForm.get("reconciliationEntryList")
+      this.bankReconciliationForm.get("BankReconciliationDetailsList")
     )).push(this.addReconciliationEntryList());
     this.submitted = false;
   }
 
-  changeLedgerValue(dataItem, selectedRow): void {
-    const reconciliationFormArray = <FormArray>(
-      this.editReconciliationForm.get("reconciliationEntryList")
-    );
-    const ledgerCode = reconciliationFormArray.controls[selectedRow].get(
-      "ledgerCode"
-    ).value;
-    if (
-      reconciliationFormArray.controls[selectedRow].get("ledgerCode").status ===
-      "VALID"
-    ) {
-      this.ledgerCodeService.checkLedgerCode(ledgerCode).subscribe((res) => {
-        const selectedItem = res.Entity;
-        if (selectedItem && selectedItem.length > 0) {
-          reconciliationFormArray.controls[selectedRow]
-            .get("currentBalance")
-            .setValue(selectedItem[0].ActualBalance);
-          reconciliationFormArray.controls[selectedRow]
-            .get("particularsOrAccountingHead")
-            .setValue(selectedItem[0].LedgerName);
-          reconciliationFormArray.controls[selectedRow]
-            .get("ledgerCode")
-            .setValue(selectedItem[0].LedgerCode);
-        }
-      });
-    }
-  }
   public save(): void {
-    if (this.editReconciliationForm.valid) {
+    if (this.bankReconciliationForm.valid) {
       this.router.navigate(["/bank-reconciliation"]);
     } else {
     }
   }
 
   public cancel(): void {
-    this.editReconciliationForm.reset();
+    this.bankReconciliationForm.reset();
     this.router.navigate(["/bank-reconciliation"]);
-  }
-
-  public addHandler({ sender }) {
-    this.closeEditor(sender);
-    this.submitted = true;
-    this.rowSubmitted = true;
-    if (this.editReconciliationForm.get("reconciliationEntryList").invalid)
-      return;
-    (<FormArray>(
-      this.editReconciliationForm.get("reconciliationEntryList")
-    )).push(this.addReconciliationEntryList());
-    this.rowSubmitted = false;
-    this.submitted = false;
-  }
-
-  public editHandler({ sender, rowIndex, dataItem }) {
-    this.closeEditor(sender);
-    const reconciliationEntry = <FormArray>(
-      this.editReconciliationForm.get("reconciliationEntryList")
-    );
-    reconciliationEntry.controls[rowIndex]
-      .get("particularsOrAccountingHead")
-      .setValue(dataItem.particularsOrAccountingHead);
-    reconciliationEntry.controls[rowIndex]
-      .get("voucherNo")
-      .setValue(dataItem.voucherNo);
-    reconciliationEntry.controls[rowIndex]
-      .get("currentAmount")
-      .setValue(dataItem.currentAmount);
-    reconciliationEntry.controls[rowIndex]
-      .get("vType")
-      .setValue(dataItem.vType);
-    reconciliationEntry.controls[rowIndex]
-      .get("remarks")
-      .setValue(dataItem.remarks);
-    this.editedRowIndex = rowIndex;
-    sender.editRow(
-      rowIndex,
-      this.editReconciliationForm.get("reconciliationEntryList")
-    );
-  }
-
-  openModal(index: number): void {
-    this.modalRef = this.modalService.show(
-      LedgerModalPopupComponent,
-      this.config
-    );
-    this.modalRef.content.data = index;
-    this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe((data) => {
-      if (data) {
-        const reconciliationFormArray = <FormArray>(
-          this.editReconciliationForm.get("reconciliationEntryList")
-        );
-        reconciliationFormArray.controls[index]
-          .get("currentBalance")
-          .setValue(data.ActualBalance);
-        reconciliationFormArray.controls[index]
-          .get("particularsOrAccountingHead")
-          .setValue(data.LedgerName);
-      }
-    });
-    this.modalRef.content.onClose.subscribe((data) => {
-      //Do after Close the Modal
-    });
-  }
-
-  public cancelHandler({ sender, rowIndex }) {
-    this.closeEditor(sender, rowIndex);
-  }
-
-  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
-    //Save code
-    sender.closeRow(rowIndex);
-  }
-
-  public removeHandler({ dataItem, rowIndex }): void {
-    const bankReconciliationEntry = <FormArray>(
-      this.editReconciliationForm.get("reconciliationEntryList")
-    );
-    // Remove the Row
-    (<FormArray>bankReconciliationEntry).removeAt(rowIndex);
-  }
-
-  private closeEditor(grid, rowIndex = 1) {
-    grid.closeRow(rowIndex);
-    this.editedRowIndex = undefined;
   }
 }

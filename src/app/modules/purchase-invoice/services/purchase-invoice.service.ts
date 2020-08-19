@@ -7,8 +7,11 @@ import {
 import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
-import { Tax, TaxModel } from "@app/modules/accswift-shared/models/tax.model";
-import { RelatedUnitModel } from "@app/modules/accswift-shared/models/related-unit.model";
+import {
+  Tax,
+  TaxModel,
+} from "@accSwift-modules/accswift-shared/models/tax.model";
+import { RelatedUnitModel } from "@accSwift-modules/accswift-shared/models/related-unit.model";
 
 @Injectable({
   providedIn: "root",

@@ -4,7 +4,7 @@ import { SettingsService } from "../../services/settings.service";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { PurchaseAccount } from "../../models/settings.model";
-import { SalesAccounts } from "@app/modules/accswift-shared/models/sales-account.model";
+import { SalesAccounts } from "@accSwift-modules/accswift-shared/models/sales-account.model";
 
 @Component({
   selector: "accSwift-setting",

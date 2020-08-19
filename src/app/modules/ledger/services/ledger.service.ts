@@ -7,9 +7,14 @@ import {
   LedgerListViewModel,
 } from "../models/ledger.models";
 import { Observable } from "rxjs";
-import { AccountClass } from "@app/modules/accswift-shared/models/account-class.model";
-import { LedgerGroup } from "@app/modules/reports/models/ledger.reports.model";
-import { LedgerGroupDetailsModel } from "../models/ledger-group.model";
+import {
+  AccountClass,
+  AccountClassModel,
+} from "@accSwift-modules/accswift-shared/models/account-class.model";
+import {
+  LedgerGroupDetailsModel,
+  LedgerGroup,
+} from "../models/ledger-group.model";
 
 @Injectable({
   providedIn: "root",
@@ -29,7 +34,7 @@ export class LedgerService {
   getAccountClass(): void {
     this.httpService
       .get(`${this._api_URL}AccountClass`)
-      .subscribe((response) => {
+      .subscribe((response: AccountClassModel) => {
         this.accountClass = response.Entity;
       });
   }

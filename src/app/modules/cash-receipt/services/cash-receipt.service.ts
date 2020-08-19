@@ -7,26 +7,20 @@ import {
   CashReceiptDetailModel,
 } from "../models/cash-receipt.model";
 import { Observable } from "rxjs";
-import {
-  Project,
-  ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
+
 import {
   Series,
   SeriesRootModel,
-} from "@app/modules/accswift-shared/models/series.model";
-import { CashAccounts } from "@app/modules/accswift-shared/models/cash-account.model";
+} from "@accSwift-modules/accswift-shared/models/series.model";
 import {
   CashParty,
   CashPartyModel,
-} from "@app/modules/accswift-shared/models/cash-party.model";
+} from "@accSwift-modules/accswift-shared/models/cash-party.model";
 @Injectable({
   providedIn: "root",
 })
 export class CashReceiptService {
   seriesLists: Series[] = [];
-  projectLists: Project[];
-  cashAccountLists: CashAccounts[] = [];
   cashPartyLists: CashParty[] = [];
   _api_URL = environment.baseAPI;
 
@@ -34,18 +28,8 @@ export class CashReceiptService {
     private http: HttpClient,
     private httpService: HttpClientService
   ) {
-    this.getProjectLists();
     this.getSeriesList();
-    this.getCashReceiptAccounts();
     this.getCashPartyLists();
-  }
-
-  getProjectLists(): void {
-    this.httpService
-      .get(`${this._api_URL}project`)
-      .subscribe((res: ProjectRootModel) => {
-        this.projectLists = res.Entity;
-      });
   }
 
   getSeriesList(): void {
@@ -54,14 +38,6 @@ export class CashReceiptService {
       .get(`${this._api_URL}Series`, null, params)
       .subscribe((response: SeriesRootModel) => {
         this.seriesLists = response.Entity;
-      });
-  }
-
-  getCashReceiptAccounts(): void {
-    this.httpService
-      .get(`${this._api_URL}Ledger/CashAccounts`)
-      .subscribe((res) => {
-        this.cashAccountLists = res.Entity;
       });
   }
 

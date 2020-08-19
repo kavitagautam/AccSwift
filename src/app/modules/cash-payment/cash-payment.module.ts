@@ -13,9 +13,10 @@ import { EditCashPaymentComponent } from "./components/edit-cash-payment/edit-ca
 
 import { ListCashPaymentComponent } from "./components/list-cash-payment/list-cash-payment.component";
 import { AddCashPaymentComponent } from "./components/add-cash-payment/add-cash-payment.component";
-import { LedgerModalPopupComponent } from "@app/modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { SharedModule } from "@app/shared/shared.module";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
+import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module"
     DropDownsModule,
     SharedModule,
     AccswiftSharedModule,
+    AccswiftFormsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [LedgerModalPopupComponent],

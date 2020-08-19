@@ -14,10 +14,7 @@ import {
   CashPartyGroupModel,
   PurchaseReportModel,
 } from "../models/sales.report.model";
-import {
-  LedgerReportModel,
-  LedgerMinModel,
-} from "../models/ledger.reports.model";
+import { LedgerReportModel } from "../models/ledger.reports.model";
 import {
   ProfitLossRootModel,
   ProfitLossLDRootModel,
@@ -31,23 +28,24 @@ import {
 import {
   Project,
   ProjectRootModel,
-} from "@app/modules/accswift-shared/models/project.model";
-import { CashPartyModel } from "@app/modules/accswift-shared/models/cash-party.model";
-import { DepotModel } from "@app/modules/depot/models/depot.model";
-import { SalesAccountModel } from "@app/modules/accswift-shared/models/sales-account.model";
+} from "@accSwift-modules/accswift-shared/models/project.model";
+import { CashPartyModel } from "@accSwift-modules/accswift-shared/models/cash-party.model";
+import { DepotModel } from "@accSwift-modules/depot/models/depot.model";
+import { SalesAccountModel } from "@accSwift-modules/accswift-shared/models/sales-account.model";
 import {
   AccountClass,
   AccountClassModel,
-} from "@app/modules/accswift-shared/models/account-class.model";
+} from "@accSwift-modules/accswift-shared/models/account-class.model";
 import {
   ProductGroup,
   ProductGroupModel,
-} from "@app/modules/product/models/product-group.models";
+} from "@accSwift-modules/product/models/product-group.models";
 import {
   ProductMinRootModel,
   ProductMin,
-} from "@app/modules/product/models/product-min.model";
-import { LedgerGroupModel } from "@app/modules/ledger/models/ledger-group.model";
+} from "@accSwift-modules/product/models/product-min.model";
+import { LedgerGroupModel } from "@accSwift-modules/ledger/models/ledger-group.model";
+import { LedgerMinModel } from "@accSwift-modules/ledger/models/ledger.models";
 
 @Injectable({
   providedIn: "root",

@@ -11,8 +11,6 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { InvoiceDetail, SalseInvoice } from "../../models/sales-invoice.model";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
-import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
 
 @Component({
   selector: "accSwift-list-sales-invoice",
@@ -22,7 +20,6 @@ import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model"
 export class ListSalesInvoiceComponent implements OnInit {
   salesInvoiceForm: FormGroup;
   salesInvoiceList: SalseInvoice[];
-  cashPartyList: CashParty[] = [];
 
   listLoading: Boolean;
   public gridView: GridDataResult;
@@ -56,11 +53,7 @@ export class ListSalesInvoiceComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private modalService: BsModalService
-  ) {
-    this.salesInvoiceService.getCashPartyAccountDD().subscribe((response) => {
-      this.cashPartyList = response.Entity;
-    });
-  }
+  ) {}
 
   ngOnInit() {
     this.buildSalesInvoiceSearchForm();
@@ -151,30 +144,6 @@ export class ListSalesInvoiceComponent implements OnInit {
 
   public edit(item): void {
     this.router.navigate(["/sales-invoice/edit", item.ID]);
-  }
-
-  // Filterable Cash Party Drop-down
-  cashPartyDDFilter(value): void {
-    this.cashPartyList = this.salesInvoiceService.cashPartyList.filter(
-      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
-    );
-  }
-
-  openCashPartyModel(): void {
-    this.modalRef = this.modalService.show(
-      CashPartyModalPopupComponent,
-      this.config
-    );
-    this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe((data) => {
-      if (data) {
-        // Do After the the sucess
-        this.salesInvoiceForm.get("CashPartyLedgerID").setValue(data.LedgerID);
-      }
-    });
-    this.modalRef.content.onClose.subscribe((data) => {
-      //Do after Close the Modal
-    });
   }
 
   openConfirmationDialogue(dataItem) {

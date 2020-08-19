@@ -90,3 +90,40 @@ export interface Ledger {
   TotalDr: number;
   ClosingBalance: string;
 }
+
+export interface LedgerMin {
+  GroupName: string;
+  Balance: string;
+  ActualBalance: number;
+  LedgerType: string;
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  LedgerBalance: string;
+  CodeName: string;
+  GroupID: number;
+}
+
+export interface LedgerMinModel {
+  StatusCode: number;
+  Message: string;
+  Entity: LedgerMin[];
+}
+
+export interface LedgerLov {
+  GroupName: string;
+  Balance: string;
+  ActualBalance: number;
+  LedgerType: string;
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  CodeName: string;
+  GroupID: number;
+}
+
+export interface LedgerLovModel {
+  StatusCode: number;
+  Message: string;
+  Entity: LedgerLov[];
+}

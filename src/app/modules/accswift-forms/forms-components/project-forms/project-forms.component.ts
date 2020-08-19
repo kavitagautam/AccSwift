@@ -7,7 +7,7 @@ import {
   NG_VALUE_ACCESSOR,
 } from "@angular/forms";
 import { Subscription } from "rxjs";
-import { Project } from "@app/modules/accswift-shared/models/project.model";
+import { Project } from "@accSwift-modules/accswift-shared/models/project.model";
 
 @Component({
   selector: "accSwift-project-forms",
@@ -33,33 +33,26 @@ import { Project } from "@app/modules/accswift-shared/models/project.model";
     },
   ],
 })
-export class ProjectFormsComponent implements ControlValueAccessor, OnDestroy {
+export class ProjectFormsComponent
+  implements OnInit, ControlValueAccessor, OnDestroy {
   subscriptions: Subscription[] = [];
   ProjectID = new FormControl();
   projectList: Project[];
 
-  // get value(): number {
-  //   return this.ProjectID.value;
-  // }
-
-  // set value(value) {
-  //   this.ProjectID.setValue(value);
-  //   this.onChange(value);
-  //   this.onTouched();
-  // }
-
   constructor(private formService: FormsService) {
-    this.formService.getProjectLists().subscribe((response) => {
-      this.projectList = response.Entity;
-    });
-
     this.subscriptions.push(
       this.ProjectID.valueChanges.subscribe((value: number) => {
         //  this.onChange(value);
         this.registerOnChange(value);
-        this.onTouched();
+        //   this.onTouched();
       })
     );
+  }
+
+  ngOnInit(): void {
+    this.formService.getProjectLists().subscribe((response) => {
+      this.projectList = response.Entity;
+    });
   }
 
   ngOnDestroy() {

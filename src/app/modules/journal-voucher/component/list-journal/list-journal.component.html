@@ -17,44 +17,21 @@
         <form [formGroup]="journalSearchForm" novalidate>
           <div class="col-md-12">
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label for="voucher#">Voucher #</label>
-                <input class="form-control" formControlName="VoucherNo" />
-              </div>
-              <div class="form-group">
-                <label>Project</label>
-                <select
-                  class="form-control"
-                  id="projectId"
-                  formControlName="ProjectID"
-                >
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let project of journalService.projectLists"
-                    [value]="project.ID"
-                  >
-                    {{ project.EngName }}</option
-                  >
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
               <accSwift-series-forms
                 formControlName="SeriesID"
                 [voucherType]="'JRNL'"
               ></accSwift-series-forms>
-              <!-- <div class="form-group">
-                <label for="series">Series</label>
-                <select class="form-control" formControlName="SeriesID">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let series of journalService.journalSeriesList"
-                    [value]="series.ID"
-                    >{{ series.Name }}</option
-                  >
-                </select>
-              </div> -->
+              <accSwift-project-forms
+                formControlName="ProjectID"
+              ></accSwift-project-forms>
             </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <accSwift-voucher-forms
+                formControlName="VoucherNo"
+                [series]="journalSearchForm.get('SeriesID').value"
+              ></accSwift-voucher-forms>
+            </div>
+
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="date">From Date</label>
