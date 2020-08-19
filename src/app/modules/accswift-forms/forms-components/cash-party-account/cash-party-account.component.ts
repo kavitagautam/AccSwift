@@ -101,7 +101,7 @@ export class CashPartyAccountComponent
     const selectedTaxValue = this.formService.cashPartyList.filter(
       (s) => s.LedgerID === value
     );
-    if (selectedTaxValue) {
+    if (selectedTaxValue.length > 0) {
       this.currentAmount = selectedTaxValue[0].LedgerBalance;
     }
   }
