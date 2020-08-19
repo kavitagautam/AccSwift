@@ -7,6 +7,15 @@ import { ProjectRootModel } from "@accSwift-modules/accswift-shared/models/proje
 import { SeriesRootModel } from "@accSwift-modules/accswift-shared/models/series.model";
 import { CashAccountsModel } from "@app/modules/accswift-shared/models/cash-account.model";
 import { BankAccountsModel } from "@app/modules/accswift-shared/models/bank-account.model";
+import {
+  CashParty,
+  CashPartyModel,
+} from "@app/modules/accswift-shared/models/cash-party.model";
+import {
+  SalesAccountModel,
+  SalesAccounts,
+} from "@app/modules/accswift-shared/models/sales-account.model";
+import { Depot, DepotModel } from "@app/modules/depot/models/depot.model";
 
 @Injectable({
   providedIn: "root",
@@ -14,16 +23,24 @@ import { BankAccountsModel } from "@app/modules/accswift-shared/models/bank-acco
 export class FormsService {
   private seriesSelectedValue = new Subject<number>();
   seriesSelect$ = this.seriesSelectedValue.asObservable();
+  depotList: Depot[] = [];
+
   // Service message commands
   seriesSelect(seriesID: number) {
     this.seriesSelectedValue.next(seriesID);
   }
+  cashPartyList: CashParty[] = [];
+  salesAccountList: SalesAccounts[] = [];
 
   _api_URL = environment.baseAPI;
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {}
+  ) {
+    this.getCashPartyAccount();
+    this.getSalesAccount();
+    this.getDepotList();
+  }
 
   getSeriesList(voucherType): Observable<SeriesRootModel> {
     const params = new HttpParams().set("VoucherType", voucherType);
@@ -53,5 +70,37 @@ export class FormsService {
       null,
       params
     );
+  }
+
+  getCashPartyAccount(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/cashparty`)
+      .subscribe((response: any) => {
+        this.cashPartyList = response.Entity;
+      });
+  }
+
+  getSalesAccount(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/salesAccounts`)
+      .subscribe((response: SalesAccountModel) => {
+        this.salesAccountList = response.Entity;
+      });
+  }
+
+  getSalesAccountDD(): Observable<SalesAccountModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/salesAccounts`);
+  }
+
+  getCashPartyAccountDD(): Observable<CashPartyModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/cashparty`);
+  }
+
+  getDepotList(): void {
+    this.httpService
+      .get(`${this._api_URL}Depot`)
+      .subscribe((response: DepotModel) => {
+        this.depotList = response.Entity;
+      });
   }
 }

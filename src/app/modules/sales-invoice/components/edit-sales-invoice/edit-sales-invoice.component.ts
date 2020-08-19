@@ -10,9 +10,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
-import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 import { IconConst } from "@app/shared/constants/icon.constant";
-import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 import { ProductCodeValidatorsService } from "@app/modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { LocaleService } from "@app/core/services/locale/locale.services";
 
@@ -43,7 +41,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   adjustmentAmount: number = 0;
   vatTotalAmount: number = 0;
   grandTotalAmount: number = 0;
-  public cashPartyList: CashParty[] = [];
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -62,11 +59,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     private modalService: BsModalService,
     private toastr: ToastrService,
     private productCodeMatch: ProductCodeValidatorsService
-  ) {
-    this.salesInvoiceService.getCashPartyAccountDD().subscribe((response) => {
-      this.cashPartyList = response.Entity;
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getIdFromRoute();
@@ -423,29 +416,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       "invoices",
       JSON.stringify(this.salesInvoiceForm.value)
     );
-  }
-
-  cashPartyDDFilter(value): void {
-    this.cashPartyList = this.salesInvoiceService.cashPartyList.filter(
-      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
-    );
-  }
-
-  openCashPartyModel(): void {
-    this.modalRef = this.modalService.show(
-      CashPartyModalPopupComponent,
-      this.config
-    );
-    this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe((data) => {
-      if (data) {
-        // Do After the the sucess
-        this.salesInvoiceForm.get("CashPartyLedgerID").setValue(data.LedgerID);
-      }
-    });
-    this.modalRef.content.onClose.subscribe((data) => {
-      //Do after Close the Modal
-    });
   }
 
   openTender(template: TemplateRef<any>): void {
