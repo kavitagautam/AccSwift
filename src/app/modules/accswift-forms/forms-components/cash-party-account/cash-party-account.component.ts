@@ -1,0 +1,154 @@
+import { Component, OnInit, forwardRef, OnDestroy } from "@angular/core";
+import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
+import { FormsService } from "../../services/forms.service";
+import {
+  NG_VALUE_ACCESSOR,
+  NG_VALIDATORS,
+  ControlValueAccessor,
+  FormControl,
+} from "@angular/forms";
+import { Subscription } from "rxjs";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+
+@Component({
+  selector: "accSwift-cash-party-account",
+  template: ` <div class="form-group">
+    <div class="col-md-12 p-0">
+      <div class="col-md-11 pl-0">
+        <label>Cash/ Party /A/C <sup>*</sup></label>
+        <kendo-dropdownlist
+          class="form-control"
+          [data]="cashPartyList"
+          [filterable]="true"
+          [textField]="'LedgerName'"
+          [valueField]="'LedgerID'"
+          [valuePrimitive]="true"
+          [formControl]="CashPartyLedgerID"
+          (filterChange)="cashPartyDDFilter($event)"
+          (valueChange)="cashPartyChange(CashPartyLedgerID.value)"
+        >
+        </kendo-dropdownlist>
+      </div>
+      <div class="col-md-1 p-0">
+        <a (click)="openCashPartyModel()"
+          ><i
+            class="fa fa-eye pull-right ledgerSelectIcon"
+            style="margin-top: 25px; font-size: 18px;"
+            aria-hidden="true"
+          ></i>
+        </a>
+      </div>
+      <span class="current-balance">Current Amount : {{ currentAmount }}</span>
+    </div>
+  </div>`,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CashPartyAccountComponent),
+      multi: true,
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => CashPartyAccountComponent),
+      multi: true,
+    },
+  ],
+})
+export class CashPartyAccountComponent
+  implements ControlValueAccessor, OnDestroy {
+  cashPartyList: CashParty[] = [];
+  currentAmount: string = "0.00";
+  subscriptions: Subscription[] = [];
+  CashPartyLedgerID = new FormControl();
+  //Open the Ledger List Modal on PopUp
+  modalRef: BsModalRef;
+  //  modal config to unhide modal when clicked outside
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+    centered: true,
+    class: "modal-lg",
+  };
+  constructor(
+    private formService: FormsService,
+    private modalService: BsModalService
+  ) {
+    this.formService.getCashPartyAccountDD().subscribe((response) => {
+      this.cashPartyList = response.Entity;
+    });
+
+    this.subscriptions.push(
+      this.CashPartyLedgerID.valueChanges.subscribe((value: number) => {
+        this.registerOnChange(value);
+        this.onTouched();
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((s) => s.unsubscribe());
+  }
+
+  // Filterable Cash Party Drop-down
+  cashPartyDDFilter(value): void {
+    this.cashPartyList = this.formService.cashPartyList.filter(
+      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
+  cashPartyChange(value): void {
+    const selectedTaxValue = this.formService.cashPartyList.filter(
+      (s) => s.LedgerID === value
+    );
+    if (selectedTaxValue) {
+      this.currentAmount = selectedTaxValue[0].LedgerBalance;
+    }
+  }
+
+  openCashPartyModel(): void {
+    this.modalRef = this.modalService.show(
+      CashPartyModalPopupComponent,
+      this.config
+    );
+    this.modalRef.content.action = "Select";
+
+    this.modalRef.content.onSelected.subscribe((data) => {
+      if (data) {
+        // Do After the the sucess
+        this.CashPartyLedgerID.setValue(data.LedgerID);
+        this.currentAmount = data.LedgerBalance;
+      }
+    });
+    this.modalRef.content.onClose.subscribe((data) => {
+      //Do after Close the Modal
+    });
+  }
+
+  onChange: any = () => {};
+  onTouched: any = () => {};
+
+  registerOnChange(fn: number) {
+    this.onChange = fn;
+  }
+
+  writeValue(value: number) {
+    if (value) {
+      this.cashPartyChange(value);
+      this.CashPartyLedgerID.setValue(value);
+    }
+
+    if (value === null) {
+      this.CashPartyLedgerID.reset();
+    }
+  }
+
+  registerOnTouched(fn) {
+    this.onTouched = fn;
+  }
+
+  // communicate the inner form validation to the parent form
+  validate(_: FormControl) {
+    return this.CashPartyLedgerID.valid ? null : { profile: { valid: false } };
+  }
+}

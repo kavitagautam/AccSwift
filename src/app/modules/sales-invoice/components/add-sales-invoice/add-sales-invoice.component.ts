@@ -9,8 +9,6 @@ import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { IconConst } from "@app/shared/constants/icon.constant";
-import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 
 @Component({
   selector: "accSwift-add-sales-invoice",
@@ -23,7 +21,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   rowSubmitted: boolean;
   IsAutomatic: boolean = false;
   private editedRowIndex: number;
-  cashPartyList: CashParty[] = [];
   //Total Calculation
   myFormValueChanges$;
   private destroyed$ = new Subject<void>();
@@ -58,19 +55,13 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     private modalService: BsModalService,
     public productCodeMatch: ProductCodeValidatorsService,
     private preferenceService: PreferenceService
-  ) {
-    this.salesInvoiceService.getCashPartyAccountDD().subscribe((response) => {
-      this.cashPartyList = response.Entity;
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.buildAddSalesInvoiceForm();
-
     this.myFormValueChanges$ = this.salesInvoiceForm.controls[
       "InvoiceDetails"
     ].valueChanges;
-
     this.myFormValueChanges$.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
@@ -84,7 +75,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   buildAddSalesInvoiceForm(): void {
     this.salesInvoiceForm = this._fb.group({
-      ID:[null],
+      ID: [null],
       SeriesID: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_SERIES_SALES.Value
@@ -307,31 +298,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           this.vatTotalAmount +
           this.totalTaxAmount;
       });
-  }
-
-  // Filterable Cash Party Drop-down
-  cashPartyDDFilter(value): void {
-    this.cashPartyList = this.salesInvoiceService.cashPartyList.filter(
-      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
-    );
-  }
-
-  openCashPartyModel(): void {
-    this.modalRef = this.modalService.show(
-      CashPartyModalPopupComponent,
-      this.config
-    );
-    this.modalRef.content.action = "Select";
-
-    this.modalRef.content.onSelected.subscribe((data) => {
-      if (data) {
-        // Do After the the sucess
-        this.salesInvoiceForm.get("CashPartyLedgerID").setValue(data.LedgerID);
-      }
-    });
-    this.modalRef.content.onClose.subscribe((data) => {
-      //Do after Close the Modal
-    });
   }
 
   openTender(template: TemplateRef<any>): void {

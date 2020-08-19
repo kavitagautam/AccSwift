@@ -1,0 +1,115 @@
+<div class="box box-default">
+  <form [formGroup]="bankReconciliationForm" novalidate>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Series </label>
+            <select class="form-control" formControlName="SeriesID">
+              <option [ngValue]="null">Choose Option....</option>
+              <option
+                *ngFor="let series of reconciliationService.seriesLists"
+                [ngValue]="series.ID"
+              >
+                {{ series.Name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Bank Account </label>
+            <select
+              class="form-control"
+              formControlName="LedgerID"
+              accSwiftFormValidator
+            >
+              <option [ngValue]="null">Choose Option....</option>
+              <option
+                *ngFor="let account of reconciliationService.bankAccountLists"
+                [ngValue]="account.LedgerID"
+              >
+                {{ account.LedgerName }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Voucher</label>
+            <input
+              class="form-control"
+              formControlName="VoucherNo"
+              accSwiftFormValidator
+            />
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Project</label>
+            <select class="form-control" formControlName="ProjectID">
+              <option [ngValue]="null">Choose Option....</option>
+              <option
+                *ngFor="let project of reconciliationService.projectLists"
+                [ngValue]="project.ID"
+              >
+                {{ project.EngName }}</option
+              >
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Date</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="Date"
+              bsDatepicker
+            />
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <div class="form-group">
+            <label>Current Balance </label>
+            <div class="row clearfix ml-2 mt-3">
+              <span>0.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="box-body">
+        <accSwift-details-entry-grid
+          [entryArray]="bankReconciliationForm.controls.BankReconciliationDetailsList"
+          [voucherType]="'BRECON'"
+        ></accSwift-details-entry-grid>
+      </div>
+    </div>
+  </form>
+  <div class="box-footer">
+    <div class="mb-2">
+      <button
+        class="btn btn-primary"
+        (click)="save()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="bankReconciliationForm"
+      >
+        Save
+      </button>
+      <button class="btn btn-secondary ml-2" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

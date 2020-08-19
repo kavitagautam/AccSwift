@@ -16,94 +16,42 @@
     </div>
     <div id="collapseOne" class="box-body collapse" data-parent="#accordion">
       <div class="row">
-        <div class="col-md-12">
-          <form [formGroup]="salesInvoiceForm" novalidate>
+        <form [formGroup]="salesInvoiceForm" novalidate>
+          <div class="col-md-12">
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Series</label>
-                <select class="form-control" formControlName="SeriesID">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let series of salesInvoiceService.seriesList"
-                    [ngValue]="series.ID"
-                  >
-                    {{ series.Name }}
-                  </option>
-                </select>
-              </div>
+              <accSwift-series-forms
+                formControlName="SeriesID"
+                [voucherType]="'SALES'"
+              ></accSwift-series-forms>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <accSwift-project-forms
+                formControlName="ProjectID"
+              ></accSwift-project-forms>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <accSwift-sales-account
+                formControlName="SalesLedgerID"
+              ></accSwift-sales-account>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <accSwift-depot formControlName="DepotID"></accSwift-depot>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="col-md-3 col-sm-6 col-xs-6" style="margin-top: -15px;">
+              <accSwift-cash-party-account
+                formControlName="CashPartyLedgerID"
+              ></accSwift-cash-party-account>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
-                <div class="col-md-12 p-0">
-                  <div class="col-md-11 pl-0">
-                    <label>Cash/ Party /A/C </label>
-
-                    <kendo-dropdownlist
-                      class="form-control"
-                      [data]="cashPartyList"
-                      [filterable]="true"
-                      [textField]="'LedgerName'"
-                      [valueField]="'LedgerID'"
-                      [valuePrimitive]="true"
-                      [formControl]="salesInvoiceForm.get('CashPartyLedgerID')"
-                      (filterChange)="cashPartyDDFilter($event)"
-                    >
-                    </kendo-dropdownlist>
-                  </div>
-                  <div class="col-md-1 p-0">
-                    <a (click)="openCashPartyModel()"
-                      ><i
-                        class="fa fa-eye pull-right ledgerSelectIcon"
-                        style="margin-top: 25px; font-size: 18px;"
-                        aria-hidden="true"
-                      ></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Sales /A/C</label>
-                <select class="form-control" formControlName="SalesLedgerID">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="
-                      let salesAccount of salesInvoiceService.salesAccountList
-                    "
-                    [ngValue]="salesAccount.LedgerID"
-                  >
-                    {{ salesAccount.LedgerName }}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Depot/ Location</label>
-                <select class="form-control" formControlName="DepotID">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let depot of salesInvoiceService.depotList"
-                    [ngValue]="depot.ID"
-                  >
-                    {{ depot.DepotName }}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Project</label>
-                <select class="form-control" formControlName="ProjectID">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let project of salesInvoiceService.projectList"
-                    [ngValue]="project.LedgerID"
-                  >
-                    {{ project.EngName }}
-                  </option>
-                </select>
+                <label>Order No.</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="OrderNo"
+                />
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
@@ -117,18 +65,8 @@
                 />
               </div>
             </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Order No.</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="OrderNo"
-                />
-              </div>
-            </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
       <div class="box-footer">
         <div class="mb-2">

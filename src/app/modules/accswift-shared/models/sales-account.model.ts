@@ -1,8 +1,10 @@
 export interface SalesAccounts {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
+  CodeName: string;
   GroupID: number;
+  LedgerBalance: string;
+  LedgerCode: string;
+  LedgerID: number;
+  LedgerName: string;
 }
 
 export interface SalesAccountModel {
