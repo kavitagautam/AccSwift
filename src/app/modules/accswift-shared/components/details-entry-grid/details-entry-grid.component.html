@@ -169,56 +169,6 @@
             </a>
           </div>
         </div>
-        <!-- <div class="col-xs-12 col-md-12 p-0">
-          <div class="col-md-4 pl-0">
-            <input
-              #input
-              class="k-textbox"
-              style="width: 100px;"
-              placeholder="Ledger Code"
-              [formControl]="entryArray.controls[rowIndex].get('LedgerCode')"
-              (change)="changeLedgerValue(dataItem, rowIndex)"
-            />
-            <kendo-popup
-              [anchor]="input"
-              *ngIf="entryArray.controls[rowIndex].get('LedgerCode').invalid"
-              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-            >
-              <span class="k-icon k-i-warning"></span>
-              Ledger Code is invalid
-            </kendo-popup>
-          </div>
-          <div class="col-md-8 pr-0">
-            <input
-              #input
-              class="k-textbox"
-              [readonly]="true"
-              [formControl]="entryArray.controls[rowIndex].get('LedgerName')"
-            />
-            <a (click)="openLedgerModal(rowIndex)"
-              ><i
-                class="fa fa-eye pull-right ledgerSelectIcon"
-                aria-hidden="true"
-              ></i>
-            </a>
-            <kendo-popup
-              [anchor]="input"
-              *ngIf="
-                entryArray.controls[rowIndex].get('LedgerName').invalid &&
-                rowSubmitted &&
-                !(
-                  isNew &&
-                  entryArray.controls[rowIndex].get('LedgerName').untouched
-                ) &&
-                !entryArray.controls[rowIndex].get('LedgerCode')
-              "
-              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-            >
-              <span class="k-icon k-i-warning"></span>
-              Ledger name is required
-            </kendo-popup>
-          </div>
-        </div> -->
       </ng-template>
     </kendo-grid-column>
 
@@ -320,7 +270,7 @@
       >
         <span class="pull-right">
           Credit Total:
-          <span [innerHTML]="calculateDebitTotal() | currencyFormat"></span>
+          <span [innerHTML]="calculateCreditTotal() | currencyFormat"></span>
         </span>
       </ng-template>
     </kendo-grid-column>

@@ -206,9 +206,8 @@ export class DetailsEntryGridComponent implements OnInit {
     let debitTotalAmount = 0;
     for (let i = 0; i < entryListArray.length; i++) {
       if (
-        entryListArray &&
         entryListArray[i].Amount &&
-        entryListArray[i].DebitCredit == "Debit"
+        entryListArray[i].DebitCredit === "Debit"
       ) {
         debitTotalAmount = debitTotalAmount + entryListArray[i].Amount;
       }
@@ -216,12 +215,13 @@ export class DetailsEntryGridComponent implements OnInit {
     this.debitTotal = debitTotalAmount;
     return debitTotalAmount;
   }
+
   public calculateCreditTotal(): number {
     const entryListArray = this.entryArray.value;
     let creditTotalAmount = 0;
+
     for (let i = 0; i < entryListArray.length; i++) {
       if (
-        entryListArray &&
         entryListArray[i].Amount &&
         entryListArray[i].DebitCredit == "Credit"
       ) {
@@ -648,6 +648,31 @@ export class DetailsEntryGridComponent implements OnInit {
         ChequeNumber: [""],
         ChequeBank: [""],
         ChequeDate: [""],
+        Amount: [""],
+        LedgerBalance: [""],
+        VoucherType: [""],
+        Remarks: [""],
+      });
+    }
+    if (this.voucherType == "BRECON") {
+      return this._fb.group({
+        ID: [0],
+        MasterID: [null],
+        LedgerID: [null, Validators.required],
+        LedgerCode: [""],
+        LedgerName: ["", Validators.required],
+        DrCr: [""],
+        LedgerBalance: [""],
+        Amount: [0],
+        Remarks: [""],
+      });
+    }
+    if (this.voucherType == "CNTR") {
+      return this._fb.group({
+        ID: [0],
+        LedgerCode: [""],
+        LedgerName: ["", Validators.required],
+        VoucherNo: ["", [Validators.required]],
         Amount: [""],
         LedgerBalance: [""],
         VoucherType: [""],

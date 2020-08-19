@@ -38,22 +38,11 @@
       <div class="row mt-3">
         <div class="col-md-12">
           <div class="col-md-3 col-sm-6 col-xs-6">
-            <div class="form-group">
-              <label>Series<sup>*</sup></label>
-              <select
-                class="form-control"
-                formControlName="SeriesID"
-                (change)="seriesValueChange()"
-              >
-                <option [ngValue]="null">Choose Option....</option>
-                <option
-                  *ngFor="let series of salesInvoiceService.seriesList"
-                  [ngValue]="series.ID"
-                >
-                  {{ series.Name }}
-                </option>
-              </select>
-            </div>
+            <accSwift-project-forms
+              formControlName="SeriesID"
+              [voucherType]="'SALES'"
+            ></accSwift-project-forms>
+
             <div class="form-group">
               <label>Order No.</label>
               <input
@@ -69,102 +58,26 @@
             </div>
           </div>
           <div class="col-md-3 col-sm-6 col-xs-6">
-            <div class="form-group">
-              <label>Voucher No. <sup>*</sup></label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="VoucherNo"
-                accSwiftFormValidator
-              />
-              <span
-                *ngIf="IsAutomatic"
-                style="
-                  top: 32px;
-                  margin-left: 172px;
-                  display: inline-block;
-                  position: absolute;
-                "
-                >Automatic</span
-              >
-            </div>
-            <div class="form-group">
-              <div class="col-md-12 p-0">
-                <div class="col-md-11 pl-0">
-                  <label>Cash/ Party /A/C <sup>*</sup></label>
-                  <kendo-dropdownlist
-                    class="form-control"
-                    [data]="cashPartyList"
-                    [filterable]="true"
-                    [textField]="'LedgerName'"
-                    [valueField]="'LedgerID'"
-                    [valuePrimitive]="true"
-                    [formControl]="salesInvoiceForm.get('CashPartyLedgerID')"
-                    (filterChange)="cashPartyDDFilter($event)"
-                  >
-                  </kendo-dropdownlist>
-                </div>
-                <div class="col-md-1 p-0">
-                  <a (click)="openCashPartyModel()"
-                    ><i
-                      class="fa fa-eye pull-right ledgerSelectIcon"
-                      style="margin-top: 25px; font-size: 18px;"
-                      aria-hidden="true"
-                    ></i>
-                  </a>
-                </div>
-              </div>
-            </div>
+            <accSwift-voucher-forms
+              formControlName="VoucherNo"
+            ></accSwift-voucher-forms>
+
+            <accSwift-cash-party-account
+              formControlName="CashPartyLedgerID"
+            ></accSwift-cash-party-account>
           </div>
           <div class="col-md-3 col-sm-6 col-xs-6">
-            <div class="form-group">
-              <label>Project<sup>*</sup></label>
-              <select class="form-control" formControlName="ProjectID">
-                <option [ngValue]="null">Choose Option....</option>
-                <option
-                  *ngFor="let project of salesInvoiceService.projectList"
-                  [ngValue]="project.ID"
-                >
-                  {{ project.EngName }}
-                </option></select
-              >
-            </div>
-            <div class="form-group">
-              <label>Sales /A/C <sup>*</sup></label>
-              <select
-                class="form-control"
-                formControlName="SalesLedgerID"
-                accSwiftFormValidator
-              >
-                <option [ngValue]="null">Choose Option....</option>
-                <option
-                  *ngFor="
-                    let salesAccount of salesInvoiceService.salesAccountList
-                  "
-                  [ngValue]="salesAccount.LedgerID"
-                >
-                  {{ salesAccount.LedgerName }}
-                </option>
-              </select>
-            </div>
+            <accSwift-project-forms
+              formControlName="ProjectID"
+            ></accSwift-project-forms>
+
+            <accSwift-sales-account
+              formControlName="SalesLedgerID"
+            ></accSwift-sales-account>
           </div>
           <div class="col-md-3 col-sm-6 col-xs-6">
-            <div class="form-group">
-              <label>Depot/ Location<sup>*</sup></label>
-              <select
-                class="form-control"
-                formControlName="DepotID"
-                accSwiftFormValidator
-              >
-                <option [ngValue]="null">Choose Option....</option>
-                <option
-                  *ngFor="let depot of salesInvoiceService.depotList"
-                  [ngValue]="depot.ID"
-                >
-                  {{ depot.DepotName }}
-                </option>
-              </select>
-            </div>
+            <accSwift-depot formControlName="DepotID"></accSwift-depot>
+
             <div class="form-group">
               <label>Date </label>
               <input

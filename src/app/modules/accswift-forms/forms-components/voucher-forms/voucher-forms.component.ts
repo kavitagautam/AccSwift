@@ -1,4 +1,12 @@
-import { Component, OnInit, forwardRef, OnDestroy, Input } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  forwardRef,
+  OnDestroy,
+  Input,
+  ChangeDetectionStrategy,
+  OnChanges,
+} from "@angular/core";
 import {
   NG_VALUE_ACCESSOR,
   NG_VALIDATORS,
@@ -11,9 +19,20 @@ import { FormsService } from "../../services/forms.service";
 @Component({
   selector: "accSwift-voucher-forms",
   template: ` <div class="form-group">
-    <label for="voucher#">Voucher #</label>
-    <input class="form-control" [formControl]="VoucherNo" />
+    <label>Voucher No. <sup>*</sup></label>
+    <input type="text" class="form-control" [formControl]="VoucherNo" />
+    <span
+      *ngIf="IsAutomatic.value"
+      style="
+      top: 32px;
+      margin-left: 155px;
+      display: inline-block;
+      position: absolute;
+    "
+      >Automatic</span
+    >
   </div>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -27,32 +46,58 @@ import { FormsService } from "../../services/forms.service";
     },
   ],
 })
-export class VoucherFormsComponent implements ControlValueAccessor, OnDestroy {
+export class VoucherFormsComponent
+  implements ControlValueAccessor, OnDestroy, OnChanges {
   subscriptions: Subscription[] = [];
   VoucherNo = new FormControl();
-  @Input("seriesID") seriesID;
+  IsAutomatic = new FormControl();
+  @Input("series") seriesID;
+
   constructor(private formService: FormsService) {
-    // this.formService.getBankAccounts().subscribe((response) => {
-    //   this.bankAccount = response.Entity;
-    // });
-    console.log("SEried ID " + this.seriesID);
     this.subscriptions.push(
       this.VoucherNo.valueChanges.subscribe((value: number) => {
         this.registerOnChange(value);
+        this.seriesID = null;
+        this.IsAutomatic.setValue(true);
         this.onTouched();
       })
     );
+
+    formService.seriesSelect$.subscribe((value) => {
+      this.seriesID = value;
+      this.seriesValueChange(value);
+    });
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  // changeAccount(VocherNo): void {
-  //   this.formService.getLedgerDetails(VocherNo).subscribe((response) => {
-  //     this.currentAmount = response;
-  //   });
-  // }
+  ngOnChanges(changes): void {
+    if (this.seriesID) {
+      this.seriesValueChange(this.seriesID);
+    }
+  }
+
+  seriesValueChange(value): void {
+    if (value) {
+      this.formService
+        .getVoucherNoWithSeriesChange(value)
+        .subscribe((response) => {
+          this.IsAutomatic.setValue(
+            response.VoucherNoType === "Automatic" ? true : false
+          );
+          this.VoucherNo.setValue(response.VoucherNO);
+          if (response.IsEnabled) {
+            this.VoucherNo.enable();
+          } else {
+            this.VoucherNo.disable();
+          }
+        });
+    } else {
+      this.VoucherNo.reset();
+    }
+  }
 
   onChange: any = () => {};
   onTouched: any = () => {};
@@ -63,7 +108,6 @@ export class VoucherFormsComponent implements ControlValueAccessor, OnDestroy {
 
   writeValue(value: number) {
     if (value) {
-      //  this.changeAccount(value);
       this.VoucherNo.setValue(value);
     }
 
