@@ -62,7 +62,7 @@ export class SalesAccountComponent implements ControlValueAccessor, OnDestroy {
     const selectedTaxValue = this.salesAccountList.filter(
       (s) => s.LedgerID === ledgerId
     );
-    if (selectedTaxValue) {
+    if (selectedTaxValue.length > 0) {
       this.currentAmount = selectedTaxValue[0].LedgerBalance;
     }
   }
