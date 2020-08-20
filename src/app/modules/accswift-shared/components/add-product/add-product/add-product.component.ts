@@ -12,7 +12,7 @@ import { ToastrService } from "ngx-toastr";
 import { SelectEvent } from "@progress/kendo-angular-upload";
 import { ImageCroppedEvent } from "ngx-image-cropper";
 import { Subject } from "rxjs";
-import { AccountClass } from "@app/modules/accswift-shared/models/account-class.model";
+import { AccountClass } from "@accSwift-modules/accswift-shared/models/account-class.model";
 
 @Component({
   selector: "accSwift-add-product",
