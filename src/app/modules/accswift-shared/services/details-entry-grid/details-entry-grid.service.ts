@@ -7,12 +7,12 @@ import { Observable } from "rxjs";
 import {
   ProductMinRootModel,
   ProductMin,
-} from "@app/modules/product/models/product-min.model";
+} from "@accSwift-modules/product/models/product-min.model";
 import { RelatedUnitModel } from "../../models/related-unit.model";
 import {
   LedgerMin,
   LedgerMinModel,
-} from "@app/modules/ledger/models/ledger.models";
+} from "@accSwift-modules/ledger/models/ledger.models";
 import { VoucherType, VoucherTypeModel } from "../../models/voucher-type.model";
 
 @Injectable({

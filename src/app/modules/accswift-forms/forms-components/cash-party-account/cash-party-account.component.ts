@@ -1,5 +1,5 @@
 import { Component, OnInit, forwardRef, OnDestroy } from "@angular/core";
-import { CashParty } from "@app/modules/accswift-shared/models/cash-party.model";
+import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 import { FormsService } from "../../services/forms.service";
 import {
   NG_VALUE_ACCESSOR,
@@ -9,7 +9,7 @@ import {
 } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { CashPartyModalPopupComponent } from "@app/modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-cash-party-account",

@@ -11,8 +11,8 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { LedgerList } from "../../models/ledger.reports.model";
-import { LedgerMin } from "@app/modules/ledger/models/ledger.models";
-import { LedgerGroup } from "@app/modules/ledger/models/ledger-group.model";
+import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
+import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
 
 @Component({
   selector: "accSwift-ledger-report",

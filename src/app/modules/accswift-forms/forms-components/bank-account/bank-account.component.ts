@@ -7,7 +7,7 @@ import {
 } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { FormsService } from "../../services/forms.service";
-import { BankAccounts } from "@app/modules/accswift-shared/models/bank-account.model";
+import { BankAccounts } from "@accSwift-modules/accswift-shared/models/bank-account.model";
 
 @Component({
   selector: "accSwift-bank-account",
