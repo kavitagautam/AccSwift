@@ -706,7 +706,7 @@
     <table
       id="header-fixed"
       class="table table-hover table-fixed"
-      width="80"
+      style="width: 80%;"
       align="center"
     >
       <thead>
@@ -730,10 +730,18 @@
           <td *ngIf="invoice.ProductName">{{ invoice.DiscountAmount }}</td>
           <td *ngIf="invoice.ProductName">{{ invoice.NetAmount }}</td>
         </tr>
+        <tr *ngIf="invoiceDetails.length - 1 == 0" align="center">
+          <span>No Data Avaiable</span>
+        </tr>
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="4">Amount In Words</td>
+          <td colspan="4" style="text-align: left;">
+            Amount In Words : &nbsp;&nbsp;
+            <span class="amount_words">
+              {{ grandTotalAmount | numberToWordsConvert }}</span
+            >
+          </td>
           <td colspan="2" align="right">Gross Total</td>
           <td colspan="1" align="right">{{ totalGrossAmount }}</td>
         </tr>
