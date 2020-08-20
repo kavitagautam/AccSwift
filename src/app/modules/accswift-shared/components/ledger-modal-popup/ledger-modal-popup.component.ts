@@ -8,7 +8,7 @@ import {
   PageChangeEvent,
 } from "@progress/kendo-angular-grid";
 import { LedgerListService } from "../../services/ledger-list/ledger-list.service";
-import { LedgerLov } from "@app/modules/ledger/models/ledger.models";
+import { LedgerLov } from "@accSwift-modules/ledger/models/ledger.models";
 
 @Component({
   selector: "accSwift-ledger-modal-popup",

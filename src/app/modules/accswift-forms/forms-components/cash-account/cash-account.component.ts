@@ -12,7 +12,7 @@ import {
   FormControl,
 } from "@angular/forms";
 import { Subscription } from "rxjs";
-import { CashAccounts } from "@app/modules/accswift-shared/models/cash-account.model";
+import { CashAccounts } from "@accSwift-modules/accswift-shared/models/cash-account.model";
 import { FormsService } from "../../services/forms.service";
 
 @Component({

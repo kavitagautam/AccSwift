@@ -23,13 +23,13 @@ import { BsModalRef, BsModalService, BsLocaleService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { RelatedUnits } from "../../models/related-unit.model";
 import { CashParty } from "../../models/cash-party.model";
-import { ProductMin } from "@app/modules/product/models/product-min.model";
+import { ProductMin } from "@accSwift-modules/product/models/product-min.model";
 import { ProductModalPopupComponent } from "../product-modal-popup/product-modal-popup.component";
 import { LedgerModalPopupComponent } from "../ledger-modal-popup/ledger-modal-popup.component";
 import { LocaleService } from "@app/core/services/locale/locale.services";
-import { SettingsService } from "@app/modules/settings/services/settings.service";
+import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 import { IntlService, CldrIntlService } from "@progress/kendo-angular-intl";
-import { LedgerMin } from "@app/modules/ledger/models/ledger.models";
+import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
 
 @Component({
   selector: "accSwift-details-entry-grid",

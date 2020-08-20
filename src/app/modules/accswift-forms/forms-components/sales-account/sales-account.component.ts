@@ -6,7 +6,7 @@ import {
   ControlValueAccessor,
 } from "@angular/forms";
 import { Subscription } from "rxjs";
-import { SalesAccounts } from "@app/modules/accswift-shared/models/sales-account.model";
+import { SalesAccounts } from "@accSwift-modules/accswift-shared/models/sales-account.model";
 import { FormsService } from "../../services/forms.service";
 
 @Component({

@@ -5,17 +5,17 @@ import { environment } from "@env/environment";
 import { Observable, Subject } from "rxjs";
 import { ProjectRootModel } from "@accSwift-modules/accswift-shared/models/project.model";
 import { SeriesRootModel } from "@accSwift-modules/accswift-shared/models/series.model";
-import { CashAccountsModel } from "@app/modules/accswift-shared/models/cash-account.model";
-import { BankAccountsModel } from "@app/modules/accswift-shared/models/bank-account.model";
+import { CashAccountsModel } from "@accSwift-modules/accswift-shared/models/cash-account.model";
+import { BankAccountsModel } from "@accSwift-modules/accswift-shared/models/bank-account.model";
 import {
   CashParty,
   CashPartyModel,
-} from "@app/modules/accswift-shared/models/cash-party.model";
+} from "@accSwift-modules/accswift-shared/models/cash-party.model";
 import {
   SalesAccountModel,
   SalesAccounts,
-} from "@app/modules/accswift-shared/models/sales-account.model";
-import { Depot, DepotModel } from "@app/modules/depot/models/depot.model";
+} from "@accSwift-modules/accswift-shared/models/sales-account.model";
+import { Depot, DepotModel } from "@accSwift-modules/depot/models/depot.model";
 
 @Injectable({
   providedIn: "root",
