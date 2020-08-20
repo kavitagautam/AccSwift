@@ -3,7 +3,7 @@ import { Observable } from "rxjs";
 import { environment } from "@env/environment.prod";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
-import { LedgerLovModel } from "@app/modules/ledger/models/ledger.models";
+import { LedgerLovModel } from "@accSwift-modules/ledger/models/ledger.models";
 
 @Injectable({
   providedIn: "root",
