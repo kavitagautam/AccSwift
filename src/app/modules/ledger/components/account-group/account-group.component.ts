@@ -162,7 +162,6 @@ export class AccountGroupComponent implements OnInit, OnChanges {
     this.editMode = false;
     this.title = "Add New Group ";
     this.accountGroupForm.reset();
-    console.log("selected" + this.selectedLedgerGroupId);
     if (this.selectedLedgerGroupId) {
       this.accountGroupForm
         .get("ParentGroupID")
@@ -185,7 +184,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
         }, 1000);
       },
       (error) => {
-        this.toastr.success(JSON.stringify(error.error.Message));
+        this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
         this.toastr.success("Ledger Group deleted successfully");

@@ -288,7 +288,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       ConfirmationDialogComponent,
       this.config
     );
-    this.modalRef.content.data = "ledger Account";
+    this.modalRef.content.data = "Ledger Account";
     this.modalRef.content.action = "delete";
     this.modalRef.content.onClose.subscribe((confirm) => {
       if (confirm) {
@@ -305,10 +305,10 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         }, 1000);
       },
       (error) => {
-        this.toastr.success(JSON.stringify(error.error.Message));
+        this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
-        this.toastr.success("Product deleted successfully");
+        this.toastr.success("Account Ledger deleted successfully");
       }
     );
   }
