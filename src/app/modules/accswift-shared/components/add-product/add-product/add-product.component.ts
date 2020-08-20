@@ -12,15 +12,17 @@ import { ToastrService } from "ngx-toastr";
 import { SelectEvent } from "@progress/kendo-angular-upload";
 import { ImageCroppedEvent } from "ngx-image-cropper";
 import { Subject } from "rxjs";
+import { AccountClass } from "@app/modules/accswift-shared/models/account-class.model";
 
 @Component({
   selector: "accSwift-add-product",
   templateUrl: "./add-product.component.html",
   styleUrls: ["./add-product.component.scss"],
+  providers: [ProductService],
 })
 export class AddProductComponent implements OnInit {
   public onClose: Subject<boolean>;
-
+  accountClass: AccountClass[] = [];
   productForm: FormGroup;
   private editedRowIndex: number;
   imageChangedEvent: Array<any> = [];
@@ -78,7 +80,8 @@ export class AddProductComponent implements OnInit {
         ID: 0,
         ProductID: 0,
         AccClassID: [
-          this.productService.accountClass
+          this.productService.accountClass &&
+          this.productService.accountClass.length > 0
             ? this.productService.accountClass[0].ID
             : null,
         ],

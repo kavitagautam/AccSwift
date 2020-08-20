@@ -180,6 +180,7 @@ export class ListSalesInvoiceComponent implements OnInit {
       },
       () => {
         this.toastr.success("Invoice deleted successfully");
+        this.getSalesInvoiceList();
       }
     );
   }

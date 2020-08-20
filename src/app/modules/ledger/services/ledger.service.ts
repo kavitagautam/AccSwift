@@ -78,7 +78,7 @@ export class LedgerService {
   }
 
   deleteLedgerById(ledgerId): Observable<any> {
-    return this.httpService.delete(`${this._api_URL}Legder/${ledgerId}`);
+    return this.httpService.delete(`${this._api_URL}Ledger/${ledgerId}`);
   }
 
   getLedgerGroupDropDown(): void {
