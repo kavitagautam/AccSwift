@@ -51,29 +51,24 @@ export class AddJournalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.buildjournalVoucherForms();
-    this.getPreferences();
+    this.buildJournalVoucherForms();
   }
 
-  getPreferences(): void {
-    this.preferenceService.getPreferenceData().subscribe((response) => {
-      this.preferenceData = response.Entity;
-      this.buildjournalVoucherForms();
-    });
-  }
-
-  buildjournalVoucherForms(): void {
+  buildJournalVoucherForms(): void {
     this.journalVoucherForms = this._fb.group({
       SeriesID: [
-        this.preferenceData
-          ? this.preferenceData.DEFAULT_SERIES_JRNL.Value
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SERIES_JRNL.Value
           : null,
+      ],
+      ProjectID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+          : null,
+        Validators.required,
       ],
       VoucherNo: ["", [Validators.required]],
       Date: [new Date()],
-      ProjectID: [
-        this.preferenceData ? this.preferenceData.DEFAULT_PROJECT.Value : null,
-      ],
       Remarks: [""],
       Journaldetails: this._fb.array([this.addJournalEntryFormGroup()]),
     });
