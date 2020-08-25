@@ -12,7 +12,12 @@ import { Subscription } from "rxjs";
   selector: "accSwift-depot",
   template: `<div class="form-group">
     <label>Depot/ Location<sup>*</sup></label>
-    <select class="form-control" [formControl]="DepotID" accSwiftFormValidator>
+    <select
+      class="form-control"
+      [formControl]="DepotID"
+      accSwiftFormValidator
+      (change)="depotValueChange($event.target.value)"
+    >
       <option [ngValue]="null">Choose Option....</option>
       <option *ngFor="let depot of formService.depotList" [ngValue]="depot.ID">
         {{ depot.DepotName }}
@@ -38,7 +43,7 @@ export class DepotComponent implements ControlValueAccessor, OnDestroy {
   constructor(public formService: FormsService) {
     this.subscriptions.push(
       this.DepotID.valueChanges.subscribe((value: number) => {
-        this.registerOnChange(value);
+        this.onChange(value);
         this.onTouched();
       })
     );
@@ -47,15 +52,35 @@ export class DepotComponent implements ControlValueAccessor, OnDestroy {
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
+  get value(): number {
+    return this.DepotID.value;
+  }
+
+  set value(value: number) {
+    this.DepotID.setValue(value);
+    this.onChange(value);
+    this.onTouched();
+  }
+
   onChange: any = () => {};
   onTouched: any = () => {};
 
-  registerOnChange(fn: number) {
-    this.onChange = fn;
+  registerOnChange(fn: (_: number | null) => void): void {
+    //  this.onChange = fn;
+    this.onChange = (value) => {
+      fn(value == "" ? null : parseInt(value));
+    };
+  }
+
+  depotValueChange(value: number) {
+    this.value = value;
+    this.onChange(value);
+    this.onTouched();
   }
 
   writeValue(value: number) {
     if (value) {
+      this.value = value;
       this.DepotID.setValue(value);
     }
 

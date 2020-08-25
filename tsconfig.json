@@ -3,11 +3,11 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
+      "@accSwift-modules/*": ["app/modules/*"],
       "@app/*": ["app/*"],
       "@env/*": ["environments/*"],
       "@core/*": ["app/core/*"],
       "@lib/*": ["./../lib/*"],
-      "@accSwift-modules/*": ["app/modules/*"],
       "@shared/*": ["app/shared/*"],
       "@assets/*": ["assets/*"],
       "@config/*": ["config/*"],
