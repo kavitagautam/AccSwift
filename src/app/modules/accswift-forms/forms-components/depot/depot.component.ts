@@ -66,7 +66,6 @@ export class DepotComponent implements ControlValueAccessor, OnDestroy {
   onTouched: any = () => {};
 
   registerOnChange(fn: (_: number | null) => void): void {
-    //  this.onChange = fn;
     this.onChange = (value) => {
       fn(value == "" ? null : parseInt(value));
     };
