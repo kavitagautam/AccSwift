@@ -15,7 +15,12 @@ import { Series } from "@accSwift-modules/accswift-shared/models/series.model";
   selector: "accSwift-series-forms",
   template: `<div class="form-group">
     <label for="series">Series</label>
-    <select class="form-control" type="number" [formControl]="SeriesID">
+    <select
+      class="form-control"
+      type="number"
+      [formControl]="SeriesID"
+      (change)="seriesChange($event.target.value)"
+    >
       <option [value]="null">Choose Option....</option>
       <option *ngFor="let series of seriesList" [value]="series.ID">{{
         series.Name
@@ -42,11 +47,21 @@ export class SeriesFormsComponent
   SeriesID = new FormControl();
   seriesList: Series[];
 
+  get value(): number {
+    return this.SeriesID.value;
+  }
+
+  set value(value: number) {
+    this.SeriesID.setValue(value);
+    this.onChange(value);
+    this.onTouched();
+  }
+
   constructor(private formSerivice: FormsService) {
     this.subscriptions.push(
       this.SeriesID.valueChanges.subscribe((value: number) => {
-        this.registerOnChange(value);
         this.formSerivice.seriesSelect(value);
+        this.onChange(value);
         this.onTouched();
       })
     );
@@ -65,13 +80,20 @@ export class SeriesFormsComponent
   onChange: any = () => {};
   onTouched: any = () => {};
 
-  registerOnChange(fn: number) {
-    this.onChange = fn;
+  registerOnChange(fn: (_: number | null) => void): void {
+    this.onChange = (value) => {
+      fn(value == "" ? null : parseInt(value));
+    };
   }
-
+  seriesChange(value: number) {
+    this.value = value;
+    this.onChange(value);
+    this.onTouched();
+  }
   writeValue(value: number) {
     if (value) {
       this.SeriesID.setValue(value);
+      this.value = value;
       this.formSerivice.seriesSelect(value);
     }
     if (value === null) {

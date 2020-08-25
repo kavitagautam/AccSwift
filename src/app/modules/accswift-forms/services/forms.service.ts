@@ -3,7 +3,10 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { environment } from "@env/environment";
 import { Observable, Subject } from "rxjs";
-import { ProjectRootModel } from "@accSwift-modules/accswift-shared/models/project.model";
+import {
+  ProjectRootModel,
+  Project,
+} from "@accSwift-modules/accswift-shared/models/project.model";
 import { SeriesRootModel } from "@accSwift-modules/accswift-shared/models/series.model";
 import { CashAccountsModel } from "@accSwift-modules/accswift-shared/models/cash-account.model";
 import { BankAccountsModel } from "@accSwift-modules/accswift-shared/models/bank-account.model";
@@ -31,6 +34,7 @@ export class FormsService {
   }
   cashPartyList: CashParty[] = [];
   salesAccountList: SalesAccounts[] = [];
+  projectList: Project[];
 
   _api_URL = environment.baseAPI;
   constructor(
@@ -40,6 +44,7 @@ export class FormsService {
     this.getCashPartyAccount();
     this.getSalesAccount();
     this.getDepotList();
+    this.getProjectLists();
   }
 
   getSeriesList(voucherType): Observable<SeriesRootModel> {
@@ -47,8 +52,12 @@ export class FormsService {
     return this.httpService.get(`${this._api_URL}Series`, null, params);
   }
 
-  getProjectLists(): Observable<ProjectRootModel> {
-    return this.httpService.get(`${this._api_URL}project`);
+  getProjectLists(): void {
+    this.httpService
+      .get(`${this._api_URL}project`)
+      .subscribe((response: ProjectRootModel) => {
+        this.projectList = response.Entity;
+      });
   }
 
   getLedgerDetails(id): Observable<any> {

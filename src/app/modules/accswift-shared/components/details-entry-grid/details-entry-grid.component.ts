@@ -343,19 +343,11 @@ export class DetailsEntryGridComponent implements OnInit {
       entryListArray.controls[index]
         .get("ProductID")
         .setValue(selectedProductValue[0].ProductID);
-      entryListArray.controls[index]
-        .get("CodeName")
-        .setValue(selectedProductValue[0].CodeName);
+
       entryListArray.controls[index]
         .get("ProductName")
         .setValue(selectedProductValue[0].ProductName);
       entryListArray.controls[index].get("Quantity").setValue(1);
-      entryListArray.controls[index]
-        .get("QtyUnitID")
-        .setValue(selectedProductValue[0].QtyUnitID);
-      entryListArray.controls[index]
-        .get("QtyUnitName")
-        .setValue(selectedProductValue[0].QtyUnitName);
       entryListArray.controls[index]
         .get("SalesRate")
         .setValue(selectedProductValue[0].SalesRate);
@@ -366,25 +358,37 @@ export class DetailsEntryGridComponent implements OnInit {
           entryListArray.controls[index].get("SalesRate").value *
             entryListArray.controls[index].get("Quantity").value
         );
-      entryListArray.controls[index].get("DiscPercentage").setValue(0);
-      entryListArray.controls[index]
-        .get("DiscountAmount")
-        .setValue(
-          entryListArray.controls[index].get("DiscPercentage").value *
-            entryListArray.controls[index].get("Amount").value
-        );
-      entryListArray.controls[index]
-        .get("NetAmount")
-        .setValue(
-          entryListArray.controls[index].get("Amount").value -
-            entryListArray.controls[index].get("DiscountAmount").value
-        );
+      if (this.voucherType == "SALES") {
+        entryListArray.controls[index]
+          .get("CodeName")
+          .setValue(selectedProductValue[0].CodeName);
+        entryListArray.controls[index]
+          .get("QtyUnitID")
+          .setValue(selectedProductValue[0].QtyUnitID);
+        entryListArray.controls[index]
+          .get("QtyUnitName")
+          .setValue(selectedProductValue[0].QtyUnitName);
+        entryListArray.controls[index].get("DiscPercentage").setValue(0);
+        entryListArray.controls[index]
+          .get("DiscountAmount")
+          .setValue(
+            entryListArray.controls[index].get("DiscPercentage").value *
+              entryListArray.controls[index].get("Amount").value
+          );
+        entryListArray.controls[index]
+          .get("NetAmount")
+          .setValue(
+            entryListArray.controls[index].get("Amount").value -
+              entryListArray.controls[index].get("DiscountAmount").value
+          );
 
-      entryListArray.controls[index]
-        .get("TaxID")
-        .setValue(selectedProductValue[0].TaxID);
-      entryListArray.controls[index].get("TaxAmount").setValue("");
-      entryListArray.controls[index].get("Remarks").setValue("");
+        entryListArray.controls[index]
+          .get("TaxID")
+          .setValue(selectedProductValue[0].TaxID);
+        entryListArray.controls[index].get("TaxAmount").setValue("");
+        entryListArray.controls[index].get("Remarks").setValue("");
+      }
+
       const length = this.entryArray.value.length;
       if (entryListArray.controls[length - 1].invalid) return;
       this.entryArray.push(this.addEntryList());
@@ -447,13 +451,8 @@ export class DetailsEntryGridComponent implements OnInit {
         entryListArray.controls[index]
           .get("ProductName")
           .setValue(data.ProductName);
+
         entryListArray.controls[index].get("Quantity").setValue(1);
-        entryListArray.controls[index]
-          .get("QtyUnitID")
-          .setValue(data.QtyUnitID);
-        entryListArray.controls[index]
-          .get("QtyUnitName")
-          .setValue(data.QtyUnitName);
         entryListArray.controls[index]
           .get("SalesRate")
           .setValue(data.SalesRate);
@@ -463,25 +462,44 @@ export class DetailsEntryGridComponent implements OnInit {
             entryListArray.controls[index].get("SalesRate").value *
               entryListArray.controls[index].get("Quantity").value
           );
-        entryListArray.controls[index].get("DiscPercentage").setValue(0);
-        entryListArray.controls[index]
-          .get("DiscountAmount")
-          .setValue(
-            entryListArray.controls[index].get("DiscPercentage").value *
-              entryListArray.controls[index].get("Amount").value
-          );
-        entryListArray.controls[index]
-          .get("NetAmount")
-          .setValue(
-            entryListArray.controls[index].get("Amount").value -
-              entryListArray.controls[index].get("DiscountAmount").value
-          );
+        // for sales invoice
+        if (this.voucherType == "SALES") {
+          entryListArray.controls[index].get("DiscPercentage").setValue(0);
+          entryListArray.controls[index]
+            .get("DiscountAmount")
+            .setValue(
+              entryListArray.controls[index].get("DiscPercentage").value *
+                entryListArray.controls[index].get("Amount").value
+            );
+          entryListArray.controls[index]
+            .get("NetAmount")
+            .setValue(
+              entryListArray.controls[index].get("Amount").value -
+                entryListArray.controls[index].get("DiscountAmount").value
+            );
 
-        entryListArray.controls[index].get("TaxID").setValue(data.TaxID);
-        entryListArray.controls[index]
-          .get("TaxAmount")
-          .setValue(data.TaxAmount);
-        entryListArray.controls[index].get("Remarks").setValue("");
+          entryListArray.controls[index].get("TaxID").setValue(data.TaxID);
+          entryListArray.controls[index]
+            .get("TaxAmount")
+            .setValue(data.TaxAmount);
+          entryListArray.controls[index]
+            .get("QtyUnitID")
+            .setValue(data.QtyUnitID);
+          entryListArray.controls[index]
+            .get("QtyUnitName")
+            .setValue(data.QtyUnitName);
+          entryListArray.controls[index].get("Remarks").setValue("");
+        }
+        //for sales Order
+        if (this.voucherType == "SLS_ORDER") {
+          entryListArray.controls[index]
+            .get("UpdatedQuantity")
+            .setValue(data.UpdatedQuantity);
+          entryListArray.controls[index]
+            .get("PenndingQuantity")
+            .setValue(data.PenndingQuantity);
+        }
+
         const length = this.entryArray.value.length;
         if (entryListArray.controls[length - 1].invalid) return;
         this.entryArray.push(this.addEntryList());
@@ -568,7 +586,7 @@ export class DetailsEntryGridComponent implements OnInit {
         ProductID: [""],
         ProductName: [""],
         CodeName: [""],
-        Quantity: ["", Validators.required],
+        Quantity: [1, Validators.required],
         QtyUnitID: ["", Validators.required],
         QtyUnitName: [""],
         SalesRate: ["", Validators.required],
@@ -677,6 +695,20 @@ export class DetailsEntryGridComponent implements OnInit {
         LedgerBalance: [""],
         VoucherType: [""],
         Remarks: [""],
+      });
+    }
+    if (this.voucherType == "SLS_ORDER") {
+      return this._fb.group({
+        ID: [0],
+        SalesOrderID: [0],
+        ProductCode: [""],
+        ProductID: [null, Validators.required],
+        ProductName: [""],
+        Quantity: [1],
+        SalesRate: [""],
+        Amount: [""],
+        UpdatedQuantity: [0],
+        PenndingQuantity: [0],
       });
     }
   }

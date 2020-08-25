@@ -17,6 +17,7 @@ import { EditSalesOrderComponent } from "./components/edit-sales-order/edit-sale
 import { ProductModalPopupComponent } from "@accSwift-modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
 import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
+import { AccswiftFormsModule } from "@accSwift-modules/accswift-forms/accswift-forms.module";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module"
     SalesOrderRoutingModule,
     SharedModule,
     AccswiftSharedModule,
+    AccswiftFormsModule,
     GridModule,
     FormsModule,
     ReactiveFormsModule,
