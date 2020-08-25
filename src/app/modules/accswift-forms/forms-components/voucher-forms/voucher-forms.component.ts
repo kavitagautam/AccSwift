@@ -15,6 +15,7 @@ import {
 } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { FormsService } from "../../services/forms.service";
+import { EventsOutsideAngularDirective } from "@progress/kendo-angular-common";
 
 @Component({
   selector: "accSwift-voucher-forms",
@@ -56,9 +57,9 @@ export class VoucherFormsComponent
   constructor(private formService: FormsService) {
     this.subscriptions.push(
       this.VoucherNo.valueChanges.subscribe((value: number) => {
-        this.registerOnChange(value);
         this.seriesID = null;
         this.IsAutomatic.setValue(true);
+        this.onChange(value);
         this.onTouched();
       })
     );
@@ -73,6 +74,16 @@ export class VoucherFormsComponent
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
+  get value(): string {
+    return this.VoucherNo.value;
+  }
+
+  set value(value: string) {
+    this.VoucherNo.setValue(value);
+    this.onChange(value);
+    this.onTouched();
+  }
+
   ngOnChanges(changes): void {
     if (this.seriesID) {
       this.seriesValueChange(this.seriesID);
@@ -80,7 +91,7 @@ export class VoucherFormsComponent
   }
 
   seriesValueChange(value): void {
-    if (value) {
+    if (value > 0) {
       this.formService
         .getVoucherNoWithSeriesChange(value)
         .subscribe((response) => {
@@ -88,6 +99,8 @@ export class VoucherFormsComponent
             response.VoucherNoType === "Automatic" ? true : false
           );
           this.VoucherNo.setValue(response.VoucherNO);
+          this.value = response.VoucherNO;
+
           if (response.IsEnabled) {
             this.VoucherNo.enable();
           } else {
@@ -96,18 +109,21 @@ export class VoucherFormsComponent
         });
     } else {
       this.VoucherNo.reset();
+      this.value = "";
     }
   }
 
   onChange: any = () => {};
   onTouched: any = () => {};
 
-  registerOnChange(fn: number) {
+  registerOnChange(fn: string) {
     this.onChange = fn;
   }
 
-  writeValue(value: number) {
+  writeValue(value: string) {
     if (value) {
+      // this.value = value;
+      this.seriesValueChange(value);
       this.VoucherNo.setValue(value);
     }
 
@@ -116,7 +132,7 @@ export class VoucherFormsComponent
     }
   }
 
-  registerOnTouched(fn) {
+  registerOnTouched(fn: string) {
     this.onTouched = fn;
   }
 

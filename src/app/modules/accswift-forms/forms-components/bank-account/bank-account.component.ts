@@ -50,10 +50,20 @@ export class BankAccountComponent implements ControlValueAccessor, OnDestroy {
 
     this.subscriptions.push(
       this.LedgerID.valueChanges.subscribe((value: number) => {
-        this.registerOnChange(value);
+        this.onChange(value);
         this.onTouched();
       })
     );
+  }
+
+  get value(): number {
+    return this.LedgerID.value;
+  }
+
+  set value(value: number) {
+    this.LedgerID.setValue(value);
+    this.onChange(value);
+    this.onTouched();
   }
 
   ngOnDestroy() {
@@ -64,17 +74,23 @@ export class BankAccountComponent implements ControlValueAccessor, OnDestroy {
     this.formService.getLedgerDetails(ledgerId).subscribe((response) => {
       this.currentAmount = response;
     });
+    this.value = ledgerId;
+    this.onChange(ledgerId);
+    this.onTouched();
   }
 
   onChange: any = () => {};
   onTouched: any = () => {};
 
-  registerOnChange(fn: number) {
-    this.onChange = fn;
+  registerOnChange(fn: (_: number | null) => void): void {
+    this.onChange = (value) => {
+      fn(value == "" ? null : parseInt(value));
+    };
   }
 
   writeValue(value: number) {
     if (value) {
+      this.value = value;
       this.changeAccount(value);
       this.LedgerID.setValue(value);
     }
