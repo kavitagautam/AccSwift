@@ -81,8 +81,6 @@ export class CashPartyAccountComponent
     this.subscriptions.push(
       this.CashPartyLedgerID.valueChanges.subscribe((value: number) => {
         this.onChange(value);
-        //this.value - value;
-        // this.registerOnChange(value);
         this.onTouched();
       })
     );
@@ -151,7 +149,7 @@ export class CashPartyAccountComponent
     if (value) {
       this.cashPartyChange(value);
       this.value = value;
-      //this.CashPartyLedgerID.setValue(value);
+      this.CashPartyLedgerID.setValue(value);
     }
 
     if (value === null) {
