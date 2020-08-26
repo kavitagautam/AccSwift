@@ -172,7 +172,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
               this.assignFormsValue();
               this.setInvoiceList();
             }
-            //this.buildSalesInvoiceForm();
           });
       }
     });
@@ -344,23 +343,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       );
     }
     return invoiceFormArray;
-  }
-
-  seriesValueChange(): void {
-    const seriesChange = this.salesInvoiceForm.get("SeriesID").value;
-    this.salesInvoiceService
-      .getVoucherNoWithSeriesChange(seriesChange)
-      .subscribe((response) => {
-        this.salesInvoiceForm.get("VoucherNo").setValue(response.VoucherNO);
-        if (response.IsEnabled) {
-          this.salesInvoiceForm.get("VoucherNo").enable();
-        } else {
-          this.salesInvoiceForm.get("VoucherNo").disable();
-        }
-        if (response.VoucherNoType === "Automatic") {
-          this.IsAutomatic = true;
-        }
-      });
   }
 
   payInvoice(): void {

@@ -85,14 +85,15 @@
             <tr>
               <td style="border: none;">
                 <img
-                  src="{{ defaultImageUrl }}/logo.png"
+                  [src]="companyLogo"
                   style="max-width: 200px; max-height: 80px;"
                 /><br /><br /><br />
                 <b>
-                  SIMPLIFLY STAFFING TECHNOLOGY<br />
-                  800 N HAVEN AVE<br />
-                  SUITE 240<br />
-                  ONTARIO, CALIFORNIA 91764<br />
+                  {{ companyDetails?.Name }}<br />
+                  {{ companyDetails?.Zone }}, {{ companyDetails?.District
+                  }}<br />
+                  {{ companyDetails?.Address1 }}<br />
+                  {{ companyDetails?.Address2 }}<br />
                 </b>
               </td>
             </tr>
