@@ -115,7 +115,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       Remarks: [""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
-    this.seriesValueChange();
   }
 
   addInvoiceEntryList(): FormGroup {
@@ -172,25 +171,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         this.tenderForm.get("tenderAmount").value;
       this.tenderForm.get("returnAmount").setValue(paidA.toFixed(2));
     });
-  }
-
-  seriesValueChange(): void {
-    const seriesChange = this.salesInvoiceForm.get("SeriesID").value;
-    if (seriesChange) {
-      this.salesInvoiceService
-        .getVoucherNoWithSeriesChange(seriesChange)
-        .subscribe((response) => {
-          this.salesInvoiceForm.get("VoucherNo").setValue(response.VoucherNO);
-          if (response.IsEnabled) {
-            this.salesInvoiceForm.get("VoucherNo").enable();
-          } else {
-            this.salesInvoiceForm.get("VoucherNo").disable();
-          }
-          if (response.VoucherNoType === "Automatic") {
-            this.IsAutomatic = true;
-          }
-        });
-    }
   }
 
   invoiceBilling(): void {

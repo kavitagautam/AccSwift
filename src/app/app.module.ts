@@ -22,6 +22,7 @@ import "@lib/ne/all"; // For Kendo Nepali Input
 import { registerLocaleData } from "@angular/common";
 import localeNe from "@angular/common/locales/ne";
 import { LocaleService } from "./core/services/locale/locale.services";
+import { CookieService } from "ngx-cookie-service";
 registerLocaleData(localeNe, "ne");
 
 export function initPreferenceData(preferenceService: PreferenceService) {
@@ -85,6 +86,7 @@ export function localFunction(settingsService: SettingsService) {
       deps: [],
       useFactory: localFunction,
     },
+    CookieService,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],

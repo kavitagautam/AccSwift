@@ -9,18 +9,19 @@ import {
 } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { map, catchError } from "rxjs/operators";
+import { AuthenticationService } from "@accSwift-modules/auth/login/services/authentication.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class HttpInterceptorsService implements HttpInterceptor {
-  constructor() {}
+  constructor(private authService: AuthenticationService) {}
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const authToken = sessionStorage.getItem("access_token");
+    const authToken = this.authService.getToken();
     let authReq = req.clone({
       headers: req.headers
         .append("Authorization", `bearer ` + authToken)

@@ -5,28 +5,21 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from "@angular/router";
+import { AuthenticationService } from "@accSwift-modules/auth/login/services/authentication.service";
+import { CookieService } from "ngx-cookie-service";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cookieService: CookieService) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (sessionStorage.getItem("access_token")) {
-      // logged in so return true
+    const token = this.cookieService.get("access_token");
+    if (!token) {
+      this.router.navigate(["/login"]);
+      return false;
+    } else {
       return true;
     }
-
-    // not logged in so redirect to login page with the return url and return false
-    this.router.navigate(["/login"], { queryParams: { returnUrl: state.url } });
-    return false;
   }
-  // canActivate(): boolean {
-  //   const token = sessionStorage.getItem("access_token");
-  //   if (!token) {
-  //     this.router.navigate(["/login"]);
-  //     return false;
-  //   }
-  //   return true;
-  // }
 }
