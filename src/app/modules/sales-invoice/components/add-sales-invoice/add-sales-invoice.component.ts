@@ -125,14 +125,14 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       ProductName: [""],
       CodeName: [""],
       Quantity: ["", Validators.required],
-      QtyUnitID: ["", Validators.required],
+      QtyUnitID: [null, Validators.required],
       QtyUnitName: [""],
       SalesRate: ["", Validators.required],
       Amount: ["", Validators.required],
       DiscPercentage: [0, Validators.required],
       DiscountAmount: [0, Validators.required],
       NetAmount: [0, Validators.required],
-      TaxID: [""],
+      TaxID: [null],
       TaxAmount: [""],
       Remarks: [""],
     });
@@ -259,7 +259,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (invoices && invoices[i].TaxAmount) {
+          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
@@ -271,7 +271,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         this.totalDiscountPercentage = sumTotalDiscountPer;
         this.totalTaxAmount = sumTaxAmount;
 
-        this.vatTotalAmount = this.totalNetAmount * 0.13;
+        this.vatTotalAmount = sumTaxAmount;
         this.grandTotalAmount =
           this.totalGrossAmount -
           this.totalDiscountAmount +

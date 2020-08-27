@@ -292,25 +292,27 @@ export class DetailsEntryGridComponent implements OnInit {
   //Change Discount Value
   discountAmountCalc(dataItem, index): void {
     const entryListArray = this.entryArray as FormArray;
+    let qunatityValue = entryListArray.controls[index].get("Quantity").value;
+
+    let salesRateValue = entryListArray.controls[index].get("SalesRate").value;
+    let amountC = qunatityValue * salesRateValue;
 
     let discountAmountValue = entryListArray.controls[index].get(
       "DiscountAmount"
     ).value;
-    let qunatityValue = entryListArray.controls[index].get("Quantity").value;
+    let calculatePercentage = 0;
+    if (discountAmountValue) {
+      calculatePercentage = discountAmountValue / amountC;
+    }
 
-    let salesRateValue = entryListArray.controls[index].get("SalesRate").value;
-
-    let amountC = qunatityValue * salesRateValue;
-    let calculatePercentage = (discountAmountValue / amountC) * 100;
     entryListArray.controls[index]
       .get("DiscPercentage")
-      .setValue(calculatePercentage);
-    let discountPer = entryListArray.controls[index].get("DiscPercentage")
-      .value;
-    let discountAmountC = discountPer * amountC;
+      .setValue(calculatePercentage * 100);
 
-    discountPer = calculatePercentage;
-    discountAmountC = amountC * discountPer;
+    let discountAmountC = calculatePercentage * amountC;
+
+    discountAmountC = amountC * calculatePercentage;
+
     entryListArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
@@ -385,7 +387,12 @@ export class DetailsEntryGridComponent implements OnInit {
         entryListArray.controls[index]
           .get("TaxID")
           .setValue(selectedProductValue[0].TaxID);
-        entryListArray.controls[index].get("TaxAmount").setValue("");
+        entryListArray.controls[index]
+          .get("TaxAmount")
+          .setValue(
+            entryListArray.controls[index].get("NetAmount").value * 0.13
+          );
+        console.log(JSON.stringify(selectedProductValue));
         entryListArray.controls[index].get("Remarks").setValue("");
       }
 
@@ -481,7 +488,9 @@ export class DetailsEntryGridComponent implements OnInit {
           entryListArray.controls[index].get("TaxID").setValue(data.TaxID);
           entryListArray.controls[index]
             .get("TaxAmount")
-            .setValue(data.TaxAmount);
+            .setValue(
+              entryListArray.controls[index].get("NetAmount").value * 0.13
+            );
           entryListArray.controls[index]
             .get("QtyUnitID")
             .setValue(data.QtyUnitID);

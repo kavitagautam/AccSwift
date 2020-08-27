@@ -68,7 +68,11 @@ import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
     DetailsEntryGridComponent,
   ],
   providers: [ValidationMsgService],
-  entryComponents: [AddProductComponent],
+  entryComponents: [
+    AddProductComponent,
+    ProductModalPopupComponent,
+    LedgerModalPopupComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AccswiftSharedModule {}
