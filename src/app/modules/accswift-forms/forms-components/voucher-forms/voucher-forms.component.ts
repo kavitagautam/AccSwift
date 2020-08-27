@@ -4,7 +4,6 @@ import {
   forwardRef,
   OnDestroy,
   Input,
-  ChangeDetectionStrategy,
   OnChanges,
 } from "@angular/core";
 import {
@@ -15,7 +14,6 @@ import {
 } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { FormsService } from "../../services/forms.service";
-import { EventsOutsideAngularDirective } from "@progress/kendo-angular-common";
 
 @Component({
   selector: "accSwift-voucher-forms",
@@ -23,7 +21,7 @@ import { EventsOutsideAngularDirective } from "@progress/kendo-angular-common";
     <label>Voucher No. <sup>*</sup></label>
     <input type="text" class="form-control" [formControl]="VoucherNo" />
     <span
-      *ngIf="IsAutomatic.value"
+      *ngIf="IsAutomatic == true"
       style="
       top: 32px;
       margin-left: 155px;
@@ -33,7 +31,6 @@ import { EventsOutsideAngularDirective } from "@progress/kendo-angular-common";
       >Automatic</span
     >
   </div>`,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -51,14 +48,13 @@ export class VoucherFormsComponent
   implements ControlValueAccessor, OnDestroy, OnChanges {
   subscriptions: Subscription[] = [];
   VoucherNo = new FormControl();
-  IsAutomatic = new FormControl();
+  IsAutomatic: boolean = false;
   @Input("series") seriesID;
 
   constructor(private formService: FormsService) {
     this.subscriptions.push(
       this.VoucherNo.valueChanges.subscribe((value: number) => {
-        this.seriesID = null;
-        this.IsAutomatic.setValue(true);
+        this.IsAutomatic = true;
         this.onChange(value);
         this.onTouched();
       })
@@ -95,16 +91,17 @@ export class VoucherFormsComponent
       this.formService
         .getVoucherNoWithSeriesChange(value)
         .subscribe((response) => {
-          this.IsAutomatic.setValue(
-            response.VoucherNoType === "Automatic" ? true : false
-          );
-          this.VoucherNo.setValue(response.VoucherNO);
-          this.value = response.VoucherNO;
+          if (response && response.VoucherNO !== "") {
+            this.IsAutomatic =
+              response.VoucherNoType === "Automatic" ? true : false;
+            this.VoucherNo.setValue(response.VoucherNO);
+            this.value = response.VoucherNO;
 
-          if (response.IsEnabled) {
-            this.VoucherNo.enable();
-          } else {
-            this.VoucherNo.disable();
+            if (response.IsEnabled) {
+              this.VoucherNo.enable();
+            } else {
+              this.VoucherNo.disable();
+            }
           }
         });
     } else {
@@ -122,8 +119,7 @@ export class VoucherFormsComponent
 
   writeValue(value: string) {
     if (value) {
-      // this.value = value;
-      this.seriesValueChange(value);
+      this.value = value;
       this.VoucherNo.setValue(value);
     }
 

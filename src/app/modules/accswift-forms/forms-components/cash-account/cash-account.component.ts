@@ -24,13 +24,13 @@ import { FormsService } from "../../services/forms.service";
       [formControl]="LedgerID"
       (change)="changeCashAccount(LedgerID.value)"
     >
-      <option [ngValue]="null">Choose option... </option>
+      <option [ngValue]="null">Choose option...</option>
       <option
         *ngFor="let account of cashAccountLists"
         [ngValue]="account.LedgerID"
       >
-        {{ account.LedgerName }}</option
-      >
+        {{ account.LedgerName }}
+      </option>
     </select>
     <span class="current-balance">Current Amount : {{ currentAmount }}</span>
   </div>`,
