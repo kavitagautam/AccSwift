@@ -237,7 +237,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (invoices && invoices[i].TaxAmount) {
+          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
@@ -266,14 +266,14 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       ProductName: [""],
       CodeName: [""],
       Quantity: ["", Validators.required],
-      QtyUnitID: ["", Validators.required],
+      QtyUnitID: [null, Validators.required],
       QtyUnitName: [""],
       SalesRate: ["", Validators.required],
       Amount: ["", Validators.required],
       DiscPercentage: [0, Validators.required],
       DiscountAmount: [0, Validators.required],
       NetAmount: [0, Validators.required],
-      TaxID: [""],
+      TaxID: [null],
       TaxAmount: [""],
       Remarks: [""],
     });

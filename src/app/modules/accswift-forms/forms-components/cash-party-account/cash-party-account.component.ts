@@ -71,7 +71,7 @@ export class CashPartyAccountComponent
     class: "modal-lg",
   };
   constructor(
-    private formService: FormsService,
+    public formService: FormsService,
     private modalService: BsModalService
   ) {
     this.formService.getCashPartyAccountDD().subscribe((response) => {
