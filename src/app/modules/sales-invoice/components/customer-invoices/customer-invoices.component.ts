@@ -6,6 +6,8 @@ import { IconConst } from "@shared/constants/icon.constant";
 import { MapCustomerInvoiceExportData } from "@app/shared/data/map-customer-invoice-export-data";
 import { CustomerInvoiceExportColumnHeaders } from "@app/shared/models/customer-invoice-export-column-headers.model";
 import { ActivatedRoute, Router } from "@angular/router";
+import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
+import { Company } from "@accSwift-modules/company/models/company.model";
 @Component({
   selector: "simpliflysaas-customer-invoices",
   templateUrl: "./customer-invoices.component.html",
@@ -22,6 +24,7 @@ export class CustomerInvoicesComponent implements OnInit {
   totalTaxAmount: number = 0;
   vatTotalAmount: number = 0;
   grandTotalAmount: number = 0;
+  companyLogo: any = "";
   // select dropdown
   payrollInvoiceList = [
     {
@@ -33,18 +36,24 @@ export class CustomerInvoicesComponent implements OnInit {
       name: 3222,
     },
   ];
+  companyDetails: Company;
   invoiceDetails = [];
   customerDescription: any[];
   constructor(
     private exportService: ExportToCsvService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private salesInvoiceServices: SalesInvoiceService
   ) {
-    //   console.log("route --->", this.router.getCurrentNavigation().extras.state);
-    //const data = this.router.getCurrentNavigation().extras.state;
+    this.salesInvoiceServices.getCompanyDetails().subscribe((response) => {
+      this.companyDetails = response.Entity;
+      if (this.companyDetails) {
+        this.companyLogo = this.companyDetails.Logo;
+      }
+    });
+
     const data = JSON.parse(localStorage.getItem("invoices"));
     if (data) {
-      // this.invoiceDetails = this.router.getCurrentNavigation().extras.state.InvoiceDetails;
       this.invoiceDetails = data.InvoiceDetails;
       this.calculateTotal(this.invoiceDetails);
     }
@@ -99,17 +108,13 @@ export class CustomerInvoicesComponent implements OnInit {
 
   getIdFromRoute(): void {
     this.route.paramMap.subscribe((params) => {
-      console.log(JSON.stringify(params));
       const param = params.get("id");
-      console.log("Invoice ID" + JSON.stringify(param));
       if (param) {
       }
     });
     const param = this.route.snapshot.queryParamMap;
     if (param.get("data")) {
       const data = param.get("data");
-
-      console.log("data of params" + JSON.stringify(data));
     }
   }
 

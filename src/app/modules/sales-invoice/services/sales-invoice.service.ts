@@ -8,6 +8,7 @@ import { HttpClientService } from "@core/services/http-client/http-client.servic
 import { Observable } from "rxjs";
 import { environment } from "@env/environment";
 import { Injectable } from "@angular/core";
+import { CompanyDetailsModel } from "@accSwift-modules/company/models/company.model";
 
 @Injectable({
   providedIn: "root",
@@ -19,15 +20,6 @@ export class SalesInvoiceService {
     private httpService: HttpClientService,
     private http: HttpClient
   ) {}
-
-  getVoucherNoWithSeriesChange(seriesId): Observable<any> {
-    const params = new HttpParams().set("SeriesID", seriesId);
-    return this.httpService.get(
-      `${this._api_URL}Series/VoucherNo`,
-      null,
-      params
-    );
-  }
 
   getSalesInvoiceMaster(body): Observable<SalseInvoiceNavigateModel> {
     return this.httpService.post(
@@ -50,5 +42,9 @@ export class SalesInvoiceService {
 
   deleteSalesById(id): Observable<any> {
     return this.http.delete(`${this._api_URL}SalesInvoiceMaster/${id}`);
+  }
+
+  getCompanyDetails(): Observable<CompanyDetailsModel> {
+    return this.httpService.get(`${this._api_URL}Company/User`);
   }
 }
