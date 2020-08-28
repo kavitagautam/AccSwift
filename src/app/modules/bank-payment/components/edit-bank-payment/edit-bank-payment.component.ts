@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-edit-bank-payment",
@@ -16,11 +17,9 @@ import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/val
 export class EditBankPaymentComponent implements OnInit {
   bankPaymentForm: FormGroup;
   private editedRowIndex: number;
-  currentAmount: string = "0.00";
-  numericFormat: string = "n2";
-  public decimals: number = 2;
+  iconConst = IconConst;
+
   bankPaymentDetails: BankPayment;
-  date: Date = new Date();
   submitted: boolean;
   rowSubmitted: boolean;
   modalRef: BsModalRef;
@@ -95,8 +94,8 @@ export class EditBankPaymentComponent implements OnInit {
           .getBankPaymentDetails(params.get("id"))
           .subscribe((response) => {
             this.bankPaymentDetails = response.Entity;
-            this.buildbankPaymentForm();
             this.setBankPaymentList();
+            this.bankPaymentForm.patchValue(this.bankPaymentDetails);
           });
       }
     });
@@ -162,6 +161,21 @@ export class EditBankPaymentComponent implements OnInit {
 
   get getBankPaymentEntryList(): FormArray {
     return <FormArray>this.bankPaymentForm.get("BankPaymentDetailsList");
+  }
+
+  print(): void {
+    this.router.navigate(
+      [
+        `/bank-payment/edit/${
+          this.bankPaymentForm.get("ID").value
+        }/invoice-billing`,
+      ],
+      { state: this.bankPaymentForm.value }
+    );
+    localStorage.setItem(
+      "BankPaymentDetailsList",
+      JSON.stringify(this.bankPaymentForm.value)
+    );
   }
 
   public save(): void {

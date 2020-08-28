@@ -25,6 +25,9 @@ import { ValidationMsgService } from "./services/form-validators/validation-mess
 import { SharedModule } from "@app/shared/shared.module";
 import { DetailsEntryGridComponent } from "./components/details-entry-grid/details-entry-grid.component";
 import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
+import { CustomerInvoicesComponent } from "./components/customer-invoices/customer-invoices.component";
+import { NgxPrintModule } from "ngx-print";
+import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 
 @NgModule({
   declarations: [
@@ -40,6 +43,7 @@ import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
     FormSubmitValidationMsgDirective,
     FormControlValidationMsgDirective,
     DetailsEntryGridComponent,
+    CustomerInvoicesComponent,
   ],
   imports: [
     FormsModule,
@@ -50,6 +54,8 @@ import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
     PopupModule,
     SharedModule,
     InputsModule,
+    NgxPrintModule,
+    PDFExportModule,
     LayoutModule,
     DropDownListModule,
     DateInputsModule,
@@ -66,6 +72,7 @@ import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
     FormSubmitValidationMsgDirective,
     FormControlValidationMsgDirective,
     DetailsEntryGridComponent,
+    CustomerInvoicesComponent,
   ],
   providers: [ValidationMsgService],
   entryComponents: [

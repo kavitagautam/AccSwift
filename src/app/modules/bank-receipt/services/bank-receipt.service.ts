@@ -7,32 +7,16 @@ import {
 } from "../models/bank-receipt.model";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
-import {
-  Series,
-  SeriesRootModel,
-} from "@accSwift-modules/accswift-shared/models/series.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class BankReceiptService {
-  seriesLists: Series[] = [];
   _api_URL = environment.baseAPI;
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {
-    this.getSeriesList();
-  }
-
-  getSeriesList(): void {
-    const params = new HttpParams().set("VoucherType", "BANK_RCPT"); // Series List for bank Receipt V.Type
-    this.httpService
-      .get(`${this._api_URL}Series`, null, params)
-      .subscribe((response: SeriesRootModel) => {
-        this.seriesLists = response.Entity;
-      });
-  }
+  ) {}
 
   getBankReceiptMaster(body): Observable<BankReceiptNavigateModel> {
     return this.httpService.post(

@@ -1,0 +1,448 @@
+<div class="row">
+  <customer-invoice></customer-invoice>
+  <!-- <div class="col-sm-4 col-xs-12">
+    <div class="form-group">
+      <label>Payroll Invoice No</label>
+      <select class="form-control" [value]="">
+        <option value="" selected disabled>Select</option>
+        <option
+          *ngFor="let payrollInvoice of payrollInvoiceList"
+          [value]="payrollInvoice.id"
+        >
+          {{ payrollInvoice.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-sm-4 col-xs-12" style="padding-left: 0px">
+    <button class="btn btn-primary" style="margin-top: 23px">Submit</button>
+  </div> -->
+
+  <div class="col-md-12 col-xs-12" style="margin-top: 18px">
+    <div class="move-right">
+      <button
+        class="btn btn-default mr-2 mt-2"
+        tooltip="Generate Pdf"
+        (click)="pdf.saveAs('customer-invoice.pdf')"
+      >
+        <i class="{{ iconConst.EXPORT_TO_PDF }}"></i>
+      </button>
+      <button
+        class="btn btn-default mr-2 mt-2"
+        tooltip="CSV Export"
+        (click)="exportToCSV()"
+      >
+        <i class="{{ iconConst.EXPORT_TO_CSV }}"></i>
+      </button>
+      <button
+        class="btn btn-default mr-2 mt-2"
+        tooltip="Print"
+        printSectionId="print-section"
+        ngxPrint
+        [useExistingCss]="true"
+      >
+        <i class="{{ iconConst.PRINT }}"></i>
+      </button>
+      <button class="btn btn-default mr-2 mt-2" tooltip="Email">
+        <i class="{{ iconConst.EMAIL }}"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<kendo-pdf-export
+  #pdf
+  paperSize="A4"
+  margin="1cm"
+  [scale]="0.8"
+  [repeatHeaders]="true"
+>
+  <div id="print-section">
+    <table
+      width="100%"
+      border="0"
+      style="
+        border-collapse: collapse;
+        border: 0;
+        font-size: 12px;
+        margin-top: 10px;
+        color: #000000;
+        font-family: Arial, Verdana;
+      "
+    >
+      <tr>
+        <td width="57%" style="border: none" valign="top">
+          <table
+            borde="0"
+            style="
+              border: none;
+              font-size: 13px;
+              margin-top: 40px;
+              margin-left: 40px;
+            "
+          >
+            <tr>
+              <td style="border: none">
+                <img
+                  [src]="companyLogo"
+                  style="max-width: 200px; max-height: 80px"
+                /><br /><br /><br />
+                <b>
+                  {{ companyDetails?.Name }}<br />
+                  {{ companyDetails?.Zone }}, {{ companyDetails?.District
+                  }}<br />
+                  {{ companyDetails?.Address1 }}<br />
+                  {{ companyDetails?.Address2 }}<br />
+                </b>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td width="43%" style="border: none" valign="top">
+          <table
+            width="100%"
+            border="0"
+            style="
+              border: none;
+              border-collapse: collapse;
+              font-size: 12px;
+              margin-top: 10px;
+              color: #000000;
+              font-family: Arial, Verdana;
+            "
+          >
+            <tr>
+              <td
+                width="100%"
+                align="center"
+                style="
+                  border: none;
+                  font-size: 30px;
+                  font-weight: bold;
+                  text-align: right;
+                "
+              >
+                INVOICE
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="border: none">
+                <table
+                  width="100%"
+                  border="0"
+                  style="
+                    border-collapse: collapse;
+                    border: 0;
+                    font-size: 12px;
+                    margin-top: 4px;
+                    color: #000000;
+                    font-family: Arial, Verdana;
+                  "
+                >
+                  <tr>
+                    <td
+                      align="center"
+                      bgcolor="#000000"
+                      style="
+                        font-weight: bold;
+                        border: #000000 1px solid;
+                        color: #fff;
+                      "
+                      class="header"
+                    >
+                      Payment Terms
+                    </td>
+                    <td
+                      align="center"
+                      bgcolor="#000000"
+                      style="
+                        font-weight: bold;
+                        border: #000000 1px solid;
+                        color: #fff;
+                      "
+                      class="header"
+                    >
+                      Invoice Date
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" style="border: #000000 1px solid"></td>
+                    <td align="center" style="border: #000000 1px solid">
+                      10/02/2019
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      colspan="2"
+                      bgcolor="#000000"
+                      style="
+                        border: #000000 1px solid;
+                        font-weight: bold;
+                        color: #fff;
+                      "
+                      align="center"
+                      class="header"
+                    >
+                      Invoice No.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      colspan="2"
+                      style="border: #000000 1px solid"
+                      align="center"
+                    >
+                      <a>3443</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      colspan="2"
+                      style="border: #000000 1px solid"
+                      align="center"
+                    >
+                      Purchase Order Number
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      colspan="2"
+                      style="height: 30px; border: #000000 1px solid"
+                      align="center"
+                    >
+                      123
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <table
+      style="border: none; font-size: 12px; margin-top: 20px"
+      border="0"
+      width="100%"
+    >
+      <tr>
+        <td width="57%" valign="top" style="border: none; padding-left: 45px">
+          <b> Bill To:</b> <br /><br />
+          TEST COMPANY ONE<br />
+          253 ANYWHERE 3<br />
+          ONTARIO, CALIFORNIA 91761
+        </td>
+        <td width="43%" valign="top" style="border: none">
+          <b>Remit To: </b> <br /><br />
+          Remit To:<br />
+          <br />
+          The Funding Company
+        </td>
+      </tr>
+    </table>
+
+    <br />
+    <div style="font-size: 11px; font-weight: bold"></div>
+
+    <table
+      *ngIf="voucherType == 'SALES'"
+      id="header-fixed"
+      class="table table-hover table-fixed"
+      style="width: 80%"
+      align="center"
+    >
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Particulars</th>
+          <th>Quantity</th>
+          <th>Rate</th>
+          <th>Amount</th>
+          <th>Disc</th>
+          <th>Net Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let invoice of invoiceDetails; index as i">
+          <td *ngIf="invoice.ProductName">{{ i + 1 }}</td>
+          <td *ngIf="invoice.ProductName">{{ invoice.ProductName }}</td>
+          <td *ngIf="invoice.ProductName">{{ invoice.Quantity }}</td>
+          <td *ngIf="invoice.ProductName">{{ invoice.SalesRate }}</td>
+          <td *ngIf="invoice.ProductName">{{ invoice.Amount }}</td>
+          <td *ngIf="invoice.ProductName">{{ invoice.DiscountAmount }}</td>
+          <td *ngIf="invoice.ProductName">{{ invoice.NetAmount }}</td>
+        </tr>
+        <tr *ngIf="invoiceDetails.length - 1 == 0" align="center">
+          <span>No Data Avaiable</span>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" style="text-align: left">
+            Amount In Words : &nbsp;&nbsp;
+            <span class="amount_words">
+              {{ grandTotalAmount | numberToWordsConvert }}</span
+            >
+          </td>
+          <td colspan="2" align="right">Gross Total</td>
+          <td colspan="1" align="right">{{ totalGrossAmount }}</td>
+        </tr>
+        <tr>
+          <td colspan="4"></td>
+          <td colspan="2" align="right">Discount</td>
+          <td colspan="1" align="right">{{ totalDiscountAmount }}</td>
+        </tr>
+        <tr>
+          <td colspan="4"></td>
+          <td colspan="2" align="right">Net Amount</td>
+          <td colspan="1" align="right">{{ totalNetAmount }}</td>
+        </tr>
+        <tr>
+          <td colspan="4"></td>
+          <td colspan="2" align="right">VAT</td>
+          <td colspan="1" align="right">{{ vatTotalAmount }}</td>
+        </tr>
+        <tr>
+          <td colspan="4"></td>
+          <td colspan="2" align="right">Grand Total</td>
+          <td colspan="1" align="right">{{ grandTotalAmount }}</td>
+        </tr>
+      </tfoot>
+    </table>
+    <table
+      *ngIf="voucherType == 'JRNL'"
+      id="header-fixed"
+      class="table table-hover table-fixed"
+      style="width: 80%"
+      align="center"
+    >
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Ledger</th>
+          <th>Debit Amount</th>
+          <th>Credit Amount</th>
+          <th>Ledger Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let journal of journalDetails; index as i">
+          <td *ngIf="journal.LedgerName">{{ i + 1 }}</td>
+          <td *ngIf="journal.LedgerName">{{ journal.LedgerName }}</td>
+          <td *ngIf="journal.LedgerName">
+            <span *ngIf="journal.DebitCredit == 'Debit'">{{
+              journal.Amount
+            }}</span>
+          </td>
+          <td *ngIf="journal.LedgerName">
+            <span *ngIf="journal.DebitCredit == 'Credit'">{{
+              journal.Amount
+            }}</span>
+          </td>
+          <td *ngIf="journal.LedgerName">{{ journal.LedgerBalance }}</td>
+        </tr>
+        <tr *ngIf="journalDetails.length - 1 == 0" align="center">
+          <span>No Data Avaiable</span>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="1"></td>
+          <td colspan="1"></td>
+          <td colspan="1" align="right">
+            Debit Total :<span
+              [innerHTML]="calculateDebitTotal(journalDetails) | currencyFormat"
+            ></span>
+          </td>
+          <td colspan="1" align="right">
+            Credit Total :<span
+              [innerHTML]="
+                calculateCreditTotal(journalDetails) | currencyFormat
+              "
+            ></span>
+          </td>
+          <td colspan="1" align="right"></td>
+        </tr>
+      </tfoot>
+    </table>
+    <table
+      *ngIf="voucherType == 'CASH_RCPT' || voucherType == 'CASH_PMNT'"
+      id="header-fixed"
+      class="table table-hover table-fixed"
+      style="width: 80%"
+      align="center"
+    >
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Ledger</th>
+          <th>Voucher</th>
+          <th>Amount</th>
+          <th>Ledger Balance</th>
+          <th>Voucher Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cash of cashDetails; index as i">
+          <td *ngIf="cash.LedgerName">{{ i + 1 }}</td>
+          <td *ngIf="cash.LedgerName">{{ cash.LedgerName }}</td>
+          <td *ngIf="cash.LedgerName">
+            {{ cash.VoucherNumber }}
+          </td>
+          <td *ngIf="cash.LedgerName">
+            {{ cash.Amount }}
+          </td>
+          <td *ngIf="cash.LedgerName">{{ cash.LedgerBalance }}</td>
+          <td *ngIf="cash.LedgerName">{{ cash.VoucherType }}</td>
+        </tr>
+        <tr *ngIf="cashDetails.length - 1 == 0" align="center">
+          <span>No Data Avaiable</span>
+        </tr>
+      </tbody>
+    </table>
+    <table
+      *ngIf="voucherType == 'BANK_RCPT' || voucherType == 'BANK_PMNT'"
+      id="header-fixed"
+      class="table table-hover table-fixed"
+      style="width: 80%"
+      align="center"
+    >
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Ledger</th>
+          <th>Voucher No</th>
+          <th>ChequeNumber</th>
+          <th>ChequeDate</th>
+          <th>Amount</th>
+          <th>Ledger Balance</th>
+          <th>Voucher Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bank of bankDetails; index as i">
+          <td *ngIf="bank.LedgerName">{{ i + 1 }}</td>
+          <td *ngIf="bank.LedgerName">{{ bank.LedgerName }}</td>
+          <td *ngIf="bank.LedgerName">
+            {{ bank.VoucherNumber }}
+          </td>
+          <td *ngIf="bank.LedgerName">
+            {{ bank.ChequeNumber }}
+          </td>
+          <td *ngIf="bank.LedgerName">
+            {{ bank.ChequeDate | date: "yyyy-MM-dd" }}
+          </td>
+          <td *ngIf="bank.LedgerName">
+            {{ bank.Amount }}
+          </td>
+          <td *ngIf="bank.LedgerName">{{ bank.LedgerBalance }}</td>
+          <td *ngIf="bank.LedgerName">{{ bank.VoucherType }}</td>
+        </tr>
+        <tr *ngIf="bankDetails.length - 1 == 0" align="center">
+          <span>No Data Avaiable</span>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</kendo-pdf-export>

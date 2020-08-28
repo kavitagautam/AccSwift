@@ -6,8 +6,8 @@ import { CashPaymentService } from "../../services/cash-payment.service";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { CashPayment } from "../../models/cash-payment.model";
-import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-edit-cash-payment",
@@ -17,7 +17,7 @@ import { ToastrService } from "ngx-toastr";
 export class EditCashPaymentComponent implements OnInit {
   private editedRowIndex: number;
   cashPaymentForm: FormGroup;
-  currentAmount: string = "0.00";
+  iconConst = IconConst;
 
   cashPaymentDetail: CashPayment;
   submitted: boolean;
@@ -93,8 +93,9 @@ export class EditCashPaymentComponent implements OnInit {
           .getCashPaymentDetails(params.get("id"))
           .subscribe((response) => {
             this.cashPaymentDetail = response.Entity;
-            this.buildCashPaymentForm();
+            // this.buildCashPaymentForm();
             this.setCashPaymentList();
+            this.cashPaymentForm.patchValue(this.cashPaymentDetail);
           });
       }
     });
@@ -148,6 +149,21 @@ export class EditCashPaymentComponent implements OnInit {
 
   get getCashPaymentEntryList(): FormArray {
     return <FormArray>this.cashPaymentForm.get("CashPaymentDetailsList");
+  }
+
+  print(): void {
+    this.router.navigate(
+      [
+        `/cash-payment/edit/${
+          this.cashPaymentForm.get("ID").value
+        }/invoice-billing`,
+      ],
+      { state: this.cashPaymentForm.value }
+    );
+    localStorage.setItem(
+      "CashPaymentDetailsList",
+      JSON.stringify(this.cashPaymentForm.value)
+    );
   }
 
   public save(): void {

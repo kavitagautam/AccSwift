@@ -287,6 +287,14 @@ export class DetailsEntryGridComponent implements OnInit {
     entryListArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
+
+    entryListArray.controls[index]
+      .get("TaxAmount")
+      .setValue(
+        entryListArray.controls[index].get("Quantity").value *
+          entryListArray.controls[index].get("NetAmount").value *
+          0.13
+      );
   }
 
   //Change Discount Value
@@ -390,9 +398,10 @@ export class DetailsEntryGridComponent implements OnInit {
         entryListArray.controls[index]
           .get("TaxAmount")
           .setValue(
-            entryListArray.controls[index].get("NetAmount").value * 0.13
+            entryListArray.controls[index].get("Quantity").value *
+              entryListArray.controls[index].get("NetAmount").value *
+              0.13
           );
-        console.log(JSON.stringify(selectedProductValue));
         entryListArray.controls[index].get("Remarks").setValue("");
       }
 
@@ -489,7 +498,9 @@ export class DetailsEntryGridComponent implements OnInit {
           entryListArray.controls[index]
             .get("TaxAmount")
             .setValue(
-              entryListArray.controls[index].get("NetAmount").value * 0.13
+              entryListArray.controls[index].get("Quantity").value *
+                entryListArray.controls[index].get("NetAmount").value *
+                0.13
             );
           entryListArray.controls[index]
             .get("QtyUnitID")

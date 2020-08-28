@@ -18,20 +18,11 @@
         <div class="col-md-12">
           <form [formGroup]="bankReceiptForm" novalidate>
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Series </label>
-                <select class="form-control" formControlName="SeriesID">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let series of bankReceiptService.seriesLists"
-                    [ngValue]="series.ID"
-                  >
-                    {{ series.Name }}
-                  </option>
-                </select>
-              </div>
+              <accSwift-series-forms
+                formControlName="SeriesID"
+                [voucherType]="'BANK_RCPT'"
+              ></accSwift-series-forms>
             </div>
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <accSwift-bank-account
                 formControlName="LedgerID"
@@ -259,9 +250,7 @@
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-primary" (click)="modalRef.hide()">
-      OK
-    </button>
+    <button class="btn btn-primary" (click)="modalRef.hide()">OK</button>
     <button
       class="btn btn-secondary ml-2"
       type="button"
