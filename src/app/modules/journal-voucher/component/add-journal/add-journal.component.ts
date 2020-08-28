@@ -9,6 +9,7 @@ import { ToastrService } from "ngx-toastr";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { Preferences } from "../../../preference/models/preference.model";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-add-journal",
@@ -19,6 +20,8 @@ import { Preferences } from "../../../preference/models/preference.model";
 export class AddJournalComponent implements OnInit {
   private editedRowIndex: number;
   //Input Field Property
+  iconConst = IconConst;
+
   public decimals: number = 2;
   numericFormat: string = "n3";
   preferenceData: Preferences;
@@ -88,6 +91,21 @@ export class AddJournalComponent implements OnInit {
 
   get getjournalEntryList(): FormArray {
     return <FormArray>this.journalVoucherForms.get("Journaldetails");
+  }
+
+  journalPrint(): void {
+    this.router.navigate(
+      [
+        `/journal/edit/${
+          this.journalVoucherForms.get("ID").value
+        }/invoice-billing`,
+      ],
+      { state: this.journalVoucherForms.value }
+    );
+    localStorage.setItem(
+      "journal",
+      JSON.stringify(this.journalVoucherForms.value)
+    );
   }
 
   //This ledger code input has not been used
