@@ -7,6 +7,7 @@ import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/servic
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { CashReceipt } from "../../models/cash-receipt.model";
 import { ToastrService } from "ngx-toastr";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-edit-cash-receipt",
@@ -15,9 +16,8 @@ import { ToastrService } from "ngx-toastr";
 })
 export class EditCashReceiptComponent implements OnInit {
   private editedRowIndex: number;
-  numericFormat: string = "n2";
-  public decimals: number = 2;
-  currentAmount: string = "0.00";
+  iconConst = IconConst;
+
   cashReceiptDetails: CashReceipt;
   cashReceiptForm: FormGroup;
   submitted: boolean;
@@ -184,6 +184,21 @@ export class EditCashReceiptComponent implements OnInit {
       );
     }
     return cashReceiptFormArray;
+  }
+
+  print(): void {
+    this.router.navigate(
+      [
+        `/cash-receipt/edit/${
+          this.cashReceiptForm.get("ID").value
+        }/invoice-billing`,
+      ],
+      { state: this.cashReceiptForm.value }
+    );
+    localStorage.setItem(
+      "CashReceiptDetails",
+      JSON.stringify(this.cashReceiptForm.value)
+    );
   }
 
   addCashReceiptEntry(): void {

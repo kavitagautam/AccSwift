@@ -5,9 +5,9 @@ import { Router } from "@angular/router";
 import { BankReceiptService } from "../../services/bank-receipt.service";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
 import { PreferenceService } from "../../../preference/services/preference.service";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accswift-add-bank-receipt",
@@ -16,9 +16,7 @@ import { PreferenceService } from "../../../preference/services/preference.servi
 })
 export class AddBankReceiptComponent implements OnInit {
   private editedRowIndex: number;
-  numericFormat: string = "n2";
-  public decimals: number = 2;
-  date: Date = new Date();
+  iconConst = IconConst;
   bankReceiptForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -49,6 +47,7 @@ export class AddBankReceiptComponent implements OnInit {
 
   buildBankReceiptForm(): void {
     this.bankReceiptForm = this._fb.group({
+      ID: [null],
       SeriesID: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_SERIES_BANK_RCPT.Value
@@ -101,6 +100,21 @@ export class AddBankReceiptComponent implements OnInit {
       this.addBankReceiptEntryList()
     );
     this.submitted = false;
+  }
+
+  print(): void {
+    this.router.navigate(
+      [
+        `/bank-receipt/edit/${
+          this.bankReceiptForm.get("ID").value
+        }/invoice-billing`,
+      ],
+      { state: this.bankReceiptForm.value }
+    );
+    localStorage.setItem(
+      "BankReceiptDetailsList",
+      JSON.stringify(this.bankReceiptForm.value)
+    );
   }
 
   public save(): void {

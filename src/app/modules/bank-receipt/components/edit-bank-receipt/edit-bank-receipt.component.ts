@@ -5,9 +5,9 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { BankReceiptService } from "../../services/bank-receipt.service";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
 import { BankReceipt } from "../../models/bank-receipt.model";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accswift-edit-bank-receipt",
@@ -17,11 +17,9 @@ import { BankReceipt } from "../../models/bank-receipt.model";
 export class EditBankReceiptComponent implements OnInit {
   private editedRowIndex: number;
   bankReceiptDetails: BankReceipt;
-  currentAmount: string = "0.00";
   bankReceiptForm: FormGroup;
-  numericFormat: string = "n2";
-  public decimals: number = 2;
-  date: Date = new Date();
+
+  iconConst = IconConst;
 
   submitted: boolean;
   rowSubmitted: boolean;
@@ -104,8 +102,9 @@ export class EditBankReceiptComponent implements OnInit {
           .getBankReceiptDetails(params.get("id"))
           .subscribe((response) => {
             this.bankReceiptDetails = response.Entity;
-            this.buildBankReceiptForm();
+            //this.buildBankReceiptForm();
             this.setBankReceiptList();
+            this.bankReceiptForm.patchValue(this.bankReceiptDetails);
           });
       }
     });
@@ -193,6 +192,21 @@ export class EditBankReceiptComponent implements OnInit {
       this.addBankReceiptDetailsList()
     );
     this.submitted = false;
+  }
+
+  print(): void {
+    this.router.navigate(
+      [
+        `/bank-receipt/edit/${
+          this.bankReceiptForm.get("ID").value
+        }/invoice-billing`,
+      ],
+      { state: this.bankReceiptForm.value }
+    );
+    localStorage.setItem(
+      "BankReceiptDetailsList",
+      JSON.stringify(this.bankReceiptForm.value)
+    );
   }
 
   public save(): void {

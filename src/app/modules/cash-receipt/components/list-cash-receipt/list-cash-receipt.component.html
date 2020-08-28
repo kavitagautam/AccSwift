@@ -18,22 +18,10 @@
         <div class="col-md-12">
           <form [formGroup]="cashReceiptForm" novalidate>
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Series</label>
-                <select
-                  class="form-control"
-                  id="seriesId"
-                  formControlName="SeriesID"
-                >
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let series of cashReceiptService.seriesLists"
-                    [ngValue]="series.ID"
-                  >
-                    {{ series.Name }}</option
-                  >
-                </select>
-              </div>
+              <accSwift-series-forms
+                formControlName="SeriesID"
+                [voucherType]="'CASH_RCPT'"
+              ></accSwift-series-forms>
             </div>
 
             <div class="col-md-3 col-sm-6 col-xs-6">
@@ -43,24 +31,20 @@
             </div>
 
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Cash Party/ Customer </label>
-                <select class="form-control" id="cashPartyId">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let cash of cashReceiptService.cashPartyLists"
-                    [ngValue]="cash.LedgerID"
-                    >{{ cash.LedgerName }}</option
-                  >
-                </select>
-              </div>
+              <accSwift-cash-party-account></accSwift-cash-party-account>
             </div>
 
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Voucher #</label>
-                <input class="form-control" formControlName="VoucherNo" />
-              </div>
+              <accSwift-voucher-forms
+                *ngIf="!cashReceiptForm.get('VoucherNo').value"
+                formControlName="VoucherNo"
+                [series]="cashReceiptForm.get('SeriesID').value"
+              ></accSwift-voucher-forms>
+              <accSwift-voucher-forms
+                *ngIf="cashReceiptForm.get('VoucherNo').value"
+                formControlName="VoucherNo"
+                [series]="null"
+              ></accSwift-voucher-forms>
             </div>
 
             <div class="col-md-3 col-sm-6 col-xs-6">
@@ -277,9 +261,7 @@
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-primary" (click)="modalRef.hide()">
-      OK
-    </button>
+    <button class="btn btn-primary" (click)="modalRef.hide()">OK</button>
     <button
       class="btn btn-secondary ml-2"
       type="button"

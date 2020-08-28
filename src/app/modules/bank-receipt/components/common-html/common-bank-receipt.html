@@ -1,20 +1,46 @@
 <div class="box box-default">
+  <div class="col-md-12 col-xs-12" style="margin-top: 18px">
+    <div class="move-right">
+      <button class="btn btn-default mr-2 mt-2" tooltip="Generate Pdf" disabled>
+        <i class="{{ iconConst.EXPORT_TO_PDF }}"></i>
+      </button>
+      <button class="btn btn-default mr-2 mt-2" tooltip="CSV Export" disabled>
+        <i class="{{ iconConst.EXPORT_TO_CSV }}"></i>
+      </button>
+      <button
+        class="btn btn-default mr-2 mt-2"
+        tooltip="Print"
+        (click)="print()"
+      >
+        <i class="{{ iconConst.PRINT }}"></i>
+      </button>
+      <!-- <button
+        class="btn btn-default mr-2 mt-2"
+        tooltip="Print"
+        printSectionId="print-section"
+        ngxPrint
+        [useExistingCss]="true"
+        (click)="invoiceBilling()"
+      >
+       
+       //  (click)="invoiceBilling()"
+         //[routerLink]="['invoice-billing']" 
+
+        <i class="{{ iconConst.PRINT }}"></i>
+      </button> -->
+      <button class="btn btn-default mr-2 mt-2" disabled tooltip="Email">
+        <i class="{{ iconConst.EMAIL }}"></i>
+      </button>
+    </div>
+  </div>
   <form [formGroup]="bankReceiptForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Series </label>
-            <select class="form-control" formControlName="SeriesID">
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let series of bankReceiptService.seriesLists"
-                [ngValue]="series.ID"
-              >
-                {{ series.Name }}
-              </option>
-            </select>
-          </div>
+          <accSwift-series-forms
+            formControlName="SeriesID"
+            [voucherType]="'BANK_RCPT'"
+          ></accSwift-series-forms>
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -75,9 +101,7 @@
       >
         Save
       </button>
-      <button class="btn btn-secondary ml-2" (click)="cancel()">
-        Cancel
-      </button>
+      <button class="btn btn-secondary ml-2" (click)="cancel()">Cancel</button>
     </div>
   </div>
 </div>

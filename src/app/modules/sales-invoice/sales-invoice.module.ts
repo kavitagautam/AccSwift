@@ -9,8 +9,6 @@ import { ListSalesInvoiceComponent } from "./components/list-sales-invoice/list-
 import { AddSalesInvoiceComponent } from "./components/add-sales-invoice/add-sales-invoice.component";
 import { EditSalesInvoiceComponent } from "./components/edit-sales-invoice/edit-sales-invoice.component";
 
-import { CustomerInvoicesComponent } from "./components/customer-invoices/customer-invoices.component";
-import { NgxPrintModule } from "ngx-print";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { SharedModule } from "@app/shared/shared.module";
 import { DragDropModule } from "@angular/cdk/drag-drop";
@@ -22,7 +20,6 @@ import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
     ListSalesInvoiceComponent,
     AddSalesInvoiceComponent,
     EditSalesInvoiceComponent,
-    CustomerInvoicesComponent,
   ],
   imports: [
     CommonModule,
@@ -31,7 +28,6 @@ import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
     SharedModule,
     AccswiftSharedModule,
     ReactiveFormsModule,
-    NgxPrintModule,
     GridModule,
     PopupModule,
     DragDropModule,

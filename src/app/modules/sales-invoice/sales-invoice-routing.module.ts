@@ -3,7 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { ListSalesInvoiceComponent } from "./components/list-sales-invoice/list-sales-invoice.component";
 import { AddSalesInvoiceComponent } from "./components/add-sales-invoice/add-sales-invoice.component";
 import { EditSalesInvoiceComponent } from "./components/edit-sales-invoice/edit-sales-invoice.component";
-import { CustomerInvoicesComponent } from "./components/customer-invoices/customer-invoices.component";
+import { CustomerInvoicesComponent } from "@accSwift-modules/accswift-shared/components/customer-invoices/customer-invoices.component";
 
 const routes: Routes = [
   {

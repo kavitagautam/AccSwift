@@ -26,18 +26,12 @@ export class CustomerInvoicesComponent implements OnInit {
   grandTotalAmount: number = 0;
   companyLogo: any = "";
   // select dropdown
-  payrollInvoiceList = [
-    {
-      id: 1,
-      name: 3343,
-    },
-    {
-      id: 2,
-      name: 3222,
-    },
-  ];
+  voucherType: string;
   companyDetails: Company;
   invoiceDetails = [];
+  journalDetails = [];
+  cashDetails = [];
+  bankDetails = [];
   customerDescription: any[];
   constructor(
     private exportService: ExportToCsvService,
@@ -52,11 +46,104 @@ export class CustomerInvoicesComponent implements OnInit {
       }
     });
 
-    const data = JSON.parse(localStorage.getItem("invoices"));
-    if (data) {
-      this.invoiceDetails = data.InvoiceDetails;
-      this.calculateTotal(this.invoiceDetails);
+    if (this.router.url.indexOf("/journal") > -1) {
+      this.voucherType = "JRNL";
+      const data = JSON.parse(localStorage.getItem("journal"));
+      if (data) {
+        this.journalDetails = data.Journaldetails;
+      }
     }
+    if (this.router.url.indexOf("/sales-invoice") > -1) {
+      this.voucherType = "SALES";
+      const data = JSON.parse(localStorage.getItem("invoices"));
+      if (data) {
+        this.invoiceDetails = data.InvoiceDetails;
+        this.calculateTotal(this.invoiceDetails);
+      }
+    }
+    if (this.router.url.indexOf("/cash-receipt") > -1) {
+      this.voucherType = "CASH_RCPT";
+      const data = JSON.parse(localStorage.getItem("CashReceiptDetails"));
+      if (data) {
+        this.cashDetails = data.CashReceiptDetails;
+      }
+    }
+    if (this.router.url.indexOf("/cash-payment") > -1) {
+      this.voucherType = "CASH_PMNT";
+      const data = JSON.parse(localStorage.getItem("CashPaymentDetailsList"));
+      if (data) {
+        this.cashDetails = data.CashPaymentDetailsList;
+      }
+    }
+    if (this.router.url.indexOf("/bank-receipt") > -1) {
+      this.voucherType = "BANK_RCPT";
+      const data = JSON.parse(localStorage.getItem("BankReceiptDetailsList"));
+      if (data) {
+        this.bankDetails = data.BankReceiptDetailsList;
+      }
+    }
+    if (this.router.url.indexOf("/bank-payment") > -1) {
+      this.voucherType = "BANK_PMNT";
+      const data = JSON.parse(localStorage.getItem("BankPaymentDetailsList"));
+      if (data) {
+        this.bankDetails = data.BankPaymentDetailsList;
+      }
+    }
+  }
+
+  ngOnInit() {
+    this.getIdFromRoute();
+  }
+
+  getIdFromRoute(): void {
+    this.route.paramMap.subscribe((params) => {
+      const param = params.get("id");
+      if (param) {
+      }
+    });
+    const param = this.route.snapshot.queryParamMap;
+    if (param.get("data")) {
+      const data = param.get("data");
+    }
+  }
+
+  exportToCSV() {
+    var exportData: IExport = {
+      data: this.customerDescription.map((x) =>
+        MapCustomerInvoiceExportData.mapCustomerInvoice(x)
+      ),
+      columnHeaders: CustomerInvoiceExportColumnHeaders.Columns,
+      columnHeaderNotToBeIncluded: [],
+    };
+    this.exportService.ExportToCSV(exportData);
+  }
+
+  public calculateDebitTotal(journalDetails): number {
+    let debitTotalAmount = 0;
+    for (let i = 0; i < journalDetails.length; i++) {
+      if (
+        journalDetails[i].Amount &&
+        journalDetails[i].DebitCredit === "Debit"
+      ) {
+        debitTotalAmount = debitTotalAmount + journalDetails[i].Amount;
+      }
+    }
+    return debitTotalAmount;
+  }
+
+  public calculateCreditTotal(journalDetails): number {
+    let creditTotalAmount = 0;
+
+    for (let i = 0; i < journalDetails.length; i++) {
+      if (
+        journalDetails[i].Amount &&
+        journalDetails[i].DebitCredit == "Credit"
+      ) {
+        creditTotalAmount = creditTotalAmount + journalDetails[i].Amount;
+      }
+    }
+
+    return creditTotalAmount;
   }
 
   calculateTotal(invoices): void {
@@ -100,32 +187,5 @@ export class CustomerInvoicesComponent implements OnInit {
       this.totalDiscountAmount +
       this.vatTotalAmount +
       this.totalTaxAmount;
-  }
-
-  ngOnInit() {
-    this.getIdFromRoute();
-  }
-
-  getIdFromRoute(): void {
-    this.route.paramMap.subscribe((params) => {
-      const param = params.get("id");
-      if (param) {
-      }
-    });
-    const param = this.route.snapshot.queryParamMap;
-    if (param.get("data")) {
-      const data = param.get("data");
-    }
-  }
-
-  exportToCSV() {
-    var exportData: IExport = {
-      data: this.customerDescription.map((x) =>
-        MapCustomerInvoiceExportData.mapCustomerInvoice(x)
-      ),
-      columnHeaders: CustomerInvoiceExportColumnHeaders.Columns,
-      columnHeaderNotToBeIncluded: [],
-    };
-    this.exportService.ExportToCSV(exportData);
   }
 }

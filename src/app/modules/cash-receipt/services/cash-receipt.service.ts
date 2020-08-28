@@ -8,46 +8,16 @@ import {
 } from "../models/cash-receipt.model";
 import { Observable } from "rxjs";
 
-import {
-  Series,
-  SeriesRootModel,
-} from "@accSwift-modules/accswift-shared/models/series.model";
-import {
-  CashParty,
-  CashPartyModel,
-} from "@accSwift-modules/accswift-shared/models/cash-party.model";
 @Injectable({
   providedIn: "root",
 })
 export class CashReceiptService {
-  seriesLists: Series[] = [];
-  cashPartyLists: CashParty[] = [];
   _api_URL = environment.baseAPI;
 
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {
-    this.getSeriesList();
-    this.getCashPartyLists();
-  }
-
-  getSeriesList(): void {
-    const params = new HttpParams().set("VoucherType", "CASH_RCPT"); // Series List for Cash Receipt Voucher Type
-    this.httpService
-      .get(`${this._api_URL}Series`, null, params)
-      .subscribe((response: SeriesRootModel) => {
-        this.seriesLists = response.Entity;
-      });
-  }
-
-  getCashPartyLists(): void {
-    this.httpService
-      .get(`${this._api_URL}Ledger/cashparty`)
-      .subscribe((res: any) => {
-        this.cashPartyLists = res.Entity;
-      });
-  }
+  ) {}
 
   getCashReceiptMaster(body): Observable<CashReceiptNavigateModel> {
     return this.httpService.post(
@@ -74,9 +44,5 @@ export class CashReceiptService {
 
   deleteCashReceiptByID(id): Observable<any> {
     return this.httpService.delete(`${this._api_URL}CashReceiptMaster/${id}`);
-  }
-
-  getCashParty(): Observable<CashPartyModel> {
-    return this.httpService.get(`${this._api_URL}/Ledger/cashparty`);
   }
 }
