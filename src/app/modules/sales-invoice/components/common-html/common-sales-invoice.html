@@ -1,20 +1,28 @@
 <div class="box box-default">
-  <div class="col-md-12 col-xs-12" style="margin-top: 18px;">
+  <!-- <div class="col-md-12 col-xs-12" style="margin-top: 18px">
     <div class="move-right">
-      <button class="btn btn-default mr-2 mt-2" tooltip="Generate Pdf" disabled>
+      <button
+        class="btn btn-default mr-2 mt-2"
+        tooltip="Generate Pdf"
+        (click)="pdf.saveAs('customer-invoice.pdf')"
+      >
         <i class="{{ iconConst.EXPORT_TO_PDF }}"></i>
       </button>
-      <button class="btn btn-default mr-2 mt-2" tooltip="CSV Export" disabled>
+      <button
+        class="btn btn-default mr-2 mt-2"
+        tooltip="CSV Export"
+        (click)="exportToCSV()"
+      >
         <i class="{{ iconConst.EXPORT_TO_CSV }}"></i>
       </button>
       <button
         class="btn btn-default mr-2 mt-2"
-        tooltip="Print"
+        tooltip="Preview"
         (click)="invoiceBilling()"
       >
-        <i class="{{ iconConst.PRINT }}"></i>
+        <i class="{{ iconConst.PREVIEW }}"></i>
       </button>
-      <!-- <button
+      <button
         class="btn btn-default mr-2 mt-2"
         tooltip="Print"
         printSectionId="print-section"
@@ -23,19 +31,32 @@
         (click)="invoiceBilling()"
       >
        
-       //  (click)="invoiceBilling()"
-         //[routerLink]="['invoice-billing']" 
+
 
         <i class="{{ iconConst.PRINT }}"></i>
-      </button> -->
+      </button>
       <button class="btn btn-default mr-2 mt-2" disabled tooltip="Email">
         <i class="{{ iconConst.EMAIL }}"></i>
       </button>
     </div>
-  </div>
+  </div> -->
+  <!-- <kendo-pdf-export
+    hidden
+    #pdf
+    paperSize="A4"
+    margin="1cm"
+    [scale]="0.8"
+    [repeatHeaders]="true"
+  >
+    <simpliflysaas-customer-invoices></simpliflysaas-customer-invoices>
+  </kendo-pdf-export> -->
   <div class="col-md-12 m-2">
     <form [formGroup]="salesInvoiceForm" novalidate>
-      <div class="row mt-3">
+      <accSwift-create-reports
+        [formGroup]="salesInvoiceForm"
+        [voucherType]="'SALES'"
+      ></accSwift-create-reports>
+      <div class="row mt-5">
         <div class="col-md-12">
           <div class="col-md-3 col-sm-6 col-xs-6">
             <accSwift-series-forms
@@ -107,13 +128,11 @@
         <table
           class="table"
           width="60%"
-          style="float: right; width: 60%; text-align: right;"
+          style="float: right; width: 60%; text-align: right"
         >
           <tbody>
             <tr>
-              <td>
-                Adjustment (Rs):
-              </td>
+              <td>Adjustment (Rs):</td>
               <td>
                 <span [innerHTML]="adjustmentAmount | currencyFormat "></span>
               </td>
@@ -125,9 +144,7 @@
               </td>
             </tr>
             <tr>
-              <td>
-                Tender:
-              </td>
+              <td>Tender:</td>
               <td>
                 <span [innerHTML]="tenderAmount | currencyFormat "></span>
               </td>
@@ -141,9 +158,7 @@
               </td>
             </tr>
             <tr>
-              <td>
-                Change:
-              </td>
+              <td>Change:</td>
               <td>
                 <span [innerHTML]="changeAmount | currencyFormat "></span>
               </td>
@@ -161,9 +176,7 @@
               <td></td>
               <td></td>
               <td></td>
-              <td class="total_amount">
-                Grand Total
-              </td>
+              <td class="total_amount">Grand Total</td>
               <td class="total_amount">
                 <span [innerHTML]=" grandTotalAmount | currencyFormat "></span>
               </td>
@@ -218,9 +231,7 @@
       >
         Save
       </button>
-      <button class="btn btn-secondary ml-2" (click)="cancel()">
-        Cancel
-      </button>
+      <button class="btn btn-secondary ml-2" (click)="cancel()">Cancel</button>
     </div>
   </div>
 </div>
@@ -241,9 +252,7 @@
     <div class="row"><accSwift-add-product></accSwift-add-product></div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" (click)="modalRef.hide()">
-      OK
-    </button>
+    <button class="btn btn-primary" (click)="modalRef.hide()">OK</button>
     <button
       class="btn btn-secondary ml-2"
       type="button"
@@ -317,9 +326,7 @@
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-primary" (click)="payInvoice()">
-      Pay
-    </button>
+    <button class="btn btn-primary" (click)="payInvoice()">Pay</button>
     <button
       class="btn btn-secondary ml-2"
       type="button"

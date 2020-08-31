@@ -58,7 +58,8 @@ export class CustomerInvoicesComponent implements OnInit {
       const data = JSON.parse(localStorage.getItem("invoices"));
       if (data) {
         this.invoiceDetails = data.InvoiceDetails;
-        this.calculateTotal(this.invoiceDetails);
+        console.log("Invoice Details " + JSON.stringify(this.invoiceDetails));
+        //  this.calculateTotal(this.invoiceDetails);
       }
     }
     if (this.router.url.indexOf("/cash-receipt") > -1) {
@@ -108,14 +109,14 @@ export class CustomerInvoicesComponent implements OnInit {
   }
 
   exportToCSV() {
-    var exportData: IExport = {
-      data: this.customerDescription.map((x) =>
-        MapCustomerInvoiceExportData.mapCustomerInvoice(x)
-      ),
-      columnHeaders: CustomerInvoiceExportColumnHeaders.Columns,
-      columnHeaderNotToBeIncluded: [],
-    };
-    this.exportService.ExportToCSV(exportData);
+    // var exportData: IExport = {
+    //   data: this.customerDescription.map((x) =>
+    //     MapCustomerInvoiceExportData.mapCustomerInvoice(x)
+    //   ),
+    //   columnHeaders: CustomerInvoiceExportColumnHeaders.Columns,
+    //   columnHeaderNotToBeIncluded: [],
+    // };
+    // this.exportService.ExportToCSV(exportData);
   }
 
   public calculateDebitTotal(journalDetails): number {

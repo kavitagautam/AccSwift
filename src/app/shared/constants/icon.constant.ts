@@ -17,4 +17,5 @@ export const IconConst = {
   EXPORT_TO_CSV: "fas fa-file-csv",
   PRINT: "fas fa-print",
   EMAIL: "fas fa-envelope",
+  PREVIEW:"fa fa-eye"
 };
