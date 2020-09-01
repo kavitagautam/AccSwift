@@ -23,7 +23,17 @@ import { registerLocaleData } from "@angular/common";
 import localeNe from "@angular/common/locales/ne";
 import { LocaleService } from "./core/services/locale/locale.services";
 import { CookieService } from "ngx-cookie-service";
+import { NgxsModule } from "@ngxs/store";
+import { NgxsLoggerPluginModule } from "@ngxs/logger-plugin";
+import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
+import { environment } from "@env/environment";
+
 registerLocaleData(localeNe, "ne");
+
+const loggerPluginOptions = {
+  logger: console,
+  collapsed: false,
+};
 
 export function initPreferenceData(preferenceService: PreferenceService) {
   return (): Observable<PreferenceModel> => {
@@ -58,6 +68,11 @@ export function localFunction(settingsService: SettingsService) {
     HttpClientModule,
     BrowserAnimationsModule,
     DropDownsModule,
+    NgxsModule.forRoot([], {
+      developmentMode: !environment.production,
+    }),
+    NgxsLoggerPluginModule.forRoot(loggerPluginOptions),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
   ],
   providers: [
     PreferenceService,

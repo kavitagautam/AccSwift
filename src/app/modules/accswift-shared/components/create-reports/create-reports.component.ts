@@ -26,11 +26,15 @@ export class CreateReportsComponent implements OnInit {
     }
     if (this.router.url.indexOf("/sales-invoice") > -1) {
       this.voucherType = "SALES";
-      const data = JSON.parse(localStorage.getItem("invoices"));
-      if (data) {
-        // this.invoiceDetails = data.InvoiceDetails;
-        // this.calculateTotal(this.invoiceDetails);
-      }
+      // localStorage.setItem(
+      //   "invoices",
+      //   JSON.stringify(this.form.get("InvoiceDetails").value)
+      // );
+      //const data = JSON.parse(localStorage.getItem("invoices"));
+      // if (data) {
+      // this.invoiceDetails = data.InvoiceDetails;
+      // this.calculateTotal(this.invoiceDetails);
+      //}
     }
     if (this.router.url.indexOf("/cash-receipt") > -1) {
       this.voucherType = "CASH_RCPT";
@@ -41,6 +45,7 @@ export class CreateReportsComponent implements OnInit {
     }
     if (this.router.url.indexOf("/cash-payment") > -1) {
       this.voucherType = "CASH_PMNT";
+
       const data = JSON.parse(localStorage.getItem("CashPaymentDetailsList"));
       if (data) {
         // this.cashDetails = data.CashPaymentDetailsList;
@@ -73,14 +78,14 @@ export class CreateReportsComponent implements OnInit {
           state: this.form.get("InvoiceDetails").value,
         }
       );
-      const data = this.form.get("InvoiceDetails").value;
-      console.log(data);
-      if (data) {
-        localStorage.setItem(
-          "invoices",
-          JSON.stringify(this.form.get("InvoiceDetails").value)
-        );
-      }
+      // const data = this.form.get("InvoiceDetails").value;
+      // console.log(data);
+      // if (data) {
+      //   localStorage.setItem(
+      //     "invoices",
+      //     JSON.stringify(this.form.get("InvoiceDetails").value)
+      //   );
+      // }
     }
   }
 

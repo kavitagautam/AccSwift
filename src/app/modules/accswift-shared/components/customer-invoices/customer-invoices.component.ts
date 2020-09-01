@@ -28,10 +28,10 @@ export class CustomerInvoicesComponent implements OnInit {
   // select dropdown
   voucherType: string;
   companyDetails: Company;
-  invoiceDetails = [];
-  journalDetails = [];
-  cashDetails = [];
-  bankDetails = [];
+  invoiceDetails: any = [];
+  journalDetails: any = [];
+  cashDetails: any = [];
+  bankDetails: any = [];
   customerDescription: any[];
   constructor(
     private exportService: ExportToCsvService,
@@ -55,11 +55,21 @@ export class CustomerInvoicesComponent implements OnInit {
     }
     if (this.router.url.indexOf("/sales-invoice") > -1) {
       this.voucherType = "SALES";
-      const data = JSON.parse(localStorage.getItem("invoices"));
+      const data = this.router.getCurrentNavigation().extras.state;
+      // console.log("this the " + JSON.stringify(data));
+      // localStorage.setItem(
+      //   "invoices",
+      //   JSON.stringify(this.router.getCurrentNavigation().extras.state[0])
+      // );
       if (data) {
-        this.invoiceDetails = data.InvoiceDetails;
+        this.invoiceDetails = data;
         console.log("Invoice Details " + JSON.stringify(this.invoiceDetails));
-        //  this.calculateTotal(this.invoiceDetails);
+        this.calculateTotal(this.invoiceDetails);
+      } else {
+        // const data = JSON.parse(localStorage.getItem("invoices"));
+        // this.invoiceDetails = data;
+        // console.log("Invoice Details " + JSON.stringify(this.invoiceDetails));
+        // this.calculateTotal(this.invoiceDetails);
       }
     }
     if (this.router.url.indexOf("/cash-receipt") > -1) {
