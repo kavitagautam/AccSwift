@@ -7,7 +7,6 @@ import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/servic
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { ToastrService } from "ngx-toastr";
 import { PreferenceService } from "../../../preference/services/preference.service";
-import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accswift-add-bank-receipt",
@@ -15,8 +14,6 @@ import { IconConst } from "@app/shared/constants/icon.constant";
   styleUrls: ["./add-bank-receipt.component.scss"],
 })
 export class AddBankReceiptComponent implements OnInit {
-  private editedRowIndex: number;
-  iconConst = IconConst;
   bankReceiptForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -100,21 +97,6 @@ export class AddBankReceiptComponent implements OnInit {
       this.addBankReceiptEntryList()
     );
     this.submitted = false;
-  }
-
-  print(): void {
-    this.router.navigate(
-      [
-        `/bank-receipt/edit/${
-          this.bankReceiptForm.get("ID").value
-        }/invoice-billing`,
-      ],
-      { state: this.bankReceiptForm.value }
-    );
-    localStorage.setItem(
-      "BankReceiptDetailsList",
-      JSON.stringify(this.bankReceiptForm.value)
-    );
   }
 
   public save(): void {

@@ -21,14 +21,14 @@ import { FormsService } from "../../services/forms.service";
     <label>Voucher No. <sup>*</sup></label>
     <input type="text" class="form-control" [formControl]="VoucherNo" />
     <span
-      *ngIf="IsAutomatic == true"
+      *ngIf="voucherNoType"
       style="
-      top: 32px;
-      margin-left: 155px;
-      display: inline-block;
-      position: absolute;
-    "
-      >Automatic</span
+    top: 32px;
+    margin-left: 155px;
+    display: inline-block;
+    position: absolute;
+  "
+      >({{ voucherNoType }})</span
     >
   </div>`,
   providers: [
@@ -48,13 +48,13 @@ export class VoucherFormsComponent
   implements ControlValueAccessor, OnDestroy, OnChanges {
   subscriptions: Subscription[] = [];
   VoucherNo = new FormControl();
-  IsAutomatic: boolean = false;
+  voucherNoType: string;
+
   @Input("series") seriesID;
 
   constructor(private formService: FormsService) {
     this.subscriptions.push(
       this.VoucherNo.valueChanges.subscribe((value: number) => {
-        this.IsAutomatic = true;
         this.onChange(value);
         this.onTouched();
       })
@@ -92,8 +92,10 @@ export class VoucherFormsComponent
         .getVoucherNoWithSeriesChange(value)
         .subscribe((response) => {
           if (response && response.VoucherNO !== "") {
-            this.IsAutomatic =
-              response.VoucherNoType === "Automatic" ? true : false;
+            if (response.VoucherNoType === "Automatic") {
+              this.voucherNoType = "Automatic";
+            }
+
             this.VoucherNo.setValue(response.VoucherNO);
             this.value = response.VoucherNO;
 
