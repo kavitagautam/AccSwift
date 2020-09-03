@@ -182,21 +182,6 @@ export class EditJournalComponent implements OnInit {
     return journalFormArray;
   }
 
-  journalPrint(): void {
-    this.router.navigate(
-      [
-        `/journal/edit/${
-          this.journalVoucherForms.get("ID").value
-        }/invoice-billing`,
-      ],
-      { state: this.journalVoucherForms.value }
-    );
-    localStorage.setItem(
-      "journal",
-      JSON.stringify(this.journalVoucherForms.value)
-    );
-  }
-
   public save(): void {
     // if (this.journalVoucherForms.invalid) return;
     this.journalService

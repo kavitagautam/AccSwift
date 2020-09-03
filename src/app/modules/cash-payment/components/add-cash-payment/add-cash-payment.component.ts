@@ -7,7 +7,6 @@ import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/val
 import { ToastrService } from "ngx-toastr";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { PreferenceService } from "../../../preference/services/preference.service";
-import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-add-cash-payment",
@@ -16,7 +15,6 @@ import { IconConst } from "@app/shared/constants/icon.constant";
 })
 export class AddCashPaymentComponent implements OnInit {
   cashPaymentForm: FormGroup;
-  iconConst = IconConst;
 
   submitted: boolean;
   rowSubmitted: boolean;
@@ -89,21 +87,6 @@ export class AddCashPaymentComponent implements OnInit {
       this.cashPaymentForm.get("CashPaymentDetailsList")
     );
     return cashPaymentFormArray;
-  }
-
-  print(): void {
-    this.router.navigate(
-      [
-        `/cash-payment/edit/${
-          this.cashPaymentForm.get("ID").value
-        }/invoice-billing`,
-      ],
-      { state: this.cashPaymentForm.value }
-    );
-    localStorage.setItem(
-      "CashPaymentDetailsList",
-      JSON.stringify(this.cashPaymentForm.value)
-    );
   }
 
   public save(): void {

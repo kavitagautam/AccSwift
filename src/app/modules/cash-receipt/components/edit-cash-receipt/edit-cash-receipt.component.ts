@@ -15,9 +15,6 @@ import { IconConst } from "@app/shared/constants/icon.constant";
   styleUrls: ["./edit-cash-receipt.component.scss"],
 })
 export class EditCashReceiptComponent implements OnInit {
-  private editedRowIndex: number;
-  iconConst = IconConst;
-
   cashReceiptDetails: CashReceipt;
   cashReceiptForm: FormGroup;
   submitted: boolean;
@@ -184,21 +181,6 @@ export class EditCashReceiptComponent implements OnInit {
       );
     }
     return cashReceiptFormArray;
-  }
-
-  print(): void {
-    this.router.navigate(
-      [
-        `/cash-receipt/edit/${
-          this.cashReceiptForm.get("ID").value
-        }/invoice-billing`,
-      ],
-      { state: this.cashReceiptForm.value }
-    );
-    localStorage.setItem(
-      "CashReceiptDetails",
-      JSON.stringify(this.cashReceiptForm.value)
-    );
   }
 
   addCashReceiptEntry(): void {

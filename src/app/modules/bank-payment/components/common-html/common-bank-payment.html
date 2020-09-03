@@ -1,39 +1,11 @@
 <div class="box box-default">
-  <div class="col-md-12 col-xs-12" style="margin-top: 18px">
-    <div class="move-right">
-      <button class="btn btn-default mr-2 mt-2" tooltip="Generate Pdf" disabled>
-        <i class="{{ iconConst.EXPORT_TO_PDF }}"></i>
-      </button>
-      <button class="btn btn-default mr-2 mt-2" tooltip="CSV Export" disabled>
-        <i class="{{ iconConst.EXPORT_TO_CSV }}"></i>
-      </button>
-      <button
-        class="btn btn-default mr-2 mt-2"
-        tooltip="Print"
-        (click)="print()"
-      >
-        <i class="{{ iconConst.PRINT }}"></i>
-      </button>
-      <!-- <button
-        class="btn btn-default mr-2 mt-2"
-        tooltip="Print"
-        printSectionId="print-section"
-        ngxPrint
-        [useExistingCss]="true"
-        (click)="invoiceBilling()"
-      >
-       
-       //  (click)="invoiceBilling()"
-         //[routerLink]="['invoice-billing']" 
-
-        <i class="{{ iconConst.PRINT }}"></i>
-      </button> -->
-      <button class="btn btn-default mr-2 mt-2" disabled tooltip="Email">
-        <i class="{{ iconConst.EMAIL }}"></i>
-      </button>
-    </div>
-  </div>
   <form [formGroup]="bankPaymentForm" novalidate>
+    <div class="row">
+      <accSwift-create-reports
+        [formGroup]="bankPaymentForm"
+        [voucherType]="'BANK_PMNT'"
+      ></accSwift-create-reports>
+    </div>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -42,11 +14,7 @@
             [voucherType]="'BANK_PMNT'"
           ></accSwift-series-forms>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <accSwift-bank-account
-            formControlName="LedgerID"
-          ></accSwift-bank-account>
-        </div>
+
         <div class="col-md-3 col-sm-6 col-xs-6">
           <accSwift-voucher-forms
             *ngIf="!bankPaymentForm.get('VoucherNo').value"
@@ -63,6 +31,11 @@
           <accSwift-project-forms
             formControlName="ProjectID"
           ></accSwift-project-forms>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <accSwift-bank-account
+            formControlName="LedgerID"
+          ></accSwift-bank-account>
         </div>
       </div>
     </div>

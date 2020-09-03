@@ -21,9 +21,17 @@
                 formControlName="SeriesID"
                 [voucherType]="'JRNL'"
               ></accSwift-series-forms>
-              <accSwift-project-forms
-                formControlName="ProjectID"
-              ></accSwift-project-forms>
+              <div class="form-group">
+                <label for="date">To Date</label>
+                <input
+                  type="text"
+                  placeholder="To Date"
+                  class="form-control"
+                  formControlName="toDate"
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                  bsDatepicker
+                />
+              </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <accSwift-voucher-forms
@@ -33,6 +41,11 @@
             </div>
 
             <div class="col-md-3 col-sm-6 col-xs-6">
+              <accSwift-project-forms
+                formControlName="ProjectID"
+              ></accSwift-project-forms>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="date">From Date</label>
                 <input
@@ -40,19 +53,6 @@
                   placeholder="From Date"
                   class="form-control"
                   formControlName="fromDate"
-                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
-                  bsDatepicker
-                />
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label for="date">To Date</label>
-                <input
-                  type="text"
-                  placeholder="To Date"
-                  class="form-control"
-                  formControlName="toDate"
                   [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                   bsDatepicker
                 />

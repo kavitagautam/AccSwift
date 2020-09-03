@@ -16,11 +16,9 @@ import { IconConst } from "@app/shared/constants/icon.constant";
 })
 export class AddCashReceiptComponent implements OnInit {
   cashReceiptForm: FormGroup;
-  private editedRowIndex: number;
 
   submitted: boolean;
   rowSubmitted: boolean;
-  iconConst = IconConst;
 
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
@@ -135,21 +133,6 @@ export class AddCashReceiptComponent implements OnInit {
         );
       });
     }
-  }
-
-  print(): void {
-    this.router.navigate(
-      [
-        `/cash-receipt/edit/${
-          this.cashReceiptForm.get("ID").value
-        }/invoice-billing`,
-      ],
-      { state: this.cashReceiptForm.value }
-    );
-    localStorage.setItem(
-      "CashReceiptDetails",
-      JSON.stringify(this.cashReceiptForm.value)
-    );
   }
 
   public save(): void {

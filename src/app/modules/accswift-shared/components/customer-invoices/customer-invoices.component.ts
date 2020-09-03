@@ -8,6 +8,8 @@ import { CustomerInvoiceExportColumnHeaders } from "@app/shared/models/customer-
 import { ActivatedRoute, Router } from "@angular/router";
 import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
 import { Company } from "@accSwift-modules/company/models/company.model";
+import { Store } from "@ngxs/store";
+import { AddInvoiceDetails } from "@accSwift-modules/accswift-shared/state/sales-invoice.state";
 @Component({
   selector: "simpliflysaas-customer-invoices",
   templateUrl: "./customer-invoices.component.html",
@@ -28,16 +30,17 @@ export class CustomerInvoicesComponent implements OnInit {
   // select dropdown
   voucherType: string;
   companyDetails: Company;
-  invoiceDetails = [];
-  journalDetails = [];
-  cashDetails = [];
-  bankDetails = [];
+  invoiceDetails: any = [];
+  journalDetails: any = [];
+  cashDetails: any = [];
+  bankDetails: any = [];
   customerDescription: any[];
   constructor(
     private exportService: ExportToCsvService,
     private route: ActivatedRoute,
     private router: Router,
-    private salesInvoiceServices: SalesInvoiceService
+    private salesInvoiceServices: SalesInvoiceService,
+    private store: Store
   ) {
     this.salesInvoiceServices.getCompanyDetails().subscribe((response) => {
       this.companyDetails = response.Entity;
@@ -48,45 +51,55 @@ export class CustomerInvoicesComponent implements OnInit {
 
     if (this.router.url.indexOf("/journal") > -1) {
       this.voucherType = "JRNL";
-      const data = JSON.parse(localStorage.getItem("journal"));
+      const data = this.router.getCurrentNavigation().extras.state;
       if (data) {
-        this.journalDetails = data.Journaldetails;
+        this.journalDetails = data;
       }
     }
     if (this.router.url.indexOf("/sales-invoice") > -1) {
       this.voucherType = "SALES";
-      const data = JSON.parse(localStorage.getItem("invoices"));
+      const data = this.router.getCurrentNavigation().extras.state;
+      const obj = {
+        status: "invoices",
+        InvoicesDetails: data,
+      };
+      //  this.store.dispatch(new AddInvoiceDetails({invoices:data}));
+      // console.log("this the " + JSON.stringify(data));
+      // localStorage.setItem(
+      //   "invoices",
+      //   JSON.stringify(this.router.getCurrentNavigation().extras.state[0])
+      // );
       if (data) {
-        this.invoiceDetails = data.InvoiceDetails;
+        this.invoiceDetails = data;
         this.calculateTotal(this.invoiceDetails);
       }
     }
     if (this.router.url.indexOf("/cash-receipt") > -1) {
       this.voucherType = "CASH_RCPT";
-      const data = JSON.parse(localStorage.getItem("CashReceiptDetails"));
+      const data = this.router.getCurrentNavigation().extras.state;
       if (data) {
-        this.cashDetails = data.CashReceiptDetails;
+        this.cashDetails = data;
       }
     }
     if (this.router.url.indexOf("/cash-payment") > -1) {
       this.voucherType = "CASH_PMNT";
-      const data = JSON.parse(localStorage.getItem("CashPaymentDetailsList"));
+      const data = this.router.getCurrentNavigation().extras.state;
       if (data) {
-        this.cashDetails = data.CashPaymentDetailsList;
+        this.cashDetails = data;
       }
     }
     if (this.router.url.indexOf("/bank-receipt") > -1) {
       this.voucherType = "BANK_RCPT";
-      const data = JSON.parse(localStorage.getItem("BankReceiptDetailsList"));
+      const data = this.router.getCurrentNavigation().extras.state;
       if (data) {
-        this.bankDetails = data.BankReceiptDetailsList;
+        this.bankDetails = data;
       }
     }
     if (this.router.url.indexOf("/bank-payment") > -1) {
       this.voucherType = "BANK_PMNT";
-      const data = JSON.parse(localStorage.getItem("BankPaymentDetailsList"));
+      const data = this.router.getCurrentNavigation().extras.state;
       if (data) {
-        this.bankDetails = data.BankPaymentDetailsList;
+        this.bankDetails = data;
       }
     }
   }
@@ -108,14 +121,14 @@ export class CustomerInvoicesComponent implements OnInit {
   }
 
   exportToCSV() {
-    var exportData: IExport = {
-      data: this.customerDescription.map((x) =>
-        MapCustomerInvoiceExportData.mapCustomerInvoice(x)
-      ),
-      columnHeaders: CustomerInvoiceExportColumnHeaders.Columns,
-      columnHeaderNotToBeIncluded: [],
-    };
-    this.exportService.ExportToCSV(exportData);
+    // var exportData: IExport = {
+    //   data: this.customerDescription.map((x) =>
+    //     MapCustomerInvoiceExportData.mapCustomerInvoice(x)
+    //   ),
+    //   columnHeaders: CustomerInvoiceExportColumnHeaders.Columns,
+    //   columnHeaderNotToBeIncluded: [],
+    // };
+    // this.exportService.ExportToCSV(exportData);
   }
 
   public calculateDebitTotal(journalDetails): number {

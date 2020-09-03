@@ -28,6 +28,7 @@ import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
 import { CustomerInvoicesComponent } from "./components/customer-invoices/customer-invoices.component";
 import { NgxPrintModule } from "ngx-print";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
+import { CreateReportsComponent } from "./components/create-reports/create-reports.component";
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
     FormControlValidationMsgDirective,
     DetailsEntryGridComponent,
     CustomerInvoicesComponent,
+    CreateReportsComponent,
   ],
   imports: [
     FormsModule,
@@ -73,6 +75,7 @@ import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
     FormControlValidationMsgDirective,
     DetailsEntryGridComponent,
     CustomerInvoicesComponent,
+    CreateReportsComponent,
   ],
   providers: [ValidationMsgService],
   entryComponents: [

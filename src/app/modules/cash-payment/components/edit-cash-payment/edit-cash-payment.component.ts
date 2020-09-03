@@ -15,9 +15,7 @@ import { IconConst } from "@app/shared/constants/icon.constant";
   styleUrls: ["./edit-cash-payment.component.scss"],
 })
 export class EditCashPaymentComponent implements OnInit {
-  private editedRowIndex: number;
   cashPaymentForm: FormGroup;
-  iconConst = IconConst;
 
   cashPaymentDetail: CashPayment;
   submitted: boolean;
@@ -149,21 +147,6 @@ export class EditCashPaymentComponent implements OnInit {
 
   get getCashPaymentEntryList(): FormArray {
     return <FormArray>this.cashPaymentForm.get("CashPaymentDetailsList");
-  }
-
-  print(): void {
-    this.router.navigate(
-      [
-        `/cash-payment/edit/${
-          this.cashPaymentForm.get("ID").value
-        }/invoice-billing`,
-      ],
-      { state: this.cashPaymentForm.value }
-    );
-    localStorage.setItem(
-      "CashPaymentDetailsList",
-      JSON.stringify(this.cashPaymentForm.value)
-    );
   }
 
   public save(): void {
