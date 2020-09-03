@@ -3,17 +3,17 @@ import { State, Selector, Action, StateContext } from "@ngxs/store";
 
 export class SalesInvoiceDetails {
   status: string;
-  InvoicesDetails: InvoiceDetail;
+  InvoicesDetails: [];
 }
 
 export class AddInvoiceDetails {
-  static readonly type = "[INVOICE] Add";
-  constructor(public payLoad: SalesInvoiceDetails) {}
+  static readonly type = "[InvoiceDetail] Add";
+  constructor(public payLoad: InvoiceDetail[]) {}
 }
 
 export class RemoveInvoiceDetails {
-  static readonly type = "[INVOICE] Remove";
-  constructor(public payLoad: string) {}
+  static readonly type = "[InvoiceDetail] Remove";
+  constructor(public payLoad: number) {}
 }
 
 export class InvoiceModel {
@@ -29,13 +29,14 @@ export class InvoiceState {
   static getInvoice(state: InvoiceModel) {
     return state.invoices;
   }
+
   @Action(AddInvoiceDetails)
   add(
     { getState, patchState }: StateContext<InvoiceModel>,
     { payLoad }: AddInvoiceDetails
   ) {
     const state = getState();
-    patchState({ invoices: [...state.invoices] });
+    // patchState({ invoices: [...state.invoices, payLoad] });
   }
 
   @Action(RemoveInvoiceDetails)
@@ -43,6 +44,8 @@ export class InvoiceState {
     { getState, patchState }: StateContext<InvoiceModel>,
     { payLoad }: RemoveInvoiceDetails
   ) {
-    //patchState({ invoices: getState().invoices.filter(a=>a.name!==payLoad)});
+    patchState({
+      invoices: getState().invoices.filter((a) => a.ID !== payLoad),
+    });
   }
 }

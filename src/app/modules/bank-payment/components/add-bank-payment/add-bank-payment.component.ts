@@ -16,8 +16,6 @@ import { IconConst } from "@app/shared/constants/icon.constant";
 })
 export class AddBankPaymentComponent implements OnInit {
   bankPaymentForm: FormGroup;
-  private editedRowIndex: number;
-  iconConst = IconConst;
 
   submitted: boolean;
   rowSubmitted: boolean;
@@ -86,21 +84,6 @@ export class AddBankPaymentComponent implements OnInit {
 
   get getBankPaymentEntryList(): FormArray {
     return <FormArray>this.bankPaymentForm.get("BankPaymentDetailsList");
-  }
-
-  print(): void {
-    this.router.navigate(
-      [
-        `/bank-payment/edit/${
-          this.bankPaymentForm.get("ID").value
-        }/invoice-billing`,
-      ],
-      { state: this.bankPaymentForm.value }
-    );
-    localStorage.setItem(
-      "BankPaymentDetailsList",
-      JSON.stringify(this.bankPaymentForm.value)
-    );
   }
 
   public save(): void {

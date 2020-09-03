@@ -93,21 +93,6 @@ export class AddJournalComponent implements OnInit {
     return <FormArray>this.journalVoucherForms.get("Journaldetails");
   }
 
-  journalPrint(): void {
-    this.router.navigate(
-      [
-        `/journal/edit/${
-          this.journalVoucherForms.get("ID").value
-        }/invoice-billing`,
-      ],
-      { state: this.journalVoucherForms.value }
-    );
-    localStorage.setItem(
-      "journal",
-      JSON.stringify(this.journalVoucherForms.value)
-    );
-  }
-
   //This ledger code input has not been used
   changeLedgerValue(dataItem, selectedRow): void {
     const journalEntryFormArray = <FormArray>(
