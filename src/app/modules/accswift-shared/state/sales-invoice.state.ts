@@ -8,7 +8,7 @@ export class SalesInvoiceDetails {
 
 export class AddInvoiceDetails {
   static readonly type = "[InvoiceDetail] Add";
-  constructor(public payLoad: InvoiceDetail[]) {}
+  constructor(public payLoad: InvoiceDetail) {}
 }
 
 export class RemoveInvoiceDetails {
@@ -36,7 +36,7 @@ export class InvoiceState {
     { payLoad }: AddInvoiceDetails
   ) {
     const state = getState();
-    // patchState({ invoices: [...state.invoices, payLoad] });
+    patchState({ invoices: [...state.invoices, payLoad] });
   }
 
   @Action(RemoveInvoiceDetails)

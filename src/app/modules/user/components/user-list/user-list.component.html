@@ -1,0 +1,204 @@
+<div class="box-header">
+  <button class="btn btn-success" (click)="openAddModal(openUserModel)">
+    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add User
+  </button>
+</div>
+<div class="box box-default">
+  <div class="box-body">
+    <div class="col-md-12 p-0">
+      <div class="grid-wrapper">
+        <kendo-grid
+          [data]="gridView"
+          [resizable]="true"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          [pageable]="true"
+          scrollable="none"
+          [filter]="filter"
+          [filterable]="false"
+          (pageChange)="pageChange($event)"
+          (sortChange)="sortChange($event)"
+          (filterChange)="filterChange($event)"
+        >
+          <kendo-grid-column field="UserName" title="UserName" width="120">
+          </kendo-grid-column>
+          <kendo-grid-column field="Name" title="Name" width="150">
+          </kendo-grid-column>
+          <kendo-grid-column field="AccessRoleName" title="Role" width="120">
+          </kendo-grid-column>
+          <kendo-grid-column field="Address" title="Address" width="150">
+          </kendo-grid-column>
+          <kendo-grid-column field="Department" title="Department" width="150">
+          </kendo-grid-column>
+          <kendo-grid-column field="Contact" title="Contact" width="120">
+          </kendo-grid-column>
+
+          <kendo-grid-command-column title="Action" width="70">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
+            >
+              <button
+                kendoGridEditCommand
+                (click)="openEditModal(openUserModel, dataItem)"
+                [primary]="true"
+              >
+                Edit
+              </button>
+              <!-- <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialogue(dataItem)"
+              >
+                Delete
+              </button> -->
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
+        <div *ngIf="listLoading" class="k-i-loading"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add Unit Modal -->
+<form [formGroup]="userForm">
+  <ng-template #openUserModel>
+    <div class="modal-header">
+      <h3 class="modal-title pull-left">{{ modalTitle }}</h3>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="close()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Name <sup>*</sup></label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="Name"
+                accSwiftFormValidator
+              />
+            </div>
+            <div class="form-group">
+              <label>Address </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="Address"
+                accSwiftFormValidator
+              />
+            </div>
+            <div class="form-group">
+              <label>Phone </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="Contact"
+                accSwiftFormValidator
+              />
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input class="form-control" formControlName="Email" />
+            </div>
+            <div class="form-group">
+              <label>Department</label>
+              <input class="form-control" formControlName="Department" />
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Role<sup>*</sup></label>
+              <select
+                class="form-control"
+                formControlName="AccessRoleID"
+                accSwiftFormValidator
+              >
+                <option [ngValue]="null">Choose option..</option>
+                <option
+                  *ngFor="let role of userService.accessRoles"
+                  [ngValue]="role.ID"
+                >
+                  {{ role.Name }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Parent Class</label>
+              <select class="form-control" formControlName="AccClassID">
+                <option [ngValue]="null">Choose option..</option>
+                <option
+                  *ngFor="let account of userService.accountClass"
+                  [ngValue]="account.ID"
+                >
+                  {{ account.Name }}
+                </option>
+              </select>
+            </div>
+            <fieldset>
+              <legend>User Info</legend>
+              <div class="form-group">
+                <label>User Name<sup>*</sup></label>
+                <input
+                  class="form-control"
+                  formControlName="UserName"
+                  id="username"
+                  name="username"
+                  accSwiftFormValidator
+                />
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input
+                  class="form-control"
+                  formControlName="Password"
+                  type="password"
+                  name="password"
+                  accSwiftFormValidator
+                />
+              </div>
+              <div class="form-group">
+                <label>Verify Password</label>
+                <input
+                  class="form-control"
+                  formControlName="VerifyPassword"
+                  type="verifypassword"
+                  accSwiftFormValidator
+                />
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        class="btn btn-primary"
+        (click)="onSubmitUser()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="userForm"
+      >
+        {{ submitButton }}
+      </button>
+      <button class="btn btn-secondary ml-2" type="button" (click)="close()">
+        Cancel
+      </button>
+    </div>
+  </ng-template>
+</form>

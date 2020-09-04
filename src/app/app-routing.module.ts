@@ -140,6 +140,13 @@ const routes: Routes = [
         },
       },
       {
+        path: "user",
+        loadChildren: "@accSwift-modules/user/user.module#UserModule",
+        data: {
+          breadcrumb: "User",
+        },
+      },
+      {
         path: "trail-balance",
         loadChildren: "@accSwift-modules/reports/reports.module#ReportsModule",
         data: {
