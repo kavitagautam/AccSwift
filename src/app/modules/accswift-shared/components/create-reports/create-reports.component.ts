@@ -128,26 +128,31 @@ export class CreateReportsComponent implements OnInit {
   }
 
   exportToCSV() {
-    //  const data = this.salesInvoiceForm.get("InvoiceDetails").value;
     var fileName: string;
     var data = [];
     if (this.voucherType == "SALES") {
       data = this.form.get("InvoiceDetails").value;
+      fileName = "Sales Invoice ";
     }
     if (this.voucherType == "JRNL") {
       data = this.form.get("Journaldetails").value;
+      fileName = "Journal ";
     }
     if (this.voucherType == "CASH_RCPT") {
       data = this.form.get("CashReceiptDetails").value;
+      fileName = "Cash Receipt ";
     }
     if (this.voucherType == "CASH_PMNT") {
       data = this.form.get("CashPaymentDetailsList").value;
+      fileName = "Cash Payment ";
     }
     if (this.voucherType == "BANK_PMNT") {
       data = this.form.get("BankPaymentDetailsList").value;
+      fileName = "Bank Payment ";
     }
     if (this.voucherType == "BANK_RCPT") {
       data = this.form.get("BankReceiptDetailsList").value;
+      fileName = "Bank Receipt ";
     }
 
     const replacer = (key, value) => (value === null ? "" : value); // specify how you want to handle null values here
@@ -165,7 +170,7 @@ export class CreateReportsComponent implements OnInit {
     const url = window.URL.createObjectURL(blob);
 
     a.href = url;
-    a.download = "Product Files.csv";
+    a.download = fileName + ".csv";
     a.click();
     window.URL.revokeObjectURL(url);
     a.remove();

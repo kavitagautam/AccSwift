@@ -63,8 +63,8 @@ export class CustomerInvoicesComponent implements OnInit {
         status: "invoices",
         InvoicesDetails: data,
       };
-      //  this.store.dispatch(new AddInvoiceDetails({invoices:data}));
-      // console.log("this the " + JSON.stringify(data));
+      //this.store.dispatch(new AddInvoiceDetails(data));
+      console.log("this the " + JSON.stringify(data));
       // localStorage.setItem(
       //   "invoices",
       //   JSON.stringify(this.router.getCurrentNavigation().extras.state[0])

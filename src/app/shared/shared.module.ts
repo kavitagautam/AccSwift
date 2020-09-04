@@ -26,6 +26,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { LayoutModule } from "@progress/kendo-angular-layout";
 import { ImageCropperModule } from "ngx-image-cropper";
 import { PopupAnchorDirective } from "./directives/popup-anchor/popup.anchor-target.directive";
+import { FormControlValidationMessageDirective } from "./directives/validators/validation-message.directive";
+import { FormSubmitValidationMessageDirective } from "./directives/validators/submit-validation-msg.directive";
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { PopupAnchorDirective } from "./directives/popup-anchor/popup.anchor-tar
     PopupAnchorDirective,
     DateFormatPipe,
     PhoneMaskDirective,
+    FormControlValidationMessageDirective,
+    FormSubmitValidationMessageDirective,
   ],
   imports: [
     FormsModule,
@@ -72,6 +76,8 @@ import { PopupAnchorDirective } from "./directives/popup-anchor/popup.anchor-tar
     CommonModalComponent,
     DateFormatPipe,
     PhoneMaskDirective,
+    FormControlValidationMessageDirective,
+    FormSubmitValidationMessageDirective,
   ],
 })
 export class SharedModule {}
