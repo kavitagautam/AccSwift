@@ -2,24 +2,23 @@ import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
-import {
-  UserRootModel,
-  UserNavigateModel,
-  AccessRoles,
-  AccessRoleRootModel,
-} from "../models/user.model";
+import { UserRootModel, UserNavigateModel } from "../models/user.model";
 import { Observable } from "rxjs";
 import {
   AccountClassModel,
   AccountClass,
 } from "@accSwift-modules/accswift-shared/models/account-class.model";
+import {
+  AccessRoleMinRootModel,
+  AccessRolesMin,
+} from "@accSwift-modules/access-role/models/access-role.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class UserService {
   _api_URL = environment.baseAPI;
-  accessRoles: AccessRoles[] = [];
+  accessRoles: AccessRolesMin[] = [];
   accountClass: AccountClass[] = [];
   constructor(
     private http: HttpClient,
@@ -32,7 +31,7 @@ export class UserService {
   getAccessRole(): void {
     this.httpService
       .get(`${this._api_URL}AccessRole/min`)
-      .subscribe((response: AccessRoleRootModel) => {
+      .subscribe((response: AccessRoleMinRootModel) => {
         this.accessRoles = response.Entity;
       });
   }

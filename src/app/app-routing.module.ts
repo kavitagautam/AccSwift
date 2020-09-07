@@ -132,6 +132,12 @@ const routes: Routes = [
         data: { breadcrumb: "Compound Unit" },
       },
       {
+        path: "access-role",
+        loadChildren:
+          "@accSwift-modules/access-role/access-role.module#AccessRoleModule",
+        data: { breadcrumb: "Access Role" },
+      },
+      {
         path: "unit-maintenance",
         loadChildren:
           "@accSwift-modules/unit-maintenance/unit-maintenance.module#UnitMaintenanceModule",
