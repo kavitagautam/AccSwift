@@ -62,7 +62,7 @@ export class DetailsEntryGridComponent implements OnInit {
   rowSubmitted: boolean;
   IsAutomatic: boolean = false;
   private editedRowIndex: number;
-
+  currencyFormat: string = "c2";
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -152,7 +152,9 @@ export class DetailsEntryGridComponent implements OnInit {
   public unitToggle(rowIndex): void {
     this.showUnitPopup = !this.showUnitPopup;
     this.rowPopupIndexUnit = rowIndex;
-    this.getRelatedUnitList(this.entryArray.value[rowIndex].ProductID);
+    if (rowIndex !== null) {
+      this.getRelatedUnitList(this.entryArray.value[rowIndex].ProductID);
+    }
   }
 
   private contains(target: any): boolean {
@@ -274,27 +276,31 @@ export class DetailsEntryGridComponent implements OnInit {
     let qunatityValue = entryListArray.controls[index].get("Quantity").value;
 
     let salesRateValue = entryListArray.controls[index].get("SalesRate").value;
-    let discountPer = entryListArray.controls[index].get("DiscPercentage")
+    let discountAmountC = entryListArray.controls[index].get("DiscountAmount")
       .value;
 
     let amountC = qunatityValue * salesRateValue;
-    let discountAmountC = (discountPer / 100) * amountC;
-    entryListArray.controls[index]
-      .get("DiscountAmount")
-      .setValue(discountAmountC);
+    let discountPerC = (discountAmountC / amountC) * 100;
 
+    entryListArray.controls[index].get("DiscPercentage").setValue(discountPerC);
     entryListArray.controls[index].get("Amount").setValue(amountC);
     entryListArray.controls[index]
       .get("NetAmount")
-      .setValue(amountC - discountAmountC);
-
-    entryListArray.controls[index]
-      .get("TaxAmount")
       .setValue(
-        entryListArray.controls[index].get("Quantity").value *
-          entryListArray.controls[index].get("NetAmount").value *
-          0.13
+        amountC - entryListArray.controls[index].get("DiscountAmount").value
       );
+    const selectedTaxValue = this.gridServices.taxList.filter(
+      (s) => s.ID === entryListArray.controls[index].get("TaxID").value
+    );
+    if (selectedTaxValue) {
+      entryListArray.controls[index]
+        .get("TaxAmount")
+        .setValue(
+          entryListArray.controls[index].get("Quantity").value *
+            entryListArray.controls[index].get("NetAmount").value *
+            selectedTaxValue[0].Rate
+        );
+    }
   }
 
   //Change Discount Value
@@ -395,13 +401,18 @@ export class DetailsEntryGridComponent implements OnInit {
         entryListArray.controls[index]
           .get("TaxID")
           .setValue(selectedProductValue[0].TaxID);
-        entryListArray.controls[index]
-          .get("TaxAmount")
-          .setValue(
-            entryListArray.controls[index].get("Quantity").value *
-              entryListArray.controls[index].get("NetAmount").value *
-              0.13
-          );
+        const selectedTaxValue = this.gridServices.taxList.filter(
+          (s) => s.ID === entryListArray.controls[index].get("TaxID").value
+        );
+        if (selectedProductValue) {
+          entryListArray.controls[index]
+            .get("TaxAmount")
+            .setValue(
+              entryListArray.controls[index].get("Quantity").value *
+                entryListArray.controls[index].get("NetAmount").value *
+                selectedTaxValue[0].Rate
+            );
+        }
         entryListArray.controls[index].get("Remarks").setValue("");
       }
 
@@ -431,7 +442,7 @@ export class DetailsEntryGridComponent implements OnInit {
         .setValue(selectedLedgerValue[0].LedgerID);
       if (this.voucherType == "BANK_RCPT") {
         entryListArray.controls[index].get("VoucherNumber").setValue(0);
-        entryListArray.controls[index].get("ChequeNumber").setValue("45454");
+        entryListArray.controls[index].get("ChequeNumber").setValue("");
         entryListArray.controls[index].get("VoucherType").setValue("BANK_RCPT");
         entryListArray.controls[index].get("ChequeDate").setValue(new Date());
       }
