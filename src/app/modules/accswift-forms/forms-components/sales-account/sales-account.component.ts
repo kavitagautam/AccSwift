@@ -16,7 +16,7 @@ import { FormsService } from "../../services/forms.service";
     <select
       class="form-control"
       [formControl]="SalesLedgerID"
-      (change)="changeSalesAccount($event.target.value)"
+      (change)="changeSalesAccount(SalesLedgerID.value)"
     >
       <option [ngValue]="null">Choose Option....</option>
       <option
@@ -73,9 +73,10 @@ export class SalesAccountComponent implements ControlValueAccessor, OnDestroy {
   }
 
   changeSalesAccount(ledgerId): void {
-    const selectedTaxValue = this.salesAccountList.filter(
+    const selectedTaxValue = this.formService.salesAccountList.filter(
       (s) => s.LedgerID === ledgerId
     );
+
     if (selectedTaxValue.length > 0) {
       this.currentAmount = selectedTaxValue[0].LedgerBalance;
     }

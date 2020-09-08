@@ -48,7 +48,7 @@ export class VoucherFormsComponent
   implements ControlValueAccessor, OnDestroy, OnChanges {
   subscriptions: Subscription[] = [];
   VoucherNo = new FormControl();
-  voucherNoType: string;
+  voucherNoType: string = "";
 
   @Input("series") seriesID;
 
@@ -62,7 +62,9 @@ export class VoucherFormsComponent
 
     formService.seriesSelect$.subscribe((value) => {
       this.seriesID = value;
-      this.seriesValueChange(value);
+      if (value > 0) {
+        this.seriesValueChange(value);
+      }
     });
   }
 
@@ -91,20 +93,12 @@ export class VoucherFormsComponent
       this.formService
         .getVoucherNoWithSeriesChange(value)
         .subscribe((response) => {
-          if (response && response.VoucherNO !== "") {
-            if (response.VoucherNoType === "Automatic") {
-              this.voucherNoType = "Automatic";
-            }
-
-            this.VoucherNo.setValue(response.VoucherNO);
-            this.value = response.VoucherNO;
-
-            if (response.IsEnabled) {
-              this.VoucherNo.enable();
-            } else {
-              this.VoucherNo.disable();
-            }
-          }
+          this.voucherNoType = response.VoucherNoType;
+          this.VoucherNo.disable(
+            response.IsEnabled ? response.IsEnabled : false
+          );
+          this.value = response.VoucherNO;
+          this.VoucherNo.setValue(response.VoucherNO);
         });
     } else {
       this.VoucherNo.reset();
