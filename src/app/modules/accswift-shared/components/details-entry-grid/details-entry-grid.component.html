@@ -192,7 +192,7 @@
           popupAnchor
           class="form-control"
           [decimals]="decimals"
-          [format]="'c0'"
+          [format]="currencyFormat"
           [disabled]="
             entryArray.controls[rowIndex].get('DebitCredit').value == 'Credit'
           "
@@ -243,7 +243,7 @@
           popupAnchor
           class="form-control"
           [decimals]="decimals"
-          [format]="'c0'"
+          [format]="currencyFormat"
           [disabled]="
             entryArray.controls[rowIndex].get('DebitCredit').value == 'Debit'
           "
@@ -397,7 +397,7 @@
           class="form-control"
           [decimals]="decimals"
           [spinners]="false"
-          [format]="'c0'"
+          [format]="currencyFormat"
           [formControl]="entryArray.controls[rowIndex].get('SalesRate')"
           (valueChange)="changeInvoiceValues(dataItem, rowIndex)"
         >
@@ -455,7 +455,7 @@
                 class="form-control"
                 [decimals]="decimals"
                 [spinners]="false"
-                [format]="'c0'"
+                [format]="currencyFormat"
                 [formControl]="
                   entryArray.controls[rowIndex].get('DiscountAmount')
                 "
@@ -532,7 +532,7 @@
           class="form-control"
           [decimals]="decimals"
           [spinners]="false"
-          [format]="'c0'"
+          [format]="currencyFormat"
           [formControl]="entryArray.controls[rowIndex].get(column.field)"
         ></kendo-numerictextbox>
         <div *ngIf="voucherType == 'SALES'">
