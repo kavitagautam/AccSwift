@@ -1,8 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { CheckableSettings } from "@progress/kendo-angular-treeview";
-import { Observable, of } from "rxjs";
-import { AccessRoles } from "@accSwift-modules/access-role/models/access-role.model";
+import {
+  CheckableSettings,
+  CheckedState,
+  TreeItemLookup,
+} from "@progress/kendo-angular-treeview";
 import { AccessRoleService } from "@accSwift-modules/access-role/services/access-role.service";
+import { AccessRoles } from "@accSwift-modules/access-role/models/access-role.model";
 
 @Component({
   selector: "accSwift-access-role",
@@ -10,8 +13,11 @@ import { AccessRoleService } from "@accSwift-modules/access-role/services/access
   styleUrls: ["./access-role.component.scss"],
 })
 export class AccessRoleComponent implements OnInit {
-  public checkedKeys: any[] = ["1"];
+  public checkedKeys: any[] = [];
+  public key = "Title";
+  treeViewLoading: boolean;
   accessRoles: AccessRoles[] = [];
+  accessType: string;
   selectedRoles: number;
   accessRoleTreeView: any;
   public enableCheck = true;
@@ -32,46 +38,83 @@ export class AccessRoleComponent implements OnInit {
   }
 
   constructor(private accessService: AccessRoleService) {}
+
   ngOnInit() {
     this.accessService.getAccessRoles().subscribe((response) => {
       this.accessRoles = response.Entity;
     });
 
-    this.accessService.getAccessRolesTreeView().subscribe((response) => {
-      this.accessRoleTreeView = response.Tree;
-    });
+    this.treeViewLoading = true;
+    this.accessService.getAccessRolesTreeView().subscribe(
+      (response) => {
+        this.accessRoleTreeView = response.Tree;
+        this.treeViewLoading = false;
+      },
+      (error) => {
+        this.treeViewLoading = false;
+      },
+      () => {
+        this.treeViewLoading = false;
+      }
+    );
   }
 
   onSelect(roles: AccessRoles): void {
+    this.treeViewLoading = true;
+    this.accessType = roles.Name;
     this.selectedRoles = roles.ID;
-    console.log("roles ID");
-    this.accessService
-      .getAccessRolesTreeViewID(this.selectedRoles)
-      .subscribe((response) => {
+    this.accessService.getAccessRolesTreeViewID(this.selectedRoles).subscribe(
+      (response) => {
         this.accessRoleTreeView = response.Tree;
-      });
+        this.treeViewLoading = false;
+      },
+      (error) => {
+        this.treeViewLoading = false;
+      },
+      () => {
+        this.treeViewLoading = false;
+      }
+    );
   }
-  public data: any[] = [
-    {
-      text: "Furniture",
-      items: [
-        { text: "Tables & Chairs" },
-        { text: "Sofas" },
-        {
-          text: "Occasional Furniture",
-          items: [
-            {
-              text: "Decor",
-              items: [{ text: "Bed Linen" }, { text: "Curtains & Blinds" }],
-            },
-          ],
-        },
-      ],
-    },
-    { text: "Decor" },
-    { text: "Outdoors" },
-  ];
 
-  public children = (dataItem: any): Observable<any[]> => of(dataItem.items);
-  public hasChildren = (dataItem: any): boolean => !!dataItem.items;
+  public itemChecked: boolean = false;
+
+  public isChecked = (dataItem: any, index: string): CheckedState => {
+    if (dataItem.IsChecked) {
+      return "checked";
+    }
+
+    return "none";
+
+    // if (this.isIndeterminate(dataItem.items)) {
+    //   return "indeterminate";
+    // }
+
+    // return "none";
+  };
+
+  private isIndeterminate(items: any[] = []): boolean {
+    let idx = 0;
+    let item;
+
+    while ((item = items[idx])) {
+      if (this.isIndeterminate(item.items) || this.containsItem(item)) {
+        return true;
+      }
+
+      idx += 1;
+    }
+
+    return false;
+  }
+  private containsItem(item: any): boolean {
+    return this.checkedKeys.indexOf(item[this.key]) > -1;
+  }
+
+  public handleChecking(itemLookup: TreeItemLookup): void {
+    this.checkedKeys = [itemLookup.item.index];
+  }
+
+  save(): void {}
+  cancel(): void {}
 }

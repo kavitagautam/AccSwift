@@ -1,99 +1,71 @@
-<div class="col-md-4">
-  <ul class="heroes">
-    <li
-      *ngFor="let roles of accessRoles"
-      [class.selected]="roles.ID === selectedRoles"
-      (click)="onSelect(roles)"
-    >
-      {{ roles.Name }}
-    </li>
-  </ul>
+<div class="box box-default">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      This following access role defines the user with the specific previlige.
+      The user is later on assigned the created access roll. Create your own
+      access role and provide the access role to the users.
+    </div>
+  </div>
+  <div class="col-md-4">
+    <h5>Existing Access Roles:</h5>
+    <ul class="heroes">
+      <li
+        *ngFor="let roles of accessRoles"
+        [class.selected]="roles.ID === selectedRoles"
+        (click)="onSelect(roles)"
+      >
+        {{ roles.Name }}
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-sm-5">
+        <div class="form-group">
+          <label>Role Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngModel]="accessType"
+            disabled
+          />
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <label>Copy Access Role Form:</label>
+        <select class="form-control">
+          <option [ngValue]="null">Choose Option...</option>
+          <option *ngFor="let roles of accessRoles" [ngValue]="roles.ID">
+            {{ roles.Name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="treeview-wrapper">
+      <kendo-treeview
+        [nodes]="accessRoleTreeView"
+        childrenField="Child"
+        [expandBy]="'Title'"
+        kendoTreeViewExpandable
+        kendoTreeViewSelectable
+        kendoTreeViewHierarchyBinding
+        kendoTreeViewExpandable
+        textField="Title"
+        [kendoTreeViewCheckable]="checkableSettings"
+        (checkedChange)="handleChecking($event)"
+        [checkBy]="key"
+        [isChecked]="isChecked"
+        style="height: 76vh; overflow: scroll"
+      >
+      </kendo-treeview>
+      <div *ngIf="treeViewLoading" class="k-i-loading"></div>
+    </div>
+  </div>
 </div>
-<div class="col-md-8">
-  <!-- <fieldset>
-    <legend>Check Settings</legend>
-    <div class="k-form-field" style="margin-bottom: 1em">
-      <span class="right"><strong>Mode:</strong></span>
-      <input
-        type="radio"
-        name="checkMode"
-        id="singleCheck"
-        value="single"
-        class="k-radio right"
-        [(ngModel)]="checkMode"
-      />
-      <label class="k-radio-label right" for="singleCheck">Single</label>
-      <input
-        type="radio"
-        name="checkMode"
-        id="multipleCheck"
-        value="multiple"
-        class="k-radio"
-        [(ngModel)]="checkMode"
-      />
-      <label class="k-radio-label" for="multipleCheck">Multiple</label>
-    </div>
-    <div *ngIf="checkMode == 'multiple'">
-      <label class="k-form-field right">
-        <input
-          type="checkbox"
-          id="enableCheck"
-          class="k-checkbox"
-          [(ngModel)]="enableCheck"
-        />
-        <label class="k-checkbox-label" for="enableCheck">Enable</label>
-      </label>
-      <label class="k-form-field right">
-        <input
-          type="checkbox"
-          id="checkChildren"
-          class="k-checkbox"
-          [(ngModel)]="checkChildren"
-        />
-        <label class="k-checkbox-label" for="checkChildren"
-          >Check all children</label
-        >
-      </label>
-      <label class="k-form-field right">
-        <input
-          type="checkbox"
-          id="checkParents"
-          class="k-checkbox"
-          [(ngModel)]="checkParents"
-        />
-        <label class="k-checkbox-label" for="checkParents"
-          >Check all parents when children are checked</label
-        >
-      </label>
-      <label class="k-form-field right">
-        <input
-          type="checkbox"
-          id="checkOnClick"
-          class="k-checkbox"
-          [(ngModel)]="checkOnClick"
-        />
-        <label class="k-checkbox-label" for="checkOnClick"
-          >Check the node on click</label
-        >
-      </label>
-    </div>
-  </fieldset> -->
-  <br />
-  <kendo-treeview
-    [nodes]="accessRoleTreeView"
-    childrenField="Child"
-    [expandBy]="'Title'"
-    kendoTreeViewExpandable
-    kendoTreeViewSelectable
-    kendoTreeViewHierarchyBinding
-    kendoTreeViewExpandable
-    textField="Title"
-    [kendoTreeViewCheckable]="checkableSettings"
-    [(checkedKeys)]="checkedKeys"
-  >
-  </kendo-treeview>
-  <div style="margin: 10px 0">
-    <i>Press SPACE to check/uncheck the active node</i>
-    <div class="example-config">Checked keys: {{ checkedKeys.join(",") }}</div>
+<div class="box-footer">
+  <div class="mb-2">
+    <button class="btn btn-primary" (click)="save()" disabled>Save</button>
+    <button class="btn btn-secondary ml-2" (click)="cancel()">Cancel</button>
   </div>
 </div>

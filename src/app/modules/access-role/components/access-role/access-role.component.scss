@@ -10,8 +10,8 @@
   left: 0;
   background-color: #eee;
   margin: 0.5em;
-  padding: 0.3em 0;
-  height: 1.6em;
+  padding: 5px;
+  height: 25px;
   border-radius: 4px;
 }
 .heroes li:hover {
@@ -40,4 +40,22 @@
   height: 1.8em;
   margin-right: 0.8em;
   border-radius: 4px 0 0 4px;
+}
+
+.treeview-wrapper {
+  position: relative;
+}
+.grid-wrapper-listView {
+  position: relative;
+}
+
+.k-i-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 64px;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #ff6757;
 }
