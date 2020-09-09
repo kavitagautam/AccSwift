@@ -239,6 +239,12 @@ export class SideNavComponent implements OnInit {
       ],
     },
     {
+      id: 25,
+      displayName: "Access Role",
+      iconName: "fas fa-cogs",
+      route: "/access-role",
+    },
+    {
       id: 7,
       displayName: "Preference",
       iconName: "fas fa-cogs",
