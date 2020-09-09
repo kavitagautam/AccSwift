@@ -26,4 +26,8 @@ export class AccessRoleService {
   getAccessRolesTreeView(): Observable<AccessRoleTreeViewModel> {
     return this.httpService.get(`${this._api_URL}Access/TreeView`);
   }
+
+  getAccessRolesTreeViewID(id): Observable<AccessRoleTreeViewModel> {
+    return this.httpService.get(`${this._api_URL}Access/${id}`);
+  }
 }

@@ -2,7 +2,7 @@
   <ul class="heroes">
     <li
       *ngFor="let roles of accessRoles"
-      [class.selected]="roles === selectedRoles"
+      [class.selected]="roles.ID === selectedRoles"
       (click)="onSelect(roles)"
     >
       {{ roles.Name }}

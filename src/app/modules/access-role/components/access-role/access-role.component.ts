@@ -44,6 +44,12 @@ export class AccessRoleComponent implements OnInit {
 
   onSelect(roles: AccessRoles): void {
     this.selectedRoles = roles.ID;
+    console.log("roles ID");
+    this.accessService
+      .getAccessRolesTreeViewID(this.selectedRoles)
+      .subscribe((response) => {
+        this.accessRoleTreeView = response.Tree;
+      });
   }
   public data: any[] = [
     {
