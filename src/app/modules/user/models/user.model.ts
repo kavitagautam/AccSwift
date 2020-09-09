@@ -39,14 +39,3 @@ export interface UserNavigateModel {
   Message: string;
   Entity: UserNavigate;
 }
-
-export interface AccessRoles {
-  ID: number;
-  Name: string;
-}
-
-export interface AccessRoleRootModel {
-  StatusCode: number;
-  Message: string;
-  Entity: AccessRoles[];
-}
