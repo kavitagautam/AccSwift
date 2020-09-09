@@ -1,29 +1,20 @@
 <div class="box box-default">
   <form [formGroup]="journalVoucherForms" novalidate>
+    <div class="row">
+      <accSwift-create-reports
+        [formGroup]="journalVoucherForms"
+        [voucherType]="'JRNL'"
+      ></accSwift-create-reports>
+    </div>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Series </label>
-            <select
-              class="form-control"
-              id="seriesId"
-              formControlName="SeriesID"
-            >
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let series of journalService.journalSeriesList"
-                [value]="series.ID"
-                >{{ series.Name }}
-              </option>
-            </select>
-          </div>
+          <accSwift-series-forms
+            formControlName="SeriesID"
+            [voucherType]="'JRNL'"
+          ></accSwift-series-forms>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-5">
-          <accSwift-project-forms
-            formControlName="ProjectID"
-          ></accSwift-project-forms>
-        </div>
+
         <div class="col-md-3 col-sm-6 col-xs-6">
           <accSwift-voucher-forms
             *ngIf="!journalVoucherForms.get('VoucherNo').value"
@@ -35,15 +26,11 @@
             formControlName="VoucherNo"
             [series]="null"
           ></accSwift-voucher-forms>
-          <!-- <div class="form-group">
-            <label>Voucher #</label>
-            <input
-              class="form-control"
-              formControlName="VoucherNo"
-              id="voucherNo"
-              accSwiftFormValidator
-            />
-          </div> -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-5">
+          <accSwift-project-forms
+            formControlName="ProjectID"
+          ></accSwift-project-forms>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
@@ -100,9 +87,7 @@
   <div class="box-footer">
     <div class="mb-2">
       <button class="btn btn-primary" (click)="save()">Save</button>
-      <button class="btn btn-secondary ml-2" (click)="cancel()">
-        Cancel
-      </button>
+      <button class="btn btn-secondary ml-2" (click)="cancel()">Cancel</button>
     </div>
   </div>
 </div>

@@ -9,6 +9,7 @@ import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/servic
 import { IntlService } from "@progress/kendo-angular-intl";
 import { ToastrService } from "ngx-toastr";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-edit-journal",
@@ -18,10 +19,8 @@ import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/val
 })
 export class EditJournalComponent implements OnInit {
   private editedRowIndex: number;
-  //Input Field Property
+  iconConst = IconConst;
 
-  numericFormat: string = "n2";
-  public decimals: number = 2;
   journalVoucherForms: FormGroup;
   journalDetail: Journal;
   submitted: boolean;

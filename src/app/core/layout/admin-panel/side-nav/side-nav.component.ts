@@ -113,6 +113,12 @@ export class SideNavComponent implements OnInit {
       ],
     },
     {
+      id: 20,
+      displayName: "User",
+      iconName: "fa fa-users",
+      route: "/user",
+    },
+    {
       id: 15,
       displayName: "Report",
       iconName: "fa fa-file-pdf-o",
@@ -231,6 +237,12 @@ export class SideNavComponent implements OnInit {
           route: "",
         },
       ],
+    },
+    {
+      id: 25,
+      displayName: "Access Role",
+      iconName: "fas fa-cogs",
+      route: "/access-role",
     },
     {
       id: 7,

@@ -19,58 +19,23 @@
         <div class="col-md-12">
           <form [formGroup]="salesOrderForm" novalidate>
             <div class="col-md-3 col-sm-6 col-xs-6">
+              <accSwift-series-forms
+                formControlName="SeriesID"
+                [voucherType]="'SLS_ORDER'"
+              ></accSwift-series-forms>
+              <accSwift-cash-party-account
+                formControlName="CashPartyLedgerID"
+              ></accSwift-cash-party-account>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <accSwift-project-forms
+                formControlName="ProjectID"
+              ></accSwift-project-forms>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Order No.</label>
                 <input class="form-control" formControlName="OrderNo" />
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <div class="col-md-12 p-0">
-                  <div class="col-md-11 pl-0">
-                    <label>Cash/ Party /A/C </label>
-                    <kendo-dropdownlist
-                      class="form-control"
-                      [data]="cashPartyList"
-                      [filterable]="true"
-                      [textField]="'LedgerName'"
-                      [valueField]="'LedgerID'"
-                      [valuePrimitive]="true"
-                      [formControl]="salesOrderForm.get('CashPartyLedgerID')"
-                      (filterChange)="cashPartyDDFilter($event)"
-                    >
-                    </kendo-dropdownlist>
-                  </div>
-                  <div class="col-md-1 p-0">
-                    <a (click)="openCashPartyModel()"
-                      ><i
-                        class="fa fa-eye pull-right ledgerSelectIcon"
-                        style="margin-top: 25px; font-size: 18px;"
-                        aria-hidden="true"
-                      ></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Remarks</label> <sup>*</sup>
-                <input class="form-control" formControlName="Remarks" />
-              </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Project</label>
-                <select class="form-control" formControlName="ProjectID">
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let project of salesOrderService.projectList"
-                    [ngValue]="project.ID"
-                  >
-                    {{ project.EngName }}
-                  </option>
-                </select>
               </div>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">

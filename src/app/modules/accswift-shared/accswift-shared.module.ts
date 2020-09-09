@@ -25,6 +25,10 @@ import { ValidationMsgService } from "./services/form-validators/validation-mess
 import { SharedModule } from "@app/shared/shared.module";
 import { DetailsEntryGridComponent } from "./components/details-entry-grid/details-entry-grid.component";
 import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
+import { CustomerInvoicesComponent } from "./components/customer-invoices/customer-invoices.component";
+import { NgxPrintModule } from "ngx-print";
+import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
+import { CreateReportsComponent } from "./components/create-reports/create-reports.component";
 
 @NgModule({
   declarations: [
@@ -40,6 +44,8 @@ import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
     FormSubmitValidationMsgDirective,
     FormControlValidationMsgDirective,
     DetailsEntryGridComponent,
+    CustomerInvoicesComponent,
+    CreateReportsComponent,
   ],
   imports: [
     FormsModule,
@@ -50,6 +56,8 @@ import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
     PopupModule,
     SharedModule,
     InputsModule,
+    NgxPrintModule,
+    PDFExportModule,
     LayoutModule,
     DropDownListModule,
     DateInputsModule,
@@ -66,9 +74,15 @@ import { DateInputsModule } from "@progress/kendo-angular-dateinputs";
     FormSubmitValidationMsgDirective,
     FormControlValidationMsgDirective,
     DetailsEntryGridComponent,
+    CustomerInvoicesComponent,
+    CreateReportsComponent,
   ],
   providers: [ValidationMsgService],
-  entryComponents: [AddProductComponent],
+  entryComponents: [
+    AddProductComponent,
+    ProductModalPopupComponent,
+    LedgerModalPopupComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AccswiftSharedModule {}

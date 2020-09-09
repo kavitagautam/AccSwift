@@ -7,6 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-add-bank-payment",
@@ -15,11 +16,7 @@ import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/val
 })
 export class AddBankPaymentComponent implements OnInit {
   bankPaymentForm: FormGroup;
-  private editedRowIndex: number;
-  currentAmount: string = "0.00";
-  numericFormat: string = "n2";
-  public decimals: number = 2;
-  date: Date = new Date();
+
   submitted: boolean;
   rowSubmitted: boolean;
   modalRef: BsModalRef;

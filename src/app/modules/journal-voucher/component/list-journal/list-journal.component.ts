@@ -68,6 +68,7 @@ export class ListJournalComponent implements OnInit {
       VoucherNo: [""],
       toDate: [""],
       fromDate: [""],
+      password: [],
     });
     this.getJournalList();
   }

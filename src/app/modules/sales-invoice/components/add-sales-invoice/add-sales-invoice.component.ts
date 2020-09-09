@@ -115,7 +115,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       Remarks: [""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
-    this.seriesValueChange();
   }
 
   addInvoiceEntryList(): FormGroup {
@@ -126,14 +125,14 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       ProductName: [""],
       CodeName: [""],
       Quantity: ["", Validators.required],
-      QtyUnitID: ["", Validators.required],
+      QtyUnitID: [null, Validators.required],
       QtyUnitName: [""],
       SalesRate: ["", Validators.required],
       Amount: ["", Validators.required],
       DiscPercentage: [0, Validators.required],
       DiscountAmount: [0, Validators.required],
       NetAmount: [0, Validators.required],
-      TaxID: [""],
+      TaxID: [null],
       TaxAmount: [""],
       Remarks: [""],
     });
@@ -174,25 +173,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
-  seriesValueChange(): void {
-    const seriesChange = this.salesInvoiceForm.get("SeriesID").value;
-    if (seriesChange) {
-      this.salesInvoiceService
-        .getVoucherNoWithSeriesChange(seriesChange)
-        .subscribe((response) => {
-          this.salesInvoiceForm.get("VoucherNo").setValue(response.VoucherNO);
-          if (response.IsEnabled) {
-            this.salesInvoiceForm.get("VoucherNo").enable();
-          } else {
-            this.salesInvoiceForm.get("VoucherNo").disable();
-          }
-          if (response.VoucherNoType === "Automatic") {
-            this.IsAutomatic = true;
-          }
-        });
-    }
-  }
-
   invoiceBilling(): void {
     this.router.navigate(
       [
@@ -206,6 +186,29 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       "invoices",
       JSON.stringify(this.salesInvoiceForm.value)
     );
+  }
+
+  exportToCSV() {
+    const data = this.salesInvoiceForm.get("InvoiceDetails").value;
+    const replacer = (key, value) => (value === null ? "" : value); // specify how you want to handle null values here
+    const header = Object.keys(data[0]);
+    const csv = data.map((row) =>
+      header
+        .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+        .join(",")
+    );
+    csv.unshift(header.join(","));
+    const csvArray = csv.join("\r\n");
+
+    const a = document.createElement("a");
+    const blob = new Blob([csvArray], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+
+    a.href = url;
+    a.download = "myFile.csv";
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
   }
 
   payInvoice(): void {
@@ -279,7 +282,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (invoices && invoices[i].TaxAmount) {
+          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
@@ -291,7 +294,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         this.totalDiscountPercentage = sumTotalDiscountPer;
         this.totalTaxAmount = sumTaxAmount;
 
-        this.vatTotalAmount = this.totalNetAmount * 0.13;
+        this.vatTotalAmount = sumTaxAmount;
         this.grandTotalAmount =
           this.totalGrossAmount -
           this.totalDiscountAmount +

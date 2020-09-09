@@ -6,7 +6,6 @@ import { CashPaymentService } from "../../services/cash-payment.service";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { ToastrService } from "ngx-toastr";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
-import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { PreferenceService } from "../../../preference/services/preference.service";
 
 @Component({
@@ -16,8 +15,8 @@ import { PreferenceService } from "../../../preference/services/preference.servi
 })
 export class AddCashPaymentComponent implements OnInit {
   cashPaymentForm: FormGroup;
+
   submitted: boolean;
-  currentAmount: string = "0.00";
   rowSubmitted: boolean;
   editedRowIndex: any;
 

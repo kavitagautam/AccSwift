@@ -8,23 +8,15 @@ import {
   JournalEditModel,
 } from "../models/journal.model";
 
-import {
-  Series,
-  SeriesRootModel,
-} from "@accSwift-modules/accswift-shared/models/series.model";
-
 @Injectable({
   providedIn: "root",
 })
 export class JournalService {
-  journalSeriesList: Series[] = [];
   _api_URL = environment.baseAPI;
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {
-    this.getSeriesList();
-  }
+  ) {}
 
   getJournalDetails(id): Observable<JournalEditModel> {
     return this.httpService.get(`${this._api_URL}journalmaster/${id}`);
@@ -36,15 +28,6 @@ export class JournalService {
 
   updateJournalVoucher(body): Observable<any> {
     return this.httpService.put(`${this._api_URL}JournalMaster`, body);
-  }
-
-  getSeriesList(): void {
-    const params = new HttpParams().set("VoucherType", "JRNL");
-    this.httpService
-      .get(`${this._api_URL}series`, null, params)
-      .subscribe((response: SeriesRootModel) => {
-        this.journalSeriesList = response.Entity;
-      });
   }
 
   getJournalList(body): Observable<JournalMasterRootModel> {

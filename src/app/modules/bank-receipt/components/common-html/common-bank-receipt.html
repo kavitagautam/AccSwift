@@ -1,42 +1,40 @@
 <div class="box box-default">
   <form [formGroup]="bankReceiptForm" novalidate>
+    <div class="row">
+      <accSwift-create-reports
+        [formGroup]="bankReceiptForm"
+        [voucherType]="'BANK_RCPT'"
+      ></accSwift-create-reports>
+    </div>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Series </label>
-            <select class="form-control" formControlName="SeriesID">
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let series of bankReceiptService.seriesLists"
-                [ngValue]="series.ID"
-              >
-                {{ series.Name }}
-              </option>
-            </select>
-          </div>
+          <accSwift-series-forms
+            formControlName="SeriesID"
+            [voucherType]="'BANK_RCPT'"
+          ></accSwift-series-forms>
         </div>
-
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <accSwift-bank-account
-            formControlName="LedgerID"
-          ></accSwift-bank-account>
-        </div>
-
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Voucher</label>
-            <input
-              class="form-control"
-              formControlName="VoucherNo"
-              accSwiftFormValidator
-            />
-          </div>
+          <accSwift-voucher-forms
+            *ngIf="!bankReceiptForm.get('VoucherNo').value"
+            formControlName="VoucherNo"
+            [series]="bankReceiptForm.get('SeriesID').value"
+          ></accSwift-voucher-forms>
+          <accSwift-voucher-forms
+            *ngIf="bankReceiptForm.get('VoucherNo').value"
+            formControlName="VoucherNo"
+            [series]="null"
+          ></accSwift-voucher-forms>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <accSwift-project-forms
             formControlName="ProjectID"
           ></accSwift-project-forms>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <accSwift-bank-account
+            formControlName="LedgerID"
+          ></accSwift-bank-account>
         </div>
       </div>
     </div>
@@ -75,9 +73,7 @@
       >
         Save
       </button>
-      <button class="btn btn-secondary ml-2" (click)="cancel()">
-        Cancel
-      </button>
+      <button class="btn btn-secondary ml-2" (click)="cancel()">Cancel</button>
     </div>
   </div>
 </div>

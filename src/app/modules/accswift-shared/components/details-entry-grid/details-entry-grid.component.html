@@ -60,59 +60,60 @@
               ></i>
             </a>
           </div>
-
-          <div
-            class="col-md-12"
-            *ngIf="entryArray.controls[rowIndex].get('QtyUnitName').value"
-          >
-            <span
-              ><b>Unit : </b>&nbsp; &nbsp;{{
-                entryArray.controls[rowIndex].get("QtyUnitName").value
-              }}
-            </span>
-            <button
-              #anchor
-              style="
-                color: blue;
-                font-size: 12px;
-                cursor: pointer;
-                padding: 0px;
-              "
-              class="btn"
-              (click)="unitToggle(rowIndex)"
+          <div *ngIf="voucherType == 'SALES'">
+            <div
+              class="col-md-12"
+              *ngIf="entryArray.controls[rowIndex].get('QtyUnitName').value"
             >
-              Change
-            </button>
-            <kendo-popup
-              #popup
-              [anchor]="anchor"
-              *ngIf="showUnitPopup && rowPopupIndexUnit == rowIndex"
-              (anchorViewportLeave)="unitToggle(null)"
-            >
-              <div class="contentPopup">
-                <div class="form-group">
-                  <label>Unit</label>
-                  <kendo-dropdownlist
-                    class="form-control"
-                    [data]="relatedUnits"
-                    textField="Name"
-                    valueField="ID"
-                    [valuePrimitive]="true"
-                    [formControl]="
-                      entryArray.controls[rowIndex].get('QtyUnitID')
-                    "
+              <span
+                ><b>Unit : </b>&nbsp; &nbsp;{{
+                  entryArray.controls[rowIndex].get("QtyUnitName").value
+                }}
+              </span>
+              <button
+                #anchor
+                style="
+                  color: blue;
+                  font-size: 12px;
+                  cursor: pointer;
+                  padding: 0px;
+                "
+                class="btn"
+                (click)="unitToggle(rowIndex)"
+              >
+                Change
+              </button>
+              <kendo-popup
+                #popup
+                [anchor]="anchor"
+                *ngIf="showUnitPopup && rowPopupIndexUnit == rowIndex"
+                (anchorViewportLeave)="unitToggle(null)"
+              >
+                <div class="contentPopup">
+                  <div class="form-group">
+                    <label>Unit</label>
+                    <kendo-dropdownlist
+                      class="form-control"
+                      [data]="relatedUnits"
+                      textField="Name"
+                      valueField="ID"
+                      [valuePrimitive]="true"
+                      [formControl]="
+                        entryArray.controls[rowIndex].get('QtyUnitID')
+                      "
+                    >
+                    </kendo-dropdownlist>
+                  </div>
+                  <button
+                    class="btn btn-primary"
+                    style="margin: auto; display: table;"
+                    (click)="unitToggle(null)"
                   >
-                  </kendo-dropdownlist>
+                    Ok
+                  </button>
                 </div>
-                <button
-                  class="btn btn-primary"
-                  style="margin: auto; display: table;"
-                  (click)="unitToggle(null)"
-                >
-                  Ok
-                </button>
-              </div>
-            </kendo-popup>
+              </kendo-popup>
+            </div>
           </div>
         </div>
       </ng-template>
@@ -191,7 +192,7 @@
           popupAnchor
           class="form-control"
           [decimals]="decimals"
-          [format]="'c0'"
+          [format]="currencyFormat"
           [disabled]="
             entryArray.controls[rowIndex].get('DebitCredit').value == 'Credit'
           "
@@ -242,7 +243,7 @@
           popupAnchor
           class="form-control"
           [decimals]="decimals"
-          [format]="'c0'"
+          [format]="currencyFormat"
           [disabled]="
             entryArray.controls[rowIndex].get('DebitCredit').value == 'Debit'
           "
@@ -396,7 +397,7 @@
           class="form-control"
           [decimals]="decimals"
           [spinners]="false"
-          [format]="'c0'"
+          [format]="currencyFormat"
           [formControl]="entryArray.controls[rowIndex].get('SalesRate')"
           (valueChange)="changeInvoiceValues(dataItem, rowIndex)"
         >
@@ -454,7 +455,7 @@
                 class="form-control"
                 [decimals]="decimals"
                 [spinners]="false"
-                [format]="'c0'"
+                [format]="currencyFormat"
                 [formControl]="
                   entryArray.controls[rowIndex].get('DiscountAmount')
                 "
@@ -522,14 +523,16 @@
           *ngIf="
             voucherType == 'CASH_RCPT' ||
             voucherType == 'CASH_PMNT' ||
-            voucherType == 'BANK_RCPT'
+            voucherType == 'BANK_RCPT' ||
+            voucherType == 'BANK_PMNT' ||
+            voucherType == 'SLS_ORDER'
           "
           #ntb="popupAnchor"
           popupAnchor
           class="form-control"
           [decimals]="decimals"
           [spinners]="false"
-          [format]="'c0'"
+          [format]="currencyFormat"
           [formControl]="entryArray.controls[rowIndex].get(column.field)"
         ></kendo-numerictextbox>
         <div *ngIf="voucherType == 'SALES'">
@@ -577,6 +580,55 @@
         <label>
           Net : <span [innerHTML]="calculateNetTotal | currencyFormat"></span>
         </label>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column
+      field="UpdatedQuantity"
+      title="Updated Quantity"
+      width="140"
+      [hidden]="!columns.includes('UpdatedQuantity')"
+    >
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-rowIndex="rowIndex"
+        let-isNew="isNew"
+        let-formGroup="formGroup"
+      >
+        <kendo-numerictextbox
+          popupAnchor
+          class="form-control"
+          [format]="'n0'"
+          [min]="0"
+          [formControl]="entryArray.controls[rowIndex].get('UpdatedQuantity')"
+        >
+        </kendo-numerictextbox>
+      </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column
+      field="PenndingQuantity"
+      title="Pennding Quantity"
+      width="140"
+      [hidden]="!columns.includes('PenndingQuantity')"
+    >
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-rowIndex="rowIndex"
+        let-isNew="isNew"
+        let-formGroup="formGroup"
+      >
+        <kendo-numerictextbox
+          popupAnchor
+          class="form-control"
+          [format]="'n0'"
+          [min]="0"
+          [formControl]="entryArray.controls[rowIndex].get('PenndingQuantity')"
+        >
+        </kendo-numerictextbox>
       </ng-template>
     </kendo-grid-column>
     <kendo-grid-column

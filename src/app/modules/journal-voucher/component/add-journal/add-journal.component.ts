@@ -9,6 +9,7 @@ import { ToastrService } from "ngx-toastr";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { Preferences } from "../../../preference/models/preference.model";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-add-journal",
@@ -19,6 +20,8 @@ import { Preferences } from "../../../preference/models/preference.model";
 export class AddJournalComponent implements OnInit {
   private editedRowIndex: number;
   //Input Field Property
+  iconConst = IconConst;
+
   public decimals: number = 2;
   numericFormat: string = "n3";
   preferenceData: Preferences;
@@ -51,29 +54,24 @@ export class AddJournalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.buildjournalVoucherForms();
-    this.getPreferences();
+    this.buildJournalVoucherForms();
   }
 
-  getPreferences(): void {
-    this.preferenceService.getPreferenceData().subscribe((response) => {
-      this.preferenceData = response.Entity;
-      this.buildjournalVoucherForms();
-    });
-  }
-
-  buildjournalVoucherForms(): void {
+  buildJournalVoucherForms(): void {
     this.journalVoucherForms = this._fb.group({
       SeriesID: [
-        this.preferenceData
-          ? this.preferenceData.DEFAULT_SERIES_JRNL.Value
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SERIES_JRNL.Value
           : null,
+      ],
+      ProjectID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+          : null,
+        Validators.required,
       ],
       VoucherNo: ["", [Validators.required]],
       Date: [new Date()],
-      ProjectID: [
-        this.preferenceData ? this.preferenceData.DEFAULT_PROJECT.Value : null,
-      ],
       Remarks: [""],
       Journaldetails: this._fb.array([this.addJournalEntryFormGroup()]),
     });

@@ -71,7 +71,7 @@ export class CashPartyAccountComponent
     class: "modal-lg",
   };
   constructor(
-    private formService: FormsService,
+    public formService: FormsService,
     private modalService: BsModalService
   ) {
     this.formService.getCashPartyAccountDD().subscribe((response) => {
@@ -80,7 +80,7 @@ export class CashPartyAccountComponent
 
     this.subscriptions.push(
       this.CashPartyLedgerID.valueChanges.subscribe((value: number) => {
-        this.registerOnChange(value);
+        this.onChange(value);
         this.onTouched();
       })
     );
@@ -90,6 +90,16 @@ export class CashPartyAccountComponent
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
+  get value(): number {
+    return this.CashPartyLedgerID.value;
+  }
+
+  set value(value: number) {
+    this.CashPartyLedgerID.setValue(value);
+    this.onChange(value);
+    this.onTouched();
+  }
+
   // Filterable Cash Party Drop-down
   cashPartyDDFilter(value): void {
     this.cashPartyList = this.formService.cashPartyList.filter(
@@ -97,13 +107,16 @@ export class CashPartyAccountComponent
     );
   }
 
-  cashPartyChange(value): void {
+  cashPartyChange(value: number): void {
     const selectedTaxValue = this.formService.cashPartyList.filter(
       (s) => s.LedgerID === value
     );
     if (selectedTaxValue.length > 0) {
       this.currentAmount = selectedTaxValue[0].LedgerBalance;
     }
+    this.value = value;
+    this.onChange(value);
+    this.onTouched();
   }
 
   openCashPartyModel(): void {
@@ -135,6 +148,7 @@ export class CashPartyAccountComponent
   writeValue(value: number) {
     if (value) {
       this.cashPartyChange(value);
+      this.value = value;
       this.CashPartyLedgerID.setValue(value);
     }
 

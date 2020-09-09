@@ -5,7 +5,6 @@ import { Router } from "@angular/router";
 import { BankReceiptService } from "../../services/bank-receipt.service";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
 import { PreferenceService } from "../../../preference/services/preference.service";
 
@@ -15,10 +14,6 @@ import { PreferenceService } from "../../../preference/services/preference.servi
   styleUrls: ["./add-bank-receipt.component.scss"],
 })
 export class AddBankReceiptComponent implements OnInit {
-  private editedRowIndex: number;
-  numericFormat: string = "n2";
-  public decimals: number = 2;
-  date: Date = new Date();
   bankReceiptForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -49,6 +44,7 @@ export class AddBankReceiptComponent implements OnInit {
 
   buildBankReceiptForm(): void {
     this.bankReceiptForm = this._fb.group({
+      ID: [null],
       SeriesID: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_SERIES_BANK_RCPT.Value

@@ -17,29 +17,11 @@
         <div class="col-md-12">
           <form [formGroup]="cashPaymentsForm" novalidate>
             <div class="col-md-3 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Series </label>
-                <select
-                  class="form-control"
-                  id="seriesId"
-                  formControlName="SeriesID"
-                >
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let series of cashPaymentService.seriesLists"
-                    [ngValue]="series.ID"
-                  >
-                    {{ series.Name }}</option
-                  >
-                </select>
-              </div>
+              <accSwift-series-forms
+                formControlName="SeriesID"
+                [voucherType]="'CASH_PMNT'"
+              ></accSwift-series-forms>
             </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
-              <accSwift-cash-account
-                formControlName="LedgerID"
-              ></accSwift-cash-account>
-            </div>
-
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Voucher #</label>
@@ -50,6 +32,11 @@
               <accSwift-project-forms
                 formControlName="ProjectID"
               ></accSwift-project-forms>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-6">
+              <accSwift-cash-account
+                formControlName="LedgerID"
+              ></accSwift-cash-account>
             </div>
             <div class="col-md-3 col-sm-6 col-xs-6">
               <div class="form-group">
@@ -257,9 +244,7 @@
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-primary" (click)="modalRef.hide()">
-      OK
-    </button>
+    <button class="btn btn-primary" (click)="modalRef.hide()">OK</button>
     <button
       class="btn btn-secondary ml-2"
       type="button"

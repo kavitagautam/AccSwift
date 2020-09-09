@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { AuthenticationService } from "../services/authentication.service";
 import { first } from "rxjs/operators";
 import { ToastrService } from "ngx-toastr";
+import { CookieService } from "ngx-cookie-service";
 import {
   Validators,
   FormBuilder,
@@ -26,7 +27,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private _fb: FormBuilder,
     private authenticationService: AuthenticationService,
     private validationMessageService: ValidationMessageService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit() {
@@ -52,10 +54,55 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe(
         (data) => {
-          // Set sessionStorage
+          // Set cookies Services
           for (const key in data) {
             if (data[key]) {
-              sessionStorage.setItem(key, data[key]);
+              // sessionStorage.setItem(key, data[key]);
+              this.cookieService.set(
+                "access_token",
+                data.access_token,
+                null,
+                "/",
+                null,
+                false,
+                "Lax"
+              );
+              this.cookieService.set(
+                "token_type",
+                data.token_type,
+                null,
+                "/",
+                null,
+                false,
+                "Lax"
+              );
+              this.cookieService.set(
+                "expires_in",
+                data.expires_in,
+                null,
+                "/",
+                null,
+                false,
+                "Lax"
+              );
+              this.cookieService.set(
+                "refresh_token",
+                data.refresh_token,
+                null,
+                "/",
+                null,
+                false,
+                "Lax"
+              );
+              this.cookieService.set(
+                "ExpiredDateTime",
+                data.ExpiredDateTime,
+                null,
+                "/",
+                null,
+                false,
+                "Lax"
+              );
             }
           }
           this.router.navigate([""]);

@@ -272,3 +272,9 @@ legend {
 .k-tabstrip > .k-content.k-state-active {
   overflow-x: hidden !important;
 }
+
+.move-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}

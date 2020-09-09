@@ -172,7 +172,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
               this.assignFormsValue();
               this.setInvoiceList();
             }
-            //this.buildSalesInvoiceForm();
           });
       }
     });
@@ -238,7 +237,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (invoices && invoices[i].TaxAmount) {
+          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
@@ -267,14 +266,14 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       ProductName: [""],
       CodeName: [""],
       Quantity: ["", Validators.required],
-      QtyUnitID: ["", Validators.required],
+      QtyUnitID: [null, Validators.required],
       QtyUnitName: [""],
       SalesRate: ["", Validators.required],
       Amount: ["", Validators.required],
       DiscPercentage: [0, Validators.required],
       DiscountAmount: [0, Validators.required],
       NetAmount: [0, Validators.required],
-      TaxID: [""],
+      TaxID: [null],
       TaxAmount: [""],
       Remarks: [""],
     });
@@ -346,23 +345,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     return invoiceFormArray;
   }
 
-  seriesValueChange(): void {
-    const seriesChange = this.salesInvoiceForm.get("SeriesID").value;
-    this.salesInvoiceService
-      .getVoucherNoWithSeriesChange(seriesChange)
-      .subscribe((response) => {
-        this.salesInvoiceForm.get("VoucherNo").setValue(response.VoucherNO);
-        if (response.IsEnabled) {
-          this.salesInvoiceForm.get("VoucherNo").enable();
-        } else {
-          this.salesInvoiceForm.get("VoucherNo").disable();
-        }
-        if (response.VoucherNoType === "Automatic") {
-          this.IsAutomatic = true;
-        }
-      });
-  }
-
   payInvoice(): void {
     this.salesInvoiceForm.get("IsPay").setValue(true);
     this.salesInvoiceService
@@ -379,6 +361,29 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
           this.modalRef.hide();
         }
       );
+  }
+
+  exportToCSV() {
+    const data = this.salesInvoiceForm.get("InvoiceDetails").value;
+    const replacer = (key, value) => (value === null ? "" : value); // specify how you want to handle null values here
+    const header = Object.keys(data[0]);
+    const csv = data.map((row) =>
+      header
+        .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+        .join(",")
+    );
+    csv.unshift(header.join(","));
+    const csvArray = csv.join("\r\n");
+
+    const a = document.createElement("a");
+    const blob = new Blob([csvArray], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+
+    a.href = url;
+    a.download = "myFile.csv";
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
   }
 
   public save(): void {

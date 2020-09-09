@@ -4,7 +4,6 @@ import {
   forwardRef,
   OnDestroy,
   Input,
-  ChangeDetectionStrategy,
   OnChanges,
 } from "@angular/core";
 import {
@@ -22,17 +21,16 @@ import { FormsService } from "../../services/forms.service";
     <label>Voucher No. <sup>*</sup></label>
     <input type="text" class="form-control" [formControl]="VoucherNo" />
     <span
-      *ngIf="IsAutomatic.value"
+      *ngIf="voucherNoType"
       style="
-      top: 32px;
-      margin-left: 155px;
-      display: inline-block;
-      position: absolute;
-    "
-      >Automatic</span
+    top: 32px;
+    margin-left: 155px;
+    display: inline-block;
+    position: absolute;
+  "
+      >({{ voucherNoType }})</span
     >
   </div>`,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -50,27 +48,38 @@ export class VoucherFormsComponent
   implements ControlValueAccessor, OnDestroy, OnChanges {
   subscriptions: Subscription[] = [];
   VoucherNo = new FormControl();
-  IsAutomatic = new FormControl();
+  voucherNoType: string = "";
+
   @Input("series") seriesID;
 
   constructor(private formService: FormsService) {
     this.subscriptions.push(
       this.VoucherNo.valueChanges.subscribe((value: number) => {
-        this.registerOnChange(value);
-        this.seriesID = null;
-        this.IsAutomatic.setValue(true);
+        this.onChange(value);
         this.onTouched();
       })
     );
 
     formService.seriesSelect$.subscribe((value) => {
       this.seriesID = value;
-      this.seriesValueChange(value);
+      if (value > 0) {
+        this.seriesValueChange(value);
+      }
     });
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((s) => s.unsubscribe());
+  }
+
+  get value(): string {
+    return this.VoucherNo.value;
+  }
+
+  set value(value: string) {
+    this.VoucherNo.setValue(value);
+    this.onChange(value);
+    this.onTouched();
   }
 
   ngOnChanges(changes): void {
@@ -80,34 +89,33 @@ export class VoucherFormsComponent
   }
 
   seriesValueChange(value): void {
-    if (value) {
+    if (value > 0) {
       this.formService
         .getVoucherNoWithSeriesChange(value)
         .subscribe((response) => {
-          this.IsAutomatic.setValue(
-            response.VoucherNoType === "Automatic" ? true : false
+          this.voucherNoType = response.VoucherNoType;
+          this.VoucherNo.disable(
+            response.IsEnabled ? response.IsEnabled : false
           );
+          this.value = response.VoucherNO;
           this.VoucherNo.setValue(response.VoucherNO);
-          if (response.IsEnabled) {
-            this.VoucherNo.enable();
-          } else {
-            this.VoucherNo.disable();
-          }
         });
     } else {
       this.VoucherNo.reset();
+      this.value = "";
     }
   }
 
   onChange: any = () => {};
   onTouched: any = () => {};
 
-  registerOnChange(fn: number) {
+  registerOnChange(fn: string) {
     this.onChange = fn;
   }
 
-  writeValue(value: number) {
+  writeValue(value: string) {
     if (value) {
+      this.value = value;
       this.VoucherNo.setValue(value);
     }
 
@@ -116,7 +124,7 @@ export class VoucherFormsComponent
     }
   }
 
-  registerOnTouched(fn) {
+  registerOnTouched(fn: string) {
     this.onTouched = fn;
   }
 

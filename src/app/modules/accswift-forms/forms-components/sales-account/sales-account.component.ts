@@ -13,7 +13,11 @@ import { FormsService } from "../../services/forms.service";
   selector: "accSwift-sales-account",
   template: ` <div class="form-group">
     <label>Sales /A/C <sup>*</sup></label>
-    <select class="form-control" [formControl]="SalesLedgerID">
+    <select
+      class="form-control"
+      [formControl]="SalesLedgerID"
+      (change)="changeSalesAccount(SalesLedgerID.value)"
+    >
       <option [ngValue]="null">Choose Option....</option>
       <option
         *ngFor="let salesAccount of salesAccountList"
@@ -48,7 +52,7 @@ export class SalesAccountComponent implements ControlValueAccessor, OnDestroy {
     });
     this.subscriptions.push(
       this.SalesLedgerID.valueChanges.subscribe((value: number) => {
-        this.registerOnChange(value);
+        this.onChange(value);
         this.onTouched();
       })
     );
@@ -58,24 +62,41 @@ export class SalesAccountComponent implements ControlValueAccessor, OnDestroy {
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
+  get value(): number {
+    return this.SalesLedgerID.value;
+  }
+
+  set value(value: number) {
+    this.SalesLedgerID.setValue(value);
+    this.onChange(value);
+    this.onTouched();
+  }
+
   changeSalesAccount(ledgerId): void {
-    const selectedTaxValue = this.salesAccountList.filter(
+    const selectedTaxValue = this.formService.salesAccountList.filter(
       (s) => s.LedgerID === ledgerId
     );
+
     if (selectedTaxValue.length > 0) {
       this.currentAmount = selectedTaxValue[0].LedgerBalance;
     }
+    this.value = ledgerId;
+    //this.onChange(ledgerId);
+    //this.onTouched();
   }
 
   onChange: any = () => {};
   onTouched: any = () => {};
 
-  registerOnChange(fn: number) {
-    this.onChange = fn;
+  registerOnChange(fn: (_: number | null) => void): void {
+    this.onChange = (value) => {
+      fn(value == "" ? null : parseInt(value));
+    };
   }
 
   writeValue(value: number) {
     if (value) {
+      this.value = value;
       this.changeSalesAccount(value);
       this.SalesLedgerID.setValue(value);
     }

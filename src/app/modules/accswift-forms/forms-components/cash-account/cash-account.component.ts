@@ -24,13 +24,13 @@ import { FormsService } from "../../services/forms.service";
       [formControl]="LedgerID"
       (change)="changeCashAccount(LedgerID.value)"
     >
-      <option [ngValue]="null">Choose option... </option>
+      <option [ngValue]="null">Choose option...</option>
       <option
         *ngFor="let account of cashAccountLists"
         [ngValue]="account.LedgerID"
       >
-        {{ account.LedgerName }}</option
-      >
+        {{ account.LedgerName }}
+      </option>
     </select>
     <span class="current-balance">Current Amount : {{ currentAmount }}</span>
   </div>`,
@@ -59,10 +59,20 @@ export class CashAccountComponent implements ControlValueAccessor, OnDestroy {
 
     this.subscriptions.push(
       this.LedgerID.valueChanges.subscribe((value: number) => {
-        this.registerOnChange(value);
+        this.onChange(value);
         this.onTouched();
       })
     );
+  }
+
+  get value(): number {
+    return this.LedgerID.value;
+  }
+
+  set value(value: number) {
+    this.LedgerID.setValue(value);
+    this.onChange(value);
+    this.onTouched();
   }
 
   ngOnDestroy() {
@@ -73,17 +83,23 @@ export class CashAccountComponent implements ControlValueAccessor, OnDestroy {
     this.formService.getLedgerDetails(ledgerId).subscribe((response) => {
       this.currentAmount = response;
     });
+    this.value = ledgerId;
+    //  this.onChange(ledgerId);
+    // this.onTouched();
   }
 
   onChange: any = () => {};
   onTouched: any = () => {};
 
-  registerOnChange(fn: number) {
-    this.onChange = fn;
+  registerOnChange(fn: (_: number | null) => void): void {
+    this.onChange = (value) => {
+      fn(value == "" ? null : parseInt(value));
+    };
   }
 
   writeValue(value: number) {
     if (value) {
+      this.value = value;
       this.changeCashAccount(value);
       this.LedgerID.setValue(value);
     }

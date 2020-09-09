@@ -7,6 +7,7 @@ import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/servic
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { ToastrService } from "ngx-toastr";
 import { PreferenceService } from "../../../preference/services/preference.service";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-add-cash-receipt",
@@ -15,11 +16,10 @@ import { PreferenceService } from "../../../preference/services/preference.servi
 })
 export class AddCashReceiptComponent implements OnInit {
   cashReceiptForm: FormGroup;
-  private editedRowIndex: number;
-  numericFormat: string = "n2";
-  public decimals: number = 2;
+
   submitted: boolean;
   rowSubmitted: boolean;
+
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside

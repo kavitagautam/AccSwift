@@ -15,12 +15,8 @@ import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/val
 })
 export class EditBankPaymentComponent implements OnInit {
   bankPaymentForm: FormGroup;
-  private editedRowIndex: number;
-  currentAmount: string = "0.00";
-  numericFormat: string = "n2";
-  public decimals: number = 2;
+
   bankPaymentDetails: BankPayment;
-  date: Date = new Date();
   submitted: boolean;
   rowSubmitted: boolean;
   modalRef: BsModalRef;
@@ -95,8 +91,8 @@ export class EditBankPaymentComponent implements OnInit {
           .getBankPaymentDetails(params.get("id"))
           .subscribe((response) => {
             this.bankPaymentDetails = response.Entity;
-            this.buildbankPaymentForm();
             this.setBankPaymentList();
+            this.bankPaymentForm.patchValue(this.bankPaymentDetails);
           });
       }
     });

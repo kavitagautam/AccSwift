@@ -5,7 +5,6 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { BankReceiptService } from "../../services/bank-receipt.service";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
-import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { ToastrService } from "ngx-toastr";
 import { BankReceipt } from "../../models/bank-receipt.model";
 
@@ -15,13 +14,8 @@ import { BankReceipt } from "../../models/bank-receipt.model";
   styleUrls: ["./edit-bank-receipt.component.scss"],
 })
 export class EditBankReceiptComponent implements OnInit {
-  private editedRowIndex: number;
   bankReceiptDetails: BankReceipt;
-  currentAmount: string = "0.00";
   bankReceiptForm: FormGroup;
-  numericFormat: string = "n2";
-  public decimals: number = 2;
-  date: Date = new Date();
 
   submitted: boolean;
   rowSubmitted: boolean;
@@ -104,8 +98,9 @@ export class EditBankReceiptComponent implements OnInit {
           .getBankReceiptDetails(params.get("id"))
           .subscribe((response) => {
             this.bankReceiptDetails = response.Entity;
-            this.buildBankReceiptForm();
+            //this.buildBankReceiptForm();
             this.setBankReceiptList();
+            this.bankReceiptForm.patchValue(this.bankReceiptDetails);
           });
       }
     });

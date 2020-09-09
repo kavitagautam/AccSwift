@@ -62,7 +62,7 @@ export class DetailsEntryGridComponent implements OnInit {
   rowSubmitted: boolean;
   IsAutomatic: boolean = false;
   private editedRowIndex: number;
-
+  currencyFormat: string = "c2";
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -152,7 +152,9 @@ export class DetailsEntryGridComponent implements OnInit {
   public unitToggle(rowIndex): void {
     this.showUnitPopup = !this.showUnitPopup;
     this.rowPopupIndexUnit = rowIndex;
-    this.getRelatedUnitList(this.entryArray.value[rowIndex].ProductID);
+    if (rowIndex !== null) {
+      this.getRelatedUnitList(this.entryArray.value[rowIndex].ProductID);
+    }
   }
 
   private contains(target: any): boolean {
@@ -274,43 +276,57 @@ export class DetailsEntryGridComponent implements OnInit {
     let qunatityValue = entryListArray.controls[index].get("Quantity").value;
 
     let salesRateValue = entryListArray.controls[index].get("SalesRate").value;
-    let discountPer = entryListArray.controls[index].get("DiscPercentage")
+    let discountAmountC = entryListArray.controls[index].get("DiscountAmount")
       .value;
 
     let amountC = qunatityValue * salesRateValue;
-    let discountAmountC = (discountPer / 100) * amountC;
-    entryListArray.controls[index]
-      .get("DiscountAmount")
-      .setValue(discountAmountC);
+    let discountPerC = (discountAmountC / amountC) * 100;
 
+    entryListArray.controls[index].get("DiscPercentage").setValue(discountPerC);
     entryListArray.controls[index].get("Amount").setValue(amountC);
     entryListArray.controls[index]
       .get("NetAmount")
-      .setValue(amountC - discountAmountC);
+      .setValue(
+        amountC - entryListArray.controls[index].get("DiscountAmount").value
+      );
+    const selectedTaxValue = this.gridServices.taxList.filter(
+      (s) => s.ID === entryListArray.controls[index].get("TaxID").value
+    );
+    if (selectedTaxValue) {
+      entryListArray.controls[index]
+        .get("TaxAmount")
+        .setValue(
+          entryListArray.controls[index].get("Quantity").value *
+            entryListArray.controls[index].get("NetAmount").value *
+            selectedTaxValue[0].Rate
+        );
+    }
   }
 
   //Change Discount Value
   discountAmountCalc(dataItem, index): void {
     const entryListArray = this.entryArray as FormArray;
+    let qunatityValue = entryListArray.controls[index].get("Quantity").value;
+
+    let salesRateValue = entryListArray.controls[index].get("SalesRate").value;
+    let amountC = qunatityValue * salesRateValue;
 
     let discountAmountValue = entryListArray.controls[index].get(
       "DiscountAmount"
     ).value;
-    let qunatityValue = entryListArray.controls[index].get("Quantity").value;
+    let calculatePercentage = 0;
+    if (discountAmountValue) {
+      calculatePercentage = discountAmountValue / amountC;
+    }
 
-    let salesRateValue = entryListArray.controls[index].get("SalesRate").value;
-
-    let amountC = qunatityValue * salesRateValue;
-    let calculatePercentage = (discountAmountValue / amountC) * 100;
     entryListArray.controls[index]
       .get("DiscPercentage")
-      .setValue(calculatePercentage);
-    let discountPer = entryListArray.controls[index].get("DiscPercentage")
-      .value;
-    let discountAmountC = discountPer * amountC;
+      .setValue(calculatePercentage * 100);
 
-    discountPer = calculatePercentage;
-    discountAmountC = amountC * discountPer;
+    let discountAmountC = calculatePercentage * amountC;
+
+    discountAmountC = amountC * calculatePercentage;
+
     entryListArray.controls[index]
       .get("NetAmount")
       .setValue(amountC - discountAmountC);
@@ -343,19 +359,11 @@ export class DetailsEntryGridComponent implements OnInit {
       entryListArray.controls[index]
         .get("ProductID")
         .setValue(selectedProductValue[0].ProductID);
-      entryListArray.controls[index]
-        .get("CodeName")
-        .setValue(selectedProductValue[0].CodeName);
+
       entryListArray.controls[index]
         .get("ProductName")
         .setValue(selectedProductValue[0].ProductName);
       entryListArray.controls[index].get("Quantity").setValue(1);
-      entryListArray.controls[index]
-        .get("QtyUnitID")
-        .setValue(selectedProductValue[0].QtyUnitID);
-      entryListArray.controls[index]
-        .get("QtyUnitName")
-        .setValue(selectedProductValue[0].QtyUnitName);
       entryListArray.controls[index]
         .get("SalesRate")
         .setValue(selectedProductValue[0].SalesRate);
@@ -366,25 +374,48 @@ export class DetailsEntryGridComponent implements OnInit {
           entryListArray.controls[index].get("SalesRate").value *
             entryListArray.controls[index].get("Quantity").value
         );
-      entryListArray.controls[index].get("DiscPercentage").setValue(0);
-      entryListArray.controls[index]
-        .get("DiscountAmount")
-        .setValue(
-          entryListArray.controls[index].get("DiscPercentage").value *
-            entryListArray.controls[index].get("Amount").value
-        );
-      entryListArray.controls[index]
-        .get("NetAmount")
-        .setValue(
-          entryListArray.controls[index].get("Amount").value -
-            entryListArray.controls[index].get("DiscountAmount").value
-        );
+      if (this.voucherType == "SALES") {
+        entryListArray.controls[index]
+          .get("CodeName")
+          .setValue(selectedProductValue[0].CodeName);
+        entryListArray.controls[index]
+          .get("QtyUnitID")
+          .setValue(selectedProductValue[0].QtyUnitID);
+        entryListArray.controls[index]
+          .get("QtyUnitName")
+          .setValue(selectedProductValue[0].QtyUnitName);
+        entryListArray.controls[index].get("DiscPercentage").setValue(0);
+        entryListArray.controls[index]
+          .get("DiscountAmount")
+          .setValue(
+            entryListArray.controls[index].get("DiscPercentage").value *
+              entryListArray.controls[index].get("Amount").value
+          );
+        entryListArray.controls[index]
+          .get("NetAmount")
+          .setValue(
+            entryListArray.controls[index].get("Amount").value -
+              entryListArray.controls[index].get("DiscountAmount").value
+          );
 
-      entryListArray.controls[index]
-        .get("TaxID")
-        .setValue(selectedProductValue[0].TaxID);
-      entryListArray.controls[index].get("TaxAmount").setValue("");
-      entryListArray.controls[index].get("Remarks").setValue("");
+        entryListArray.controls[index]
+          .get("TaxID")
+          .setValue(selectedProductValue[0].TaxID);
+        const selectedTaxValue = this.gridServices.taxList.filter(
+          (s) => s.ID === entryListArray.controls[index].get("TaxID").value
+        );
+        if (selectedProductValue) {
+          entryListArray.controls[index]
+            .get("TaxAmount")
+            .setValue(
+              entryListArray.controls[index].get("Quantity").value *
+                entryListArray.controls[index].get("NetAmount").value *
+                selectedTaxValue[0].Rate
+            );
+        }
+        entryListArray.controls[index].get("Remarks").setValue("");
+      }
+
       const length = this.entryArray.value.length;
       if (entryListArray.controls[length - 1].invalid) return;
       this.entryArray.push(this.addEntryList());
@@ -411,7 +442,7 @@ export class DetailsEntryGridComponent implements OnInit {
         .setValue(selectedLedgerValue[0].LedgerID);
       if (this.voucherType == "BANK_RCPT") {
         entryListArray.controls[index].get("VoucherNumber").setValue(0);
-        entryListArray.controls[index].get("ChequeNumber").setValue("45454");
+        entryListArray.controls[index].get("ChequeNumber").setValue("");
         entryListArray.controls[index].get("VoucherType").setValue("BANK_RCPT");
         entryListArray.controls[index].get("ChequeDate").setValue(new Date());
       }
@@ -447,13 +478,8 @@ export class DetailsEntryGridComponent implements OnInit {
         entryListArray.controls[index]
           .get("ProductName")
           .setValue(data.ProductName);
+
         entryListArray.controls[index].get("Quantity").setValue(1);
-        entryListArray.controls[index]
-          .get("QtyUnitID")
-          .setValue(data.QtyUnitID);
-        entryListArray.controls[index]
-          .get("QtyUnitName")
-          .setValue(data.QtyUnitName);
         entryListArray.controls[index]
           .get("SalesRate")
           .setValue(data.SalesRate);
@@ -463,25 +489,48 @@ export class DetailsEntryGridComponent implements OnInit {
             entryListArray.controls[index].get("SalesRate").value *
               entryListArray.controls[index].get("Quantity").value
           );
-        entryListArray.controls[index].get("DiscPercentage").setValue(0);
-        entryListArray.controls[index]
-          .get("DiscountAmount")
-          .setValue(
-            entryListArray.controls[index].get("DiscPercentage").value *
-              entryListArray.controls[index].get("Amount").value
-          );
-        entryListArray.controls[index]
-          .get("NetAmount")
-          .setValue(
-            entryListArray.controls[index].get("Amount").value -
-              entryListArray.controls[index].get("DiscountAmount").value
-          );
+        // for sales invoice
+        if (this.voucherType == "SALES") {
+          entryListArray.controls[index].get("DiscPercentage").setValue(0);
+          entryListArray.controls[index]
+            .get("DiscountAmount")
+            .setValue(
+              entryListArray.controls[index].get("DiscPercentage").value *
+                entryListArray.controls[index].get("Amount").value
+            );
+          entryListArray.controls[index]
+            .get("NetAmount")
+            .setValue(
+              entryListArray.controls[index].get("Amount").value -
+                entryListArray.controls[index].get("DiscountAmount").value
+            );
 
-        entryListArray.controls[index].get("TaxID").setValue(data.TaxID);
-        entryListArray.controls[index]
-          .get("TaxAmount")
-          .setValue(data.TaxAmount);
-        entryListArray.controls[index].get("Remarks").setValue("");
+          entryListArray.controls[index].get("TaxID").setValue(data.TaxID);
+          entryListArray.controls[index]
+            .get("TaxAmount")
+            .setValue(
+              entryListArray.controls[index].get("Quantity").value *
+                entryListArray.controls[index].get("NetAmount").value *
+                0.13
+            );
+          entryListArray.controls[index]
+            .get("QtyUnitID")
+            .setValue(data.QtyUnitID);
+          entryListArray.controls[index]
+            .get("QtyUnitName")
+            .setValue(data.QtyUnitName);
+          entryListArray.controls[index].get("Remarks").setValue("");
+        }
+        //for sales Order
+        if (this.voucherType == "SLS_ORDER") {
+          entryListArray.controls[index]
+            .get("UpdatedQuantity")
+            .setValue(data.UpdatedQuantity);
+          entryListArray.controls[index]
+            .get("PenndingQuantity")
+            .setValue(data.PenndingQuantity);
+        }
+
         const length = this.entryArray.value.length;
         if (entryListArray.controls[length - 1].invalid) return;
         this.entryArray.push(this.addEntryList());
@@ -568,7 +617,7 @@ export class DetailsEntryGridComponent implements OnInit {
         ProductID: [""],
         ProductName: [""],
         CodeName: [""],
-        Quantity: ["", Validators.required],
+        Quantity: [1, Validators.required],
         QtyUnitID: ["", Validators.required],
         QtyUnitName: [""],
         SalesRate: ["", Validators.required],
@@ -677,6 +726,20 @@ export class DetailsEntryGridComponent implements OnInit {
         LedgerBalance: [""],
         VoucherType: [""],
         Remarks: [""],
+      });
+    }
+    if (this.voucherType == "SLS_ORDER") {
+      return this._fb.group({
+        ID: [0],
+        SalesOrderID: [0],
+        ProductCode: [""],
+        ProductID: [null, Validators.required],
+        ProductName: [""],
+        Quantity: [1],
+        SalesRate: [""],
+        Amount: [""],
+        UpdatedQuantity: [0],
+        PenndingQuantity: [0],
       });
     }
   }

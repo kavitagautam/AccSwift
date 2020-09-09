@@ -11,9 +11,7 @@ import { FormBuilder } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
-import { SalesOrderList } from "../../models/sales-order.model";
-import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
+import { SalesOrder } from "../../models/sales-order.model";
 
 @Component({
   selector: "accSwift-list-sales-order",
@@ -23,7 +21,6 @@ import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.m
 export class ListSalesOrderComponent implements OnInit {
   salesOrderForm: FormGroup;
   listLoading: Boolean;
-  cashPartyList: CashParty[] = [];
 
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
@@ -50,7 +47,7 @@ export class ListSalesOrderComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true,
   };
-  salesOrderList: SalesOrderList[];
+  salesOrderList: SalesOrder[];
   modalService: BsModalService;
 
   constructor(
@@ -58,11 +55,7 @@ export class ListSalesOrderComponent implements OnInit {
     public salesOrderService: SalesOrderService,
     private router: Router,
     private toastr: ToastrService
-  ) {
-    this.salesOrderService.getCashPartyAccountDD().subscribe((response) => {
-      this.cashPartyList = response.Entity;
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.buildSalesOrderForm();
@@ -71,6 +64,7 @@ export class ListSalesOrderComponent implements OnInit {
 
   buildSalesOrderForm(): void {
     this.salesOrderForm = this._fb.group({
+      SeriesID: [null],
       OrderNo: [""],
       CashPartyLedgerID: [null],
       ProjectID: [null],
@@ -147,29 +141,6 @@ export class ListSalesOrderComponent implements OnInit {
 
   public edit(item): void {
     this.router.navigate(["/sales-order/edit", item.ID]);
-  }
-  // Filterable Cash Party Drop-down
-  cashPartyDDFilter(value): void {
-    this.cashPartyList = this.salesOrderService.cashPartyList.filter(
-      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
-    );
-  }
-
-  openCashPartyModel(): void {
-    this.modalRef = this.modalService.show(
-      CashPartyModalPopupComponent,
-      this.config
-    );
-    this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe((data) => {
-      if (data) {
-        // Do After the the sucess
-        this.salesOrderForm.get("CashPartyLedgerID").setValue(data.LedgerID);
-      }
-    });
-    this.modalRef.content.onClose.subscribe((data) => {
-      //Do after Close the Modal
-    });
   }
 
   openConfirmationDialogue(dataItem): void {

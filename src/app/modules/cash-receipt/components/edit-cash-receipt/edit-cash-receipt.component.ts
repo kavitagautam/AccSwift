@@ -7,6 +7,7 @@ import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/servic
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { CashReceipt } from "../../models/cash-receipt.model";
 import { ToastrService } from "ngx-toastr";
+import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-edit-cash-receipt",
@@ -14,10 +15,6 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./edit-cash-receipt.component.scss"],
 })
 export class EditCashReceiptComponent implements OnInit {
-  private editedRowIndex: number;
-  numericFormat: string = "n2";
-  public decimals: number = 2;
-  currentAmount: string = "0.00";
   cashReceiptDetails: CashReceipt;
   cashReceiptForm: FormGroup;
   submitted: boolean;

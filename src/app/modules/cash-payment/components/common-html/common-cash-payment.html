@@ -1,29 +1,30 @@
 <div class="box box-default">
   <form [formGroup]="cashPaymentForm" novalidate>
+    <div class="row">
+      <accSwift-create-reports
+        [formGroup]="cashPaymentForm"
+        [voucherType]="'CASH_PMNT'"
+      ></accSwift-create-reports>
+    </div>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Series </label>
-            <select
-              class="form-control"
-              id="seriesId"
-              formControlName="SeriesID"
-            >
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let series of cashPaymentService.seriesLists"
-                [ngValue]="series.ID"
-              >
-                {{ series.Name }}</option
-              >
-            </select>
-          </div>
+          <accSwift-series-forms
+            formControlName="SeriesID"
+            [voucherType]="'CASH_PMNT'"
+          ></accSwift-series-forms>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <accSwift-cash-account
-            formControlName="LedgerID"
-          ></accSwift-cash-account>
+          <accSwift-voucher-forms
+            *ngIf="!cashPaymentForm.get('VoucherNo').value"
+            formControlName="VoucherNo"
+            [series]="cashPaymentForm.get('SeriesID').value"
+          ></accSwift-voucher-forms>
+          <accSwift-voucher-forms
+            *ngIf="cashPaymentForm.get('VoucherNo').value"
+            formControlName="VoucherNo"
+            [series]="null"
+          ></accSwift-voucher-forms>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <accSwift-project-forms
@@ -31,14 +32,9 @@
           ></accSwift-project-forms>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Voucher #</label>
-            <input
-              class="form-control"
-              formControlName="VoucherNo"
-              accSwiftFormValidator
-            />
-          </div>
+          <accSwift-cash-account
+            formControlName="LedgerID"
+          ></accSwift-cash-account>
         </div>
       </div>
     </div>
@@ -78,9 +74,7 @@
       >
         Save
       </button>
-      <button class="btn btn-secondary ml-2" (click)="cancel()">
-        Cancel
-      </button>
+      <button class="btn btn-secondary ml-2" (click)="cancel()">Cancel</button>
     </div>
   </div>
 </div>
