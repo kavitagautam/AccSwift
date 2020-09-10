@@ -128,8 +128,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       Company: [this.ledgerDetails ? this.ledgerDetails.Company : ""],
       Website: [this.ledgerDetails ? this.ledgerDetails.Website : ""],
       VatPanNo: [this.ledgerDetails ? this.ledgerDetails.VatPanNo : ""],
-      CreditLimit: [this.ledgerDetails ? this.ledgerDetails.CreditLimit : ""],
-      IsActive: [this.ledgerDetails ? this.ledgerDetails.IsActive : ""],
+      CreditLimit: [0],
+      IsActive: [true],
       OpeningBalance: this._fb.array([this.addOpeningBalanceFormGroup()]),
       Remarks: [this.ledgerDetails ? this.ledgerDetails.Remarks : ""],
     });
@@ -213,7 +213,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     this.accountLedgerForm
       .get("PreviousYearBalanceDebitCredit")
       .setValue(selectedItem[0].DrCr === "DR" ? "DEBIT" : "CREDIT");
-    this.accountLedgerForm.get("DrCr").setValue(this.balanceDrCr);
+    this.accountLedgerForm.get("DrCr").setValue(selectedItem[0].DrCr);
     const openingBalance = <FormArray>(
       this.accountLedgerForm.get("OpeningBalance")
     );
