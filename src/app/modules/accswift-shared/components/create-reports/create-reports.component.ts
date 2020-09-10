@@ -76,6 +76,11 @@ export class CreateReportsComponent implements OnInit {
           state: this.form.get("InvoiceDetails").value,
         }
       );
+      localStorage.setItem(
+        "invoices",
+        JSON.stringify(this.form.get("InvoiceDetails").value)
+      );
+
       // const data = this.form.get("InvoiceDetails").value;
       // console.log(data);
       // if (data) {
