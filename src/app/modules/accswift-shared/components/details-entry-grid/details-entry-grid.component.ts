@@ -404,7 +404,7 @@ export class DetailsEntryGridComponent implements OnInit {
         const selectedTaxValue = this.gridServices.taxList.filter(
           (s) => s.ID === entryListArray.controls[index].get("TaxID").value
         );
-        if (selectedProductValue) {
+        if (selectedTaxValue) {
           entryListArray.controls[index]
             .get("TaxAmount")
             .setValue(
