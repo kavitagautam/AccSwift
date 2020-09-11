@@ -11,7 +11,6 @@ import { PreferenceService } from "../../../preference/services/preference.servi
 @Component({
   selector: "accSwift-add-sales-order",
   templateUrl: "../common-html/sales-order.html",
-  styleUrls: ["./add-sales-order.component.scss"],
 })
 export class AddSalesOrderComponent implements OnInit {
   salesOrderForm: FormGroup;

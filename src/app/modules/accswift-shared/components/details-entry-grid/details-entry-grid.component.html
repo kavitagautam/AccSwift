@@ -55,7 +55,7 @@
             <a (click)="openProductModal(rowIndex)"
               ><i
                 class="fa fa-eye pull-right ledgerSelectIcon"
-                style="margin: 0px; font-size: 16px; position: relative;"
+                style="margin: 0px; font-size: 16px; position: relative"
                 aria-hidden="true"
               ></i>
             </a>
@@ -106,7 +106,7 @@
                   </div>
                   <button
                     class="btn btn-primary"
-                    style="margin: auto; display: table;"
+                    style="margin: auto; display: table"
                     (click)="unitToggle(null)"
                   >
                     Ok
@@ -164,7 +164,7 @@
             <a (click)="openLedgerModal(rowIndex)"
               ><i
                 class="fa fa-eye pull-right ledgerSelectIcon"
-                style="margin: 0px; font-size: 16px; position: relative;"
+                style="margin: 0px; font-size: 16px; position: relative"
                 aria-hidden="true"
               ></i>
             </a>
@@ -405,6 +405,33 @@
       </ng-template>
     </kendo-grid-column>
     <kendo-grid-column
+      field="PurchaseRate"
+      title="Purchase Rate"
+      width="80"
+      [hidden]="!columns.includes('PurchaseRate')"
+    >
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-formGroup="formGroup"
+        let-isNew="isNew"
+        let-column="column"
+        let-rowIndex="rowIndex"
+      >
+        <kendo-numerictextbox
+          popupAnchor
+          class="form-control"
+          [decimals]="decimals"
+          [spinners]="false"
+          [format]="currencyFormat"
+          [formControl]="entryArray.controls[rowIndex].get('PurchaseRate')"
+          (valueChange)="changeInvoiceValues(dataItem, rowIndex)"
+        >
+        </kendo-numerictextbox>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column
       field="DiscPercentage"
       title="Disc%"
       width="80"
@@ -465,7 +492,7 @@
             </div>
             <button
               class="btn-primary btn"
-              style="margin: auto; display: table;"
+              style="margin: auto; display: table"
               (click)="discountToggle(null)"
             >
               Ok
@@ -535,7 +562,7 @@
           [format]="currencyFormat"
           [formControl]="entryArray.controls[rowIndex].get(column.field)"
         ></kendo-numerictextbox>
-        <div *ngIf="voucherType == 'SALES'">
+        <div *ngIf="voucherType == 'SALES' || voucherType == 'PURCH'">
           <span class="small_text"
             >Total :&nbsp; &nbsp;
             <span
@@ -648,7 +675,7 @@
         <input
           #input
           class="k-textbox"
-          style="text-align: right;"
+          style="text-align: right"
           class="form-control"
           [readonly]="true"
           [formControl]="entryArray.controls[rowIndex].get(column.field)"
