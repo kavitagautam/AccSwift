@@ -7,38 +7,18 @@ import {
 import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
-import {
-  Tax,
-  TaxModel,
-} from "@accSwift-modules/accswift-shared/models/tax.model";
-import { RelatedUnitModel } from "@accSwift-modules/accswift-shared/models/related-unit.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class PurchaseInvoiceService {
   _api_URL = environment.baseAPI;
-  taxList: Tax[] = [];
 
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
-  ) {
-    this.getTaxList();
-  }
+  ) {}
 
-  getTaxList(): void {
-    this.httpService
-      .get(`${this._api_URL}Tax/min`)
-      .subscribe((response: TaxModel) => {
-        this.taxList = response.Entity;
-      });
-  }
-  getRelatedUnits(id: any): Observable<RelatedUnitModel> {
-    return this.httpService.get(
-      `${this._api_URL}CompoundUnit/RelatedUnits/${id}`
-    );
-  }
   getPurchaseInvoiceMaster(body): Observable<PurchaseInvoiceNavigateModel> {
     return this.httpService.post(
       `${this._api_URL}PurchaseInvoiceMaster/navigate`,

@@ -16,6 +16,7 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
 import { PopupModule } from "@progress/kendo-angular-popup";
 import { SalesAccountComponent } from "./forms-components/sales-account/sales-account.component";
 import { DepotComponent } from "./forms-components/depot/depot.component";
+import { PurchaseAccountComponent } from "./forms-components/purchase-account/purchase-account.component";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { DepotComponent } from "./forms-components/depot/depot.component";
     CashPartyAccountComponent,
     SalesAccountComponent,
     DepotComponent,
+    PurchaseAccountComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,7 @@ import { DepotComponent } from "./forms-components/depot/depot.component";
     CashPartyAccountComponent,
     SalesAccountComponent,
     DepotComponent,
+    PurchaseAccountComponent,
   ],
   entryComponents: [CashPartyModalPopupComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

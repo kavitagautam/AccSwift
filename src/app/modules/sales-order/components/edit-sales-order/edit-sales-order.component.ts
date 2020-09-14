@@ -7,14 +7,11 @@ import { Component, OnInit } from "@angular/core";
 import { SalesOrder } from "../../models/sales-order.model";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { ProductModalPopupComponent } from "@accSwift-modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
-import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
 
 @Component({
   selector: "accSwift-edit-sales-order",
   templateUrl: "../common-html/sales-order.html",
-  styleUrls: ["./edit-sales-order.component.scss"],
 })
 export class EditSalesOrderComponent implements OnInit {
   salesOrderForm: FormGroup;

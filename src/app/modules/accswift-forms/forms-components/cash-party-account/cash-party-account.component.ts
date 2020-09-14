@@ -13,7 +13,7 @@ import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/
 
 @Component({
   selector: "accSwift-cash-party-account",
-  template: ` <div class="form-group">
+  template: ` <div class="form-group" style="margin-bottom:0px !important">
     <div class="col-md-12 p-0">
       <div class="col-md-11 pl-0">
         <label>Cash/ Party /A/C <sup>*</sup></label>
