@@ -6,24 +6,18 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
-import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
-import { ProductModalPopupComponent } from "@accSwift-modules/accswift-shared/components/product-modal-popup/product-modal-popup.component";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
-import { RelatedUnits } from "@accSwift-modules/accswift-shared/models/related-unit.model";
+import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
 
 @Component({
   selector: "accSwift-add-sales-return",
   templateUrl: "../common-html/sales-return.html",
-  styleUrls: ["./add-sales-return.component.scss"],
 })
 export class AddSalesReturnComponent implements OnInit, OnDestroy {
   salesReturnForm: FormGroup;
   editedRowIndex: number;
   submitted: boolean;
-  cashPartyList: CashParty[] = [];
-  relatedUnits: RelatedUnits[] = [];
 
   private destroyed$ = new Subject<void>();
 
@@ -57,12 +51,9 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
     private router: Router,
     private toastr: ToastrService,
     private modalService: BsModalService,
-    public productCodeMatch: ProductCodeValidatorsService
-  ) {
-    this.salesReturnService.getCashPartyAccountDD().subscribe((response) => {
-      this.cashPartyList = response.Entity;
-    });
-  }
+    public productCodeMatch: ProductCodeValidatorsService,
+    private preferenceService: PreferenceService
+  ) {}
 
   ngOnInit(): void {
     this.buildSalesReturnForm();
@@ -82,12 +73,38 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
 
   buildSalesReturnForm(): void {
     this.salesReturnForm = this._fb.group({
-      SeriesID: ["", Validators.required],
-      CashPartyLedgerID: [null],
-      VoucherNo: [null, Validators.required],
-      SalesLedgerID: [null],
-      DepotID: [null],
-      ProjectID: [null, Validators.required],
+      ID: [null],
+
+      SeriesID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SERIES_SLS_RTN.Value
+          : null,
+        Validators.required,
+      ],
+      CashPartyLedgerID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_CASH_ACCOUNT.Value
+          : null,
+        Validators.required,
+      ],
+      VoucherNo: [null],
+      SalesLedgerID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SALES_ACCOUNT.Value
+          : null,
+        Validators.required,
+      ],
+      DepotID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_DEPOT.Value
+          : null,
+      ],
+      ProjectID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+          : null,
+        Validators.required,
+      ],
       Date: [new Date()],
       OrderNo: [""],
       TotalAmount: [0, Validators.required],
@@ -101,121 +118,24 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
 
   addReturnDetails(): FormGroup {
     return this._fb.group({
-      ProductCode: [""],
-      ProductName: [""],
+      ID: [null],
       ProductID: [null],
-      Quantity: [""],
+      ProductName: [""],
+      CodeName: [""],
+      ProductCode: [""],
+      Quantity: [null],
       QtyUnitID: [null],
-      SalesRate: [""],
-      Amount: [""],
-      DiscPercentage: [""],
-      DiscountAmount: [""],
-      NetAmount: [""],
+      QtyUnitName: [""],
+      SalesReturnID: [null],
+      SalesRate: [null],
+      VATAmount: [null],
+      DiscPercentage: [0],
+      DiscountAmount: [0],
+      NetAmount: [null],
       TaxID: [null],
-      TaxAmount: [""],
+      TaxAmount: [0],
+      Amount: [0],
       Remarks: [""],
-    });
-  }
-
-  get getReturnDetailList() {
-    return this.salesReturnForm.get("ReturnDetails");
-  }
-
-  getRelatedUnits(productCode): void {
-    this.salesReturnService
-      .getRelatedUnits(productCode)
-      .subscribe((response) => {
-        this.relatedUnits = response.Entity;
-      });
-  }
-
-  // Filterable Cash Party Drop-down
-  cashPartyDDFilter(value): void {
-    this.cashPartyList = this.salesReturnService.cashPartyList.filter(
-      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
-    );
-  }
-
-  openCashPartyModel(): void {
-    this.modalRef = this.modalService.show(
-      CashPartyModalPopupComponent,
-      this.config
-    );
-    this.modalRef.content.action = "Select";
-
-    this.modalRef.content.onSelected.subscribe((data) => {
-      if (data) {
-        // Do After the the sucess
-        this.salesReturnForm.get("CashPartyLedgerID").setValue(data.LedgerID);
-      }
-    });
-    this.modalRef.content.onClose.subscribe((data) => {
-      //Do after Close the Modal
-    });
-  }
-
-  openModal(index: number): void {
-    this.modalRef = this.modalService.show(
-      ProductModalPopupComponent,
-      this.config
-    );
-    this.modalRef.content.data = index;
-    this.modalRef.content.action = "Select";
-    this.modalRef.content.onSelected.subscribe((data) => {
-      if (data) {
-        const returnArray = <FormArray>(
-          this.salesReturnForm.get("ReturnDetails")
-        );
-        returnArray.controls[index].get("ProductCode").setValue(data.Code);
-        returnArray.controls[index].get("ProductID").setValue(data.ID);
-        returnArray.controls[index].get("ProductName").setValue(data.Name);
-        returnArray.controls[index].get("Quantity").setValue(1);
-        returnArray.controls[index].get("QtyUnitID").setValue(data.UnitID);
-        returnArray.controls[index].get("SalesRate").setValue(data.SalesRate);
-        returnArray.controls[index]
-          .get("Amount")
-          .setValue(
-            data.SalesRate * returnArray.controls[index].get("Quantity").value
-          );
-        returnArray.controls[index].get("DiscPercentage").setValue(0);
-        returnArray.controls[index]
-          .get("DiscountAmount")
-          .setValue(
-            returnArray.controls[index].get("DiscPercentage").value *
-              returnArray.controls[index].get("Amount").value
-          );
-        returnArray.controls[index]
-          .get("NetAmount")
-          .setValue(
-            returnArray.controls[index].get("Amount").value -
-              returnArray.controls[index].get("DiscountAmount").value
-          );
-        const totalQty = returnArray.controls[index].get("Quantity").value;
-        const totalAmount =
-          totalQty * returnArray.controls[index].get("SalesRate").value;
-        const grossAmount =
-          totalAmount - returnArray.controls[index].get("DiscountAmount").value;
-        const netAmount =
-          totalAmount - returnArray.controls[index].get("DiscountAmount").value;
-        this.salesReturnForm.get("TotalAmount").setValue(totalAmount);
-        this.salesReturnForm.get("TotalQty").setValue(totalQty);
-        this.salesReturnForm.get("GrossAmount").setValue(grossAmount);
-        this.salesReturnForm.get("NetAmount").setValue(netAmount);
-
-        returnArray.controls[index].get("TaxID").setValue("");
-        returnArray.controls[index].get("TaxAmount").setValue("");
-        returnArray.controls[index].get("Remarks").setValue("");
-
-        this.grandTotalAmount =
-          this.totalGrossAmount -
-          this.totalDiscountAmount +
-          this.vatTotalAmount +
-          this.totalTaxAmount;
-        this.getRelatedUnits(data.ID);
-      }
-    });
-    this.modalRef.content.onClose.subscribe((data) => {
-      //Do after Close the Modal
     });
   }
 
@@ -267,82 +187,6 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
       });
   }
 
-  //Change Discount Value
-  changeDiscountValue(dataItem, index): void {
-    const invoiceEntryArray = <FormArray>(
-      this.salesReturnForm.get("ReturnDetails")
-    );
-    let discountAmountValue = invoiceEntryArray.controls[index].get(
-      "DiscountAmount"
-    ).value;
-    let qunatityValue = invoiceEntryArray.controls[index].get("Quantity").value;
-
-    let salesRateValue = invoiceEntryArray.controls[index].get("SalesRate")
-      .value;
-
-    let amountC = qunatityValue * salesRateValue;
-    let calculatePercentage = discountAmountValue / amountC;
-    invoiceEntryArray.controls[index]
-      .get("DiscPercentage")
-      .setValue(calculatePercentage);
-    let discountPer = invoiceEntryArray.controls[index].get("DiscPercentage")
-      .value;
-    let discountAmountC = discountPer * amountC;
-
-    discountPer = calculatePercentage;
-    discountAmountC = amountC * discountPer;
-    invoiceEntryArray.controls[index]
-      .get("NetAmount")
-      .setValue(amountC - discountAmountC);
-
-    this.myFormValueChanges$.subscribe((changes) =>
-      this.returnValueChange(changes)
-    );
-  }
-
-  //Invoice Column value changes
-  changeInvoiceValues(dataItem, index): void {
-    const returnArray = <FormArray>this.salesReturnForm.get("ReturnDetails");
-
-    let qunatityValue = returnArray.controls[index].get("Quantity").value;
-
-    let salesRateValue = returnArray.controls[index].get("SalesRate").value;
-    let discountPer = returnArray.controls[index].get("DiscPercentage").value;
-    let discountAmountValue = returnArray.controls[index].get("DiscountAmount")
-      .value;
-    let amountC = qunatityValue * salesRateValue;
-    let discountAmountC = discountPer * amountC;
-
-    returnArray.controls[index].get("Amount").setValue(amountC);
-
-    returnArray.controls[index].get("DiscountAmount").setValue(discountAmountC);
-    returnArray.controls[index]
-      .get("NetAmount")
-      .setValue(amountC - discountAmountC);
-    returnArray.controls[index].get("DiscountAmount").value;
-
-    this.salesReturnForm.get("TotalQty").setValue(this.totalQty);
-    this.salesReturnForm.get("GrossAmount").setValue(this.totalGrossAmount);
-    this.salesReturnForm.get("NetAmount").setValue(this.totalNetAmount);
-    this.myFormValueChanges$.subscribe((changes) => {
-      this.returnValueChange(changes);
-    });
-
-    this.salesReturnForm.get("TotalAmount").setValue(this.grandTotalAmount);
-  }
-
-  //tax Change value calculation
-  handleTaxChange(value, index): void {
-    const selectedTaxValue = this.salesReturnService.taxList.filter(
-      (s) => s.ID === value
-    );
-    const returnArray = <FormArray>this.salesReturnForm.get("ReturnDetails");
-    let netAmountV = returnArray.controls[index].get("NetAmount").value;
-    returnArray.controls[index]
-      .get("TaxAmount")
-      .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
-  }
-
   public save(): void {
     if (this.salesReturnForm.invalid) return;
 
@@ -364,57 +208,5 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
   public cancel(): void {
     this.salesReturnForm.reset();
     this.router.navigate(["/sales-return"]);
-  }
-
-  private closeEditor(grid, rowIndex = 1) {
-    grid.closeRow(rowIndex);
-    this.editedRowIndex = undefined;
-    //this.formGroup = undefined
-  }
-
-  public addHandler({ sender }) {
-    this.closeEditor(sender);
-    this.submitted = true;
-    this.rowSubmitted = true;
-    const salesReturnEntry = <FormArray>(
-      this.salesReturnForm.get("ReturnDetails")
-    );
-    if (salesReturnEntry.invalid) return;
-    (<FormArray>salesReturnEntry).push(this.addReturnDetails());
-    this.submitted = false;
-    this.rowSubmitted = false;
-  }
-
-  public editHandler({ sender, rowIndex, dataItem }) {
-    this.closeEditor(sender);
-    const salesReturnEntry = <FormArray>(
-      this.salesReturnForm.get("ReturnDetails")
-    );
-    salesReturnEntry.controls[rowIndex]
-      .get("ProductName")
-      .setValue(dataItem.ProductName);
-    salesReturnEntry.controls[rowIndex].get("Unit").setValue(dataItem.Unit);
-    salesReturnEntry.controls[rowIndex]
-      .get("PurchaseRate")
-      .setValue(dataItem.PurchaseRate);
-    salesReturnEntry.controls[rowIndex].get("Amount").setValue(dataItem.Amount);
-    salesReturnEntry.controls[rowIndex]
-      .get("NetAmount")
-      .setValue(dataItem.NetAmount);
-    salesReturnEntry.controls[rowIndex].get("TaxID").setValue(dataItem.TaxID);
-    this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.salesReturnForm.get("ReturnDetails"));
-  }
-
-  public removeHandler({ dataItem, rowIndex }): void {
-    (<FormArray>this.salesReturnForm.get("ReturnDetails")).removeAt(rowIndex);
-  }
-
-  public cancelHandler({ sender, rowIndex }) {
-    this.closeEditor(sender, rowIndex);
-  }
-
-  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
-    sender.closeRow(rowIndex);
   }
 }

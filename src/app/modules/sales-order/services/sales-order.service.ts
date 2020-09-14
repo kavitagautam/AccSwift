@@ -26,15 +26,6 @@ export class SalesOrderService {
     );
   }
 
-  getVoucherNoWithSeriesChange(seriesId): Observable<any> {
-    const params = new HttpParams().set("SeriesID", seriesId);
-    return this.httpService.get(
-      `${this._api_URL}Series/VoucherNo`,
-      null,
-      params
-    );
-  }
-
   getSalesOrderDetails(id: any): Observable<SalesOrderDetailModel> {
     return this.httpService.get(`${this._api_URL}SalesOrderMaster/${id}`);
   }
