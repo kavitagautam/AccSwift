@@ -29,6 +29,7 @@ import { CustomerInvoicesComponent } from "./components/customer-invoices/custom
 import { NgxPrintModule } from "ngx-print";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { CreateReportsComponent } from "./components/create-reports/create-reports.component";
+import { AddressComponent } from "./components/address/address.component";
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { CreateReportsComponent } from "./components/create-reports/create-repor
     DetailsEntryGridComponent,
     CustomerInvoicesComponent,
     CreateReportsComponent,
+    AddressComponent,
   ],
   imports: [
     FormsModule,
@@ -76,6 +78,7 @@ import { CreateReportsComponent } from "./components/create-reports/create-repor
     DetailsEntryGridComponent,
     CustomerInvoicesComponent,
     CreateReportsComponent,
+    AddressComponent,
   ],
   providers: [ValidationMsgService],
   entryComponents: [

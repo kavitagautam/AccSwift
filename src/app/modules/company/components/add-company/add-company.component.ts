@@ -8,7 +8,7 @@ import { SelectEvent } from "@progress/kendo-angular-upload";
 @Component({
   selector: "accSwift-add-company",
   templateUrl: "../common-template/company-form.html",
-  styleUrls: ["./add-company.component.scss"]
+  styleUrls: ["./add-company.component.scss"],
 })
 export class AddCompanyComponent implements OnInit {
   companyLogo: any = "";
@@ -28,28 +28,32 @@ export class AddCompanyComponent implements OnInit {
 
   buildCompanyForm(): void {
     this.companyForm = this._fb.group({
-      companyName: ["", Validators.required],
-      code: ["", Validators.required],
-      address1: ["", Validators.required],
-      address2: [""],
-      city: [""],
-      district: [""],
-      zone: [""],
-      telephone: [""],
-      email: [""],
-      website: [" "],
-      POBoxNo: [""],
-      PANNo: [""],
-      logo: [""],
-      fiscalYear: [""],
-      fiscalStyle: ["075/76"],
-      booksBegin: [""]
+      ID: [null],
+      Name: ["", Validators.required],
+      Code: ["", Validators.required],
+      Telephone: [""],
+      Email: [""],
+      Website: [""],
+      POBox: [""],
+      PAN: [""],
+      Logo: [""],
+      Address1: [""],
+      Address2: [""],
+      CountryID: [null],
+      StateOrProvinceID: [null],
+      City: [""],
+      District: [""],
+      Zone: [""],
+      FYFrom: [new Date()],
+      FiscalYear: ["075/76"],
+      BookBeginFrom: [""],
+      Remarks: [""],
     });
   }
 
   public selectEventHandler(e: SelectEvent): void {
     const that = this;
-    e.files.forEach(file => {
+    e.files.forEach((file) => {
       if (!file.validationErrors) {
         var reader = new FileReader();
 
@@ -57,8 +61,7 @@ export class AddCompanyComponent implements OnInit {
         reader.onload = (event: any) => {
           // console.log(event.target.result);
           this.companyLogo = event.target.result;
-
-          console.log(this.companyLogo);
+          this.companyForm.get("Logo").setValue(this.companyLogo);
         };
 
         reader.readAsDataURL(file.rawFile);
@@ -68,29 +71,12 @@ export class AddCompanyComponent implements OnInit {
 
   public save(): void {
     if (this.companyForm.invalid) return;
-    const obj = {
-      Name: this.companyForm.get("companyName").value,
-      Code: this.companyForm.get("code").value,
-      Address1: this.companyForm.get("address1").value,
-      Address2: this.companyForm.get("address2").value,
-      City: this.companyForm.get("city").value,
-      District: this.companyForm.get("district").value,
-      Zone: this.companyForm.get("zone").value,
-      Telephone: this.companyForm.get("telephone").value,
-      Email: this.companyForm.get("email").value,
-      Website: this.companyForm.get("website").value,
-      POBox: this.companyForm.get("POBoxNo").value,
-      PAN: this.companyForm.get("PANNo").value,
-      Logo: this.companyLogo ? this.companyLogo : "",
-      FYFrom: this.companyForm.get("fiscalYear").value,
-      BookBeginFrom: this.companyForm.get("booksBegin").value,
-      FiscalYear: this.companyForm.get("fiscalStyle").value
-    };
-    this.companyService.addCompany(obj).subscribe(
-      response => {
+
+    this.companyService.addCompany(this.companyForm.value).subscribe(
+      (response) => {
         this.router.navigate(["/company"]);
       },
-      error => {
+      (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
