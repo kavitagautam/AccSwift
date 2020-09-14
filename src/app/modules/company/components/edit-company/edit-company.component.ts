@@ -45,33 +45,39 @@ export class EditCompanyComponent implements OnInit {
 
   buildCompanyForm(): void {
     this.companyForm = this._fb.group({
-      companyName: [
+      ID: [this.companyDetails ? this.companyDetails.ID : null],
+      Name: [
         this.companyDetails ? this.companyDetails.Name : "",
         Validators.required,
       ],
-      code: [
+      Code: [
         this.companyDetails ? this.companyDetails.Code : "",
         Validators.required,
       ],
-      address1: [
-        this.companyDetails ? this.companyDetails.Address1 : "",
-        Validators.required,
+      Telephone: [this.companyDetails ? this.companyDetails.Telephone : ""],
+      Email: [this.companyDetails ? this.companyDetails.Email : ""],
+      Website: [this.companyDetails ? this.companyDetails.Website : ""],
+      POBox: [this.companyDetails ? this.companyDetails.POBox : ""],
+      PAN: [this.companyDetails ? this.companyDetails.PAN : ""],
+      Logo: [this.companyDetails ? this.companyDetails.Logo : ""],
+      Address1: [this.companyDetails ? this.companyDetails.Address1 : ""],
+      Address2: [this.companyDetails ? this.companyDetails.Address2 : ""],
+
+      City: [this.companyDetails ? this.companyDetails.City : ""],
+      District: [this.companyDetails ? this.companyDetails.District : ""],
+      CountryID: [this.companyDetails ? this.companyDetails.CountryID : null],
+      StateOrProvinceID: [
+        this.companyDetails ? this.companyDetails.StateOrProvinceID : null,
       ],
-      address2: [this.companyDetails ? this.companyDetails.Address2 : ""],
-      city: [this.companyDetails ? this.companyDetails.City : ""],
-      district: [this.companyDetails ? this.companyDetails.District : ""],
-      zone: [this.companyDetails ? this.companyDetails.Zone : ""],
-      telephone: [this.companyDetails ? this.companyDetails.Telephone : ""],
-      email: [this.companyDetails ? this.companyDetails.Email : ""],
-      website: [this.companyDetails ? this.companyDetails.Website : ""],
-      POBoxNo: [this.companyDetails ? this.companyDetails.POBox : ""],
-      PANNo: [this.companyDetails ? this.companyDetails.PAN : ""],
-      logo: [this.companyLogo ? this.companyLogo : ""],
-      fiscalYear: [this.companyDetails ? this.companyDetails.FYFrom : ""],
-      fiscalStyle: ["075/76"],
-      booksBegin: [
+      Zone: [this.companyDetails ? this.companyDetails.Zone : ""],
+      FYFrom: [this.companyDetails ? this.companyDetails.FYFrom : new Date()],
+      FiscalYear: [
+        this.companyDetails ? this.companyDetails.FiscalYear : "075/76",
+      ],
+      BookBeginFrom: [
         this.companyDetails ? this.companyDetails.BookBeginFrom : "",
       ],
+      Remarks: [this.companyDetails ? this.companyDetails.Remarks : ""],
     });
   }
 
@@ -94,26 +100,7 @@ export class EditCompanyComponent implements OnInit {
 
   public save(): void {
     if (this.companyForm.invalid) return;
-    const obj = {
-      ID: this.companyDetails.ID,
-      Name: this.companyForm.get("companyName").value,
-      Code: this.companyForm.get("code").value,
-      Address1: this.companyForm.get("address1").value,
-      Address2: this.companyForm.get("address2").value,
-      City: this.companyForm.get("city").value,
-      District: this.companyForm.get("district").value,
-      Zone: this.companyForm.get("zone").value,
-      Telephone: this.companyForm.get("telephone").value,
-      Email: this.companyForm.get("email").value,
-      Website: this.companyForm.get("website").value,
-      POBox: this.companyForm.get("POBoxNo").value,
-      PAN: this.companyForm.get("PANNo").value,
-      Logo: this.companyLogo ? this.companyLogo : "",
-      FYFrom: this.companyForm.get("fiscalYear").value,
-      BookBeginFrom: this.companyForm.get("booksBegin").value,
-      FiscalYear: this.companyForm.get("fiscalStyle").value,
-    };
-    this.companyService.updateCompany(obj).subscribe(
+    this.companyService.updateCompany(this.companyForm.value).subscribe(
       (response) => {
         this.router.navigate(["/company"]);
       },

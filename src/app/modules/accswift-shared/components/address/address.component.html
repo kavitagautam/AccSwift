@@ -1,0 +1,85 @@
+<div [formGroup]="addressForms">
+  <div class="row clearfix mt-3">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Country</label>
+        <select
+          class="form-control"
+          formControlName="CountryID"
+          (change)="changeCountry()"
+          accSwiftFormValidator
+        >
+          <option [ngValue]="null">Choose Option...</option>
+          <option
+            *ngFor="let country of addressService.countryList"
+            [ngValue]="country.ID"
+          >
+            {{ country.Name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>State/Province</label>
+        <select
+          class="form-control"
+          formControlName="StateOrProvinceID"
+          accSwiftFormValidator
+        >
+          <option [ngValue]="null">Choose Option...</option>
+          <option *ngFor="let state of stateProvince" [ngValue]="state.ID">
+            {{ state.Name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>City </label>
+        <input
+          class="form-control"
+          formControlName="City"
+          accSwiftFormValidator
+        />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label>District </label>
+            <input
+              class="form-control"
+              formControlName="District"
+              accSwiftFormValidator
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Zone </label>
+            <input
+              class="form-control"
+              formControlName="Zone"
+              accSwiftFormValidator
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Address 1 </label>
+        <input
+          class="form-control"
+          formControlName="Address1"
+          accSwiftFormValidator
+        />
+      </div>
+      <div class="form-group">
+        <label>Address 2</label>
+        <input
+          class="form-control"
+          formControlName="Address2"
+          accSwiftFormValidator
+        />
+      </div>
+    </div>
+  </div>
+</div>
