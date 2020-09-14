@@ -28,7 +28,7 @@ export class AddCompanyComponent implements OnInit {
 
   buildCompanyForm(): void {
     this.companyForm = this._fb.group({
-      ID: [null],
+      ID: [0],
       Name: ["", Validators.required],
       Code: ["", Validators.required],
       Telephone: [""],

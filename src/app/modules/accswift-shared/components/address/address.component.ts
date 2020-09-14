@@ -1,6 +1,6 @@
 import { StateProvince } from "@accSwift-modules/accswift-shared/models/address.model";
 import { AddressService } from "@accSwift-modules/accswift-shared/services/address-services/address.service";
-import { Component, forwardRef, Input, OnInit } from "@angular/core";
+import { Component, forwardRef, Input, OnChanges, OnInit } from "@angular/core";
 import {
   ControlValueAccessor,
   FormBuilder,
@@ -20,22 +20,29 @@ import {
     },
   ],
 })
-export class AddressComponent implements OnInit, ControlValueAccessor {
+export class AddressComponent
+  implements OnInit, ControlValueAccessor, OnChanges {
   @Input("") addressForms: FormGroup;
-  //@Input("") addressForms: FormGroup;
   stateProvince: StateProvince[] = [];
   constructor(
     private _fb: FormBuilder,
     public addressService: AddressService
   ) {}
-  ngOnInit() {}
+
+  ngOnInit(): void {}
+
+  ngOnChanges(): void {
+    if (this.addressForms.get("CountryID").value !== null) {
+      this.changeCountry();
+    }
+  }
 
   public onTouched: () => void = () => {};
 
   changeCountry(): void {
-    console.log(this.addressForms.get("Country").value);
+    console.log(this.addressForms.get("CountryID").value);
     this.addressService
-      .getStateProvince(this.addressForms.get("Country").value)
+      .getStateProvince(this.addressForms.get("CountryID").value)
       .subscribe((response) => {
         this.stateProvince = response.Entity;
       });

@@ -100,7 +100,6 @@ export class EditCompanyComponent implements OnInit {
 
   public save(): void {
     if (this.companyForm.invalid) return;
-
     this.companyService.updateCompany(this.companyForm.value).subscribe(
       (response) => {
         this.router.navigate(["/company"]);
