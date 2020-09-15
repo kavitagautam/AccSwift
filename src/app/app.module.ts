@@ -27,8 +27,11 @@ import { NgxsModule } from "@ngxs/store";
 import { NgxsLoggerPluginModule } from "@ngxs/logger-plugin";
 import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
 import { environment } from "@env/environment";
+import { CldrIntlService } from "@progress/kendo-angular-intl";
+import localeGB from "@angular/common/locales/en-GB";
 
 registerLocaleData(localeNe, "ne");
+registerLocaleData(localeGB, "en_GB");
 
 const loggerPluginOptions = {
   logger: console,
@@ -55,6 +58,25 @@ export function localFunction(settingsService: SettingsService) {
     localeId = "en_US";
   } else {
     localeId = "ne";
+  }
+
+  if (settingsService && settingsService.settings.DEFAULT_CURRENCY.Value == 1) {
+    this.localeId = "ne";
+  }
+  if (settingsService && settingsService.settings.DEFAULT_CURRENCY.Value == 2) {
+    this.localeId = "en_US";
+  }
+  if (
+    settingsService &&
+    settingsService.settings.DEFAULT_CURRENCY.Value == 249
+  ) {
+    this.localeId = "en_GB";
+  }
+  if (
+    settingsService &&
+    settingsService.settings.DEFAULT_CURRENCY.Value == 260
+  ) {
+    this.localeId = "en_GB";
   }
   return localeId;
 }

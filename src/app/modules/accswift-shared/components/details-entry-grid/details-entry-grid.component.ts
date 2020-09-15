@@ -86,15 +86,50 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (
-      this.settingsService.settings &&
-      this.settingsService.settings.DEFAULT_LANGUAGE.Value === "English"
-    ) {
-      this.localeId = "en_US";
-    } else {
-      this.localeId = "ne";
-    }
-    (<CldrIntlService>this.intlService).localeId = this.localeId;
+    this.settingsService.getSettingsData().subscribe((response) => {
+      // console.log("response" + JSON.stringify(response));
+      const currency = this.gridServices.currencyList.filter(
+        (s) => s.ID === response.Entity.DEFAULT_CURRENCY.Value
+      );
+      console.log("Currency " + JSON.stringify(currency));
+
+      if (currency[0].Code == "NPR") {
+        this.localeId = "ne";
+      }
+      if (currency[0].Code == "DLR") {
+        this.localeId = "en_US";
+      }
+      if (currency[0].Code == "Euro") {
+        this.localeId = "en_GB";
+      }
+      if (currency[0].Code == "POUND") {
+        this.localeId = "en_GB";
+      }
+      (<CldrIntlService>this.intlService).localeId = this.localeId;
+    });
+    // if (
+    //   this.settingsService.settings &&
+    //   this.settingsService.settings.DEFAULT_CURRENCY.Value
+    // ) {
+    //   const currency = this.gridServices.currencyList.filter(
+    //     (s) => s.ID === this.settingsService.settings.DEFAULT_CURRENCY.Value
+    //   );
+    //   console.log("Currency " + JSON.stringify(currency));
+    //   if (currency[0].Code == "NPR") {
+    //     this.localeId = "ne";
+    //   }
+    //   if (currency[0].Code == "DLR") {
+    //     this.localeId = "en_US";
+    //   }
+    //   if (currency[0].Code == "Euro") {
+    //     this.localeId = "en_GB";
+    //   }
+    //   if (currency[0].Code == "POUND") {
+    //     this.localeId = "en_GB";
+    //   }
+    // }
+
+    //(<CldrIntlService>this.intlService).localeId = this.localeId;
 
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;

@@ -18,7 +18,7 @@ export interface DATEFORMAT {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -42,7 +42,7 @@ export interface DEFAULTDECIMALPLACES {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -50,7 +50,7 @@ export interface VAT {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value?: any;
   CompanyID: number;
 }
 
@@ -58,7 +58,7 @@ export interface COMMASEPARATED {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -66,7 +66,7 @@ export interface DECIMALFORMAT {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -74,7 +74,7 @@ export interface MULTICURRENCY {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -82,7 +82,7 @@ export interface DEFAULTCASHACCOUNT {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -90,7 +90,7 @@ export interface DEFAULTBANKACCOUNT {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value?: any;
   CompanyID: number;
 }
 
@@ -106,7 +106,7 @@ export interface BACKUPINTERVALDAY {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -146,7 +146,7 @@ export interface AUTOBACKUP {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -154,7 +154,7 @@ export interface DEFAULTSALESTAX1CHECK {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -162,7 +162,7 @@ export interface DEFAULTSALESTAX2CHECK {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -170,7 +170,7 @@ export interface DEFAULTSALESTAX3CHECK {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -178,7 +178,7 @@ export interface DEFAULTPURCHASETAX1CHECK {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -186,7 +186,7 @@ export interface DEFAULTPURCHASETAX2CHECK {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -194,7 +194,7 @@ export interface DEFAULTPURCHASETAX3CHECK {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -202,7 +202,7 @@ export interface DEFAULTTAX1VALUE {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -210,7 +210,7 @@ export interface DEFAULTTAX2VALUE {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -218,7 +218,7 @@ export interface DEFAULTTAX3VALUE {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -226,7 +226,7 @@ export interface DEFAULTVATVALUE {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -266,7 +266,7 @@ export interface DEFAULTSALESVAT {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -298,7 +298,7 @@ export interface DEFAULTPURCHASEVAT {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -306,7 +306,7 @@ export interface FREEZESTATUS {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -338,7 +338,7 @@ export interface DEFAULTPURCHASEACCOUNT {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -346,7 +346,7 @@ export interface DEFAULTSALESACCOUNT {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -354,7 +354,7 @@ export interface ACCOUNTCLASS {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -370,7 +370,7 @@ export interface ISPROFIT {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -378,7 +378,7 @@ export interface PLAMOUNT {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -386,7 +386,7 @@ export interface AUTHORISEDCAPITAL {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -394,7 +394,7 @@ export interface ISSUEDCAPITAL {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -450,7 +450,7 @@ export interface CUSTOMDUTY {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -474,7 +474,7 @@ export interface PREVYRPROFIT {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -514,7 +514,7 @@ export interface FYCHECK {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: boolean;
   CompanyID: number;
 }
 
@@ -522,7 +522,7 @@ export interface TAX1SALESLEDGERID {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -530,7 +530,7 @@ export interface TAX2SALESLEDGERID {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -538,7 +538,7 @@ export interface TAX3SALESLEDGERID {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -546,7 +546,7 @@ export interface TAX1PURCHLEDGERID {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -554,7 +554,7 @@ export interface TAX2PURCHLEDGERID {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -562,7 +562,7 @@ export interface TAX3PURCHLEDGERID {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -570,7 +570,7 @@ export interface VATRECLEDGERID {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -578,7 +578,15 @@ export interface VATPAYLEDGERID {
   ID: number;
   Name: string;
   Code: string;
-  Value: string;
+  Value: number;
+  CompanyID: number;
+}
+
+export interface DEFAULTCURRENCY {
+  ID: number;
+  Name: string;
+  Code: string;
+  Value: number;
   CompanyID: number;
 }
 
@@ -656,25 +664,13 @@ export interface Settings {
   TAX3_PURCH_LEDGERID: TAX3PURCHLEDGERID;
   VAT_REC_LEDGERID: VATRECLEDGERID;
   VAT_PAY_LEDGERID: VATPAYLEDGERID;
+  DEFAULT_CURRENCY: DEFAULTCURRENCY;
 }
 
 export interface SettingsModel {
   StatusCode: number;
   Message: string;
   Entity: Settings;
-}
-
-export interface PurchaseAccount {
-  LedgerID: number;
-  LedgerCode: string;
-  LedgerName: string;
-  GroupID: number;
-}
-
-export interface PurchaseAccountModel {
-  StatusCode: number;
-  Message: string;
-  Entity: PurchaseAccount[];
 }
 
 export interface DATE_FORMAT {

@@ -5,7 +5,6 @@ import { environment } from "@env/environment";
 import {
   SettingsModel,
   Settings,
-  PurchaseAccountModel,
   DATE_FORMAT_MODEL,
 } from "../models/settings.model";
 import { Observable } from "rxjs";
@@ -13,6 +12,8 @@ import { BankAccountsModel } from "@accSwift-modules/accswift-shared/models/bank
 import { CashAccountsModel } from "@accSwift-modules/accswift-shared/models/cash-account.model";
 import { SalesAccountModel } from "@accSwift-modules/accswift-shared/models/sales-account.model";
 import { AccountClassModel } from "@accSwift-modules/accswift-shared/models/account-class.model";
+import { PurchaseAccountRootModel } from "@accSwift-modules/accswift-shared/models/purchase-account.model";
+import { CurrencyRootModel } from "@accSwift-modules/accswift-shared/models/currency-model";
 
 @Injectable({
   providedIn: "root",
@@ -55,7 +56,7 @@ export class SettingsService {
     return this.httpService.get(`${this._api_URL}Ledger/salesAccounts`);
   }
 
-  getPurchaseAccount(): Observable<PurchaseAccountModel> {
+  getPurchaseAccount(): Observable<PurchaseAccountRootModel> {
     return this.httpService.get(`${this._api_URL}Ledger/purchAccounts`);
   }
 
@@ -64,5 +65,9 @@ export class SettingsService {
   }
   getDateFormats(): Observable<DATE_FORMAT_MODEL> {
     return this.httpService.get(`${this._api_URL}UserPreference/DateFormats`);
+  }
+
+  getCurrency(): Observable<CurrencyRootModel> {
+    return this.httpService.get(`${this._api_URL}Currency`);
   }
 }

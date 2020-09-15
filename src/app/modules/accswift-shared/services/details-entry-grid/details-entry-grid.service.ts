@@ -14,6 +14,10 @@ import {
   LedgerMinModel,
 } from "@accSwift-modules/ledger/models/ledger.models";
 import { VoucherType, VoucherTypeModel } from "../../models/voucher-type.model";
+import {
+  Currency,
+  CurrencyRootModel,
+} from "@accSwift-modules/accswift-shared/models/currency-model";
 
 @Injectable({
   providedIn: "root",
@@ -23,6 +27,7 @@ export class DetailsEntryGridService {
   productList: ProductMin[] = [];
   ledgerList: LedgerMin[] = [];
   voucherType: VoucherType[] = [];
+  currencyList: Currency[] = [];
   taxList: Tax[] = [];
   constructor(
     private httpService: HttpClientService,
@@ -32,7 +37,9 @@ export class DetailsEntryGridService {
     this.getProductList();
     this.getLedgerList();
     this.getVoucherType();
+    this.getCurrency();
   }
+
   getTaxList(): void {
     this.httpService
       .get(`${this._api_URL}Tax/min`)
@@ -46,6 +53,14 @@ export class DetailsEntryGridService {
       .get(`${this._api_URL}Product/min`)
       .subscribe((response: any) => {
         this.productList = response.Entity;
+      });
+  }
+
+  getCurrency(): void {
+    this.httpService
+      .get(`${this._api_URL}Currency`)
+      .subscribe((response: CurrencyRootModel) => {
+        this.currencyList = response.Entity;
       });
   }
 

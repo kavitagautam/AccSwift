@@ -40,12 +40,13 @@ export class AddressComponent
   public onTouched: () => void = () => {};
 
   changeCountry(): void {
-    console.log(this.addressForms.get("CountryID").value);
-    this.addressService
-      .getStateProvince(this.addressForms.get("CountryID").value)
-      .subscribe((response) => {
-        this.stateProvince = response.Entity;
-      });
+    if (this.addressForms.get("CountryID").value !== null) {
+      this.addressService
+        .getStateProvince(this.addressForms.get("CountryID").value)
+        .subscribe((response) => {
+          this.stateProvince = response.Entity;
+        });
+    }
   }
   writeValue(val: any): void {
     val && this.addressForms.setValue(val, { emitEvent: false });
