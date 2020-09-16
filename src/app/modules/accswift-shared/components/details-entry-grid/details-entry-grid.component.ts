@@ -63,6 +63,11 @@ export class DetailsEntryGridComponent implements OnInit {
   IsAutomatic: boolean = false;
   private editedRowIndex: number;
   currencyFormat: string = "c2";
+  // public currencyFormat: any = {
+  //   style: "currency",
+  //   currency: "EUR",
+  //   currencyDisplay: "symbol",
+  // };
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -86,15 +91,25 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (
-      this.settingsService.settings &&
-      this.settingsService.settings.DEFAULT_LANGUAGE.Value === "English"
-    ) {
-      this.localeId = "en_US";
-    } else {
-      this.localeId = "ne";
-    }
-    (<CldrIntlService>this.intlService).localeId = this.localeId;
+    this.settingsService.getSettingsData().subscribe((response) => {
+      const currency = this.gridServices.currencyList.filter(
+        (s) => s.ID === response.Entity.DEFAULT_CURRENCY.Value
+      );
+
+      if (currency[0].Code == "NPR") {
+        this.localeId = "ne";
+      }
+      if (currency[0].Code == "USD") {
+        this.localeId = "en_US";
+      }
+      if (currency[0].Code == "Euro") {
+        this.localeId = "fr-FR";
+      }
+      if (currency[0].Code == "GBP") {
+        this.localeId = "en_GB";
+      }
+      (<CldrIntlService>this.intlService).localeId = this.localeId;
+    });
 
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
@@ -299,15 +314,41 @@ export class DetailsEntryGridComponent implements OnInit {
     const selectedTaxValue = this.gridServices.taxList.filter(
       (s) => s.ID === entryListArray.controls[index].get("TaxID").value
     );
-    if (selectedTaxValue) {
+    if (selectedTaxValue.length > 0) {
       entryListArray.controls[index]
         .get("TaxAmount")
         .setValue(
           entryListArray.controls[index].get("Quantity").value *
             entryListArray.controls[index].get("NetAmount").value *
-            selectedTaxValue[0].Rate
+            (selectedTaxValue[0].Rate / 100)
         );
     }
+  }
+  //Change Discount Per
+  discountPerCalc(dataItem, index): void {
+    const entryListArray = this.entryArray as FormArray;
+    let qunatityValue = entryListArray.controls[index].get("Quantity").value;
+    let discountPer = entryListArray.controls[index].get("DiscPercentage")
+      .value;
+    let salesPurchaseRate = 0;
+    if (this.voucherType == "SALES") {
+      salesPurchaseRate = entryListArray.controls[index].get("SalesRate").value;
+    }
+    if (this.voucherType == "PURCH") {
+      salesPurchaseRate = entryListArray.controls[index].get("PurchaseRate")
+        .value;
+    }
+    let amountC = salesPurchaseRate * qunatityValue;
+
+    entryListArray.controls[index]
+      .get("DiscountAmount")
+      .setValue(amountC * (discountPer / 100));
+
+    entryListArray.controls[index]
+      .get("NetAmount")
+      .setValue(
+        amountC - entryListArray.controls[index].get("DiscountAmount").value
+      );
   }
 
   //Change Discount Value
@@ -353,10 +394,10 @@ export class DetailsEntryGridComponent implements OnInit {
     );
     const entryListArray = this.entryArray as FormArray;
     let netAmountV = entryListArray.controls[index].get("NetAmount").value;
-    if (selectedTaxValue) {
+    if (selectedTaxValue.length > 0) {
       entryListArray.controls[index]
         .get("TaxAmount")
-        .setValue((netAmountV * selectedTaxValue[0].Rate) / 100);
+        .setValue(netAmountV * (selectedTaxValue[0].Rate / 100));
     }
   }
 
@@ -419,13 +460,13 @@ export class DetailsEntryGridComponent implements OnInit {
         const selectedTaxValue = this.gridServices.taxList.filter(
           (s) => s.ID === entryListArray.controls[index].get("TaxID").value
         );
-        if (selectedTaxValue) {
+        if (selectedTaxValue.length > 0) {
           entryListArray.controls[index]
             .get("TaxAmount")
             .setValue(
               entryListArray.controls[index].get("Quantity").value *
                 entryListArray.controls[index].get("NetAmount").value *
-                selectedTaxValue[0].Rate
+                (selectedTaxValue[0].Rate / 100)
             );
         }
         entryListArray.controls[index].get("Remarks").setValue("");
@@ -471,13 +512,13 @@ export class DetailsEntryGridComponent implements OnInit {
         const selectedTaxValue = this.gridServices.taxList.filter(
           (s) => s.ID === entryListArray.controls[index].get("TaxID").value
         );
-        if (selectedTaxValue) {
+        if (selectedTaxValue.length > 0) {
           entryListArray.controls[index]
             .get("TaxAmount")
             .setValue(
               entryListArray.controls[index].get("Quantity").value *
                 entryListArray.controls[index].get("NetAmount").value *
-                selectedTaxValue[0].Rate
+                (selectedTaxValue[0].Rate / 100)
             );
         }
         entryListArray.controls[index].get("Remarks").setValue("");
@@ -726,7 +767,7 @@ export class DetailsEntryGridComponent implements OnInit {
         ProductID: [""],
         ProductName: [""],
         CodeName: [""],
-        Quantity: [1, Validators.required],
+        Quantity: [null, Validators.required],
         QtyUnitID: ["", Validators.required],
         QtyUnitName: [""],
         SalesRate: ["", Validators.required],
@@ -844,7 +885,7 @@ export class DetailsEntryGridComponent implements OnInit {
         ProductCode: [""],
         ProductID: [null, Validators.required],
         ProductName: [""],
-        Quantity: [1],
+        Quantity: [null],
         SalesRate: [""],
         Amount: [""],
         UpdatedQuantity: [0],
@@ -858,7 +899,7 @@ export class DetailsEntryGridComponent implements OnInit {
         ProductName: [""],
         ProductCode: [""],
         CodeName: [""],
-        Quantity: [1],
+        Quantity: [0],
         QtyUnitName: [""],
         PurchaseRate: [""],
         Amount: [""],
