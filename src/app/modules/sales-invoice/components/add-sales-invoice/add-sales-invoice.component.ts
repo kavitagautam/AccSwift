@@ -111,6 +111,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       TotalQty: [0, Validators.required],
       GrossAmount: [0, Validators.required],
       NetAmount: [0, Validators.required],
+      SpecialDiscount: [0, Validators.required],
       VAT: [0],
       Remarks: [""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
@@ -124,7 +125,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       ProductID: [""],
       ProductName: [""],
       CodeName: [""],
-      Quantity: ["", Validators.required],
+      Quantity: [0, Validators.required],
       QtyUnitID: [null, Validators.required],
       QtyUnitName: [""],
       SalesRate: ["", Validators.required],
@@ -230,6 +231,15 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
+
+    this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
+    this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
+    this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
+    this.salesInvoiceForm
+      .get("SpecialDiscount")
+      .setValue(this.totalDiscountAmount);
+    this.salesInvoiceForm.get("VAT").setValue(this.totalTaxAmount);
     if (this.salesInvoiceForm.invalid) return;
     this.salesInvoiceService
       .addSalesInvoice(this.salesInvoiceForm.value)

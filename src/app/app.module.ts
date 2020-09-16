@@ -20,7 +20,7 @@ import { SettingsModel } from "./modules/settings/models/settings.model";
 import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import "@lib/ne/all"; // For Kendo Nepali Input
 import { registerLocaleData } from "@angular/common";
-import localeNe from "@angular/common/locales/ne";
+// import localeNe from "@angular/common/locales/ne";
 import { LocaleService } from "./core/services/locale/locale.services";
 import { CookieService } from "ngx-cookie-service";
 import { NgxsModule } from "@ngxs/store";
@@ -29,8 +29,13 @@ import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
 import { environment } from "@env/environment";
 import { CldrIntlService } from "@progress/kendo-angular-intl";
 import localeGB from "@angular/common/locales/en-GB";
+import localefr from "@angular/common/locales/fr";
+import "@progress/kendo-angular-intl/locales/en-GB/all";
+import "@progress/kendo-angular-intl/locales/fr/all";
 
-registerLocaleData(localeNe, "ne");
+// registerLocaleData(localeNe, "ne");
+registerLocaleData(localefr, "fr");
+
 registerLocaleData(localeGB, "en_GB");
 
 const loggerPluginOptions = {
@@ -51,33 +56,34 @@ export function initSettingsData(settingsService: SettingsService) {
 
 export function localFunction(settingsService: SettingsService) {
   var localeId: string;
-  if (
-    settingsService &&
-    settingsService.settings.DEFAULT_LANGUAGE.Value === "English"
-  ) {
-    localeId = "en_US";
-  } else {
-    localeId = "ne";
-  }
+  // if (
+  //   settingsService &&
+  //   settingsService.settings.DEFAULT_LANGUAGE.Value === "English"
+  // ) {
+  //   localeId = "en_US";
+  // } else {
+  //   localeId = "ne";
+  // }
 
   if (settingsService && settingsService.settings.DEFAULT_CURRENCY.Value == 1) {
     this.localeId = "ne";
   }
   if (settingsService && settingsService.settings.DEFAULT_CURRENCY.Value == 2) {
-    this.localeId = "en_US";
+    localeId = "en_US";
   }
   if (
     settingsService &&
     settingsService.settings.DEFAULT_CURRENCY.Value == 249
   ) {
-    this.localeId = "en_GB";
+    localeId = "fr-FR";
   }
   if (
     settingsService &&
     settingsService.settings.DEFAULT_CURRENCY.Value == 260
   ) {
-    this.localeId = "en_GB";
+    localeId = "en_GB";
   }
+
   return localeId;
 }
 
@@ -118,11 +124,11 @@ export function localFunction(settingsService: SettingsService) {
     },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     // { provide: LOCALE_ID, useValue: "ne" },
-    {
-      provide: LOCALE_ID,
-      deps: [],
-      useFactory: localFunction,
-    },
+    // {
+    //   provide: LOCALE_ID,
+    //   deps: [],
+    //   useFactory: localFunction,
+    // },
     CookieService,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

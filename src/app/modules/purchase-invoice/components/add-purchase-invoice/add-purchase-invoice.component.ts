@@ -105,7 +105,7 @@ export class AddPurchaseInvoiceComponent implements OnInit {
       ProductName: [""],
       ProductCode: [""],
       CodeName: [""],
-      Quantity: [1],
+      Quantity: [0],
       QtyUnitName: [""],
       PurchaseRate: [""],
       Amount: [""],
