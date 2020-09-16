@@ -13,20 +13,26 @@ import { SettingsService } from "@accSwift-modules/settings/services/settings.se
   name: "currencyFormat",
 })
 export class CurrencyFormatPipe implements PipeTransform {
-  currencySign: string = "रू ";
+  currencySign: string;
 
   constructor(
     protected sanitizer: DomSanitizer,
     private settingService: SettingsService
   ) {
-    if (
-      this.settingService.settings &&
-      this.settingService.settings.DEFAULT_LANGUAGE.Value === "Nepali"
-    ) {
-      this.currencySign = "रू ";
-    } else {
-      this.currencySign = "$ ";
-    }
+    this.settingService.getSettingsData().subscribe((response) => {
+      if (response.Entity.DEFAULT_CURRENCY.Value == 1) {
+        this.currencySign = "रू ";
+      }
+      if (response.Entity.DEFAULT_CURRENCY.Value == 2) {
+        this.currencySign = "$ ";
+      }
+      if (response.Entity.DEFAULT_CURRENCY.Value == 249) {
+        this.currencySign = "€ ";
+      }
+      if (response.Entity.DEFAULT_CURRENCY.Value == 260) {
+        this.currencySign = "£ ";
+      }
+    });
   }
 
   transform(value: any, event?: number): SafeHtml {
@@ -75,9 +81,7 @@ export class CurrencyFormatPipe implements PipeTransform {
         '<span style="color:red">(' + this.currencySign + output + ")</span>"
       );
     } else {
-      return this.sanitizer.bypassSecurityTrustHtml(
-        this.currencySign + (0.0).toFixed(2)
-      );
+      return this.sanitizer.bypassSecurityTrustHtml((0.0).toFixed(2));
     }
   }
 

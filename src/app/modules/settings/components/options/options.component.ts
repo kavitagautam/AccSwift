@@ -5,7 +5,7 @@ import { SettingsService } from "../../services/settings.service";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { DATE_FORMAT, Settings } from "../../models/settings.model";
-
+import { Currency } from "@accSwift-modules/accswift-shared/models/currency-model";
 @Component({
   selector: "accSwift-options",
   templateUrl: "./options.component.html",
@@ -15,7 +15,7 @@ export class OptionsComponent implements OnInit {
   settingsForm: FormGroup;
   dateFormats: DATE_FORMAT[];
   dateSampleValue: string;
-
+  currencyList: Currency[] = [];
   settings: Settings;
   constructor(
     private _fb: FormBuilder,
@@ -28,12 +28,19 @@ export class OptionsComponent implements OnInit {
     this.buildSettingsForm();
     this.getDateFormat();
     this.getSettings();
+    this.getCurrencyList();
   }
 
   getSettings(): void {
     this.settingsService.getSettingsData().subscribe((response) => {
       this.settings = response.Entity;
       this.buildSettingsForm();
+    });
+  }
+
+  getCurrencyList(): void {
+    this.settingsService.getCurrency().subscribe((response) => {
+      this.currencyList = response.Entity;
     });
   }
 
@@ -54,6 +61,9 @@ export class OptionsComponent implements OnInit {
       MULTI_CURRENCY: [this.settings ? this.settings.MULTI_CURRENCY.Value : ""],
       VAT: [this.settings ? this.settings.VAT.Value : ""],
       PL_AMOUNT: [this.settings ? this.settings.PL_AMOUNT.Value : ""],
+      DEFAULT_CURRENCY: [
+        this.settings ? this.settings.DEFAULT_CURRENCY.Value : null,
+      ],
     });
     this.dateFormatChange(this.settingsForm.get("DATE_FORMAT").value);
   }

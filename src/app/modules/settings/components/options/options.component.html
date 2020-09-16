@@ -51,9 +51,9 @@
                 "
               >
                 <option [ngValue]="null">Choose Option...</option>
-                <option *ngFor="let date of dateFormats" [ngValue]="date.ID">{{
-                  date.Format
-                }}</option>
+                <option *ngFor="let date of dateFormats" [ngValue]="date.ID">
+                  {{ date.Format }}
+                </option>
               </select>
             </div>
             <span>Sample Date: {{ dateSampleValue }} </span>
@@ -72,7 +72,7 @@
                 class="form-control"
                 formControlName="DEFAULT_DECIMALPLACES"
               >
-                <option [value]="null"> Choose Option...</option>
+                <option [value]="null">Choose Option...</option>
                 <option [value]="1">1</option>
                 <option [value]="2">2</option>
                 <option [value]="3">3</option>
@@ -148,6 +148,7 @@
       <div class="col-md-3">
         <label>Language</label>
       </div>
+
       <div class="col-md-2">
         <div class="form-group">
           <div class="radio">
@@ -176,6 +177,20 @@
               Nepali
             </label>
           </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Currency</label>
+          <select class="form-control" formControlName="DEFAULT_CURRENCY">
+            <option [value]="null">Choose Option...</option>
+            <option
+              *ngFor="let currnecy of currencyList"
+              [ngValue]="currnecy.ID"
+            >
+              {{ currnecy.Name }}
+            </option>
+          </select>
         </div>
       </div>
     </div>
