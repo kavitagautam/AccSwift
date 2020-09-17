@@ -23,7 +23,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
   selectedLedgerGroupId: number;
   ledgerGroupDetails: LedgerGroup;
   accountGroupForm: FormGroup;
-
+  ledgerGroup: LedgerGroup[] = [];
   editMode: boolean;
   addMode: boolean;
   title: string;
@@ -44,12 +44,18 @@ export class AccountGroupComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.buildAccountGroupForm();
+    this.getLedgerGroup();
     this.addMode = true;
     if (this.selectedItem == null) {
       this.addLedgerGroup();
     }
   }
 
+  getLedgerGroup(): void {
+    this.ledgerService.getLedgerGroupList().subscribe((response) => {
+      this.ledgerGroup = response.Entity;
+    });
+  }
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     let log: string[] = [];
     for (let p in changes) {
@@ -112,6 +118,13 @@ export class AccountGroupComponent implements OnInit, OnChanges {
     );
 
     this.accountGroupForm.get("DrCr").setValue(selectedItem[0].DrCr);
+  }
+
+  // Filterable Cash Party Drop-down
+  ledgerGroupDDFilter(value): void {
+    this.ledgerGroup = this.ledgerService.ledgerGroupLists.filter(
+      (s) => s.Name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
   }
 
   public saveAccountGroup(): void {

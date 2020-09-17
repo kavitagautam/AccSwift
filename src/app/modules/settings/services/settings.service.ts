@@ -13,7 +13,10 @@ import { CashAccountsModel } from "@accSwift-modules/accswift-shared/models/cash
 import { SalesAccountModel } from "@accSwift-modules/accswift-shared/models/sales-account.model";
 import { AccountClassModel } from "@accSwift-modules/accswift-shared/models/account-class.model";
 import { PurchaseAccountRootModel } from "@accSwift-modules/accswift-shared/models/purchase-account.model";
-import { CurrencyRootModel } from "@accSwift-modules/accswift-shared/models/currency-model";
+import {
+  Currency,
+  CurrencyRootModel,
+} from "@accSwift-modules/accswift-shared/models/currency-model";
 
 @Injectable({
   providedIn: "root",
@@ -21,11 +24,20 @@ import { CurrencyRootModel } from "@accSwift-modules/accswift-shared/models/curr
 export class SettingsService {
   _api_URL = environment.baseAPI;
   settings: Settings;
+  currencyDetails: Currency;
   constructor(
     private httpService: HttpClientService,
     private http: HttpClient
   ) {
-    this.getSettings();
+    this.httpService
+      .get(`${this._api_URL}Settings`)
+      .subscribe((response: SettingsModel) => {
+        this.settings = response.Entity;
+        if (this.settings && this.settings.DEFAULT_CURRENCY.Value) {
+          this.getCurrencyDetails(this.settings.DEFAULT_CURRENCY.Value);
+        }
+      });
+    // this.getSettings();
   }
 
   getSettings(): void {
@@ -33,7 +45,22 @@ export class SettingsService {
       .get(`${this._api_URL}Settings`)
       .subscribe((response: SettingsModel) => {
         this.settings = response.Entity;
+        if (this.settings && this.settings.DEFAULT_CURRENCY.Value) {
+          this.getCurrencyDetails(this.settings.DEFAULT_CURRENCY.Value);
+        }
       });
+  }
+
+  getCurrencyDetails(currencyID): Observable<CurrencyRootModel> {
+    return this.httpService.get(`${this._api_URL}Currency/${currencyID}`);
+    // .subscribe((response: CurrencyRootModel) => {
+    //   this.currencyDetails = response.Entity[0];
+    //  this.currencyDetails[0].LocaleID = "ne";
+    // });
+  }
+
+  get getCurrencySymbol(): string {
+    return this.currencyDetails ? this.currencyDetails.Symbol : "रू ";
   }
 
   getSettingsData(): Observable<SettingsModel> {

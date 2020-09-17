@@ -14,20 +14,20 @@
       <div class="col-md-12">
         <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
           <div class="form-group">
-            <label>Group Code<sup>*</sup></label>
+            <label>Group Name <sup>*</sup></label>
             <input
               class="form-control"
-              formControlName="LedgerCode"
+              formControlName="Name"
               accSwiftFormValidator
             />
           </div>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
           <div class="form-group">
-            <label>Group Name <sup>*</sup></label>
+            <label>Group Code<sup>*</sup></label>
             <input
               class="form-control"
-              formControlName="Name"
+              formControlName="LedgerCode"
               accSwiftFormValidator
             />
           </div>
@@ -39,27 +39,17 @@
         <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
           <div class="form-group">
             <label>Parent Group <sup>*</sup></label>
-            <select
+            <kendo-dropdownlist
               class="form-control"
-              id="parentGroup"
-              formControlName="ParentGroupID"
-              accSwiftFormValidator
-              (change)="changeParnetGroup()"
+              [data]="ledgerGroup"
+              [filterable]="true"
+              [textField]="'Name'"
+              [valueField]="'ID'"
+              [valuePrimitive]="true"
+              [formControl]="accountGroupForm.get('ParentGroupID')"
+              (filterChange)="ledgerGroupDDFilter($event)"
             >
-              <!-- 
-             [attr.disabled]="
-                ledgerGroupDetails && ledgerGroupDetails.IsBuiltIn && editMode
-                  ? true
-                  : false
-              " -->
-              <option [ngValue]="null">Choose Option....</option>
-              <option
-                *ngFor="let ledgerGroup of ledgerService.ledgerGroupLists"
-                [ngValue]="ledgerGroup.ID"
-              >
-                {{ ledgerGroup.Name }}</option
-              >
-            </select>
+            </kendo-dropdownlist>
           </div>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
@@ -71,7 +61,7 @@
       </div>
     </div>
   </form>
-  <div class="box-footer" style="display: table; margin: auto;">
+  <div class="box-footer" style="display: table; margin: auto">
     <div class="mb-2">
       <button
         class="btn btn-primary"
@@ -79,6 +69,7 @@
         accSwiftFormSubmitValidationMsg
         [validationControl]="accountGroupForm"
       >
+        <i class="fas fa-save"></i>&nbsp;&nbsp;
         <span *ngIf="editMode">Update</span>
         <span *ngIf="addMode">Save</span>
       </button>

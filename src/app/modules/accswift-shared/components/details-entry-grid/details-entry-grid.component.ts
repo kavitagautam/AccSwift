@@ -35,6 +35,7 @@ import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
   selector: "accSwift-details-entry-grid",
   templateUrl: "./details-entry-grid.component.html",
   styleUrls: ["./details-entry-grid.component.scss"],
+  providers: [SettingsService],
 })
 export class DetailsEntryGridComponent implements OnInit {
   relatedUnits: RelatedUnits[] = [];
@@ -91,26 +92,35 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.settingsService.getSettingsData().subscribe((response) => {
-      const currency = this.gridServices.currencyList.filter(
-        (s) => s.ID === response.Entity.DEFAULT_CURRENCY.Value
-      );
+    // this.settingsService.getSettingsData().subscribe((response) => {
+    //   const currency = this.gridServices.currencyList.filter(
+    //     (s) => s.ID === response.Entity.DEFAULT_CURRENCY.Value
+    //   );
 
-      if (currency[0].Code == "NPR") {
-        this.localeId = "ne";
-      }
-      if (currency[0].Code == "USD") {
-        this.localeId = "en_US";
-      }
-      if (currency[0].Code == "Euro") {
-        this.localeId = "fr-FR";
-      }
-      if (currency[0].Code == "GBP") {
-        this.localeId = "en_GB";
-      }
-      (<CldrIntlService>this.intlService).localeId = this.localeId;
-    });
+    //   if (currency && currency[0].Code == "NPR") {
+    //     this.localeId = "ne";
+    //   }
+    //   if (currency && currency[0].Code == "USD") {
+    //     this.localeId = "en_US";
+    //   }
+    //   if (currency && currency[0].Code == "Euro") {
+    //     this.localeId = "fr-FR";
+    //   }
+    //   if (currency && currency[0].Code == "GBP") {
+    //     this.localeId = "en_GB";
+    //   }
+    //   (<CldrIntlService>this.intlService).localeId = this.localeId;
+    // });
+    // if (this.settingsService.currencyDetails) {
+    console.log("this los inside" + this.localeId);
 
+    this.localeId = this.settingsService.currencyDetails
+      ? this.settingsService.currencyDetails.LocaleID
+      : "ne";
+    //  }
+    console.log("this los" + this.localeId);
+
+    (<CldrIntlService>this.intlService).localeId = this.localeId;
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
     });

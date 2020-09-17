@@ -19,20 +19,35 @@ export class CurrencyFormatPipe implements PipeTransform {
     protected sanitizer: DomSanitizer,
     private settingService: SettingsService
   ) {
-    this.settingService.getSettingsData().subscribe((response) => {
-      if (response.Entity.DEFAULT_CURRENCY.Value == 1) {
-        this.currencySign = "रू ";
-      }
-      if (response.Entity.DEFAULT_CURRENCY.Value == 2) {
-        this.currencySign = "$ ";
-      }
-      if (response.Entity.DEFAULT_CURRENCY.Value == 249) {
-        this.currencySign = "€ ";
-      }
-      if (response.Entity.DEFAULT_CURRENCY.Value == 260) {
-        this.currencySign = "£ ";
-      }
-    });
+    // this.settingService.getSettingsData().subscribe((response) => {
+
+    //   if (response.Entity.DEFAULT_CURRENCY.Value == 1) {
+    //     this.currencySign = "रू ";
+    //   }
+    //   if (response.Entity.DEFAULT_CURRENCY.Value == 2) {
+    //     this.currencySign = "$ ";
+    //   }
+    //   if (response.Entity.DEFAULT_CURRENCY.Value == 249) {
+    //     this.currencySign = "€ ";
+    //   }
+    //   if (response.Entity.DEFAULT_CURRENCY.Value == 260) {
+    //     this.currencySign = "£ ";
+    //   }
+    // });
+    // if (this.settingService.currencyDetails) {
+    // this.currencySign = this.settingService.currencyDetails
+    //   ? this.settingService.currencyDetails.Symbol
+    //   : "रू ";
+    this.currencySign = this.settingService.getCurrencySymbol;
+    // console.log("this currency" + this.currencySign);
+    // }
+    // this.settingService.getSettingsData().subscribe((response) => {
+    //   this.settingService
+    //     .getCurrencyDetails(response.Entity.DEFAULT_CURRENCY.Value)
+    //     .subscribe((res) => {
+    //       this.currencySign = res.Entity ? res.Entity[0].Symbol : "रू ";
+    //     });
+    // });
   }
 
   transform(value: any, event?: number): SafeHtml {

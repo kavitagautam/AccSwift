@@ -29,8 +29,8 @@
                 "
                 [ngValue]="productGroup.ID"
               >
-                {{ productGroup.Name }}</option
-              >
+                {{ productGroup.Name }}
+              </option>
             </select>
           </div>
         </div>
@@ -47,7 +47,7 @@
   </form>
   <div
     class="box-footer"
-    style="display: table;margin:auto"
+    style="display: table; margin: auto"
     *ngIf="showActions"
   >
     <div class="mb-2">
@@ -57,11 +57,9 @@
         accSwiftFormSubmitValidationMsg
         [validationControl]="productGroupForm"
       >
-        Save
+        <i class="fas fa-save"></i>&nbsp;&nbsp;Save
       </button>
-      <button class="btn btn-secondary ml-2" (click)="cancel()">
-        Cancel
-      </button>
+      <button class="btn btn-secondary ml-2" (click)="cancel()">Cancel</button>
     </div>
   </div>
 </div>

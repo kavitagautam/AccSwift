@@ -10,9 +10,7 @@
       </thead>
       <tbody>
         <tr>
-          <td>
-            Bank Payment
-          </td>
+          <td>Bank Payment</td>
           <td>
             <select
               class="form-control"
@@ -22,15 +20,14 @@
               <option
                 *ngFor="let series of bankPaymentSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Bank Receipt
-          </td>
+          <td>Bank Receipt</td>
           <td>
             <select
               class="form-control"
@@ -40,15 +37,14 @@
               <option
                 *ngFor="let series of bankReceiptSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Bank Reconciliation
-          </td>
+          <td>Bank Reconciliation</td>
           <td>
             <select
               class="form-control"
@@ -58,15 +54,14 @@
               <option
                 *ngFor="let series of bankReconciliationSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Cash Payment
-          </td>
+          <td>Cash Payment</td>
           <td>
             <select
               class="form-control"
@@ -76,15 +71,14 @@
               <option
                 *ngFor="let series of cashPaymentSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Cash Receipt
-          </td>
+          <td>Cash Receipt</td>
           <td>
             <select
               class="form-control"
@@ -94,15 +88,14 @@
               <option
                 *ngFor="let series of cashReceiptSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Cheque Receipt
-          </td>
+          <td>Cheque Receipt</td>
           <td>
             <select
               class="form-control"
@@ -112,30 +105,25 @@
               <option
                 *ngFor="let series of chequeReceiptSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Contra
-          </td>
+          <td>Contra</td>
           <td>
             <select class="form-control" formControlName="DEFAULT_SERIES_CNTR">
               <option [ngValue]="null">Choose Option..</option>
-              <option
-                *ngFor="let series of contraSeries"
-                [ngValue]="series.ID"
-                >{{ series.Name }}</option
-              >
+              <option *ngFor="let series of contraSeries" [ngValue]="series.ID">
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Credit Notes
-          </td>
+          <td>Credit Notes</td>
           <td>
             <select
               class="form-control"
@@ -145,33 +133,28 @@
               <option
                 *ngFor="let series of creditNoteSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Damage Item
-          </td>
+          <td>Damage Item</td>
           <td>
             <select
               class="form-control"
               formControlName="DEFAULT_SERIES_DAMAGE"
             >
               <option [ngValue]="null">Choose Option..</option>
-              <option
-                *ngFor="let series of damageSeries"
-                [ngValue]="series.ID"
-                >{{ series.Name }}</option
-              >
+              <option *ngFor="let series of damageSeries" [ngValue]="series.ID">
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Debit Notes
-          </td>
+          <td>Debit Notes</td>
           <td>
             <select
               class="form-control"
@@ -181,46 +164,43 @@
               <option
                 *ngFor="let series of debitNoteSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Journal
-          </td>
+          <td>Journal</td>
           <td>
             <select class="form-control" formControlName="DEFAULT_SERIES_JRNL">
               <option [ngValue]="null">Choose Option..</option>
               <option
                 *ngFor="let series of journalSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
 
         <tr>
-          <td>
-            Purchase
-          </td>
+          <td>Purchase</td>
           <td>
             <select class="form-control" formControlName="DEFAULT_SERIES_PURCH">
               <option [ngValue]="null">Choose Option..</option>
               <option
                 *ngFor="let series of purchaseSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Purchase Return
-          </td>
+          <td>Purchase Return</td>
           <td>
             <select
               class="form-control"
@@ -230,30 +210,25 @@
               <option
                 *ngFor="let series of purchaseReturnSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Sales
-          </td>
+          <td>Sales</td>
           <td>
             <select class="form-control" formControlName="DEFAULT_SERIES_SALES">
               <option [ngValue]="null">Choose Option..</option>
-              <option
-                *ngFor="let series of salesSeries"
-                [ngValue]="series.ID"
-                >{{ series.Name }}</option
-              >
+              <option *ngFor="let series of salesSeries" [ngValue]="series.ID">
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Sales Return
-          </td>
+          <td>Sales Return</td>
           <td>
             <select
               class="form-control"
@@ -263,15 +238,14 @@
               <option
                 *ngFor="let series of salesReturnSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Stock Transfer
-          </td>
+          <td>Stock Transfer</td>
           <td>
             <select
               class="form-control"
@@ -281,15 +255,14 @@
               <option
                 *ngFor="let series of stockTransferSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Sales Order
-          </td>
+          <td>Sales Order</td>
           <td>
             <select
               class="form-control"
@@ -299,15 +272,14 @@
               <option
                 *ngFor="let series of salesOrderSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>
-            Purchase Order
-          </td>
+          <td>Purchase Order</td>
           <td>
             <select
               class="form-control"
@@ -317,8 +289,9 @@
               <option
                 *ngFor="let series of purchaseOrderSeries"
                 [ngValue]="series.ID"
-                >{{ series.Name }}</option
               >
+                {{ series.Name }}
+              </option>
             </select>
           </td>
         </tr>
@@ -339,7 +312,7 @@
         class="btn btn-primary pull-right ml-3"
         (click)="save()"
       >
-        Save
+        <i class="fas fa-save"></i>&nbsp;&nbsp;Save
       </button>
     </div>
   </div>

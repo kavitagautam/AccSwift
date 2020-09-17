@@ -12,13 +12,13 @@
             formControlName="DEFAULT_CASH_ACCOUNT"
             accSwiftFormValidator
           >
-            <option [ngValue]="null">Choose option... </option>
+            <option [ngValue]="null">Choose option...</option>
             <option
               *ngFor="let cashAccount of cashAccountLists"
               [ngValue]="cashAccount.LedgerID"
             >
-              {{ cashAccount.LedgerName }}</option
-            >
+              {{ cashAccount.LedgerName }}
+            </option>
           </select>
         </div>
       </div>
@@ -321,7 +321,7 @@
       class="btn btn-primary pull-right ml-3"
       (click)="save()"
     >
-      Save
+      <i class="fas fa-save"></i>&nbsp;&nbsp;Save
     </button>
   </div>
 </div>

@@ -292,7 +292,12 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
+          if (
+            invoices &&
+            invoices[i].TaxAmount &&
+            invoices[i].TaxID !== null &&
+            invoices[i].IsVAT
+          ) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
