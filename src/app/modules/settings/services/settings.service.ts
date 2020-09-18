@@ -24,20 +24,13 @@ import {
 export class SettingsService {
   _api_URL = environment.baseAPI;
   settings: Settings;
+
   currencyDetails: Currency;
   constructor(
     private httpService: HttpClientService,
     private http: HttpClient
   ) {
-    this.httpService
-      .get(`${this._api_URL}Settings`)
-      .subscribe((response: SettingsModel) => {
-        this.settings = response.Entity;
-        if (this.settings && this.settings.DEFAULT_CURRENCY.Value) {
-          this.getCurrencyDetails(this.settings.DEFAULT_CURRENCY.Value);
-        }
-      });
-    // this.getSettings();
+    this.getSettings();
   }
 
   getSettings(): void {
@@ -45,22 +38,22 @@ export class SettingsService {
       .get(`${this._api_URL}Settings`)
       .subscribe((response: SettingsModel) => {
         this.settings = response.Entity;
+
         if (this.settings && this.settings.DEFAULT_CURRENCY.Value) {
           this.getCurrencyDetails(this.settings.DEFAULT_CURRENCY.Value);
         }
       });
   }
 
-  getCurrencyDetails(currencyID): Observable<CurrencyRootModel> {
-    return this.httpService.get(`${this._api_URL}Currency/${currencyID}`);
-    // .subscribe((response: CurrencyRootModel) => {
-    //   this.currencyDetails = response.Entity[0];
-    //  this.currencyDetails[0].LocaleID = "ne";
-    // });
-  }
-
-  get getCurrencySymbol(): string {
-    return this.currencyDetails ? this.currencyDetails.Symbol : "रू ";
+  getCurrencyDetails(currencyID): void {
+    this.httpService
+      .get(`${this._api_URL}Currency/${currencyID}`)
+      .subscribe((response) => {
+        const currency = response.Entity;
+        console.log("currency" + JSON.stringify(currency));
+        localStorage.setItem("currencySymbol", currency.Symbol);
+        localStorage.setItem("currencyLocaleID", currency.LocaleID);
+      });
   }
 
   getSettingsData(): Observable<SettingsModel> {

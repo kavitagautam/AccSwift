@@ -26,7 +26,6 @@ import { CashParty } from "../../models/cash-party.model";
 import { ProductMin } from "@accSwift-modules/product/models/product-min.model";
 import { ProductModalPopupComponent } from "../product-modal-popup/product-modal-popup.component";
 import { LedgerModalPopupComponent } from "../ledger-modal-popup/ledger-modal-popup.component";
-import { LocaleService } from "@app/core/services/locale/locale.services";
 import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 import { IntlService, CldrIntlService } from "@progress/kendo-angular-intl";
 import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
@@ -63,12 +62,9 @@ export class DetailsEntryGridComponent implements OnInit {
   rowSubmitted: boolean;
   IsAutomatic: boolean = false;
   private editedRowIndex: number;
-  currencyFormat: string = "c2";
-  // public currencyFormat: any = {
-  //   style: "currency",
-  //   currency: "EUR",
-  //   currencyDisplay: "symbol",
-  // };
+  currencyFormat: string =
+    "c" + JSON.parse(localStorage.getItem("decimalPlaces"));
+
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -84,42 +80,11 @@ export class DetailsEntryGridComponent implements OnInit {
     private modalService: BsModalService,
     private _fb: FormBuilder,
     @Inject(LOCALE_ID) public localeId: string,
-    public intlService: IntlService,
-    private settingsService: SettingsService
-  ) {
-    // locale === "Nepali" ? "ne-NP" : "en_US"
-    // this.localeService.set("en_US");
-  }
+    public intlService: IntlService
+  ) {}
 
   ngOnInit(): void {
-    // this.settingsService.getSettingsData().subscribe((response) => {
-    //   const currency = this.gridServices.currencyList.filter(
-    //     (s) => s.ID === response.Entity.DEFAULT_CURRENCY.Value
-    //   );
-
-    //   if (currency && currency[0].Code == "NPR") {
-    //     this.localeId = "ne";
-    //   }
-    //   if (currency && currency[0].Code == "USD") {
-    //     this.localeId = "en_US";
-    //   }
-    //   if (currency && currency[0].Code == "Euro") {
-    //     this.localeId = "fr-FR";
-    //   }
-    //   if (currency && currency[0].Code == "GBP") {
-    //     this.localeId = "en_GB";
-    //   }
-    //   (<CldrIntlService>this.intlService).localeId = this.localeId;
-    // });
-    // if (this.settingsService.currencyDetails) {
-    console.log("this los inside" + this.localeId);
-
-    this.localeId = this.settingsService.currencyDetails
-      ? this.settingsService.currencyDetails.LocaleID
-      : "ne";
-    //  }
-    console.log("this los" + this.localeId);
-
+    this.localeId = localStorage.getItem("currencyLocaleID");
     (<CldrIntlService>this.intlService).localeId = this.localeId;
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;

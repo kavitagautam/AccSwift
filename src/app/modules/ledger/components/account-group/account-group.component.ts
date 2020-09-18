@@ -123,7 +123,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
   // Filterable Cash Party Drop-down
   ledgerGroupDDFilter(value): void {
     this.ledgerGroup = this.ledgerService.ledgerGroupLists.filter(
-      (s) => s.Name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+      (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
   }
 

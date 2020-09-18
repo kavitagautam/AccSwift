@@ -96,14 +96,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       .getLedgerDetails(this.selectedLedgerId)
       .subscribe((res) => {
         this.ledgerDetails = res.Entity;
-        // this.accountLedgerForm.setControl(
-        //   "OpeningBalance",
-        //   this.ledgerDetails.OpeningBalance
-        // );
-        //  this.accountLedgerForm.patchValue(this.ledgerDetails);
         this.setOpeningBalanceList();
         this.accountLedgerForm.patchValue(this.ledgerDetails);
-        // this.buildAccountLedgerForm();
       });
   }
 
@@ -233,7 +227,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   // Filterable Cash Party Drop-down
   ledgerGroupDDFilter(value): void {
     this.ledgerGroup = this.ledgerService.ledgerGroupLists.filter(
-      (s) => s.Name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+      (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
   }
 
