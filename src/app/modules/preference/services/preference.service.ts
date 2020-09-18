@@ -44,6 +44,10 @@ export class PreferenceService {
       .get(`${this._api_URL}UserPreference`)
       .subscribe((response: PreferenceModel) => {
         this.preferences = response.Entity;
+        localStorage.setItem(
+          "decimalPlaces",
+          JSON.stringify(this.preferences.DEFAULT_DECIMALPLACES.Value)
+        );
       });
   }
 

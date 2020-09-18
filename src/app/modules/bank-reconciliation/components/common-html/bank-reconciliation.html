@@ -56,8 +56,8 @@
                 *ngFor="let project of reconciliationService.projectLists"
                 [ngValue]="project.ID"
               >
-                {{ project.EngName }}</option
-              >
+                {{ project.EngName }}
+              </option>
             </select>
           </div>
         </div>
@@ -105,11 +105,9 @@
         accSwiftFormSubmitValidationMsg
         [validationControl]="bankReconciliationForm"
       >
-        Save
+        <i class="fas fa-save"></i>&nbsp;&nbsp; Save
       </button>
-      <button class="btn btn-secondary ml-2" (click)="cancel()">
-        Cancel
-      </button>
+      <button class="btn btn-secondary ml-2" (click)="cancel()">Cancel</button>
     </div>
   </div>
 </div>

@@ -87,13 +87,11 @@
               <div class="col-xs-12 col-md-12 p-0">
                 <div class="col-md-4 pl-0">
                   <div class="form-group">
-                    <label>
-                      Code
-                    </label>
+                    <label> Code </label>
                     <input
                       #input
                       class="k-textbox"
-                      style="width: 100px;"
+                      style="width: 100px"
                       placeholder="Product Code"
                       [formControl]="
                         getPurchaseOrderEntryList.controls[rowIndex].get('ProductCode')
@@ -120,7 +118,7 @@
                       #input
                       class="k-textbox"
                       [readonly]="true"
-                      style="width: 150px; display: inherit;"
+                      style="width: 150px; display: inherit"
                       [formControl]="
                         getPurchaseOrderEntryList.controls[rowIndex].get('ProductName')
                       "
@@ -128,7 +126,7 @@
                     <a (click)="openModal(rowIndex)"
                       ><i
                         class="fa fa-eye pull-right ledgerSelectIcon"
-                        style="right: 0px; top: 30px;"
+                        style="right: 0px; top: 30px"
                         aria-hidden="true"
                       ></i>
                     </a>
@@ -154,7 +152,7 @@
                     <label>Purchse Rate</label>
                     <kendo-numerictextbox
                       popupAnchor
-                      style="width: 120px;"
+                      style="width: 120px"
                       [decimals]="decimals"
                       [spinners]="false"
                       [format]="c0"
@@ -181,7 +179,7 @@
             >
               <kendo-numerictextbox
                 popupAnchor
-                style="width: 120px;"
+                style="width: 120px"
                 [format]="'n0'"
                 [min]="1"
                 [formControl]="
@@ -204,7 +202,7 @@
             >
               <kendo-numerictextbox
                 popupAnchor
-                style="width: 120px;"
+                style="width: 120px"
                 [decimals]="decimals"
                 [spinners]="false"
                 [format]="c0"
@@ -231,7 +229,7 @@
             >
               <kendo-numerictextbox
                 popupAnchor
-                style="width: 120px;"
+                style="width: 120px"
                 [format]="'n0'"
                 [min]="0"
                 [formControl]="
@@ -259,7 +257,7 @@
             >
               <kendo-numerictextbox
                 popupAnchor
-                style="width: 120px;"
+                style="width: 120px"
                 [format]="'n0'"
                 [min]="0"
                 [formControl]="
@@ -305,7 +303,7 @@
             accSwiftFormSubmitValidationMsg
             [validationControl]="purchaseOrderForm"
           >
-            Save
+            <i class="fas fa-save"></i>&nbsp;&nbsp;Save
           </button>
           <button class="btn btn-secondary ml-2" (click)="cancel()">
             Cancel

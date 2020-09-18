@@ -13,7 +13,10 @@ import { CashAccountsModel } from "@accSwift-modules/accswift-shared/models/cash
 import { SalesAccountModel } from "@accSwift-modules/accswift-shared/models/sales-account.model";
 import { AccountClassModel } from "@accSwift-modules/accswift-shared/models/account-class.model";
 import { PurchaseAccountRootModel } from "@accSwift-modules/accswift-shared/models/purchase-account.model";
-import { CurrencyRootModel } from "@accSwift-modules/accswift-shared/models/currency-model";
+import {
+  Currency,
+  CurrencyRootModel,
+} from "@accSwift-modules/accswift-shared/models/currency-model";
 
 @Injectable({
   providedIn: "root",
@@ -21,6 +24,8 @@ import { CurrencyRootModel } from "@accSwift-modules/accswift-shared/models/curr
 export class SettingsService {
   _api_URL = environment.baseAPI;
   settings: Settings;
+
+  currencyDetails: Currency;
   constructor(
     private httpService: HttpClientService,
     private http: HttpClient
@@ -33,6 +38,21 @@ export class SettingsService {
       .get(`${this._api_URL}Settings`)
       .subscribe((response: SettingsModel) => {
         this.settings = response.Entity;
+
+        if (this.settings && this.settings.DEFAULT_CURRENCY.Value) {
+          this.getCurrencyDetails(this.settings.DEFAULT_CURRENCY.Value);
+        }
+      });
+  }
+
+  getCurrencyDetails(currencyID): void {
+    this.httpService
+      .get(`${this._api_URL}Currency/${currencyID}`)
+      .subscribe((response) => {
+        const currency = response.Entity;
+        console.log("currency" + JSON.stringify(currency));
+        localStorage.setItem("currencySymbol", currency.Symbol);
+        localStorage.setItem("currencyLocaleID", currency.LocaleID);
       });
   }
 

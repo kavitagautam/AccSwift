@@ -7,9 +7,9 @@
           <label>
             <input
               type="checkbox"
-              style="font-size: 1000;"
+              style="font-size: 1000"
               formControlName="AUTO_BACKUP"
-            /><span style="font-weight: bold;">Automatic Backup</span>
+            /><span style="font-weight: bold">Automatic Backup</span>
           </label>
         </div>
       </div>
@@ -25,9 +25,7 @@
           formControlName="BACKUP_INTERVAL_DAY"
         />
       </div>
-      <div class="col-md-1">
-        Days
-      </div>
+      <div class="col-md-1">Days</div>
     </div>
     <div class="row mt-3">
       <div class="col-md-3">
@@ -82,7 +80,7 @@
         class="btn btn-primary pull-right ml-3"
         (click)="save()"
       >
-        Save
+        <i class="fas fa-save"></i>&nbsp;&nbsp;Save
       </button>
     </div>
   </div>

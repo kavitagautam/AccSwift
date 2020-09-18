@@ -30,6 +30,7 @@ import { NgxPrintModule } from "ngx-print";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { CreateReportsComponent } from "./components/create-reports/create-reports.component";
 import { AddressComponent } from "./components/address/address.component";
+import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 
 @NgModule({
   declarations: [

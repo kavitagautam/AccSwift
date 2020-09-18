@@ -92,7 +92,7 @@
               let-column="column"
               let-rowIndex="rowIndex"
             >
-              <input style="width: 120px;" />
+              <input style="width: 120px" />
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column
@@ -123,7 +123,7 @@
         accSwiftFormSubmitValidationMsg
         [validationControl]="editStockTransferForm"
       >
-        Save
+        <i class="fas fa-save"></i>&nbsp;&nbsp;Save
       </button>
       <button class="btn btn-secondory ml-2" (click)="cancel()">Cancel</button>
     </div>

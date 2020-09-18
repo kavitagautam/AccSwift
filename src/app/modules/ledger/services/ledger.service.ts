@@ -14,6 +14,7 @@ import {
 import {
   LedgerGroupDetailsModel,
   LedgerGroup,
+  LedgerGroupModel,
 } from "../models/ledger-group.model";
 
 @Injectable({
@@ -87,5 +88,9 @@ export class LedgerService {
       .subscribe((response) => {
         this.ledgerGroupLists = response.Entity;
       });
+  }
+
+  getLedgerGroupList(): Observable<LedgerGroupModel> {
+    return this.httpService.get(`${this._api_URL}LedgerGroup`);
   }
 }

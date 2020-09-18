@@ -44,6 +44,8 @@ export class AddCompanyComponent implements OnInit {
       City: [""],
       District: [""],
       Zone: [""],
+      UserName: ["", Validators.required],
+      Password: ["", Validators.required],
       FYFrom: [new Date()],
       FiscalYear: ["075/76"],
       BookBeginFrom: [""],

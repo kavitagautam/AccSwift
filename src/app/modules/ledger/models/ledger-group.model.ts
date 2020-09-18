@@ -1,6 +1,7 @@
 export interface LedgerGroup {
   ID: number;
   LedgerCode: string;
+  CodeName: string;
   ParentGroupID?: number;
   Name: string;
   DrCr: string;
