@@ -5,6 +5,7 @@ export interface Currency {
   Code: string;
   Symbol: string;
   Country: string;
+  LocaleID: string;
 }
 
 export interface CurrencyRootModel {

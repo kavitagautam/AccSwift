@@ -14,6 +14,7 @@ import { LedgerDetails } from "../../models/ledger.models";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
+import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
 
 @Component({
   selector: "accSwift-account-ledger",
@@ -33,6 +34,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   title: string;
   rowSubmitted: boolean;
   submitted: boolean;
+  ledgerGroup: LedgerGroup[] = [];
+
   private editedRowIndex: number;
   balanceDrCr: string;
   modalRef: BsModalRef;
@@ -52,6 +55,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.buildAccountLedgerForm();
+    this.getLedgerGroup();
     if (this.selectedItem == null) {
       this.addAccountLedger();
     }
@@ -81,19 +85,19 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     { type: "CREDIT", Name: "CREDIT", id: 2 },
   ];
 
+  getLedgerGroup(): void {
+    this.ledgerService.getLedgerGroupList().subscribe((response) => {
+      this.ledgerGroup = response.Entity;
+    });
+  }
+
   getLedgerDetails(): void {
     this.ledgerService
       .getLedgerDetails(this.selectedLedgerId)
       .subscribe((res) => {
         this.ledgerDetails = res.Entity;
-        // this.accountLedgerForm.setControl(
-        //   "OpeningBalance",
-        //   this.ledgerDetails.OpeningBalance
-        // );
-        //  this.accountLedgerForm.patchValue(this.ledgerDetails);
         this.setOpeningBalanceList();
         this.accountLedgerForm.patchValue(this.ledgerDetails);
-        // this.buildAccountLedgerForm();
       });
   }
 
@@ -218,6 +222,13 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       this.accountLedgerForm.get("OpeningBalance")
     );
     openingBalance.controls[0].get("OpenBalDrCr").setValue(this.balanceDrCr);
+  }
+
+  // Filterable Cash Party Drop-down
+  ledgerGroupDDFilter(value): void {
+    this.ledgerGroup = this.ledgerService.ledgerGroupLists.filter(
+      (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
   }
 
   save(): void {

@@ -118,21 +118,49 @@
             <accSwift-address [addressForms]="companyForm"></accSwift-address>
           </fieldset>
         </div>
-      </div>
-
-      <div class="col-md-12 m-2">
-        <button
-          class="btn btn-primary"
-          (click)="save()"
-          accSwiftFormSubmitValidationMsg
-          [validationControl]="companyForm"
-        >
-          Save
-        </button>
-        <button class="btn btn-secondary ml-2" (click)="cancel()">
-          Cancel
-        </button>
+        <div class="row">
+          <fieldset>
+            <legend>User Info</legend>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>User Name<sup>*</sup></label>
+                <input
+                  class="form-control"
+                  formControlName="UserName"
+                  id="username"
+                  name="username"
+                  accSwiftFormValidator
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Password</label>
+                <input
+                  class="form-control"
+                  formControlName="Password"
+                  type="password"
+                  name="password"
+                  accSwiftFormValidator
+                />
+              </div>
+            </div>
+          </fieldset>
+        </div>
       </div>
     </div>
   </form>
+</div>
+<div class="box-footer">
+  <div class="mb-2">
+    <button
+      class="btn btn-primary"
+      (click)="save()"
+      accSwiftFormSubmitValidationMsg
+      [validationControl]="companyForm"
+    >
+      <i class="fas fa-save"></i>&nbsp;&nbsp;Save
+    </button>
+    <button class="btn btn-secondary ml-2" (click)="cancel()">Cancel</button>
+  </div>
 </div>

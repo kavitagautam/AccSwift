@@ -70,6 +70,14 @@ export class EditCompanyComponent implements OnInit {
         this.companyDetails ? this.companyDetails.StateOrProvinceID : null,
       ],
       Zone: [this.companyDetails ? this.companyDetails.Zone : ""],
+      UserName: [
+        this.companyDetails ? this.companyDetails.UserName : "",
+        Validators.required,
+      ],
+      Password: [
+        this.companyDetails ? this.companyDetails.Password : "",
+        Validators.required,
+      ],
       FYFrom: [this.companyDetails ? this.companyDetails.FYFrom : new Date()],
       FiscalYear: [
         this.companyDetails ? this.companyDetails.FiscalYear : "075/76",

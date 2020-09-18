@@ -12,7 +12,7 @@
         [expandBy]="'Title'"
         kendoTreeViewExpandable
         [(expandedKeys)]="expandedKeys"
-        style="height: 76vh; overflow: scroll;"
+        style="height: 76vh; overflow: scroll"
       >
         <ng-template kendoTreeViewNodeTemplate let-dataItem>
           <span
@@ -38,8 +38,8 @@
               *ngFor="let series of seriesDropDownList"
               [value]="series.ID"
             >
-              {{ series.Name }}</option
-            >
+              {{ series.Name }}
+            </option>
           </select>
         </div>
       </div>
@@ -68,8 +68,8 @@
                           *ngFor="let type of numberingTypes"
                           [value]="type.type"
                         >
-                          {{ type.type }}</option
-                        >
+                          {{ type.type }}
+                        </option>
                       </select>
                     </div>
                     <fieldset>
@@ -87,8 +87,8 @@
                             *ngFor="let type of voucherNoValidation"
                             [value]="type.type"
                           >
-                            {{ type.value }}</option
-                          >
+                            {{ type.value }}
+                          </option>
                         </select>
                       </div>
                       <div class="form-group">
@@ -103,8 +103,8 @@
                             *ngFor="let type of voucherNoValidation"
                             [value]="type.type"
                           >
-                            {{ type.value }}</option
-                          >
+                            {{ type.value }}
+                          </option>
                         </select>
                       </div>
                     </fieldset>
@@ -153,7 +153,7 @@
                           *ngIf="hideNumberFormatting"
                           (click)="openNumberFormatting(numberFormat)"
                           class="btn-secondary pull-right"
-                          style="margin: 24px;"
+                          style="margin: 24px"
                         >
                           Numbering Format
                         </button>
@@ -194,8 +194,8 @@
                             *ngFor="let freq of renumberingFreq"
                             [value]="freq.value"
                           >
-                            {{ freq.value }}</option
-                          >
+                            {{ freq.value }}
+                          </option>
                           <option>Annual</option>
                         </select>
                       </div>
@@ -240,7 +240,7 @@
               <fieldset>
                 <legend>Optional Field Information</legend>
                 <div formGroupName="OptionalFields">
-                  <table class="table" style="width: 80%;">
+                  <table class="table" style="width: 80%">
                     <thead>
                       <tr>
                         <th colspan="1"></th>
@@ -406,7 +406,7 @@
             </ng-template>
           </kendo-tabstrip-tab>
         </kendo-tabstrip>
-        <div class="box-footer" style="display: table; margin: auto;">
+        <div class="box-footer" style="display: table; margin: auto">
           <div class="mb-2">
             <button
               class="btn btn-primary"
@@ -414,7 +414,7 @@
               accSwiftFormSubmitValidationMsg
               [validationControl]="numberingConfigForm"
             >
-              Save
+              <i class="fas fa-save"></i>&nbsp;&nbsp;Save
             </button>
             <button class="btn btn-secondary ml-2" (click)="cancel()">
               Cancel
@@ -464,9 +464,9 @@
               (change)="dateInput($event)"
             >
               <option [ngValue]="null">Choose Option...</option>
-              <option *ngFor="let date of dateTypeDD" [value]="date.type">{{
-                date.value
-              }}</option>
+              <option *ngFor="let date of dateTypeDD" [value]="date.type">
+                {{ date.value }}
+              </option>
             </select>
           </div>
         </div>

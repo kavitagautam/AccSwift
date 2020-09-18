@@ -27,7 +27,6 @@ import { NgxsModule } from "@ngxs/store";
 import { NgxsLoggerPluginModule } from "@ngxs/logger-plugin";
 import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
 import { environment } from "@env/environment";
-import { CldrIntlService } from "@progress/kendo-angular-intl";
 import localeGB from "@angular/common/locales/en-GB";
 import localefr from "@angular/common/locales/fr";
 import "@progress/kendo-angular-intl/locales/en-GB/all";
@@ -56,14 +55,6 @@ export function initSettingsData(settingsService: SettingsService) {
 
 export function localFunction(settingsService: SettingsService) {
   var localeId: string;
-  // if (
-  //   settingsService &&
-  //   settingsService.settings.DEFAULT_LANGUAGE.Value === "English"
-  // ) {
-  //   localeId = "en_US";
-  // } else {
-  //   localeId = "ne";
-  // }
 
   if (settingsService && settingsService.settings.DEFAULT_CURRENCY.Value == 1) {
     this.localeId = "ne";
@@ -83,7 +74,6 @@ export function localFunction(settingsService: SettingsService) {
   ) {
     localeId = "en_GB";
   }
-
   return localeId;
 }
 
