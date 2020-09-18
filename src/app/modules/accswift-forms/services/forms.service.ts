@@ -19,6 +19,7 @@ import {
   SalesAccounts,
 } from "@accSwift-modules/accswift-shared/models/sales-account.model";
 import { Depot, DepotModel } from "@accSwift-modules/depot/models/depot.model";
+import { PurchaseAccountRootModel } from "@accSwift-modules/accswift-shared/models/purchase-account.model";
 
 @Injectable({
   providedIn: "root",
@@ -66,6 +67,10 @@ export class FormsService {
 
   getCashAccounts(): Observable<CashAccountsModel> {
     return this.httpService.get(`${this._api_URL}Ledger/CashAccounts`);
+  }
+
+  getPurchaseAccounts(): Observable<PurchaseAccountRootModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/purchAccounts`);
   }
 
   getBankAccounts(): Observable<BankAccountsModel> {

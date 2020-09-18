@@ -105,6 +105,9 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         Validators.required,
       ],
       NetAmount: [this.salesDetails ? this.salesDetails.NetAmount : 0],
+      SpecialDiscount: [
+        this.salesDetails ? this.salesDetails.SpecialDiscount : 0,
+      ],
       VAT: [this.salesDetails ? this.salesDetails.VAT : 0],
       Remarks: [this.salesDetails ? this.salesDetails.Remarks : ""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
@@ -136,6 +139,9 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm
       .get("TotalAmount")
       .setValue(this.salesDetails.TotalAmount);
+    this.salesInvoiceForm
+      .get("SpecialDiscount")
+      .setValue(this.salesDetails.SpecialDiscount);
     this.salesInvoiceForm.get("TotalQty").setValue(this.salesDetails.TotalQty);
     this.salesInvoiceForm
       .get("GrossAmount")
@@ -237,7 +243,12 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
+          if (
+            invoices &&
+            invoices[i].TaxAmount &&
+            invoices[i].TaxID !== null &&
+            invoices[i].IsVAT
+          ) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
@@ -265,7 +276,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       ProductID: [""],
       ProductName: [""],
       CodeName: [""],
-      Quantity: ["", Validators.required],
+      Quantity: [0, Validators.required],
       QtyUnitID: [null, Validators.required],
       QtyUnitName: [""],
       SalesRate: ["", Validators.required],
@@ -387,6 +398,16 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
+
+    this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
+    this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
+    this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
+    this.salesInvoiceForm
+      .get("SpecialDiscount")
+      .setValue(this.totalDiscountAmount);
+    this.salesInvoiceForm.get("VAT").setValue(this.totalTaxAmount);
+
     if (this.salesInvoiceForm.invalid) return;
     this.salesInvoiceService
       .updateSalesInvoice(this.salesInvoiceForm.value)

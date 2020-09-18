@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { SettingsService } from "../../services/settings.service";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { PurchaseAccount } from "../../models/settings.model";
 import { SalesAccounts } from "@accSwift-modules/accswift-shared/models/sales-account.model";
+import { PurchaseAccounts } from "@accSwift-modules/accswift-shared/models/purchase-account.model";
 
 @Component({
   selector: "accSwift-setting",
@@ -14,7 +14,7 @@ import { SalesAccounts } from "@accSwift-modules/accswift-shared/models/sales-ac
 export class SettingComponent implements OnInit {
   settingsForm: FormGroup;
   salesAccountList: SalesAccounts[];
-  purchaseAccountList: PurchaseAccount[];
+  purchaseAccountList: PurchaseAccounts[];
   constructor(
     private _fb: FormBuilder,
     private settingsService: SettingsService,

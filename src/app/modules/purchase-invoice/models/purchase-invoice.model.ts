@@ -1,23 +1,25 @@
 export interface PurchInvoiceDetail {
   PurchaseInvoiceID: number;
-  ID: number;
-  ProductID: number;
-  ProductName: string;
-  ProductCode: string;
-  Quantity: number;
   PurchaseRate: number;
-  Amount: number;
-  DiscPercentage: number;
-  DiscountAmount: number;
-  NetAmount: number;
-  TaxAmount: number;
-  VAT: number;
   CustomDuty: number;
   CustomDutyPercent: number;
   Freight: number;
+  VATAmount: number;
+  DiscPercentage: number;
+  DiscountAmount: number;
+  NetAmount: number;
   QtyUnitID: number;
   QtyUnitName: string;
-  TaxID: number;
+  TaxID?: any;
+  TaxAmount: number;
+  ID: number;
+  ProductID: number;
+  ProductName: string;
+  CodeName: string;
+  ProductCode: string;
+  Quantity: number;
+  Amount: number;
+  Remarks: string;
 }
 
 export interface PurchaseInvoice {

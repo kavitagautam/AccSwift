@@ -29,15 +29,22 @@ export class InvoiceState {
   static getInvoice(state: InvoiceModel) {
     return state.invoices;
   }
-
   @Action(AddInvoiceDetails)
-  add(
-    { getState, patchState }: StateContext<InvoiceModel>,
-    { payLoad }: AddInvoiceDetails
-  ) {
-    const state = getState();
-    patchState({ invoices: [...state.invoices, payLoad] });
+  add(ctx: StateContext<InvoiceModel>) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      invoices: [],
+    });
   }
+  // @Action(AddInvoiceDetails)
+  // add(
+  //   { getState, patchState }: StateContext<InvoiceModel>,
+  //   { payLoad }: AddInvoiceDetails
+  // ) {
+  //   const state = getState();
+  //   patchState({ invoices: [...state.invoices, payLoad] });
+  // }
 
   @Action(RemoveInvoiceDetails)
   remove(

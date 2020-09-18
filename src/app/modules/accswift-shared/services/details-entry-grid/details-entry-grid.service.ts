@@ -33,6 +33,7 @@ export class DetailsEntryGridService {
     this.getLedgerList();
     this.getVoucherType();
   }
+
   getTaxList(): void {
     this.httpService
       .get(`${this._api_URL}Tax/min`)

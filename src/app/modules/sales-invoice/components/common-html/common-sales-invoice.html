@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="col-md-12">
       <accSwift-details-entry-grid
         [entryArray]="salesInvoiceForm.controls.InvoiceDetails"
         [voucherType]="'SALES'"
@@ -138,7 +138,7 @@
       </button>
     </div>
     <div class="col-md-12">
-      <div class="col-md-12">
+      <div class="col-md-4">
         <div class="form-group">
           <label>Remarks</label>
           <input formControlName="Remarks" type="text" class="form-control" />
@@ -174,7 +174,7 @@
       accSwiftFormSubmitValidationMsg
       [validationControl]="salesInvoiceForm"
     >
-      Save
+      <i class="fas fa-save"></i>&nbsp;&nbsp;Save
     </button>
     <button class="btn btn-secondary ml-2" (click)="cancel()">Cancel</button>
   </div>

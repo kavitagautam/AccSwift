@@ -1,9 +1,7 @@
 <h3>Slabs</h3>
 <form [formGroup]="slabsForms" novalidate>
   <fieldset>
-    <legend>
-      Slabs
-    </legend>
+    <legend>Slabs</legend>
     <div class="row">
       <div class="col-md-6">
         <fieldset>
@@ -31,8 +29,8 @@
               >
                 <option [value]="">Choose Option...</option>
                 <option *ngFor="let d of tax1Value" [value]="d.name">
-                  {{ d.name }}</option
-                >
+                  {{ d.name }}
+                </option>
               </select>
             </div>
           </div>
@@ -59,8 +57,8 @@
               >
                 <option [value]="">Choose Option...</option>
                 <option *ngFor="let d of tax2Value" [value]="d.name">
-                  {{ d.name }}</option
-                >
+                  {{ d.name }}
+                </option>
               </select>
             </div>
           </div>
@@ -87,8 +85,8 @@
               >
                 <option [value]="">Choose Option...</option>
                 <option *ngFor="let d of tax3Value" [value]="d.name">
-                  {{ d.name }}</option
-                >
+                  {{ d.name }}
+                </option>
               </select>
             </div>
           </div>
@@ -135,8 +133,8 @@
               >
                 <option [value]="">Choose Option...</option>
                 <option *ngFor="let d of tax1Value" [value]="d.name">
-                  {{ d.name }}</option
-                >
+                  {{ d.name }}
+                </option>
               </select>
             </div>
           </div>
@@ -163,8 +161,8 @@
               >
                 <option [value]="">Choose Option...</option>
                 <option *ngFor="let d of tax2Value" [value]="d.name">
-                  {{ d.name }}</option
-                >
+                  {{ d.name }}
+                </option>
               </select>
             </div>
           </div>
@@ -191,8 +189,8 @@
               >
                 <option [value]="">Choose Option...</option>
                 <option *ngFor="let d of tax3Value" [value]="d.name">
-                  {{ d.name }}</option
-                >
+                  {{ d.name }}
+                </option>
               </select>
             </div>
           </div>
@@ -243,7 +241,7 @@
         class="btn btn-primary pull-right ml-3"
         (click)="save()"
       >
-        Save
+        <i class="fas fa-save"></i>&nbsp;&nbsp;Save
       </button>
     </div>
   </div>
