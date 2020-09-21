@@ -50,7 +50,6 @@ export class SettingsService {
       .get(`${this._api_URL}Currency/${currencyID}`)
       .subscribe((response) => {
         const currency = response.Entity;
-        console.log("currency" + JSON.stringify(currency));
         localStorage.setItem("currencySymbol", currency.Symbol);
         localStorage.setItem("currencyLocaleID", currency.LocaleID);
       });
