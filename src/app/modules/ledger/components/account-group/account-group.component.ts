@@ -111,12 +111,11 @@ export class AccountGroupComponent implements OnInit, OnChanges {
     });
   }
 
-  changeParnetGroup(): void {
+  changeAccountHead(): void {
     const groupId = this.accountGroupForm.get("ParentGroupID").value;
     const selectedItem = this.ledgerService.ledgerGroupLists.filter(
       (x) => x.ID == groupId
     );
-
     this.accountGroupForm.get("DrCr").setValue(selectedItem[0].DrCr);
   }
 

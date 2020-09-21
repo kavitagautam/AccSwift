@@ -48,6 +48,7 @@
               [valuePrimitive]="true"
               [formControl]="accountGroupForm.get('ParentGroupID')"
               (filterChange)="ledgerGroupDDFilter($event)"
+              (valueChange)="changeAccountHead()"
             >
             </kendo-dropdownlist>
           </div>
