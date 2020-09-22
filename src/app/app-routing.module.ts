@@ -198,13 +198,7 @@ const routes: Routes = [
           breadcrumb: "Purchase Report",
         },
       },
-      {
-        path: "pos",
-        loadChildren: "@accSwift-modules/pos/pos.module#PosModule",
-        data: {
-          breadcrumb: "Pos",
-        },
-      },
+
       {
         path: "ledger-report",
         loadChildren:
