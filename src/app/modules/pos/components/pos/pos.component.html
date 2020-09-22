@@ -1,5 +1,8 @@
 <div class="box box-default">
   <div class="col-md-4">
+    <button type="button" class="btn btn-primary" (click)="getProductGroup()">
+      Back to Main
+    </button>
     <div class="btn-group-vertical" style="height: 600px; overflow: scroll">
       <div class="col-md-12 p-0">
         <div class="col-md-3" *ngFor="let product of productOrGroupList">
@@ -7,7 +10,7 @@
             <button
               type="button"
               class="btn btn-secondary listButton"
-              (click)="productClick(product.ID)"
+              (click)="productClick(product)"
             >
               {{ product.Title }}
             </button>

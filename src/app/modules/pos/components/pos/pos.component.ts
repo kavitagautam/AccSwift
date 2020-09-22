@@ -1,6 +1,5 @@
 import { ProductOrGroup } from "@accSwift-modules/pos/models/pos.model";
 import { PosService } from "@accSwift-modules/pos/services/pos.service";
-import { ProductGroup } from "@accSwift-modules/product/models/product-group.models";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
@@ -23,11 +22,11 @@ export class PosComponent implements OnInit {
     });
   }
 
-  productClick(id): void {
-    console.log("product ID" + id);
-    this.posServices.getProductOrGroup(id).subscribe((response) => {
-      console.log("this product List" + JSON.stringify(response));
-      this.productOrGroupList = response.Entity;
-    });
+  productClick(product): void {
+    if (product.TypeOf == 0) {
+      this.posServices.getProductOrGroup(product.ID).subscribe((response) => {
+        this.productOrGroupList = response.Entity;
+      });
+    }
   }
 }
