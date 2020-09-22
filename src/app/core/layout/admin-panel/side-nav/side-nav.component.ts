@@ -84,6 +84,12 @@ export class SideNavComponent implements OnInit {
       route: "/company",
     },
     {
+      id: 44,
+      displayName: "POS",
+      iconName: "fab fa-product-hunt",
+      route: "/pos",
+    },
+    {
       id: 5,
       displayName: "Product",
       iconName: "fab fa-product-hunt",
