@@ -63,9 +63,7 @@ export class EditBankReceiptComponent implements OnInit {
         [Validators.required],
       ],
       Date: [
-        this.bankReceiptDetails
-          ? new Date(this.bankReceiptDetails.CreatedDate)
-          : "",
+        this.bankReceiptDetails ? new Date(this.bankReceiptDetails.Date) : "",
       ],
       BankReceiptDetailsList: this._fb.array([
         this.addBankReceiptDetailsList(),
