@@ -1,0 +1,227 @@
+<div class="box box-default">
+  <div class="col-md-4">
+    <button type="button" class="btn btn-primary" (click)="getProductGroup()">
+      Back to Main
+    </button>
+    <div class="btn-group-vertical" style="height: 600px; overflow: scroll">
+      <div class="col-md-12 p-0">
+        <div class="col-md-3" *ngFor="let product of productOrGroupList">
+          <div class="form-group">
+            <button
+              type="button"
+              class="btn btn-secondary listButton"
+              (click)="productClick(product)"
+            >
+              {{ product.Title }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5 p-0">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Item Bar Code</label>
+        <input type="text" class="form-control" />
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <label>Quentity</label>
+        <input type="number" class="form-control" />
+      </div>
+    </div>
+    <div class="col-md-2 mt-4">
+      <div class="form-group">
+        <button class="btn btn-seconday" type="button">Add</button>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <kendo-grid
+        [data]="getProduct.value"
+        (cancel)="cancelHandler($event)"
+        (save)="saveHandler($event)"
+        (remove)="removeHandler($event)"
+      >
+        <ng-template kendoGridToolbarTemplate>
+          <button kendoGridAddCommand>Add New</button>
+        </ng-template>
+        <kendo-grid-column field="Quantity" title="Quantity" width="80">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-rowIndex="rowIndex"
+            let-isNew="isNew"
+            let-formGroup="formGroup"
+          >
+            <kendo-numerictextbox
+              popupAnchor
+              class="form-control"
+              [format]="'n0'"
+              [min]="1"
+              [formControl]="getProduct.controls[rowIndex].get(column.field)"
+              (valueChange)="quantityValues(dataItem, rowIndex)"
+            >
+            </kendo-numerictextbox>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="Title" title="Item" width="120">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-rowIndex="rowIndex"
+            let-isNew="isNew"
+            let-formGroup="formGroup"
+          >
+            <input
+              #ntb="popupAnchor"
+              popupAnchor
+              class="k-textbox"
+              class="form-control"
+              [readonly]="true"
+              [formControl]="getProduct.controls[rowIndex].get(column.field)"
+            />
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="SalesRate" title="Rate" width="100">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-rowIndex="rowIndex"
+            let-isNew="isNew"
+            let-formGroup="formGroup"
+          >
+            <kendo-numerictextbox
+              popupAnchor
+              class="form-control"
+              [format]="'n2'"
+              [readonly]="true"
+              [spinners]="false"
+              [formControl]="getProduct.controls[rowIndex].get(column.field)"
+            >
+            </kendo-numerictextbox>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="Amount" title="Amount" width="100">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-rowIndex="rowIndex"
+            let-isNew="isNew"
+            let-formGroup="formGroup"
+          >
+            <kendo-numerictextbox
+              popupAnchor
+              class="form-control"
+              [format]="'n2'"
+              [readonly]="true"
+              [spinners]="false"
+              [formControl]="getProduct.controls[rowIndex].get(column.field)"
+            >
+            </kendo-numerictextbox>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-command-column title="Action" width="60">
+          <ng-template kendoGridCellTemplate let-isNew="isNew">
+            <button kendoGridRemoveCommand>
+              <i
+                class="fas fa-trash-alt mr-2 cursor-pointer"
+                tooltip="Delete"
+              ></i>
+            </button>
+            <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
+              {{ isNew ? "Add" : "Update" }}
+            </button>
+            <button kendoGridCancelCommand>
+              {{ isNew ? "Discard changes" : "Cancel" }}
+            </button>
+          </ng-template>
+        </kendo-grid-command-column>
+      </kendo-grid>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="form-group">
+      <select class="form-control" type="number" placeholder="Customer All">
+        <option></option>
+        <option>Main User</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <select class="form-control" type="number" placeholder="Default">
+        <option></option>
+        <option>Main User</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <button type="button" class="btn btn-secondary">REFRESH</button>
+    </div>
+    <div class="col-md-6">
+      <button type="button" class="btn btn-secondary">PAY ACCOUNT</button>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Payment Method</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Account</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Cash</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Discount 10%</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>EFT POS</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Gift Voucher</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Lay-By</td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Remening</td>
+          <td>Rs 27</td>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="col-md-6">
+      <div class="form-group">
+        <button type="button" class="btn btn-secondary">CLEAR</button>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-secondary">
+          RECEIPT <br />37342
+        </button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <button type="button" class="btn btn-secondary">TILL</button>
+      </div>
+
+      <div class="form-group">
+        <button type="button" class="btn btn-secondary">COMMIT</button>
+      </div>
+    </div>
+  </div>
+</div>

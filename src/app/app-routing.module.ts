@@ -105,6 +105,13 @@ const routes: Routes = [
         },
       },
       {
+        path: "pos",
+        loadChildren: "@accSwift-modules/pos/pos.module#PosModule",
+        data: {
+          breadcrumb: "POS",
+        },
+      },
+      {
         path: "budget",
         loadChildren: "@accSwift-modules/budget/budget.module#BudgetModule",
         data: {
@@ -191,6 +198,7 @@ const routes: Routes = [
           breadcrumb: "Purchase Report",
         },
       },
+
       {
         path: "ledger-report",
         loadChildren:
