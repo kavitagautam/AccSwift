@@ -64,9 +64,7 @@ export class EditCashReceiptComponent implements OnInit {
         [Validators.required],
       ],
       Date: [
-        this.cashReceiptDetails
-          ? new Date(this.cashReceiptDetails.CreatedDate)
-          : "",
+        this.cashReceiptDetails ? new Date(this.cashReceiptDetails.Date) : "",
       ],
       Remarks: [this.cashReceiptDetails ? this.cashReceiptDetails.Remarks : ""],
       CashReceiptDetails: this._fb.array([this.addCashReceiptEntryFormGroup()]),

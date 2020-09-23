@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, LOCALE_ID } from "@angular/core";
+import { Component, OnInit} from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
@@ -6,7 +6,6 @@ import { DatePipe } from "@angular/common";
 import { Journal } from "../../models/journal.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
-import { IntlService } from "@progress/kendo-angular-intl";
 import { ToastrService } from "ngx-toastr";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { IconConst } from "@app/shared/constants/icon.constant";
@@ -47,11 +46,8 @@ export class EditJournalComponent implements OnInit {
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
-    @Inject(LOCALE_ID) public localeId: string,
-    public intlService: IntlService,
     private toastr: ToastrService
   ) {
-    //this.localeService.set("en-US");
   }
 
   ngOnInit() {
@@ -63,34 +59,13 @@ export class EditJournalComponent implements OnInit {
           .getJournalDetails(params.get("id"))
           .subscribe((response) => {
             this.journalDetail = response.Entity;
-            //this.buildJournalForm();
             if (this.journalDetail) {
               this.setJournalList();
-              this.assignFormsValue();
+              this.journalVoucherForms.patchValue(this.journalDetail);
             }
           });
       }
     });
-  }
-
-  assignFormsValue(): void {
-    this.journalVoucherForms.get("ID").setValue(this.journalDetail.ID);
-    this.journalVoucherForms
-      .get("SeriesID")
-      .setValue(this.journalDetail.SeriesID);
-    this.journalVoucherForms
-      .get("VoucherNo")
-      .setValue(this.journalDetail.VoucherNo);
-
-    this.journalVoucherForms
-      .get("ProjectID")
-      .setValue(this.journalDetail.ProjectID);
-    this.journalVoucherForms
-      .get("Date")
-      .setValue(new Date(this.journalDetail.CreatedDate));
-    this.journalVoucherForms
-      .get("Remarks")
-      .setValue(this.journalDetail.Remarks);
   }
 
   buildJournalForm(): void {
@@ -98,9 +73,7 @@ export class EditJournalComponent implements OnInit {
       ID: [this.journalDetail ? this.journalDetail.ID : null],
       SeriesID: [this.journalDetail ? this.journalDetail.SeriesID : null],
       VoucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
-      Date: [
-        this.journalDetail ? new Date(this.journalDetail.CreatedDate) : "",
-      ],
+      Date: [this.journalDetail ? new Date(this.journalDetail.Date) : ""],
       ProjectID: [this.journalDetail ? this.journalDetail.ProjectID : null],
       Remarks: [this.journalDetail ? this.journalDetail.Remarks : ""],
       Journaldetails: this._fb.array([this.addJournalEntryFormGroup()]),
