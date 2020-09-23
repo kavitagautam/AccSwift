@@ -1,5 +1,8 @@
 <div class="box box-default">
   <div class="col-md-4">
+    <button type="button" class="btn btn-primary" (click)="getProductGroup()">
+      Back to Main
+    </button>
     <div class="btn-group-vertical" style="height: 600px; overflow: scroll">
       <div class="col-md-12 p-0">
         <div class="col-md-3" *ngFor="let product of productOrGroupList">
@@ -7,7 +10,7 @@
             <button
               type="button"
               class="btn btn-secondary listButton"
-              (click)="productClick(product.ID)"
+              (click)="productClick(product)"
             >
               {{ product.Title }}
             </button>
@@ -16,7 +19,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-5 p-0">
     <div class="col-md-12">
       <div class="form-group">
         <label>Item Bar Code</label>
@@ -35,39 +38,114 @@
       </div>
     </div>
     <div class="col-md-12">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Quantity</th>
-            <th>Item</th>
-            <th>Rate</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Stationery</td>
-            <td>10</td>
-            <td>10</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Stationery</td>
-            <td>10</td>
-            <td>10</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Stationery</td>
-            <td>10</td>
-            <td>10</td>
-          </tr>
-        </tbody>
-      </table>
+      <kendo-grid
+        [data]="getProduct.value"
+        (cancel)="cancelHandler($event)"
+        (save)="saveHandler($event)"
+        (remove)="removeHandler($event)"
+      >
+        <ng-template kendoGridToolbarTemplate>
+          <button kendoGridAddCommand>Add New</button>
+        </ng-template>
+        <kendo-grid-column field="Quantity" title="Quantity" width="80">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-rowIndex="rowIndex"
+            let-isNew="isNew"
+            let-formGroup="formGroup"
+          >
+            <kendo-numerictextbox
+              popupAnchor
+              class="form-control"
+              [format]="'n0'"
+              [min]="1"
+              [formControl]="getProduct.controls[rowIndex].get(column.field)"
+              (valueChange)="quantityValues(dataItem, rowIndex)"
+            >
+            </kendo-numerictextbox>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="Title" title="Item" width="120">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-rowIndex="rowIndex"
+            let-isNew="isNew"
+            let-formGroup="formGroup"
+          >
+            <input
+              #ntb="popupAnchor"
+              popupAnchor
+              class="k-textbox"
+              class="form-control"
+              [readonly]="true"
+              [formControl]="getProduct.controls[rowIndex].get(column.field)"
+            />
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="SalesRate" title="Rate" width="100">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-rowIndex="rowIndex"
+            let-isNew="isNew"
+            let-formGroup="formGroup"
+          >
+            <kendo-numerictextbox
+              popupAnchor
+              class="form-control"
+              [format]="'n2'"
+              [readonly]="true"
+              [spinners]="false"
+              [formControl]="getProduct.controls[rowIndex].get(column.field)"
+            >
+            </kendo-numerictextbox>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="Amount" title="Amount" width="100">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-rowIndex="rowIndex"
+            let-isNew="isNew"
+            let-formGroup="formGroup"
+          >
+            <kendo-numerictextbox
+              popupAnchor
+              class="form-control"
+              [format]="'n2'"
+              [readonly]="true"
+              [spinners]="false"
+              [formControl]="getProduct.controls[rowIndex].get(column.field)"
+            >
+            </kendo-numerictextbox>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-command-column title="Action" width="60">
+          <ng-template kendoGridCellTemplate let-isNew="isNew">
+            <button kendoGridRemoveCommand>
+              <i
+                class="fas fa-trash-alt mr-2 cursor-pointer"
+                tooltip="Delete"
+              ></i>
+            </button>
+            <button kendoGridSaveCommand [disabled]="formGroup?.invalid">
+              {{ isNew ? "Add" : "Update" }}
+            </button>
+            <button kendoGridCancelCommand>
+              {{ isNew ? "Discard changes" : "Cancel" }}
+            </button>
+          </ng-template>
+        </kendo-grid-command-column>
+      </kendo-grid>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="form-group">
       <select class="form-control" type="number" placeholder="Customer All">
         <option></option>
