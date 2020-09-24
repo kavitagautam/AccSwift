@@ -38,9 +38,13 @@ export class PosComponent implements OnInit {
     });
   }
 
-  get getProduct(): FormArray {
-    return <FormArray>this.form.get("products");
+  get getProduct() {
+    return this.form.get("products") as FormArray;
   }
+
+  // get formArr() {
+  //   return this.accountForm.get("sports") as FormArray;
+  // }
   ngOnInit() {
     this.getProductGroup();
   }

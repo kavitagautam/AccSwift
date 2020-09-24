@@ -28,7 +28,7 @@
     </div>
     <div class="col-md-10">
       <div class="form-group">
-        <label>Quentity</label>
+        <label>Quantity</label>
         <input type="number" class="form-control" />
       </div>
     </div>
@@ -38,6 +38,26 @@
       </div>
     </div>
     <div class="col-md-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Quantity</th>
+            <th>Item</th>
+            <th>Rate</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr *ngFor="let product of getProduct.controls; index as i">
+            <td>{{ product[i].Quantity }}</td>
+            <td>{{ product[i].Item }}</td>
+            <td>{{ product[i].SalesRate }}</td>
+            <td>{{ product[i].Amount }}</td>
+          </tr> -->
+        </tbody>
+        <!-- <h5>{{ getProduct.controls.value | json }}</h5> -->
+      </table>
+
       <kendo-grid
         [data]="getProduct.value"
         (cancel)="cancelHandler($event)"
