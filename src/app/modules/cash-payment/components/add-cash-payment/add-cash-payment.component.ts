@@ -65,6 +65,7 @@ export class AddCashPaymentComponent implements OnInit {
         [Validators.required],
       ],
       Date: [new Date()],
+      Remarks: [""],
       CashPaymentDetailsList: this._fb.array([this.addCashPaymentEntryList()]),
     });
   }
