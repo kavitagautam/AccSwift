@@ -194,7 +194,7 @@
           [decimals]="decimals"
           [format]="currencyFormat"
           [disabled]="
-            entryArray.controls[rowIndex].get('DebitCredit').value == 'Credit'
+            entryArray.controls[rowIndex].get('DebitCredit').value === 'Credit'
           "
           [formControl]="entryArray.controls[rowIndex].get('Amount')"
           (change)="checkDebitValue(dataItem, rowIndex)"
@@ -245,7 +245,7 @@
           [decimals]="decimals"
           [format]="currencyFormat"
           [disabled]="
-            entryArray.controls[rowIndex].get('DebitCredit').value == 'Debit'
+            entryArray.controls[rowIndex].get('DebitCredit').value === 'Debit'
           "
           [formControl]="entryArray.controls[rowIndex].get('Amount')"
           (change)="checkCreditValue(dataItem, rowIndex)"
