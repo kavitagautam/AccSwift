@@ -67,6 +67,7 @@ export class EditCashPaymentComponent implements OnInit {
       Date: [
         this.cashPaymentDetail ? new Date(this.cashPaymentDetail.Date) : "",
       ],
+      Remarks: [this.cashPaymentDetail ? this.cashPaymentDetail.Remarks : ""],
       CashPaymentDetailsList: this._fb.array([this.addCashPaymentEntryList()]),
     });
   }
