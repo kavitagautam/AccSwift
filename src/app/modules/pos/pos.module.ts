@@ -10,6 +10,7 @@ import { SharedModule } from "@app/shared/shared.module";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift-shared.module";
+import { NgNumericKeyboardModule } from "ng-numeric-keyboard";
 
 @NgModule({
   declarations: [PosComponent],
@@ -23,6 +24,7 @@ import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift
     SharedModule,
     AccswiftSharedModule,
     InputsModule,
+    NgNumericKeyboardModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
