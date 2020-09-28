@@ -1,7 +1,8 @@
 import { ProductOrGroup } from "@accSwift-modules/pos/models/pos.model";
 import { PosService } from "@accSwift-modules/pos/services/pos.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
 
 @Component({
   selector: "accSwift-pos",
@@ -10,37 +11,30 @@ import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
 })
 export class PosComponent implements OnInit {
   productOrGroupList: ProductOrGroup[] = [];
-  form: FormGroup;
   private editedRowIndex: number;
+  quantityNo: number;
+  selectedRow: number = null;
+  productList: any = [];
+  totalQty: number;
+  totalAmount: number;
+  accoutNumber: any;
+  cashAmount: number;
+  discountAmount: number;
 
-  constructor(private posServices: PosService, private _fb: FormBuilder) {
-    this.form = this._fb.group({
-      products: this._fb.array([]),
-    });
-    // [this.addNewProduct()]
-  }
+  modalRef: BsModalRef;
+  //  modal config to unhide modal when clicked outside
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+    centered: true,
+    class: "modal-lg",
+  };
 
-  addNewProduct(): FormGroup {
-    return this._fb.group({
-      PurchaseRate: [""],
-      SalesRate: [""],
-      ClosingQty: [""],
-      QtyUnitID: [""],
-      Quantity: [null],
-      IsInventory: [""],
-      IsVAT: [""],
-      TaxID: [""],
-      Amount: [0],
-      CodeName: [""],
-      ID: [""],
-      TypeOf: [""],
-      Title: [""],
-    });
-  }
+  constructor(
+    private posServices: PosService,
+    private modalService: BsModalService
+  ) {}
 
-  get getProduct(): FormArray {
-    return <FormArray>this.form.get("products");
-  }
   ngOnInit() {
     this.getProductGroup();
   }
@@ -51,6 +45,44 @@ export class PosComponent implements OnInit {
     });
   }
 
+  selectProduct(i, product): void {
+    this.quantityNo = product.Quantity;
+    this.selectedRow = i;
+  }
+
+  quantityChange(): void {
+    if (this.selectedRow !== null) {
+      const obj = {
+        Title: this.productList[this.selectedRow].Title,
+        Quantity: this.quantityNo,
+        Amount: this.productList[this.selectedRow].SalesRate * this.quantityNo,
+        SalesRate: this.productList[this.selectedRow].SalesRate,
+      };
+      this.productList[this.selectedRow] = obj;
+    }
+    this.calculateTotal(this.productList);
+  }
+
+  calculateTotal(item): void {
+    let totalQty = 0;
+    let totalAmount = 0;
+
+    for (let i = 0; i < item.length; i++) {
+      if (item[i].Quantity) {
+        totalQty = totalQty + item[i].Quantity;
+      }
+      if (item[i].Amount) {
+        totalAmount = totalAmount + item[i].Amount;
+      }
+    }
+    this.totalQty = totalQty;
+    this.totalAmount = totalAmount;
+  }
+
+  deleteProduct(index): void {
+    this.productList.splice(index, 1);
+  }
+
   productClick(product): void {
     if (product.TypeOf == 0) {
       this.posServices.getProductOrGroup(product.ID).subscribe((response) => {
@@ -58,58 +90,25 @@ export class PosComponent implements OnInit {
       });
     }
     if (product.TypeOf == 1) {
-      const creds = this.form.controls.products as FormArray;
-      creds.push(
-        this._fb.group({
-          PurchaseRate: [product.PurchaseRate],
-          SalesRate: [product.SalesRate],
-          ClosingQty: [product.ClosingQty],
-          QtyUnitID: [product.QtyUnitID],
-          Quantity: [1],
-          IsInventory: [product.IsInventory],
-          IsVAT: [product.IsVAT],
-          TaxID: [product.TaxID],
-          Amount: [0],
-          CodeName: [product.CodeName],
-          ID: [product.ID],
-          TypeOf: [product.TypeOf],
-          Title: [product.Title],
-        })
-      );
+      this.quantityNo = 1;
+      const obj = {
+        Title: product.Title,
+        Quantity: this.quantityNo,
+        Amount: product.SalesRate * this.quantityNo,
+        SalesRate: product.SalesRate,
+      };
+      this.productList.push(obj);
+      this.calculateTotal(this.productList);
     }
   }
 
-  quantityValues(dataItem, index): void {
-    const productListArray = this.form.get("products") as FormArray;
-    let qunatityValue = productListArray.controls[index].get("Quantity").value;
-    let salesRate = productListArray.controls[index].get("SalesRate").value;
-    productListArray.controls[index]
-      .get("Amount")
-      .setValue(qunatityValue * salesRate);
-  }
-
-  private closeEditor(grid, rowIndex = 1) {
-    grid.closeRow(rowIndex);
-    this.editedRowIndex = undefined;
-  }
-  public editHandler({ sender, rowIndex, dataItem }) {
-    this.closeEditor(sender);
-
-    this.editedRowIndex = rowIndex;
-    sender.editRow(rowIndex, this.form.get("products"));
-  }
-
-  public removeHandler({ dataItem, rowIndex }): void {
-    const productListArray = this.form.get("products") as FormArray;
-    // Remove the Row
-    productListArray.removeAt(rowIndex);
-  }
-
-  public cancelHandler({ sender, rowIndex }) {
-    this.closeEditor(sender, rowIndex);
-  }
-
-  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
-    sender.closeRow(rowIndex);
+  openCommit(template: TemplateRef<any>): void {
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      centered: true,
+      class: "modal-sm",
+    };
+    this.modalRef = this.modalService.show(template, config);
   }
 }

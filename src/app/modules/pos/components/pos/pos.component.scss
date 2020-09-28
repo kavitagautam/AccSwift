@@ -7,3 +7,8 @@
   overflow: hidden;
   word-wrap: break-word;
 }
+
+tr.selected {
+  background-color: #cfd8dc;
+  color: white;
+}
