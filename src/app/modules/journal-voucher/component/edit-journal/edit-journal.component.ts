@@ -1,4 +1,4 @@
-import { Component, OnInit} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
@@ -47,8 +47,7 @@ export class EditJournalComponent implements OnInit {
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     private toastr: ToastrService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.buildJournalForm();
@@ -87,8 +86,8 @@ export class EditJournalComponent implements OnInit {
       LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       LedgerName: ["", Validators.required],
       LedgerID: [""],
-      DebitCredit: ["", Validators.required],
-      Amount: [""],
+      DrAmount: [""],
+      CrAmount: [""],
       LedgerBalance: [""],
       Remarks: [""],
     });
@@ -120,17 +119,17 @@ export class EditJournalComponent implements OnInit {
             LedgerCode: [element.LedgerCode ? element.LedgerCode : ""],
             LedgerName: [element.LedgerName, Validators.required],
             LedgerID: [element.LedgerID],
-            DebitCredit: [element.DebitCredit],
-            Amount: [element.Amount],
+            DrAmount: [element.DrAmount],
+            CrAmount: [element.CrAmount],
             LedgerBalance: [element.LedgerBalance],
             Remarks: [element.Remarks],
           })
         );
-        if ((element.DebitCredit = "Debit")) {
-          this.debitTotal = +parseInt(element.Amount) || 0;
+        if (element.DrAmount !== null) {
+          this.debitTotal = +parseInt(element.DrAmount) || 0;
         }
-        if ((element.DebitCredit = "Credit")) {
-          this.creditTotal = +parseInt(element.Amount) || 0;
+        if (element.CrAmount !== null) {
+          this.creditTotal = +parseInt(element.CrAmount) || 0;
         }
       });
     } else {
@@ -145,8 +144,8 @@ export class EditJournalComponent implements OnInit {
           ],
           LedgerName: [""],
           LedgerID: [""],
-          DebitCredit: ["", Validators.required],
-          Amount: ["", Validators.required],
+          DrAmount: [""],
+          CrAmount: [""],
           LedgerBalance: [""],
           Remarks: [""],
         })

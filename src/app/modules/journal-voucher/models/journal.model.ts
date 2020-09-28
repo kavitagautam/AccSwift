@@ -1,12 +1,19 @@
-export interface JournalDetails {
-  DebitCredit: string;
+export interface JournalEditModel {
+  StatusCode: number;
+  Message: string;
+  Entity: Journal;
+}
+
+export interface Journaldetail {
+  DrAmount?: number;
+  CrAmount?: number;
   ID: number;
   MasterID: number;
   LedgerID: number;
+  CodeName: string;
   LedgerName: string;
   LedgerCode: string;
   LedgerBalance: string;
-  Amount: number;
   Remarks: string;
 }
 
@@ -21,7 +28,7 @@ export interface Fields {
 export interface Journal {
   ID: number;
   Date: Date;
-  Journaldetails: JournalDetails[];
+  Journaldetails: Journaldetail[];
   Fields: Fields;
   SeriesID: number;
   SeriesName: string;
@@ -29,6 +36,7 @@ export interface Journal {
   VoucherNo: string;
   ProjectID: number;
   ProjectName: string;
+  AccClassIDs: number[];
   CompanyID: number;
   Remarks: string;
   CreatedBy: string;
@@ -50,10 +58,4 @@ export interface JournalMasterRootModel {
   StatusCode: number;
   Message: string;
   Entity: JournalMaster;
-}
-
-export interface JournalEditModel {
-  StatusCode: number;
-  Message: string;
-  Entity: Journal;
 }
