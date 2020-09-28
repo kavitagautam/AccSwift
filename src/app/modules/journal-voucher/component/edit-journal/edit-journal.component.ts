@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, LOCALE_ID } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
@@ -6,7 +6,6 @@ import { DatePipe } from "@angular/common";
 import { Journal } from "../../models/journal.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
-import { IntlService } from "@progress/kendo-angular-intl";
 import { ToastrService } from "ngx-toastr";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { IconConst } from "@app/shared/constants/icon.constant";
@@ -47,12 +46,8 @@ export class EditJournalComponent implements OnInit {
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
-    @Inject(LOCALE_ID) public localeId: string,
-    public intlService: IntlService,
     private toastr: ToastrService
-  ) {
-    //this.localeService.set("en-US");
-  }
+  ) {}
 
   ngOnInit() {
     this.buildJournalForm();
@@ -63,34 +58,13 @@ export class EditJournalComponent implements OnInit {
           .getJournalDetails(params.get("id"))
           .subscribe((response) => {
             this.journalDetail = response.Entity;
-            //this.buildJournalForm();
             if (this.journalDetail) {
               this.setJournalList();
-              this.assignFormsValue();
+              this.journalVoucherForms.patchValue(this.journalDetail);
             }
           });
       }
     });
-  }
-
-  assignFormsValue(): void {
-    this.journalVoucherForms.get("ID").setValue(this.journalDetail.ID);
-    this.journalVoucherForms
-      .get("SeriesID")
-      .setValue(this.journalDetail.SeriesID);
-    this.journalVoucherForms
-      .get("VoucherNo")
-      .setValue(this.journalDetail.VoucherNo);
-
-    this.journalVoucherForms
-      .get("ProjectID")
-      .setValue(this.journalDetail.ProjectID);
-    this.journalVoucherForms
-      .get("Date")
-      .setValue(new Date(this.journalDetail.CreatedDate));
-    this.journalVoucherForms
-      .get("Remarks")
-      .setValue(this.journalDetail.Remarks);
   }
 
   buildJournalForm(): void {
@@ -98,9 +72,7 @@ export class EditJournalComponent implements OnInit {
       ID: [this.journalDetail ? this.journalDetail.ID : null],
       SeriesID: [this.journalDetail ? this.journalDetail.SeriesID : null],
       VoucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
-      Date: [
-        this.journalDetail ? new Date(this.journalDetail.CreatedDate) : "",
-      ],
+      Date: [this.journalDetail ? new Date(this.journalDetail.Date) : ""],
       ProjectID: [this.journalDetail ? this.journalDetail.ProjectID : null],
       Remarks: [this.journalDetail ? this.journalDetail.Remarks : ""],
       Journaldetails: this._fb.array([this.addJournalEntryFormGroup()]),
@@ -114,8 +86,8 @@ export class EditJournalComponent implements OnInit {
       LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       LedgerName: ["", Validators.required],
       LedgerID: [""],
-      DebitCredit: ["", Validators.required],
-      Amount: [""],
+      DrAmount: [""],
+      CrAmount: [""],
       LedgerBalance: [""],
       Remarks: [""],
     });
@@ -147,17 +119,17 @@ export class EditJournalComponent implements OnInit {
             LedgerCode: [element.LedgerCode ? element.LedgerCode : ""],
             LedgerName: [element.LedgerName, Validators.required],
             LedgerID: [element.LedgerID],
-            DebitCredit: [element.DebitCredit],
-            Amount: [element.Amount],
+            DrAmount: [element.DrAmount],
+            CrAmount: [element.CrAmount],
             LedgerBalance: [element.LedgerBalance],
             Remarks: [element.Remarks],
           })
         );
-        if ((element.DebitCredit = "Debit")) {
-          this.debitTotal = +parseInt(element.Amount) || 0;
+        if (element.DrAmount !== null) {
+          this.debitTotal = +parseInt(element.DrAmount) || 0;
         }
-        if ((element.DebitCredit = "Credit")) {
-          this.creditTotal = +parseInt(element.Amount) || 0;
+        if (element.CrAmount !== null) {
+          this.creditTotal = +parseInt(element.CrAmount) || 0;
         }
       });
     } else {
@@ -172,8 +144,8 @@ export class EditJournalComponent implements OnInit {
           ],
           LedgerName: [""],
           LedgerID: [""],
-          DebitCredit: ["", Validators.required],
-          Amount: ["", Validators.required],
+          DrAmount: [""],
+          CrAmount: [""],
           LedgerBalance: [""],
           Remarks: [""],
         })

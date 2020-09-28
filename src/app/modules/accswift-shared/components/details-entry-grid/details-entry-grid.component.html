@@ -174,10 +174,10 @@
     </kendo-grid-column>
 
     <kendo-grid-column
-      field="DebitCredit"
+      field="DrAmount"
       title="Debit"
       width="150"
-      [hidden]="!columns.includes('DebitCredit')"
+      [hidden]="!columns.includes('DrAmount')"
     >
       <ng-template
         kendoGridCellTemplate
@@ -192,19 +192,19 @@
           popupAnchor
           class="form-control"
           [decimals]="decimals"
-          [format]="currencyFormat"
           [disabled]="
-            entryArray.controls[rowIndex].get('DebitCredit').value == 'Credit'
+            entryArray.controls[rowIndex].get('CrAmount').value !== null
           "
-          [formControl]="entryArray.controls[rowIndex].get('Amount')"
+          [format]="currencyFormat"
+          [formControl]="entryArray.controls[rowIndex].get('DrAmount')"
           (change)="checkDebitValue(dataItem, rowIndex)"
         ></kendo-numerictextbox>
         <kendo-popup
           [anchor]="ntb.element"
           *ngIf="
-            entryArray.controls[rowIndex].get('Amount').invalid &&
+            entryArray.controls[rowIndex].get('DrAmount').invalid &&
             rowSubmitted &&
-            !entryArray.controls[rowIndex].get('Amount').untouched
+            !entryArray.controls[rowIndex].get('DrAmount').untouched
           "
           popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
         >
@@ -223,12 +223,12 @@
         </span>
       </ng-template>
     </kendo-grid-column>
-
+    
     <kendo-grid-column
-      field="DebitCredit"
+      field="CrAmount"
       title="Credit"
       width="150"
-      [hidden]="!columns.includes('DebitCredit')"
+      [hidden]="!columns.includes('CrAmount')"
     >
       <ng-template
         kendoGridCellTemplate
@@ -245,18 +245,18 @@
           [decimals]="decimals"
           [format]="currencyFormat"
           [disabled]="
-            entryArray.controls[rowIndex].get('DebitCredit').value == 'Debit'
+            entryArray.controls[rowIndex].get('DrAmount').value !== null
           "
-          [formControl]="entryArray.controls[rowIndex].get('Amount')"
+          [formControl]="entryArray.controls[rowIndex].get('CrAmount')"
           (change)="checkCreditValue(dataItem, rowIndex)"
         ></kendo-numerictextbox>
 
         <kendo-popup
           [anchor]="ntb.element"
           *ngIf="
-            entryArray.controls[rowIndex].get('Amount').invalid &&
+            entryArray.controls[rowIndex].get('CrAmount').invalid &&
             rowSubmitted &&
-            !(isNew && entryArray.controls[rowIndex].get('Amount').untouched)
+            !(isNew && entryArray.controls[rowIndex].get('CrAmount').untouched)
           "
           popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
         >

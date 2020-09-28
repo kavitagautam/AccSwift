@@ -82,8 +82,8 @@ export class AddJournalComponent implements OnInit {
       LedgerCode: [""],
       LedgerName: ["", Validators.required],
       LedgerID: [""],
-      DebitCredit: [""],
-      Amount: ["", Validators.required],
+      DrAmount: [""],
+      CrAmount: [""],
       LedgerBalance: [""],
       Remarks: [""],
     });
