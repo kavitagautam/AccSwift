@@ -206,11 +206,17 @@ export class ReportsService {
   }
 
   getBSGroupDetails(body): Observable<BalanceSheetGDetailModel> {
-    return this.httpService.post(`${this._api_URL}Reports/BalanceSheet`, body);
+    return this.httpService.post(
+      `${this._api_URL}Reports/BalanceSheetDetails`,
+      body
+    );
   }
 
   getBSLedgerDetails(body): Observable<BalanceSheetLDetailRootModel> {
-    return this.httpService.post(`${this._api_URL}Reports/BalanceSheet`, body);
+    return this.httpService.post(
+      `${this._api_URL}Reports/BalanceSheetDetails`,
+      body
+    );
   }
 
   getPLGroupDetails(body): Observable<ProfitLossGDRootModel> {

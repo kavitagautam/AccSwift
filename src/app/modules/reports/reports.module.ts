@@ -11,9 +11,14 @@ import { ReportPdfComponent } from "./components/report-pdf/report-pdf.component
 import { TrialBalanceComponent } from "./components/trial-balance/trial-balance.component";
 import { SharedModule } from "@app/shared/shared.module";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
+import { SettingsReportsComponent } from "./common/components/settings-reports/settings-reports.component";
 
 @NgModule({
-  declarations: [ReportPdfComponent, TrialBalanceComponent],
+  declarations: [
+    ReportPdfComponent,
+    TrialBalanceComponent,
+    SettingsReportsComponent,
+  ],
   imports: [
     CommonModule,
     ReportsRoutingModule,
@@ -26,5 +31,6 @@ import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module"
     SharedModule,
     AccswiftSharedModule,
   ],
+  entryComponents: [SettingsReportsComponent],
 })
 export class ReportsModule {}

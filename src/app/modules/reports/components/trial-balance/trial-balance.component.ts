@@ -16,6 +16,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { Company } from "@accSwift-modules/company/models/company.model";
+import { SettingsReportsComponent } from '@accSwift-modules/reports/common/components/settings-reports/settings-reports.component';
 @Component({
   selector: "accSwift-trial-balance",
   templateUrl: "./trial-balance.component.html",
@@ -69,7 +70,7 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(
-      () => this.openTrialBalanceSettings(this.trailBalanceSettings),
+      () => this.openTrialBalanceSettings(),
       100
     );
   }
@@ -105,15 +106,22 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
     }
   }
 
-  openTrialBalanceSettings(template: TemplateRef<any>): void {
-    const config = {
-      backdrop: true,
-      ignoreBackdropClick: true,
-      centered: true,
-      class: "modal-lg",
-    };
-    this.modalRef = this.modalService.show(template, config);
+  openTrialBalanceSettings(): void {
+    this.modalRef = this.modalService.show(
+      SettingsReportsComponent,
+      this.config
+    );
   }
+
+  // openTrialBalanceSettings(template: TemplateRef<any>): void {
+  //   const config = {
+  //     backdrop: true,
+  //     ignoreBackdropClick: true,
+  //     centered: true,
+  //     class: "modal-lg",
+  //   };
+  //   this.modalRef = this.modalService.show(template, config);
+  // }
 
   openGroupBalance(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, this.config);

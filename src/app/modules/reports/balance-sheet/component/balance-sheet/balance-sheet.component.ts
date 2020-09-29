@@ -131,9 +131,11 @@ export class BalanceSheetComponent implements OnInit {
   }
 
   openBalanceDrillDown(event, data): void {
+    console.log("data" + JSON.stringify(data));
     if (data.Type === "GROUP") {
       this.modalRef.hide();
       this.balanceSheetForms.get("Type").setValue(data.Type);
+      this.balanceSheetForms.get("AccountGroupID").setValue(data.ID);
       this.balanceSheetForms.get("ID").setValue(data.ID);
       this.opengroupPLBalance(this.groupBalance);
       this.groupLoading = true;
@@ -142,6 +144,9 @@ export class BalanceSheetComponent implements OnInit {
         .subscribe(
           (response) => {
             this.groupBalanceList = response.Entity.Entity;
+            console.log(
+              "Group Balance " + JSON.stringify(this.groupBalanceList)
+            );
             this.companyInfo = response.Entity.Company;
             this.totalGroupClosingBalance = response.Entity.ClosingBalance;
           },
@@ -156,6 +161,7 @@ export class BalanceSheetComponent implements OnInit {
     if (data.Type === "LEDGER") {
       this.modalRef.hide();
       this.balanceSheetForms.get("Type").setValue(data.Type);
+      this.balanceSheetForms.get("LedgerID").setValue(data.ID);
       this.balanceSheetForms.get("ID").setValue(data.ID);
       this.openLedgerDetails(this.ledgerDetails);
       this.ledgerLoading = true;
