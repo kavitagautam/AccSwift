@@ -24,6 +24,7 @@ export class SettingsReportsComponent implements OnInit {
   constructor(private _fb: FormBuilder, public reportService: ReportsService) {}
 
   ngOnInit() {
+    //this.settingsForms=
     // this.settingsForms = this._fb.group({
     //   Type: [""],
     //   ID: [null],
