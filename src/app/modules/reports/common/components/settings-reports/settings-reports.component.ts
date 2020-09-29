@@ -9,7 +9,7 @@ import { BsModalRef } from "ngx-bootstrap";
   styleUrls: ["./settings-reports.component.scss"],
 })
 export class SettingsReportsComponent implements OnInit {
-  settingsForms: FormGroup;
+  @Input("") settingsForms: FormGroup;
   toDateSelect: number;
   dateCheckbox: boolean = true;
   projectName: string;
@@ -24,24 +24,24 @@ export class SettingsReportsComponent implements OnInit {
   constructor(private _fb: FormBuilder, public reportService: ReportsService) {}
 
   ngOnInit() {
-    this.settingsForms = this._fb.group({
-      Type: [""],
-      ID: [null],
-      IsLedgerOnly: [false],
-      IsShowPreviousYear: [false],
-      IsOpeningTrial: [false],
-      GroupID: 0,
-      IsShowSecondLevelGroupDtl: [false],
-      IsAllGroups: [true],
-      IsOnlyPrimaryGroups: [false],
-      IsDateRange: [false],
-      IsDetails: [false],
-      IsShowZeroBalance: [false],
-      ProjectID: [null],
-      AccClassID: [],
-      FromDate: [""],
-      ToDate: [{ value: "", disabled: true }],
-    });
+    // this.settingsForms = this._fb.group({
+    //   Type: [""],
+    //   ID: [null],
+    //   IsLedgerOnly: [false],
+    //   IsShowPreviousYear: [false],
+    //   IsOpeningTrial: [false],
+    //   GroupID: 0,
+    //   IsShowSecondLevelGroupDtl: [false],
+    //   IsAllGroups: [true],
+    //   IsOnlyPrimaryGroups: [false],
+    //   IsDateRange: [false],
+    //   IsDetails: [false],
+    //   IsShowZeroBalance: [false],
+    //   ProjectID: [null],
+    //   AccClassID: [],
+    //   FromDate: [""],
+    //   ToDate: [{ value: "", disabled: true }],
+    // });
   }
 
   enableDate(): void {

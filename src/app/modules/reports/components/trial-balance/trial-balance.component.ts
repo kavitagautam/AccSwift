@@ -16,7 +16,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { Company } from "@accSwift-modules/company/models/company.model";
-import { SettingsReportsComponent } from '@accSwift-modules/reports/common/components/settings-reports/settings-reports.component';
+import { SettingsReportsComponent } from "@accSwift-modules/reports/common/components/settings-reports/settings-reports.component";
 @Component({
   selector: "accSwift-trial-balance",
   templateUrl: "./trial-balance.component.html",
@@ -69,10 +69,7 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(
-      () => this.openTrialBalanceSettings(),
-      100
-    );
+    setTimeout(() => this.openTrialBalanceSettings(), 100);
   }
 
   buildTrailBalanceForms(): void {
@@ -111,6 +108,10 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
       SettingsReportsComponent,
       this.config
     );
+    this.modalRef.content.data = this.trailBalanceForms;
+    // // this.modalRef.componentInsta
+    // const modalRef = this.modalService.show(SettingsReportsComponent);
+    this.modalRef.content.settingsForms = this.trailBalanceForms;
   }
 
   // openTrialBalanceSettings(template: TemplateRef<any>): void {
