@@ -192,9 +192,7 @@
           popupAnchor
           class="form-control"
           [decimals]="decimals"
-          [disabled]="
-            entryArray.controls[rowIndex].get('CrAmount').value !== null
-          "
+          [disabled]="entryArray.controls[rowIndex].get('CrAmount').value > 0"
           [format]="currencyFormat"
           [formControl]="entryArray.controls[rowIndex].get('DrAmount')"
           (change)="checkDebitValue(dataItem, rowIndex)"
@@ -223,7 +221,7 @@
         </span>
       </ng-template>
     </kendo-grid-column>
-    
+
     <kendo-grid-column
       field="CrAmount"
       title="Credit"
@@ -244,9 +242,7 @@
           class="form-control"
           [decimals]="decimals"
           [format]="currencyFormat"
-          [disabled]="
-            entryArray.controls[rowIndex].get('DrAmount').value !== null
-          "
+          [disabled]="entryArray.controls[rowIndex].get('DrAmount').value > 0"
           [formControl]="entryArray.controls[rowIndex].get('CrAmount')"
           (change)="checkCreditValue(dataItem, rowIndex)"
         ></kendo-numerictextbox>
