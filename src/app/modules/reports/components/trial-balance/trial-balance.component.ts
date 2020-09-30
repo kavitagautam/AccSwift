@@ -16,7 +16,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { Company } from "@accSwift-modules/company/models/company.model";
-import { SettingsReportsComponent } from "@accSwift-modules/reports/common/components/settings-reports/settings-reports.component";
+import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 @Component({
   selector: "accSwift-trial-balance",
   templateUrl: "./trial-balance.component.html",
@@ -89,7 +89,7 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
       ProjectID: [null],
       AccClassID: [],
       FromDate: [""],
-      ToDate: [{ value: "", disabled: true }],
+      ToDate: [""],
     });
   }
 
@@ -104,14 +104,37 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   }
 
   openTrialBalanceSettings(): void {
-    this.modalRef = this.modalService.show(
-      SettingsReportsComponent,
-      this.config
-    );
-    this.modalRef.content.data = this.trailBalanceForms;
-    // // this.modalRef.componentInsta
-    // const modalRef = this.modalService.show(SettingsReportsComponent);
-    this.modalRef.content.settingsForms = this.trailBalanceForms;
+    this.modalRef = this.modalService.show(SettingsReportsComponent, {
+      initialState: { settingsForms: this.trailBalanceForms },
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-lg",
+    });
+    this.modalRef.content.projectName.subscribe((data) => {
+      this.projectName = data;
+    });
+    this.modalRef.content.onSubmit.subscribe((data) => {
+      console.log(JSON.stringify(data));
+      if (data) {
+        this.listLoading = true;
+        this.reportService.getTrailBalance(JSON.stringify(data)).subscribe(
+          (response) => {
+            this.trailBalnceList = response.Entity.Entity;
+          },
+          (error) => {
+            this.listLoading = false;
+          },
+          () => {
+            this.listLoading = false;
+          }
+        );
+      }
+    });
+
+    this.modalRef.content.onClose.subscribe((data) => {
+      this.showReport();
+    });
   }
 
   // openTrialBalanceSettings(template: TemplateRef<any>): void {

@@ -1,7 +1,10 @@
+import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
+import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
 import { ReportsService } from "@accSwift-modules/reports/services/reports.service";
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { BsModalRef } from "ngx-bootstrap";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "accSwift-settings-reports",
@@ -9,11 +12,20 @@ import { BsModalRef } from "ngx-bootstrap";
   styleUrls: ["./settings-reports.component.scss"],
 })
 export class SettingsReportsComponent implements OnInit {
-  @Input("") settingsForms: FormGroup;
+  @Input() settingsForms: FormGroup;
   toDateSelect: number;
   dateCheckbox: boolean = true;
-  projectName: string;
-  modalRef: BsModalRef;
+  public onClose = new Subject();
+  public onSubmit: Subject<boolean>;
+  public projectName: Subject<string>;
+  formsField = [];
+
+  accountLedger: boolean = false;
+  accountsSelect: number;
+
+  accountGroup: boolean = false;
+  ledgerMinList: LedgerMin[] = [];
+  ledgerGroupList: LedgerGroup[] = [];
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -21,30 +33,36 @@ export class SettingsReportsComponent implements OnInit {
     centered: true,
     class: "modal-lg",
   };
-  constructor(private _fb: FormBuilder, public reportService: ReportsService) {}
+  constructor(
+    private _fb: FormBuilder,
+    public reportService: ReportsService,
+    public modalRef: BsModalRef
+  ) {}
 
   ngOnInit() {
-    //this.settingsForms=
-    // this.settingsForms = this._fb.group({
-    //   Type: [""],
-    //   ID: [null],
-    //   IsLedgerOnly: [false],
-    //   IsShowPreviousYear: [false],
-    //   IsOpeningTrial: [false],
-    //   GroupID: 0,
-    //   IsShowSecondLevelGroupDtl: [false],
-    //   IsAllGroups: [true],
-    //   IsOnlyPrimaryGroups: [false],
-    //   IsDateRange: [false],
-    //   IsDetails: [false],
-    //   IsShowZeroBalance: [false],
-    //   ProjectID: [null],
-    //   AccClassID: [],
-    //   FromDate: [""],
-    //   ToDate: [{ value: "", disabled: true }],
-    // });
+    this.formsField = [];
+    this.onClose = new Subject();
+    this.onSubmit = new Subject();
+    this.projectName = new Subject();
+    this.getLedger();
+    this.getLedgerGroup();
+    for (const key in this.settingsForms.value) {
+      this.formsField.push(key);
+    }
+    console.log("Forms Filed " + JSON.stringify(this.formsField));
   }
 
+  getLedger(): void {
+    this.reportService.getLedgerMin().subscribe((response) => {
+      this.ledgerMinList = response.Entity;
+    });
+  }
+
+  getLedgerGroup(): void {
+    this.reportService.getLedgerGroup().subscribe((response) => {
+      this.ledgerGroupList = response.Entity;
+    });
+  }
   enableDate(): void {
     if (this.settingsForms.get("IsDateRange").value) {
       this.dateCheckbox = false;
@@ -53,6 +71,28 @@ export class SettingsReportsComponent implements OnInit {
       this.dateCheckbox = true;
       this.settingsForms.get("ToDate").disable();
     }
+  }
+
+  accountLedgerCheck(): void {
+    this.accountGroup = false;
+    if (this.accountLedger == true) {
+      this.accountLedger = false;
+      this.settingsForms.get("LedgerID").disable();
+    } else {
+      this.accountLedger = true;
+    }
+    this.settingsForms.get("LedgerID").enable();
+  }
+
+  accountGroupCheck(): void {
+    this.accountLedger = false;
+    if (this.accountGroup == true) {
+      this.accountGroup = false;
+      this.settingsForms.get("AccountGroupID").disable();
+    } else {
+      this.accountGroup = true;
+    }
+    this.settingsForms.get("AccountGroupID").enable();
   }
 
   allGroupRadio(): void {
@@ -68,7 +108,7 @@ export class SettingsReportsComponent implements OnInit {
     const filterValue = this.reportService.projectList.filter(
       (s) => s.ID == projectID
     );
-    this.projectName = filterValue[0].EngName;
+    this.projectName.next(filterValue[0].EngName);
   }
 
   primaryGroupRadio(): void {
@@ -106,5 +146,16 @@ export class SettingsReportsComponent implements OnInit {
   today(): void {
     const today = new Date();
     this.settingsForms.get("ToDate").setValue(today);
+  }
+
+  showReport(): void {
+    this.onSubmit.next(this.settingsForms.value);
+    this.onClose.next(true);
+    this.modalRef.hide();
+  }
+
+  public onCancel(): void {
+    this.onClose.next(true);
+    this.modalRef.hide();
   }
 }

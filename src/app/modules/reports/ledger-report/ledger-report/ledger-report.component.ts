@@ -13,6 +13,7 @@ import { Location } from "@angular/common";
 import { LedgerList } from "../../models/ledger.reports.model";
 import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
 import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
+import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 
 @Component({
   selector: "accSwift-ledger-report",
@@ -66,7 +67,7 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.openLedgerSettings(this.ledgerSettings), 100);
+    setTimeout(() => this.openLedgerSettings(), 100);
   }
 
   buildLedgerReportForms(): void {
@@ -110,9 +111,46 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openLedgerSettings(template: TemplateRef<any>): void {
-    this.modalRef = this.modalService.show(template, this.config);
+  openLedgerSettings(): void {
+    this.modalRef = this.modalService.show(SettingsReportsComponent, {
+      initialState: { settingsForms: this.ledgerReportForms },
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-lg",
+    });
+    this.modalRef.content.projectName.subscribe((data) => {
+      this.projectName = data;
+    });
+    this.modalRef.content.onSubmit.subscribe((data) => {
+      console.log(JSON.stringify(data));
+      if (data) {
+        this.listLoading = true;
+        this.reportService.getLedgerReports(JSON.stringify(data)).subscribe(
+          (response) => {
+            this.ledgerReportList = response.Entity.Entity;
+            this.totalDebitAmount = response.Entity.TotalDebitAmount;
+            this.totalCreditAmount = response.Entity.TotalCreditAmount;
+            this.totalClosingBalance = response.Entity.ClosingBalance;
+          },
+          (error) => {
+            this.listLoading = false;
+          },
+          () => {
+            this.listLoading = false;
+          }
+        );
+      }
+    });
+
+    this.modalRef.content.onClose.subscribe((data) => {
+      this.showReport();
+    });
   }
+
+  // openLedgerSettings(template: TemplateRef<any>): void {
+  //   this.modalRef = this.modalService.show(template, this.config);
+  // }
   openLedgerDetailsPopUP(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(template, this.config);
   }

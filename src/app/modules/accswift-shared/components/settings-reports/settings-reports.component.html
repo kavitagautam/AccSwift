@@ -1,10 +1,10 @@
 <div class="modal-header">
-  <h3 class="modal-title pull-left">Trial Balance Settings</h3>
+  <h3 class="modal-title pull-left">Settings</h3>
   <button
     type="button"
     class="close pull-right"
     aria-label="Close"
-    (click)="cancel()"
+    (click)="onCancel()"
   >
     <span aria-hidden="true">&times;</span>
   </button>
@@ -29,6 +29,7 @@
               </label>
             </div>
           </div>
+
           <div class="col-md-5">
             <div class="form-group">
               <label>End of Month</label>
@@ -50,7 +51,7 @@
             </div>
           </div>
           <div class="col-md-5">
-            <div class="form-group">
+            <div class="form-group" *ngIf="formsField.includes('ToDate')">
               <label>At the End of</label>
               <input
                 type="text"
@@ -70,7 +71,10 @@
         <div class="col-md-12 p-0">
           <div class="flex-item p-0">
             <div class="col-md-4">
-              <div class="form-group">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('IsAllGroups')"
+              >
                 <div class="radio">
                   <label>
                     <input
@@ -86,7 +90,10 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="form-group">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('IsOnlyPrimaryGroups')"
+              >
                 <div class="radio">
                   <label>
                     <input
@@ -102,7 +109,10 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="form-group">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('IsLedgerOnly')"
+              >
                 <div class="radio">
                   <label>
                     <input
@@ -119,12 +129,72 @@
             </div>
           </div>
         </div>
+        <div class="col-md-12 p-0" *ngIf="formsField.includes('LedgerID')">
+          <div class="flex-item p-0">
+            <div class="col-md-6">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      id="accountLedger"
+                      [value]="true"
+                      [(ngModel)]="accountLedger"
+                      [ngModelOptions]="{ standalone: true }"
+                      (click)="accountLedgerCheck()"
+                    />
+                    <label>Choose Account Ledger</label>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group" >
+                <select class="form-control" formControlName="LedgerID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let ledger of ledgerMinList"
+                    [ngValue]="ledger.LedgerID"
+                  >
+                    {{ ledger.LedgerName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      id="accountGroup"
+                      [value]="true"
+                      [(ngModel)]="accountGroup"
+                      [ngModelOptions]="{ standalone: true }"
+                      (click)="accountGroupCheck()"
+                    />
+                    <label>Choose Account Group</label>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="formsField.includes('AccountGroupID')">
+                <select class="form-control" formControlName="AccountGroupID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let group of ledgerGroupList"
+                    [ngValue]="group.ID"
+                  >
+                    {{ group.Name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
       </fieldset>
       <fieldset>
         <div class="col-md-12 p-0">
           <div class="col-md-8">
             <div class="col-md-4">
-              <div class="form-group">
+              <div class="form-group" *ngIf="formsField.includes('IsDetails')">
                 <div class="radio">
                   <label>
                     <input
@@ -139,7 +209,7 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="form-group">
+              <div class="form-group" *ngIf="formsField.includes('IsDetails')">
                 <div class="radio">
                   <label>
                     <input
@@ -154,7 +224,7 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="form-group">
+              <div class="form-group" *ngIf="formsField.includes('ProjectID')">
                 <label>Project</label>
                 <select
                   class="form-control"
@@ -205,7 +275,7 @@
     </div> -->
         <div class="col-md-12 p-0">
           <div class="col-md-4">
-            <div class="form-group">
+            <div class="form-group" *ngIf="formsField.includes('IsShowZeroBalance')">
               <div class="radio">
                 <label>
                   <input
@@ -220,7 +290,7 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="form-group">
+            <div class="form-group"  *ngIf="formsField.includes('IsShowPreviousYear')">
               <div class="radio">
                 <label>
                   <input
@@ -235,7 +305,7 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="form-group">
+            <div class="form-group" *ngIf="formsField.includes('IsShowSecondLevelGroupDtl')">
               <div class="radio">
                 <label>
                   <input
@@ -340,7 +410,7 @@
   <button type="button" class="btn btn-primary" (click)="showReport()">
     Show
   </button>
-  <button type="button" class="btn btn-danger" (click)="cancel()">
+  <button type="button" class="btn btn-danger" (click)="onCancel()">
     Cancel
   </button>
 </div>

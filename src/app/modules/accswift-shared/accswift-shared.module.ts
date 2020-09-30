@@ -31,6 +31,7 @@ import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { CreateReportsComponent } from "./components/create-reports/create-reports.component";
 import { AddressComponent } from "./components/address/address.component";
 import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
+import { SettingsReportsComponent } from "./components/settings-reports/settings-reports.component";
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { SettingsService } from "@accSwift-modules/settings/services/settings.se
     CustomerInvoicesComponent,
     CreateReportsComponent,
     AddressComponent,
+    SettingsReportsComponent,
   ],
   imports: [
     FormsModule,
@@ -80,6 +82,7 @@ import { SettingsService } from "@accSwift-modules/settings/services/settings.se
     CustomerInvoicesComponent,
     CreateReportsComponent,
     AddressComponent,
+    SettingsReportsComponent,
   ],
   providers: [ValidationMsgService],
   entryComponents: [
