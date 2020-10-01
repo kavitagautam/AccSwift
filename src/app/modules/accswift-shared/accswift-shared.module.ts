@@ -32,6 +32,7 @@ import { CreateReportsComponent } from "./components/create-reports/create-repor
 import { AddressComponent } from "./components/address/address.component";
 import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 import { SettingsReportsComponent } from "./components/settings-reports/settings-reports.component";
+import { GroupBalanceReportComponent } from './components/group-balance-report/group-balance-report.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { SettingsReportsComponent } from "./components/settings-reports/settings
     CreateReportsComponent,
     AddressComponent,
     SettingsReportsComponent,
+    GroupBalanceReportComponent,
   ],
   imports: [
     FormsModule,
