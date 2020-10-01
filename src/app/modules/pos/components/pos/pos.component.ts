@@ -11,6 +11,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 })
 export class PosComponent implements OnInit {
   productOrGroupList: ProductOrGroup[] = [];
+  favProductOrGroupList: ProductOrGroup[] = [];
   private editedRowIndex: number;
   quantityNo: number;
   selectedRow: number = null;
@@ -20,7 +21,8 @@ export class PosComponent implements OnInit {
   accoutNumber: any;
   cashAmount: number;
   discountAmount: number;
-
+  tenderAmount: number;
+  changeAmount: number;
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
   config = {
@@ -37,11 +39,17 @@ export class PosComponent implements OnInit {
 
   ngOnInit() {
     this.getProductGroup();
+    this.getFavouriteProductGroup();
   }
 
   getProductGroup(): void {
     this.posServices.getProductOrGroup(null).subscribe((response) => {
       this.productOrGroupList = response.Entity;
+    });
+  }
+  getFavouriteProductGroup(): void {
+    this.posServices.getFavouriteItems().subscribe((response) => {
+      this.favProductOrGroupList = response.Entity;
     });
   }
 
@@ -91,13 +99,25 @@ export class PosComponent implements OnInit {
     }
     if (product.TypeOf == 1) {
       this.quantityNo = 1;
-      const obj = {
-        Title: product.Title,
-        Quantity: this.quantityNo,
-        Amount: product.SalesRate * this.quantityNo,
-        SalesRate: product.SalesRate,
-      };
-      this.productList.push(obj);
+
+      const selectedProduct = this.productList.filter(
+        (s) => s.ID === product.ID
+      );
+
+      if (selectedProduct.length > 0) {
+        selectedProduct[0].Quantity = selectedProduct[0].Quantity + 1;
+        selectedProduct[0].Amount =
+          selectedProduct[0].Quantity * selectedProduct[0].SalesRate;
+      } else {
+        const obj = {
+          ID: product.ID,
+          Title: product.Title,
+          Quantity: this.quantityNo,
+          Amount: product.SalesRate * this.quantityNo,
+          SalesRate: product.SalesRate,
+        };
+        this.productList.push(obj);
+      }
       this.calculateTotal(this.productList);
     }
   }
@@ -107,7 +127,7 @@ export class PosComponent implements OnInit {
       backdrop: true,
       ignoreBackdropClick: true,
       centered: true,
-      class: "modal-sm",
+      class: "modal-md",
     };
     this.modalRef = this.modalService.show(template, config);
   }
