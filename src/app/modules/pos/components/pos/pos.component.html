@@ -1,4 +1,18 @@
 <div class="box box-default">
+  <div class="col-md-12">
+    <h3>Favourite Items</h3>
+    <div class="col-md-2" *ngFor="let favProduct of favProductOrGroupList">
+      <div class="form-group">
+        <button
+          type="button"
+          class="btn btn-secondary listButton"
+          (click)="productClick(favProduct)"
+        >
+          {{ favProduct.Title }}
+        </button>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-4">
       <button type="button" class="btn btn-primary" (click)="getProductGroup()">
@@ -30,7 +44,7 @@
       <div class="col-md-10">
         <div class="form-group">
           <label>Quantity</label>
-          <ng-numeric-input
+          <!-- <ng-numeric-input
             [layout]="'number'"
             [entertext]="'Next'"
             [placeholder]="'Enter Quantity'"
@@ -38,7 +52,7 @@
             [(ngModel)]="quantityNo"
             (ngModelChange)="quantityChange()"
           >
-          </ng-numeric-input>
+          </ng-numeric-input> -->
           <input
             type="number"
             class="form-control"
@@ -48,9 +62,9 @@
         </div>
       </div>
       <div class="col-md-2 mt-4">
-        <div class="form-group">
+        <!-- <div class="form-group">
           <button class="btn btn-seconday" type="button">Add</button>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-12">
         <table class="table">
@@ -216,7 +230,28 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-md-12">
-        <h3>Show available notes here</h3>
+        <div class="form-group">
+          <label>Amount</label>
+          <input type="number" class="form-control" [(ngModel)]="totalAmount" />
+        </div>
+        <div class="form-group">
+          <label>Tender </label>
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="tenderAmount"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Change</label>
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="changeAmount"
+            step="0.01"
+          />
+        </div>
       </div>
     </div>
   </div>
