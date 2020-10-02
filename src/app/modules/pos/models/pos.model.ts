@@ -17,3 +17,4 @@ export interface ProductOrGroupRootModel {
     Message: string;
     Entity: ProductOrGroup[];
 }
+

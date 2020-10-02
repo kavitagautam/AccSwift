@@ -23,4 +23,8 @@ export class PosService {
       params
     );
   }
+
+  getFavouriteItems(): Observable<ProductOrGroupRootModel> {
+    return this.httpService.get(`${this._api_URL}Product/FavouriteItems`);
+  }
 }
