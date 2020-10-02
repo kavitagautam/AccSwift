@@ -17,7 +17,7 @@ export class SettingsReportsComponent implements OnInit {
   dateCheckbox: boolean = true;
   public onClose = new Subject();
   public onSubmit: Subject<boolean>;
-  public projectName: Subject<string>;
+  // public projectName: Subject<string>;
   formsField = [];
 
   accountLedger: boolean = false;
@@ -43,13 +43,13 @@ export class SettingsReportsComponent implements OnInit {
     this.formsField = [];
     this.onClose = new Subject();
     this.onSubmit = new Subject();
-    this.projectName = new Subject();
+    //this.projectName = new Subject();
     this.getLedger();
     this.getLedgerGroup();
     for (const key in this.settingsForms.value) {
       this.formsField.push(key);
     }
-    console.log("Forms Filed " + JSON.stringify(this.formsField));
+    // console.log("Forms Filed " + JSON.stringify(this.formsField));
   }
 
   getLedger(): void {
@@ -108,7 +108,8 @@ export class SettingsReportsComponent implements OnInit {
     const filterValue = this.reportService.projectList.filter(
       (s) => s.ID == projectID
     );
-    this.projectName.next(filterValue[0].EngName);
+    //this.projectName.next(filterValue[0].EngName);
+    this.reportService.selectProject(filterValue[0].EngName);
   }
 
   primaryGroupRadio(): void {
@@ -157,5 +158,6 @@ export class SettingsReportsComponent implements OnInit {
   public onCancel(): void {
     this.onClose.next(true);
     this.modalRef.hide();
+    this.modalRef = null;
   }
 }

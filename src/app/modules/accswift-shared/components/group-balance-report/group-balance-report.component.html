@@ -31,8 +31,8 @@
         <table id="header-fixed" class="table table-hover table-fixed">
           <thead>
             <tr>
-              <th colspan="1" style="text-align: left;">Account Code</th>
-              <th colspan="1" style="text-align: center;">Account Name</th>
+              <th colspan="1" style="text-align: left">Account Code</th>
+              <th colspan="1" style="text-align: center">Account Name</th>
               <th colspan="1">Debit Amount</th>
               <th colspan="1">Credit Amount</th>
             </tr>
@@ -47,7 +47,7 @@
                 <span *ngIf="group.Type === 'GROUP'">
                   {{ group.AccountCode }}
                 </span>
-                <span *ngIf="group.Type === 'LEDGER'" style="color: blue;">
+                <span *ngIf="group.Type === 'LEDGER'" style="color: blue">
                   {{ group.AccountCode }}
                 </span>
               </td>
@@ -60,14 +60,14 @@
                 </span>
                 <span
                   *ngIf="group.Type === 'LEDGER'"
-                  style="margin-left: 50px; color: blue;"
+                  style="margin-left: 50px; color: blue"
                   >{{ group.AccountName }}</span
                 >
-                <span *ngIf="group.Type === 'TOTAL'" style="float: right;">{{
+                <span *ngIf="group.Type === 'TOTAL'" style="float: right">{{
                   group.AccountName
                 }}</span>
 
-                <span *ngIf="group.Type === null" style="float: right;">{{
+                <span *ngIf="group.Type === null" style="float: right">{{
                   group.AccountName
                 }}</span>
               </td>
@@ -76,26 +76,21 @@
                 <span [innerHTML]="group.DebitAmount | currencyFormat"></span>
               </td>
               <td class="balance">
-                <span
-                  [innerHTML]="group.CreditAmount | currencyFormat"
-                ></span>
+                <span [innerHTML]="group.CreditAmount | currencyFormat"></span>
               </td>
             </tr>
           </tbody>
           <tbody *ngIf="groupBalanceList.length == 0">
             <tr>
-              <td colspan="7" align="center">
-                No Data Available
-              </td>
+              <td colspan="7" align="center">No Data Available</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div *ngIf="groupLoading" class="k-i-loading"></div>
   </div>
   <div class="col-md-12">
-    <span style="float: right; margin: 10px;"
+    <span style="float: right; margin: 10px"
       >Closing Balance :{{ totalGroupClosingBalance }}</span
     >
   </div>

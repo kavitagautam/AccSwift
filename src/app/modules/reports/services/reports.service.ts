@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import {
   TrailBalanceModel,
   GroupBalanceModel,
@@ -51,6 +51,15 @@ import { LedgerMinModel } from "@accSwift-modules/ledger/models/ledger.models";
   providedIn: "root",
 })
 export class ReportsService {
+  private projectName = new Subject<string>();
+  projectName$ = this.projectName.asObservable();
+
+  // Service message commands
+  selectProject(name: string) {
+    console.log("NAMe" + name)
+    this.projectName.next(name);
+  }
+
   _api_URL = environment.baseAPI;
   productList: ProductMin[] = [];
   productGroupList: ProductGroup[] = [];
