@@ -121,7 +121,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   addInvoiceEntryList(): FormGroup {
     return this._fb.group({
       ID: [0],
-      ProductCode: ["", null, this.productCodeMatch.productCodeMatch()],
+      ProductCode: [""],
       ProductID: [""],
       ProductName: [""],
       CodeName: [""],
@@ -292,12 +292,8 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (
-            invoices &&
-            invoices[i].TaxAmount &&
-            invoices[i].TaxID !== null &&
-            invoices[i].IsVAT
-          ) {
+
+          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
@@ -309,7 +305,8 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         this.totalDiscountPercentage = sumTotalDiscountPer;
         this.totalTaxAmount = sumTaxAmount;
 
-        this.vatTotalAmount = sumTaxAmount;
+        this.vatTotalAmount =
+          this.totalNetAmount * (this.salesInvoiceService.vatRate / 100);
         this.grandTotalAmount =
           this.totalGrossAmount -
           this.totalDiscountAmount +

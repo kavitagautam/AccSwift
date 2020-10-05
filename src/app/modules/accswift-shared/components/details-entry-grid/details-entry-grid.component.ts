@@ -426,13 +426,15 @@ export class DetailsEntryGridComponent implements OnInit {
           (s) => s.ID === entryListArray.controls[index].get("TaxID").value
         );
         if (selectedTaxValue.length > 0) {
-          entryListArray.controls[index]
-            .get("TaxAmount")
-            .setValue(
-              entryListArray.controls[index].get("Quantity").value *
-                entryListArray.controls[index].get("NetAmount").value *
-                (selectedTaxValue[0].Rate / 100)
-            );
+          if (selectedProductValue[0].IsVAT) {
+            entryListArray.controls[index]
+              .get("TaxAmount")
+              .setValue(
+                entryListArray.controls[index].get("Quantity").value *
+                  entryListArray.controls[index].get("NetAmount").value *
+                  (selectedTaxValue[0].Rate / 100)
+              );
+          }
         }
         entryListArray.controls[index].get("Remarks").setValue("");
       }
@@ -470,7 +472,6 @@ export class DetailsEntryGridComponent implements OnInit {
             entryListArray.controls[index].get("Amount").value -
               entryListArray.controls[index].get("DiscountAmount").value
           );
-
         entryListArray.controls[index]
           .get("TaxID")
           .setValue(selectedProductValue[0].TaxID);
@@ -478,13 +479,15 @@ export class DetailsEntryGridComponent implements OnInit {
           (s) => s.ID === entryListArray.controls[index].get("TaxID").value
         );
         if (selectedTaxValue.length > 0) {
-          entryListArray.controls[index]
-            .get("TaxAmount")
-            .setValue(
-              entryListArray.controls[index].get("Quantity").value *
-                entryListArray.controls[index].get("NetAmount").value *
-                (selectedTaxValue[0].Rate / 100)
-            );
+          if (selectedProductValue[0].IsVAT) {
+            entryListArray.controls[index]
+              .get("TaxAmount")
+              .setValue(
+                entryListArray.controls[index].get("Quantity").value *
+                  entryListArray.controls[index].get("NetAmount").value *
+                  (selectedTaxValue[0].Rate / 100)
+              );
+          }
         }
         entryListArray.controls[index].get("Remarks").setValue("");
       }
@@ -579,13 +582,21 @@ export class DetailsEntryGridComponent implements OnInit {
             );
 
           entryListArray.controls[index].get("TaxID").setValue(data.TaxID);
-          entryListArray.controls[index]
-            .get("TaxAmount")
-            .setValue(
-              entryListArray.controls[index].get("Quantity").value *
-                entryListArray.controls[index].get("NetAmount").value *
-                0.13
-            );
+          const selectedTaxValue = this.gridServices.taxList.filter(
+            (s) => s.ID === entryListArray.controls[index].get("TaxID").value
+          );
+          if (selectedTaxValue.length > 0) {
+            if (data.IsVAT) {
+              entryListArray.controls[index]
+                .get("TaxAmount")
+                .setValue(
+                  entryListArray.controls[index].get("Quantity").value *
+                    entryListArray.controls[index].get("NetAmount").value *
+                    (selectedTaxValue[0].Rate / 100)
+                );
+            }
+          }
+
           entryListArray.controls[index]
             .get("QtyUnitID")
             .setValue(data.QtyUnitID);
@@ -621,13 +632,21 @@ export class DetailsEntryGridComponent implements OnInit {
             );
 
           entryListArray.controls[index].get("TaxID").setValue(data.TaxID);
-          entryListArray.controls[index]
-            .get("TaxAmount")
-            .setValue(
-              entryListArray.controls[index].get("Quantity").value *
-                entryListArray.controls[index].get("NetAmount").value *
-                0.13
-            );
+          const selectedTaxValue = this.gridServices.taxList.filter(
+            (s) => s.ID === entryListArray.controls[index].get("TaxID").value
+          );
+          if (selectedTaxValue.length > 0) {
+            if (data.IsVAT) {
+              entryListArray.controls[index]
+                .get("TaxAmount")
+                .setValue(
+                  entryListArray.controls[index].get("Quantity").value *
+                    entryListArray.controls[index].get("NetAmount").value *
+                    (selectedTaxValue[0].Rate / 100)
+                );
+            }
+          }
+
           entryListArray.controls[index]
             .get("QtyUnitID")
             .setValue(data.QtyUnitID);
