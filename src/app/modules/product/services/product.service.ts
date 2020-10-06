@@ -14,6 +14,7 @@ import {
   ProductGroup,
   ProductGroupModel,
 } from "../models/product-group.models";
+import { Tax } from "@accSwift-modules/accswift-shared/models/tax.model";
 
 @Injectable({
   providedIn: "root",
@@ -23,6 +24,7 @@ export class ProductService {
   productGroupList: ProductGroup[] = [];
   accountClass: AccountClass[] = [];
   depotList: Depot[] = [];
+  taxList: Tax[] = [];
   unitList;
   constructor(
     private http: HttpClient,
@@ -32,6 +34,7 @@ export class ProductService {
     this.getDepotList();
     this.getUnitList();
     this.getAccountClass();
+    this.getTaxList();
   }
 
   getProductTree(): Observable<ProductTreeViewModel> {
@@ -85,6 +88,12 @@ export class ProductService {
       .subscribe((response) => {
         this.unitList = response.Entity;
       });
+  }
+
+  getTaxList(): void {
+    this.httpService.get(`${this._api_URL}Tax/min`).subscribe((response) => {
+      this.taxList = response.Entity;
+    });
   }
 
   deleteProductByID(id): Observable<any> {

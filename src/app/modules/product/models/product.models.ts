@@ -45,6 +45,8 @@ export interface Product {
   Website?: any;
   BackColor: number;
   OpeningQuantity: OpeningQuantity;
+  TaxID: number;
+      TaxName: string;
   Remarks: string;
 }
 

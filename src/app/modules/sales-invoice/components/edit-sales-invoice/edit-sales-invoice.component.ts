@@ -243,12 +243,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (
-            invoices &&
-            invoices[i].TaxAmount &&
-            invoices[i].TaxID !== null &&
-            invoices[i].IsVAT
-          ) {
+          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
@@ -260,7 +255,8 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         this.totalDiscountPercentage = sumTotalDiscountPer;
         this.totalTaxAmount = sumTaxAmount;
 
-        this.vatTotalAmount = this.totalNetAmount * 0.13;
+        this.vatTotalAmount =
+          this.totalNetAmount * (this.salesInvoiceService.vatRate / 100);
         this.grandTotalAmount =
           this.totalGrossAmount -
           this.totalDiscountAmount +
@@ -272,7 +268,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   addInvoiceEntryList(): FormGroup {
     return this._fb.group({
       ID: [0],
-      ProductCode: ["", null, this.productCodeMatch.productCodeMatch()],
+      ProductCode: [""],
       ProductID: [""],
       ProductName: [""],
       CodeName: [""],
@@ -309,11 +305,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         invoiceFormArray.push(
           this._fb.group({
             ID: [element.ID],
-            ProductCode: [
-              element.ProductCode,
-              null,
-              this.productCodeMatch.productCodeMatch(),
-            ],
+            ProductCode: [element.ProductCode],
             ProductID: [element.ProductID],
             ProductName: [element.ProductName],
             CodeName: [element.CodeName],
@@ -335,7 +327,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       invoiceFormArray.push(
         this._fb.group({
           ID: [0],
-          ProductCode: ["", null, this.productCodeMatch.productCodeMatch()],
+          ProductCode: [""],
           ProductID: [null],
           ProductName: [""],
           CodeName: [""],

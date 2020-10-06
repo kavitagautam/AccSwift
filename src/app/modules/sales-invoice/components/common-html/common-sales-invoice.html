@@ -112,7 +112,7 @@
             </td>
             <td>Tax 2</td>
             <td>0.00</td>
-            <td>VAT(13%)</td>
+            <td>VAT({{salesInvoiceService.vatRate }} %)</td>
             <td>
               <span [innerHTML]="vatTotalAmount | currencyFormat "></span>
             </td>

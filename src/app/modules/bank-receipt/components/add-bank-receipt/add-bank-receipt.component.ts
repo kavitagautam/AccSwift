@@ -63,6 +63,7 @@ export class AddBankReceiptComponent implements OnInit {
         [Validators.required],
       ],
       Date: [new Date()],
+      Remarks: [""],
       BankReceiptDetailsList: this._fb.array([this.addBankReceiptEntryList()]),
     });
   }
