@@ -1,8 +1,6 @@
 import { Company } from "@accSwift-modules/company/models/company.model";
-import {
-  GroupBalanceList,
-  LedgerList,
-} from "@accSwift-modules/reports/models/trail-balance.model";
+import { GroupBalance } from "@accSwift-modules/reports/models/group-balance.model";
+import { LedgerTransaction } from "@accSwift-modules/reports/models/ledger-transaction.model";
 import { ReportsService } from "@accSwift-modules/reports/services/reports.service";
 import { Component, Input, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
@@ -19,9 +17,9 @@ export class GroupBalanceReportComponent implements OnInit {
   @Input() settingsForms: FormGroup;
 
   @Input() companyInfo: Company;
-  @Input() groupBalanceList: GroupBalanceList[] = [];
+  @Input() groupBalanceList: GroupBalance[] = [];
   @Input() totalGroupClosingBalance: string;
-  ledgerDetailsList: LedgerList[] = [];
+  ledgerDetailsList: LedgerTransaction[] = [];
   public onClose = new Subject();
   public onSubmit: Subject<boolean>;
   constructor(
@@ -37,16 +35,17 @@ export class GroupBalanceReportComponent implements OnInit {
   openTrailBalance(event, data): void {
     if (data.Type === "GROUP") {
       this.settingsForms.get("Type").setValue(data.Type);
-      this.settingsForms.get("ID").setValue(data.ID);
+      this.settingsForms.get("GroupID").setValue(data.ID);
 
       this.reportService
-        .getTrailGroupDetails(this.settingsForms.value)
+        .getGroupBalanceDetails(this.settingsForms.value)
         .subscribe((response) => {
           this.companyInfo = response.Entity.Company;
           this.groupBalanceList = response.Entity.Entity;
           this.totalGroupClosingBalance = response.Entity.ClosingBalance;
           this.modalRef = this.modalService.show(GroupBalanceReportComponent, {
             initialState: {
+              settingsForms: this.settingsForms,
               companyInfo: this.companyInfo,
               groupBalanceList: this.groupBalanceList,
               totalGroupClosingBalance: this.totalGroupClosingBalance,
@@ -59,11 +58,18 @@ export class GroupBalanceReportComponent implements OnInit {
         });
     }
     if (data.Type === "LEDGER") {
-      this.settingsForms.get("Type").setValue(data.Type);
-      this.settingsForms.get("ID").setValue(data.ID);
-
+      const obj = {
+        LedgerID: data.ID,
+        IsDetails: this.settingsForms.get("IsDetails").value,
+        IsShowZeroBalance: this.settingsForms.get("IsShowZeroBalance").value,
+        FromDate: this.settingsForms.get("FromDate").value,
+        ToDate: this.settingsForms.get("ToDate").value,
+        IsDateRange: this.settingsForms.get("IsDateRange").value,
+        ProjectID: this.settingsForms.get("ProjectID").value,
+        AccClassID: this.settingsForms.get("AccClassID").value,
+      };
       this.reportService
-        .getTrailLedgerDetails(this.settingsForms.value)
+        .getLedgerTransactionDetails(obj)
         .subscribe((response) => {
           this.ledgerDetailsList = response.Entity.Entity;
           this.modalRefLedger = this.modalService.show(

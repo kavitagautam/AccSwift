@@ -46,6 +46,8 @@ import {
 } from "@accSwift-modules/product/models/product-min.model";
 import { LedgerGroupModel } from "@accSwift-modules/ledger/models/ledger-group.model";
 import { LedgerMinModel } from "@accSwift-modules/ledger/models/ledger.models";
+import { GroupBalanceRootModel } from "../models/group-balance.model";
+import { LedgerTransactionRootModel } from "../models/ledger-transaction.model";
 
 @Injectable({
   providedIn: "root",
@@ -56,7 +58,7 @@ export class ReportsService {
 
   // Service message commands
   selectProject(name: string) {
-    console.log("NAMe" + name)
+    console.log("NAMe" + name);
     this.projectName.next(name);
   }
 
@@ -141,12 +143,19 @@ export class ReportsService {
     return this.httpService.post(`${this._api_URL}/Reports/Trial`, body);
   }
 
-  getTrailGroupDetails(body): Observable<GroupBalanceModel> {
-    return this.httpService.post(`${this._api_URL}Reports/TrialDetails`, body);
+  getGroupBalanceDetails(body): Observable<GroupBalanceRootModel> {
+    return this.httpService.post(
+      `${this._api_URL}Reports/GroupBal
+    `,
+      body
+    );
   }
 
-  getTrailLedgerDetails(body): Observable<LedgerDetailsModel> {
-    return this.httpService.post(`${this._api_URL}Reports/TrialDetails`, body);
+  getLedgerTransactionDetails(body): Observable<LedgerTransactionRootModel> {
+    return this.httpService.post(
+      `${this._api_URL}Reports/LedgerTransact`,
+      body
+    );
   }
 
   getLedgerReports(body): Observable<LedgerReportModel> {

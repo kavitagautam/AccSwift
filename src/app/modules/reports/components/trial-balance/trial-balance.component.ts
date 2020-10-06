@@ -13,9 +13,6 @@ import {
 import { ReportsService } from "../../services/reports.service";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { Router } from "@angular/router";
-import { Location } from "@angular/common";
-import { Company } from "@accSwift-modules/company/models/company.model";
 import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 import { GroupBalanceReportComponent } from "@accSwift-modules/accswift-shared/components/group-balance-report/group-balance-report.component";
 import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component";
@@ -140,9 +137,9 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   openTrailBalance(event, data): void {
     if (data.Type === "GROUP") {
       this.trailBalanceForms.get("Type").setValue(data.Type);
-      this.trailBalanceForms.get("ID").setValue(data.ID);
+      this.trailBalanceForms.get("GroupID").setValue(data.ID);
       this.reportService
-        .getTrailGroupDetails(this.trailBalanceForms.value)
+        .getGroupBalanceDetails(this.trailBalanceForms.value)
         .subscribe((response) => {
           this.modalRef = this.modalService.show(GroupBalanceReportComponent, {
             initialState: {
@@ -159,10 +156,21 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
         });
     }
     if (data.Type === "LEDGER") {
-      this.trailBalanceForms.get("Type").setValue(data.Type);
-      this.trailBalanceForms.get("ID").setValue(data.ID);
+      //this.trailBalanceForms.get("Type").setValue(data.Type);
+      //this.trailBalanceForms.get("LedgerID").setValue(data.ID);
+      const obj = {
+        LedgerID: data.ID,
+        IsDetails: this.trailBalanceForms.get("IsDetails").value,
+        IsShowZeroBalance: this.trailBalanceForms.get("IsShowZeroBalance")
+          .value,
+        FromDate: this.trailBalanceForms.get("FromDate").value,
+        ToDate: this.trailBalanceForms.get("ToDate").value,
+        IsDateRange: this.trailBalanceForms.get("IsDateRange").value,
+        ProjectID: this.trailBalanceForms.get("ProjectID").value,
+        AccClassID: this.trailBalanceForms.get("AccClassID").value,
+      };
       this.reportService
-        .getTrailLedgerDetails(this.trailBalanceForms.value)
+        .getLedgerTransactionDetails(obj)
         .subscribe((response) => {
           this.modalRefLedger = this.modalService.show(
             LedgerDetailReportsComponent,

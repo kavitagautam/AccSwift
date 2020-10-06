@@ -38,6 +38,9 @@
               <td *ngIf="ledger.Type === 'HEADER'" colspan="8" align="center">
                 {{ ledger.AccountName }}
               </td>
+              <td *ngIf="ledger.Type === 'OPENING'" colspan="6" align="right">
+                {{ ledger.AccountName }}
+              </td>
               <td *ngIf="ledger.Type === 'VOUCHER'">
                 <span *ngIf="ledger.Type === 'VOUCHER'" style="color: blue">
                   {{ ledger.AccountName }}
@@ -60,6 +63,9 @@
               >
                 {{ ledger.AccountName }}
               </td>
+              <td *ngIf="ledger.Type === 'TOTAL'" colspan="4" align="right">
+                {{ ledger.AccountName }}
+              </td>
               <td *ngIf="ledger.Type === 'VOUCHER'">
                 {{ ledger.TransactDate | date: "yyyy-MM-dd" }}
               </td>
@@ -76,24 +82,22 @@
                 {{ ledger.VoucherType }}
               </td>
               <td *ngIf="ledger.Type === 'VOUCHER'" class="balance">
-                <span [innerHTML]="ledger.Balance | currencyFormat"></span>
+                {{ ledger.Balance }}
               </td>
               <td *ngIf="ledger.Type === 'OPENING'" class="balance">
-                <span [innerHTML]="ledger.Balance | currencyFormat"></span>
+                {{ ledger.Balance }}
               </td>
-              <td *ngIf="ledger.Type === 'TOTAL'" colspan="4" align="right">
-                {{ ledger.AccountName }}
-              </td>
+
               <td *ngIf="ledger.Type === 'TOTAL'" class="balance">
                 <span [innerHTML]="ledger.DebitAmount | currencyFormat"></span>
               </td>
-              <td *ngIf="ledger.Type === CLOSING" class="balance">
+              <td *ngIf="ledger.Type === 'CLOSING'" class="balance">
                 <span [innerHTML]="ledger.DebitAmount | currencyFormat"></span>
               </td>
               <td *ngIf="ledger.Type === 'TOTAL'" class="balance">
                 <span [innerHTML]="ledger.CreditAmount | currencyFormat"></span>
               </td>
-              <td *ngIf="ledger.Type === CLOSING" class="balance">
+              <td *ngIf="ledger.Type === 'CLOSING'" class="balance">
                 <span [innerHTML]="ledger.CreditAmount | currencyFormat"></span>
               </td>
             </tr>
