@@ -1,554 +1,27 @@
 <div class="box box-default">
-  <div class="col-md-12">
-    <button
-      type="button"
-      class="btn-primary m-3"
-      (click)="openLedgerSettings()"
-    >
-      Ledger Settings
-    </button>
-  </div>
-  <h1 style="text-align: center">Ledger Balance</h1>
-  <h3 style="text-align: center" *ngIf="projectName">
-    Project : {{ projectName }}
-  </h3>
-
-  <div class="col-md-12">
-    <div class="grid-wrapper">
-      <div class="table-box">
-        <table
-          id="header-fixed"
-          *ngIf="ledgerReportForms.get('IsDetails').value == true"
-          class="table table-hover table-fixed"
-        >
-          <thead>
-            <tr>
-              <th colspan="1">S.N</th>
-              <th colspan="1" style="text-align: left">Ledger Name</th>
-              <th colspan="1" style="text-align: center">Transaction Date</th>
-              <th colspan="1">Voucher ID</th>
-              <th colspan="1">Debit Amount</th>
-              <th colspan="1">Credit Amount</th>
-              <th colspan="1">Voucher Type</th>
-              <th colspan="1">Balance</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let ledger of ledgerReportList; let i = index">
-            <tr>
-              <td
-                colspan="8"
-                align="center"
-                style="font-size: 14px; font-weight: 700; background: darkgray"
-              >
-                {{ ledger.AccountName }}
-              </td>
-            </tr>
-            <tr *ngIf="ledger.OpeningBalance">
-              <td colspan="1"></td>
-              <td
-                colspan="1"
-                align="right"
-                style="font-size: 14px; font-weight: 700"
-              >
-                Opening Balance
-              </td>
-              <td colspan="1"></td>
-              <td colspan="1"></td>
-              <td colspan="1"></td>
-              <td colspan="1"></td>
-              <td colspan="1"></td>
-              <td class="balance" colspan="1">
-                {{ ledger.OpeningBalance }}
-              </td>
-            </tr>
-            <tr
-              *ngFor="let l of ledger.TransactDetails; let i = index"
-              (click)="openVoucherDetails($event, l)"
-              (dblclick)="openVoucherDetails($event, l)"
-            >
-              <td>{{ i + 1 }}</td>
-              <td *ngIf="l.Type === 'VOUCHER'" style="color: blue">
-                {{ l.AccountName }}
-              </td>
-              <td>{{ l.TransactDate | date: "yyyy-MM-dd" }}</td>
-              <td>{{ l.VoucherNo }}</td>
-
-              <td class="balance">
-                <span [innerHTML]="l.DebitAmount | currencyFormat"></span>
-              </td>
-              <td class="balance">
-                <span [innerHTML]="l.CreditAmount | currencyFormat"></span>
-              </td>
-              <td>{{ l.VoucherType }}</td>
-              <td class="balance">
-                <!-- <span [innerHTML]="l.Balance | currencyFormat"></span> -->
-                {{ l.Balance }}
-              </td>
-            </tr>
-            <tr style="font-size: 14px; font-weight: 700">
-              <td colspan="1"></td>
-              <td colspan="1" align="right">Total Amount</td>
-              <td colspan="1"></td>
-              <td colspan="1"></td>
-              <td colspan="1" class="balance">
-                <span [innerHTML]="ledger.TotalDr | currencyFormat"></span>
-              </td>
-              <td colspan="1" class="balance">
-                <span [innerHTML]="ledger.TotalCr | currencyFormat"></span>
-              </td>
-              <td colspan="1"></td>
-              <td class="balance" colspan="1"></td>
-            </tr>
-            <tr *ngIf="ledger.ClosingBalance">
-              <td colspan="1"></td>
-              <td
-                colspan="1"
-                align="right"
-                style="font-size: 14px; font-weight: 700"
-              >
-                Closing Balance
-              </td>
-              <td colspan="1"></td>
-              <td colspan="1"></td>
-              <td colspan="1"></td>
-              <td colspan="1"></td>
-              <td colspan="1"></td>
-              <td class="balance" colspan="1">
-                {{ ledger.ClosingBalance }}
-              </td>
-            </tr>
-          </tbody>
-          <tbody *ngIf="ledgerReportList.length == 0">
-            <tr>
-              <td colspan="8" align="center">No Data Available</td>
-            </tr>
-          </tbody>
-        </table>
-        <table
-          id="header-fixed"
-          *ngIf="ledgerReportForms.get('IsDetails').value == false"
-          class="table table-hover table-fixed"
-        >
-          <thead>
-            <tr>
-              <th colspan="1">S.N</th>
-              <th colspan="1" style="text-align: left">Ledger Name</th>
-              <th colspan="1" style="text-align: center">Opening</th>
-              <th colspan="1">Debit Amount</th>
-              <th colspan="1">Credit Amount</th>
-              <th colspan="1">Balance(diff. DR/CR)</th>
-              <th colspan="1">Final Balance</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let ledger of ledgerReportList; let i = index">
-            <tr
-              (click)="openLedgerDetails($event, ledger)"
-              (dblclick)="openLedgerDetails($event, ledger)"
-            >
-              <td>{{ i + 1 }}</td>
-              <td style="color: blue">
-                {{ ledger.AccountName }}
-              </td>
-              <td class="balance">{{ ledger.Opening }}</td>
-              <td class="balance">
-                <span [innerHTML]="ledger.DebitAmount | currencyFormat"></span>
-              </td>
-              <td class="balance">
-                <span [innerHTML]="ledger.CreditAmount | currencyFormat"></span>
-              </td>
-              <td class="balance">{{ ledger.CrDrDiffBalance }}</td>
-
-              <td class="balance">{{ ledger.FinalBalance }}</td>
-            </tr>
-          </tbody>
-          <tbody *ngIf="ledgerReportList.length == 0">
-            <tr>
-              <td colspan="8" align="center">No Data Available</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="2" align="center">
-                Total Debit Amount:
-                <span [innerHTML]="totalDebitAmount | currencyFormat"></span>
-              </td>
-              <td colspan="2" align="center">
-                Total Debit Amount :
-                <span [innerHTML]="totalCreditAmount | currencyFormat"></span>
-              </td>
-              <td colspan="3" align="center">
-                Total Balance :{{ totalClosingBalance }}
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button
+        type="button"
+        class="btn-primary m-3"
+        (click)="openLedgerSettings()"
+      >
+        Ledger Settings
+      </button>
     </div>
-    <div *ngIf="listLoading" class="k-i-loading"></div>
-  </div>
-</div>
+    <h1 style="text-align: center">Ledger Balance</h1>
+    <h3 style="text-align: center" *ngIf="projectName">
+      Project : {{ projectName }}
+    </h3>
 
-<ng-template #ledgerSettings>
-  <div class="modal-header">
-    <h3 class="modal-title pull-left">Ledger Balance Settings</h3>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="cancel()"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
-    <div class="row">
-      <form [formGroup]="ledgerReportForms" novalidate>
-        <div class="col-md-12">
-          <fieldset>
-            <div class="col-md-12 p-0">
-              <div class="form-group">
-                <div class="checkbox">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="selectDate"
-                      value="true"
-                      formControlName="IsDateRange"
-                      (change)="enableDate()"
-                    />
-                    <label>Click For Date Selection</label>
-                  </label>
-                </div>
-              </div>
-              <div class="col-md-5">
-                <div class="form-group">
-                  <label>End of Month</label>
-                  <select
-                    class="form-control"
-                    [(ngModel)]="toDateSelect"
-                    [ngModelOptions]="{ standalone: true }"
-                    [disabled]="dateCheckbox"
-                    (change)="endOfMonth()"
-                  >
-                    <option [ngValue]="null">Choose Option..</option>
-                    <option
-                      *ngFor="let month of reportService.monthList"
-                      [ngValue]="month.number"
-                    >
-                      {{ month.name }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-5">
-                <div class="form-group">
-                  <label>At the End of</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="ToDate"
-                    bsDatepicker
-                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
-                  />
-                </div>
-              </div>
-              <div class="col-md-2">
-                <button
-                  type="button"
-                  class="btn-secondary m-5"
-                  (click)="today()"
-                >
-                  Today
-                </button>
-              </div>
-            </div>
-            <div class="col-md-12 p-0">
-              <div class="flex-item p-0">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <div class="radio">
-                      <label>
-                        <input
-                          type="radio"
-                          id="accountLedger"
-                          [value]="true"
-                          [(ngModel)]="accountLedger"
-                          [ngModelOptions]="{ standalone: true }"
-                          (click)="accountLedgerCheck()"
-                        />
-                        <label>Choose Account Ledger</label>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <select class="form-control" formControlName="LedgerID">
-                      <option [ngValue]="null">Choose Option..</option>
-                      <option
-                        *ngFor="let ledger of ledgerMinList"
-                        [ngValue]="ledger.LedgerID"
-                      >
-                        {{ ledger.LedgerName }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <div class="radio">
-                      <label>
-                        <input
-                          type="radio"
-                          id="accountGroup"
-                          [value]="true"
-                          [(ngModel)]="accountGroup"
-                          [ngModelOptions]="{ standalone: true }"
-                          (click)="accountGroupCheck()"
-                        />
-                        <label>Choose Account Group</label>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <select
-                      class="form-control"
-                      formControlName="AccountGroupID"
-                    >
-                      <option [ngValue]="null">Choose Option..</option>
-                      <option
-                        *ngFor="let group of ledgerGroupList"
-                        [ngValue]="group.ID"
-                      >
-                        {{ group.Name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </fieldset>
-          <fieldset>
-            <div class="col-md-12 p-0">
-              <div class="col-md-8">
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <div class="radio">
-                      <label>
-                        <input
-                          type="radio"
-                          name="IsDetails"
-                          [value]="false"
-                          formControlName="IsDetails"
-                        />
-                        <label>Summary</label>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <div class="radio">
-                      <label>
-                        <input
-                          type="radio"
-                          name="IsDetails"
-                          [value]="true"
-                          formControlName="IsDetails"
-                        />
-                        <label>Details</label>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label>Project</label>
-                    <select
-                      class="form-control"
-                      formControlName="ProjectID"
-                      (change)="changeProject()"
-                    >
-                      <option [ngValue]="null">Choose Option..</option>
-                      <option
-                        *ngFor="let project of reportService.projectList"
-                        [ngValue]="project.ID"
-                      >
-                        {{ project.EngName }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <legend>Accounting Class</legend>
-                <div class="form-group">
-                  <button
-                    type="button"
-                    class="btn btn-secondory"
-                    data-toggle="modal"
-                    data-target="#openAccountSelect"
-                  >
-                    Select Account Class
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-12 p-0">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        name="IsShowZeroBalance"
-                        [value]="true"
-                        formControlName="IsShowZeroBalance"
-                      />
-                      <label>Show Zero Balance</label>
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        name="IsShowRemarks"
-                        [value]="true"
-                        formControlName="IsShowRemarks"
-                      />
-                      <label>Show Remarks</label>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </fieldset>
-        </div>
-        <!--Modal PopUp Opening Balance Modal-->
-        <div
-          class="modal fade bd-example-modal"
-          #openAccountSelect
-          id="openAccountSelect"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h3 class="modal-title pull-left">Select Account Class</h3>
-                <button
-                  class="close"
-                  type="button"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="form-group">
-                      <label>Account Class</label>
-                      <select
-                        class="form-control"
-                        [(ngModel)]="accountsSelect"
-                        [ngModelOptions]="{ standalone: true }"
-                      >
-                        <option [ngValue]="null">Choose Option..</option>
-                        <option
-                          *ngFor="let account of reportService.accountLists"
-                          [ngValue]="account.ID"
-                        >
-                          {{ account.Name }}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col-md-12">
-                      <div
-                        class="form-group"
-                        *ngFor="
-                          let account of reportService.accountLists;
-                          index as i
-                        "
-                      >
-                        <div class="checkbox">
-                          <label class="form-check-label" for="check1">
-                            <input
-                              type="checkbox"
-                              class="form-check-input"
-                              id="check1"
-                              [value]="account.ID"
-                              name="account.Name"
-                              (click)="selectAccounts(account.ID, $event)"
-                            />{{ account.Name }}
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  class="btn btn-primary"
-                  type="button"
-                  data-dismiss="modal"
-                >
-                  OK
-                </button>
-                <button
-                  class="btn btn-secondary"
-                  type="button"
-                  data-dismiss="modal"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="showReport()">
-      Show
-    </button>
-    <button type="button" class="btn btn-danger" (click)="cancel()">
-      Cancel
-    </button>
-  </div>
-</ng-template>
-
-<ng-template #ledgerDetails>
-  <div class="modal-header">
-    <h3 class="modal-title pull-left">Ledger Details</h3>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef.hide()"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
     <div class="col-md-12">
       <div class="grid-wrapper">
-        <div
-          class="table-box"
-          style="width: 100% !important; height: 400px !important"
-        >
-          <table id="header-fixed" class="table table-hover table-fixed">
+        <div class="table-box">
+          <table
+            id="header-fixed"
+            *ngIf="ledgerReportForms.get('IsDetails').value == true"
+            class="table table-hover table-fixed"
+          >
             <thead>
               <tr>
                 <th colspan="1">S.N</th>
@@ -561,9 +34,7 @@
                 <th colspan="1">Balance</th>
               </tr>
             </thead>
-            <tbody
-              *ngFor="let ledger of ledgerDetailsReportList; let i = index"
-            >
+            <tbody *ngFor="let ledger of ledgerReportList; let i = index">
               <tr>
                 <td
                   colspan="8"
@@ -652,24 +123,77 @@
                 </td>
               </tr>
             </tbody>
-            <tbody *ngIf="ledgerDetailsReportList.length == 0">
+            <tbody *ngIf="ledgerReportList.length == 0">
               <tr>
                 <td colspan="8" align="center">No Data Available</td>
               </tr>
             </tbody>
           </table>
+          <table
+            id="header-fixed"
+            *ngIf="ledgerReportForms.get('IsDetails').value == false"
+            class="table table-hover table-fixed"
+          >
+            <thead>
+              <tr>
+                <th colspan="1">S.N</th>
+                <th colspan="1" style="text-align: left">Ledger Name</th>
+                <th colspan="1" style="text-align: center">Opening</th>
+                <th colspan="1">Debit Amount</th>
+                <th colspan="1">Credit Amount</th>
+                <th colspan="1">Balance(diff. DR/CR)</th>
+                <th colspan="1">Final Balance</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let ledger of ledgerReportList; let i = index">
+              <tr
+                (click)="openLedgerDetails($event, ledger)"
+                (dblclick)="openLedgerDetails($event, ledger)"
+              >
+                <td>{{ i + 1 }}</td>
+                <td style="color: blue">
+                  {{ ledger.AccountName }}
+                </td>
+                <td class="balance">{{ ledger.Opening }}</td>
+                <td class="balance">
+                  <span
+                    [innerHTML]="ledger.DebitAmount | currencyFormat"
+                  ></span>
+                </td>
+                <td class="balance">
+                  <span
+                    [innerHTML]="ledger.CreditAmount | currencyFormat"
+                  ></span>
+                </td>
+                <td class="balance">{{ ledger.CrDrDiffBalance }}</td>
+
+                <td class="balance">{{ ledger.FinalBalance }}</td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="ledgerReportList.length == 0">
+              <tr>
+                <td colspan="8" align="center">No Data Available</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" align="center">
+                  Total Debit Amount:
+                  <span [innerHTML]="totalDebitAmount | currencyFormat"></span>
+                </td>
+                <td colspan="2" align="center">
+                  Total Debit Amount :
+                  <span [innerHTML]="totalCreditAmount | currencyFormat"></span>
+                </td>
+                <td colspan="3" align="center">
+                  Total Balance :{{ totalClosingBalance }}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
-      <div *ngIf="listLedgerLoading" class="k-i-loading"></div>
+      <div *ngIf="listLoading" class="k-i-loading"></div>
     </div>
   </div>
-
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="modalRef.hide()">
-      Ok
-    </button>
-    <button type="button" class="btn btn-danger" (click)="modalRef.hide()">
-      Cancel
-    </button>
-  </div>
-</ng-template>
+</div>
