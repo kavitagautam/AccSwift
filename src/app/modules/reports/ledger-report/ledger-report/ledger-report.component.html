@@ -3,13 +3,13 @@
     <button
       type="button"
       class="btn-primary m-3"
-      (click)="openLedgerSettings(ledgerSettings)"
+      (click)="openLedgerSettings()"
     >
       Ledger Settings
     </button>
   </div>
-  <h1 style="text-align: center;">Ledger Balance</h1>
-  <h3 style="text-align: center;" *ngIf="projectName">
+  <h1 style="text-align: center">Ledger Balance</h1>
+  <h3 style="text-align: center" *ngIf="projectName">
     Project : {{ projectName }}
   </h3>
 
@@ -24,8 +24,8 @@
           <thead>
             <tr>
               <th colspan="1">S.N</th>
-              <th colspan="1" style="text-align: left;">Ledger Name</th>
-              <th colspan="1" style="text-align: center;">Transaction Date</th>
+              <th colspan="1" style="text-align: left">Ledger Name</th>
+              <th colspan="1" style="text-align: center">Transaction Date</th>
               <th colspan="1">Voucher ID</th>
               <th colspan="1">Debit Amount</th>
               <th colspan="1">Credit Amount</th>
@@ -38,7 +38,7 @@
               <td
                 colspan="8"
                 align="center"
-                style="font-size: 14px; font-weight: 700; background: darkgray;"
+                style="font-size: 14px; font-weight: 700; background: darkgray"
               >
                 {{ ledger.AccountName }}
               </td>
@@ -48,7 +48,7 @@
               <td
                 colspan="1"
                 align="right"
-                style="font-size: 14px; font-weight: 700;"
+                style="font-size: 14px; font-weight: 700"
               >
                 Opening Balance
               </td>
@@ -67,7 +67,7 @@
               (dblclick)="openVoucherDetails($event, l)"
             >
               <td>{{ i + 1 }}</td>
-              <td *ngIf="l.Type === 'VOUCHER'" style="color: blue;">
+              <td *ngIf="l.Type === 'VOUCHER'" style="color: blue">
                 {{ l.AccountName }}
               </td>
               <td>{{ l.TransactDate | date: "yyyy-MM-dd" }}</td>
@@ -85,11 +85,9 @@
                 {{ l.Balance }}
               </td>
             </tr>
-            <tr style="font-size: 14px; font-weight: 700;">
+            <tr style="font-size: 14px; font-weight: 700">
               <td colspan="1"></td>
-              <td colspan="1" align="right">
-                Total Amount
-              </td>
+              <td colspan="1" align="right">Total Amount</td>
               <td colspan="1"></td>
               <td colspan="1"></td>
               <td colspan="1" class="balance">
@@ -106,7 +104,7 @@
               <td
                 colspan="1"
                 align="right"
-                style="font-size: 14px; font-weight: 700;"
+                style="font-size: 14px; font-weight: 700"
               >
                 Closing Balance
               </td>
@@ -122,9 +120,7 @@
           </tbody>
           <tbody *ngIf="ledgerReportList.length == 0">
             <tr>
-              <td colspan="8" align="center">
-                No Data Available
-              </td>
+              <td colspan="8" align="center">No Data Available</td>
             </tr>
           </tbody>
         </table>
@@ -136,8 +132,8 @@
           <thead>
             <tr>
               <th colspan="1">S.N</th>
-              <th colspan="1" style="text-align: left;">Ledger Name</th>
-              <th colspan="1" style="text-align: center;">Opening</th>
+              <th colspan="1" style="text-align: left">Ledger Name</th>
+              <th colspan="1" style="text-align: center">Opening</th>
               <th colspan="1">Debit Amount</th>
               <th colspan="1">Credit Amount</th>
               <th colspan="1">Balance(diff. DR/CR)</th>
@@ -150,7 +146,7 @@
               (dblclick)="openLedgerDetails($event, ledger)"
             >
               <td>{{ i + 1 }}</td>
-              <td style="color: blue;">
+              <td style="color: blue">
                 {{ ledger.AccountName }}
               </td>
               <td class="balance">{{ ledger.Opening }}</td>
@@ -167,9 +163,7 @@
           </tbody>
           <tbody *ngIf="ledgerReportList.length == 0">
             <tr>
-              <td colspan="8" align="center">
-                No Data Available
-              </td>
+              <td colspan="8" align="center">No Data Available</td>
             </tr>
           </tbody>
           <tfoot>
@@ -241,8 +235,9 @@
                     <option
                       *ngFor="let month of reportService.monthList"
                       [ngValue]="month.number"
-                      >{{ month.name }}</option
                     >
+                      {{ month.name }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -292,8 +287,9 @@
                       <option
                         *ngFor="let ledger of ledgerMinList"
                         [ngValue]="ledger.LedgerID"
-                        >{{ ledger.LedgerName }}</option
                       >
+                        {{ ledger.LedgerName }}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -322,8 +318,9 @@
                       <option
                         *ngFor="let group of ledgerGroupList"
                         [ngValue]="group.ID"
-                        >{{ group.Name }}</option
                       >
+                        {{ group.Name }}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -375,8 +372,9 @@
                       <option
                         *ngFor="let project of reportService.projectList"
                         [ngValue]="project.ID"
-                        >{{ project.EngName }}</option
                       >
+                        {{ project.EngName }}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -467,8 +465,9 @@
                         <option
                           *ngFor="let account of reportService.accountLists"
                           [ngValue]="account.ID"
-                          >{{ account.Name }}</option
                         >
+                          {{ account.Name }}
+                        </option>
                       </select>
                     </div>
                     <div class="col-md-12">
@@ -547,16 +546,14 @@
       <div class="grid-wrapper">
         <div
           class="table-box"
-          style="width: 100% !important; height: 400px !important;"
+          style="width: 100% !important; height: 400px !important"
         >
           <table id="header-fixed" class="table table-hover table-fixed">
             <thead>
               <tr>
                 <th colspan="1">S.N</th>
-                <th colspan="1" style="text-align: left;">Ledger Name</th>
-                <th colspan="1" style="text-align: center;">
-                  Transaction Date
-                </th>
+                <th colspan="1" style="text-align: left">Ledger Name</th>
+                <th colspan="1" style="text-align: center">Transaction Date</th>
                 <th colspan="1">Voucher ID</th>
                 <th colspan="1">Debit Amount</th>
                 <th colspan="1">Credit Amount</th>
@@ -585,7 +582,7 @@
                 <td
                   colspan="1"
                   align="right"
-                  style="font-size: 14px; font-weight: 700;"
+                  style="font-size: 14px; font-weight: 700"
                 >
                   Opening Balance
                 </td>
@@ -604,7 +601,7 @@
                 (dblclick)="openVoucherDetails($event, l)"
               >
                 <td>{{ i + 1 }}</td>
-                <td *ngIf="l.Type === 'VOUCHER'" style="color: blue;">
+                <td *ngIf="l.Type === 'VOUCHER'" style="color: blue">
                   {{ l.AccountName }}
                 </td>
                 <td>{{ l.TransactDate | date: "yyyy-MM-dd" }}</td>
@@ -622,11 +619,9 @@
                   {{ l.Balance }}
                 </td>
               </tr>
-              <tr style="font-size: 14px; font-weight: 700;">
+              <tr style="font-size: 14px; font-weight: 700">
                 <td colspan="1"></td>
-                <td colspan="1" align="right">
-                  Total Amount
-                </td>
+                <td colspan="1" align="right">Total Amount</td>
                 <td colspan="1"></td>
                 <td colspan="1"></td>
                 <td colspan="1" class="balance">
@@ -643,7 +638,7 @@
                 <td
                   colspan="1"
                   align="right"
-                  style="font-size: 14px; font-weight: 700;"
+                  style="font-size: 14px; font-weight: 700"
                 >
                   Closing Balance
                 </td>
@@ -659,9 +654,7 @@
             </tbody>
             <tbody *ngIf="ledgerDetailsReportList.length == 0">
               <tr>
-                <td colspan="8" align="center">
-                  No Data Available
-                </td>
+                <td colspan="8" align="center">No Data Available</td>
               </tr>
             </tbody>
           </table>

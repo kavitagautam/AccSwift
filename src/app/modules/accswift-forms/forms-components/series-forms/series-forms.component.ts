@@ -22,9 +22,9 @@ import { Series } from "@accSwift-modules/accswift-shared/models/series.model";
       (change)="seriesChange($event.target.value)"
     >
       <option [value]="null">Choose Option....</option>
-      <option *ngFor="let series of seriesList" [value]="series.ID">{{
-        series.Name
-      }}</option>
+      <option *ngFor="let series of seriesList" [value]="series.ID">
+        {{ series.Name }}
+      </option>
     </select>
   </div>`,
   providers: [

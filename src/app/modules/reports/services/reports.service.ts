@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import {
   TrailBalanceModel,
   GroupBalanceModel,
@@ -46,11 +46,22 @@ import {
 } from "@accSwift-modules/product/models/product-min.model";
 import { LedgerGroupModel } from "@accSwift-modules/ledger/models/ledger-group.model";
 import { LedgerMinModel } from "@accSwift-modules/ledger/models/ledger.models";
+import { GroupBalanceRootModel } from "../models/group-balance.model";
+import { LedgerTransactionRootModel } from "../models/ledger-transaction.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class ReportsService {
+  private projectName = new Subject<string>();
+  projectName$ = this.projectName.asObservable();
+
+  // Service message commands
+  selectProject(name: string) {
+    console.log("NAMe" + name);
+    this.projectName.next(name);
+  }
+
   _api_URL = environment.baseAPI;
   productList: ProductMin[] = [];
   productGroupList: ProductGroup[] = [];
@@ -132,12 +143,19 @@ export class ReportsService {
     return this.httpService.post(`${this._api_URL}/Reports/Trial`, body);
   }
 
-  getTrailGroupDetails(body): Observable<GroupBalanceModel> {
-    return this.httpService.post(`${this._api_URL}Reports/TrialDetails`, body);
+  getGroupBalanceDetails(body): Observable<GroupBalanceRootModel> {
+    return this.httpService.post(
+      `${this._api_URL}Reports/GroupBal
+    `,
+      body
+    );
   }
 
-  getTrailLedgerDetails(body): Observable<LedgerDetailsModel> {
-    return this.httpService.post(`${this._api_URL}Reports/TrialDetails`, body);
+  getLedgerTransactionDetails(body): Observable<LedgerTransactionRootModel> {
+    return this.httpService.post(
+      `${this._api_URL}Reports/LedgerTransact`,
+      body
+    );
   }
 
   getLedgerReports(body): Observable<LedgerReportModel> {
@@ -206,11 +224,17 @@ export class ReportsService {
   }
 
   getBSGroupDetails(body): Observable<BalanceSheetGDetailModel> {
-    return this.httpService.post(`${this._api_URL}Reports/BalanceSheet`, body);
+    return this.httpService.post(
+      `${this._api_URL}Reports/BalanceSheetDetails`,
+      body
+    );
   }
 
   getBSLedgerDetails(body): Observable<BalanceSheetLDetailRootModel> {
-    return this.httpService.post(`${this._api_URL}Reports/BalanceSheet`, body);
+    return this.httpService.post(
+      `${this._api_URL}Reports/BalanceSheetDetails`,
+      body
+    );
   }
 
   getPLGroupDetails(body): Observable<ProfitLossGDRootModel> {
