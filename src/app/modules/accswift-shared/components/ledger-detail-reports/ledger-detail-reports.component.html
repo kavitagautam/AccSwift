@@ -23,7 +23,7 @@
               <th colspan="1" style="text-align: left">Ledger Name</th>
               <th colspan="1" style="text-align: center">Transaction Date</th>
               <th colspan="1">VoucherID</th>
-              <th colspan="1">Credit Amount</th>
+              <th colspan="1">Debit Amount</th>
               <th colspan="1">Credit Amount</th>
               <th colspan="1">Voucher Type</th>
               <th colspan="1">Balance</th>
@@ -59,11 +59,18 @@
               </td>
               <td
                 *ngIf="ledger.Type === 'CLOSING'"
+                colspan="3"
                 style="font-size: 14px; font-weight: 700"
+                align="right"
               >
                 {{ ledger.AccountName }}
               </td>
-              <td *ngIf="ledger.Type === 'TOTAL'" colspan="4" align="right">
+              <td
+                *ngIf="ledger.Type === 'TOTAL'"
+                style="font-size: 14px; font-weight: 700"
+                colspan="3"
+                align="right"
+              >
                 {{ ledger.AccountName }}
               </td>
               <td *ngIf="ledger.Type === 'VOUCHER'">

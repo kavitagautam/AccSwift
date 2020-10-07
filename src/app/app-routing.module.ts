@@ -14,6 +14,13 @@ const routes: Routes = [
       "@accSwift-modules/auth/register/register.module#RegisterModule",
   },
   {
+    path: "pos",
+    loadChildren: "@accSwift-modules/pos/pos.module#PosModule",
+    data: {
+      breadcrumb: "POS",
+    },
+  },
+  {
     path: "",
     canActivate: [AuthGuard],
     component: AdminPanelComponent,
@@ -104,13 +111,7 @@ const routes: Routes = [
           breadcrumb: "Product",
         },
       },
-      {
-        path: "pos",
-        loadChildren: "@accSwift-modules/pos/pos.module#PosModule",
-        data: {
-          breadcrumb: "POS",
-        },
-      },
+
       {
         path: "budget",
         loadChildren: "@accSwift-modules/budget/budget.module#BudgetModule",

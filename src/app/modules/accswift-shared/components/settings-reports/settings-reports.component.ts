@@ -26,6 +26,7 @@ export class SettingsReportsComponent implements OnInit {
   accountGroup: boolean = false;
   ledgerMinList: LedgerMin[] = [];
   ledgerGroupList: LedgerGroup[] = [];
+
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -46,10 +47,7 @@ export class SettingsReportsComponent implements OnInit {
     //this.projectName = new Subject();
     this.getLedger();
     this.getLedgerGroup();
-    for (const key in this.settingsForms.value) {
-      this.formsField.push(key);
-    }
-    // console.log("Forms Filed " + JSON.stringify(this.formsField));
+    this.formsField = Object.keys(this.settingsForms.controls);
   }
 
   getLedger(): void {
@@ -63,6 +61,7 @@ export class SettingsReportsComponent implements OnInit {
       this.ledgerGroupList = response.Entity;
     });
   }
+
   enableDate(): void {
     if (this.settingsForms.get("IsDateRange").value) {
       this.dateCheckbox = false;
@@ -88,11 +87,11 @@ export class SettingsReportsComponent implements OnInit {
     this.accountLedger = false;
     if (this.accountGroup == true) {
       this.accountGroup = false;
-      this.settingsForms.get("AccountGroupID").disable();
+      this.settingsForms.get("GroupID").disable();
     } else {
       this.accountGroup = true;
     }
-    this.settingsForms.get("AccountGroupID").enable();
+    this.settingsForms.get("GroupID").enable();
   }
 
   allGroupRadio(): void {
