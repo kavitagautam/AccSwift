@@ -6,6 +6,7 @@ import { LedgerReportComponent } from "./ledger-report/ledger-report.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "@app/shared/shared.module";
 import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift-shared.module";
+import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 
 @NgModule({
   declarations: [LedgerReportComponent],
@@ -18,5 +19,6 @@ import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift
     LedgerReportRoutingModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents: [SettingsReportsComponent],
 })
 export class LedgerReportModule {}

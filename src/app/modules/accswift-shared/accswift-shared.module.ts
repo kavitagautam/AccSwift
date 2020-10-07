@@ -30,7 +30,9 @@ import { NgxPrintModule } from "ngx-print";
 import { PDFExportModule } from "@progress/kendo-angular-pdf-export";
 import { CreateReportsComponent } from "./components/create-reports/create-reports.component";
 import { AddressComponent } from "./components/address/address.component";
-import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
+import { SettingsReportsComponent } from "./components/settings-reports/settings-reports.component";
+import { GroupBalanceReportComponent } from "./components/group-balance-report/group-balance-report.component";
+import { LedgerDetailReportsComponent } from "./components/ledger-detail-reports/ledger-detail-reports.component";
 
 @NgModule({
   declarations: [
@@ -49,6 +51,9 @@ import { SettingsService } from "@accSwift-modules/settings/services/settings.se
     CustomerInvoicesComponent,
     CreateReportsComponent,
     AddressComponent,
+    SettingsReportsComponent,
+    GroupBalanceReportComponent,
+    LedgerDetailReportsComponent,
   ],
   imports: [
     FormsModule,
@@ -80,6 +85,9 @@ import { SettingsService } from "@accSwift-modules/settings/services/settings.se
     CustomerInvoicesComponent,
     CreateReportsComponent,
     AddressComponent,
+    SettingsReportsComponent,
+    GroupBalanceReportComponent,
+    LedgerDetailReportsComponent,
   ],
   providers: [ValidationMsgService],
   entryComponents: [

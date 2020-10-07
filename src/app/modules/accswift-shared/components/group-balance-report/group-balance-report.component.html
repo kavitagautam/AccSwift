@@ -1,0 +1,106 @@
+<div class="modal-header">
+  <h3 class="modal-title pull-left">Group Balance</h3>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="modalRef.hide()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="col-md-12">
+    <h2 align="center">
+      {{ companyInfo?.Name }}
+    </h2>
+    <h4 align="center">
+      {{ companyInfo?.Address1 }}, {{ companyInfo?.City }}
+      {{ companyInfo?.District }}
+    </h4>
+    <h5 align="center" *ngIf="companyInfo && companyInfo.Telephone">
+      Contact: {{ companyInfo.Telephone }}
+    </h5>
+    <h5 align="center" *ngIf="companyInfo && companyInfo.Website">
+      WebSite: {{ companyInfo.Website }}
+    </h5>
+    <h3 align="center">Group Balance</h3>
+    <div class="grid-wrapper">
+      <div class="table-box">
+        <table id="header-fixed" class="table table-hover table-fixed">
+          <thead>
+            <tr>
+              <th colspan="1" style="text-align: left">Account Code</th>
+              <th colspan="1" style="text-align: center">Account Name</th>
+              <th colspan="1">Debit Amount</th>
+              <th colspan="1">Credit Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let group of groupBalanceList; let i = index"
+              (click)="openTrailBalance($event, group)"
+              (dblclick)="openTrailBalance($event, group)"
+            >
+              <td>
+                <span *ngIf="group.Type === 'GROUP'">
+                  {{ group.AccountCode }}
+                </span>
+                <span *ngIf="group.Type === 'LEDGER'" style="color: blue">
+                  {{ group.AccountCode }}
+                </span>
+              </td>
+              <td>
+                <span *ngIf="group.Type === 'GROUP'" class="group_name">
+                  {{ group.AccountName }}
+                </span>
+                <span *ngIf="group.Type === null" class="group_name">
+                  {{ group.AccountName }}
+                </span>
+                <span
+                  *ngIf="group.Type === 'LEDGER'"
+                  style="margin-left: 50px; color: blue"
+                  >{{ group.AccountName }}</span
+                >
+                <span *ngIf="group.Type === 'TOTAL'" style="float: right">{{
+                  group.AccountName
+                }}</span>
+
+                <span *ngIf="group.Type === null" style="float: right">{{
+                  group.AccountName
+                }}</span>
+              </td>
+
+              <td class="balance">
+                <span [innerHTML]="group.DebitAmount | currencyFormat"></span>
+              </td>
+              <td class="balance">
+                <span [innerHTML]="group.CreditAmount | currencyFormat"></span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="groupBalanceList.length == 0">
+            <tr>
+              <td colspan="7" align="center">No Data Available</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <span style="float: right; margin: 10px"
+      >Closing Balance :{{ totalGroupClosingBalance }}</span
+    >
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" (click)="modalRef.hide()">
+    OK
+  </button>
+  <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
+    Cancel
+  </button>
+</div>
