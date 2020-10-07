@@ -87,7 +87,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           ? this.preferenceService.preferences.DEFAULT_CASH_ACCOUNT.Value
           : null,
       ],
-      VoucherNo: [null, Validators.required],
+      VoucherNo: [null],
       SalesLedgerID: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_SALES_ACCOUNT.Value
