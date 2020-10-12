@@ -87,7 +87,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           ? this.preferenceService.preferences.DEFAULT_CASH_ACCOUNT.Value
           : null,
       ],
-      VoucherNo: [null],
+      VoucherNo: [""],
       SalesLedgerID: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_SALES_ACCOUNT.Value
@@ -113,6 +113,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       NetAmount: [0, Validators.required],
       SpecialDiscount: [0, Validators.required],
       VAT: [0],
+      TotalTCAmount: [0],
       Remarks: [""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
@@ -232,15 +233,14 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   public save(): void {
     this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
-
+    this.salesInvoiceForm.get("TotalTCAmount").setValue(this.totalTaxAmount);
     this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
     this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
     this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
     this.salesInvoiceForm
       .get("SpecialDiscount")
       .setValue(this.totalDiscountAmount);
-    this.salesInvoiceForm.get("VAT").setValue(this.totalTaxAmount);
-    if (this.salesInvoiceForm.invalid) return;
+   // if (this.salesInvoiceForm.invalid) return;
     this.salesInvoiceService
       .addSalesInvoice(this.salesInvoiceForm.value)
       .subscribe(
@@ -305,8 +305,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         this.totalDiscountPercentage = sumTotalDiscountPer;
         this.totalTaxAmount = sumTaxAmount;
 
-        this.vatTotalAmount =
-          this.totalNetAmount * (this.salesInvoiceService.vatRate / 100);
         this.grandTotalAmount =
           this.totalGrossAmount -
           this.totalDiscountAmount +

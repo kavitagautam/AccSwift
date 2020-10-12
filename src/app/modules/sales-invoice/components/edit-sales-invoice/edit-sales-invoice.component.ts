@@ -109,6 +109,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       ],
       VAT: [this.salesDetails ? this.salesDetails.VAT : 0],
       Remarks: [this.salesDetails ? this.salesDetails.Remarks : ""],
+      TotalTCAmount: [this.salesDetails ? this.salesDetails.TotalTCAmount : 0],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
   }
@@ -145,6 +146,9 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm
       .get("GrossAmount")
       .setValue(this.salesDetails.GrossAmount);
+    this.salesInvoiceForm
+      .get("TotalTCAmount")
+      .setValue(this.salesDetails.TotalTCAmount);
     this.salesInvoiceForm
       .get("NetAmount")
       .setValue(this.salesDetails.NetAmount);
@@ -254,8 +258,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         this.totalDiscountPercentage = sumTotalDiscountPer;
         this.totalTaxAmount = sumTaxAmount;
 
-        this.vatTotalAmount =
-          this.totalNetAmount * (this.salesInvoiceService.vatRate / 100);
         this.grandTotalAmount =
           this.totalGrossAmount -
           this.totalDiscountAmount +
@@ -390,6 +392,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
 
   public save(): void {
     this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
+    this.salesInvoiceForm.get("TotalTCAmount").setValue(this.totalTaxAmount);
 
     this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
     this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
@@ -397,9 +400,8 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm
       .get("SpecialDiscount")
       .setValue(this.totalDiscountAmount);
-    this.salesInvoiceForm.get("VAT").setValue(this.totalTaxAmount);
 
-    if (this.salesInvoiceForm.invalid) return;
+    //  if (this.salesInvoiceForm.invalid) return;
     this.salesInvoiceService
       .updateSalesInvoice(this.salesInvoiceForm.value)
       .subscribe(

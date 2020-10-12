@@ -24,6 +24,7 @@ export class DetailsEntryGridService {
   ledgerList: LedgerMin[] = [];
   voucherType: VoucherType[] = [];
   taxList: Tax[] = [];
+  vatRate:number;
   constructor(
     private httpService: HttpClientService,
     private http: HttpClient
@@ -32,6 +33,7 @@ export class DetailsEntryGridService {
     this.getProductList();
     this.getLedgerList();
     this.getVoucherType();
+    this.getVatRate()
   }
 
   getTaxList(): void {
@@ -39,6 +41,15 @@ export class DetailsEntryGridService {
       .get(`${this._api_URL}Tax/min`)
       .subscribe((response: TaxModel) => {
         this.taxList = response.Entity;
+      });
+  }
+
+
+  getVatRate(): void {
+    this.httpService
+      .get(`${this._api_URL}Slabs/SalesVAT`)
+      .subscribe((response) => {
+        this.vatRate = response;
       });
   }
 
