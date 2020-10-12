@@ -29,7 +29,15 @@
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <accSwift-voucher-forms
+          <div class="form-group">
+            <label>VoucherNo </label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="VoucherNo"
+            />
+          </div>
+          <!-- <accSwift-voucher-forms
             *ngIf="!salesInvoiceForm.get('VoucherNo').value"
             formControlName="VoucherNo"
             [series]="salesInvoiceForm.get('SeriesID').value"
@@ -38,7 +46,7 @@
             *ngIf="salesInvoiceForm.get('VoucherNo').value"
             formControlName="VoucherNo"
             [series]="null"
-          ></accSwift-voucher-forms>
+          ></accSwift-voucher-forms> -->
           <accSwift-cash-party-account
             formControlName="CashPartyLedgerID"
           ></accSwift-cash-party-account>

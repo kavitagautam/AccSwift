@@ -12,7 +12,6 @@ import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
-import { LocaleService } from "@app/core/services/locale/locale.services";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",

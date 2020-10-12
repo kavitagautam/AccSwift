@@ -1,0 +1,488 @@
+<div class="modal-header">
+  <h3 class="modal-title pull-left">Settings</h3>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="onCancel()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="settingsForms" novalidate>
+    <div class="col-md-12">
+      <fieldset>
+        <div class="col-md-12 p-0">
+          <div class="form-group">
+            <div class="checkbox">
+              <label>
+                <input
+                  type="checkbox"
+                  name="selectDate"
+                  value="true"
+                  formControlName="IsDateRange"
+                  (change)="enableDate()"
+                />
+                <label>Click For Date Selection</label>
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="form-group">
+              <label>End of Month</label>
+              <select
+                class="form-control"
+                [(ngModel)]="toDateSelect"
+                [ngModelOptions]="{ standalone: true }"
+                [disabled]="dateCheckbox"
+                (change)="endOfMonth()"
+              >
+                <option [ngValue]="null">Choose Option..</option>
+                <option
+                  *ngFor="let month of reportService.monthList"
+                  [ngValue]="month.number"
+                >
+                  {{ month.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="form-group" *ngIf="formsField.includes('ToDate')">
+              <label>At the End of</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ToDate"
+                bsDatepicker
+                [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              />
+            </div>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn-secondary m-5" (click)="today()">
+              Today
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 p-0">
+          <div class="flex-item p-0">
+            <div class="col-md-4">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('IsAllGroups')"
+              >
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="IsAllGroups"
+                      [value]="true"
+                      (click)="allGroupRadio()"
+                      formControlName="IsAllGroups"
+                    />
+                    <label>All Groups</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('IsOnlyPrimaryGroups')"
+              >
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="IsOnlyPrimaryGroups"
+                      [value]="true"
+                      (click)="primaryGroupRadio()"
+                      formControlName="IsOnlyPrimaryGroups"
+                    />
+                    <label>Only Primary Groups</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('IsLedgerOnly')"
+              >
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="IsLedgerOnly"
+                      [value]="true"
+                      (click)="ledgerOnlyRaido()"
+                      formControlName="IsLedgerOnly"
+                    />
+                    <label>Only Ledgers</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 p-0" *ngIf="formsField.includes('LedgerID')">
+          <div class="flex-item p-0">
+            <div class="col-md-6">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      id="accountLedger"
+                      [value]="true"
+                      [(ngModel)]="accountLedger"
+                      [ngModelOptions]="{ standalone: true }"
+                      (click)="accountLedgerCheck()"
+                    />
+                    <label>Choose Account Ledger</label>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <select class="form-control" formControlName="LedgerID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let ledger of ledgerMinList"
+                    [ngValue]="ledger.LedgerID"
+                  >
+                    {{ ledger.LedgerName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      id="accountGroup"
+                      [value]="true"
+                      [(ngModel)]="accountGroup"
+                      [ngModelOptions]="{ standalone: true }"
+                      (click)="accountGroupCheck()"
+                    />
+                    <label>Choose Account Group</label>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="formsField.includes('GroupID')">
+                <select class="form-control" formControlName="GroupID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let group of ledgerGroupList"
+                    [ngValue]="group.ID"
+                  >
+                    {{ group.Name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-12 p-0">
+          <div class="flex-item p-0">
+            <div class="col-md-6">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      id="accountLedger"
+                      [value]="true"
+                      [(ngModel)]="accountLedger"
+                      [ngModelOptions]="{ standalone: true }"
+                      (click)="accountLedgerCheck()"
+                    />
+                    <label>Choose Account Ledger</label>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <select class="form-control" formControlName="LedgerID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let ledger of ledgerMinList"
+                    [ngValue]="ledger.LedgerID"
+                  >
+                    {{ ledger.LedgerName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      id="accountGroup"
+                      [value]="true"
+                      [(ngModel)]="accountGroup"
+                      [ngModelOptions]="{ standalone: true }"
+                      (click)="accountGroupCheck()"
+                    />
+                    <label>Choose Account Group</label>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <select
+                  class="form-control"
+                  formControlName="AccountGroupID"
+                >
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let group of ledgerGroupList"
+                    [ngValue]="group.ID"
+                  >
+                    {{ group.Name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </fieldset>
+      <fieldset>
+        <div class="col-md-12 p-0">
+          <div class="col-md-8">
+            <div class="col-md-4">
+              <div class="form-group" *ngIf="formsField.includes('IsDetails')">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="IsDetails"
+                      [value]="false"
+                      formControlName="IsDetails"
+                    />
+                    <label>Summary</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group" *ngIf="formsField.includes('IsDetails')">
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="IsDetails"
+                      [value]="true"
+                      formControlName="IsDetails"
+                    />
+                    <label>Details</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group" *ngIf="formsField.includes('ProjectID')">
+                <label>Project</label>
+                <select
+                  class="form-control"
+                  formControlName="ProjectID"
+                  (change)="changeProject()"
+                >
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let project of reportService.projectList"
+                    [ngValue]="project.ID"
+                  >
+                    {{ project.EngName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <legend>Accounting Class</legend>
+            <div class="form-group">
+              <button
+                type="button"
+                class="btn btn-secondory"
+                data-toggle="modal"
+                data-target="#openAccountSelect"
+              >
+                Select Account Class
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-12 p-0">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Currency</label>
+            <select class="form-control">
+              <option [ngValue]="null">Choose Option..</option>
+              <option>USD</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Rate</label>
+            <input class="form-control" type="text" />
+          </div>
+        </div>
+    </div> -->
+        <div class="col-md-12 p-0">
+          <div class="col-md-4">
+            <div
+              class="form-group"
+              *ngIf="formsField.includes('IsShowZeroBalance')"
+            >
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="IsShowZeroBalance"
+                    [value]="true"
+                    formControlName="IsShowZeroBalance"
+                  />
+                  <label>Show Zero Balance</label>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div
+              class="form-group"
+              *ngIf="formsField.includes('IsShowPreviousYear')"
+            >
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="IsShowPreviousYear"
+                    [value]="true"
+                    formControlName="IsShowPreviousYear"
+                  />
+                  <label>Show Previous Year</label>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div
+              class="form-group"
+              *ngIf="formsField.includes('IsShowSecondLevelGroupDtl')"
+            >
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="IsShowSecondLevelGroupDtl"
+                    [value]="true"
+                    formControlName="IsShowSecondLevelGroupDtl"
+                  />
+                  <label>Show Second Level Group Details</label>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <!--Modal PopUp Opening Balance Modal-->
+    <div
+      class="modal fade bd-example-modal"
+      #openAccountSelect
+      id="openAccountSelect"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title pull-left">Select Account Class</h3>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Account Class</label>
+                  <select
+                    class="form-control"
+                    [(ngModel)]="accountsSelect"
+                    [ngModelOptions]="{ standalone: true }"
+                  >
+                    <option [ngValue]="null">Choose Option..</option>
+                    <option
+                      *ngFor="let account of reportService.accountLists"
+                      [ngValue]="account.ID"
+                    >
+                      {{ account.Name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-12">
+                  <div
+                    class="form-group"
+                    *ngFor="
+                      let account of reportService.accountLists;
+                      index as i
+                    "
+                  >
+                    <div class="checkbox">
+                      <label class="form-check-label" for="check1">
+                        <input
+                          type="checkbox"
+                          class="form-check-input"
+                          id="check1"
+                          [value]="account.ID"
+                          name="account.Name"
+                          (click)="selectAccounts(account.ID, $event)"
+                        />{{ account.Name }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="button" data-dismiss="modal">
+              OK
+            </button>
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="showReport()">
+    Show
+  </button>
+  <button type="button" class="btn btn-danger" (click)="onCancel()">
+    Cancel
+  </button>
+</div>

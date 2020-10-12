@@ -1,784 +1,321 @@
 <div class="box box-default">
-  <div class="col-md-12">
-    <button
-      type="button"
-      class="btn-primary m-3"
-      (click)="openBalanceSheetSettings(balanceSheetSettings)"
-    >
-      Balance Sheet Settings
-    </button>
-  </div>
-  <h1 style="text-align: center;">Balance Sheet</h1>
-  <h4 style="text-align: center;" *ngIf="projectName">
-    Project : {{ projectName }}
-  </h4>
-  <div class="col-md-12">
-    <div class="grid-wrapper">
-      <div class="table-box">
-        <table
-          id="header-fixed"
-          style="width: 50%;"
-          align="left"
-          class="table table-hover table-fixed"
-          *ngIf="balanceSheetForms.get('DisplayFormat').value === 'TFormat'"
-        >
-          <thead>
-            <tr>
-              <th colspan="1" style="text-align: left;">Account Name</th>
-              <th colspan="1" style="text-align: left;">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let balanceS of balanceSheetList"
-              (click)="openBalanceDrillDown($event, balanceS)"
-              (dblclick)="openBalanceDrillDown($event, balanceS)"
-            >
-              <td
-                *ngIf="balanceS.Type == 'HEADER' && balanceS.Category == 1"
-                colspan="2"
-                align="center"
-                style="background-color: darkgray;"
-              >
-                {{ balanceS.AccountName }}
-              </td>
-              <td *ngIf="balanceS.Category == 1">
-                <span *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'">{{
-                  balanceS.AccountName
-                }}</span>
-                <span
-                  *ngIf="balanceS.Category == 1 && balanceS.Type == 'Opening'"
-                  class="bold_text"
-                  >{{ balanceS.AccountName }}</span
-                >
-                <span
-                  *ngIf="balanceS.Category == 1 && balanceS.Type == 'balanceS'"
-                  class="bold_text"
-                  >{{ balanceS.AccountName }}</span
-                >
-                <span
-                  *ngIf="balanceS.Category == 1 && balanceS.Type == 'TOTAL'"
-                  class="bold_text"
-                  >{{ balanceS.AccountName }}</span
-                >
-                <span *ngIf="balanceS.Level == 1" style="margin-left: 10px;">{{
-                  balanceS.AccountName
-                }}</span>
-                <span
-                  *ngIf="balanceS.Level == 2"
-                  style="margin-left: 30px; color: blue;"
-                  >{{ balanceS.AccountName }}</span
-                >
-              </td>
-              <td
-                *ngIf="balanceS.Category == 1 && balanceS.Type !== 'HEADER'"
-                class="balance"
-              >
-                <span [innerHTML]="balanceS.Amount | currencyFormat"></span>
-              </td>
-            </tr>
-
-            <tr *ngIf="balanceSheetList.length == 0">
-              <td colspan="7" align="center">
-                No Data Available
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table
-          id="header-fixed"
-          style="width: 50%;"
-          align="right"
-          class="table table-hover table-fixed"
-          *ngIf="balanceSheetForms.get('DisplayFormat').value === 'TFormat'"
-        >
-          <thead>
-            <tr>
-              <th colspan="1" style="text-align: left;">Account Name</th>
-              <th colspan="1" style="text-align: left;">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let balanceS of balanceSheetList"
-              (click)="openBalanceDrillDown($event, balanceS)"
-              (dblclick)="openBalanceDrillDown($event, balanceS)"
-            >
-              <td
-                *ngIf="balanceS.Type == 'HEADER' && balanceS.Category == 2"
-                colspan="2"
-                align="center"
-                style="background-color: darkgray;"
-              >
-                {{ balanceS.AccountName }}
-              </td>
-              <td *ngIf="balanceS.Category == 2">
-                <span *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'">{{
-                  balanceS.AccountName
-                }}</span>
-                <span
-                  *ngIf="balanceS.Category == 2 && balanceS.Type == 'Opening'"
-                  class="bold_text"
-                  >{{ balanceS.AccountName }}</span
-                >
-                <span
-                  *ngIf="balanceS.Category == 2 && balanceS.Type == 'PL'"
-                  class="bold_text"
-                  >{{ balanceS.AccountName }}</span
-                >
-                <span
-                  *ngIf="balanceS.Category == 2 && balanceS.Type == 'TOTAL'"
-                  class="bold_text"
-                  >{{ balanceS.AccountName }}</span
-                >
-                <span *ngIf="balanceS.Level == 1" style="margin-left: 10px;">{{
-                  balanceS.AccountName
-                }}</span>
-                <span
-                  *ngIf="balanceS.Level == 2"
-                  style="margin-left: 30px; color: blue;"
-                  >{{ balanceS.AccountName }}</span
-                >
-              </td>
-              <td
-                *ngIf="balanceS.Category == 2 && balanceS.Type !== 'HEADER'"
-                class="balance"
-              >
-                <span [innerHTML]="balanceS.Amount | currencyFormat"></span>
-              </td>
-            </tr>
-
-            <tr *ngIf="balanceSheetList.length == 0">
-              <td colspan="7" align="center">
-                No Data Available
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <table
-          id="header-fixed"
-          class="table table-hover table-fixed"
-          *ngIf="balanceSheetForms.get('DisplayFormat').value === 'Vertical'"
-        >
-          <thead>
-            <tr>
-              <th colspan="1" style="text-align: left;">Account Name</th>
-              <th colspan="1" style="text-align: left;">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let balanceS of balanceSheetList"
-              (click)="openBalanceDrillDown($event, balanceS)"
-              (dblclick)="openBalanceDrillDown($event, balanceS)"
-            >
-              <td
-                *ngIf="balanceS.Type == 'HEADER'"
-                colspan="2"
-                align="center"
-                style="background-color: darkgray;"
-              >
-                {{ balanceS.AccountName }}
-              </td>
-              <td>
-                <span *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'">{{
-                  balanceS.AccountName
-                }}</span>
-                <span
-                  *ngIf="
-                    balanceS.Type !== 'HEADER' &&
-                    balanceS.Type !== 'GROUP' &&
-                    balanceS.Type !== 'LEDGER'
-                  "
-                  class="bold_text"
-                  >{{ balanceS.AccountName }}</span
-                >
-
-                <span *ngIf="balanceS.Level == 1" style="margin-left: 10px;">{{
-                  balanceS.AccountName
-                }}</span>
-                <span
-                  *ngIf="balanceS.Level == 2"
-                  style="margin-left: 30px; color: blue;"
-                  >{{ balanceS.AccountName }}</span
-                >
-              </td>
-              <td *ngIf="balanceS.Type !== 'HEADER'" class="balance">
-                <span [innerHTML]="balanceS.Amount | currencyFormat"></span>
-              </td>
-            </tr>
-
-            <tr *ngIf="balanceSheetList.length == 0">
-              <td colspan="4" align="center">
-                No Data Available
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <table
-          id="header-fixed"
-          class="table table-hover table-fixed"
-          *ngIf="balanceSheetForms.get('DisplayFormat').value === 'Standard'"
-        >
-          <thead>
-            <tr>
-              <th colspan="1" style="text-align: left;">Account Name</th>
-              <th colspan="1" style="text-align: left;">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let balanceS of balanceSheetList"
-              (click)="openBalanceDrillDown($event, balanceS)"
-              (dblclick)="openBalanceDrillDown($event, balanceS)"
-            >
-              <td
-                *ngIf="balanceS.Type == 'HEADER'"
-                colspan="2"
-                align="center"
-                style="background-color: darkgray;"
-              >
-                {{ balanceS.AccountName }}
-              </td>
-              <td>
-                <span *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'">{{
-                  balanceS.AccountName
-                }}</span>
-                <span
-                  *ngIf="
-                    balanceS.Type !== 'HEADER' &&
-                    balanceS.Type !== 'GROUP' &&
-                    balanceS.Type !== 'LEDGER'
-                  "
-                  class="bold_text"
-                  >{{ balanceS.AccountName }}</span
-                >
-
-                <span *ngIf="balanceS.Level == 1" style="margin-left: 10px;">{{
-                  balanceS.AccountName
-                }}</span>
-                <span
-                  *ngIf="balanceS.Level == 2"
-                  style="margin-left: 30px; color: blue;"
-                  >{{ balanceS.AccountName }}</span
-                >
-              </td>
-              <td *ngIf="balanceS.Type !== 'HEADER'" class="balance">
-                <span [innerHTML]="balanceS.Amount | currencyFormat"></span>
-              </td>
-            </tr>
-
-            <tr *ngIf="balanceSheetList.length == 0">
-              <td colspan="4" align="center">
-                No Data Available
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div *ngIf="listLoading" class="k-i-loading"></div>
-  </div>
-</div>
-
-<ng-template #balanceSheetSettings>
-  <div class="modal-header">
-    <h3 class="modal-title pull-left">Balance Sheet Settings</h3>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="cancel()"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
-    <div class="row">
-      <form [formGroup]="balanceSheetForms" novalidate>
-        <div class="col-md-12">
-          <div class="col-md-12 p-0">
-            <div class="form-group">
-              <div class="checkbox">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="IsDateRange"
-                    value="true"
-                    formControlName="IsDateRange"
-                    (change)="enableDate()"
-                  />
-                  <label>Click For Date Selection</label>
-                </label>
-              </div>
-            </div>
-            <fieldset>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Form Date</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="FromDate"
-                    bsDatepicker
-                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
-                  />
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>To Date</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="ToDate"
-                    bsDatepicker
-                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
-                  />
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>End of Month</label>
-                  <select
-                    class="form-control"
-                    [(ngModel)]="toDateSelect"
-                    [ngModelOptions]="{ standalone: true }"
-                    [disabled]="dateCheckbox"
-                    (change)="endOfMonth()"
-                  >
-                    <option [ngValue]="null">Choose Option..</option>
-                    <option
-                      *ngFor="let month of reportService.monthList"
-                      [ngValue]="month.number"
-                      >{{ month.name }}</option
-                    >
-                  </select>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-          <fieldset>
-            <div class="col-md-12">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        name="DisplayFormat"
-                        value="TFormat"
-                        formControlName="DisplayFormat"
-                      />
-                      <label>T-Format</label>
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        name="DisplayFormat"
-                        value="Vertical"
-                        formControlName="DisplayFormat"
-                      />
-                      <label>Vertical</label>
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        name="DisplayFormat"
-                        value="Standard"
-                        formControlName="DisplayFormat"
-                      />
-                      <label>Standard</label>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend>Accounting Class</legend>
-            <div class="form-group">
-              <button
-                type="button"
-                class="btn btn-secondory"
-                data-toggle="modal"
-                data-target="#openAccountSelect"
-              >
-                Select Account Class
-              </button>
-            </div>
-          </fieldset>
-          <fieldset>
-            <div class="col-md-12">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        name="IsDetails"
-                        [value]="false"
-                        formControlName="IsDetails"
-                      />
-                      <label>Summary</label>
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        name="IsDetails"
-                        [value]="true"
-                        formControlName="IsDetails"
-                      />
-                      <label>Details</label>
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Project</label>
-                  <select
-                    class="form-control"
-                    formControlName="ProjectID"
-                    (change)="changeProject()"
-                  >
-                    <option [ngValue]="null">Choose Option..</option>
-                    <option
-                      *ngFor="let project of reportService.projectList"
-                      [ngValue]="project.ID"
-                      >{{ project.EngName }}</option
-                    >
-                  </select>
-                </div>
-              </div>
-            </div>
-          </fieldset>
-          <div class="col-md-12">
-            <div class="form-group">
-              <div class="radio">
-                <label>
-                  <input
-                    type="radio"
-                    name="IsShowZeroBalance"
-                    value="true"
-                    formControlName="IsShowZeroBalance"
-                  />
-                  <label>Show Zero Balance</label>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--Modal PopUp Opening Balance Modal-->
-        <div
-          class="modal fade bd-example-modal"
-          #openAccountSelect
-          id="openAccountSelect"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h3 class="modal-title pull-left">Select Account Class</h3>
-                <button
-                  class="close"
-                  type="button"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="form-group">
-                      <label>Account Class</label>
-                      <select
-                        class="form-control"
-                        [(ngModel)]="accountSelect"
-                        [ngModelOptions]="{ standalone: true }"
-                      >
-                        <option [ngValue]="null">Choose Option..</option>
-                        <option
-                          *ngFor="let account of reportService.accountLists"
-                          [ngValue]="account.ID"
-                          >{{ account.Name }}</option
-                        >
-                      </select>
-                    </div>
-                    <div class="col-md-12">
-                      <div
-                        class="form-group"
-                        *ngFor="
-                          let account of reportService.accountLists;
-                          index as i
-                        "
-                      >
-                        <div class="checkbox">
-                          <label class="form-check-label" for="check1">
-                            <input
-                              type="checkbox"
-                              class="form-check-input"
-                              id="check1"
-                              [value]="account.ID"
-                              name="account.Name"
-                              (click)="selectAccounts(account.ID, $event)"
-                            />{{ account.Name }}
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  class="btn btn-primary"
-                  type="button"
-                  data-dismiss="modal"
-                >
-                  OK
-                </button>
-                <button
-                  class="btn btn-secondary"
-                  type="button"
-                  data-dismiss="modal"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="showReport()">
-      Show
-    </button>
-    <button type="button" class="btn btn-danger" (click)="cancel()">
-      Cancel
-    </button>
-  </div>
-</ng-template>
-
-<ng-template #groupBalance>
-  <div class="modal-header">
-    <h3 class="modal-title pull-left">Group Balance</h3>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef.hide()"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
+  <div class="row">
     <div class="col-md-12">
-      <h2 align="center">{{ companyInfo.Name }}</h2>
-      <h4 align="center">
-        {{ companyInfo.Address1 }}, {{ companyInfo.City }}
-        {{ companyInfo.District }}
-      </h4>
-      <h5 align="center" *ngIf="companyInfo.Telephone">
-        Contact: {{ companyInfo.Telephone }}
-      </h5>
-      <h5 align="center" *ngIf="companyInfo.Website">
-        WebSite: {{ companyInfo.Website }}
-      </h5>
-      <h3 align="center">Group Balance</h3>
-      <div class="grid-wrapper">
-        <div class="table-box">
-          <table id="header-fixed" class="table table-hover table-fixed">
-            <thead>
-              <tr>
-                <th colspan="1" style="text-align: center;">Account Name</th>
-                <th colspan="1">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="let group of groupBalanceList; let i = index"
-                (click)="openBalanceDrillDown($event, group)"
-                (dblclick)="openBalanceDrillDown($event, group)"
-              >
-                <td>
-                  <span *ngIf="group.Type === 'GROUP'" class="group_name">
-                    {{ group.AccountName }}
-                  </span>
-                  <span *ngIf="group.Type === null" class="group_name">
-                    {{ group.AccountName }}
-                  </span>
-                  <span
-                    *ngIf="
-                      group.Type !== 'HEADER' &&
-                      group.Type !== 'GROUP' &&
-                      group.Type !== 'LEDGER'
-                    "
-                    class="bold_text"
-                  >
-                    {{ group.AccountName }}
-                  </span>
-                  <span
-                    *ngIf="group.Type === 'LEDGER'"
-                    style="margin-left: 50px; color: blue;"
-                    >{{ group.AccountName }}</span
-                  >
-                </td>
-
-                <td class="balance" *ngIf="group.Type !== 'HEADER'">
-                  <span [innerHTML]="group.Amount | currencyFormat"></span>
-                </td>
-              </tr>
-            </tbody>
-            <tbody *ngIf="groupBalanceList.length == 0">
-              <tr>
-                <td colspan="7" align="center">
-                  No Data Available
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div *ngIf="groupLoading" class="k-i-loading"></div>
-    </div>
-    <div class="col-md-12">
-      <span style="float: right; margin: 10px;"
-        >Closing Balance :{{ totalGroupClosingBalance }}</span
+      <button
+        type="button"
+        class="btn-primary m-3"
+        (click)="openBalanceSheetSettings()"
       >
+        Balance Sheet Settings
+      </button>
     </div>
-  </div>
-
-  <div class="modal-footer">
-    <button class="btn btn-primary" type="button" (click)="modalRef.hide()">
-      OK
-    </button>
-    <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
-      Cancel
-    </button>
-  </div>
-</ng-template>
-
-<ng-template #ledgerDetails>
-  <div class="modal-header">
-    <h3 class="modal-title pull-left">Transaction</h3>
-    <h4 style="text-align: center;" *ngIf="projectName">
+    <h1 style="text-align: center">Balance Sheet</h1>
+    <h4 style="text-align: center" *ngIf="projectName">
       Project : {{ projectName }}
     </h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef.hide()"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
     <div class="col-md-12">
       <div class="grid-wrapper">
         <div class="table-box">
-          <table id="header-fixed" class="table table-hover table-fixed">
+          <table
+            id="header-fixed"
+            style="width: 50%"
+            align="left"
+            class="table table-hover table-fixed"
+            *ngIf="balanceSheetForms.get('DisplayFormat').value === 'TFormat'"
+          >
             <thead>
               <tr>
-                <th colspan="1" style="text-align: left;">Account Name</th>
-
-                <th colspan="1">Amount</th>
+                <th colspan="1" style="text-align: left">Account Name</th>
+                <th colspan="1" style="text-align: left">Amount</th>
               </tr>
             </thead>
             <tbody>
               <tr
-                *ngFor="let ledger of ledgerDetailsList; let i = index"
-                (click)="openLedgerDetailsDetails($event, ledger)"
-                (dblclick)="openLedgerDetailsDetails($event, ledger)"
+                *ngFor="let balanceS of balanceSheetList"
+                (click)="openBalanceDrillDown($event, balanceS)"
+                (dblclick)="openBalanceDrillDown($event, balanceS)"
               >
                 <td
-                  *ngIf="ledger.Type === 'HEADER'"
-                  style="
-                    background-color: darkgray;
-                    font-size: 14px;
-                    text-align: center;
-                  "
+                  *ngIf="balanceS.Type == 'HEADER' && balanceS.Category == 1"
                   colspan="2"
+                  align="center"
+                  style="background-color: darkgray"
                 >
-                  {{ ledger.AccountName }}
+                  {{ balanceS.AccountName }}
+                </td>
+                <td *ngIf="balanceS.Category == 1">
+                  <span
+                    *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Level == 1 && balanceS.Type == 'GROUP'"
+                    style="margin-left: 10px"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Level == 2 && balanceS.Type == 'GROUP'"
+                    style="margin-left: 20px"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Level == 3 && balanceS.Type == 'GROUP'"
+                    style="margin-left: 30px"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Level == 4 && balanceS.Type == 'GROUP'"
+                    style="margin-left: 40px"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Type == 'LEDGER'"
+                    style="margin-left: 50px; color: blue"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 1 && balanceS.Type == 'Opening'"
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 1 && balanceS.Type == 'PL'"
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 1 && balanceS.Type == 'TOTAL'"
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 1 && balanceS.Type == 'DIFF'"
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                </td>
+                <td
+                  *ngIf="balanceS.Category == 1 && balanceS.Type !== 'HEADER'"
+                  class="balance"
+                >
+                  <span [innerHTML]="balanceS.Amount | currencyFormat"></span>
+                </td>
+              </tr>
+
+              <tr *ngIf="balanceSheetList.length == 0">
+                <td colspan="7" align="center">No Data Available</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table
+            id="header-fixed"
+            style="width: 50%"
+            align="right"
+            class="table table-hover table-fixed"
+            *ngIf="balanceSheetForms.get('DisplayFormat').value === 'TFormat'"
+          >
+            <thead>
+              <tr>
+                <th colspan="1" style="text-align: left">Account Name</th>
+                <th colspan="1" style="text-align: left">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let balanceS of balanceSheetList"
+                (click)="openBalanceDrillDown($event, balanceS)"
+                (dblclick)="openBalanceDrillDown($event, balanceS)"
+              >
+                <td
+                  *ngIf="balanceS.Type == 'HEADER' && balanceS.Category == 2"
+                  colspan="2"
+                  align="center"
+                  style="background-color: darkgray"
+                >
+                  {{ balanceS.AccountName }}
+                </td>
+                <td *ngIf="balanceS.Category == 2">
+                  <span
+                    *ngIf="balanceS.Level == 1 && balanceS.Type == 'GROUP'"
+                    style="margin-left: 10px"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Level == 2 && balanceS.Type == 'GROUP'"
+                    style="margin-left: 20px"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Level == 3 && balanceS.Type == 'GROUP'"
+                    style="margin-left: 30px"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Level == 4 && balanceS.Type == 'GROUP'"
+                    style="margin-left: 40px"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Type == 'LEDGER'"
+                    style="margin-left: 50px; color: blue"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 2 && balanceS.Type == 'Opening'"
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 2 && balanceS.Type == 'PL'"
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 2 && balanceS.Type == 'TOTAL'"
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 2 && balanceS.Type == 'Closing'"
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                </td>
+                <td
+                  *ngIf="balanceS.Category == 2 && balanceS.Type !== 'HEADER'"
+                  class="balance"
+                >
+                  <span [innerHTML]="balanceS.Amount | currencyFormat"></span>
+                </td>
+              </tr>
+
+              <tr *ngIf="balanceSheetList.length == 0">
+                <td colspan="7" align="center">No Data Available</td>
+              </tr>
+            </tbody>
+          </table>
+          <table
+            id="header-fixed"
+            class="table table-hover table-fixed"
+            *ngIf="balanceSheetForms.get('DisplayFormat').value === 'Vertical'"
+          >
+            <thead>
+              <tr>
+                <th colspan="1" style="text-align: left">Account Name</th>
+                <th colspan="1" style="text-align: left">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let balanceS of balanceSheetList"
+                (click)="openBalanceDrillDown($event, balanceS)"
+                (dblclick)="openBalanceDrillDown($event, balanceS)"
+              >
+                <td
+                  *ngIf="balanceS.Type == 'HEADER'"
+                  colspan="2"
+                  align="center"
+                  style="background-color: darkgray"
+                >
+                  {{ balanceS.AccountName }}
                 </td>
                 <td>
                   <span
+                    *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
                     *ngIf="
-                      ledger.Type !== 'HEADER' &&
-                      ledger.Type !== 'GROUP' &&
-                      ledger.Type !== 'LEDGER'
+                      balanceS.Type !== 'HEADER' &&
+                      balanceS.Type !== 'GROUP' &&
+                      balanceS.Type !== 'LEDGER'
                     "
                     class="bold_text"
+                    >{{ balanceS.AccountName }}</span
                   >
-                    {{ ledger.AccountName }}
-                  </span>
-                  <span *ngIf="ledger.Type == 'GROUP'" class="group_name">
-                    {{ ledger.AccountName }}
-                  </span>
+
+                  <span *ngIf="balanceS.Level == 1" style="margin-left: 10px">{{
+                    balanceS.AccountName
+                  }}</span>
                   <span
-                    *ngIf="ledger.Type == 'LEDGER'"
-                    style="color: blue; margin-left: 30px;"
+                    *ngIf="balanceS.Level == 2"
+                    style="margin-left: 30px; color: blue"
+                    >{{ balanceS.AccountName }}</span
                   >
-                    {{ ledger.AccountName }}
-                  </span>
                 </td>
-                <td *ngIf="ledger.Type !== 'HEADER'" class="balance">
-                  <span [innerHTML]="ledger.Amount | currencyFormat"></span>
+                <td *ngIf="balanceS.Type !== 'HEADER'" class="balance">
+                  <span [innerHTML]="balanceS.Amount | currencyFormat"></span>
                 </td>
               </tr>
+
+              <tr *ngIf="balanceSheetList.length == 0">
+                <td colspan="4" align="center">No Data Available</td>
+              </tr>
             </tbody>
-            <tbody *ngIf="ledgerDetailsList.length == 0">
+          </table>
+          <table
+            id="header-fixed"
+            class="table table-hover table-fixed"
+            *ngIf="balanceSheetForms.get('DisplayFormat').value === 'Standard'"
+          >
+            <thead>
               <tr>
-                <td colspan="7" align="center">
-                  No Data Available
+                <th colspan="1" style="text-align: left">Account Name</th>
+                <th colspan="1" style="text-align: left">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let balanceS of balanceSheetList"
+                (click)="openBalanceDrillDown($event, balanceS)"
+                (dblclick)="openBalanceDrillDown($event, balanceS)"
+              >
+                <td
+                  *ngIf="balanceS.Type == 'HEADER'"
+                  colspan="2"
+                  align="center"
+                  style="background-color: darkgray"
+                >
+                  {{ balanceS.AccountName }}
                 </td>
+                <td>
+                  <span
+                    *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="
+                      balanceS.Type !== 'HEADER' &&
+                      balanceS.Type !== 'GROUP' &&
+                      balanceS.Type !== 'LEDGER'
+                    "
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+
+                  <span *ngIf="balanceS.Level == 1" style="margin-left: 10px">{{
+                    balanceS.AccountName
+                  }}</span>
+                  <span
+                    *ngIf="balanceS.Level == 2"
+                    style="margin-left: 30px; color: blue"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                </td>
+                <td *ngIf="balanceS.Type !== 'HEADER'" class="balance">
+                  <span [innerHTML]="balanceS.Amount | currencyFormat"></span>
+                </td>
+              </tr>
+
+              <tr *ngIf="balanceSheetList.length == 0">
+                <td colspan="4" align="center">No Data Available</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <div *ngIf="ledgerLoading" class="k-i-loading"></div>
+      <div *ngIf="listLoading" class="k-i-loading"></div>
     </div>
   </div>
-
-  <div class="modal-footer">
-    <button class="btn btn-primary" type="button" (click)="modalRef.hide()">
-      OK
-    </button>
-    <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
-      Cancel
-    </button>
-  </div>
-</ng-template>
+</div>
