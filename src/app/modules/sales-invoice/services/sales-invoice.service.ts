@@ -1,4 +1,4 @@
-import { HttpParams } from "@angular/common/http";
+import { HttpHeaders, HttpParams, HttpResponse } from "@angular/common/http";
 import {
   SalesInvoiceDetailsModel,
   SalseInvoiceNavigateModel,
@@ -56,5 +56,14 @@ export class SalesInvoiceService {
       .subscribe((response) => {
         this.vatRate = response;
       });
+  }
+
+  getSalesInvoicePDF(invoiceID): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set("Accept", "application/pdf");
+    return this.http.get(
+      `${this._api_URL}SalesInvoiceMaster/PDF/${invoiceID}`,
+      { headers: headers, responseType: "blob" as "json" }
+    );
   }
 }

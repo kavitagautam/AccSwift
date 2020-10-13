@@ -3,6 +3,9 @@ import { environment } from "@env/environment";
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { Router } from "@angular/router";
 import { FormGroup } from "@angular/forms";
+import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
+import { HttpResponse } from "@angular/common/http";
+import { saveAs } from "file-saver";
 
 @Component({
   selector: "accSwift-create-reports",
@@ -16,7 +19,10 @@ export class CreateReportsComponent implements OnInit {
   @Input("voucherType") public voucherType: string;
   iconConst = IconConst;
   cvsList = [];
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private salesInvoiceService: SalesInvoiceService
+  ) {
     // if (this.router.url.indexOf("/journal") > -1) {
     //   this.voucherType = "JRNL";
     //   const data = JSON.parse(localStorage.getItem("journal"));
@@ -129,6 +135,36 @@ export class CreateReportsComponent implements OnInit {
           state: this.form.get("Journaldetails").value,
         }
       );
+    }
+  }
+
+  downloadPDF(): void {
+    if (this.voucherType == "SALES") {
+      this.salesInvoiceService
+        .getSalesInvoicePDF(this.form.get("ID").value)
+        .subscribe((response) => {
+          console.log("response " + JSON.stringify(response));
+          //  let filename: string = this.getFileName(response);
+          // let blob: any = new Blob([response], {
+          //   type: "text/json; charset=utf-8",
+          // });
+          // const url = window.URL.createObjectURL(blob);
+          // //window.open(url);
+          // //window.location.href = response.url;
+          // fileSaver.saveAs(blob, "employees.json");
+          var blob = new Blob([response], { type: "application/pdf" });
+          console.log(blob);
+          saveAs(blob, "testData.pdf");
+          // let binaryData = [];
+          // binaryData.push(response.body);
+          // let downloadLink = document.createElement("a");
+          // downloadLink.href = window.URL.createObjectURL(
+          //   new Blob(binaryData, { type: "blob" })
+          // );
+          // downloadLink.setAttribute("download", "invoice.pdf");
+          // document.body.appendChild(downloadLink);
+          // downloadLink.click();
+        });
     }
   }
 

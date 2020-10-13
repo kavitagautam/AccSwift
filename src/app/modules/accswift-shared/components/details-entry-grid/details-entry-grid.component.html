@@ -514,6 +514,7 @@
       >
         <kendo-dropdownlist
           class="form-control"
+          [defaultItem]="defaultItem"
           [data]="gridServices.taxList"
           textField="Name"
           valueField="ID"
@@ -523,7 +524,7 @@
         >
           <ng-template kendoDropDownListItemTemplate let-dataItem>
             <span class="template">{{ dataItem.Name }}</span
-            >({{ dataItem.Rate }} %)
+            ><span *ngIf="dataItem.Rate">({{ dataItem.Rate }} %)</span>
           </ng-template>
         </kendo-dropdownlist>
       </ng-template>

@@ -29,15 +29,15 @@
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label>VoucherNo </label>
             <input
               type="text"
               class="form-control"
               formControlName="VoucherNo"
             />
-          </div>
-          <!-- <accSwift-voucher-forms
+          </div> -->
+          <accSwift-voucher-forms
             *ngIf="!salesInvoiceForm.get('VoucherNo').value"
             formControlName="VoucherNo"
             [series]="salesInvoiceForm.get('SeriesID').value"
@@ -46,7 +46,7 @@
             *ngIf="salesInvoiceForm.get('VoucherNo').value"
             formControlName="VoucherNo"
             [series]="null"
-          ></accSwift-voucher-forms> -->
+          ></accSwift-voucher-forms>
           <accSwift-cash-party-account
             formControlName="CashPartyLedgerID"
           ></accSwift-cash-party-account>
@@ -120,9 +120,9 @@
             </td>
             <td>Tax 2</td>
             <td>0.00</td>
-            <td>VAT({{salesInvoiceService.vatRate }} %)</td>
+            <td>Tax</td>
             <td>
-              <span [innerHTML]="vatTotalAmount | currencyFormat "></span>
+              <span [innerHTML]="totalTaxAmount | currencyFormat "></span>
             </td>
           </tr>
         </tbody>
