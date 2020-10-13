@@ -189,69 +189,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="col-md-12 p-0">
-          <div class="flex-item p-0">
-            <div class="col-md-6">
-              <div class="form-group">
-                <div class="radio">
-                  <label>
-                    <input
-                      type="radio"
-                      id="accountLedger"
-                      [value]="true"
-                      [(ngModel)]="accountLedger"
-                      [ngModelOptions]="{ standalone: true }"
-                      (click)="accountLedgerCheck()"
-                    />
-                    <label>Choose Account Ledger</label>
-                  </label>
-                </div>
-              </div>
-              <div class="form-group">
-                <select class="form-control" formControlName="LedgerID">
-                  <option [ngValue]="null">Choose Option..</option>
-                  <option
-                    *ngFor="let ledger of ledgerMinList"
-                    [ngValue]="ledger.LedgerID"
-                  >
-                    {{ ledger.LedgerName }}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <div class="radio">
-                  <label>
-                    <input
-                      type="radio"
-                      id="accountGroup"
-                      [value]="true"
-                      [(ngModel)]="accountGroup"
-                      [ngModelOptions]="{ standalone: true }"
-                      (click)="accountGroupCheck()"
-                    />
-                    <label>Choose Account Group</label>
-                  </label>
-                </div>
-              </div>
-              <div class="form-group">
-                <select
-                  class="form-control"
-                  formControlName="AccountGroupID"
-                >
-                  <option [ngValue]="null">Choose Option..</option>
-                  <option
-                    *ngFor="let group of ledgerGroupList"
-                    [ngValue]="group.ID"
-                  >
-                    {{ group.Name }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </fieldset>
       <fieldset>
         <div class="col-md-12 p-0">

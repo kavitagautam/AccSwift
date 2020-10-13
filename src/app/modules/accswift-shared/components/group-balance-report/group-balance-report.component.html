@@ -40,7 +40,6 @@
           <tbody>
             <tr
               *ngFor="let group of groupBalanceList; let i = index"
-              (click)="openTrailBalance($event, group)"
               (dblclick)="openTrailBalance($event, group)"
             >
               <td>

@@ -32,7 +32,6 @@
           <tbody>
             <tr
               *ngFor="let ledger of ledgerDetailsList; let i = index"
-              (click)="openLedgerDetailsDetails($event, ledger)"
               (dblclick)="openLedgerDetailsDetails($event, ledger)"
             >
               <td *ngIf="ledger.Type === 'HEADER'" colspan="8" align="center">

@@ -68,7 +68,6 @@
               </tr>
               <tr
                 *ngFor="let l of ledger.TransactDetails; let i = index"
-                (click)="openVoucherDetails($event, l)"
                 (dblclick)="openVoucherDetails($event, l)"
               >
                 <td>{{ i + 1 }}</td>
