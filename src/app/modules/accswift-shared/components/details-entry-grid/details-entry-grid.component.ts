@@ -370,6 +370,8 @@ export class DetailsEntryGridComponent implements OnInit {
       entryListArray.controls[index]
         .get("TaxAmount")
         .setValue(netAmountV * (selectedTaxValue[0].Rate / 100));
+    } else {
+      entryListArray.controls[index].get("TaxAmount").setValue(0);
     }
   }
 
