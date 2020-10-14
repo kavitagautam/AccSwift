@@ -89,7 +89,7 @@
                 [class.selected]="i === selectedRow"
               >
                 <td>{{ product.Quantity }}</td>
-                <td>{{ product.Title }}</td>
+                <td>{{ product.ProductName }}</td>
                 <td>{{ product.SalesRate }}</td>
                 <td>{{ product.Amount }}</td>
                 <td>
@@ -105,6 +105,7 @@
             </tbody>
           </table>
         </div>
+
         <div class="col-md-12">
           <div class="pull-left">
             <h6>Total Qty: &nbsp; {{ totalQty }}</h6>
@@ -113,18 +114,72 @@
             <h6>Amount: &nbsp; {{ totalAmount }}</h6>
           </div>
         </div>
+        <div class="col-md-12">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Sub Amount</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="totalAmount"
+              />
+            </div>
+            <div class="form-group">
+              <label> Discount</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="discountAmount"
+                (change)="discountAmountChange()"
+              />
+            </div>
+            <div class="form-group">
+              <label> Tax</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="taxAmount"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label>Grand Total</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="grandTotalAmount"
+              />
+            </div>
+            <button type="button" class="btn btn-primary" (click)="checkOut()">
+              CheckOut
+            </button>
+          </div>
+        </div>
       </div>
+
       <div class="col-md-3">
         <div class="form-group">
-          <select class="form-control" type="number" placeholder="Customer All">
-            <option></option>
-            <option>Main User</option>
+          <select
+            class="form-control"
+            type="number"
+            placeholder="select Series "
+          >
+            <option>Choose Option...</option>
+            <option *ngFor="let series of posServices.seriesList">
+              {{ series.Name }}
+            </option>
           </select>
         </div>
         <div class="form-group">
-          <select class="form-control" type="number" placeholder="Default">
-            <option></option>
-            <option>Main User</option>
+          <select
+            class="form-control"
+            type="number"
+            placeholder="Select project"
+          >
+            <option>Choose Option...</option>
+            <option *ngFor="let project of posServices.projectList">
+              {{ project.EngName }}
+            </option>
           </select>
         </div>
         <div class="col-md-6">

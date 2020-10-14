@@ -588,6 +588,15 @@
               "
             ></span
           ></span>
+          <span class="small_text"
+          >Tax :&nbsp; &nbsp;
+          <span
+            [innerHTML]="
+              entryArray.controls[rowIndex].get('TaxAmount').value
+                | currencyFormat
+            "
+          ></span
+        ></span>
         </div>
       </ng-template>
       <ng-template
