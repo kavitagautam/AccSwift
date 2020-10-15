@@ -8,8 +8,8 @@
       Day-book Settings
     </button>
   </div>
-  <h1 style="text-align: center;">Day Book</h1>
-  <h4 style="text-align: center;" *ngIf="projectName">
+  <h1 style="text-align: center">Day Book</h1>
+  <h4 style="text-align: center" *ngIf="projectName">
     Project : {{ projectName }}
   </h4>
   <div class="col-md-12">
@@ -18,11 +18,11 @@
         <table id="header-fixed" class="table table-hover table-fixed">
           <thead>
             <tr>
-              <th colspan="1" style="text-align: left;">S.N</th>
-              <th colspan="1" style="text-align: left;">Transaction Date</th>
-              <th colspan="1" style="text-align: left;">Voucher Type</th>
-              <th colspan="1" style="text-align: left;">Voucher No.</th>
-              <th colspan="1" style="text-align: center;">Account Name</th>
+              <th colspan="1" style="text-align: left">S.N</th>
+              <th colspan="1" style="text-align: left">Transaction Date</th>
+              <th colspan="1" style="text-align: left">Voucher Type</th>
+              <th colspan="1" style="text-align: left">Voucher No.</th>
+              <th colspan="1" style="text-align: center">Account Name</th>
               <th colspan="1">Debit Amount</th>
               <th colspan="1">Credit Amount</th>
             </tr>
@@ -30,7 +30,6 @@
           <tbody>
             <tr
               *ngFor="let l of dayBookList; index as i"
-              (click)="openTransaction($event, l)"
               (dblclick)="openTransaction($event, l)"
             >
               <td>{{ i + 1 }}</td>
@@ -46,9 +45,7 @@
               </td>
             </tr>
             <tr *ngIf="dayBookList.length == 0">
-              <td colspan="7" align="center">
-                No Data Available
-              </td>
+              <td colspan="7" align="center">No Data Available</td>
             </tr>
           </tbody>
           <tfoot>
@@ -133,8 +130,9 @@
                   <option
                     *ngFor="let month of monthList"
                     [ngValue]="month.number"
-                    >{{ month.name }}</option
                   >
+                    {{ month.name }}
+                  </option>
                 </select>
               </div>
               <div class="form-group">
@@ -144,8 +142,9 @@
                   <option
                     *ngFor="let voucherType of transVoucherType"
                     [ngValue]="voucherType.VouchType"
-                    >{{ voucherType.VouchName }}</option
                   >
+                    {{ voucherType.VouchName }}
+                  </option>
                 </select>
               </div>
             </fieldset>
@@ -186,13 +185,18 @@
             <fieldset>
               <div class="form-group">
                 <label>Project</label>
-                <select class="form-control" formControlName="ProjectID" (change)="changeProject()">
+                <select
+                  class="form-control"
+                  formControlName="ProjectID"
+                  (change)="changeProject()"
+                >
                   <option [ngValue]="null">Choose Option..</option>
                   <option
                     *ngFor="let project of projectList"
                     [ngValue]="project.ID"
-                    >{{ project.EngName }}</option
                   >
+                    {{ project.EngName }}
+                  </option>
                 </select>
               </div>
             </fieldset>
@@ -235,8 +239,9 @@
                         <option
                           *ngFor="let account of accountLists"
                           [ngValue]="account.ID"
-                          >{{ account.Name }}</option
                         >
+                          {{ account.Name }}
+                        </option>
                       </select>
                     </div>
                     <div class="col-md-12">

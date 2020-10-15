@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { StockStatusList } from "../models/stock.models";
 import { ReportsService } from "../../services/reports.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 
 @Component({
   selector: "accSwift-stock-status",
@@ -17,10 +18,10 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 })
 export class StockStatusComponent implements OnInit, AfterViewInit {
   stockStatusFroms: FormGroup;
-  @ViewChild("stockStatusSettings") stockStatusSettings;
 
   isActive;
   listLoading: boolean;
+  projectName: string;
 
   stockStatusList: StockStatusList[] = [];
   totalQty: number;
@@ -47,7 +48,7 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.openStockSettings(this.stockStatusSettings), 100);
+    setTimeout(() => this.openStockSettings(), 100);
   }
 
   buildStockStatusForms(): void {
@@ -63,53 +64,50 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
       IsClosingQtyRange: [false],
       FromQtyRange: [""],
       IsFromRangeMin: [false],
+      IsDateRange: [false],
       IsToRangeMax: [false],
       ToQtyRange: [""],
     });
   }
 
-  allProduct(event): void {
-    this.stockStatusFroms.get("ProductID").setValue(null);
-    this.stockStatusFroms.get("ProductGroupID").setValue(null);
-    this.stockStatusFroms.get("ProductID").disable();
-    this.stockStatusFroms.get("ProductGroupID").disable();
-  }
+  openStockSettings(): void {
+    this.modalRef = this.modalService.show(SettingsReportsComponent, {
+      initialState: { settingsForms: this.stockStatusFroms },
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-lg",
+    });
+    // this.modalRef.content.projectName.subscribe((data) => {
+    //   this.projectName = data;
+    // });
+    this.reportService.projectName$.subscribe((value) => {
+      this.projectName = value;
+    });
+    //this.modalRef = this.modalService.show(template, this.config);
 
-  quantityRange(): void {
-    this.stockStatusFroms.get("FromQtyRange").enable();
-    this.stockStatusFroms.get("IsFromRangeMin").enable();
-    this.stockStatusFroms.get("IsToRangeMax").enable();
-    this.stockStatusFroms.get("ToQtyRange").enable();
-  }
+    this.modalRef.content.onSubmit.subscribe((data) => {
+      if (data) {
+        this.listLoading = true;
+        this.reportService.stockStatusReports(JSON.stringify(data)).subscribe(
+          (response) => {
+            this.stockStatusList = response.Entity.Entity;
+            this.totalQty = response.Entity.TotalClosingQty;
+            this.totalAmount = response.Entity.TotalClosingAmount;
+          },
+          (error) => {
+            this.listLoading = false;
+          },
+          () => {
+            this.listLoading = false;
+          }
+        );
+      }
+    });
 
-  endOfMonth(): void {
-    var today = new Date();
-    var lastDayOfMonth = new Date(
-      today.getFullYear(),
-      this.toDateSelect + 1,
-      0
-    );
-    this.stockStatusFroms.get("ToDate").setValue(lastDayOfMonth);
-  }
-
-  selectAccounts(id, event): void {
-    if (event.target.checked) {
-      this.stockStatusFroms.get("AccClassID").setValue([id]);
-    }
-  }
-
-  openStockSettings(template: TemplateRef<any>): void {
-    this.modalRef = this.modalService.show(template, this.config);
-  }
-
-  singleProduct(event): void {
-    this.stockStatusFroms.get("ProductGroupID").setValue(null);
-    this.stockStatusFroms.get("ProductGroupID").disable();
-  }
-
-  productGroup(event): void {
-    this.stockStatusFroms.get("ProductID").setValue(null);
-    this.stockStatusFroms.get("ProductID").disable();
+    this.modalRef.content.onClose.subscribe((data) => {
+      this.showReport();
+    });
   }
 
   showReport(): void {

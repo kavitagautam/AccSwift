@@ -191,6 +191,95 @@
         </div>
       </fieldset>
       <fieldset>
+        <div class="col-md-12">
+          <div class="col-sm-6" *ngIf="formsField.includes('ProductID')">
+            <div class="flex-item">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="radio">
+                    <label>
+                      <input
+                        type="radio"
+                        [value]="allproduct"
+                        [(ngModel)]="isActive"
+                        [ngModelOptions]="{ standalone: true }"
+                        (change)="allProduct($event)"
+                      />
+                      <label>All Product</label>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex-item">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="radio">
+                    <label>
+                      <input
+                        type="radio"
+                        [value]="singleProduct"
+                        [(ngModel)]="isActive"
+                        [ngModelOptions]="{ standalone: true }"
+                        (change)="singleProduct($event)"
+                      />
+                      <label>Single Product</label>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex-item">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="radio">
+                    <label>
+                      <input
+                        type="radio"
+                        [value]="productGroup"
+                        [(ngModel)]="isActive"
+                        [ngModelOptions]="{ standalone: true }"
+                        (change)="productGroup($event)"
+                      />
+                      <label>Product Group</label>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mt-5">
+            <div class="form-group"></div>
+            <div class="form-group" *ngIf="formsField.includes('ProductID')">
+              <select class="form-control" formControlName="ProductID">
+                <option [ngValue]="null">Choose Option..</option>
+                <option
+                  *ngFor="let product of reportService.productList"
+                  [ngValue]="product.ProductID"
+                >
+                  {{ product.ProductName }}
+                </option>
+              </select>
+            </div>
+            <div
+              class="form-group"
+              *ngIf="formsField.includes('ProductGroupID')"
+            >
+              <select class="form-control" formControlName="ProductGroupID">
+                <option [ngValue]="null">Choose Option..</option>
+                <option
+                  *ngFor="let productG of reportService.productGroupList"
+                  [ngValue]="productG.ID"
+                >
+                  {{ productG.Name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
         <div class="col-md-12 p-0">
           <div class="col-md-8">
             <div class="col-md-4">
@@ -207,6 +296,22 @@
                   </label>
                 </div>
               </div>
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('ShowZeroQunatity')"
+              >
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="ShowZeroQunatity"
+                      value="true"
+                      formControlName="ShowZeroQunatity"
+                    />
+                    <label>Show Zero Quantity</label>
+                  </label>
+                </div>
+              </div>
             </div>
             <div class="col-md-4">
               <div class="form-group" *ngIf="formsField.includes('IsDetails')">
@@ -219,6 +324,23 @@
                       formControlName="IsDetails"
                     />
                     <label>Details</label>
+                  </label>
+                </div>
+              </div>
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('IsClosingQtyRange')"
+              >
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="comma"
+                      value="true"
+                      formControlName="IsClosingQtyRange"
+                      (change)="quantityRange()"
+                    />
+                    <label>Change Qty Rannge</label>
                   </label>
                 </div>
               </div>
@@ -285,6 +407,7 @@
                     type="radio"
                     name="IsShowZeroBalance"
                     [value]="true"
+                    (click)="isShowZeroBalanceClick()"
                     formControlName="IsShowZeroBalance"
                   />
                   <label>Show Zero Balance</label>
@@ -303,6 +426,7 @@
                     type="radio"
                     name="IsShowPreviousYear"
                     [value]="true"
+                    (click)="isShowPreviousYearClick()"
                     formControlName="IsShowPreviousYear"
                   />
                   <label>Show Previous Year</label>
@@ -321,9 +445,56 @@
                     type="radio"
                     name="IsShowSecondLevelGroupDtl"
                     [value]="true"
+                    (click)="isShowSecondLevelGroupClick()"
                     formControlName="IsShowSecondLevelGroupDtl"
                   />
                   <label>Show Second Level Group Details</label>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="col-md-12">
+          <div class="col-sm-6">
+            <div class="form-group" *ngIf="formsField.includes('FromQtyRange')">
+              <label>From(Qty)</label>
+              <input class="form-control" formControlName="FromQtyRange" />
+            </div>
+            <div class="form-group" *ngIf="formsField.includes('ToQtyRange')">
+              <label>To(Qty)</label>
+              <input class="form-control" formControlName="ToQtyRange" />
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div
+              class="form-group"
+              *ngIf="formsField.includes('IsFromRangeMin')"
+            >
+              <div class="checkbox">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="comma"
+                    value="true"
+                    formControlName="IsFromRangeMin"
+                  />
+                  <label>Minimum</label>
+                </label>
+              </div>
+            </div>
+            <div class="form-group" *ngIf="formsField.includes('IsToRangeMax')">
+              <div class="checkbox">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="comma"
+                    value="true"
+                    formControlName="IsToRangeMax"
+                  />
+                  <label>Maximum</label>
                 </label>
               </div>
             </div>
