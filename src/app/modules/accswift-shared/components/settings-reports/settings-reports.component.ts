@@ -127,6 +127,54 @@ export class SettingsReportsComponent implements OnInit {
     }
   }
 
+  isShowZeroBalanceClick(): void {
+    if (this.settingsForms.get("IsShowZeroBalance").value === true) {
+      this.settingsForms.get("IsShowZeroBalance").setValue(false);
+    } else {
+      this.settingsForms.get("IsShowZeroBalance").setValue(true);
+    }
+  }
+
+  isShowPreviousYearClick(): void {
+    if (this.settingsForms.get("IsShowPreviousYear").value === true) {
+      this.settingsForms.get("IsShowPreviousYear").setValue(false);
+    } else {
+      this.settingsForms.get("IsShowPreviousYear").setValue(true);
+    }
+  }
+
+  isShowSecondLevelGroupClick(): void {
+    if (this.settingsForms.get("IsShowSecondLevelGroupDtl").value === true) {
+      this.settingsForms.get("IsShowSecondLevelGroupDtl").setValue(false);
+    } else {
+      this.settingsForms.get("IsShowSecondLevelGroupDtl").setValue(true);
+    }
+  }
+
+  allProduct(event): void {
+    this.settingsForms.get("ProductID").setValue(null);
+    this.settingsForms.get("ProductGroupID").setValue(null);
+    this.settingsForms.get("ProductID").disable();
+    this.settingsForms.get("ProductGroupID").disable();
+  }
+
+  quantityRange(): void {
+    this.settingsForms.get("FromQtyRange").enable();
+    this.settingsForms.get("IsFromRangeMin").enable();
+    this.settingsForms.get("IsToRangeMax").enable();
+    this.settingsForms.get("ToQtyRange").enable();
+  }
+
+  singleProduct(event): void {
+    this.settingsForms.get("ProductGroupID").setValue(null);
+    this.settingsForms.get("ProductGroupID").disable();
+  }
+
+  productGroup(event): void {
+    this.settingsForms.get("ProductID").setValue(null);
+    this.settingsForms.get("ProductID").disable();
+  }
+
   endOfMonth(): void {
     var today = new Date();
     var lastDayOfMonth = new Date(

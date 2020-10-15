@@ -126,7 +126,7 @@ export class SideNavComponent implements OnInit {
     },
     {
       id: 15,
-      displayName: "Report",
+      displayName: "Reports",
       iconName: "fa fa-file-pdf-o",
       children: [
         {
@@ -145,27 +145,27 @@ export class SideNavComponent implements OnInit {
           route: "/stock-status",
         },
         {
-          displayName: "Sales Report",
+          displayName: "Sales ",
           iconName: "fa fa-file-excel-o",
           route: "/sales-report",
         },
         {
-          displayName: "Purchase Report",
+          displayName: "Purchase",
           iconName: "fa fa-file-excel-o",
           route: "/purchase-report",
         },
         {
-          displayName: "Ledger Report",
+          displayName: "Ledger ",
           iconName: "fa fa-file-excel-o",
           route: "/ledger-report",
         },
         {
-          displayName: "Profit Loss Report",
+          displayName: "Profit Loss ",
           iconName: "fa fa-file-excel-o",
           route: "/profit-loss",
         },
         {
-          displayName: "Balance Sheet Report",
+          displayName: "Balance Sheet ",
           iconName: "fa fa-file-excel-o",
           route: "/balance-sheet",
         },

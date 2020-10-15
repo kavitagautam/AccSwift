@@ -5,6 +5,7 @@ import { StockStatusComponent } from "./stock-status/stock-status.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "@app/shared/shared.module";
 import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift-shared.module";
+import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 
 @NgModule({
   declarations: [StockStatusComponent],
@@ -16,5 +17,6 @@ import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift
     CommonModule,
     StockStatusRoutingModule,
   ],
+  entryComponents: [SettingsReportsComponent],
 })
 export class StockStatusModule {}

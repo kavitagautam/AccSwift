@@ -34,6 +34,7 @@ export class GroupBalanceReportComponent implements OnInit {
 
   openTrailBalance(event, data): void {
     if (data.Type === "GROUP") {
+      console.log("GroupLevel" + JSON.stringify(data));
       this.settingsForms.get("Type").setValue(data.Type);
       this.settingsForms.get("GroupID").setValue(data.ID);
 
@@ -43,18 +44,18 @@ export class GroupBalanceReportComponent implements OnInit {
           this.companyInfo = response.Entity.Company;
           this.groupBalanceList = response.Entity.Entity;
           this.totalGroupClosingBalance = response.Entity.ClosingBalance;
-          this.modalRef = this.modalService.show(GroupBalanceReportComponent, {
-            initialState: {
-              settingsForms: this.settingsForms,
-              companyInfo: this.companyInfo,
-              groupBalanceList: this.groupBalanceList,
-              totalGroupClosingBalance: this.totalGroupClosingBalance,
-            },
-            ignoreBackdropClick: true,
-            animated: true,
-            keyboard: true,
-            class: "modal-lg",
-          });
+          // this.modalRef = this.modalService.show(GroupBalanceReportComponent, {
+          //   initialState: {
+          //     settingsForms: this.settingsForms,
+          //     companyInfo: this.companyInfo,
+          //     groupBalanceList: this.groupBalanceList,
+          //     totalGroupClosingBalance: this.totalGroupClosingBalance,
+          //   },
+          //   ignoreBackdropClick: true,
+          //   animated: true,
+          //   keyboard: true,
+          //   class: "modal-lg",
+          // });
         });
     }
     if (data.Type === "LEDGER") {
