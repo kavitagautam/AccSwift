@@ -6,6 +6,8 @@ import { ProfitLossComponent } from "./components/profit-loss.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "@app/shared/shared.module";
 import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift-shared.module";
+import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
+import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component";
 
 @NgModule({
   declarations: [ProfitLossComponent],
@@ -17,5 +19,6 @@ import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift
     CommonModule,
     ProfitLossRoutingModule,
   ],
+  entryComponents: [SettingsReportsComponent, LedgerDetailReportsComponent],
 })
 export class ProfitLossModule {}

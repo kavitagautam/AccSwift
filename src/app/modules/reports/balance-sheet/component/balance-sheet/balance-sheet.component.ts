@@ -75,13 +75,10 @@ export class BalanceSheetComponent implements OnInit {
       keyboard: true,
       class: "modal-lg",
     });
-    // this.modalRef.content.projectName.subscribe((data) => {
-    //   this.projectName = data;
-    // });
+
     this.reportService.projectName$.subscribe((value) => {
       this.projectName = value;
     });
-    //this.modalRef = this.modalService.show(template, this.config);
 
     this.modalRef.content.onSubmit.subscribe((data) => {
       if (data) {
