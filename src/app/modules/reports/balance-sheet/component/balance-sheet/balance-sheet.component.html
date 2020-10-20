@@ -32,7 +32,6 @@
             <tbody>
               <tr
                 *ngFor="let balanceS of balanceSheetList"
-                (click)="openBalanceDrillDown($event, balanceS)"
                 (dblclick)="openBalanceDrillDown($event, balanceS)"
               >
                 <td
@@ -45,27 +44,8 @@
                 </td>
                 <td *ngIf="balanceS.Category == 1">
                   <span
-                    *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'"
-                    >{{ balanceS.AccountName }}</span
-                  >
-                  <span
-                    *ngIf="balanceS.Level == 1 && balanceS.Type == 'GROUP'"
-                    style="margin-left: 10px"
-                    >{{ balanceS.AccountName }}</span
-                  >
-                  <span
-                    *ngIf="balanceS.Level == 2 && balanceS.Type == 'GROUP'"
-                    style="margin-left: 20px"
-                    >{{ balanceS.AccountName }}</span
-                  >
-                  <span
-                    *ngIf="balanceS.Level == 3 && balanceS.Type == 'GROUP'"
-                    style="margin-left: 30px"
-                    >{{ balanceS.AccountName }}</span
-                  >
-                  <span
-                    *ngIf="balanceS.Level == 4 && balanceS.Type == 'GROUP'"
-                    style="margin-left: 40px"
+                    *ngIf="balanceS.Type == 'GROUP'"
+                    [style.margin-left.px]="balanceS.Level * 10"
                     >{{ balanceS.AccountName }}</span
                   >
                   <span
@@ -124,7 +104,6 @@
             <tbody>
               <tr
                 *ngFor="let balanceS of balanceSheetList"
-                (click)="openBalanceDrillDown($event, balanceS)"
                 (dblclick)="openBalanceDrillDown($event, balanceS)"
               >
                 <td
@@ -137,25 +116,11 @@
                 </td>
                 <td *ngIf="balanceS.Category == 2">
                   <span
-                    *ngIf="balanceS.Level == 1 && balanceS.Type == 'GROUP'"
-                    style="margin-left: 10px"
+                    *ngIf="balanceS.Type == 'GROUP'"
+                    [style.margin-left.px]="balanceS.Level * 10"
                     >{{ balanceS.AccountName }}</span
                   >
-                  <span
-                    *ngIf="balanceS.Level == 2 && balanceS.Type == 'GROUP'"
-                    style="margin-left: 20px"
-                    >{{ balanceS.AccountName }}</span
-                  >
-                  <span
-                    *ngIf="balanceS.Level == 3 && balanceS.Type == 'GROUP'"
-                    style="margin-left: 30px"
-                    >{{ balanceS.AccountName }}</span
-                  >
-                  <span
-                    *ngIf="balanceS.Level == 4 && balanceS.Type == 'GROUP'"
-                    style="margin-left: 40px"
-                    >{{ balanceS.AccountName }}</span
-                  >
+
                   <span
                     *ngIf="balanceS.Type == 'LEDGER'"
                     style="margin-left: 50px; color: blue"
@@ -168,6 +133,11 @@
                   >
                   <span
                     *ngIf="balanceS.Category == 2 && balanceS.Type == 'PL'"
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 2 && balanceS.Type == 'DIFF'"
                     class="bold_text"
                     >{{ balanceS.AccountName }}</span
                   >
@@ -224,22 +194,36 @@
                     *ngIf="balanceS.Level == 0 && balanceS.Type == 'GROUP'"
                     >{{ balanceS.AccountName }}</span
                   >
+
                   <span
-                    *ngIf="
-                      balanceS.Type !== 'HEADER' &&
-                      balanceS.Type !== 'GROUP' &&
-                      balanceS.Type !== 'LEDGER'
-                    "
-                    class="bold_text"
+                    *ngIf="balanceS.Type == 'GROUP'"
+                    [style.margin-left.px]="balanceS.Level * 10"
                     >{{ balanceS.AccountName }}</span
                   >
 
-                  <span *ngIf="balanceS.Level == 1" style="margin-left: 10px">{{
-                    balanceS.AccountName
-                  }}</span>
                   <span
-                    *ngIf="balanceS.Level == 2"
-                    style="margin-left: 30px; color: blue"
+                    *ngIf="balanceS.Type == 'LEDGER'"
+                    style="margin-left: 50px; color: blue"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 1 && balanceS.Type == 'Opening'"
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 1 && balanceS.Type == 'PL'"
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 1 && balanceS.Type == 'TOTAL'"
+                    class="bold_text"
+                    >{{ balanceS.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="balanceS.Category == 1 && balanceS.Type == 'DIFF'"
+                    class="bold_text"
                     >{{ balanceS.AccountName }}</span
                   >
                 </td>
