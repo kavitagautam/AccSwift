@@ -29,8 +29,19 @@
               </label>
             </div>
           </div>
-
-          <div class="col-md-5">
+          <div class="col-md-3">
+            <div class="form-group" *ngIf="formsField.includes('FromDate')">
+              <label>From Date</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="FromDate"
+                bsDatepicker
+                [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
             <div class="form-group">
               <label>End of Month</label>
               <select
@@ -50,7 +61,7 @@
               </select>
             </div>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-3">
             <div class="form-group" *ngIf="formsField.includes('ToDate')">
               <label>At the End of</label>
               <input
@@ -69,6 +80,45 @@
           </div>
         </div>
         <div class="col-md-12 p-0">
+          <div class="col-md-12">
+            <div class="col-md-6">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('DisplayFormat')"
+              >
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="DisplayFormat"
+                      value="TFormat"
+                      formControlName="DisplayFormat"
+                    />
+                    <label>T-Format</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('DisplayFormat')"
+              >
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="DisplayFormat"
+                      value="Vertical"
+                      formControlName="DisplayFormat"
+                    />
+                    <label>Vertical</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="flex-item p-0">
             <div class="col-md-4">
               <div
@@ -190,7 +240,7 @@
           </div>
         </div>
       </fieldset>
-      <fieldset>
+      <fieldset *ngIf="formsField.includes('ProductID')">
         <div class="col-md-12">
           <div class="col-sm-6" *ngIf="formsField.includes('ProductID')">
             <div class="flex-item">
@@ -378,23 +428,7 @@
             </div>
           </div>
         </div>
-        <!-- <div class="col-md-12 p-0">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>Currency</label>
-            <select class="form-control">
-              <option [ngValue]="null">Choose Option..</option>
-              <option>USD</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>Rate</label>
-            <input class="form-control" type="text" />
-          </div>
-        </div>
-    </div> -->
+
         <div class="col-md-12 p-0">
           <div class="col-md-4">
             <div
@@ -454,10 +488,7 @@
             </div>
           </div>
         </div>
-      </fieldset>
-
-      <fieldset>
-        <div class="col-md-12">
+        <div class="col-md-12 p-0">
           <div class="col-sm-6">
             <div class="form-group" *ngIf="formsField.includes('FromQtyRange')">
               <label>From(Qty)</label>

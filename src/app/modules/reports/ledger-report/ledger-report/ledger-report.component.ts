@@ -11,8 +11,6 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { LedgerList } from "../../models/ledger.reports.model";
-import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
-import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
 import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component";
 
@@ -30,6 +28,7 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
   totalDebitAmount: number;
   totalCreditAmount: number;
   totalClosingBalance: string;
+  baseURL: string;
 
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
@@ -46,11 +45,15 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
     private _fb: FormBuilder,
     public reportService: ReportsService,
     private modalService: BsModalService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
     this.buildLedgerReportForms();
+    this.baseURL =
+      this.location["_platformStrategy"]._platformLocation["location"].origin +
+      "/#/";
   }
 
   ngAfterViewInit(): void {
@@ -162,5 +165,63 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
 
   cancel(): void {
     this.showReport();
+  }
+
+  openVoucherDetails(event, data): void {
+    if (data.VoucherType === "JRNL") {
+      const url = this.router.serializeUrl(
+        this.router.createUrlTree(["/journal/edit", data.RowID])
+      );
+      window.open(this.baseURL + "journal/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "BANK_PMNT") {
+      window.open(this.baseURL + "bank-payment/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "CASH_PMNT") {
+      window.open(this.baseURL + "cash-payment/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "BANK_RCPT") {
+      window.open(this.baseURL + "bank-receipt/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "BRECON") {
+      window.open(
+        this.baseURL + "bank-reconciliation/edit/" + data.RowID,
+        "_blank"
+      );
+    }
+    if (data.VoucherType === "CNTR") {
+      window.open(this.baseURL + "contra-voucher/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "BANK_RCPT") {
+      window.open(this.baseURL + "bank-receipt/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "CASH_RCPT") {
+      window.open(this.baseURL + "cash-receipt/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "SALES") {
+      window.open(this.baseURL + "sales-invoice/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "SLS_RTN") {
+      window.open(this.baseURL + "sales-return/edit/" + data.RowID, "_blank");
+    }
+    if (data.VoucherType === "SLS_ORDER") {
+      window.open(this.baseURL + "sales-order/edit/" + data.RowID, "_blank");
+    }
+
+    if (data.VoucherType === "PURCH") {
+      window.open(
+        this.baseURL + "purchase-invoice/edit/" + data.RowID,
+        "_blank"
+      );
+    }
+    if (data.VoucherType === "PURCH_RTN") {
+      window.open(
+        this.baseURL + "purchase-return/edit/" + data.RowID,
+        "_blank"
+      );
+    }
+    if (data.VoucherType === "PURCH_ORDER") {
+      window.open(this.baseURL + "purchase-order/edit/" + data.RowID, "_blank");
+    }
   }
 }

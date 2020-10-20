@@ -54,8 +54,8 @@ export class StockStatusComponent implements OnInit, AfterViewInit {
   buildStockStatusForms(): void {
     this.stockStatusFroms = this._fb.group({
       AccClassID: [""],
-      ProductID: [null],
-      ProductGroupID: [null],
+      ProductID: [{ value: null, disabled: true }],
+      ProductGroupID: [{ value: null, disabled: true }],
       DepotID: [null],
       ToDate: [""],
       FromDate: [""],

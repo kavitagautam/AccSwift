@@ -145,10 +145,7 @@
               </tr>
             </thead>
             <tbody *ngFor="let ledger of ledgerReportList; let i = index">
-              <tr
-                (click)="openLedgerDetails($event, ledger)"
-                (dblclick)="openLedgerDetails($event, ledger)"
-              >
+              <tr (dblclick)="openLedgerDetails($event, ledger)">
                 <td>{{ i + 1 }}</td>
                 <td style="color: blue">
                   {{ ledger.AccountName }}
