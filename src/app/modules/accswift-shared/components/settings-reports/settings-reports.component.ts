@@ -175,7 +175,6 @@ export class SettingsReportsComponent implements OnInit {
     this.settingsForms.get("ProductID").setValue(null);
     this.settingsForms.get("ProductID").disable();
     this.settingsForms.get("ProductGroupID").enable();
-
   }
 
   endOfMonth(): void {
@@ -201,7 +200,6 @@ export class SettingsReportsComponent implements OnInit {
 
   showReport(): void {
     this.onSubmit.next(this.settingsForms.value);
-    this.onClose.next(true);
     this.modalRef.hide();
   }
 

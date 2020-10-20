@@ -34,7 +34,6 @@ export class GroupBalanceReportComponent implements OnInit {
 
   openTrailBalance(event, data): void {
     if (data.Type === "GROUP") {
-      console.log("GroupLevel" + JSON.stringify(data));
       this.settingsForms.get("Type").setValue(data.Type);
       this.settingsForms.get("GroupID").setValue(data.ID);
 

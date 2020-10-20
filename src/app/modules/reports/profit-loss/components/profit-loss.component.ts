@@ -7,14 +7,8 @@ import {
 } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { Router } from "@angular/router";
 import { ReportsService } from "../../services/reports.service";
-import { Location } from "@angular/common";
-import {
-  ProfitLossLists,
-  LedgerDetailList,
-  GroupDetailList,
-} from "../../models/profit-loss.model";
+import { ProfitLossLists } from "../../models/profit-loss.model";
 import { Company } from "@accSwift-modules/company/models/company.model";
 import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 import { GroupBalanceReportComponent } from "@accSwift-modules/accswift-shared/components/group-balance-report/group-balance-report.component";
@@ -52,6 +46,7 @@ export class ProfitLossComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.buildProfitLossForms();
   }
+
   ngAfterViewInit(): void {
     setTimeout(() => this.openProfitLossSettings(), 100);
   }
@@ -112,7 +107,7 @@ export class ProfitLossComponent implements OnInit, AfterViewInit {
       this.profitLossForms.get("Type").setValue(data.Type);
       this.profitLossForms.get("GroupID").setValue(data.ID);
       this.reportService
-        .getPLGroupDetails(this.profitLossForms.value)
+        .getGroupBalanceDetails(this.profitLossForms.value)
         .subscribe((response) => {
           this.modalRef = this.modalService.show(GroupBalanceReportComponent, {
             initialState: {
@@ -130,8 +125,6 @@ export class ProfitLossComponent implements OnInit, AfterViewInit {
     }
     if (data.Type === "LEDGER") {
       this.modalRef.hide();
-      // this.profitLossForms.get("Type").setValue(data.Type);
-      // this.profitLossForms.get("ID").setValue(data.ID);
       const obj = {
         LedgerID: data.ID,
         IsDetails: this.profitLossForms.get("IsDetails").value,

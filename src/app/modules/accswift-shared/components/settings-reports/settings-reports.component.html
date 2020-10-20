@@ -29,8 +29,19 @@
               </label>
             </div>
           </div>
-
-          <div class="col-md-5">
+          <div class="col-md-3">
+            <div class="form-group" *ngIf="formsField.includes('FromDate')">
+              <label>From Date</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="FromDate"
+                bsDatepicker
+                [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
             <div class="form-group">
               <label>End of Month</label>
               <select
@@ -50,7 +61,7 @@
               </select>
             </div>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-3">
             <div class="form-group" *ngIf="formsField.includes('ToDate')">
               <label>At the End of</label>
               <input

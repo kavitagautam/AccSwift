@@ -8,6 +8,7 @@ import { SharedModule } from "@app/shared/shared.module";
 import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift-shared.module";
 import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component";
+import { GroupBalanceReportComponent } from "@accSwift-modules/accswift-shared/components/group-balance-report/group-balance-report.component";
 
 @NgModule({
   declarations: [ProfitLossComponent],
@@ -19,6 +20,10 @@ import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/
     CommonModule,
     ProfitLossRoutingModule,
   ],
-  entryComponents: [SettingsReportsComponent, LedgerDetailReportsComponent],
+  entryComponents: [
+    SettingsReportsComponent,
+    LedgerDetailReportsComponent,
+    GroupBalanceReportComponent,
+  ],
 })
 export class ProfitLossModule {}
