@@ -9,7 +9,7 @@
     </button>
   </div>
   <h3
-    style="text-align: center;"
+    style="text-align: center"
     *ngIf="
       selectType === 'product' &&
       salesReportForms.get('ProductID').value === null
@@ -18,12 +18,12 @@
     Sales Product-Wise Report
   </h3>
   <h3
-    style="text-align: center;"
+    style="text-align: center"
     *ngIf="selectType === 'product' && salesReportForms.get('ProductID').value"
   >
     Sales Product-Wise Transaction Report
   </h3>
-  <h3 style="text-align: center;" *ngIf="selectType === 'party'">
+  <h3 style="text-align: center" *ngIf="selectType === 'party'">
     Sales Party-Wise Report
   </h3>
 
@@ -57,9 +57,7 @@
               </td>
             </tr>
             <tr *ngIf="salesReportList.length == 0">
-              <td colspan="10" align="center">
-                No Data Available
-              </td>
+              <td colspan="10" align="center">No Data Available</td>
             </tr>
           </tbody>
           <tfoot>
@@ -111,7 +109,7 @@
                       formControlName="IsProductWise"
                       (change)="reportType('product')"
                     />
-                    <label>Product</label>
+                    Product
                   </label>
                 </div>
               </div>
@@ -126,7 +124,7 @@
                       formControlName="IsProductWise"
                       (change)="reportType('party')"
                     />
-                    <label>Party</label>
+                    Party
                   </label>
                 </div>
               </div>
@@ -145,7 +143,7 @@
                             [ngModelOptions]="{ standalone: true }"
                             (change)="allProduct($event)"
                           />
-                          <label>All Product</label>
+                          All Product
                         </label>
                       </div>
                     </div>
@@ -163,7 +161,7 @@
                             [ngModelOptions]="{ standalone: true }"
                             (change)="singleProduct($event)"
                           />
-                          <label>Single Product</label>
+                          Single Product
                         </label>
                       </div>
                     </div>
@@ -181,7 +179,7 @@
                             [ngModelOptions]="{ standalone: true }"
                             (change)="productGroup($event)"
                           />
-                          <label>Product Group</label>
+                          Product Group
                         </label>
                       </div>
                     </div>
@@ -196,8 +194,9 @@
                     <option
                       *ngFor="let product of reportService.productList"
                       [ngValue]="product.ID"
-                      >{{ product.Name }}</option
                     >
+                      {{ product.Name }}
+                    </option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -206,8 +205,9 @@
                     <option
                       *ngFor="let productG of reportService.productGroupList"
                       [ngValue]="productG.ID"
-                      >{{ productG.Name }}</option
                     >
+                      {{ productG.Name }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -226,7 +226,7 @@
                             [ngModelOptions]="{ standalone: true }"
                             (change)="allCashPArty($event)"
                           />
-                          <label>All Party</label>
+                          All Party
                         </label>
                       </div>
                     </div>
@@ -244,7 +244,7 @@
                             [ngModelOptions]="{ standalone: true }"
                             (change)="singleCashParty($event)"
                           />
-                          <label>Single Party</label>
+                          Single Party
                         </label>
                       </div>
                     </div>
@@ -262,7 +262,7 @@
                             [ngModelOptions]="{ standalone: true }"
                             (change)="cashPartyGroup($event)"
                           />
-                          <label>Party Group</label>
+                          Party Group
                         </label>
                       </div>
                     </div>
@@ -277,8 +277,9 @@
                     <option
                       *ngFor="let party of cashPartyList"
                       [ngValue]="party.LedgerID"
-                      >{{ party.LedgerName }}</option
                     >
+                      {{ party.LedgerName }}
+                    </option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -287,8 +288,9 @@
                     <option
                       *ngFor="let partyGroup of cashPartyGroupList"
                       [ngValue]="partyGroup.ID"
-                      >{{ partyGroup.Name }}</option
                     >
+                      {{ partyGroup.Name }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -302,11 +304,9 @@
                 <label>Depot</label>
                 <select class="form-control" formControlName="DepotID">
                   <option [ngValue]="null">Choose Option..</option>
-                  <option
-                    *ngFor="let depot of depotList"
-                    [ngValue]="depot.ID"
-                    >{{ depot.Name }}</option
-                  >
+                  <option *ngFor="let depot of depotList" [ngValue]="depot.ID">
+                    {{ depot.Name }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -330,8 +330,9 @@
                   <option
                     *ngFor="let salesAcc of salesAccountList"
                     [ngValue]="salesAcc.LedgerID"
-                    >{{ salesAcc.LedgerName }}</option
                   >
+                    {{ salesAcc.LedgerName }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -343,8 +344,9 @@
                   <option
                     *ngFor="let project of reportService.projectList"
                     [ngValue]="project.ID"
-                    >{{ project.EngName }}</option
                   >
+                    {{ project.EngName }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -378,8 +380,9 @@
                   <option
                     *ngFor="let month of reportService.monthList"
                     [ngValue]="month.number"
-                    >{{ month.name }}</option
                   >
+                    {{ month.name }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -438,8 +441,9 @@
                         <option
                           *ngFor="let account of reportService.accountLists"
                           [ngValue]="account.ID"
-                          >{{ account.Name }}</option
                         >
+                          {{ account.Name }}
+                        </option>
                       </select>
                     </div>
                     <div class="col-md-12">

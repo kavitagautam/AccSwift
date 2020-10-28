@@ -9,7 +9,6 @@ import { Subject } from "rxjs";
 @Component({
   selector: "accSwift-ledger-detail-reports",
   templateUrl: "./ledger-detail-reports.component.html",
-  styleUrls: ["./ledger-detail-reports.component.scss"],
 })
 export class LedgerDetailReportsComponent implements OnInit {
   @Input() ledgerDetailsList: LedgerList[] = [];

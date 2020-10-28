@@ -6,6 +6,7 @@ import { CashPartyGroup, PurchaseList } from "../../models/sales.report.model";
 import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 import { Depot } from "@accSwift-modules/depot/models/depot.model";
 import { SalesAccounts } from "@accSwift-modules/accswift-shared/models/sales-account.model";
+import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
 
 @Component({
   selector: "accSwift-purchase-report",
@@ -47,7 +48,8 @@ export class PurchaseReportComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     public reportService: ReportsService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private preferenceService: PreferenceService
   ) {}
 
   ngOnInit(): void {
@@ -67,7 +69,11 @@ export class PurchaseReportComponent implements OnInit {
   buildpurchaseReportForms(): void {
     this.purchaseReportForms = this._fb.group({
       PurchaseLedgerID: [null],
-      ProjectID: [null],
+      ProjectID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+          : null,
+      ],
       DepotID: [null],
       AccClassID: [""],
       IsProductWise: [false],

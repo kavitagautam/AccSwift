@@ -48,6 +48,10 @@ import { LedgerGroupModel } from "@accSwift-modules/ledger/models/ledger-group.m
 import { LedgerMinModel } from "@accSwift-modules/ledger/models/ledger.models";
 import { GroupBalanceRootModel } from "../models/group-balance.model";
 import { LedgerTransactionRootModel } from "../models/ledger-transaction.model";
+import {
+  VoucherType,
+  VoucherTypeModel,
+} from "@accSwift-modules/accswift-shared/models/voucher-type.model";
 
 @Injectable({
   providedIn: "root",
@@ -67,6 +71,7 @@ export class ReportsService {
   productGroupList: ProductGroup[] = [];
   projectList: Project[] = [];
   accountLists: AccountClass[];
+  transVoucherType: VoucherType[] = [];
   monthList = [
     {
       name: "January",
@@ -137,6 +142,7 @@ export class ReportsService {
     this.getProductGroup();
     this.getAccountClass();
     this.getProjectLists();
+    this.getVoucherType();
   }
 
   getTrailBalance(body): Observable<TrailBalanceModel> {
@@ -273,5 +279,13 @@ export class ReportsService {
 
   getLedgerGroup(): Observable<LedgerGroupModel> {
     return this.httpService.get(`${this._api_URL}LedgerGroup`);
+  }
+
+  getVoucherType(): void {
+    this.httpService
+      .get(`${this._api_URL}Utility/TransactVoucherType`)
+      .subscribe((response: VoucherTypeModel) => {
+        this.transVoucherType = response.Entity;
+      });
   }
 }

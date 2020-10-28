@@ -12,6 +12,7 @@ import { SalesReportList, CashPartyGroup } from "../models/sales.report.model";
 import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 import { Depot } from "@accSwift-modules/depot/models/depot.model";
 import { SalesAccounts } from "@accSwift-modules/accswift-shared/models/sales-account.model";
+import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
 
 @Component({
   selector: "accSwift-sales-report",
@@ -53,7 +54,8 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   constructor(
     private _fb: FormBuilder,
     public reportService: ReportsService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private preferenceService: PreferenceService
   ) {}
 
   ngOnInit(): void {
@@ -72,9 +74,21 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
 
   buildSalesReportForms(): void {
     this.salesReportForms = this._fb.group({
-      SalesLedgerID: [null],
-      ProjectID: [null],
-      DepotID: [null],
+      SalesLedgerID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SALES_ACCOUNT.Value
+          : null,
+      ],
+      ProjectID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+          : null,
+      ],
+      DepotID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_DEPOT.Value
+          : null,
+      ],
       AccClassID: [""],
       IsProductWise: [false],
       ProductGroupID: [null],
