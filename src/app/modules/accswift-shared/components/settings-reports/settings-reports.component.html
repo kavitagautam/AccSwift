@@ -94,7 +94,7 @@
                       value="TFormat"
                       formControlName="DisplayFormat"
                     />
-                    <label>T-Format</label>
+                    T-Format
                   </label>
                 </div>
               </div>
@@ -112,7 +112,7 @@
                       value="Vertical"
                       formControlName="DisplayFormat"
                     />
-                    <label>Vertical</label>
+                    Vertical
                   </label>
                 </div>
               </div>
@@ -134,7 +134,7 @@
                       (click)="allGroupRadio()"
                       formControlName="IsAllGroups"
                     />
-                    <label>All Groups</label>
+                    All Groups
                   </label>
                 </div>
               </div>
@@ -153,7 +153,7 @@
                       (click)="primaryGroupRadio()"
                       formControlName="IsOnlyPrimaryGroups"
                     />
-                    <label>Only Primary Groups</label>
+                    Only Primary Groups
                   </label>
                 </div>
               </div>
@@ -172,7 +172,7 @@
                       (click)="ledgerOnlyRaido()"
                       formControlName="IsLedgerOnly"
                     />
-                    <label>Only Ledgers</label>
+                    Only Ledgers
                   </label>
                 </div>
               </div>
@@ -186,14 +186,13 @@
                 <div class="radio">
                   <label>
                     <input
-                      type="radio"
+                      type="checkbox"
                       id="accountLedger"
-                      [value]="true"
                       [(ngModel)]="accountLedger"
                       [ngModelOptions]="{ standalone: true }"
                       (click)="accountLedgerCheck()"
                     />
-                    <label>Choose Account Ledger</label>
+                    Choose Account Ledger
                   </label>
                 </div>
               </div>
@@ -214,14 +213,13 @@
                 <div class="radio">
                   <label>
                     <input
-                      type="radio"
+                      type="checkbox"
                       id="accountGroup"
-                      [value]="true"
                       [(ngModel)]="accountGroup"
                       [ngModelOptions]="{ standalone: true }"
                       (click)="accountGroupCheck()"
                     />
-                    <label>Choose Account Group</label>
+                    Choose Account Group
                   </label>
                 </div>
               </div>
@@ -240,7 +238,227 @@
           </div>
         </div>
       </fieldset>
-      <fieldset *ngIf="formsField.includes('ProductID')">
+
+      <fieldset>
+        <div class="col-md-12">
+          <div class="col-md-2 pl-0">
+            <div
+              class="form-group"
+              *ngIf="formsField.includes('IsProductWise')"
+            >
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="IsProductWise"
+                    value="true"
+                    formControlName="IsProductWise"
+                    (change)="reportType('product')"
+                  />
+                  Product
+                </label>
+              </div>
+            </div>
+
+            <div
+              class="form-group"
+              *ngIf="formsField.includes('IsProductWise')"
+            >
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="IsProductWise"
+                    value="false"
+                    formControlName="IsProductWise"
+                    (change)="reportType('party')"
+                  />
+                  Party
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-10"
+            *ngIf="selectType === 'product' && formsField.includes('ProductID')"
+          >
+            <div class="col-sm-6 p-0">
+              <div class="flex-item">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div class="radio">
+                      <label>
+                        <input
+                          type="radio"
+                          [value]="allproduct"
+                          [(ngModel)]="isActive"
+                          [ngModelOptions]="{ standalone: true }"
+                          (change)="allProduct($event)"
+                        />
+                        All Product
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-item">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div class="radio">
+                      <label>
+                        <input
+                          type="radio"
+                          [value]="singleProduct"
+                          [(ngModel)]="isActive"
+                          [ngModelOptions]="{ standalone: true }"
+                          (change)="singleProduct($event)"
+                        />
+                        Single Product
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-item">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div class="radio">
+                      <label>
+                        <input
+                          type="radio"
+                          [value]="productGroup"
+                          [(ngModel)]="isActive"
+                          [ngModelOptions]="{ standalone: true }"
+                          (change)="productGroup($event)"
+                        />
+                        Product Group
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mt-5">
+              <div class="form-group"></div>
+              <div class="form-group" *ngIf="formsField.includes('ProductID')">
+                <select class="form-control" formControlName="ProductID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let product of reportService.productList"
+                    [ngValue]="product.ProductID"
+                  >
+                    {{ product.ProductName }}
+                  </option>
+                </select>
+              </div>
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('ProductGroupID')"
+              >
+                <select class="form-control" formControlName="ProductGroupID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let productG of reportService.productGroupList"
+                    [ngValue]="productG.ID"
+                  >
+                    {{ productG.Name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-10"
+            *ngIf="selectType === 'party' && formsField.includes('PartyID')"
+          >
+            <div class="col-sm-6 p-0">
+              <div class="flex-item">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div class="radio">
+                      <label>
+                        <input
+                          type="radio"
+                          [value]="allCashParty"
+                          [(ngModel)]="isActiveParty"
+                          [ngModelOptions]="{ standalone: true }"
+                          (change)="allCashPArty($event)"
+                        />
+                        All Party
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-item">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div class="radio">
+                      <label>
+                        <input
+                          type="radio"
+                          [value]="singleCashParty"
+                          [(ngModel)]="isActiveParty"
+                          [ngModelOptions]="{ standalone: true }"
+                          (change)="singleCashParty($event)"
+                        />
+                        Single Party
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-item">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <div class="radio">
+                      <label>
+                        <input
+                          type="radio"
+                          [value]="cashPartyGroup"
+                          [(ngModel)]="isActiveParty"
+                          [ngModelOptions]="{ standalone: true }"
+                          (change)="cashPartyGroup($event)"
+                        />
+                        Party Group
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mt-5">
+              <div class="form-group"></div>
+              <div class="form-group" *ngIf="formsField.includes('PartyID')">
+                <select class="form-control" formControlName="PartyID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let party of cashPartyList"
+                    [ngValue]="party.LedgerID"
+                  >
+                    {{ party.LedgerName }}
+                  </option>
+                </select>
+              </div>
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('PartyGroupID')"
+              >
+                <select class="form-control" formControlName="PartyGroupID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let partyGroup of cashPartyGroupList"
+                    [ngValue]="partyGroup.ID"
+                  >
+                    {{ partyGroup.Name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <!-- <fieldset *ngIf="formsField.includes('ProductID')">
         <div class="col-md-12">
           <div class="col-sm-6" *ngIf="formsField.includes('ProductID')">
             <div class="flex-item">
@@ -255,7 +473,7 @@
                         [ngModelOptions]="{ standalone: true }"
                         (change)="allProduct($event)"
                       />
-                      <label>All Product</label>
+                      All Product
                     </label>
                   </div>
                 </div>
@@ -273,7 +491,7 @@
                         [ngModelOptions]="{ standalone: true }"
                         (change)="singleProduct($event)"
                       />
-                      <label>Single Product</label>
+                      Single Product
                     </label>
                   </div>
                 </div>
@@ -291,7 +509,7 @@
                         [ngModelOptions]="{ standalone: true }"
                         (change)="productGroup($event)"
                       />
-                      <label>Product Group</label>
+                      Product Group
                     </label>
                   </div>
                 </div>
@@ -327,12 +545,41 @@
             </div>
           </div>
         </div>
-      </fieldset>
+      </fieldset> -->
 
       <fieldset>
         <div class="col-md-12 p-0">
           <div class="col-md-8">
             <div class="col-md-4">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('IsTransactionWise')"
+              >
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="IsTransactionWise"
+                      [value]="true"
+                      (click)="transactionToggle()"
+                      formControlName="IsTransactionWise"
+                    />
+                    Transaction Wise
+                  </label>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="formsField.includes('DepotID')">
+                <label>Depot</label>
+                <select class="form-control" formControlName="DepotID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let depot of reportService.depotList"
+                    [ngValue]="depot.ID"
+                  >
+                    {{ depot.Name }}
+                  </option>
+                </select>
+              </div>
               <div class="form-group" *ngIf="formsField.includes('IsDetails')">
                 <div class="radio">
                   <label>
@@ -342,7 +589,7 @@
                       [value]="false"
                       formControlName="IsDetails"
                     />
-                    <label>Summary</label>
+                    Summary
                   </label>
                 </div>
               </div>
@@ -358,12 +605,27 @@
                       value="true"
                       formControlName="ShowZeroQunatity"
                     />
-                    <label>Show Zero Quantity</label>
+                    Show Zero Quantity
                   </label>
                 </div>
               </div>
             </div>
             <div class="col-md-4">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('VoucherType')"
+              >
+                <label>Voucher Type</label>
+                <select class="form-control" formControlName="VoucherType">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let voucherType of reportService.transVoucherType"
+                    [ngValue]="voucherType.VouchType"
+                  >
+                    {{ voucherType.VouchName }}
+                  </option>
+                </select>
+              </div>
               <div class="form-group" *ngIf="formsField.includes('IsDetails')">
                 <div class="radio">
                   <label>
@@ -373,7 +635,7 @@
                       [value]="true"
                       formControlName="IsDetails"
                     />
-                    <label>Details</label>
+                    Details
                   </label>
                 </div>
               </div>
@@ -390,12 +652,44 @@
                       formControlName="IsClosingQtyRange"
                       (change)="quantityRange()"
                     />
-                    <label>Change Qty Rannge</label>
+                    Change Qty Rannge
                   </label>
                 </div>
               </div>
             </div>
             <div class="col-md-4">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('SalesLedgerID')"
+              >
+                <label>Sales A/C</label>
+                <select class="form-control" formControlName="SalesLedgerID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let salesAcc of reportService.salesAccountList"
+                    [ngValue]="salesAcc.LedgerID"
+                  >
+                    {{ salesAcc.LedgerName }}
+                  </option>
+                </select>
+              </div>
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('PurchaseLedgerID')"
+              >
+                <label>Purchase A/C</label>
+                <select class="form-control" formControlName="PurchaseLedgerID">
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="
+                      let purchaseAcc of reportService.purchaseAccountList
+                    "
+                    [ngValue]="purchaseAcc.LedgerID"
+                  >
+                    {{ purchaseAcc.LedgerName }}
+                  </option>
+                </select>
+              </div>
               <div class="form-group" *ngIf="formsField.includes('ProjectID')">
                 <label>Project</label>
                 <select
@@ -444,7 +738,7 @@
                     (click)="isShowZeroBalanceClick()"
                     formControlName="IsShowZeroBalance"
                   />
-                  <label>Show Zero Balance</label>
+                  Show Zero Balance
                 </label>
               </div>
             </div>
@@ -463,7 +757,7 @@
                     (click)="isShowPreviousYearClick()"
                     formControlName="IsShowPreviousYear"
                   />
-                  <label>Show Previous Year</label>
+                  Show Previous Year
                 </label>
               </div>
             </div>
@@ -482,7 +776,7 @@
                     (click)="isShowSecondLevelGroupClick()"
                     formControlName="IsShowSecondLevelGroupDtl"
                   />
-                  <label>Show Second Level Group Details</label>
+                  Show Second Level Group Details
                 </label>
               </div>
             </div>
@@ -512,7 +806,7 @@
                     value="true"
                     formControlName="IsFromRangeMin"
                   />
-                  <label>Minimum</label>
+                  Minimum
                 </label>
               </div>
             </div>
@@ -525,7 +819,7 @@
                     value="true"
                     formControlName="IsToRangeMax"
                   />
-                  <label>Maximum</label>
+                  Maximum
                 </label>
               </div>
             </div>

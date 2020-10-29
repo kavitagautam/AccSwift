@@ -11,7 +11,6 @@ import { LedgerDetailReportsComponent } from "../ledger-detail-reports/ledger-de
 @Component({
   selector: "accSwift-group-balance-report",
   templateUrl: "./group-balance-report.component.html",
-  styleUrls: ["./group-balance-report.component.scss"],
 })
 export class GroupBalanceReportComponent implements OnInit {
   @Input() settingsForms: FormGroup;

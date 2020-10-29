@@ -1,5 +1,8 @@
+import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
 import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
+import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
+import { CashPartyGroup } from "@accSwift-modules/reports/models/sales.report.model";
 import { ReportsService } from "@accSwift-modules/reports/services/reports.service";
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
@@ -19,7 +22,11 @@ export class SettingsReportsComponent implements OnInit {
   public onSubmit: Subject<boolean>;
   // public projectName: Subject<string>;
   formsField = [];
+  selectType: string;
 
+  isActive;
+  isActiveParty;
+  selectReportWise;
   accountLedger: boolean = false;
   accountsSelect: number;
 
@@ -27,6 +34,8 @@ export class SettingsReportsComponent implements OnInit {
   ledgerMinList: LedgerMin[] = [];
   ledgerGroupList: LedgerGroup[] = [];
 
+  cashPartyList: CashParty[] = [];
+  cashPartyGroupList: CashPartyGroup[] = [];
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -37,7 +46,8 @@ export class SettingsReportsComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     public reportService: ReportsService,
-    public modalRef: BsModalRef
+    public modalRef: BsModalRef,
+    private preferenceService: PreferenceService
   ) {}
 
   ngOnInit() {
@@ -47,6 +57,15 @@ export class SettingsReportsComponent implements OnInit {
     //this.projectName = new Subject();
     this.getLedger();
     this.getLedgerGroup();
+    this.selectType = "product";
+
+    this.settingsForms
+      .get("ProjectID")
+      .setValue(
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+          : null
+      );
     this.formsField = Object.keys(this.settingsForms.controls);
   }
 
@@ -73,25 +92,38 @@ export class SettingsReportsComponent implements OnInit {
   }
 
   accountLedgerCheck(): void {
-    this.accountGroup = false;
     if (this.accountLedger == true) {
       this.accountLedger = false;
+      this.accountGroup = false;
+
       this.settingsForms.get("LedgerID").disable();
     } else {
       this.accountLedger = true;
+      this.accountGroup = false;
+      this.settingsForms.get("LedgerID").enable();
+      this.settingsForms.get("GroupID").disable();
     }
-    this.settingsForms.get("LedgerID").enable();
   }
 
   accountGroupCheck(): void {
-    this.accountLedger = false;
     if (this.accountGroup == true) {
       this.accountGroup = false;
+      this.accountLedger = false;
       this.settingsForms.get("GroupID").disable();
     } else {
       this.accountGroup = true;
+      this.accountLedger = false;
+      this.settingsForms.get("GroupID").enable();
+      this.settingsForms.get("LedgerID").disable();
     }
-    this.settingsForms.get("GroupID").enable();
+  }
+
+  transactionToggle(): void {
+    if (this.settingsForms.get("IsTransactionWise").value === true) {
+      this.settingsForms.get("IsTransactionWise").setValue(false);
+    } else {
+      this.settingsForms.get("IsTransactionWise").setValue(true);
+    }
   }
 
   allGroupRadio(): void {
@@ -99,6 +131,9 @@ export class SettingsReportsComponent implements OnInit {
       this.settingsForms.get("IsAllGroups").setValue(false);
     } else {
       this.settingsForms.get("IsAllGroups").setValue(true);
+      this.settingsForms.get("IsOnlyPrimaryGroups").setValue(false);
+
+      this.settingsForms.get("IsLedgerOnly").setValue(false);
     }
   }
 
@@ -111,11 +146,52 @@ export class SettingsReportsComponent implements OnInit {
     this.reportService.selectProject(filterValue[0].EngName);
   }
 
+  reportType(type): void {
+    this.selectType = type;
+    if (this.selectType === "party") {
+      this.getCashParty();
+      this.getCashPartyGroup();
+    }
+  }
+
+  getCashParty(): void {
+    this.reportService.getCashParty().subscribe((response) => {
+      this.cashPartyList = response.Entity;
+    });
+  }
+
+  getCashPartyGroup(): void {
+    this.reportService.getCashPartyGroup().subscribe((response) => {
+      this.cashPartyGroupList = response.Entity;
+    });
+  }
+
+  allCashPArty(): void {
+    this.settingsForms.get("PartyID").setValue(null);
+    this.settingsForms.get("PartyGroupID").setValue(null);
+    this.settingsForms.get("PartyID").disable();
+    this.settingsForms.get("PartyGroupID").disable();
+  }
+
+  singleCashParty(): void {
+    this.settingsForms.get("PartyID").enable();
+    this.settingsForms.get("PartyGroupID").setValue(null);
+    this.settingsForms.get("PartyGroupID").disable();
+  }
+
+  cashPartyGroup(): void {
+    this.settingsForms.get("PartyID").setValue(null);
+    this.settingsForms.get("PartyID").disable();
+    this.settingsForms.get("PartyGroupID").enable();
+  }
+
   primaryGroupRadio(): void {
     if (this.settingsForms.get("IsOnlyPrimaryGroups").value === true) {
       this.settingsForms.get("IsOnlyPrimaryGroups").setValue(false);
     } else {
       this.settingsForms.get("IsOnlyPrimaryGroups").setValue(true);
+      this.settingsForms.get("IsAllGroups").setValue(false);
+      this.settingsForms.get("IsLedgerOnly").setValue(false);
     }
   }
 
@@ -124,6 +200,8 @@ export class SettingsReportsComponent implements OnInit {
       this.settingsForms.get("IsLedgerOnly").setValue(false);
     } else {
       this.settingsForms.get("IsLedgerOnly").setValue(true);
+      this.settingsForms.get("IsAllGroups").setValue(false);
+      this.settingsForms.get("IsOnlyPrimaryGroups").setValue(false);
     }
   }
 
@@ -132,6 +210,8 @@ export class SettingsReportsComponent implements OnInit {
       this.settingsForms.get("IsShowZeroBalance").setValue(false);
     } else {
       this.settingsForms.get("IsShowZeroBalance").setValue(true);
+      this.settingsForms.get("IsShowPreviousYear").setValue(false);
+      this.settingsForms.get("IsShowSecondLevelGroupDtl").setValue(false);
     }
   }
 
@@ -140,6 +220,8 @@ export class SettingsReportsComponent implements OnInit {
       this.settingsForms.get("IsShowPreviousYear").setValue(false);
     } else {
       this.settingsForms.get("IsShowPreviousYear").setValue(true);
+      this.settingsForms.get("IsShowZeroBalance").setValue(false);
+      this.settingsForms.get("IsShowSecondLevelGroupDtl").setValue(false);
     }
   }
 
@@ -148,6 +230,8 @@ export class SettingsReportsComponent implements OnInit {
       this.settingsForms.get("IsShowSecondLevelGroupDtl").setValue(false);
     } else {
       this.settingsForms.get("IsShowSecondLevelGroupDtl").setValue(true);
+      this.settingsForms.get("IsShowZeroBalance").setValue(false);
+      this.settingsForms.get("IsShowPreviousYear").setValue(false);
     }
   }
 

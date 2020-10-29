@@ -58,7 +58,7 @@ export class BalanceSheetComponent implements OnInit {
       GroupID: [null],
       IsShowRemarks: [false],
       FromDate: [{ value: "", disabled: true }],
-      ToDate: [{ value: "", disabled: true }],
+      ToDate: [{ value: new Date(), disabled: true }],
       IsDateRange: [false],
       IsDetails: [false],
       IsShowZeroBalance: [false],

@@ -19,7 +19,6 @@ import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/
 @Component({
   selector: "accSwift-trial-balance",
   templateUrl: "./trial-balance.component.html",
-  styleUrls: ["./trial-balance.component.scss"],
 })
 export class TrialBalanceComponent implements OnInit, AfterViewInit {
   trailBalnceList: TrailBalance[] = [];
@@ -71,8 +70,8 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
       IsShowZeroBalance: [false],
       ProjectID: [null],
       AccClassID: [],
-      FromDate: [""],
-      ToDate: [""],
+      FromDate: [{ value: "", disabled: true }],
+      ToDate: [{ value: new Date(), disabled: true }],
     });
   }
 

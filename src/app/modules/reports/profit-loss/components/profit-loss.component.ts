@@ -61,9 +61,9 @@ export class ProfitLossComponent implements OnInit, AfterViewInit {
       IsDetails: [false],
       IsShowZeroBalance: [false],
       ProjectID: [null],
-      AccClassID: [],
-      FromDate: [""],
-      ToDate: [""],
+      AccClassID: [null],
+      FromDate: [{ value: "", disabled: true }],
+      ToDate: [{ value: new Date(), disabled: true }],
     });
   }
 
