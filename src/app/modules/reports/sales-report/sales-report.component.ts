@@ -13,6 +13,7 @@ import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.m
 import { Depot } from "@accSwift-modules/depot/models/depot.model";
 import { SalesAccounts } from "@accSwift-modules/accswift-shared/models/sales-account.model";
 import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
+import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 
 @Component({
   selector: "accSwift-sales-report",
@@ -22,12 +23,8 @@ import { PreferenceService } from "@accSwift-modules/preference/services/prefere
 export class SalesReportComponent implements OnInit, AfterViewInit {
   salesReportForms: FormGroup;
   salesReportList: SalesReportList[] = [];
-  cashPartyList: CashParty[] = [];
-  cashPartyGroupList: CashPartyGroup[] = [];
-  depotList: Depot[] = [];
-  salesAccountList: SalesAccounts[] = [];
+
   selectType: string;
-  @ViewChild("salesReportSettings") salesReportSettings;
 
   isActive;
   isActiveParty;
@@ -41,7 +38,7 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   totalVATAmount: number;
   totalNetAmount: number;
   totalDiscountAmount: number;
-
+  projectName: string;
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -60,16 +57,11 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.buildSalesReportForms();
-    this.getSalesAccount();
-    this.getDepot();
     this.selectType = "product";
   }
 
   ngAfterViewInit(): void {
-    setTimeout(
-      () => this.openSalesReportSettings(this.salesReportSettings),
-      100
-    );
+    setTimeout(() => this.openSalesReportSettings(), 100);
   }
 
   buildSalesReportForms(): void {
@@ -91,103 +83,53 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
       ],
       AccClassID: [""],
       IsProductWise: [false],
-      ProductGroupID: [null],
-      ProductID: [null],
-      PartyID: [null],
-      PartyGroupID: [null],
+      VoucherType: [null],
+      ProductGroupID: [{ value: null, disabled: true }],
+      ProductID: [{ value: null, disabled: true }],
+      PartyID: [{ value: null, disabled: true }],
+      PartyGroupID: [{ value: null, disabled: true }],
       IsDateRange: [false],
-      FromDate: [""],
-      ToDate: [""],
+      FromDate: [{ value: "", disabled: true }],
+      ToDate: [{ value: new Date(), disabled: true }],
       SalesReportType: [""],
     });
   }
 
-  endOfMonth(): void {
-    var today = new Date();
-    var lastDayOfMonth = new Date(
-      today.getFullYear(),
-      this.toDateSelect + 1,
-      0
-    );
-    this.salesReportForms.get("ToDate").setValue(lastDayOfMonth);
-  }
-
-  getCashParty(): void {
-    this.reportService.getCashParty().subscribe((response) => {
-      this.cashPartyList = response.Entity;
+  openSalesReportSettings(): void {
+    this.modalRef = this.modalService.show(SettingsReportsComponent, {
+      initialState: { settingsForms: this.salesReportForms },
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-lg",
     });
-  }
 
-  getSalesAccount(): void {
-    this.reportService.getSalesAccount().subscribe((response) => {
-      this.salesAccountList = response.Entity;
+    this.reportService.projectName$.subscribe((value) => {
+      this.projectName = value;
     });
-  }
 
-  getCashPartyGroup(): void {
-    this.reportService.getCashPartyGroup().subscribe((response) => {
-      this.cashPartyGroupList = response.Entity;
+    this.modalRef.content.onSubmit.subscribe((data) => {
+      if (data) {
+        this.listLoading = true;
+        this.reportService.getSalesReports(JSON.stringify(data)).subscribe(
+          (response) => {
+            this.salesReportList = response.Entity.Entity;
+            this.totalAmount = response.Entity.TotalAmount;
+            this.totalDiscountAmount = response.Entity.TotalDiscountAmount;
+          },
+          (error) => {
+            this.listLoading = false;
+          },
+          () => {
+            this.listLoading = false;
+          }
+        );
+      }
     });
-  }
 
-  getDepot(): void {
-    this.reportService.getDepotList().subscribe((response) => {
-      this.depotList = response.Entity;
+    this.modalRef.content.onClose.subscribe((data) => {
+      this.showReport();
     });
-  }
-
-  selectAccounts(id, event): void {
-    if (event.target.checked) {
-      this.salesReportForms.get("AccClassID").setValue([id]);
-    }
-  }
-
-  openSalesReportSettings(template: TemplateRef<any>): void {
-    this.modalRef = this.modalService.show(template, this.config);
-  }
-
-  allProduct(event): void {
-    this.salesReportForms.get("ProductID").setValue(null);
-    this.salesReportForms.get("ProductGroupID").setValue(null);
-    this.salesReportForms.get("ProductID").disable();
-    this.salesReportForms.get("ProductGroupID").disable();
-  }
-
-  singleProduct(event): void {
-    this.salesReportForms.get("ProductGroupID").setValue(null);
-    this.salesReportForms.get("ProductGroupID").disable();
-  }
-
-  productGroup(event): void {
-    this.salesReportForms.get("ProductID").setValue(null);
-    this.salesReportForms.get("ProductID").disable();
-    this.salesReportForms.get("ProductGroupID").enable();
-  }
-
-  reportType(type): void {
-    this.selectType = type;
-    if (this.selectType === "party") {
-      this.getCashParty();
-      this.getCashPartyGroup();
-    }
-  }
-
-  allCashPArty(): void {
-    this.salesReportForms.get("PartyID").setValue(null);
-    this.salesReportForms.get("PartyGroupID").setValue(null);
-    this.salesReportForms.get("PartyID").disable();
-    this.salesReportForms.get("PartyGroupID").disable();
-  }
-
-  singleCashParty(): void {
-    this.salesReportForms.get("PartyGroupID").setValue(null);
-    this.salesReportForms.get("PartyGroupID").disable();
-  }
-
-  cashPartyGroup(): void {
-    this.salesReportForms.get("PartyID").setValue(null);
-    this.salesReportForms.get("PartyID").disable();
-    this.salesReportForms.get("PartyGroupID").enable();
   }
 
   showReport(): void {

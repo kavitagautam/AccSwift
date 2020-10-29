@@ -3,11 +3,7 @@ import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
-import {
-  TrailBalanceModel,
-  GroupBalanceModel,
-  LedgerDetailsModel,
-} from "../models/trail-balance.model";
+import { TrailBalanceModel } from "../models/trail-balance.model";
 import { StockStatusReportsModel } from "../stock-status/models/stock.models";
 import {
   SalesReportModel,
@@ -30,8 +26,11 @@ import {
   ProjectRootModel,
 } from "@accSwift-modules/accswift-shared/models/project.model";
 import { CashPartyModel } from "@accSwift-modules/accswift-shared/models/cash-party.model";
-import { DepotModel } from "@accSwift-modules/depot/models/depot.model";
-import { SalesAccountModel } from "@accSwift-modules/accswift-shared/models/sales-account.model";
+import { Depot, DepotModel } from "@accSwift-modules/depot/models/depot.model";
+import {
+  SalesAccountModel,
+  SalesAccounts,
+} from "@accSwift-modules/accswift-shared/models/sales-account.model";
 import {
   AccountClass,
   AccountClassModel,
@@ -52,6 +51,10 @@ import {
   VoucherType,
   VoucherTypeModel,
 } from "@accSwift-modules/accswift-shared/models/voucher-type.model";
+import {
+  PurchaseAccount,
+  PurchaseAccountModel,
+} from "@accSwift-modules/preference/models/preference.model";
 
 @Injectable({
   providedIn: "root",
@@ -62,7 +65,6 @@ export class ReportsService {
 
   // Service message commands
   selectProject(name: string) {
-    console.log("NAMe" + name);
     this.projectName.next(name);
   }
 
@@ -72,6 +74,9 @@ export class ReportsService {
   projectList: Project[] = [];
   accountLists: AccountClass[];
   transVoucherType: VoucherType[] = [];
+  depotList: Depot[] = [];
+  salesAccountList: SalesAccounts[] = [];
+  purchaseAccountList: PurchaseAccount[] = [];
   monthList = [
     {
       name: "January",
@@ -143,6 +148,9 @@ export class ReportsService {
     this.getAccountClass();
     this.getProjectLists();
     this.getVoucherType();
+    this.getSalesAccount();
+    this.getPurchaseAccount();
+    this.getDepotList();
   }
 
   getTrailBalance(body): Observable<TrailBalanceModel> {
@@ -265,12 +273,27 @@ export class ReportsService {
     return this.httpService.get(`${this._api_URL}LedgerGroup/CashPartyGroups`);
   }
 
-  getDepotList(): Observable<DepotModel> {
-    return this.httpService.get(`${this._api_URL}Depot/min`);
+  getDepotList(): void {
+    this.httpService
+      .get(`${this._api_URL}Depot/min`)
+      .subscribe((response: DepotModel) => {
+        this.depotList = response.Entity;
+      });
   }
 
-  getSalesAccount(): Observable<SalesAccountModel> {
-    return this.httpService.get(`${this._api_URL}Ledger/salesAccounts`);
+  getSalesAccount(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/salesAccounts`)
+      .subscribe((response: SalesAccountModel) => {
+        this.salesAccountList = response.Entity;
+      });
+  }
+  getPurchaseAccount(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/purchAccounts`)
+      .subscribe((response: PurchaseAccountModel) => {
+        this.purchaseAccountList = response.Entity;
+      });
   }
 
   getLedgerMin(): Observable<LedgerMinModel> {

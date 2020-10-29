@@ -70,8 +70,8 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
       IsShowZeroBalance: [false],
       ProjectID: [null],
       AccClassID: [],
-      FromDate: [""],
-      ToDate: [""],
+      FromDate: [{ value: "", disabled: true }],
+      ToDate: [{ value: new Date(), disabled: true }],
     });
     this.ledgerReportForms.get("LedgerID").disable();
     this.ledgerReportForms.get("GroupID").disable();
