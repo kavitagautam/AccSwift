@@ -213,7 +213,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
   }
 
   public save(): void {
-    if (this.purchaseInvoiceForm.invalid) return;
+    // if (this.purchaseInvoiceForm.invalid) return;
     this.purchaseService
       .updatePurchaseInvoice(this.purchaseInvoiceForm.value)
       .subscribe(

@@ -85,9 +85,11 @@ export class SettingsReportsComponent implements OnInit {
     if (this.settingsForms.get("IsDateRange").value) {
       this.dateCheckbox = false;
       this.settingsForms.get("ToDate").enable();
+      this.settingsForms.get("FromDate").enable();
     } else {
       this.dateCheckbox = true;
       this.settingsForms.get("ToDate").disable();
+      this.settingsForms.get("FromDate").disable();
     }
   }
 

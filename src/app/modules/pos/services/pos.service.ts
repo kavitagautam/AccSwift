@@ -29,11 +29,9 @@ export class PosService {
   }
 
   getProductOrGroup(groupID): Observable<ProductOrGroupRootModel> {
-    const params = new HttpParams().set("id", groupID);
+    //const params = new HttpParams().set("id", groupID);
     return this.httpService.get(
-      `${this._api_URL}Product/ProductGroupModel`,
-      null,
-      params
+      `${this._api_URL}Product/ProductGroupModel/${groupID}`
     );
   }
 

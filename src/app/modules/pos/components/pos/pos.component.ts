@@ -16,6 +16,7 @@ export class PosComponent implements OnInit {
   favProductOrGroupList: ProductOrGroup[] = [];
   private editedRowIndex: number;
   quantityNo: number;
+  salesRate: number;
   selectedRow: number = null;
   productList: any = [];
   totalQty: number = 0;
@@ -49,7 +50,7 @@ export class PosComponent implements OnInit {
   }
 
   getProductGroup(): void {
-    this.posServices.getProductOrGroup(null).subscribe((response) => {
+    this.posServices.getProductOrGroup(0).subscribe((response) => {
       this.productOrGroupList = response.Entity;
     });
   }
@@ -61,6 +62,7 @@ export class PosComponent implements OnInit {
 
   selectProduct(i, product): void {
     this.quantityNo = product.Quantity;
+    this.salesRate = product.SalesRate;
     this.selectedRow = i;
   }
 
@@ -71,6 +73,35 @@ export class PosComponent implements OnInit {
         Quantity: this.quantityNo,
         Amount: this.productList[this.selectedRow].SalesRate * this.quantityNo,
         SalesRate: this.productList[this.selectedRow].SalesRate,
+        ID: this.productList[this.selectedRow].ID,
+        ProductID: this.productList[this.selectedRow].ProductID,
+        QtyUnitID: this.productList[this.selectedRow].QtyUnitID,
+        TaxAmount:
+          this.productList[this.selectedRow].SalesRate *
+          this.quantityNo *
+          (this.productList[this.selectedRow].TaxRate / 100),
+        TaxRate: this.productList[this.selectedRow].TaxRate,
+      };
+      this.productList[this.selectedRow] = obj;
+    }
+    this.calculateTotal(this.productList);
+  }
+
+  rateChange(): void {
+    if (this.selectedRow !== null) {
+      const obj = {
+        ProductName: this.productList[this.selectedRow].ProductName,
+        Quantity: this.quantityNo,
+        Amount: this.salesRate * this.quantityNo,
+        SalesRate: this.salesRate,
+        ID: this.productList[this.selectedRow].ID,
+        ProductID: this.productList[this.selectedRow].ProductID,
+        QtyUnitID: this.productList[this.selectedRow].QtyUnitID,
+        TaxAmount:
+          this.salesRate *
+          this.quantityNo *
+          (this.productList[this.selectedRow].TaxRate / 100),
+        TaxRate: this.productList[this.selectedRow].TaxRate,
       };
       this.productList[this.selectedRow] = obj;
     }
@@ -179,7 +210,11 @@ export class PosComponent implements OnInit {
       Date: new Date(),
     };
     this.posServices.addSalesInvoice(obj).subscribe(
-      (response) => {},
+      (response) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
+      },
       (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
@@ -197,5 +232,14 @@ export class PosComponent implements OnInit {
       class: "modal-md",
     };
     this.modalRef = this.modalService.show(template, config);
+  }
+
+  clearAll(): void {
+    this.productList = [];
+    this.quantityNo = null;
+    this.salesRate = null;
+    this.selectedRow = null;
+    this.grandTotalAmount = 0;
+    this.totalAmount = 0;
   }
 }
