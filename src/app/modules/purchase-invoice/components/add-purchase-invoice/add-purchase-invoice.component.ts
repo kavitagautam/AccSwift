@@ -89,6 +89,8 @@ export class AddPurchaseInvoiceComponent implements OnInit {
       ],
       Date: [new Date()],
       OrderNo: ["", [Validators.required]],
+      TotalTCAmount: [0],
+      SpecialDiscount: [0],
       TotalAmount: [0, Validators.required],
       TotalQty: [0, Validators.required],
       GrossAmount: [0, Validators.required],
@@ -172,6 +174,14 @@ export class AddPurchaseInvoiceComponent implements OnInit {
   }
 
   public save(): void {
+    this.purchaseInvoiceForm.get("TotalQty").setValue(this.totalQty);
+    this.purchaseInvoiceForm.get("TotalTCAmount").setValue(this.totalTaxAmount);
+    this.purchaseInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
+    this.purchaseInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
+    this.purchaseInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
+    this.purchaseInvoiceForm
+      .get("SpecialDiscount")
+      .setValue(this.totalDiscountAmount);
     //  if (this.purchaseInvoiceForm.invalid) return;
     this.purchaseService
       .addPurchaseInvoice(this.purchaseInvoiceForm.value)
