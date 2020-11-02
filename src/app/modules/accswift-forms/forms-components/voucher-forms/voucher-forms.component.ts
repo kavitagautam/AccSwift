@@ -47,14 +47,14 @@ import { FormsService } from "../../services/forms.service";
 export class VoucherFormsComponent
   implements ControlValueAccessor, OnDestroy, OnChanges {
   subscriptions: Subscription[] = [];
-  VoucherNo = new FormControl();
+  VoucherNo = new FormControl("");
   voucherNoType: string = "";
 
   @Input("series") seriesID;
 
   constructor(private formService: FormsService) {
     this.subscriptions.push(
-      this.VoucherNo.valueChanges.subscribe((value: number) => {
+      this.VoucherNo.valueChanges.subscribe((value: string) => {
         this.onChange(value);
         this.onTouched();
       })

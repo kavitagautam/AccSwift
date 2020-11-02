@@ -87,7 +87,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           ? this.preferenceService.preferences.DEFAULT_CASH_ACCOUNT.Value
           : null,
       ],
-      VoucherNo: [null, Validators.required],
+      VoucherNo: [""],
       SalesLedgerID: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_SALES_ACCOUNT.Value
@@ -113,6 +113,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       NetAmount: [0, Validators.required],
       SpecialDiscount: [0, Validators.required],
       VAT: [0],
+      TotalTCAmount: [0],
       Remarks: [""],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
@@ -121,7 +122,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   addInvoiceEntryList(): FormGroup {
     return this._fb.group({
       ID: [0],
-      ProductCode: ["", null, this.productCodeMatch.productCodeMatch()],
+      ProductCode: [""],
       ProductID: [""],
       ProductName: [""],
       CodeName: [""],
@@ -232,15 +233,14 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   public save(): void {
     this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
-
+    this.salesInvoiceForm.get("TotalTCAmount").setValue(this.totalTaxAmount);
     this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
     this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
     this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
     this.salesInvoiceForm
       .get("SpecialDiscount")
       .setValue(this.totalDiscountAmount);
-    this.salesInvoiceForm.get("VAT").setValue(this.totalTaxAmount);
-    if (this.salesInvoiceForm.invalid) return;
+   // if (this.salesInvoiceForm.invalid) return;
     this.salesInvoiceService
       .addSalesInvoice(this.salesInvoiceForm.value)
       .subscribe(
@@ -292,12 +292,8 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (
-            invoices &&
-            invoices[i].TaxAmount &&
-            invoices[i].TaxID !== null &&
-            invoices[i].IsVAT
-          ) {
+
+          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
@@ -309,7 +305,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
         this.totalDiscountPercentage = sumTotalDiscountPer;
         this.totalTaxAmount = sumTaxAmount;
 
-        this.vatTotalAmount = sumTaxAmount;
         this.grandTotalAmount =
           this.totalGrossAmount -
           this.totalDiscountAmount +

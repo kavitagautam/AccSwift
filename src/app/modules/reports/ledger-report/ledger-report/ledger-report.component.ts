@@ -11,8 +11,8 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { LedgerList } from "../../models/ledger.reports.model";
-import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
-import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
+import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
+import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component";
 
 @Component({
   selector: "accSwift-ledger-report",
@@ -20,26 +20,19 @@ import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model"
   styleUrls: ["./ledger-report.component.scss"],
 })
 export class LedgerReportComponent implements OnInit, AfterViewInit {
-  @ViewChild("ledgerSettings") ledgerSettings;
-  @ViewChild("ledgerDetails") ledgerDetails;
-  baseURL: string;
   ledgerReportForms: FormGroup;
   projectName: string;
-  toDateSelect: number;
+
   ledgerReportList: LedgerList[] = [];
-  ledgerDetailsReportList: LedgerList[] = [];
   listLoading: boolean;
-  listLedgerLoading: boolean;
   totalDebitAmount: number;
   totalCreditAmount: number;
   totalClosingBalance: string;
-  accountLedger: boolean = false;
-  accountGroup: boolean = false;
-  dateCheckbox: boolean = true;
-  ledgerMinList: LedgerMin[] = [];
-  ledgerGroupList: LedgerGroup[] = [];
+  baseURL: string;
+
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
+  modalRefLedger: BsModalRef;
   //modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -58,66 +51,123 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.buildLedgerReportForms();
-    this.getLedger();
-    this.getLedgerGroup();
     this.baseURL =
       this.location["_platformStrategy"]._platformLocation["location"].origin +
       "/#/";
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.openLedgerSettings(this.ledgerSettings), 100);
+    setTimeout(() => this.openLedgerSettings(), 100);
   }
 
   buildLedgerReportForms(): void {
     this.ledgerReportForms = this._fb.group({
       LedgerID: [null],
-      AccountGroupID: [null],
+      GroupID: [null],
       IsShowRemarks: [false],
       IsDateRange: [false],
       IsDetails: [false],
       IsShowZeroBalance: [false],
       ProjectID: [null],
       AccClassID: [],
-      FromDate: [""],
-      ToDate: [""],
+      FromDate: [{ value: "", disabled: true }],
+      ToDate: [{ value: new Date(), disabled: true }],
     });
     this.ledgerReportForms.get("LedgerID").disable();
-    this.ledgerReportForms.get("AccountGroupID").disable();
+    this.ledgerReportForms.get("GroupID").disable();
   }
 
-  enableDate(): void {
-    if (this.ledgerReportForms.get("IsDateRange").value) {
-      this.dateCheckbox = false;
-      this.ledgerReportForms.get("ToDate").enable();
-      this.ledgerReportForms.get("FromDate").enable();
-    } else {
-      this.dateCheckbox = true;
-      this.ledgerReportForms.get("ToDate").disable();
-      this.ledgerReportForms.get("FromDate").disable();
-    }
-  }
+  openLedgerSettings(): void {
+    this.modalRef = this.modalService.show(SettingsReportsComponent, {
+      initialState: { settingsForms: this.ledgerReportForms },
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-lg",
+    });
+    this.reportService.projectName$.subscribe((value) => {
+      this.projectName = value;
+    });
+    this.modalRef.content.onSubmit.subscribe((data) => {
+      if (data) {
+        this.listLoading = true;
+        this.reportService.getLedgerReports(JSON.stringify(data)).subscribe(
+          (response) => {
+            this.ledgerReportList = response.Entity.Entity;
+            this.totalDebitAmount = response.Entity.TotalDebitAmount;
+            this.totalCreditAmount = response.Entity.TotalCreditAmount;
+            this.totalClosingBalance = response.Entity.ClosingBalance;
+          },
+          (error) => {
+            this.listLoading = false;
+          },
+          () => {
+            this.listLoading = false;
+          }
+        );
+      }
+    });
 
-  getLedger(): void {
-    this.reportService.getLedgerMin().subscribe((response) => {
-      this.ledgerMinList = response.Entity;
+    this.modalRef.content.onClose.subscribe((data) => {
+      this.showReport();
     });
   }
 
-  getLedgerGroup(): void {
-    this.reportService.getLedgerGroup().subscribe((response) => {
-      this.ledgerGroupList = response.Entity;
-    });
+  openLedgerDetails(e, data): void {
+    const obj = {
+      LedgerID: data.ID,
+      IsDetails: this.ledgerReportForms.get("IsDetails").value,
+      IsShowZeroBalance: this.ledgerReportForms.get("IsShowZeroBalance").value,
+      FromDate: this.ledgerReportForms.get("FromDate").value,
+      ToDate: this.ledgerReportForms.get("ToDate").value,
+      IsDateRange: this.ledgerReportForms.get("IsDateRange").value,
+      ProjectID: this.ledgerReportForms.get("ProjectID").value,
+      AccClassID: this.ledgerReportForms.get("AccClassID").value,
+    };
+    this.reportService
+      .getLedgerTransactionDetails(obj)
+      .subscribe((response) => {
+        this.modalRefLedger = this.modalService.show(
+          LedgerDetailReportsComponent,
+          {
+            initialState: {
+              ledgerDetailsList: response.Entity.Entity,
+            },
+            ignoreBackdropClick: true,
+            animated: true,
+            keyboard: true,
+            class: "modal-lg",
+          }
+        );
+      });
   }
 
-  openLedgerSettings(template: TemplateRef<any>): void {
-    this.modalRef = this.modalService.show(template, this.config);
-  }
-  openLedgerDetailsPopUP(template: TemplateRef<any>): void {
-    this.modalRef = this.modalService.show(template, this.config);
+  showReport(): void {
+    this.modalRef.hide();
+    this.listLoading = true;
+    this.reportService
+      .getLedgerReports(JSON.stringify(this.ledgerReportForms.value))
+      .subscribe(
+        (response) => {
+          this.ledgerReportList = response.Entity.Entity;
+          this.totalDebitAmount = response.Entity.TotalDebitAmount;
+          this.totalCreditAmount = response.Entity.TotalCreditAmount;
+          this.totalClosingBalance = response.Entity.ClosingBalance;
+        },
+        (error) => {
+          this.listLoading = false;
+        },
+        () => {
+          this.listLoading = false;
+        }
+      );
   }
 
-  openVoucherDetails(e, data): void {
+  cancel(): void {
+    this.showReport();
+  }
+
+  openVoucherDetails(event, data): void {
     if (data.VoucherType === "JRNL") {
       const url = this.router.serializeUrl(
         this.router.createUrlTree(["/journal/edit", data.RowID])
@@ -173,106 +223,5 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
     if (data.VoucherType === "PURCH_ORDER") {
       window.open(this.baseURL + "purchase-order/edit/" + data.RowID, "_blank");
     }
-  }
-
-  openLedgerDetails(e, data): void {
-    this.openLedgerDetailsPopUP(this.ledgerDetails);
-    const obj = {
-      LedgerID: data.ID,
-      AccountGroupID: this.ledgerReportForms.get("AccountGroupID").value,
-      IsShowRemarks: this.ledgerReportForms.get("IsShowRemarks").value,
-      IsDetails: true,
-      IsShowZeroBalance: this.ledgerReportForms.get("IsShowZeroBalance").value,
-      ProjectID: this.ledgerReportForms.get("ProjectID").value,
-      AccClassID: this.ledgerReportForms.get("AccClassID").value,
-    };
-    this.listLedgerLoading = true;
-    this.reportService.getLedgerReports(obj).subscribe(
-      (response) => {
-        this.ledgerDetailsReportList = response.Entity.Entity;
-      },
-      (error) => {
-        this.listLedgerLoading = false;
-      },
-      () => {
-        this.listLedgerLoading = false;
-      }
-    );
-  }
-
-  changeProject(): void {
-    const projectID = this.ledgerReportForms.get("ProjectID").value;
-    const filterValue = this.reportService.projectList.filter(
-      (s) => s.ID == projectID
-    );
-    this.projectName = filterValue[0].EngName;
-  }
-
-  accountLedgerCheck(): void {
-    this.accountGroup = false;
-    if (this.accountLedger == true) {
-      this.accountLedger = false;
-      this.ledgerReportForms.get("LedgerID").disable();
-    } else {
-      this.accountLedger = true;
-    }
-    this.ledgerReportForms.get("LedgerID").enable();
-  }
-
-  accountGroupCheck(): void {
-    this.accountLedger = false;
-    if (this.accountGroup == true) {
-      this.accountGroup = false;
-      this.ledgerReportForms.get("AccountGroupID").disable();
-    } else {
-      this.accountGroup = true;
-    }
-    this.ledgerReportForms.get("AccountGroupID").enable();
-  }
-
-  endOfMonth(): void {
-    var today = new Date();
-    var lastDayOfMonth = new Date(
-      today.getFullYear(),
-      this.toDateSelect + 1,
-      0
-    );
-    this.ledgerReportForms.get("ToDate").setValue(lastDayOfMonth);
-  }
-
-  selectAccounts(id, event): void {
-    if (event.target.checked) {
-      this.ledgerReportForms.get("AccClassID").setValue([id]);
-    }
-  }
-
-  today(): void {
-    const today = new Date();
-    this.ledgerReportForms.get("ToDate").setValue(today);
-  }
-
-  showReport(): void {
-    this.modalRef.hide();
-    this.listLoading = true;
-    this.reportService
-      .getLedgerReports(JSON.stringify(this.ledgerReportForms.value))
-      .subscribe(
-        (response) => {
-          this.ledgerReportList = response.Entity.Entity;
-          this.totalDebitAmount = response.Entity.TotalDebitAmount;
-          this.totalCreditAmount = response.Entity.TotalCreditAmount;
-          this.totalClosingBalance = response.Entity.ClosingBalance;
-        },
-        (error) => {
-          this.listLoading = false;
-        },
-        () => {
-          this.listLoading = false;
-        }
-      );
-  }
-
-  cancel(): void {
-    this.showReport();
   }
 }

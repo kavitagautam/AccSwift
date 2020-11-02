@@ -109,6 +109,7 @@ export class ProductComponent implements OnInit, OnChanges {
       isInventoryApplicable: [
         this.productDetails ? this.productDetails.IsInventoryApplicable : false,
       ],
+      taxID: [this.productDetails ? this.productDetails.TaxID : null],
       remarks: [this.productDetails ? this.productDetails.Remarks : ""],
       openingBalanceList: this._fb.array([this.addOpeningBalanceFormGroup()]),
       moreDetails: new FormControl(""),
@@ -274,6 +275,12 @@ export class ProductComponent implements OnInit, OnChanges {
           OpenSalesRate: openingBalanceArray.controls[0].get("salesRate").value,
           OpenQuantityDate: openingBalanceArray.controls[0].get("date").value,
         },
+        TaxID: this.productForm.get("taxID").value
+          ? this.productForm.get("taxID").value
+          : null,
+        Remarks: this.productForm.get("remarks").value
+          ? this.productForm.get("remarks").value
+          : "",
       };
       this.productService.addProduct(obj).subscribe(
         (response) => {
@@ -312,6 +319,9 @@ export class ProductComponent implements OnInit, OnChanges {
         IsDecimalApplicable: this.productForm.get("isDecimalApplicable").value
           ? this.productForm.get("isDecimalApplicable").value
           : false,
+        TaxID: this.productForm.get("taxID").value
+          ? this.productForm.get("taxID").value
+          : null,
         OpeningQuantity: {
           ID: openingBalanceArray.controls[0].get("ID").value,
           ProductID: openingBalanceArray.controls[0].get("productId").value,

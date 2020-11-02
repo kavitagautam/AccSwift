@@ -15,6 +15,7 @@ import {
 import { NepaliDatepickerModule } from "@lib/nepali-datepicker/src/public-api";
 import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift-shared.module";
+import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 
 @NgModule({
   declarations: [DayBookComponent],
@@ -36,6 +37,6 @@ import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift
     NepaliDatepickerModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [LedgerModalPopupComponent],
+  entryComponents: [LedgerModalPopupComponent, SettingsReportsComponent],
 })
 export class DayBookModule {}

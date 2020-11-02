@@ -29,6 +29,14 @@
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
+          <!-- <div class="form-group">
+            <label>VoucherNo </label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="VoucherNo"
+            />
+          </div> -->
           <accSwift-voucher-forms
             *ngIf="!salesInvoiceForm.get('VoucherNo').value"
             formControlName="VoucherNo"
@@ -112,9 +120,9 @@
             </td>
             <td>Tax 2</td>
             <td>0.00</td>
-            <td>VAT(13%)</td>
+            <td>Tax</td>
             <td>
-              <span [innerHTML]="vatTotalAmount | currencyFormat "></span>
+              <span [innerHTML]="totalTaxAmount | currencyFormat "></span>
             </td>
           </tr>
         </tbody>

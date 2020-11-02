@@ -11,14 +11,3 @@ export interface DayBookModel {
   Message: string;
   Entity: DayBook;
 }
-
-export interface TransactionVoucher {
-  VouchType: string;
-  VouchName: string;
-}
-
-export interface TransactionVoucherModel {
-  StatusCode: number;
-  Message: string;
-  Entity: TransactionVoucher[];
-}

@@ -46,13 +46,15 @@ export class EditPurchaseInvoiceComponent implements OnInit {
     private route: ActivatedRoute,
     public purchaseService: PurchaseInvoiceService,
     private modalService: BsModalService,
-    private toastr: ToastrService,
-    public productCodeMatch: ProductCodeValidatorsService
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.buildEditInvoiceForm();
     this.getIdFromRoute();
+    this.purchaseInvoiceForm.valueChanges.subscribe((changes) => {
+      this.invoiceValueChange(changes);
+    });
   }
 
   buildEditInvoiceForm(): void {
@@ -83,6 +85,12 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       OrderNo: [
         this.purchaseDetails ? this.purchaseDetails.OrderNo : "",
         [Validators.required],
+      ],
+      TotalTCAmount: [
+        this.purchaseDetails ? this.purchaseDetails.TotalTCAmount : 0,
+      ],
+      SpecialDiscount: [
+        this.purchaseDetails ? this.purchaseDetails.SpecialDiscount : 0,
       ],
       TotalAmount: [
         this.purchaseDetails ? this.purchaseDetails.TotalAmount : 0,
@@ -159,11 +167,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
             ID: [element.ID],
             ProductID: [element.ProductID],
             ProductName: [element.ProductName],
-            ProductCode: [
-              element.ProductCode,
-              null,
-              this.productCodeMatch.productCodeMatch(),
-            ],
+            ProductCode: [element.ProductCode],
             CodeName: [element.CodeName],
             Quantity: [element.Quantity],
             QtyUnitName: [element.QtyUnitName],
@@ -213,7 +217,15 @@ export class EditPurchaseInvoiceComponent implements OnInit {
   }
 
   public save(): void {
-    if (this.purchaseInvoiceForm.invalid) return;
+    this.purchaseInvoiceForm.get("TotalQty").setValue(this.totalQty);
+    this.purchaseInvoiceForm.get("TotalTCAmount").setValue(this.totalTaxAmount);
+    this.purchaseInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
+    this.purchaseInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
+    this.purchaseInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
+    this.purchaseInvoiceForm
+      .get("SpecialDiscount")
+      .setValue(this.totalDiscountAmount);
+    // if (this.purchaseInvoiceForm.invalid) return;
     this.purchaseService
       .updatePurchaseInvoice(this.purchaseInvoiceForm.value)
       .subscribe(

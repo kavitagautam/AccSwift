@@ -1,4 +1,4 @@
-import { HttpParams } from "@angular/common/http";
+import { HttpHeaders, HttpParams, HttpResponse } from "@angular/common/http";
 import {
   SalesInvoiceDetailsModel,
   SalseInvoiceNavigateModel,
@@ -15,11 +15,13 @@ import { CompanyDetailsModel } from "@accSwift-modules/company/models/company.mo
 })
 export class SalesInvoiceService {
   _api_URL = environment.baseAPI;
-
+  vatRate: number;
   constructor(
     private httpService: HttpClientService,
     private http: HttpClient
-  ) {}
+  ) {
+    this.getVatRate();
+  }
 
   getSalesInvoiceMaster(body): Observable<SalseInvoiceNavigateModel> {
     return this.httpService.post(
@@ -46,5 +48,22 @@ export class SalesInvoiceService {
 
   getCompanyDetails(): Observable<CompanyDetailsModel> {
     return this.httpService.get(`${this._api_URL}Company/User`);
+  }
+
+  getVatRate(): void {
+    this.httpService
+      .get(`${this._api_URL}Slabs/SalesVAT`)
+      .subscribe((response) => {
+        this.vatRate = response;
+      });
+  }
+
+  getSalesInvoicePDF(invoiceID): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set("Accept", "application/pdf");
+    return this.http.get(
+      `${this._api_URL}SalesInvoiceMaster/PDF/${invoiceID}`,
+      { headers: headers, responseType: "blob" as "json" }
+    );
   }
 }

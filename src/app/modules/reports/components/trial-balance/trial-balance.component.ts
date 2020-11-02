@@ -13,37 +13,25 @@ import {
 import { ReportsService } from "../../services/reports.service";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { Router } from "@angular/router";
-import { Location } from "@angular/common";
-import { Company } from "@accSwift-modules/company/models/company.model";
+import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
+import { GroupBalanceReportComponent } from "@accSwift-modules/accswift-shared/components/group-balance-report/group-balance-report.component";
+import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component";
 @Component({
   selector: "accSwift-trial-balance",
   templateUrl: "./trial-balance.component.html",
-  styleUrls: ["./trial-balance.component.scss"],
 })
 export class TrialBalanceComponent implements OnInit, AfterViewInit {
-  @ViewChild("trailBalanceSettings") trailBalanceSettings;
-  @ViewChild("groupBalance") groupBalance;
-  @ViewChild("ledgerDetails") ledgerDetails;
-  baseURL: string;
-  companyInfo: Company;
   trailBalnceList: TrailBalance[] = [];
-  groupBalanceList: GroupBalanceList[] = [];
-  ledgerDetailsList: LedgerList[] = [];
+
   listLoading: boolean;
-  groupLoading: boolean;
-  ledgerLoading: boolean;
+
   trailBalanceForms: FormGroup;
-  accountsSelect: number;
-  totalGroupClosingBalance: string;
 
   projectName: string;
 
-  toDateSelect: number;
-  dateCheckbox: boolean = true;
-
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
+  public modalRefLedger: BsModalRef;
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -55,23 +43,15 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   constructor(
     private _fb: FormBuilder,
     public reportService: ReportsService,
-    private modalService: BsModalService,
-    private router: Router,
-    private location: Location
+    private modalService: BsModalService
   ) {}
 
   ngOnInit(): void {
     this.buildTrailBalanceForms();
-    this.baseURL =
-      this.location["_platformStrategy"]._platformLocation["location"].origin +
-      "/#/";
   }
 
   ngAfterViewInit(): void {
-    setTimeout(
-      () => this.openTrialBalanceSettings(this.trailBalanceSettings),
-      100
-    );
+    setTimeout(() => this.openTrialBalanceSettings(), 100);
   }
 
   buildTrailBalanceForms(): void {
@@ -90,90 +70,45 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
       IsShowZeroBalance: [false],
       ProjectID: [null],
       AccClassID: [],
-      FromDate: [""],
-      ToDate: [{ value: "", disabled: true }],
+      FromDate: [{ value: "", disabled: true }],
+      ToDate: [{ value: new Date(), disabled: true }],
     });
   }
 
-  enableDate(): void {
-    if (this.trailBalanceForms.get("IsDateRange").value) {
-      this.dateCheckbox = false;
-      this.trailBalanceForms.get("ToDate").enable();
-    } else {
-      this.dateCheckbox = true;
-      this.trailBalanceForms.get("ToDate").disable();
-    }
-  }
-
-  openTrialBalanceSettings(template: TemplateRef<any>): void {
-    const config = {
-      backdrop: true,
+  openTrialBalanceSettings(): void {
+    this.modalRef = this.modalService.show(SettingsReportsComponent, {
+      initialState: { settingsForms: this.trailBalanceForms },
       ignoreBackdropClick: true,
-      centered: true,
+      animated: true,
+      keyboard: true,
       class: "modal-lg",
-    };
-    this.modalRef = this.modalService.show(template, config);
-  }
+    });
+    // this.modalRef.content.projectName.subscribe((data) => {
+    //   this.projectName = data;
+    // });
+    this.reportService.projectName$.subscribe((value) => {
+      this.projectName = value;
+    });
+    this.modalRef.content.onSubmit.subscribe((data) => {
+      if (data) {
+        this.listLoading = true;
+        this.reportService.getTrailBalance(JSON.stringify(data)).subscribe(
+          (response) => {
+            this.trailBalnceList = response.Entity.Entity;
+          },
+          (error) => {
+            this.listLoading = false;
+          },
+          () => {
+            this.listLoading = false;
+          }
+        );
+      }
+    });
 
-  openGroupBalance(template: TemplateRef<any>): void {
-    this.modalRef = this.modalService.show(template, this.config);
-  }
-
-  openLedgerDetails(template: TemplateRef<any>): void {
-    this.modalRef = this.modalService.show(template, this.config);
-  }
-
-  allGroupRadio(): void {
-    if (this.trailBalanceForms.get("IsAllGroups").value === true) {
-      this.trailBalanceForms.get("IsAllGroups").setValue(false);
-    } else {
-      this.trailBalanceForms.get("IsAllGroups").setValue(true);
-    }
-  }
-
-  changeProject(): void {
-    const projectID = this.trailBalanceForms.get("ProjectID").value;
-    const filterValue = this.reportService.projectList.filter(
-      (s) => s.ID == projectID
-    );
-    this.projectName = filterValue[0].EngName;
-  }
-
-  primaryGroupRadio(): void {
-    if (this.trailBalanceForms.get("IsOnlyPrimaryGroups").value === true) {
-      this.trailBalanceForms.get("IsOnlyPrimaryGroups").setValue(false);
-    } else {
-      this.trailBalanceForms.get("IsOnlyPrimaryGroups").setValue(true);
-    }
-  }
-
-  ledgerOnlyRaido(): void {
-    if (this.trailBalanceForms.get("IsLedgerOnly").value === true) {
-      this.trailBalanceForms.get("IsLedgerOnly").setValue(false);
-    } else {
-      this.trailBalanceForms.get("IsLedgerOnly").setValue(true);
-    }
-  }
-
-  endOfMonth(): void {
-    var today = new Date();
-    var lastDayOfMonth = new Date(
-      today.getFullYear(),
-      this.toDateSelect + 1,
-      0
-    );
-    this.trailBalanceForms.get("ToDate").setValue(lastDayOfMonth);
-  }
-
-  selectAccounts(id, event): void {
-    if (event.target.checked) {
-      this.trailBalanceForms.get("AccClassID").setValue([id]);
-    }
-  }
-
-  today(): void {
-    const today = new Date();
-    this.trailBalanceForms.get("ToDate").setValue(today);
+    this.modalRef.content.onClose.subscribe((data) => {
+      this.showReport();
+    });
   }
 
   showReport(): void {
@@ -201,102 +136,54 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
   openTrailBalance(event, data): void {
     if (data.Type === "GROUP") {
       this.trailBalanceForms.get("Type").setValue(data.Type);
-      this.trailBalanceForms.get("ID").setValue(data.ID);
-      this.openGroupBalance(this.groupBalance);
-      this.groupLoading = true;
+      this.trailBalanceForms.get("GroupID").setValue(data.ID);
       this.reportService
-        .getTrailGroupDetails(this.trailBalanceForms.value)
-        .subscribe(
-          (response) => {
-            this.companyInfo = response.Entity.Company;
-            this.groupBalanceList = response.Entity.Entity;
-            this.totalGroupClosingBalance = response.Entity.ClosingBalance;
-          },
-          (error) => {
-            this.groupLoading = false;
-          },
-          () => {
-            this.groupLoading = false;
-          }
-        );
+        .getGroupBalanceDetails(this.trailBalanceForms.value)
+        .subscribe((response) => {
+          this.modalRef = this.modalService.show(GroupBalanceReportComponent, {
+            initialState: {
+              settingsForms: this.trailBalanceForms,
+              companyInfo: response.Entity.Company,
+              groupBalanceList: response.Entity.Entity,
+              totalGroupClosingBalance: response.Entity.ClosingBalance,
+            },
+            ignoreBackdropClick: true,
+            animated: true,
+            keyboard: true,
+            class: "modal-lg",
+          });
+        });
     }
     if (data.Type === "LEDGER") {
-      this.trailBalanceForms.get("Type").setValue(data.Type);
-      this.trailBalanceForms.get("ID").setValue(data.ID);
-      this.openLedgerDetails(this.ledgerDetails);
-      this.ledgerLoading = true;
-
+      //this.trailBalanceForms.get("Type").setValue(data.Type);
+      //this.trailBalanceForms.get("LedgerID").setValue(data.ID);
+      const obj = {
+        LedgerID: data.ID,
+        IsDetails: this.trailBalanceForms.get("IsDetails").value,
+        IsShowZeroBalance: this.trailBalanceForms.get("IsShowZeroBalance")
+          .value,
+        FromDate: this.trailBalanceForms.get("FromDate").value,
+        ToDate: this.trailBalanceForms.get("ToDate").value,
+        IsDateRange: this.trailBalanceForms.get("IsDateRange").value,
+        ProjectID: this.trailBalanceForms.get("ProjectID").value,
+        AccClassID: this.trailBalanceForms.get("AccClassID").value,
+      };
       this.reportService
-        .getTrailLedgerDetails(this.trailBalanceForms.value)
-        .subscribe(
-          (response) => {
-            this.ledgerDetailsList = response.Entity.Entity;
-          },
-          (error) => {
-            this.ledgerLoading = false;
-          },
-          () => {
-            this.ledgerLoading = false;
-          }
-        );
-    }
-  }
-
-  openLedgerDetailsDetails(event, data): void {
-    if (data.VoucherType === "JRNL") {
-      const url = this.router.serializeUrl(
-        this.router.createUrlTree(["/journal/edit", data.RowID])
-      );
-      window.open(this.baseURL + "journal/edit/" + data.RowID, "_blank");
-    }
-    if (data.VoucherType === "BANK_PMNT") {
-      window.open(this.baseURL + "bank-payment/edit/" + data.RowID, "_blank");
-    }
-    if (data.VoucherType === "CASH_PMNT") {
-      window.open(this.baseURL + "cash-payment/edit/" + data.RowID, "_blank");
-    }
-    if (data.VoucherType === "BANK_RCPT") {
-      window.open(this.baseURL + "bank-receipt/edit/" + data.RowID, "_blank");
-    }
-    if (data.VoucherType === "BRECON") {
-      window.open(
-        this.baseURL + "bank-reconciliation/edit/" + data.RowID,
-        "_blank"
-      );
-    }
-    if (data.VoucherType === "CNTR") {
-      window.open(this.baseURL + "contra-voucher/edit/" + data.RowID, "_blank");
-    }
-    if (data.VoucherType === "BANK_RCPT") {
-      window.open(this.baseURL + "bank-receipt/edit/" + data.RowID, "_blank");
-    }
-    if (data.VoucherType === "CASH_RCPT") {
-      window.open(this.baseURL + "cash-receipt/edit/" + data.RowID, "_blank");
-    }
-    if (data.VoucherType === "SALES") {
-      window.open(this.baseURL + "sales-invoice/edit/" + data.RowID, "_blank");
-    }
-    if (data.VoucherType === "SLS_RTN") {
-      window.open(this.baseURL + "sales-return/edit/" + data.RowID, "_blank");
-    }
-    if (data.VoucherType === "SLS_ORDER") {
-      window.open(this.baseURL + "sales-order/edit/" + data.RowID, "_blank");
-    }
-
-    if (data.VoucherType === "PURCH") {
-      window.open(
-        this.baseURL + "purchase-invoice/edit/" + data.RowID,
-        "_blank"
-      );
-    }
-    if (data.VoucherType === "PURCH_RTN") {
-      window.open(
-        this.baseURL + "purchase-return/edit/" + data.RowID,
-        "_blank"
-      );
-    }
-    if (data.VoucherType === "PURCH_ORDER") {
-      window.open(this.baseURL + "purchase-order/edit/" + data.RowID, "_blank");
+        .getLedgerTransactionDetails(obj)
+        .subscribe((response) => {
+          this.modalRefLedger = this.modalService.show(
+            LedgerDetailReportsComponent,
+            {
+              initialState: {
+                ledgerDetailsList: response.Entity.Entity,
+              },
+              ignoreBackdropClick: true,
+              animated: true,
+              keyboard: true,
+              class: "modal-lg",
+            }
+          );
+        });
     }
   }
 }

@@ -70,6 +70,64 @@
       ></accSwift-details-entry-grid>
     </div>
 
+    <div class="col-md-12">
+      <table
+        class="table"
+        width="60%"
+        style="float: right; width: 60%; text-align: right"
+      >
+        <tbody>
+          <tr>
+            <td>Adjustment (Rs):</td>
+            <td>
+              <span [innerHTML]="adjustmentAmount | currencyFormat "></span>
+            </td>
+            <td>Tax 1</td>
+            <td>0.00</td>
+            <td>Gross(Rs)</td>
+            <td>
+              <span [innerHTML]="totalGrossAmount | currencyFormat "></span>
+            </td>
+          </tr>
+          <tr>
+            <td>Tender:</td>
+            <td>
+              <span [innerHTML]="tenderAmount | currencyFormat "></span>
+            </td>
+            <td>Tax 2</td>
+            <td>0.00</td>
+            <td>Total Discount Amount (Rs)</td>
+            <td>
+              <span [innerHTML]=" totalDiscountAmount | currencyFormat "></span>
+            </td>
+          </tr>
+          <tr>
+            <td>Change:</td>
+            <td>
+              <span [innerHTML]="changeAmount | currencyFormat "></span>
+            </td>
+            <td>Tax 2</td>
+            <td>0.00</td>
+            <td>Tax</td>
+            <td>
+              <span [innerHTML]="totalTaxAmount | currencyFormat "></span>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="total_amount">Grand Total</td>
+            <td class="total_amount">
+              <span [innerHTML]=" grandTotalAmount | currencyFormat "></span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
     <div class="col-md-12 col-sm-6 col-xs-6">
       <div class="col-md-4 mt-3">
         <div class="form-group">

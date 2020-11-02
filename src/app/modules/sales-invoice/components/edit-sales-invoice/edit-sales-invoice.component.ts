@@ -12,7 +12,6 @@ import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
-import { LocaleService } from "@app/core/services/locale/locale.services";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
@@ -110,6 +109,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       ],
       VAT: [this.salesDetails ? this.salesDetails.VAT : 0],
       Remarks: [this.salesDetails ? this.salesDetails.Remarks : ""],
+      TotalTCAmount: [this.salesDetails ? this.salesDetails.TotalTCAmount : 0],
       InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
     });
   }
@@ -146,6 +146,9 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm
       .get("GrossAmount")
       .setValue(this.salesDetails.GrossAmount);
+    this.salesInvoiceForm
+      .get("TotalTCAmount")
+      .setValue(this.salesDetails.TotalTCAmount);
     this.salesInvoiceForm
       .get("NetAmount")
       .setValue(this.salesDetails.NetAmount);
@@ -243,12 +246,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (
-            invoices &&
-            invoices[i].TaxAmount &&
-            invoices[i].TaxID !== null &&
-            invoices[i].IsVAT
-          ) {
+          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
@@ -260,7 +258,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         this.totalDiscountPercentage = sumTotalDiscountPer;
         this.totalTaxAmount = sumTaxAmount;
 
-        this.vatTotalAmount = this.totalNetAmount * 0.13;
         this.grandTotalAmount =
           this.totalGrossAmount -
           this.totalDiscountAmount +
@@ -272,7 +269,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   addInvoiceEntryList(): FormGroup {
     return this._fb.group({
       ID: [0],
-      ProductCode: ["", null, this.productCodeMatch.productCodeMatch()],
+      ProductCode: [""],
       ProductID: [""],
       ProductName: [""],
       CodeName: [""],
@@ -309,11 +306,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
         invoiceFormArray.push(
           this._fb.group({
             ID: [element.ID],
-            ProductCode: [
-              element.ProductCode,
-              null,
-              this.productCodeMatch.productCodeMatch(),
-            ],
+            ProductCode: [element.ProductCode],
             ProductID: [element.ProductID],
             ProductName: [element.ProductName],
             CodeName: [element.CodeName],
@@ -335,7 +328,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       invoiceFormArray.push(
         this._fb.group({
           ID: [0],
-          ProductCode: ["", null, this.productCodeMatch.productCodeMatch()],
+          ProductCode: [""],
           ProductID: [null],
           ProductName: [""],
           CodeName: [""],
@@ -399,6 +392,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
 
   public save(): void {
     this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
+    this.salesInvoiceForm.get("TotalTCAmount").setValue(this.totalTaxAmount);
 
     this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
     this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
@@ -406,9 +400,8 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm
       .get("SpecialDiscount")
       .setValue(this.totalDiscountAmount);
-    this.salesInvoiceForm.get("VAT").setValue(this.totalTaxAmount);
 
-    if (this.salesInvoiceForm.invalid) return;
+    //  if (this.salesInvoiceForm.invalid) return;
     this.salesInvoiceService
       .updateSalesInvoice(this.salesInvoiceForm.value)
       .subscribe(

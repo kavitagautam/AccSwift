@@ -1,200 +1,296 @@
 <div class="box box-default">
-  <div class="row">
-    <div class="col-md-4">
-      <button type="button" class="btn btn-primary" (click)="getProductGroup()">
-        Back to Main
-      </button>
-      <div class="btn-group-vertical" style="height: 600px; overflow: scroll">
-        <div class="col-md-12 p-0">
-          <div class="col-md-3" *ngFor="let product of productOrGroupList">
-            <div class="form-group">
-              <button
-                type="button"
-                class="btn btn-secondary listButton"
-                (click)="productClick(product)"
-              >
-                {{ product.Title }}
-              </button>
+  <div class="row" style="margin: 15px">
+    <div class="col-md-12">
+      <h3>Favourite Items</h3>
+      <div class="col-md-2" *ngFor="let favProduct of favProductOrGroupList">
+        <div class="form-group">
+          <button
+            type="button"
+            class="btn btn-secondary listButton"
+            (click)="productClick(favProduct)"
+          >
+            {{ favProduct.Title }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="getProductGroup()"
+        >
+          Back to Main
+        </button>
+        <div class="btn-group-vertical" style="height: 600px; overflow: scroll">
+          <div class="col-md-12 p-0">
+            <h5 *ngIf="productOrGroupList.length == 0">No Item Found</h5>
+            <div class="col-md-3" *ngFor="let product of productOrGroupList">
+              <div class="form-group">
+                <button
+                  type="button"
+                  class="btn btn-secondary listButton"
+                  (click)="productClick(product)"
+                >
+                  {{ product.Title }}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-5 p-0">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Item Bar Code</label>
-          <input type="text" class="form-control" />
+      <div class="col-md-5 p-0">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Item Bar Code</label>
+            <input type="text" class="form-control" />
+          </div>
         </div>
-      </div>
-      <div class="col-md-10">
-        <div class="form-group">
-          <label>Quantity</label>
-          <ng-numeric-input
-            [layout]="'number'"
-            [entertext]="'Next'"
-            [placeholder]="'Enter Quantity'"
-            [disabled]="false"
-            [(ngModel)]="quantityNo"
-            (ngModelChange)="quantityChange()"
-          >
-          </ng-numeric-input>
-          <input
-            type="number"
-            class="form-control"
-            [(ngModel)]="quantityNo"
-            (change)="quantityChange()"
-          />
-        </div>
-      </div>
-      <div class="col-md-2 mt-4">
-        <div class="form-group">
-          <button class="btn btn-seconday" type="button">Add</button>
-        </div>
-      </div>
-      <div class="col-md-12">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Quantity</th>
-              <th>Item</th>
-              <th>Rate</th>
-              <th>Amount</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let product of productList; let i = index"
-              (click)="selectProduct(i, product)"
-              [class.selected]="i === selectedRow"
-            >
-              <td>{{ product.Quantity }}</td>
-              <td>{{ product.Title }}</td>
-              <td>{{ product.SalesRate }}</td>
-              <td>{{ product.Amount }}</td>
-              <td>
-                <button
-                  type="button"
-                  class="btn btn-danger"
-                  (click)="deleteProduct(i)"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="col-md-12">
-        <div class="pull-left">
-          <h6>Total Qty: &nbsp; {{ totalQty }}</h6>
-        </div>
-        <div class="pull-right">
-          <h6>Amount: &nbsp; {{ totalAmount }}</h6>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <select class="form-control" type="number" placeholder="Customer All">
-          <option></option>
-          <option>Main User</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <select class="form-control" type="number" placeholder="Default">
-          <option></option>
-          <option>Main User</option>
-        </select>
-      </div>
-      <div class="col-md-6">
-        <button type="button" class="btn btn-secondary">REFRESH</button>
-      </div>
-      <div class="col-md-6">
-        <button type="button" class="btn btn-secondary">PAY ACCOUNT</button>
-      </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Payment Method</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Account</td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="accoutNumber"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Cash</td>
-            <td>
+        <div class="col-md-10">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Quantity</label>
+              <!-- <ng-numeric-input
+                [layout]="'number'"
+                [entertext]="'Next'"
+                [placeholder]="'Enter Quantity'"
+                [disabled]="false"
+                [(ngModel)]="quantityNo"
+                (ngModelChange)="quantityChange()"
+              >
+              </ng-numeric-input> -->
               <input
                 type="number"
                 class="form-control"
-                [(ngModel)]="cashAmount"
+                [(ngModel)]="quantityNo"
+                (change)="quantityChange()"
               />
-            </td>
-          </tr>
-          <tr>
-            <td>Discount</td>
-            <td>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Rate</label>
+
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="salesRate"
+                (change)="rateChange()"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 mt-4">
+          <!-- <div class="form-group">
+            <button class="btn btn-seconday" type="button">Add</button>
+          </div> -->
+        </div>
+        <div class="col-md-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th align="center">Quantity</th>
+                <th align="center">Item</th>
+                <th align="center">Rate</th>
+                <th align="center">Amount</th>
+                <th align="center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let product of productList; let i = index"
+                (click)="selectProduct(i, product)"
+                [class.selected]="i === selectedRow"
+              >
+                <td align="right">{{ product.Quantity }}</td>
+                <td>{{ product.ProductName }}</td>
+                <td align="right">{{ product.SalesRate }}</td>
+                <td align="right">{{ product.Amount }}</td>
+                <td align="right">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    (click)="deleteProduct(i)"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="col-md-12">
+          <div class="pull-left">
+            <h6>Total Qty: &nbsp; {{ totalQty }}</h6>
+          </div>
+          <div class="pull-right">
+            <h6>Amount: &nbsp; {{ totalAmount }}</h6>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Sub Amount</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="totalAmount"
+              />
+            </div>
+            <div class="form-group">
+              <label> Discount</label>
               <input
                 type="number"
                 class="form-control"
                 [(ngModel)]="discountAmount"
+                (change)="discountAmountChange()"
               />
-            </td>
-          </tr>
-          <tr>
-            <td>EFT POS</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Gift Voucher</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Lay-By</td>
-            <td></td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td>Remening</td>
-            <td>Rs 27</td>
-          </tr>
-        </tfoot>
-      </table>
-      <div class="col-md-6">
-        <div class="form-group">
-          <button type="button" class="btn btn-secondary">CLEAR</button>
-        </div>
-        <div class="form-group">
-          <button type="button" class="btn btn-secondary">
-            RECEIPT <br />37342
-          </button>
+            </div>
+            <div class="form-group">
+              <label> Tax</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="taxAmount"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label>Grand Total</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="grandTotalAmount"
+              />
+            </div>
+            <button type="button" class="btn btn-primary" (click)="checkOut()">
+              CheckOut
+            </button>
+          </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <button type="button" class="btn btn-secondary">TILL</button>
-        </div>
 
+      <div class="col-md-3">
         <div class="form-group">
-          <button
-            type="button"
-            (click)="openCommit(commitModal)"
-            class="btn btn-secondary"
+          <select
+            class="form-control"
+            type="number"
+            placeholder="select Series "
           >
-            COMMIT
-          </button>
+            <option>Select Series...</option>
+            <option *ngFor="let series of posServices.seriesList">
+              {{ series.Name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select
+            class="form-control"
+            type="number"
+            placeholder="Select project"
+          >
+            <option>Select Project...</option>
+            <option *ngFor="let project of posServices.projectList">
+              {{ project.EngName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <button type="button" class="btn btn-secondary">REFRESH</button>
+        </div>
+        <div class="col-md-6">
+          <button type="button" class="btn btn-secondary">PAY ACCOUNT</button>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Payment Method</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Account</td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="accoutNumber"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Cash</td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="cashAmount"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Discount</td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="discountAmount"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>EFT POS</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Gift Voucher</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Lay-By</td>
+              <td></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <!-- <tr>
+              <td>Remaining</td>
+              <td>Rs 27</td>
+            </tr> -->
+          </tfoot>
+        </table>
+        <div class="col-md-6">
+          <div class="form-group">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="clearAll()"
+            >
+              CLEAR
+            </button>
+          </div>
+          <!-- <div class="form-group">
+             <button type="button" class="btn btn-secondary">
+              RECEIPT <br />37342
+            </button> 
+          </div>-->
+        </div>
+        <div class="col-md-6">
+          <!-- <div class="form-group">
+            <button type="button" class="btn btn-secondary">TILL</button>
+          </div> -->
+
+          <div class="form-group">
+            <button
+              type="button"
+              (click)="openCommit(commitModal)"
+              class="btn btn-secondary"
+            >
+              COMMIT
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -216,7 +312,28 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-md-12">
-        <h3>Show available notes here</h3>
+        <div class="form-group">
+          <label>Amount</label>
+          <input type="number" class="form-control" [(ngModel)]="totalAmount" />
+        </div>
+        <div class="form-group">
+          <label>Tender </label>
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="tenderAmount"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Change</label>
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="changeAmount"
+            step="0.01"
+          />
+        </div>
       </div>
     </div>
   </div>

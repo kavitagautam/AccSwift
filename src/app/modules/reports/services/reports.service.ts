@@ -2,12 +2,8 @@ import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import {
-  TrailBalanceModel,
-  GroupBalanceModel,
-  LedgerDetailsModel,
-} from "../models/trail-balance.model";
+import { Observable, Subject } from "rxjs";
+import { TrailBalanceModel } from "../models/trail-balance.model";
 import { StockStatusReportsModel } from "../stock-status/models/stock.models";
 import {
   SalesReportModel,
@@ -30,8 +26,11 @@ import {
   ProjectRootModel,
 } from "@accSwift-modules/accswift-shared/models/project.model";
 import { CashPartyModel } from "@accSwift-modules/accswift-shared/models/cash-party.model";
-import { DepotModel } from "@accSwift-modules/depot/models/depot.model";
-import { SalesAccountModel } from "@accSwift-modules/accswift-shared/models/sales-account.model";
+import { Depot, DepotModel } from "@accSwift-modules/depot/models/depot.model";
+import {
+  SalesAccountModel,
+  SalesAccounts,
+} from "@accSwift-modules/accswift-shared/models/sales-account.model";
 import {
   AccountClass,
   AccountClassModel,
@@ -46,16 +45,38 @@ import {
 } from "@accSwift-modules/product/models/product-min.model";
 import { LedgerGroupModel } from "@accSwift-modules/ledger/models/ledger-group.model";
 import { LedgerMinModel } from "@accSwift-modules/ledger/models/ledger.models";
+import { GroupBalanceRootModel } from "../models/group-balance.model";
+import { LedgerTransactionRootModel } from "../models/ledger-transaction.model";
+import {
+  VoucherType,
+  VoucherTypeModel,
+} from "@accSwift-modules/accswift-shared/models/voucher-type.model";
+import {
+  PurchaseAccount,
+  PurchaseAccountModel,
+} from "@accSwift-modules/preference/models/preference.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class ReportsService {
+  private projectName = new Subject<string>();
+  projectName$ = this.projectName.asObservable();
+
+  // Service message commands
+  selectProject(name: string) {
+    this.projectName.next(name);
+  }
+
   _api_URL = environment.baseAPI;
   productList: ProductMin[] = [];
   productGroupList: ProductGroup[] = [];
   projectList: Project[] = [];
   accountLists: AccountClass[];
+  transVoucherType: VoucherType[] = [];
+  depotList: Depot[] = [];
+  salesAccountList: SalesAccounts[] = [];
+  purchaseAccountList: PurchaseAccount[] = [];
   monthList = [
     {
       name: "January",
@@ -126,18 +147,29 @@ export class ReportsService {
     this.getProductGroup();
     this.getAccountClass();
     this.getProjectLists();
+    this.getVoucherType();
+    this.getSalesAccount();
+    this.getPurchaseAccount();
+    this.getDepotList();
   }
 
   getTrailBalance(body): Observable<TrailBalanceModel> {
     return this.httpService.post(`${this._api_URL}/Reports/Trial`, body);
   }
 
-  getTrailGroupDetails(body): Observable<GroupBalanceModel> {
-    return this.httpService.post(`${this._api_URL}Reports/TrialDetails`, body);
+  getGroupBalanceDetails(body): Observable<GroupBalanceRootModel> {
+    return this.httpService.post(
+      `${this._api_URL}Reports/GroupBal
+    `,
+      body
+    );
   }
 
-  getTrailLedgerDetails(body): Observable<LedgerDetailsModel> {
-    return this.httpService.post(`${this._api_URL}Reports/TrialDetails`, body);
+  getLedgerTransactionDetails(body): Observable<LedgerTransactionRootModel> {
+    return this.httpService.post(
+      `${this._api_URL}Reports/LedgerTransact`,
+      body
+    );
   }
 
   getLedgerReports(body): Observable<LedgerReportModel> {
@@ -206,11 +238,17 @@ export class ReportsService {
   }
 
   getBSGroupDetails(body): Observable<BalanceSheetGDetailModel> {
-    return this.httpService.post(`${this._api_URL}Reports/BalanceSheet`, body);
+    return this.httpService.post(
+      `${this._api_URL}Reports/BalanceSheetDetails`,
+      body
+    );
   }
 
   getBSLedgerDetails(body): Observable<BalanceSheetLDetailRootModel> {
-    return this.httpService.post(`${this._api_URL}Reports/BalanceSheet`, body);
+    return this.httpService.post(
+      `${this._api_URL}Reports/BalanceSheetDetails`,
+      body
+    );
   }
 
   getPLGroupDetails(body): Observable<ProfitLossGDRootModel> {
@@ -235,12 +273,27 @@ export class ReportsService {
     return this.httpService.get(`${this._api_URL}LedgerGroup/CashPartyGroups`);
   }
 
-  getDepotList(): Observable<DepotModel> {
-    return this.httpService.get(`${this._api_URL}Depot/min`);
+  getDepotList(): void {
+    this.httpService
+      .get(`${this._api_URL}Depot/min`)
+      .subscribe((response: DepotModel) => {
+        this.depotList = response.Entity;
+      });
   }
 
-  getSalesAccount(): Observable<SalesAccountModel> {
-    return this.httpService.get(`${this._api_URL}Ledger/salesAccounts`);
+  getSalesAccount(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/salesAccounts`)
+      .subscribe((response: SalesAccountModel) => {
+        this.salesAccountList = response.Entity;
+      });
+  }
+  getPurchaseAccount(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/purchAccounts`)
+      .subscribe((response: PurchaseAccountModel) => {
+        this.purchaseAccountList = response.Entity;
+      });
   }
 
   getLedgerMin(): Observable<LedgerMinModel> {
@@ -249,5 +302,13 @@ export class ReportsService {
 
   getLedgerGroup(): Observable<LedgerGroupModel> {
     return this.httpService.get(`${this._api_URL}LedgerGroup`);
+  }
+
+  getVoucherType(): void {
+    this.httpService
+      .get(`${this._api_URL}Utility/TransactVoucherType`)
+      .subscribe((response: VoucherTypeModel) => {
+        this.transVoucherType = response.Entity;
+      });
   }
 }

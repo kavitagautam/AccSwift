@@ -6,6 +6,7 @@ import { PurchaseReportComponent } from "./purchase-report/purchase-report.compo
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "@app/shared/shared.module";
 import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift-shared.module";
+import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 
 @NgModule({
   declarations: [PurchaseReportComponent],
@@ -17,5 +18,6 @@ import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift
     CommonModule,
     PurchaseReportRoutingModule,
   ],
+  entryComponents: [SettingsReportsComponent],
 })
 export class PurchaseReportModule {}
