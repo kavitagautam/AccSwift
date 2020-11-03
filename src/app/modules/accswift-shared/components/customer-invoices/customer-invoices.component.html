@@ -53,7 +53,7 @@
 
 <kendo-pdf-export
   #pdf
-  paperSize="A4"
+  paperSize="A6"
   margin="1cm"
   [scale]="0.8"
   [repeatHeaders]="true"
@@ -268,10 +268,18 @@
           <td *ngIf="invoice.ProductName">{{ i + 1 }}</td>
           <td *ngIf="invoice.ProductName">{{ invoice.ProductName }}</td>
           <td *ngIf="invoice.ProductName">{{ invoice.Quantity }}</td>
-          <td *ngIf="invoice.ProductName">{{ invoice.SalesRate }}</td>
-          <td *ngIf="invoice.ProductName">{{ invoice.Amount }}</td>
-          <td *ngIf="invoice.ProductName">{{ invoice.DiscountAmount }}</td>
-          <td *ngIf="invoice.ProductName">{{ invoice.NetAmount }}</td>
+          <td *ngIf="invoice.ProductName">
+            {{ currencySign }} {{ invoice.SalesRate }}
+          </td>
+          <td *ngIf="invoice.ProductName">
+            {{ currencySign }} {{ invoice.Amount }}
+          </td>
+          <td *ngIf="invoice.ProductName">
+            {{ currencySign }} {{ invoice.DiscountAmount }}
+          </td>
+          <td *ngIf="invoice.ProductName">
+            {{ currencySign }} {{ invoice.NetAmount }}
+          </td>
         </tr>
         <tr *ngIf="invoiceDetails.length - 1 == 0" align="center">
           <span>No Data Avaiable</span>

@@ -110,3 +110,17 @@ body {
   bottom: 0;
   background-color: rgb(233, 233, 233);
 }
+
+@media print {
+  @page print-section {
+    size: 4.1in 5.8in;
+    margin: 0.5in 0.5in 0.5in 0.5in;
+    mso-header-margin: 0.5in;
+    mso-footer-margin: 0.5in;
+    mso-paper-source: 0;
+  }
+  #print-section {
+    size: 4.1in 5.8in;
+    margin: 0.5in 0.5in 0.5in 0.5in;
+  }
+}

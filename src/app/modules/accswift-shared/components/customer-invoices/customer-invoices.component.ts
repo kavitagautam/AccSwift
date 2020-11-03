@@ -28,6 +28,7 @@ export class CustomerInvoicesComponent implements OnInit {
   grandTotalAmount: number = 0;
   companyLogo: any = "";
   // select dropdown
+  currencySign: string;
   voucherType: string;
   companyDetails: Company;
   invoiceDetails: any = [];
@@ -42,6 +43,8 @@ export class CustomerInvoicesComponent implements OnInit {
     private salesInvoiceServices: SalesInvoiceService,
     private store: Store
   ) {
+    this.currencySign = localStorage.getItem("currencySymbol");
+
     this.salesInvoiceServices.getCompanyDetails().subscribe((response) => {
       this.companyDetails = response.Entity;
       if (this.companyDetails) {
