@@ -143,27 +143,18 @@ export class CreateReportsComponent implements OnInit {
       this.salesInvoiceService
         .getSalesInvoicePDF(this.form.get("ID").value)
         .subscribe((response) => {
-          console.log("response " + JSON.stringify(response));
-          //  let filename: string = this.getFileName(response);
-          // let blob: any = new Blob([response], {
-          //   type: "text/json; charset=utf-8",
-          // });
-          // const url = window.URL.createObjectURL(blob);
-          // //window.open(url);
-          // //window.location.href = response.url;
-          // fileSaver.saveAs(blob, "employees.json");
-          var blob = new Blob([response], { type: "application/pdf" });
-          console.log(blob);
-          saveAs(blob, "testData.pdf");
-          // let binaryData = [];
-          // binaryData.push(response.body);
-          // let downloadLink = document.createElement("a");
-          // downloadLink.href = window.URL.createObjectURL(
-          //   new Blob(binaryData, { type: "blob" })
-          // );
-          // downloadLink.setAttribute("download", "invoice.pdf");
-          // document.body.appendChild(downloadLink);
-          // downloadLink.click();
+          var url = response.Entity;
+          // var url = "http://api.accswift.com/sales_invoice_15321.pdf";
+          saveAs(url, "salesInvoive.pdf");
+          console.log("url " + JSON.stringify(url));
+          // var xhr = new XMLHttpRequest();
+          // xhr.open("GET", url, true);
+          // xhr.responseType = "blob";
+          // xhr.onload = function () {
+          //   var file = new Blob([xhr.response], { type: "application/pdf" });
+          //   saveAs(file, "invoice.pdf");
+          // };
+          // xhr.send();
         });
     }
   }
