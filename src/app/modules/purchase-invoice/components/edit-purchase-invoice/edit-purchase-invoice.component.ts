@@ -195,7 +195,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
           ProductName: [""],
           ProductCode: [""],
           CodeName: [""],
-          Quantity: [1],
+          Quantity: [0],
           QtyUnitName: [""],
           PurchaseRate: [""],
           Amount: [""],
@@ -273,7 +273,8 @@ export class EditPurchaseInvoiceComponent implements OnInit {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (invoices && invoices[i].TaxAmount) {
+
+          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
@@ -285,7 +286,6 @@ export class EditPurchaseInvoiceComponent implements OnInit {
         this.totalDiscountPercentage = sumTotalDiscountPer;
         this.totalTaxAmount = sumTaxAmount;
 
-        this.vatTotalAmount = this.totalNetAmount * 0.13;
         this.grandTotalAmount =
           this.totalGrossAmount -
           this.totalDiscountAmount +

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Inject } from "@angular/core";
 import { environment } from "@env/environment";
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { Router } from "@angular/router";
@@ -6,6 +6,7 @@ import { FormGroup } from "@angular/forms";
 import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
 import { HttpResponse } from "@angular/common/http";
 import { saveAs } from "file-saver";
+import { DOCUMENT } from "@angular/common";
 
 @Component({
   selector: "accSwift-create-reports",
@@ -21,7 +22,8 @@ export class CreateReportsComponent implements OnInit {
   cvsList = [];
   constructor(
     private router: Router,
-    private salesInvoiceService: SalesInvoiceService
+    private salesInvoiceService: SalesInvoiceService,
+    @Inject(DOCUMENT) private document: Document
   ) {
     // if (this.router.url.indexOf("/journal") > -1) {
     //   this.voucherType = "JRNL";
@@ -145,7 +147,16 @@ export class CreateReportsComponent implements OnInit {
         .subscribe((response) => {
           var url = response.Entity;
           // var url = "http://api.accswift.com/sales_invoice_15321.pdf";
-          saveAs(url, "salesInvoive.pdf");
+          //  saveAs(url, "salesInvoive.pdf");
+
+          window.open(url, "_blank");
+          //  window.print();
+          window.close();
+          // const link = this.document.createElement("a");
+          // link.target = "_blank";
+          // link.href = url;
+          // link.click();
+          // link.remove();
           console.log("url " + JSON.stringify(url));
           // var xhr = new XMLHttpRequest();
           // xhr.open("GET", url, true);

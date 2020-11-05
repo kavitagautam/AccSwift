@@ -1,5 +1,9 @@
 <div class="box box-default">
   <form [formGroup]="purchaseInvoiceForm" novalidate>
+    <accSwift-create-reports
+      [formGroup]="purchaseInvoiceForm"
+      [voucherType]="'PURCH'"
+    ></accSwift-create-reports>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
