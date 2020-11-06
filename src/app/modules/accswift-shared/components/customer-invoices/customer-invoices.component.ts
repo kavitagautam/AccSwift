@@ -75,6 +75,22 @@ export class CustomerInvoicesComponent implements OnInit {
         this.calculateTotal(this.invoiceDetails);
       }
     }
+    if (this.router.url.indexOf("/purchase-invoice") > -1) {
+      this.voucherType = "PURCH";
+      const data = this.router.getCurrentNavigation().extras.state;
+      const obj = {
+        status: "purchInvoices",
+        InvoicesDetails: data,
+      };
+
+      // this.store.dispatch([new AddInvoiceDetails(data)]);
+      console.log("this the " + JSON.stringify(data));
+      const data1 = JSON.parse(localStorage.getItem("purchInvoices"));
+      if (data1) {
+        this.invoiceDetails = data1;
+        this.calculateTotal(this.invoiceDetails);
+      }
+    }
     if (this.router.url.indexOf("/cash-receipt") > -1) {
       this.voucherType = "CASH_RCPT";
       const data = this.router.getCurrentNavigation().extras.state;

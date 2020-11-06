@@ -106,6 +106,18 @@ export class CreateReportsComponent implements OnInit {
         }
       );
     }
+    if (this.voucherType == "PURCH") {
+      this.router.navigate(
+        [`/purchase-invoice/edit/${this.form.get("ID").value}/invoice-billing`],
+        {
+          state: this.form.get("PurchInvoiceDetails").value,
+        }
+      );
+      localStorage.setItem(
+        "purchInvoices",
+        JSON.stringify(this.form.get("PurchInvoiceDetails").value)
+      );
+    }
     if (this.voucherType == "BANK_PMNT") {
       this.router.navigate(
         [`/bank-payment/edit/${this.form.get("ID").value}/invoice-billing`],
@@ -151,7 +163,8 @@ export class CreateReportsComponent implements OnInit {
 
           window.open(url, "_blank");
           //  window.print();
-          window.close();
+          //      window.close();
+
           // const link = this.document.createElement("a");
           // link.target = "_blank";
           // link.href = url;
@@ -180,6 +193,10 @@ export class CreateReportsComponent implements OnInit {
     if (this.voucherType == "JRNL") {
       data = this.form.get("Journaldetails").value;
       fileName = "Journal ";
+    }
+    if (this.voucherType == "PURCH") {
+      data = this.form.get("PurchInvoiceDetails").value;
+      fileName = "Purchase Invoice ";
     }
     if (this.voucherType == "CASH_RCPT") {
       data = this.form.get("CashReceiptDetails").value;

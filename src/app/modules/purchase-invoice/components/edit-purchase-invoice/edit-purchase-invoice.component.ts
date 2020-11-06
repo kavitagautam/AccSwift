@@ -79,9 +79,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
         [Validators.required],
       ],
       ProjectID: [this.purchaseDetails ? this.purchaseDetails.ProjectID : null],
-      Date: [
-        this.purchaseDetails ? new Date(this.purchaseDetails.CreatedDate) : "",
-      ],
+      Date: [this.purchaseDetails ? new Date(this.purchaseDetails.Date) : ""],
       OrderNo: [
         this.purchaseDetails ? this.purchaseDetails.OrderNo : "",
         [Validators.required],
@@ -115,6 +113,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       CodeName: [""],
       Quantity: [0],
       QtyUnitName: [""],
+      QtyUnitID: [null],
       PurchaseRate: [""],
       Amount: [""],
       DiscPercentage: [0, Validators.required],
@@ -125,7 +124,6 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       CustomDuty: [""],
       CustomDutyPercent: [0],
       Freight: [""],
-      QtyUnitID: [null],
       TaxID: [null],
       Remarks: [""],
     });
