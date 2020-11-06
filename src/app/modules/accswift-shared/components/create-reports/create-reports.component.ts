@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Inject } from "@angular/core";
 import { environment } from "@env/environment";
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { Router } from "@angular/router";
@@ -6,6 +6,7 @@ import { FormGroup } from "@angular/forms";
 import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
 import { HttpResponse } from "@angular/common/http";
 import { saveAs } from "file-saver";
+import { DOCUMENT } from "@angular/common";
 
 @Component({
   selector: "accSwift-create-reports",
@@ -21,7 +22,8 @@ export class CreateReportsComponent implements OnInit {
   cvsList = [];
   constructor(
     private router: Router,
-    private salesInvoiceService: SalesInvoiceService
+    private salesInvoiceService: SalesInvoiceService,
+    @Inject(DOCUMENT) private document: Document
   ) {
     // if (this.router.url.indexOf("/journal") > -1) {
     //   this.voucherType = "JRNL";
@@ -104,6 +106,18 @@ export class CreateReportsComponent implements OnInit {
         }
       );
     }
+    if (this.voucherType == "PURCH") {
+      this.router.navigate(
+        [`/purchase-invoice/edit/${this.form.get("ID").value}/invoice-billing`],
+        {
+          state: this.form.get("PurchInvoiceDetails").value,
+        }
+      );
+      localStorage.setItem(
+        "purchInvoices",
+        JSON.stringify(this.form.get("PurchInvoiceDetails").value)
+      );
+    }
     if (this.voucherType == "BANK_PMNT") {
       this.router.navigate(
         [`/bank-payment/edit/${this.form.get("ID").value}/invoice-billing`],
@@ -143,27 +157,28 @@ export class CreateReportsComponent implements OnInit {
       this.salesInvoiceService
         .getSalesInvoicePDF(this.form.get("ID").value)
         .subscribe((response) => {
-          console.log("response " + JSON.stringify(response));
-          //  let filename: string = this.getFileName(response);
-          // let blob: any = new Blob([response], {
-          //   type: "text/json; charset=utf-8",
-          // });
-          // const url = window.URL.createObjectURL(blob);
-          // //window.open(url);
-          // //window.location.href = response.url;
-          // fileSaver.saveAs(blob, "employees.json");
-          var blob = new Blob([response], { type: "application/pdf" });
-          console.log(blob);
-          saveAs(blob, "testData.pdf");
-          // let binaryData = [];
-          // binaryData.push(response.body);
-          // let downloadLink = document.createElement("a");
-          // downloadLink.href = window.URL.createObjectURL(
-          //   new Blob(binaryData, { type: "blob" })
-          // );
-          // downloadLink.setAttribute("download", "invoice.pdf");
-          // document.body.appendChild(downloadLink);
-          // downloadLink.click();
+          var url = response.Entity;
+          // var url = "http://api.accswift.com/sales_invoice_15321.pdf";
+          //  saveAs(url, "salesInvoive.pdf");
+
+          window.open(url, "_blank");
+          //  window.print();
+          //      window.close();
+
+          // const link = this.document.createElement("a");
+          // link.target = "_blank";
+          // link.href = url;
+          // link.click();
+          // link.remove();
+          console.log("url " + JSON.stringify(url));
+          // var xhr = new XMLHttpRequest();
+          // xhr.open("GET", url, true);
+          // xhr.responseType = "blob";
+          // xhr.onload = function () {
+          //   var file = new Blob([xhr.response], { type: "application/pdf" });
+          //   saveAs(file, "invoice.pdf");
+          // };
+          // xhr.send();
         });
     }
   }
@@ -178,6 +193,10 @@ export class CreateReportsComponent implements OnInit {
     if (this.voucherType == "JRNL") {
       data = this.form.get("Journaldetails").value;
       fileName = "Journal ";
+    }
+    if (this.voucherType == "PURCH") {
+      data = this.form.get("PurchInvoiceDetails").value;
+      fileName = "Purchase Invoice ";
     }
     if (this.voucherType == "CASH_RCPT") {
       data = this.form.get("CashReceiptDetails").value;

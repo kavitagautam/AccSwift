@@ -94,7 +94,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       ],
       DepotID: [this.salesDetails ? this.salesDetails.DepotID : null],
       ProjectID: [this.salesDetails ? this.salesDetails.ProjectID : null],
-      Date: [this.salesDetails ? new Date(this.salesDetails.CreatedDate) : ""],
+      Date: [this.salesDetails ? new Date(this.salesDetails.Date) : ""],
       IsPay: [this.salesDetails ? this.salesDetails.IsPay : false],
       OrderNo: [this.salesDetails ? this.salesDetails.OrderNo : ""],
       TotalAmount: [this.salesDetails ? this.salesDetails.TotalAmount : 0],

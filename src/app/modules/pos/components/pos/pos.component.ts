@@ -1,5 +1,6 @@
 import { ProductOrGroup } from "@accSwift-modules/pos/models/pos.model";
 import { PosService } from "@accSwift-modules/pos/services/pos.service";
+import { Preferences } from "@accSwift-modules/preference/models/preference.model";
 import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
@@ -15,6 +16,7 @@ export class PosComponent implements OnInit {
   productOrGroupList: ProductOrGroup[] = [];
   favProductOrGroupList: ProductOrGroup[] = [];
   private editedRowIndex: number;
+  preferenceList: Preferences;
   quantityNo: number;
   salesRate: number;
   selectedRow: number = null;
@@ -24,11 +26,15 @@ export class PosComponent implements OnInit {
   accoutNumber: any;
   cashAmount: number;
   discountAmount: number = 0;
+  discountItem: number = 0;
+  discountPercItem: number = 0;
   tenderAmount: number = 0;
   changeAmount: number = 0;
   grandTotalAmount: number = 0;
   taxAmount: number = 0;
   modalRef: BsModalRef;
+  seriesID: number;
+  projectID: number;
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -42,11 +48,22 @@ export class PosComponent implements OnInit {
     private modalService: BsModalService,
     private toastr: ToastrService,
     private preferenceService: PreferenceService
-  ) {}
+  ) {
+    this.preferenceService.getPreferenceData().subscribe((response) => {
+      this.preferenceList = response.Entity;
+    });
+  }
 
   ngOnInit() {
     this.getProductGroup();
     this.getFavouriteProductGroup();
+    this.projectID = this.preferenceService.preferences
+      ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+      : null;
+    this.seriesID = this.preferenceService.preferences
+      ? this.preferenceService.preferences.DEFAULT_SERIES_SALES.ID
+      : null;
+    console.log("Project ID" + this.projectID + "Series ID " + this.seriesID);
   }
 
   getProductGroup(): void {
@@ -108,10 +125,64 @@ export class PosComponent implements OnInit {
     this.calculateTotal(this.productList);
   }
 
+  discountChange(): void {
+    if (this.selectedRow !== null) {
+      const obj = {
+        ProductName: this.productList[this.selectedRow].ProductName,
+        Quantity: this.quantityNo,
+        Amount: this.salesRate * this.quantityNo,
+        SalesRate: this.salesRate,
+        ID: this.productList[this.selectedRow].ID,
+        ProductID: this.productList[this.selectedRow].ProductID,
+        QtyUnitID: this.productList[this.selectedRow].QtyUnitID,
+        TaxAmount:
+          this.salesRate *
+          this.quantityNo *
+          (this.productList[this.selectedRow].TaxRate / 100),
+        DiscountAmount: this.discountItem,
+        DiscPercentage:
+          (this.discountItem / this.productList[this.selectedRow].Amount) * 100,
+        TaxRate: this.productList[this.selectedRow].TaxRate,
+      };
+      this.productList[this.selectedRow] = obj;
+    }
+    this.discountPercItem =
+      (this.discountItem / this.productList[this.selectedRow].Amount) * 100;
+    this.calculateTotal(this.productList);
+  }
+
+  discountPerChange(): void {
+    if (this.selectedRow !== null) {
+      const obj = {
+        ProductName: this.productList[this.selectedRow].ProductName,
+        Quantity: this.quantityNo,
+        Amount: this.salesRate * this.quantityNo,
+        SalesRate: this.salesRate,
+        ID: this.productList[this.selectedRow].ID,
+        ProductID: this.productList[this.selectedRow].ProductID,
+        QtyUnitID: this.productList[this.selectedRow].QtyUnitID,
+        TaxAmount:
+          this.salesRate *
+          this.quantityNo *
+          (this.productList[this.selectedRow].TaxRate / 100),
+        DiscountAmount:
+          (this.discountPercItem / 100) *
+          this.productList[this.selectedRow].Amount,
+        DiscPercentage: this.discountItem,
+        TaxRate: this.productList[this.selectedRow].TaxRate,
+      };
+      this.productList[this.selectedRow] = obj;
+    }
+    this.calculateTotal(this.productList);
+    this.discountItem =
+      (this.discountPercItem / 100) * this.productList[this.selectedRow].Amount;
+  }
+
   calculateTotal(item): void {
     let totalQty = 0;
     let totalAmount = 0;
     let taxAmount = 0;
+    let discAmount = 0;
     for (let i = 0; i < item.length; i++) {
       if (item[i].Quantity) {
         totalQty = totalQty + item[i].Quantity;
@@ -122,10 +193,14 @@ export class PosComponent implements OnInit {
       if (item[i].TaxAmount) {
         taxAmount = taxAmount + item[i].TaxAmount;
       }
+      if (item[i].DiscountAmount) {
+        discAmount = discAmount + item[i].DiscountAmount;
+      }
     }
     this.totalQty = totalQty;
     this.totalAmount = totalAmount;
     this.taxAmount = taxAmount;
+    this.discountAmount = discAmount;
     this.grandTotalAmount = taxAmount + this.totalAmount;
   }
 
@@ -169,6 +244,8 @@ export class PosComponent implements OnInit {
           TaxRate: product.TaxRate,
           TaxAmount:
             product.SalesRate * this.quantityNo * (product.TaxRate / 100),
+          DiscountAmount: this.discountAmount,
+          DiscPercentage: this.discountPercItem,
           SalesRate: product.SalesRate,
         };
         this.productList.push(obj);
@@ -183,23 +260,23 @@ export class PosComponent implements OnInit {
       TotalAmount: this.grandTotalAmount,
       TenderAmount: this.tenderAmount,
       ChangeAmount: this.changeAmount,
-      SeriesID: this.preferenceService.preferences
-        ? this.preferenceService.preferences.DEFAULT_SERIES_SALES.Value
+      SeriesID: this.preferenceList
+        ? this.preferenceList.DEFAULT_SERIES_SALES.Value
         : null,
 
-      CashPartyLedgerID: this.preferenceService.preferences
-        ? this.preferenceService.preferences.DEFAULT_CASH_ACCOUNT.Value
+      CashPartyLedgerID: this.preferenceList
+        ? this.preferenceList.DEFAULT_CASH_ACCOUNT.Value
         : null,
-      SalesLedgerID: this.preferenceService.preferences
-        ? this.preferenceService.preferences.DEFAULT_SALES_ACCOUNT.Value
-        : null,
-
-      DepotID: this.preferenceService.preferences
-        ? this.preferenceService.preferences.DEFAULT_DEPOT.Value
+      SalesLedgerID: this.preferenceList
+        ? this.preferenceList.DEFAULT_SALES_ACCOUNT.Value
         : null,
 
-      ProjectID: this.preferenceService.preferences
-        ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+      DepotID: this.preferenceList
+        ? this.preferenceList.DEFAULT_DEPOT.Value
+        : null,
+
+      ProjectID: this.preferenceList
+        ? this.preferenceList.DEFAULT_PROJECT.Value
         : null,
 
       InvoiceDetails: this.productList,
@@ -209,6 +286,7 @@ export class PosComponent implements OnInit {
       TotalTCAmount: this.taxAmount,
       Date: new Date(),
     };
+    console.log("Comment" + JSON.stringify(obj));
     this.posServices.addSalesInvoice(obj).subscribe(
       (response) => {
         setTimeout(() => {

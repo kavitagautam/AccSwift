@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="col-md-10">
-          <div class="col-md-6">
+          <div class="col-md-3">
             <div class="form-group">
               <label>Quantity</label>
               <!-- <ng-numeric-input
@@ -68,7 +68,7 @@
               />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-3">
             <div class="form-group">
               <label>Rate</label>
 
@@ -77,6 +77,28 @@
                 class="form-control"
                 [(ngModel)]="salesRate"
                 (change)="rateChange()"
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Discount</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="discountItem"
+                (change)="discountChange()"
+              />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Discount %</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="discountPercItem"
+                (change)="discountPerChange()"
               />
             </div>
           </div>
@@ -105,8 +127,12 @@
               >
                 <td align="right">{{ product.Quantity }}</td>
                 <td>{{ product.ProductName }}</td>
-                <td align="right">{{ product.SalesRate }}</td>
-                <td align="right">{{ product.Amount }}</td>
+                <td align="right">
+                  <span [innerHTML]="product.SalesRate | currencyFormat"></span>
+                </td>
+                <td align="right">
+                  <span [innerHTML]="product.Amount | currencyFormat"></span>
+                </td>
                 <td align="right">
                   <button
                     type="button"
@@ -126,49 +152,44 @@
             <h6>Total Qty: &nbsp; {{ totalQty }}</h6>
           </div>
           <div class="pull-right">
-            <h6>Amount: &nbsp; {{ totalAmount }}</h6>
+            <h6>
+              Amount: &nbsp;
+              <span [innerHTML]="totalAmount | currencyFormat"></span>
+            </h6>
           </div>
         </div>
         <div class="col-md-12">
-          <div class="col-md-4">
-            <div class="form-group">
-              <label>Sub Amount</label>
-              <input
-                type="number"
-                class="form-control"
-                [(ngModel)]="totalAmount"
-              />
+          <div class="col-md-3">
+            <div class="clearfix">
+              Sub Amount: &nbsp;
+              <b> <span [innerHTML]="totalAmount | currencyFormat"></span></b>
             </div>
-            <div class="form-group">
-              <label> Discount</label>
-              <input
-                type="number"
-                class="form-control"
-                [(ngModel)]="discountAmount"
-                (change)="discountAmountChange()"
-              />
-            </div>
-            <div class="form-group">
-              <label> Tax</label>
-              <input
-                type="number"
-                class="form-control"
-                [(ngModel)]="taxAmount"
-                disabled
-              />
-            </div>
-            <div class="form-group">
-              <label>Grand Total</label>
-              <input
-                type="number"
-                class="form-control"
-                [(ngModel)]="grandTotalAmount"
-              />
-            </div>
-            <button type="button" class="btn btn-primary" (click)="checkOut()">
-              CheckOut
-            </button>
           </div>
+          <div class="col-md-3">
+            <div class="clearfix">
+              Discount: &nbsp;
+              <b><span [innerHTML]="discountAmount | currencyFormat"></span></b>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="clearfix">
+              Tax : &nbsp;
+              <b> <span [innerHTML]="taxAmount | currencyFormat"></span></b>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="clearfix">
+              Total Amount: &nbsp;
+              <b>
+                <span [innerHTML]="grandTotalAmount | currencyFormat"></span>
+              </b>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <button type="button" class="btn btn-primary" (click)="checkOut()">
+            CheckOut
+          </button>
         </div>
       </div>
 
@@ -177,22 +198,31 @@
           <select
             class="form-control"
             type="number"
+            [(ngModel)]="seriesID"
             placeholder="select Series "
           >
-            <option>Select Series...</option>
-            <option *ngFor="let series of posServices.seriesList">
+            <option [ngValue]="null">Select Series...</option>
+            <option
+              *ngFor="let series of posServices.seriesList"
+              [ngValue]="series.ID"
+            >
               {{ series.Name }}
             </option>
           </select>
         </div>
+
         <div class="form-group">
           <select
             class="form-control"
             type="number"
+            [(ngModel)]="projectID"
             placeholder="Select project"
           >
-            <option>Select Project...</option>
-            <option *ngFor="let project of posServices.projectList">
+            <option [ngValue]="null">Select Project...</option>
+            <option
+              *ngFor="let project of posServices.projectList"
+              [ngValue]="project.ID"
+            >
               {{ project.EngName }}
             </option>
           </select>
@@ -231,16 +261,7 @@
                 />
               </td>
             </tr>
-            <tr>
-              <td>Discount</td>
-              <td>
-                <input
-                  type="number"
-                  class="form-control"
-                  [(ngModel)]="discountAmount"
-                />
-              </td>
-            </tr>
+
             <tr>
               <td>EFT POS</td>
               <td></td>

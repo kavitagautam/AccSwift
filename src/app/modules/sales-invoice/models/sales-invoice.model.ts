@@ -161,3 +161,9 @@ export interface SalesInvoiceDetailsModel {
   Message: string;
   Entity: SalesInvoiceDetails;
 }
+
+export interface PdfModel {
+  StatusCode: number;
+  Message: string;
+  Entity: string;
+}

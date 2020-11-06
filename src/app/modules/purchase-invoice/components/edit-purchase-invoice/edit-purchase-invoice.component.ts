@@ -79,9 +79,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
         [Validators.required],
       ],
       ProjectID: [this.purchaseDetails ? this.purchaseDetails.ProjectID : null],
-      Date: [
-        this.purchaseDetails ? new Date(this.purchaseDetails.CreatedDate) : "",
-      ],
+      Date: [this.purchaseDetails ? new Date(this.purchaseDetails.Date) : ""],
       OrderNo: [
         this.purchaseDetails ? this.purchaseDetails.OrderNo : "",
         [Validators.required],
@@ -115,6 +113,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       CodeName: [""],
       Quantity: [0],
       QtyUnitName: [""],
+      QtyUnitID: [null],
       PurchaseRate: [""],
       Amount: [""],
       DiscPercentage: [0, Validators.required],
@@ -125,7 +124,6 @@ export class EditPurchaseInvoiceComponent implements OnInit {
       CustomDuty: [""],
       CustomDutyPercent: [0],
       Freight: [""],
-      QtyUnitID: [null],
       TaxID: [null],
       Remarks: [""],
     });
@@ -195,7 +193,7 @@ export class EditPurchaseInvoiceComponent implements OnInit {
           ProductName: [""],
           ProductCode: [""],
           CodeName: [""],
-          Quantity: [1],
+          Quantity: [0],
           QtyUnitName: [""],
           PurchaseRate: [""],
           Amount: [""],
@@ -273,7 +271,8 @@ export class EditPurchaseInvoiceComponent implements OnInit {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (invoices && invoices[i].TaxAmount) {
+
+          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
@@ -285,7 +284,6 @@ export class EditPurchaseInvoiceComponent implements OnInit {
         this.totalDiscountPercentage = sumTotalDiscountPer;
         this.totalTaxAmount = sumTaxAmount;
 
-        this.vatTotalAmount = this.totalNetAmount * 0.13;
         this.grandTotalAmount =
           this.totalGrossAmount -
           this.totalDiscountAmount +

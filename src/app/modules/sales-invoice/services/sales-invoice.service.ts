@@ -1,5 +1,6 @@
 import { HttpHeaders, HttpParams, HttpResponse } from "@angular/common/http";
 import {
+  PdfModel,
   SalesInvoiceDetailsModel,
   SalseInvoiceNavigateModel,
 } from "../models/sales-invoice.model";
@@ -58,12 +59,23 @@ export class SalesInvoiceService {
       });
   }
 
-  getSalesInvoicePDF(invoiceID): Observable<any> {
+  getSalesInvoicePDF(invoiceID): Observable<PdfModel> {
     let headers = new HttpHeaders();
-    headers = headers.set("Accept", "application/pdf");
-    return this.http.get(
-      `${this._api_URL}SalesInvoiceMaster/PDF/${invoiceID}`,
-      { headers: headers, responseType: "blob" as "json" }
+    // headers = headers.set("Accept", "application/pdf");
+    headers = new HttpHeaders().set("content-type", "multipart/form-data");
+
+    //headers: headers,
+    return this.httpService.get(
+      `${this._api_URL}SalesInvoiceMaster/PDF/${invoiceID}`
     );
+  }
+
+  getPDF(url): Observable<Blob> {
+    //const options = { responseType: 'blob' }; there is no use of this
+    let headers = new HttpHeaders();
+    // headers = headers.set("Accept", "application/pdf");
+    headers = new HttpHeaders().set("content-type", "multipart/form-data");
+    // this.http refers to HttpClient. Note here that you cannot use the generic get<Blob> as it does not compile: instead you "choose" the appropriate API in this way.
+    return this.http.get(url, { headers: headers, responseType: "blob" });
   }
 }
