@@ -30,6 +30,7 @@ export class PosComponent implements OnInit {
   discountPercItem: number = 0;
   tenderAmount: number = 0;
   changeAmount: number = 0;
+  totalNetAmount: number = 0;
   grandTotalAmount: number = 0;
   taxAmount: number = 0;
   modalRef: BsModalRef;
@@ -118,6 +119,7 @@ export class PosComponent implements OnInit {
           this.salesRate *
           this.quantityNo *
           (this.productList[this.selectedRow].TaxRate / 100),
+        NetAmount: this.salesRate * this.quantityNo - this.discountPercItem,
         TaxRate: this.productList[this.selectedRow].TaxRate,
       };
       this.productList[this.selectedRow] = obj;
@@ -140,14 +142,16 @@ export class PosComponent implements OnInit {
           this.quantityNo *
           (this.productList[this.selectedRow].TaxRate / 100),
         DiscountAmount: this.discountItem,
+        NetAmount: this.salesRate * this.quantityNo - this.discountPercItem,
         DiscPercentage:
           (this.discountItem / this.productList[this.selectedRow].Amount) * 100,
         TaxRate: this.productList[this.selectedRow].TaxRate,
       };
+      this.discountPercItem =
+        (this.discountItem / this.productList[this.selectedRow].Amount) * 100;
       this.productList[this.selectedRow] = obj;
     }
-    this.discountPercItem =
-      (this.discountItem / this.productList[this.selectedRow].Amount) * 100;
+
     this.calculateTotal(this.productList);
   }
 
@@ -169,6 +173,7 @@ export class PosComponent implements OnInit {
           (this.discountPercItem / 100) *
           this.productList[this.selectedRow].Amount,
         DiscPercentage: this.discountItem,
+        NetAmount: this.salesRate * this.quantityNo - this.discountPercItem,
         TaxRate: this.productList[this.selectedRow].TaxRate,
       };
       this.productList[this.selectedRow] = obj;
@@ -183,6 +188,7 @@ export class PosComponent implements OnInit {
     let totalAmount = 0;
     let taxAmount = 0;
     let discAmount = 0;
+    let sumNetAmount = 0;
     for (let i = 0; i < item.length; i++) {
       if (item[i].Quantity) {
         totalQty = totalQty + item[i].Quantity;
@@ -193,6 +199,9 @@ export class PosComponent implements OnInit {
       if (item[i].TaxAmount) {
         taxAmount = taxAmount + item[i].TaxAmount;
       }
+      if (item[i].NetAmount) {
+        sumNetAmount = sumNetAmount + item[i].NetAmount;
+      }
       if (item[i].DiscountAmount) {
         discAmount = discAmount + item[i].DiscountAmount;
       }
@@ -200,6 +209,7 @@ export class PosComponent implements OnInit {
     this.totalQty = totalQty;
     this.totalAmount = totalAmount;
     this.taxAmount = taxAmount;
+    this.totalNetAmount = sumNetAmount;
     this.discountAmount = discAmount;
     this.grandTotalAmount = taxAmount + this.totalAmount;
   }
@@ -229,6 +239,7 @@ export class PosComponent implements OnInit {
         selectedProduct[0].Quantity = selectedProduct[0].Quantity + 1;
         selectedProduct[0].Amount =
           selectedProduct[0].Quantity * selectedProduct[0].SalesRate;
+
         selectedProduct[0].TaxAmount =
           selectedProduct[0].Quantity *
           selectedProduct[0].SalesRate *
@@ -242,6 +253,8 @@ export class PosComponent implements OnInit {
           QtyUnitID: product.QtyUnitID,
           ProductID: product.ID,
           TaxRate: product.TaxRate,
+          NetAmount:
+            product.SalesRate * this.quantityNo - this.discountPercItem,
           TaxAmount:
             product.SalesRate * this.quantityNo * (product.TaxRate / 100),
           DiscountAmount: this.discountAmount,
@@ -282,16 +295,19 @@ export class PosComponent implements OnInit {
       InvoiceDetails: this.productList,
       GrossAmount: this.totalAmount,
       SpecialDiscount: this.discountAmount,
-      NetAmount: this.grandTotalAmount - this.discountAmount,
+      NetAmount: this.totalAmount - this.discountAmount,
       TotalTCAmount: this.taxAmount,
       Date: new Date(),
     };
-    console.log("Comment" + JSON.stringify(obj));
+
+    // console.log("Comment" + JSON.stringify(obj));
     this.posServices.addSalesInvoice(obj).subscribe(
       (response) => {
-        setTimeout(() => {
-          window.location.reload();
-        }, 300);
+        console.log("response" + JSON.stringify(response));
+
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 300);
       },
       (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));

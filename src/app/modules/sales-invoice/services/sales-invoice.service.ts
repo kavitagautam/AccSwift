@@ -70,12 +70,17 @@ export class SalesInvoiceService {
     );
   }
 
-  getPDF(url): Observable<Blob> {
+  getPDF(invoiceID): Observable<Blob> {
     //const options = { responseType: 'blob' }; there is no use of this
     let headers = new HttpHeaders();
     // headers = headers.set("Accept", "application/pdf");
     headers = new HttpHeaders().set("content-type", "multipart/form-data");
     // this.http refers to HttpClient. Note here that you cannot use the generic get<Blob> as it does not compile: instead you "choose" the appropriate API in this way.
-    return this.http.get(url, { headers: headers, responseType: "blob" });
+    //return this.http.get(url, { headers: headers, responseType: "blob" });
+
+    return this.http.get(
+      `${this._api_URL}SalesInvoiceMaster/PDFDownload/${invoiceID}`,
+      { headers: headers, responseType: "blob" }
+    );
   }
 }
