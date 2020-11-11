@@ -155,30 +155,38 @@ export class CreateReportsComponent implements OnInit {
   downloadPDF(): void {
     if (this.voucherType == "SALES") {
       this.salesInvoiceService
-        .getSalesInvoicePDF(this.form.get("ID").value)
+        .getPDF(this.form.get("ID").value)
         .subscribe((response) => {
-          var url = response.Entity;
-          // var url = "http://api.accswift.com/sales_invoice_15321.pdf";
-          //  saveAs(url, "salesInvoive.pdf");
+          var newBlob = new Blob([response], { type: "application/pdf" });
+          console.log("response " + JSON.stringify(response));
+          // IE doesn't allow using a blob object directly as link href
+          // instead it is necessary to use msSaveOrOpenBlob
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(newBlob);
+            return;
+          }
 
-          window.open(url, "_blank");
-          //  window.print();
-          //      window.close();
+          // For other browsers:
+          // Create a link pointing to the ObjectURL containing the blob.
+          const data = window.URL.createObjectURL(newBlob);
 
-          // const link = this.document.createElement("a");
-          // link.target = "_blank";
-          // link.href = url;
-          // link.click();
-          // link.remove();
-          console.log("url " + JSON.stringify(url));
-          // var xhr = new XMLHttpRequest();
-          // xhr.open("GET", url, true);
-          // xhr.responseType = "blob";
-          // xhr.onload = function () {
-          //   var file = new Blob([xhr.response], { type: "application/pdf" });
-          //   saveAs(file, "invoice.pdf");
-          // };
-          // xhr.send();
+          var link = document.createElement("a");
+          link.href = data;
+          link.download = "Je kar.pdf";
+          // this is necessary as link.click() does not work on the latest firefox
+          link.dispatchEvent(
+            new MouseEvent("click", {
+              bubbles: true,
+              cancelable: true,
+              view: window,
+            })
+          );
+
+          setTimeout(function () {
+            // For Firefox it is necessary to delay revoking the ObjectURL
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
         });
     }
   }

@@ -30,6 +30,7 @@ export class PosComponent implements OnInit {
   discountPercItem: number = 0;
   tenderAmount: number = 0;
   changeAmount: number = 0;
+  totalNetAmount: number = 0;
   grandTotalAmount: number = 0;
   taxAmount: number = 0;
   modalRef: BsModalRef;
@@ -63,7 +64,6 @@ export class PosComponent implements OnInit {
     this.seriesID = this.preferenceService.preferences
       ? this.preferenceService.preferences.DEFAULT_SERIES_SALES.ID
       : null;
-    console.log("Project ID" + this.projectID + "Series ID " + this.seriesID);
   }
 
   getProductGroup(): void {
@@ -93,10 +93,13 @@ export class PosComponent implements OnInit {
         ID: this.productList[this.selectedRow].ID,
         ProductID: this.productList[this.selectedRow].ProductID,
         QtyUnitID: this.productList[this.selectedRow].QtyUnitID,
+        TaxID: this.productList[this.selectedRow].TaxID,
         TaxAmount:
           this.productList[this.selectedRow].SalesRate *
           this.quantityNo *
           (this.productList[this.selectedRow].TaxRate / 100),
+        NetAmount: this.salesRate * this.quantityNo - this.discountItem,
+
         TaxRate: this.productList[this.selectedRow].TaxRate,
       };
       this.productList[this.selectedRow] = obj;
@@ -114,10 +117,12 @@ export class PosComponent implements OnInit {
         ID: this.productList[this.selectedRow].ID,
         ProductID: this.productList[this.selectedRow].ProductID,
         QtyUnitID: this.productList[this.selectedRow].QtyUnitID,
+        TaxID: this.productList[this.selectedRow].TaxID,
         TaxAmount:
           this.salesRate *
           this.quantityNo *
           (this.productList[this.selectedRow].TaxRate / 100),
+        NetAmount: this.salesRate * this.quantityNo - this.discountItem,
         TaxRate: this.productList[this.selectedRow].TaxRate,
       };
       this.productList[this.selectedRow] = obj;
@@ -127,6 +132,8 @@ export class PosComponent implements OnInit {
 
   discountChange(): void {
     if (this.selectedRow !== null) {
+      this.discountPercItem =
+        (this.discountItem / this.productList[this.selectedRow].Amount) * 100;
       const obj = {
         ProductName: this.productList[this.selectedRow].ProductName,
         Quantity: this.quantityNo,
@@ -135,24 +142,27 @@ export class PosComponent implements OnInit {
         ID: this.productList[this.selectedRow].ID,
         ProductID: this.productList[this.selectedRow].ProductID,
         QtyUnitID: this.productList[this.selectedRow].QtyUnitID,
+        TaxID: this.productList[this.selectedRow].TaxID,
         TaxAmount:
           this.salesRate *
           this.quantityNo *
           (this.productList[this.selectedRow].TaxRate / 100),
         DiscountAmount: this.discountItem,
+        NetAmount: this.salesRate * this.quantityNo - this.discountItem,
         DiscPercentage:
           (this.discountItem / this.productList[this.selectedRow].Amount) * 100,
         TaxRate: this.productList[this.selectedRow].TaxRate,
       };
       this.productList[this.selectedRow] = obj;
     }
-    this.discountPercItem =
-      (this.discountItem / this.productList[this.selectedRow].Amount) * 100;
     this.calculateTotal(this.productList);
   }
 
   discountPerChange(): void {
     if (this.selectedRow !== null) {
+      this.discountItem =
+        (this.discountPercItem / 100) *
+        this.productList[this.selectedRow].Amount;
       const obj = {
         ProductName: this.productList[this.selectedRow].ProductName,
         Quantity: this.quantityNo,
@@ -161,6 +171,7 @@ export class PosComponent implements OnInit {
         ID: this.productList[this.selectedRow].ID,
         ProductID: this.productList[this.selectedRow].ProductID,
         QtyUnitID: this.productList[this.selectedRow].QtyUnitID,
+        TaxID: this.productList[this.selectedRow].TaxID,
         TaxAmount:
           this.salesRate *
           this.quantityNo *
@@ -169,13 +180,13 @@ export class PosComponent implements OnInit {
           (this.discountPercItem / 100) *
           this.productList[this.selectedRow].Amount,
         DiscPercentage: this.discountItem,
+        NetAmount: this.salesRate * this.quantityNo - this.discountItem,
         TaxRate: this.productList[this.selectedRow].TaxRate,
       };
+
       this.productList[this.selectedRow] = obj;
     }
     this.calculateTotal(this.productList);
-    this.discountItem =
-      (this.discountPercItem / 100) * this.productList[this.selectedRow].Amount;
   }
 
   calculateTotal(item): void {
@@ -183,6 +194,7 @@ export class PosComponent implements OnInit {
     let totalAmount = 0;
     let taxAmount = 0;
     let discAmount = 0;
+    let sumNetAmount = 0;
     for (let i = 0; i < item.length; i++) {
       if (item[i].Quantity) {
         totalQty = totalQty + item[i].Quantity;
@@ -193,6 +205,9 @@ export class PosComponent implements OnInit {
       if (item[i].TaxAmount) {
         taxAmount = taxAmount + item[i].TaxAmount;
       }
+      if (item[i].NetAmount) {
+        sumNetAmount = sumNetAmount + item[i].NetAmount;
+      }
       if (item[i].DiscountAmount) {
         discAmount = discAmount + item[i].DiscountAmount;
       }
@@ -200,12 +215,15 @@ export class PosComponent implements OnInit {
     this.totalQty = totalQty;
     this.totalAmount = totalAmount;
     this.taxAmount = taxAmount;
+    this.totalNetAmount = sumNetAmount;
     this.discountAmount = discAmount;
-    this.grandTotalAmount = taxAmount + this.totalAmount;
+    this.grandTotalAmount =
+      this.totalAmount - this.discountAmount + this.taxAmount;
   }
 
   deleteProduct(index): void {
     this.productList.splice(index, 1);
+    this.calculateTotal(this.productList);
   }
 
   discountAmountChange(): void {
@@ -229,6 +247,9 @@ export class PosComponent implements OnInit {
         selectedProduct[0].Quantity = selectedProduct[0].Quantity + 1;
         selectedProduct[0].Amount =
           selectedProduct[0].Quantity * selectedProduct[0].SalesRate;
+        selectedProduct[0].NetAmount =
+          selectedProduct[0].Quantity * selectedProduct[0].SalesRate -
+          this.discountItem;
         selectedProduct[0].TaxAmount =
           selectedProduct[0].Quantity *
           selectedProduct[0].SalesRate *
@@ -241,10 +262,13 @@ export class PosComponent implements OnInit {
           Amount: product.SalesRate * this.quantityNo,
           QtyUnitID: product.QtyUnitID,
           ProductID: product.ID,
+          TaxID: product.TaxID,
           TaxRate: product.TaxRate,
+          NetAmount:
+            product.SalesRate * this.quantityNo - this.discountPercItem,
           TaxAmount:
             product.SalesRate * this.quantityNo * (product.TaxRate / 100),
-          DiscountAmount: this.discountAmount,
+          DiscountAmount: this.discountItem,
           DiscPercentage: this.discountPercItem,
           SalesRate: product.SalesRate,
         };
@@ -282,24 +306,58 @@ export class PosComponent implements OnInit {
       InvoiceDetails: this.productList,
       GrossAmount: this.totalAmount,
       SpecialDiscount: this.discountAmount,
-      NetAmount: this.grandTotalAmount - this.discountAmount,
+      NetAmount: this.totalAmount - this.discountAmount,
       TotalTCAmount: this.taxAmount,
       Date: new Date(),
     };
-    console.log("Comment" + JSON.stringify(obj));
-    this.posServices.addSalesInvoice(obj).subscribe(
-      (response) => {
-        setTimeout(() => {
-          window.location.reload();
-        }, 300);
-      },
-      (error) => {
-        this.toastr.error(JSON.stringify(error.error.Message));
-      },
-      () => {
-        this.toastr.success("Invoice added successfully");
-      }
-    );
+
+    // console.log("Comment" + JSON.stringify(obj));
+    this.posServices.addSalesInvoice(obj).subscribe((response) => {
+      console.log("response" + JSON.stringify(response));
+      this.posServices.getPDF(response.Entity.ID).subscribe(
+        (response) => {
+          var newBlob = new Blob([response], { type: "application/pdf" });
+          console.log("response " + JSON.stringify(response));
+          // IE doesn't allow using a blob object directly as link href
+          // instead it is necessary to use msSaveOrOpenBlob
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(newBlob);
+            return;
+          }
+
+          // For other browsers:
+          // Create a link pointing to the ObjectURL containing the blob.
+          const data = window.URL.createObjectURL(newBlob);
+
+          var link = document.createElement("a");
+          link.href = data;
+          link.download = "Je kar.pdf";
+          // this is necessary as link.click() does not work on the latest firefox
+          link.dispatchEvent(
+            new MouseEvent("click", {
+              bubbles: true,
+              cancelable: true,
+              view: window,
+            })
+          );
+
+          setTimeout(function () {
+            // For Firefox it is necessary to delay revoking the ObjectURL
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Invoice added successfully");
+        }
+      );
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 300);
+    });
   }
 
   openCommit(template: TemplateRef<any>): void {

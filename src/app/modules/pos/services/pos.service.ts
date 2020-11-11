@@ -6,7 +6,7 @@ import {
   Series,
   SeriesRootModel,
 } from "@accSwift-modules/accswift-shared/models/series.model";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { environment } from "@env/environment";
@@ -55,7 +55,18 @@ export class PosService {
         this.projectList = response.Entity;
       });
   }
+
   addSalesInvoice(body): Observable<any> {
     return this.httpService.post(`${this._api_URL}SalesInvoiceMaster`, body);
+  }
+
+  getPDF(invoiceID): Observable<Blob> {
+    let headers = new HttpHeaders();
+    headers = new HttpHeaders().set("content-type", "multipart/form-data");
+    // this.http refers to HttpClient. Note here that you cannot use the generic get<Blob> as it does not compile: instead you "choose" the appropriate API in this way.
+    return this.http.get(
+      `${this._api_URL}SalesInvoiceMaster/PDFDownload/${invoiceID}`,
+      { headers: headers, responseType: "blob" }
+    );
   }
 }
