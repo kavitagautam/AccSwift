@@ -291,7 +291,7 @@ export class DetailsEntryGridComponent implements OnInit {
         .get("TaxAmount")
         .setValue(
           entryListArray.controls[index].get("Quantity").value *
-            entryListArray.controls[index].get("NetAmount").value *
+            entryListArray.controls[index].get("SalesRate").value *
             (selectedTaxValue[0].Rate / 100)
         );
     }
@@ -440,7 +440,7 @@ export class DetailsEntryGridComponent implements OnInit {
             .get("TaxAmount")
             .setValue(
               entryListArray.controls[index].get("Quantity").value *
-                entryListArray.controls[index].get("NetAmount").value *
+                entryListArray.controls[index].get("SalesRate").value *
                 (selectedTaxValue[0].Rate / 100)
             );
         }
@@ -492,7 +492,7 @@ export class DetailsEntryGridComponent implements OnInit {
             .get("TaxAmount")
             .setValue(
               entryListArray.controls[index].get("Quantity").value *
-                entryListArray.controls[index].get("NetAmount").value *
+                entryListArray.controls[index].get("PurchaseRate").value *
                 (selectedTaxValue[0].Rate / 100)
             );
         }
@@ -597,7 +597,7 @@ export class DetailsEntryGridComponent implements OnInit {
               .get("TaxAmount")
               .setValue(
                 entryListArray.controls[index].get("Quantity").value *
-                  entryListArray.controls[index].get("NetAmount").value *
+                  entryListArray.controls[index].get("SalesRate").value *
                   (selectedTaxValue[0].Rate / 100)
               );
           }
@@ -646,7 +646,7 @@ export class DetailsEntryGridComponent implements OnInit {
               .get("TaxAmount")
               .setValue(
                 entryListArray.controls[index].get("Quantity").value *
-                  entryListArray.controls[index].get("NetAmount").value *
+                  entryListArray.controls[index].get("PurchaseRate").value *
                   (selectedTaxValue[0].Rate / 100)
               );
           }
