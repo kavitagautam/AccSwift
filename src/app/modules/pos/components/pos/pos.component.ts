@@ -64,7 +64,6 @@ export class PosComponent implements OnInit {
     this.seriesID = this.preferenceService.preferences
       ? this.preferenceService.preferences.DEFAULT_SERIES_SALES.ID
       : null;
-    console.log("Project ID" + this.projectID + "Series ID " + this.seriesID);
   }
 
   getProductGroup(): void {
@@ -94,10 +93,13 @@ export class PosComponent implements OnInit {
         ID: this.productList[this.selectedRow].ID,
         ProductID: this.productList[this.selectedRow].ProductID,
         QtyUnitID: this.productList[this.selectedRow].QtyUnitID,
+        TaxID: this.productList[this.selectedRow].TaxID,
         TaxAmount:
           this.productList[this.selectedRow].SalesRate *
           this.quantityNo *
           (this.productList[this.selectedRow].TaxRate / 100),
+        NetAmount: this.salesRate * this.quantityNo - this.discountItem,
+
         TaxRate: this.productList[this.selectedRow].TaxRate,
       };
       this.productList[this.selectedRow] = obj;
@@ -115,11 +117,12 @@ export class PosComponent implements OnInit {
         ID: this.productList[this.selectedRow].ID,
         ProductID: this.productList[this.selectedRow].ProductID,
         QtyUnitID: this.productList[this.selectedRow].QtyUnitID,
+        TaxID: this.productList[this.selectedRow].TaxID,
         TaxAmount:
           this.salesRate *
           this.quantityNo *
           (this.productList[this.selectedRow].TaxRate / 100),
-        NetAmount: this.salesRate * this.quantityNo - this.discountPercItem,
+        NetAmount: this.salesRate * this.quantityNo - this.discountItem,
         TaxRate: this.productList[this.selectedRow].TaxRate,
       };
       this.productList[this.selectedRow] = obj;
@@ -129,6 +132,8 @@ export class PosComponent implements OnInit {
 
   discountChange(): void {
     if (this.selectedRow !== null) {
+      this.discountPercItem =
+        (this.discountItem / this.productList[this.selectedRow].Amount) * 100;
       const obj = {
         ProductName: this.productList[this.selectedRow].ProductName,
         Quantity: this.quantityNo,
@@ -137,26 +142,27 @@ export class PosComponent implements OnInit {
         ID: this.productList[this.selectedRow].ID,
         ProductID: this.productList[this.selectedRow].ProductID,
         QtyUnitID: this.productList[this.selectedRow].QtyUnitID,
+        TaxID: this.productList[this.selectedRow].TaxID,
         TaxAmount:
           this.salesRate *
           this.quantityNo *
           (this.productList[this.selectedRow].TaxRate / 100),
         DiscountAmount: this.discountItem,
-        NetAmount: this.salesRate * this.quantityNo - this.discountPercItem,
+        NetAmount: this.salesRate * this.quantityNo - this.discountItem,
         DiscPercentage:
           (this.discountItem / this.productList[this.selectedRow].Amount) * 100,
         TaxRate: this.productList[this.selectedRow].TaxRate,
       };
-      this.discountPercItem =
-        (this.discountItem / this.productList[this.selectedRow].Amount) * 100;
       this.productList[this.selectedRow] = obj;
     }
-
     this.calculateTotal(this.productList);
   }
 
   discountPerChange(): void {
     if (this.selectedRow !== null) {
+      this.discountItem =
+        (this.discountPercItem / 100) *
+        this.productList[this.selectedRow].Amount;
       const obj = {
         ProductName: this.productList[this.selectedRow].ProductName,
         Quantity: this.quantityNo,
@@ -165,6 +171,7 @@ export class PosComponent implements OnInit {
         ID: this.productList[this.selectedRow].ID,
         ProductID: this.productList[this.selectedRow].ProductID,
         QtyUnitID: this.productList[this.selectedRow].QtyUnitID,
+        TaxID: this.productList[this.selectedRow].TaxID,
         TaxAmount:
           this.salesRate *
           this.quantityNo *
@@ -173,14 +180,13 @@ export class PosComponent implements OnInit {
           (this.discountPercItem / 100) *
           this.productList[this.selectedRow].Amount,
         DiscPercentage: this.discountItem,
-        NetAmount: this.salesRate * this.quantityNo - this.discountPercItem,
+        NetAmount: this.salesRate * this.quantityNo - this.discountItem,
         TaxRate: this.productList[this.selectedRow].TaxRate,
       };
+
       this.productList[this.selectedRow] = obj;
     }
     this.calculateTotal(this.productList);
-    this.discountItem =
-      (this.discountPercItem / 100) * this.productList[this.selectedRow].Amount;
   }
 
   calculateTotal(item): void {
@@ -211,7 +217,8 @@ export class PosComponent implements OnInit {
     this.taxAmount = taxAmount;
     this.totalNetAmount = sumNetAmount;
     this.discountAmount = discAmount;
-    this.grandTotalAmount = taxAmount + this.totalAmount;
+    this.grandTotalAmount =
+      this.totalAmount - this.discountAmount + this.taxAmount;
   }
 
   deleteProduct(index): void {
@@ -255,12 +262,13 @@ export class PosComponent implements OnInit {
           Amount: product.SalesRate * this.quantityNo,
           QtyUnitID: product.QtyUnitID,
           ProductID: product.ID,
+          TaxID: product.TaxID,
           TaxRate: product.TaxRate,
           NetAmount:
             product.SalesRate * this.quantityNo - this.discountPercItem,
           TaxAmount:
             product.SalesRate * this.quantityNo * (product.TaxRate / 100),
-          DiscountAmount: this.discountAmount,
+          DiscountAmount: this.discountItem,
           DiscPercentage: this.discountPercItem,
           SalesRate: product.SalesRate,
         };
