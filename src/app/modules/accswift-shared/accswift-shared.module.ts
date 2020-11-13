@@ -33,6 +33,7 @@ import { AddressComponent } from "./components/address/address.component";
 import { SettingsReportsComponent } from "./components/settings-reports/settings-reports.component";
 import { GroupBalanceReportComponent } from "./components/group-balance-report/group-balance-report.component";
 import { LedgerDetailReportsComponent } from "./components/ledger-detail-reports/ledger-detail-reports.component";
+import { OpeingBalanceComponent } from "./components/opeing-balance/opeing-balance.component";
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { LedgerDetailReportsComponent } from "./components/ledger-detail-reports
     SettingsReportsComponent,
     GroupBalanceReportComponent,
     LedgerDetailReportsComponent,
+    OpeingBalanceComponent,
   ],
   imports: [
     FormsModule,
@@ -88,6 +90,7 @@ import { LedgerDetailReportsComponent } from "./components/ledger-detail-reports
     SettingsReportsComponent,
     GroupBalanceReportComponent,
     LedgerDetailReportsComponent,
+    OpeingBalanceComponent,
   ],
   providers: [ValidationMsgService],
   entryComponents: [

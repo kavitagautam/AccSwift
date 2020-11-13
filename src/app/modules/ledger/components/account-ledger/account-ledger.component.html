@@ -103,6 +103,13 @@
         ></accSwift-account-ledger-more-details>
       </ng-template>
     </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab [title]="'Sub Ledger'">
+      <ng-template kendoTabContent>
+        <accSwift-sub-ledger
+          [subLedgerList]="accountLedgerForm.get('SubLedgerList')"
+        ></accSwift-sub-ledger>
+      </ng-template>
+    </kendo-tabstrip-tab>
   </kendo-tabstrip>
 
   <div class="box-footer" style="display: table; margin: auto">
@@ -452,7 +459,7 @@
           <div class="container-fluid">
             <div class="row mt-2">
               <kendo-grid
-                [data]="getSubLedgerBalanceList.value"
+                [data]="getSubLedgerList.value"
                 (add)="addHandler($event)"
                 (remove)="removeHandler($event)"
               >
@@ -473,14 +480,12 @@
                       popupAnchor
                       class="form-control"
                       [formControl]="
-                        getSubLedgerBalanceList.controls[rowIndex].get(
-                          column.field
-                        )
+                        getSubLedgerList.controls[rowIndex].get(column.field)
                       "
                     />
                   </ng-template>
                 </kendo-grid-column>
-                <kendo-grid-column field="AccClassID" title="Account Class">
+                <kendo-grid-column field="Name" title="Name">
                   <ng-template
                     kendoGridCellTemplate
                     let-dataItem="dataItem"
@@ -489,85 +494,17 @@
                     let-isNew="isNew"
                     let-rowIndex="rowIndex"
                   >
-                    <kendo-dropdownlist
-                      #dropDown
-                      [data]="ledgerService.accountClass"
-                      [textField]="'Name'"
-                      [valueField]="'ID'"
-                      class="form-control"
-                      [formControl]="
-                        getSubLedgerBalanceList.controls[rowIndex].get(
-                          'AccClassID'
-                        )
-                      "
-                      [valuePrimitive]="true"
-                    >
-                    </kendo-dropdownlist>
-
-                    <kendo-popup
-                      [anchor]="dropDown"
-                      *ngIf="
-                        getSubLedgerBalanceList.controls[rowIndex].get(
-                          'AccClassID'
-                        ).invalid &&
-                        rowSubmitted &&
-                        !(
-                          isNew &&
-                          getSubLedgerBalanceList.controls[rowIndex].get(
-                            'AccClassID'
-                          ).untouched
-                        )
-                      "
-                      popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-                    >
-                      <span class="k-icon k-i-warning"></span>
-                      Account Class is required
-                    </kendo-popup>
-                  </ng-template>
-                </kendo-grid-column>
-
-                <kendo-grid-column field="OpenBal" title="Opening Balance">
-                  <ng-template
-                    kendoGridCellTemplate
-                    let-dataItem="dataItem"
-                    let-column="column"
-                    let-formGroup="formGroup"
-                    let-isNew="isNew"
-                    let-rowIndex="rowIndex"
-                  >
-                    <kendo-numerictextbox
+                    <input
                       #ntb="popupAnchor"
                       popupAnchor
                       class="form-control"
                       [formControl]="
-                        getSubLedgerBalanceList.controls[rowIndex].get(
-                          column.field
-                        )
+                        getSubLedgerList.controls[rowIndex].get(column.field)
                       "
-                    ></kendo-numerictextbox>
-                    <kendo-popup
-                      [anchor]="popupAnchor"
-                      *ngIf="
-                        getSubLedgerBalanceList.controls[rowIndex].get(
-                          column.field
-                        ).invalid &&
-                        rowSubmitted &&
-                        !(
-                          isNew &&
-                          getSubLedgerBalanceList.controls[rowIndex].get(
-                            column.field
-                          ).untouched
-                        )
-                      "
-                      popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
-                    >
-                      <span class="k-icon k-i-warning"></span>
-                      Balance is required
-                    </kendo-popup>
+                    />
                   </ng-template>
                 </kendo-grid-column>
-
-                <kendo-grid-column field="OpenBalDrCr" title="Balance Type">
+                <kendo-grid-column field="Remarks" title="Description">
                   <ng-template
                     kendoGridCellTemplate
                     let-dataItem="dataItem"
@@ -576,79 +513,70 @@
                     let-isNew="isNew"
                     let-rowIndex="rowIndex"
                   >
-                    <kendo-dropdownlist
-                      [data]="balanceType"
-                      [textField]="'Name'"
-                      [valueField]="'type'"
+                    <input
                       class="form-control"
                       [formControl]="
-                        getSubLedgerBalanceList.controls[rowIndex].get(
-                          column.field
-                        )
+                        getSubLedgerList.controls[rowIndex].get('Remarks')
                       "
-                      [valuePrimitive]="true"
-                      s
-                    >
-                    </kendo-dropdownlist>
+                    />
                   </ng-template>
                 </kendo-grid-column>
-                <kendo-grid-command-column title="Action" width="80">
-                  <button kendoGridRemoveCommand>
+
+                <!-- <kendo-grid-column field="IsActive" title="IsActive">
+                  <ng-template
+                    kendoGridCellTemplate
+                    let-dataItem="dataItem"
+                    let-column="column"
+                    let-formGroup="formGroup"
+                    let-isNew="isNew"
+                    let-rowIndex="rowIndex"
+                  >
+                    <input
+                      type="checkbox"
+                      kendoCheckBox
+                      [formControl]="
+                        getSubLedgerList.controls[rowIndex].get(
+                          'column.field'
+                        )
+                      "
+                    />
+                  </ng-template>
+                </kendo-grid-column> -->
+
+                <kendo-grid-column title="Action" width="80">
+                  <ng-template
+                    kendoGridCellTemplate
+                    let-dataItem="dataItem"
+                    let-column="column"
+                    let-formGroup="formGroup"
+                    let-isNew="isNew"
+                    let-rowIndex="rowIndex"
+                  >
+                    <div class="form-group">
+                      <button
+                        type="button"
+                        class="btn btn-secondory"
+                        (click)="
+                          openingBalanceOfSubLedger(getSubLedgerList, rowIndex)
+                        "
+                      >
+                        Opening Balance <sup>*</sup>
+                      </button>
+                    </div>
+                  </ng-template>
+                  <!-- <button kendoGridRemoveCommand>
                     <i
                       class="fas fa-trash-alt mr-2 cursor-pointer"
                       tooltip="Delete"
                     ></i>
-                  </button>
-                  <ng-template kendoGridCellTemplate let-isNew="isNew">
+                  </button> -->
+                  <!-- <ng-template kendoGridCellTemplate let-isNew="isNew">
                     <button class="k-button" data-dismiss="modal">
                       <i class="fas fa-save"></i>&nbsp;&nbsp;Save
                     </button>
-                  </ng-template>
-                </kendo-grid-command-column>
+                  </ng-template> -->
+                </kendo-grid-column>
               </kendo-grid>
-
-              <!-- <div formGroupName="OpeningBalance">
-               <div class="col-md-4">
-                 <div class="form-group">
-                   <label>Account Class</label>
-
-                   <kendo-dropdownlist
-                     [data]="ledgerService.accountClass"
-                     [textField]="'Name'"
-                     [valueField]="'ID'"
-                     class="form-control"
-                     formControlName="AccClassID"
-                     [valuePrimitive]="true"
-                   >
-                   </kendo-dropdownlist>
-                 </div>
-               </div>
-               <div class="col-md-4">
-                 <div class="form-group">
-                   <label>Opening Balance</label>
-
-                   <kendo-numerictextbox
-                     #ntb="popupAnchor"
-                     popupAnchor
-                     class="form-control"
-                     formControlName="OpenBal"
-                   ></kendo-numerictextbox>
-                 </div>
-               </div>
-               <div class="col-md-4">
-                 <div class="form-group">
-                   <label>Balance Type</label>
-                   <kendo-dropdownlist
-                     [data]="balanceType"
-                     [textField]="'Name'"
-                     [valueField]="'type'"
-                     class="form-control"
-                     formControlName="OpenBalDrCr"
-                     [valuePrimitive]="true"
-                   ></kendo-dropdownlist>
-                 </div>
-               </div>
-             </div> -->
             </div>
           </div>
         </div>

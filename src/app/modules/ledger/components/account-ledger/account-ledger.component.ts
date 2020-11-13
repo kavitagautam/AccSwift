@@ -15,6 +15,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
+import { OpeingBalanceComponent } from "@accSwift-modules/accswift-shared/components/opeing-balance/opeing-balance.component";
 
 @Component({
   selector: "accSwift-account-ledger",
@@ -39,6 +40,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   private editedRowIndex: number;
   balanceDrCr: string;
   modalRef: BsModalRef;
+  modelRefSubLedger: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -144,16 +146,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     return <FormArray>this.accountLedgerForm.get("OpeningBalance");
   }
 
-  get getSubLedgerBalanceList(): FormArray {
-    console.log("GetArray List");
-    const subledgerList = this.accountLedgerForm.get(
-      "SubLedgerList"
-    ) as FormArray;
-
-    console.log(
-      "SubLedgers List " + JSON.stringify(subledgerList.getRawValue())
-    );
-    return <FormArray>subledgerList.controls[0].get("OpenBalanceSubLedgers");
+  get getSubLedgerList(): FormArray {
+    return <FormArray>this.accountLedgerForm.get("SubLedgerList");
   }
 
   addOpeningBalanceFormGroup(): FormGroup {
@@ -175,7 +169,6 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       LedgerID: [null],
       Name: [""],
       Code: [""],
-
       LedgerName: [""],
       IsActive: [false],
       IsBuiltIn: [false],
@@ -387,5 +380,37 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
+  }
+
+  openingBalanceOfSubLedger(formGroup, rowIndex): void {
+    console.log(
+      "FormGrop" +
+        JSON.stringify(formGroup.getRawValue()) +
+        "rowIndex" +
+        rowIndex
+    );
+    this.modelRefSubLedger = this.modalService.show(OpeingBalanceComponent, {
+      initialState: {
+        subLedgerOpeingBalance: formGroup.controls[rowIndex].get(
+          "OpenBalanceSubLedgers"
+        ),
+      },
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-lg",
+    });
+
+    // [
+    //   {
+    //     SubLedgerID: 1,
+    //     ID: 9,
+    //     AccClassID: 1,
+    //     OpenBal: 100,
+    //     OpenBalDate: "2020-09-23T06:56:46",
+    //     OpenBalDrCr: "Debit",
+    //     OpenBalCCYID: 1,
+    //   },
+    // ],
   }
 }
