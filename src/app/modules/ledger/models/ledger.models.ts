@@ -23,7 +23,7 @@ export interface OpeningBalance {
   OpenBalCCYID: number;
 }
 
-export interface LedgerDetails {
+export interface LedgerDetailsQQ {
   ID: number;
   LedgerCode: string;
   Name: string;
@@ -49,6 +49,72 @@ export interface LedgerDetails {
   IsActive: boolean;
   OpeningBalance?: OpeningBalance;
   Remarks: string;
+}
+
+export interface OpeningBalance {
+  ID: number;
+  LedgerID: number;
+  AccClassID: number;
+  OpenBal: number;
+  OpenBalDate: Date;
+  OpenBalDrCr: string;
+  OpenBalCCYID: number;
+}
+
+export interface OpenBalanceSubLedger {
+  SubLedgerID: number;
+  ID: number;
+  AccClassID: number;
+  OpenBal: number;
+  OpenBalDate: Date;
+  OpenBalDrCr: string;
+  OpenBalCCYID: number;
+}
+
+export interface SubLedgerList {
+  ID: number;
+  Name: string;
+  Code?: any;
+  LedgerID: number;
+  LedgerName: string;
+  IsActive: boolean;
+  IsBuiltIn: boolean;
+  OpenBalanceSubLedgers: OpenBalanceSubLedger[];
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedBy: string;
+  ModifiedDate: Date;
+  CompanyID: number;
+  Remarks: string;
+}
+
+export interface LedgerDetails {
+  ID: number;
+  LedgerCode: string;
+  Name: string;
+  PreviousYearBalance: number;
+  PreviousYearBalanceDebitCredit: string;
+  OpCCYID: number;
+  Currency: string;
+  OpCCR: number;
+  OpCCRDate?: any;
+  DrCr: string;
+  GroupID: number;
+  GroupName: string;
+  PersonName?: any;
+  Address1?: any;
+  Address2?: any;
+  City?: any;
+  Phone?: any;
+  Email?: any;
+  Company?: any;
+  Website?: any;
+  VatPanNo?: any;
+  CreditLimit: number;
+  IsActive: boolean;
+  OpeningBalance: OpeningBalance[];
+  SubLedgerList: SubLedgerList[];
+  Remarks?: any;
 }
 
 export interface LedgerDetailsModel {
