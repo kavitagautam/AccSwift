@@ -53,9 +53,8 @@ export class OpeingBalanceComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.subLedgerOpeingBalance.get("OpenBalanceSubLedgers").invalid)
-      return;
-    (<FormArray>this.subLedgerOpeingBalance.get("OpenBalanceSubLedgers")).push(
+    if (this.subLedgerOpeingBalance.invalid) return;
+    (<FormArray>this.subLedgerOpeingBalance).push(
       this.addSubLedgerBalanceFormGroup()
     );
     this.rowSubmitted = false;
@@ -82,5 +81,10 @@ export class OpeingBalanceComponent implements OnInit {
       OpenBalDate: [new Date()],
       OpenBalCCYID: [""],
     });
+  }
+
+  public onCancel(): void {
+    this.onClose.next(false);
+    this.modalRef.hide();
   }
 }

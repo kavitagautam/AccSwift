@@ -8,7 +8,24 @@
       <ng-template kendoGridToolbarTemplate>
         <button kendoGridAddCommand>Add New</button>
       </ng-template>
-      <kendo-grid-column field="Code" title="Code">
+      <kendo-grid-column field="Code" title="Code" width="100">
+        <ng-template
+          kendoGridCellTemplate
+          let-dataItem="dataItem"
+          let-column="column"
+          let-formGroup="formGroup"
+          let-isNew="isNew"
+          let-rowIndex="rowIndex"
+        >
+          <input
+            #ntb="popupAnchor"
+            popupAnchor
+            class="form-control"
+            [formControl]="getSubLedgerList.controls[rowIndex].get('Code')"
+          />
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="Name" title="Name" width="100">
         <ng-template
           kendoGridCellTemplate
           let-dataItem="dataItem"
@@ -27,26 +44,7 @@
           />
         </ng-template>
       </kendo-grid-column>
-      <kendo-grid-column field="Name" title="Name">
-        <ng-template
-          kendoGridCellTemplate
-          let-dataItem="dataItem"
-          let-column="column"
-          let-formGroup="formGroup"
-          let-isNew="isNew"
-          let-rowIndex="rowIndex"
-        >
-          <input
-            #ntb="popupAnchor"
-            popupAnchor
-            class="form-control"
-            [formControl]="
-              getSubLedgerList.controls[rowIndex].get(column.field)
-            "
-          />
-        </ng-template>
-      </kendo-grid-column>
-      <kendo-grid-column field="Remarks" title="Description">
+      <kendo-grid-column field="Remarks" title="Description" width="100">
         <ng-template
           kendoGridCellTemplate
           let-dataItem="dataItem"
@@ -62,7 +60,7 @@
         </ng-template>
       </kendo-grid-column>
 
-      <!-- <kendo-grid-column field="IsActive" title="IsActive">
+      <kendo-grid-column field="IsActive" title="IsActive" width="70">
         <ng-template
           kendoGridCellTemplate
           let-dataItem="dataItem"
@@ -74,16 +72,36 @@
           <input
             type="checkbox"
             kendoCheckBox
-            [formControl]="
-              getSubLedgerList.controls[rowIndex].get(
-                'column.field'
-              )
-            "
+            [formControl]="getSubLedgerList.controls[rowIndex].get('IsActive')"
           />
         </ng-template>
-      </kendo-grid-column> -->
-
-      <kendo-grid-column title="Action" width="80">
+      </kendo-grid-column>
+      <kendo-grid-command-column title="Action" width="120">
+        <ng-template
+          kendoGridCellTemplate
+          let-dataItem="dataItem"
+          let-column="column"
+          let-formGroup="formGroup"
+          let-isNew="isNew"
+          let-rowIndex="rowIndex"
+        >
+          <div class="form-group">
+            <button
+              type="button"
+              class="btn btn-secondory mr-2"
+              (click)="openingBalanceOfSubLedger(getSubLedgerList, rowIndex)"
+              tooltip="Opening Balance "
+            >
+              Ope. Bal <sup>*</sup>
+            </button>
+            <button kendoGridRemoveCommand>
+              <i class="fas fa-trash-alt cursor-pointer" tooltip="Delete"></i>
+            </button>
+          </div>
+        </ng-template>
+      </kendo-grid-command-column>
+      <!-- 
+      <kendo-grid-column title="Action" width="120">
         <ng-template
           kendoGridCellTemplate
           let-dataItem="dataItem"
@@ -97,23 +115,16 @@
               type="button"
               class="btn btn-secondory"
               (click)="openingBalanceOfSubLedger(getSubLedgerList, rowIndex)"
+              tooltip=" Opening Balance "
             >
-              Opening Balance <sup>*</sup>
+              Ope. Bal <sup>*</sup>
             </button>
           </div>
         </ng-template>
-        <!-- <button kendoGridRemoveCommand>
-          <i
-            class="fas fa-trash-alt mr-2 cursor-pointer"
-            tooltip="Delete"
-          ></i>
-        </button> -->
-        <!-- <ng-template kendoGridCellTemplate let-isNew="isNew">
-          <button class="k-button" data-dismiss="modal">
-            <i class="fas fa-save"></i>&nbsp;&nbsp;Save
-          </button>
-        </ng-template> -->
-      </kendo-grid-column>
+        <button kendoGridRemoveCommand>
+          <i class="fas fa-trash-alt mr-2 cursor-pointer" tooltip="Delete"></i>
+        </button>
+      </kendo-grid-column> -->
     </kendo-grid>
   </div>
 </div>

@@ -99,6 +99,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       .subscribe((res) => {
         this.ledgerDetails = res.Entity;
         this.setOpeningBalanceList();
+        this.setSubLedgerList();
         this.accountLedgerForm.patchValue(this.ledgerDetails);
       });
   }
@@ -159,8 +160,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
           : null,
         Validators.required,
       ],
-      OpenBal: [""],
-      OpenBalDrCr: [""],
+      OpenBal: [0],
+      OpenBalDrCr: [this.balanceDrCr ? this.balanceDrCr : ""],
     });
   }
 
@@ -179,16 +180,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       CreatedDate: [new Date()],
       ModifiedBy: [""],
       ModifiedDate: [""],
-      CompanyID: 0,
       Remarks: [""],
     });
-  }
-
-  setOpeningBalanceList(): void {
-    this.accountLedgerForm.setControl(
-      "OpeningBalance",
-      this.setOpeningBalanceArray(this.ledgerDetails.OpeningBalance)
-    );
   }
 
   addSubLedgerBalanceFormGroup(): FormGroup {
@@ -201,12 +194,27 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
           : null,
         Validators.required,
       ],
-      OpenBal: [""],
-      OpenBalDrCr: [""],
+      OpenBal: [0],
+      OpenBalDrCr: [this.balanceDrCr ? this.balanceDrCr : ""],
       OpenBalDate: [new Date()],
       OpenBalCCYID: [""],
     });
   }
+
+  setOpeningBalanceList(): void {
+    this.accountLedgerForm.setControl(
+      "OpeningBalance",
+      this.setOpeningBalanceArray(this.ledgerDetails.OpeningBalance)
+    );
+  }
+
+  setSubLedgerList(): void {
+    this.accountLedgerForm.setControl(
+      "SubLedgerList",
+      this.setSubLedgerListArray(this.ledgerDetails.SubLedgerList)
+    );
+  }
+
   // this block of code is used to show form array data in the template.....
   setOpeningBalanceArray(openingBalance): FormArray {
     const openingList = new FormArray([]);
@@ -231,12 +239,89 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
               : null,
             Validators.required,
           ],
-          OpenBal: [""],
-          OpenBalDrCr: [""],
+          OpenBal: [0],
+          OpenBalDrCr: [this.balanceDrCr ? this.balanceDrCr : ""],
         })
       );
     }
     return openingList;
+  }
+
+  // this block of code is used to show form array data in the template.....
+  setSubLedgerListArray(subLedgerList): FormArray {
+    const subLedger = new FormArray([]);
+    if (subLedgerList && subLedgerList.length > 0) {
+      subLedgerList.forEach((element) => {
+        subLedger.push(
+          this._fb.group({
+            LedgerID: [element.LedgerID],
+            Name: [element.Name],
+            Code: [element.Code],
+            LedgerName: [element.LedgerName],
+            IsActive: [element.IsActive],
+            IsBuiltIn: [element.IsBuiltIn],
+            OpenBalanceSubLedgers: this.setSubLedgerOpeningBalanceArray(
+              element.OpenBalanceSubLedgers
+            ),
+            CreatedBy: [element.CreatedBy],
+            CreatedDate: [element.CreatedDate],
+            ModifiedBy: [element.ModifiedBy],
+            ModifiedDate: [element.ModifiedDate],
+            Remarks: [element.Remarks],
+            ID: [element.ID],
+            AccClassID: [element.AccClassID],
+            OpenBal: [element.OpenBal],
+            OpenBalDrCr: [element.OpenBalDrCr],
+          })
+        );
+      });
+    } else {
+      subLedger.push(
+        this._fb.group({
+          ID: [null],
+          AccClassID: [
+            this.ledgerService.accountClass.length > 0
+              ? this.ledgerService.accountClass[0].ID
+              : null,
+            Validators.required,
+          ],
+          OpenBal: [0],
+          OpenBalDrCr: [this.balanceDrCr ? this.balanceDrCr : ""],
+        })
+      );
+    }
+    return subLedger;
+  }
+  // this block of code is used to show form array data in the template.....
+  setSubLedgerOpeningBalanceArray(subOpeningBalance): FormArray {
+    const subOpeningBlc = new FormArray([]);
+    if (subOpeningBalance && subOpeningBalance.length > 0) {
+      subOpeningBalance.forEach((element) => {
+        subOpeningBlc.push(
+          this._fb.group({
+            ID: [element.ID],
+            AccClassID: [element.AccClassID],
+            OpenBal: [element.OpenBal],
+            OpenBalDrCr: [element.OpenBalDrCr],
+          })
+        );
+      });
+    } else {
+      subOpeningBlc.push(
+        this._fb.group({
+          ID: [null],
+          AccClassID: [
+            this.ledgerService.accountClass.length > 0
+              ? this.ledgerService.accountClass[0].ID
+              : null,
+            Validators.required,
+          ],
+          OpenBal: [0],
+          OpenBalDrCr: [this.balanceDrCr ? this.balanceDrCr : ""],
+        })
+      );
+    }
+    return subOpeningBlc;
   }
 
   changeAccountHead(): void {
@@ -268,6 +353,9 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   save(): void {
     if (this.addMode) {
+      console.log(
+        "Ledger Account " + JSON.stringify(this.accountLedgerForm.getRawValue())
+      );
       if (this.accountLedgerForm.invalid) return;
 
       this.ledgerService
@@ -286,6 +374,9 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
           }
         );
     } else {
+      console.log(
+        "Ledger Account " + JSON.stringify(this.accountLedgerForm.getRawValue())
+      );
       this.ledgerService
         .updateLedgerAccount(this.accountLedgerForm.value)
         .subscribe(
@@ -380,37 +471,5 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
-  }
-
-  openingBalanceOfSubLedger(formGroup, rowIndex): void {
-    console.log(
-      "FormGrop" +
-        JSON.stringify(formGroup.getRawValue()) +
-        "rowIndex" +
-        rowIndex
-    );
-    this.modelRefSubLedger = this.modalService.show(OpeingBalanceComponent, {
-      initialState: {
-        subLedgerOpeingBalance: formGroup.controls[rowIndex].get(
-          "OpenBalanceSubLedgers"
-        ),
-      },
-      ignoreBackdropClick: true,
-      animated: true,
-      keyboard: true,
-      class: "modal-lg",
-    });
-
-    // [
-    //   {
-    //     SubLedgerID: 1,
-    //     ID: 9,
-    //     AccClassID: 1,
-    //     OpenBal: 100,
-    //     OpenBalDate: "2020-09-23T06:56:46",
-    //     OpenBalDrCr: "Debit",
-    //     OpenBalCCYID: 1,
-    //   },
-    // ],
   }
 }

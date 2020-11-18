@@ -2,14 +2,18 @@
 
 <div class="modal-header">
   <h3 class="modal-title pull-left">Opening Balance</h3>
-  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+  <button
+    class="close"
+    type="button"
+    data-dismiss="modal"
+    aria-label="Close"
+    (click)="onCancel()"
+  >
     <span aria-hidden="true">×</span>
   </button>
 </div>
 <div class="modal-body">
   <div class="container-fluid">
-    <h5>{{ subLedgerOpeingBalance.getRawValue() | json }}</h5>
-
     <div class="row mt-2">
       <kendo-grid
         [data]="subLedgerOpeingBalance.value"
@@ -40,16 +44,7 @@
               [valuePrimitive]="true"
             >
             </kendo-dropdownlist>
-            <!-- <input
-                   #input
-                   class="k-textbox"
-                   class="form-control"
-                   [formControl]="
-                     subLedgerOpeingBalance.controls[rowIndex].get(
-                       'AccClassID'
-                     )
-                   "
-                 /> -->
+
             <kendo-popup
               [anchor]="dropDown"
               *ngIf="
@@ -138,61 +133,33 @@
             ></i>
           </button>
           <ng-template kendoGridCellTemplate let-isNew="isNew">
-            <button class="k-button" data-dismiss="modal">
-              <i class="fas fa-save"></i>&nbsp;&nbsp;Save
+            <button kendoGridRemoveCommand>
+              <i
+                class="fas fa-trash-alt mr-2 cursor-pointer"
+                tooltip="Delete"
+              ></i>
             </button>
           </ng-template>
         </kendo-grid-command-column>
       </kendo-grid>
-
-      <!-- <div formGroupName="OpeningBalance">
-             <div class="col-md-4">
-               <div class="form-group">
-                 <label>Account Class</label>
-
-                 <kendo-dropdownlist
-                   [data]="ledgerService.accountClass"
-                   [textField]="'Name'"
-                   [valueField]="'ID'"
-                   class="form-control"
-                   formControlName="AccClassID"
-                   [valuePrimitive]="true"
-                 >
-                 </kendo-dropdownlist>
-               </div>
-             </div>
-             <div class="col-md-4">
-               <div class="form-group">
-                 <label>Opening Balance</label>
-
-                 <kendo-numerictextbox
-                   #ntb="popupAnchor"
-                   popupAnchor
-                   class="form-control"
-                   formControlName="OpenBal"
-                 ></kendo-numerictextbox>
-               </div>
-             </div>
-             <div class="col-md-4">
-               <div class="form-group">
-                 <label>Balance Type</label>
-                 <kendo-dropdownlist
-                   [data]="balanceType"
-                   [textField]="'Name'"
-                   [valueField]="'type'"
-                   class="form-control"
-                   formControlName="OpenBalDrCr"
-                   [valuePrimitive]="true"
-                 ></kendo-dropdownlist>
-               </div>
-             </div>
-           </div> -->
     </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" type="button" data-dismiss="modal">OK</button>
-  <button class="btn btn-secondary" type="button" data-dismiss="modal">
+  <button
+    class="btn btn-primary"
+    type="button"
+    data-dismiss="modal"
+    (click)="onCancel()"
+  >
+    OK
+  </button>
+  <button
+    class="btn btn-secondary"
+    type="button"
+    data-dismiss="modal"
+    (click)="onCancel()"
+  >
     Cancel
   </button>
 </div>
