@@ -94,6 +94,13 @@
         ></accSwift-account-ledger-more-details>
       </ng-template>
     </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab [title]="'Sub Ledger'">
+      <ng-template kendoTabContent>
+        <accSwift-sub-ledger
+          [subLedgerList]="accountLedgerForm.get('SubLedgerList')"
+        ></accSwift-sub-ledger>
+      </ng-template>
+    </kendo-tabstrip-tab>
   </kendo-tabstrip>
 
   <div class="box-footer" style="display: table; margin: auto">
@@ -346,15 +353,12 @@
                   </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-command-column title="Action" width="80">
-                  <button kendoGridRemoveCommand>
-                    <i
-                      class="fas fa-trash-alt mr-2 cursor-pointer"
-                      tooltip="Delete"
-                    ></i>
-                  </button>
-                  <ng-template kendoGridCellTemplate let-isNew="isNew">
-                    <button class="k-button" data-dismiss="modal">
-                      <i class="fas fa-save"></i>&nbsp;&nbsp;Save
+                  <ng-template kendoGridCellTemplate>
+                    <button kendoGridRemoveCommand>
+                      <i
+                        class="fas fa-trash-alt mr-2 cursor-pointer"
+                        tooltip="Delete"
+                      ></i>
                     </button>
                   </ng-template>
                 </kendo-grid-command-column>
