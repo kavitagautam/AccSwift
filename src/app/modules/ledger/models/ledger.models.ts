@@ -23,44 +23,6 @@ export interface OpeningBalance {
   OpenBalCCYID: number;
 }
 
-export interface LedgerDetailsQQ {
-  ID: number;
-  LedgerCode: string;
-  Name: string;
-  PreviousYearBalance: number;
-  PreviousYearBalanceDebitCredit: string;
-  OpCCYID: number;
-  Currency: string;
-  OpCCR: number;
-  OpCCRDate?: any;
-  DrCr: string;
-  GroupID: number;
-  GroupName: string;
-  PersonName: string;
-  Address1: string;
-  Address2: string;
-  City: string;
-  Phone: string;
-  Email: string;
-  Company: string;
-  Website: string;
-  VatPanNo: string;
-  CreditLimit: number;
-  IsActive: boolean;
-  OpeningBalance?: OpeningBalance;
-  Remarks: string;
-}
-
-export interface OpeningBalance {
-  ID: number;
-  LedgerID: number;
-  AccClassID: number;
-  OpenBal: number;
-  OpenBalDate: Date;
-  OpenBalDrCr: string;
-  OpenBalCCYID: number;
-}
-
 export interface OpenBalanceSubLedger {
   SubLedgerID: number;
   ID: number;

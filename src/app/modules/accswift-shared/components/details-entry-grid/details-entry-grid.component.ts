@@ -29,6 +29,7 @@ import { LedgerModalPopupComponent } from "../ledger-modal-popup/ledger-modal-po
 import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 import { IntlService, CldrIntlService } from "@progress/kendo-angular-intl";
 import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
+import { EntrySubLedgerComponent } from "../entry-sub-ledger/entry-sub-ledger.component";
 
 @Component({
   selector: "accSwift-details-entry-grid",
@@ -59,8 +60,13 @@ export class DetailsEntryGridComponent implements OnInit {
     ID: null,
   };
 
+  modalRef: BsModalRef;
+
   private showDiscPopup: boolean = false;
+  private showSubLedgerPopup: boolean = false;
   rowPopupIndexDisc: number;
+  rowPopupIndexSubLedger: number;
+
   columnField = [];
   private showUnitPopup: boolean = false;
   rowPopupIndexUnit: number;
@@ -72,8 +78,6 @@ export class DetailsEntryGridComponent implements OnInit {
   currencyFormat: string =
     "c" + JSON.parse(localStorage.getItem("decimalPlaces"));
 
-  //Open the Ledger List Modal on PopUp
-  modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -102,6 +106,7 @@ export class DetailsEntryGridComponent implements OnInit {
     for (const key in this.entryArray.value[0]) {
       this.columns.push(key);
     }
+    console.log("Columns " + JSON.stringify(this.columns));
   }
 
   // @HostListener("keydown", ["$event"])
@@ -119,6 +124,10 @@ export class DetailsEntryGridComponent implements OnInit {
   //   }
 
   // }
+
+  get getSubLedgerList(): FormArray {
+    return <FormArray>this.entryArray.get("TransactionSubLedger");
+  }
 
   public enabled: boolean = true;
   public duration: number = 200;
@@ -144,6 +153,11 @@ export class DetailsEntryGridComponent implements OnInit {
   public discountToggle(rowIndex) {
     this.showDiscPopup = !this.showDiscPopup;
     this.rowPopupIndexDisc = rowIndex;
+  }
+
+  public subLedgerToggle(rowIndex) {
+    this.showSubLedgerPopup = !this.showSubLedgerPopup;
+    this.rowPopupIndexSubLedger = rowIndex;
   }
 
   public unitToggle(rowIndex): void {
@@ -725,6 +739,22 @@ export class DetailsEntryGridComponent implements OnInit {
     });
   }
 
+  openSubLedgerModal(formGroup, rowIndex): void {
+    console.log("FormGroup " + JSON.stringify(formGroup.getRawValue()));
+    this.modalRef = this.modalService.show(EntrySubLedgerComponent, {
+      initialState: {
+        getSubLedgerList: formGroup.controls[rowIndex].get(
+          "TransactionSubLedger"
+        ),
+        ledgerName: formGroup.controls[rowIndex].LedgerName,
+      },
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-md",
+    });
+  }
+
   getRelatedUnitList(productCode): void {
     this.gridServices.getRelatedUnits(productCode).subscribe((response) => {
       this.relatedUnits = response.Entity;
@@ -799,6 +829,8 @@ export class DetailsEntryGridComponent implements OnInit {
 
     if (this.voucherType == "JRNL") {
       return this._fb.group({
+        TransactionSubLedger: this._fb.array([this.addSubLedgerFormGroup()]),
+
         ID: [0],
         MasterID: [0],
         LedgerCode: [""],
@@ -927,6 +959,17 @@ export class DetailsEntryGridComponent implements OnInit {
         Remarks: [""],
       });
     }
+  }
+
+  addSubLedgerFormGroup(): FormGroup {
+    return this._fb.group({
+      ID: [null],
+      SubLedgerID: [null],
+      Name: [""],
+      Amount: [0],
+      DrCr: [""],
+      Remarks: [""],
+    });
   }
 
   productDDFilter(value, i): void {

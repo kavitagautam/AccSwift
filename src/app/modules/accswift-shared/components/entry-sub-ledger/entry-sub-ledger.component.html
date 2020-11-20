@@ -1,0 +1,90 @@
+<div class="modal-header">
+  <h3 class="modal-title pull-left">Sub Ledger</h3>
+  <button
+    class="close"
+    type="button"
+    data-dismiss="modal"
+    aria-label="Close"
+    (click)="onCancel()"
+  >
+    <span aria-hidden="true">×</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container-fluid">
+    <h5>Sub Ledger of {{ ledgerName }}</h5>
+    <div class="row mt-2">
+      <kendo-grid [data]="getSubLedgerList.value">
+        <kendo-grid-column field="Name" title="Name" width="100">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-formGroup="formGroup"
+            let-isNew="isNew"
+            let-rowIndex="rowIndex"
+          >
+            <input
+              #ntb="popupAnchor"
+              popupAnchor
+              class="form-control"
+              [formControl]="
+                getSubLedgerList.controls[rowIndex].get(column.field)
+              "
+            />
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="Amount" title="Amount" width="80">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-formGroup="formGroup"
+            let-isNew="isNew"
+            let-rowIndex="rowIndex"
+          >
+            <input
+              class="form-control"
+              [formControl]="getSubLedgerList.controls[rowIndex].get('Amount')"
+            />
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="Remarks" title="Remarks" width="70">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-formGroup="formGroup"
+            let-isNew="isNew"
+            let-rowIndex="rowIndex"
+          >
+            <input
+              type="text"
+              class="form-control"
+              [formControl]="getSubLedgerList.controls[rowIndex].get('Remarks')"
+            />
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    class="btn btn-primary"
+    type="button"
+    data-dismiss="modal"
+    (click)="onCancel()"
+  >
+    OK
+  </button>
+  <button
+    class="btn btn-secondary"
+    type="button"
+    data-dismiss="modal"
+    (click)="onCancel()"
+  >
+    Cancel
+  </button>
+</div>
