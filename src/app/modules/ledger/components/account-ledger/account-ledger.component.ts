@@ -353,11 +353,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   save(): void {
     if (this.addMode) {
-      console.log(
-        "Ledger Account " + JSON.stringify(this.accountLedgerForm.getRawValue())
-      );
       if (this.accountLedgerForm.invalid) return;
-
       this.ledgerService
         .addLedgerAccount(this.accountLedgerForm.value)
         .subscribe(
@@ -374,9 +370,6 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
           }
         );
     } else {
-      console.log(
-        "Ledger Account " + JSON.stringify(this.accountLedgerForm.getRawValue())
-      );
       this.ledgerService
         .updateLedgerAccount(this.accountLedgerForm.value)
         .subscribe(

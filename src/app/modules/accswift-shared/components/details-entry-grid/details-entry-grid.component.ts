@@ -29,6 +29,7 @@ import { LedgerModalPopupComponent } from "../ledger-modal-popup/ledger-modal-po
 import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 import { IntlService, CldrIntlService } from "@progress/kendo-angular-intl";
 import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
+import { EntrySubLedgerComponent } from "../entry-sub-ledger/entry-sub-ledger.component";
 
 @Component({
   selector: "accSwift-details-entry-grid",
@@ -59,8 +60,11 @@ export class DetailsEntryGridComponent implements OnInit {
     ID: null,
   };
 
+  modalRef: BsModalRef;
+
   private showDiscPopup: boolean = false;
   rowPopupIndexDisc: number;
+
   columnField = [];
   private showUnitPopup: boolean = false;
   rowPopupIndexUnit: number;
@@ -72,8 +76,6 @@ export class DetailsEntryGridComponent implements OnInit {
   currencyFormat: string =
     "c" + JSON.parse(localStorage.getItem("decimalPlaces"));
 
-  //Open the Ledger List Modal on PopUp
-  modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -119,6 +121,10 @@ export class DetailsEntryGridComponent implements OnInit {
   //   }
 
   // }
+
+  get getSubLedgerList(): FormArray {
+    return <FormArray>this.entryArray.get("TransactionSubLedger");
+  }
 
   public enabled: boolean = true;
   public duration: number = 200;
@@ -522,6 +528,17 @@ export class DetailsEntryGridComponent implements OnInit {
       entryListArray.controls[index]
         .get("LedgerID")
         .setValue(selectedLedgerValue[0].LedgerID);
+      if (selectedLedgerValue[0].LedgerID) {
+        this.gridServices
+          .getSubLedgerMin(selectedLedgerValue[0].LedgerID)
+          .subscribe((response) => {
+            const subLedger = entryListArray.controls[index] as FormGroup;
+            subLedger.setControl(
+              "TransactionSubLedger",
+              this.setSubLedgerListArray(response.Entity)
+            );
+          });
+      }
       if (this.voucherType == "BANK_RCPT") {
         entryListArray.controls[index].get("VoucherNumber").setValue(0);
         entryListArray.controls[index].get("ChequeNumber").setValue("");
@@ -714,7 +731,17 @@ export class DetailsEntryGridComponent implements OnInit {
             .get("ChequeDate")
             .setValue(new Date(data.ChequeDate));
         }
-
+        if (data.LedgerID) {
+          this.gridServices
+            .getSubLedgerMin(data.LedgerID)
+            .subscribe((response) => {
+              const subLedger = entryListArray.controls[index] as FormGroup;
+              subLedger.setControl(
+                "TransactionSubLedger",
+                this.setSubLedgerListArray(response.Entity)
+              );
+            });
+        }
         const length = this.entryArray.value.length;
         if (entryListArray.controls[length - 1].invalid) return;
         this.entryArray.push(this.addEntryList());
@@ -722,6 +749,21 @@ export class DetailsEntryGridComponent implements OnInit {
     });
     this.modalRef.content.onClose.subscribe((data) => {
       //Do after Close the Modal
+    });
+  }
+
+  openSubLedgerModal(formGroup, rowIndex): void {
+    this.modalRef = this.modalService.show(EntrySubLedgerComponent, {
+      initialState: {
+        getSubLedgerList: formGroup.controls[rowIndex].get(
+          "TransactionSubLedger"
+        ),
+        ledgerName: formGroup.controls[rowIndex].get("LedgerName").value,
+      },
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-md",
     });
   }
 
@@ -799,6 +841,8 @@ export class DetailsEntryGridComponent implements OnInit {
 
     if (this.voucherType == "JRNL") {
       return this._fb.group({
+        TransactionSubLedger: this._fb.array([this.addSubLedgerFormGroup()]),
+
         ID: [0],
         MasterID: [0],
         LedgerCode: [""],
@@ -927,6 +971,48 @@ export class DetailsEntryGridComponent implements OnInit {
         Remarks: [""],
       });
     }
+  }
+
+  addSubLedgerFormGroup(): FormGroup {
+    return this._fb.group({
+      ID: [null],
+      SubLedgerID: [null],
+      Name: [""],
+      Amount: [0],
+      DrCr: [""],
+      Remarks: [""],
+    });
+  }
+
+  // this block of code is used to show form array data in the template.....
+  setSubLedgerListArray(subLedgerList): FormArray {
+    const subLedger = new FormArray([]);
+    if (subLedgerList && subLedgerList.length > 0) {
+      subLedgerList.forEach((element) => {
+        subLedger.push(
+          this._fb.group({
+            ID: [null],
+            SubLedgerID: [element.SubLedgerID],
+            Name: [element.Name],
+            Amount: [null],
+            DrCr: [""],
+            Remarks: [""],
+          })
+        );
+      });
+    } else {
+      subLedger.push(
+        this._fb.group({
+          ID: [null],
+          SubLedgerID: [null],
+          Name: [""],
+          Amount: [0],
+          DrCr: [""],
+          Remarks: [""],
+        })
+      );
+    }
+    return subLedger;
   }
 
   productDDFilter(value, i): void {

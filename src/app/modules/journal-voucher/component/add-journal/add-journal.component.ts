@@ -79,12 +79,24 @@ export class AddJournalComponent implements OnInit {
 
   addJournalEntryFormGroup(): FormGroup {
     return this._fb.group({
+      TransactionSubLedger: this._fb.array([this.addSubLedgerFormGroup()]),
       LedgerCode: [""],
       LedgerName: ["", Validators.required],
       LedgerID: [""],
       DrAmount: [""],
       CrAmount: [""],
       LedgerBalance: [""],
+      Remarks: [""],
+    });
+  }
+
+  addSubLedgerFormGroup(): FormGroup {
+    return this._fb.group({
+      ID: [null],
+      SubLedgerID: [null],
+      Name: [""],
+      Amount: [0],
+      DrCr: [""],
       Remarks: [""],
     });
   }
