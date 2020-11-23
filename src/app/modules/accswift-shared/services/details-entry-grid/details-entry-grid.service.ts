@@ -14,6 +14,7 @@ import {
   LedgerMinModel,
 } from "@accSwift-modules/ledger/models/ledger.models";
 import { VoucherType, VoucherTypeModel } from "../../models/voucher-type.model";
+import { SubLedgerMinModel } from "@accSwift-modules/accswift-shared/models/subledger.model";
 
 @Injectable({
   providedIn: "root",
@@ -24,7 +25,7 @@ export class DetailsEntryGridService {
   ledgerList: LedgerMin[] = [];
   voucherType: VoucherType[] = [];
   taxList: Tax[] = [];
-  vatRate:number;
+  vatRate: number;
   constructor(
     private httpService: HttpClientService,
     private http: HttpClient
@@ -33,7 +34,7 @@ export class DetailsEntryGridService {
     this.getProductList();
     this.getLedgerList();
     this.getVoucherType();
-    this.getVatRate()
+    this.getVatRate();
   }
 
   getTaxList(): void {
@@ -43,7 +44,6 @@ export class DetailsEntryGridService {
         this.taxList = response.Entity;
       });
   }
-
 
   getVatRate(): void {
     this.httpService
@@ -88,6 +88,12 @@ export class DetailsEntryGridService {
   getRelatedUnits(id: any): Observable<RelatedUnitModel> {
     return this.httpService.get(
       `${this._api_URL}CompoundUnit/RelatedUnits/${id}`
+    );
+  }
+
+  getSubLedgerMin(ledgerID): Observable<SubLedgerMinModel> {
+    return this.httpService.get(
+      `${this._api_URL}Ledger/SubLedger/min/${ledgerID}`
     );
   }
 }

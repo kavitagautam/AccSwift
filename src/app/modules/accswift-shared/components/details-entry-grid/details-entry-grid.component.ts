@@ -63,9 +63,7 @@ export class DetailsEntryGridComponent implements OnInit {
   modalRef: BsModalRef;
 
   private showDiscPopup: boolean = false;
-  private showSubLedgerPopup: boolean = false;
   rowPopupIndexDisc: number;
-  rowPopupIndexSubLedger: number;
 
   columnField = [];
   private showUnitPopup: boolean = false;
@@ -106,7 +104,6 @@ export class DetailsEntryGridComponent implements OnInit {
     for (const key in this.entryArray.value[0]) {
       this.columns.push(key);
     }
-    console.log("Columns " + JSON.stringify(this.columns));
   }
 
   // @HostListener("keydown", ["$event"])
@@ -153,11 +150,6 @@ export class DetailsEntryGridComponent implements OnInit {
   public discountToggle(rowIndex) {
     this.showDiscPopup = !this.showDiscPopup;
     this.rowPopupIndexDisc = rowIndex;
-  }
-
-  public subLedgerToggle(rowIndex) {
-    this.showSubLedgerPopup = !this.showSubLedgerPopup;
-    this.rowPopupIndexSubLedger = rowIndex;
   }
 
   public unitToggle(rowIndex): void {
@@ -536,6 +528,17 @@ export class DetailsEntryGridComponent implements OnInit {
       entryListArray.controls[index]
         .get("LedgerID")
         .setValue(selectedLedgerValue[0].LedgerID);
+      if (selectedLedgerValue[0].LedgerID) {
+        this.gridServices
+          .getSubLedgerMin(selectedLedgerValue[0].LedgerID)
+          .subscribe((response) => {
+            const subLedger = entryListArray.controls[index] as FormGroup;
+            subLedger.setControl(
+              "TransactionSubLedger",
+              this.setSubLedgerListArray(response.Entity)
+            );
+          });
+      }
       if (this.voucherType == "BANK_RCPT") {
         entryListArray.controls[index].get("VoucherNumber").setValue(0);
         entryListArray.controls[index].get("ChequeNumber").setValue("");
@@ -728,7 +731,17 @@ export class DetailsEntryGridComponent implements OnInit {
             .get("ChequeDate")
             .setValue(new Date(data.ChequeDate));
         }
-
+        if (data.LedgerID) {
+          this.gridServices
+            .getSubLedgerMin(data.LedgerID)
+            .subscribe((response) => {
+              const subLedger = entryListArray.controls[index] as FormGroup;
+              subLedger.setControl(
+                "TransactionSubLedger",
+                this.setSubLedgerListArray(response.Entity)
+              );
+            });
+        }
         const length = this.entryArray.value.length;
         if (entryListArray.controls[length - 1].invalid) return;
         this.entryArray.push(this.addEntryList());
@@ -740,13 +753,12 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   openSubLedgerModal(formGroup, rowIndex): void {
-    console.log("FormGroup " + JSON.stringify(formGroup.getRawValue()));
     this.modalRef = this.modalService.show(EntrySubLedgerComponent, {
       initialState: {
         getSubLedgerList: formGroup.controls[rowIndex].get(
           "TransactionSubLedger"
         ),
-        ledgerName: formGroup.controls[rowIndex].LedgerName,
+        ledgerName: formGroup.controls[rowIndex].get("LedgerName").value,
       },
       ignoreBackdropClick: true,
       animated: true,
@@ -970,6 +982,37 @@ export class DetailsEntryGridComponent implements OnInit {
       DrCr: [""],
       Remarks: [""],
     });
+  }
+
+  // this block of code is used to show form array data in the template.....
+  setSubLedgerListArray(subLedgerList): FormArray {
+    const subLedger = new FormArray([]);
+    if (subLedgerList && subLedgerList.length > 0) {
+      subLedgerList.forEach((element) => {
+        subLedger.push(
+          this._fb.group({
+            ID: [null],
+            SubLedgerID: [element.SubLedgerID],
+            Name: [element.Name],
+            Amount: [null],
+            DrCr: [""],
+            Remarks: [""],
+          })
+        );
+      });
+    } else {
+      subLedger.push(
+        this._fb.group({
+          ID: [null],
+          SubLedgerID: [null],
+          Name: [""],
+          Amount: [0],
+          DrCr: [""],
+          Remarks: [""],
+        })
+      );
+    }
+    return subLedger;
   }
 
   productDDFilter(value, i): void {

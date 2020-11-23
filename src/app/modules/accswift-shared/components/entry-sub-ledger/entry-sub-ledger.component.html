@@ -12,7 +12,9 @@
 </div>
 <div class="modal-body">
   <div class="container-fluid">
-    <h5>Sub Ledger of {{ ledgerName }}</h5>
+    <h5>
+      Sub Ledger of <b>{{ ledgerName }}</b>
+    </h5>
     <div class="row mt-2">
       <kendo-grid [data]="getSubLedgerList.value">
         <kendo-grid-column field="Name" title="Name" width="100">
