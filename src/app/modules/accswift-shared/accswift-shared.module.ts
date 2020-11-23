@@ -34,6 +34,7 @@ import { SettingsReportsComponent } from "./components/settings-reports/settings
 import { GroupBalanceReportComponent } from "./components/group-balance-report/group-balance-report.component";
 import { LedgerDetailReportsComponent } from "./components/ledger-detail-reports/ledger-detail-reports.component";
 import { OpeingBalanceComponent } from "./components/opeing-balance/opeing-balance.component";
+import { EntrySubLedgerComponent } from "./components/entry-sub-ledger/entry-sub-ledger.component";
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { OpeingBalanceComponent } from "./components/opeing-balance/opeing-balan
     GroupBalanceReportComponent,
     LedgerDetailReportsComponent,
     OpeingBalanceComponent,
+    EntrySubLedgerComponent,
   ],
   imports: [
     FormsModule,
@@ -97,6 +99,7 @@ import { OpeingBalanceComponent } from "./components/opeing-balance/opeing-balan
     AddProductComponent,
     ProductModalPopupComponent,
     LedgerModalPopupComponent,
+    EntrySubLedgerComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

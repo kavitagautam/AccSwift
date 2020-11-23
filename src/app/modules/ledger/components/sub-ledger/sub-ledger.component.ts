@@ -11,7 +11,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 })
 export class SubLedgerComponent implements OnInit {
   @Input("") subLedgerList: FormArray;
-  modelRefSubLedger: BsModalRef;
+  modalRefSubLedger: BsModalRef;
   submitted: boolean;
   rowSubmitted: boolean;
   editedRowIndex: number = undefined;
@@ -86,7 +86,7 @@ export class SubLedgerComponent implements OnInit {
   }
 
   openingBalanceOfSubLedger(formGroup, rowIndex): void {
-    this.modelRefSubLedger = this.modalService.show(OpeingBalanceComponent, {
+    this.modalRefSubLedger = this.modalService.show(OpeingBalanceComponent, {
       initialState: {
         subLedgerOpeingBalance: formGroup.controls[rowIndex].get(
           "OpenBalanceSubLedgers"

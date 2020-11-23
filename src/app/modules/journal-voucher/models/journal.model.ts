@@ -4,7 +4,27 @@ export interface JournalEditModel {
   Entity: Journal;
 }
 
+export interface OpenBalanceSubLedger {
+  SubLedgerID: number;
+  ID: number;
+  AccClassID: number;
+  OpenBal: number;
+  OpenBalDate: Date;
+  OpenBalDrCr: string;
+  OpenBalCCYID: number;
+}
+
+export interface SubLedger {
+  ID: number;
+  SubLedgerID: number;
+  Name: string;
+  Amount: number;
+  DrCr: string;
+  Remarks: string;
+}
+
 export interface Journaldetail {
+  TransactionSubLedger: SubLedger[];
   DrAmount?: number;
   CrAmount?: number;
   ID: number;
