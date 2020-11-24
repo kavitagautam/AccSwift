@@ -197,55 +197,7 @@
         </button>
        
       </div>
-        <!-- <button
-          #anchor
-          class="btn-secondary"
-          (click)="subLedgerToggle(rowIndex)"
-        >
-          Sub Ledger
-        </button>
-        <kendo-popup
-          #popup
-          [anchor]="anchor"
-          *ngIf="showSubLedgerPopup && rowPopupIndexSubLedger == rowIndex"
-          [animate]="animate"
-          (anchorViewportLeave)="subLedgerToggle(null)"
-        >
-          <div class="contentPopup">
-            <h5>{{ dataItem | json }}</h5>
-            <div [formGroup]="entryArray">
-              <table>
-                <tr>
-                  <th>Name</th>
-                  <th>Amount</th>
-                  <th>Remarks</th>
-                </tr>
-                 <tbody formArrayName="TransactionSubLedger">
-                  <tr
-                    *ngFor="
-                      let subledger of getSubLedgerList.value;
-                      let i = index
-                    "
-                  >
-                    <td>
-                      <input
-                        class="form-control"
-                        disabled
-                        formControlName="Name"
-                      />
-                    </td>
-                    <td>
-                      <input class="form-control" formControlName="Amount" />
-                    </td>
-                    <td>
-                      <input class="form-control" formControlName="Remarks" />
-                    </td>
-                  </tr>
-                </tbody> 
-              </table>
-            </div>
-          </div>
-        </kendo-popup> -->
+        
       </ng-template>
     </kendo-grid-column>
 

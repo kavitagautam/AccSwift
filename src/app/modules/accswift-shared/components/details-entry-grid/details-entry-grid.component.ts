@@ -237,7 +237,7 @@ export class DetailsEntryGridComponent implements OnInit {
     const entryListArray = this.entryArray as FormArray;
     const updatedValue = entryListArray.controls[index].get("DrAmount").value;
     if (parseFloat(updatedValue)) {
-      entryListArray.controls[index].get("CrAmount").disable();
+      entryListArray.controls[index].get("CrAmount").setValue(null);
     }
     for (let j = 0; j < entryListArray.controls.length; j++) {
       debitValue =
@@ -253,7 +253,7 @@ export class DetailsEntryGridComponent implements OnInit {
 
     const updatedValue = entryListArray.controls[index].get("CrAmount").value;
     if (parseFloat(updatedValue)) {
-      entryListArray.controls[index].get("DrAmount").disable();
+      entryListArray.controls[index].get("DrAmount").setValue(null);
     }
     for (let j = 0; j < entryListArray.controls.length; j++) {
       creditValue =
@@ -759,11 +759,29 @@ export class DetailsEntryGridComponent implements OnInit {
           "TransactionSubLedger"
         ),
         ledgerName: formGroup.controls[rowIndex].get("LedgerName").value,
+        rowIndex: rowIndex,
       },
       ignoreBackdropClick: true,
       animated: true,
       keyboard: true,
       class: "modal-md",
+    });
+    this.modalRef.content.onSubmit.subscribe((data) => {
+      const entryListArray = this.entryArray as FormArray;
+      if (data.amountType == "Debit") {
+        entryListArray.controls[data.rowIndex]
+          .get("DrAmount")
+          .setValue(data.totalAmount);
+        entryListArray.controls[data.rowIndex].get("CrAmount").setValue(null);
+        entryListArray.controls[data.rowIndex].get("CrAmount").enable();
+      } else {
+        entryListArray.controls[data.rowIndex]
+          .get("CrAmount")
+          .setValue(data.totalAmount);
+        entryListArray.controls[data.rowIndex].get("DrAmount").setValue(null);
+        entryListArray.controls[data.rowIndex].get("DrAmount").enable();
+      }
+      //Do after Close the Modal
     });
   }
 
