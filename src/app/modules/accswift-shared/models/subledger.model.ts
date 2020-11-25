@@ -9,3 +9,9 @@ export interface SubLedgerMinModel {
   Message: string;
   Entity: SubLedgerMin[];
 }
+
+export interface SubLedgerEntry {
+  totalAmount: number;
+  amountType: string;
+  rowIndex: number;
+}

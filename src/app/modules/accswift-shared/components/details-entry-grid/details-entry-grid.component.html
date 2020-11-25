@@ -197,55 +197,7 @@
         </button>
        
       </div>
-        <!-- <button
-          #anchor
-          class="btn-secondary"
-          (click)="subLedgerToggle(rowIndex)"
-        >
-          Sub Ledger
-        </button>
-        <kendo-popup
-          #popup
-          [anchor]="anchor"
-          *ngIf="showSubLedgerPopup && rowPopupIndexSubLedger == rowIndex"
-          [animate]="animate"
-          (anchorViewportLeave)="subLedgerToggle(null)"
-        >
-          <div class="contentPopup">
-            <h5>{{ dataItem | json }}</h5>
-            <div [formGroup]="entryArray">
-              <table>
-                <tr>
-                  <th>Name</th>
-                  <th>Amount</th>
-                  <th>Remarks</th>
-                </tr>
-                 <tbody formArrayName="TransactionSubLedger">
-                  <tr
-                    *ngFor="
-                      let subledger of getSubLedgerList.value;
-                      let i = index
-                    "
-                  >
-                    <td>
-                      <input
-                        class="form-control"
-                        disabled
-                        formControlName="Name"
-                      />
-                    </td>
-                    <td>
-                      <input class="form-control" formControlName="Amount" />
-                    </td>
-                    <td>
-                      <input class="form-control" formControlName="Remarks" />
-                    </td>
-                  </tr>
-                </tbody> 
-              </table>
-            </div>
-          </div>
-        </kendo-popup> -->
+        
       </ng-template>
     </kendo-grid-column>
 
@@ -268,7 +220,6 @@
           popupAnchor
           class="form-control"
           [decimals]="decimals"
-          [disabled]="entryArray.controls[rowIndex].get('CrAmount').value > 0"
           [format]="currencyFormat"
           [formControl]="entryArray.controls[rowIndex].get('DrAmount')"
           (change)="checkDebitValue(dataItem, rowIndex)"
@@ -318,7 +269,6 @@
           class="form-control"
           [decimals]="decimals"
           [format]="currencyFormat"
-          [disabled]="entryArray.controls[rowIndex].get('DrAmount').value > 0"
           [formControl]="entryArray.controls[rowIndex].get('CrAmount')"
           (change)="checkCreditValue(dataItem, rowIndex)"
         ></kendo-numerictextbox>

@@ -16,7 +16,7 @@
   <div class="container-fluid">
     <div class="row mt-2">
       <kendo-grid
-        [data]="subLedgerOpeingBalance.value"
+        [data]="subLedgerOpeningBalance.value"
         (add)="addHandler($event)"
         (remove)="removeHandler($event)"
       >
@@ -39,7 +39,7 @@
               [valueField]="'ID'"
               class="form-control"
               [formControl]="
-                subLedgerOpeingBalance.controls[rowIndex].get('AccClassID')
+                subLedgerOpeningBalance.controls[rowIndex].get('AccClassID')
               "
               [valuePrimitive]="true"
             >
@@ -48,12 +48,12 @@
             <kendo-popup
               [anchor]="dropDown"
               *ngIf="
-                subLedgerOpeingBalance.controls[rowIndex].get('AccClassID')
+                subLedgerOpeningBalance.controls[rowIndex].get('AccClassID')
                   .invalid &&
                 rowSubmitted &&
                 !(
                   isNew &&
-                  subLedgerOpeingBalance.controls[rowIndex].get('AccClassID')
+                  subLedgerOpeningBalance.controls[rowIndex].get('AccClassID')
                     .untouched
                 )
               "
@@ -79,18 +79,18 @@
               popupAnchor
               class="form-control"
               [formControl]="
-                subLedgerOpeingBalance.controls[rowIndex].get(column.field)
+                subLedgerOpeningBalance.controls[rowIndex].get(column.field)
               "
             ></kendo-numerictextbox>
             <kendo-popup
               [anchor]="popupAnchor"
               *ngIf="
-                subLedgerOpeingBalance.controls[rowIndex].get(column.field)
+                subLedgerOpeningBalance.controls[rowIndex].get(column.field)
                   .invalid &&
                 rowSubmitted &&
                 !(
                   isNew &&
-                  subLedgerOpeingBalance.controls[rowIndex].get(column.field)
+                  subLedgerOpeningBalance.controls[rowIndex].get(column.field)
                     .untouched
                 )
               "
@@ -117,10 +117,9 @@
               [valueField]="'type'"
               class="form-control"
               [formControl]="
-                subLedgerOpeingBalance.controls[rowIndex].get(column.field)
+                subLedgerOpeningBalance.controls[rowIndex].get(column.field)
               "
               [valuePrimitive]="true"
-              s
             >
             </kendo-dropdownlist>
           </ng-template>

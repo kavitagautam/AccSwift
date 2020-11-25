@@ -15,6 +15,30 @@
     <h5>
       Sub Ledger of <b>{{ ledgerName }}</b>
     </h5>
+    <div class="clearfix">
+      <label class="k-label" [for]="Debit">Debit</label>
+      <input
+        type="radio"
+        name="Debit"
+        value="Debit"
+        (change)="onDebitSelect()"
+        #Debit
+        [(ngModel)]="amount.type"
+        kendoRadioButton
+      />
+
+      <label class="k-label" [for]="Credit">Credit</label>
+      <input
+        type="radio"
+        name="Credit"
+        value="Credit"
+        (change)="onCreditSelect()"
+        #Credit
+        [(ngModel)]="amount.type"
+        kendoRadioButton
+      />
+    </div>
+
     <div class="row mt-2">
       <kendo-grid [data]="getSubLedgerList.value">
         <kendo-grid-column field="Name" title="Name" width="100">
@@ -70,6 +94,12 @@
         </kendo-grid-column>
       </kendo-grid>
     </div>
+    <div class="col-md-12">
+      <span class="pull-right">
+        Amount Total:
+        <span [innerHTML]="calculateAmountTotal() | currencyFormat"></span>
+      </span>
+    </div>
   </div>
 </div>
 <div class="modal-footer">
@@ -77,9 +107,9 @@
     class="btn btn-primary"
     type="button"
     data-dismiss="modal"
-    (click)="onCancel()"
+    (click)="onSave()"
   >
-    OK
+    Save
   </button>
   <button
     class="btn btn-secondary"

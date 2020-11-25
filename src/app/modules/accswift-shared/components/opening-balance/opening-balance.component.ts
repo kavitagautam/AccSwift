@@ -5,12 +5,12 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Subject } from "rxjs";
 
 @Component({
-  selector: "accSwift-opeing-balance",
-  templateUrl: "./opeing-balance.component.html",
-  styleUrls: ["./opeing-balance.component.scss"],
+  selector: "accSwift-opening-balance",
+  templateUrl: "./opening-balance.component.html",
+  styleUrls: ["./opening-balance.component.scss"],
 })
-export class OpeingBalanceComponent implements OnInit {
-  @Input("subLedgerOpeingBalance") public subLedgerOpeingBalance: FormArray;
+export class OpeningBalanceComponent implements OnInit {
+  @Input("subLedgerOpeningBalance") public subLedgerOpeningBalance: FormArray;
 
   public onClose = new Subject();
   public onSubmit: Subject<boolean>;
@@ -43,7 +43,7 @@ export class OpeingBalanceComponent implements OnInit {
 
   public removeHandler({ dataItem, rowIndex }): void {
     const openingList = <FormArray>(
-      this.subLedgerOpeingBalance.get("OpenBalanceSubLedgers")
+      this.subLedgerOpeningBalance.get("OpenBalanceSubLedgers")
     );
     // Remove the Row
     openingList.removeAt(rowIndex);
@@ -53,8 +53,8 @@ export class OpeingBalanceComponent implements OnInit {
     this.closeEditor(sender);
     this.submitted = true;
     this.rowSubmitted = true;
-    if (this.subLedgerOpeingBalance.invalid) return;
-    (<FormArray>this.subLedgerOpeingBalance).push(
+    if (this.subLedgerOpeningBalance.invalid) return;
+    (<FormArray>this.subLedgerOpeningBalance).push(
       this.addSubLedgerBalanceFormGroup()
     );
     this.rowSubmitted = false;
