@@ -138,18 +138,19 @@ export class EditJournalComponent implements OnInit {
           })
         );
       });
-    } else {
-      subLedger.push(
-        this._fb.group({
-          ID: [null],
-          SubLedgerID: [null],
-          Name: [""],
-          Amount: [0],
-          DrCr: [""],
-          Remarks: [""],
-        })
-      );
-    }
+     } 
+   // else {
+    //   subLedger.push(
+    //     this._fb.group({
+    //       ID: [null],
+    //       SubLedgerID: [null],
+    //       Name: [""],
+    //       Amount: [0],
+    //       DrCr: [""],
+    //       Remarks: [""],
+    //     })
+    //   );
+    // }
     return subLedger;
   }
 

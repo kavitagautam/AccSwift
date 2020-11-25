@@ -1,4 +1,4 @@
-import { OpeingBalanceComponent } from "@accSwift-modules/accswift-shared/components/opeing-balance/opeing-balance.component";
+import { OpeningBalanceComponent } from "@accSwift-modules/accswift-shared/components/opening-balance/opening-balance.component";
 import { LedgerService } from "@accSwift-modules/ledger/services/ledger.service";
 import { Component, Input, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -11,7 +11,10 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 })
 export class SubLedgerComponent implements OnInit {
   @Input("") subLedgerList: FormArray;
+  @Input("") balanceType: string;
   modalRefSubLedger: BsModalRef;
+
+  openingBalance: number;
   submitted: boolean;
   rowSubmitted: boolean;
   editedRowIndex: number = undefined;
@@ -31,6 +34,18 @@ export class SubLedgerComponent implements OnInit {
     const openingList = <FormArray>this.subLedgerList;
     // Remove the Row
     openingList.removeAt(rowIndex);
+  }
+
+  openingBalanceChange(): void {
+    const subLedgerList = this.subLedgerList as FormArray;
+    for (let i = 0; i < subLedgerList.length; i++) {
+      const opeingBalance = subLedgerList.controls[i].get(
+        "OpenBalanceSubLedgers"
+      ) as FormArray;
+
+      opeingBalance.controls[0].get("OpenBal").setValue(this.openingBalance);
+      opeingBalance.controls[0].get("OpenBalDrCr").setValue(this.balanceType);
+    }
   }
 
   public addHandler({ sender }) {
@@ -86,9 +101,9 @@ export class SubLedgerComponent implements OnInit {
   }
 
   openingBalanceOfSubLedger(formGroup, rowIndex): void {
-    this.modalRefSubLedger = this.modalService.show(OpeingBalanceComponent, {
+    this.modalRefSubLedger = this.modalService.show(OpeningBalanceComponent, {
       initialState: {
-        subLedgerOpeingBalance: formGroup.controls[rowIndex].get(
+        subLedgerOpeningBalance: formGroup.controls[rowIndex].get(
           "OpenBalanceSubLedgers"
         ),
       },
