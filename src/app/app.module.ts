@@ -34,7 +34,6 @@ import "@progress/kendo-angular-intl/locales/en-GB/all";
 import "@progress/kendo-angular-intl/locales/fr/all";
 
 import 'hammerjs';
-import { MenuModule } from '@progress/kendo-angular-menu';
 import { GridModule } from '@progress/kendo-angular-grid';
 
 
@@ -101,7 +100,6 @@ export function localFunction(settingsService: SettingsService) {
     }),
     NgxsLoggerPluginModule.forRoot(loggerPluginOptions),
     NgxsReduxDevtoolsPluginModule.forRoot(),
-    MenuModule,
     GridModule,
   ],
   providers: [
