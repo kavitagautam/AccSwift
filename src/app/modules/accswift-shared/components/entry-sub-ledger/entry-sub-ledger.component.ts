@@ -63,25 +63,25 @@ export class EntrySubLedgerComponent implements OnInit {
   }
 
   onDebitSelect(): void {
-    const entryListArray = this.getSubLedgerList as FormArray;
-    for (let i = 0; i < entryListArray.length; i++) {
-      entryListArray.controls[i].get("DrCr").setValue("Debit");
+    const entrySubLedgerList = this.getSubLedgerList as FormArray;
+    for (let i = 0; i < entrySubLedgerList.length; i++) {
+      entrySubLedgerList.controls[i].get("DrCr").setValue("Debit");
     }
   }
 
   onCreditSelect(): void {
-    const entryListArray = this.getSubLedgerList as FormArray;
-    for (let i = 0; i < entryListArray.length; i++) {
-      entryListArray.controls[i].get("DrCr").setValue("Credit");
+    const entrySubLedgerList = this.getSubLedgerList as FormArray;
+    for (let i = 0; i < entrySubLedgerList.length; i++) {
+      entrySubLedgerList.controls[i].get("DrCr").setValue("Credit");
     }
   }
 
   public calculateAmountTotal(): number {
-    const entryListArray = this.getSubLedgerList.value;
+    const entrySubLedgerList = this.getSubLedgerList.value;
     let amountTotal = 0;
 
-    for (let i = 0; i < entryListArray.length; i++) {
-      amountTotal = amountTotal + parseInt(entryListArray[i].Amount);
+    for (let i = 0; i < entrySubLedgerList.length; i++) {
+      amountTotal = amountTotal + parseInt(entrySubLedgerList[i].Amount);
     }
 
     return amountTotal;

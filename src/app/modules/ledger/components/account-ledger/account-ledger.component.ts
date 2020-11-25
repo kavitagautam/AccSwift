@@ -15,7 +15,6 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
-import { OpeingBalanceComponent } from "@accSwift-modules/accswift-shared/components/opeing-balance/opeing-balance.component";
 
 @Component({
   selector: "accSwift-account-ledger",
@@ -26,6 +25,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   @ViewChild("openingBalanceModal") openingBalanceModal: ElementRef;
   @ViewChild("previousYearBalanceModal") previousYearBalanceModal: ElementRef;
   @Input("selectedItem") selectedItem;
+
   date: Date = new Date();
   selectedLedgerId: number;
   accountLedgerForm: FormGroup;
@@ -59,7 +59,16 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     this.buildAccountLedgerForm();
     this.getLedgerGroup();
     if (this.selectedItem == null) {
+      this.editMode = false;
+      this.addMode = true;
+      this.title = "Add ";
       this.addAccountLedger();
+    } else {
+      this.editMode = true;
+      this.addMode = false;
+      this.title = "Edit ";
+
+      this.getLedgerDetails();
     }
   }
 
@@ -74,6 +83,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
           this.editMode = true;
           this.addMode = false;
           this.title = "Edit ";
+
           this.getLedgerDetails();
         } else {
           this.addAccountLedger();
@@ -95,12 +105,13 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   getLedgerDetails(): void {
     this.ledgerService
-      .getLedgerDetails(this.selectedLedgerId)
+      .getLedgerDetails(this.selectedItem.ID)
       .subscribe((res) => {
         this.ledgerDetails = res.Entity;
         this.setOpeningBalanceList();
         this.setSubLedgerList();
         this.accountLedgerForm.patchValue(this.ledgerDetails);
+        this.balanceDrCr = this.ledgerDetails.DrCr == "DR" ? "DEBIT" : "CREDIT";
       });
   }
 
@@ -276,19 +287,26 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         );
       });
     } else {
-      subLedger.push(
-        this._fb.group({
-          ID: [null],
-          AccClassID: [
-            this.ledgerService.accountClass.length > 0
-              ? this.ledgerService.accountClass[0].ID
-              : null,
-            Validators.required,
-          ],
-          OpenBal: [0],
-          OpenBalDrCr: [this.balanceDrCr ? this.balanceDrCr : ""],
-        })
-      );
+      for (let i = 0; i < 5; i++) {
+        subLedger.push(
+          this._fb.group({
+            LedgerID: [null],
+            Name: [""],
+            Code: [""],
+            LedgerName: [""],
+            IsActive: [false],
+            IsBuiltIn: [false],
+            OpenBalanceSubLedgers: this._fb.array([
+              this.addSubLedgerBalanceFormGroup(),
+            ]),
+            CreatedBy: [""],
+            CreatedDate: [new Date()],
+            ModifiedBy: [""],
+            ModifiedDate: [""],
+            Remarks: [""],
+          })
+        );
+      }
     }
     return subLedger;
   }

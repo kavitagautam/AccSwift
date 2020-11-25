@@ -220,7 +220,6 @@
           popupAnchor
           class="form-control"
           [decimals]="decimals"
-          [disabled]="entryArray.controls[rowIndex].get('CrAmount').value > 0"
           [format]="currencyFormat"
           [formControl]="entryArray.controls[rowIndex].get('DrAmount')"
           (change)="checkDebitValue(dataItem, rowIndex)"
@@ -270,7 +269,6 @@
           class="form-control"
           [decimals]="decimals"
           [format]="currencyFormat"
-          [disabled]="entryArray.controls[rowIndex].get('DrAmount').value > 0"
           [formControl]="entryArray.controls[rowIndex].get('CrAmount')"
           (change)="checkCreditValue(dataItem, rowIndex)"
         ></kendo-numerictextbox>

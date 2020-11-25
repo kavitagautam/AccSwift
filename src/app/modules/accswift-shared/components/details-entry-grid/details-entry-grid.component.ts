@@ -859,8 +859,7 @@ export class DetailsEntryGridComponent implements OnInit {
 
     if (this.voucherType == "JRNL") {
       return this._fb.group({
-        TransactionSubLedger: this._fb.array([this.addSubLedgerFormGroup()]),
-
+        TransactionSubLedger: this._fb.array([]),
         ID: [0],
         MasterID: [0],
         LedgerCode: [""],
@@ -1018,17 +1017,6 @@ export class DetailsEntryGridComponent implements OnInit {
           })
         );
       });
-    } else {
-      subLedger.push(
-        this._fb.group({
-          ID: [null],
-          SubLedgerID: [null],
-          Name: [""],
-          Amount: [0],
-          DrCr: [""],
-          Remarks: [""],
-        })
-      );
     }
     return subLedger;
   }
