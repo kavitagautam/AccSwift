@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { SettingsService } from "./modules/settings/services/settings.service";
 import { SettingsModel } from "./modules/settings/models/settings.model";
 import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
+import { ChartsModule } from '@progress/kendo-angular-charts';
 import "@lib/ne/all"; // For Kendo Nepali Input
 import { registerLocaleData } from "@angular/common";
 // import localeNe from "@angular/common/locales/ne";
@@ -31,6 +32,14 @@ import localeGB from "@angular/common/locales/en-GB";
 import localefr from "@angular/common/locales/fr";
 import "@progress/kendo-angular-intl/locales/en-GB/all";
 import "@progress/kendo-angular-intl/locales/fr/all";
+
+import 'hammerjs';
+import { MenuModule } from '@progress/kendo-angular-menu';
+import { GridModule } from '@progress/kendo-angular-grid';
+
+
+
+
 
 // registerLocaleData(localeNe, "ne");
 registerLocaleData(localefr, "fr");
@@ -86,11 +95,14 @@ export function localFunction(settingsService: SettingsService) {
     HttpClientModule,
     BrowserAnimationsModule,
     DropDownsModule,
+    ChartsModule,
     NgxsModule.forRoot([], {
       developmentMode: !environment.production,
     }),
     NgxsLoggerPluginModule.forRoot(loggerPluginOptions),
     NgxsReduxDevtoolsPluginModule.forRoot(),
+    MenuModule,
+    GridModule,
   ],
   providers: [
     PreferenceService,

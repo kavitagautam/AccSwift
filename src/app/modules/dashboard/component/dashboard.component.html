@@ -1,4 +1,5 @@
 <section class="content" style="padding: 5px;">
+
   <div class="row">
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
@@ -79,6 +80,248 @@
     </div>
     <!-- ./col -->
   </div>
+
+  <div class="row">
+   
+    <div class="col-lg-6">
+      
+      <div class="check-account">
+        <h3 class="title">Checking Account</h3>
+        <div class="line"></div>
+        <kendo-chart  style="height:230px">
+          <kendo-chart-title></kendo-chart-title>
+          <kendo-chart-category-axis>
+              <kendo-chart-category-axis-item
+                  [categories]="['Sep 4', 'Sep 11', 'Sep 18', 'Sep 25']"
+                  [title]="{ text: 'Months' }">
+              </kendo-chart-category-axis-item>
+          </kendo-chart-category-axis>
+          <kendo-chart-series>
+            <kendo-chart-series-item type="line" [data]="[123, 276, 310, 212]">
+            </kendo-chart-series-item>
+            <kendo-chart-series-item type="line" [data]="[165, 210, 287, 144]">
+            </kendo-chart-series-item>
+            <kendo-chart-series-item type="line" [data]="[56, 140, 195, 46]">
+            </kendo-chart-series-item>
+          </kendo-chart-series>
+        </kendo-chart>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+     <div class="account-watchlist">
+      <h3 class="title">Account WatchList</h3>
+      <div class="line"></div>
+      <div class="table-responsive">
+        <table class="table table-striped">
+
+         <thead>
+          <tr>
+            <th class="text-center" scope="col">Account</th>
+            <th class="text-center" scope="col">This Month</th>
+            <th class="text-center" scope="col">YTD</th>
+          </tr>
+         </thead>
+
+         <tbody>
+          <tr>
+            <td ><a href="#">Advertising (600)</a></td>
+            <td>2,2500</td>
+            <td>10,062</td>
+          </tr>
+
+          <tr>
+            <td scope="row"><a href="#">Entertainmanet</a></td>
+            <td>131</td>
+            <td>958</td>
+          </tr>
+
+          <tr>
+            <td scope="row"><a href="#">Inventory (140)</a></td>
+            <td>19</td>
+            <td>417</td>
+          </tr>
+          
+          <tr>
+            <td scope="row"><a href="#">Sales (400)</a></td>
+            <td>109</td>
+            <td>476</td>
+          </tr>
+
+          <tr>
+            <td scope="row"><a href="#">Purchase (400)</a></td>
+            <td>109</td>
+            <td>476</td>
+          </tr>
+         </tbody>
+
+        </table>
+      </div>
+     </div>
+    </div>
+
+  </div>
+
+  <div class="row padding-top">
+
+    <div class="col-lg-6">
+      <div class="invoices">
+        <h3 class="title">Invoices owned to you</h3>
+        <div class="line"></div>
+        <div class="row">
+
+          <div class="col-lg-6">
+            <button class="btn btn-primary btn-sm" type="button">New Sales Invoice</button>
+          </div>
+  
+          <div class="col-lg-6">
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <td><a href="#">2 Draft Invoices</a></td>
+                  <td>11,000.00</td>
+                </tr>
+
+                <tr>
+                  <td><a href="#">9 Awaiting Payment</a></td>
+                  <td>9,172.00</td>
+                </tr>
+
+                <tr>
+                  <td><a href="#">5 Overdue</a></td>
+                  <td>6,978.00</td>
+                </tr>
+              </table>  
+            </div>  
+          </div>
+
+        </div>
+
+        <div class="invoice-chart">
+          <kendo-chart style="height:230px">
+            <kendo-chart-title></kendo-chart-title>
+            <kendo-chart-category-axis>
+                <kendo-chart-category-axis-item
+                    [categories]="['April', 'May', 'June', 'July', 'August', 'September']"
+                    [title]="{ text: 'Months' }">
+                </kendo-chart-category-axis-item>
+            </kendo-chart-category-axis>
+            <kendo-chart-series>
+              <kendo-chart-series-item [data]="[12, 20, 30, 60, 70, 50]">
+              </kendo-chart-series-item>
+              <kendo-chart-series-item [data]="[30, 40, 50]">
+              </kendo-chart-series-item>
+            </kendo-chart-series>
+          </kendo-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+
+      <div class="bills">
+        <h3 class="title">Bills you need to pay</h3>
+        <div class="line"></div>
+        <div class="row">
+
+          <div class="col-lg-6">
+            <button class="btn btn-primary btn-sm" type="button">New Bill</button>
+          </div>
+  
+          <div class="col-lg-6">
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <td><a href="#">2 Draft Bills</a></td>
+                  <td>11,000.00</td>
+                </tr>
+  
+                <tr>
+                  <td><a href="#">9 Awaiting Payment</a></td>
+                  <td>9,172.00</td>
+                </tr>
+  
+                <tr>
+                  <td><a href="#">5 Overdue</a></td>
+                  <td>6,978.00</td>
+                </tr>
+              </table>  
+            </div>  
+          </div>
+  
+        </div>
+        
+        <div class="bill-chart">
+          <kendo-chart  style="height:230px">
+            <kendo-chart-title></kendo-chart-title>
+            <kendo-chart-category-axis>
+                <kendo-chart-category-axis-item
+                    [categories]="['Older', 'Sep 11', 'This Week', 'Oct 25', 'Oct 20', 'Future']"
+                    [title]="{ text: 'Months' }">
+                </kendo-chart-category-axis-item>
+            </kendo-chart-category-axis>
+            <kendo-chart-series>
+              <kendo-chart-series-item [data]="[12, 276, 310, 50, 10]">
+              </kendo-chart-series-item>
+            </kendo-chart-series>
+          </kendo-chart>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+ <div class="voucher-detail padding-top">
+  <h3 class="title">Journal Voucher</h3>
+  <div class="line"></div>
+  <div class="row">
+    <kendo-grid
+          [data]="gridView"
+          [selectable]="true"
+          style="height:230px"
+        >
+        <kendo-grid-column field="VoucherNo" title="Voucher No" [width]="70"></kendo-grid-column>
+        <kendo-grid-column field="Date" title="Date" [width]="200"></kendo-grid-column>
+        <kendo-grid-column field="ProjectName" title="Project Name" [width]="300"></kendo-grid-column>
+        <kendo-grid-column field="Series" title="Series Name" [width]="100"></kendo-grid-column>
+        <ng-template kendoGridDetailTemplate let-dataItem>
+          <section *ngIf="dataItem.VoucherNo">
+            <p><strong>Remarks:</strong> {{dataItem.Remarks}}</p>
+          </section>
+        </ng-template>
+      </kendo-grid>
+  </div>
+  </div>
+
+  <div class="row padding-top">
+    <div class="col-lg-6">
+      <div class="cash-flow">
+        <h3 class="title">Cash Flow</h3>
+        <div class="line"></div>
+        <h5>Cash coming in and going out of your business.</h5>
+        <div>
+          <a class="view" href="#">View Report</a>
+        </div>
+       
+        <kendo-chart  style="height:230px">
+          <kendo-chart-category-axis>
+              <kendo-chart-category-axis-item
+                  [categories]="['Jan', 'Feb', 'Mar', 'Apr', 'May']">
+              </kendo-chart-category-axis-item>
+          </kendo-chart-category-axis>
+          <kendo-chart-series>
+            <kendo-chart-series-item type="verticalArea" [data]="[ 1, 2, 3, 5, 8 ]">
+            </kendo-chart-series-item>
+            <kendo-chart-series-item type="verticalArea" [data]="[ -1, -2, -3, -5, -8]">
+            </kendo-chart-series-item>
+          </kendo-chart-series>
+        </kendo-chart>
+      </div>
+    </div>
+  </div>
+
+  
   <!-- /.row -->
 
   <!-- top row -->
@@ -677,6 +920,8 @@
             <i class="fa fa-plus"></i> Add item
           </button>
         </div>
+
+       
       </div>
       <!-- /.box -->
     </section>
