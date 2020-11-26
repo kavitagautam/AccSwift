@@ -46,6 +46,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
     this.buildAccountGroupForm();
     this.getLedgerGroup();
     this.addMode = true;
+    this.getLedgerGroupDetails();
     if (this.selectedItem == null) {
       this.addLedgerGroup();
     }
@@ -71,7 +72,6 @@ export class AccountGroupComponent implements OnInit, OnChanges {
           this.getLedgerGroupDetails();
         } else {
           this.title = "Add ";
-
           this.addLedgerGroup();
         }
       }
@@ -80,10 +80,11 @@ export class AccountGroupComponent implements OnInit, OnChanges {
 
   getLedgerGroupDetails(): void {
     this.ledgerService
-      .getLedgerGroupDetails(this.selectedLedgerGroupId)
+      .getLedgerGroupDetails(this.ledgerGroupDetails.ID)
       .subscribe((res) => {
         this.ledgerGroupDetails = res.Entity;
         this.buildAccountGroupForm();
+        this.selectedLedgerGroupId = this.ledgerGroupDetails.ID;
       });
   }
 

@@ -1,4 +1,10 @@
-<div class="box box-default">
+<div
+  class="box box-default"
+  [ngClass]="{
+    add_component: selectedItem == null,
+    edit_component: selectedItem != null
+  }"
+>
   <h5 class="form_heading">
     {{ title }}
     <span *ngIf="ledgerGroupDetails">{{ ledgerGroupDetails.Name }}</span>
