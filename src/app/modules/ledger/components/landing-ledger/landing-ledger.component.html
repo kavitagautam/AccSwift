@@ -79,40 +79,8 @@
             <i class="fa fa-plus" aria-hidden="true"></i> Create Ledger
           </button>
         </div>
-        <div class="col-md-12 mt-3">
+        <div class="col-md-12 mt-5">
           <div #dynamicContentDiv></div>
-        </div>
-
-        <!-- <div class="col-md-12 m-2">
-          <button class="btn btn-primary mr-3" (click)="addProductGroup()">
-            <i class="fa fa-plus" aria-hidden="true"></i> Add
-          </button>
-          <button
-            class="btn btn-success mr-3"
-            (click)="editProductGroup()"
-            [disabled]="!selectedGroupId"
-          >
-            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
-          </button>
-          <button
-            class="btn btn-danger mr-3"
-            [disabled]="!selectedGroupId"
-            (click)="deleteProductGroup()"
-          >
-            <i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;&nbsp;Delete
-          </button>
-        </div> -->
-
-        <div class="col-md-12">
-          <accSwift-account-group
-            *ngIf="ledgerGroupComponent"
-            [selectedItem]="selectedItem"
-          ></accSwift-account-group>
-
-          <accSwift-account-ledger
-            *ngIf="ledgerComponent"
-            [selectedItem]="selectedItem"
-          ></accSwift-account-ledger>
         </div>
 
         <!-- <kendo-tabstrip>
