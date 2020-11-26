@@ -29,8 +29,6 @@ export class LandingLedgerComponent implements OnInit {
   ledgerTreeList: any;
   ledgerTreeNode: any;
   ledgerListView: any;
-  ledgerComponent: boolean = false;
-  ledgerGroupComponent: boolean = false;
   treeViewLoading: boolean;
   listViewLoading: boolean;
 
@@ -90,11 +88,7 @@ export class LandingLedgerComponent implements OnInit {
   selectedNode(dataItem): void {
     if (dataItem.TypeOf === 0) {
       this.selectedItem = dataItem;
-      // this.ledgerComponent = false;
-      // this.ledgerGroupComponent = true;
-      // this.selectedGroupTab = true;
-      // this.selectedLedgerTab = false;
-      console.log("dataItem" + dataItem);
+
       this.dynamicContentDiv.clear();
       const factory = this.componentFactoryResolver.resolveComponentFactory(
         AccountGroupComponent
@@ -103,11 +97,6 @@ export class LandingLedgerComponent implements OnInit {
       componentRef.instance.selectedItem = dataItem;
     } else {
       this.selectedItem = dataItem;
-      // this.ledgerComponent = true;
-      // this.ledgerGroupComponent = false;
-      // this.selectedLedgerTab = true;
-      // this.selectedGroupTab = false;
-      console.log("dataItem" + JSON.stringify(dataItem));
 
       this.dynamicContentDiv.clear();
       const factory = this.componentFactoryResolver.resolveComponentFactory(
@@ -119,10 +108,6 @@ export class LandingLedgerComponent implements OnInit {
   }
 
   addNewLedger(): void {
-    // this.selectedItem = null;
-    // this.ledgerComponent = true;
-    // this.ledgerGroupComponent = false;
-
     this.dynamicContentDiv.clear();
     const factory = this.componentFactoryResolver.resolveComponentFactory(
       AccountLedgerComponent
@@ -138,10 +123,6 @@ export class LandingLedgerComponent implements OnInit {
   }
 
   addLedgerGroup(): void {
-    // this.selectedItem = null;
-    // this.ledgerGroupComponent = true;
-    // this.ledgerComponent = false;
-
     this.dynamicContentDiv.clear();
     const factory = this.componentFactoryResolver.resolveComponentFactory(
       AccountGroupComponent
