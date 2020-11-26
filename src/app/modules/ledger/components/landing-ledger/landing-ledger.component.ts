@@ -5,10 +5,14 @@ import {
   ElementRef,
   Output,
   EventEmitter,
+  ViewContainerRef,
+  ComponentFactoryResolver,
 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
+import { AccountLedgerComponent } from "../account-ledger/account-ledger.component";
+import { AccountGroupComponent } from "../account-group/account-group.component";
 
 @Component({
   selector: "accSwift-landing-ledger",
@@ -16,6 +20,8 @@ import { Router } from "@angular/router";
   styleUrls: ["./landing-ledger.component.scss"],
 })
 export class LandingLedgerComponent implements OnInit {
+  @ViewChild("dynamicContentDiv", { read: ViewContainerRef })
+  dynamicContentDiv: ViewContainerRef;
   @Output("selectedItem") selectedItem = new EventEmitter();
   @Output("addNew") addNew: boolean;
   selectedGroupTab: boolean;
@@ -23,7 +29,6 @@ export class LandingLedgerComponent implements OnInit {
   ledgerTreeList: any;
   ledgerTreeNode: any;
   ledgerListView: any;
-
   treeViewLoading: boolean;
   listViewLoading: boolean;
 
@@ -32,7 +37,8 @@ export class LandingLedgerComponent implements OnInit {
   constructor(
     public _fb: FormBuilder,
     private ledgerService: LedgerService,
-    private router: Router
+    private router: Router,
+    private componentFactoryResolver: ComponentFactoryResolver
   ) {}
 
   ngOnInit() {
@@ -82,13 +88,47 @@ export class LandingLedgerComponent implements OnInit {
   selectedNode(dataItem): void {
     if (dataItem.TypeOf === 0) {
       this.selectedItem = dataItem;
-      this.selectedGroupTab = true;
-      this.selectedLedgerTab = false;
+
+      this.dynamicContentDiv.clear();
+      const factory = this.componentFactoryResolver.resolveComponentFactory(
+        AccountGroupComponent
+      );
+      const componentRef = this.dynamicContentDiv.createComponent(factory);
+      componentRef.instance.selectedItem = dataItem;
     } else {
       this.selectedItem = dataItem;
-      this.selectedLedgerTab = true;
-      this.selectedGroupTab = false;
+
+      this.dynamicContentDiv.clear();
+      const factory = this.componentFactoryResolver.resolveComponentFactory(
+        AccountLedgerComponent
+      );
+      const componentRef = this.dynamicContentDiv.createComponent(factory);
+      componentRef.instance.selectedItem = dataItem;
     }
+  }
+
+  addNewLedger(): void {
+    this.dynamicContentDiv.clear();
+    const factory = this.componentFactoryResolver.resolveComponentFactory(
+      AccountLedgerComponent
+    );
+    const componentRef = this.dynamicContentDiv.createComponent(factory);
+    componentRef.instance.selectedItem = null;
+
+    // componentRef.instance.onCancel.subscribe((data) => {
+    //   if (data) {
+    //     this.viewProductGroup();
+    //   }
+    // });
+  }
+
+  addLedgerGroup(): void {
+    this.dynamicContentDiv.clear();
+    const factory = this.componentFactoryResolver.resolveComponentFactory(
+      AccountGroupComponent
+    );
+    const componentRef = this.dynamicContentDiv.createComponent(factory);
+    componentRef.instance.selectedItem = null;
   }
 
   public onTabSelect(e) {

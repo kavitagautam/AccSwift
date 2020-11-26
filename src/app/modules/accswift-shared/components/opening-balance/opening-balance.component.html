@@ -1,0 +1,164 @@
+<!--Modal PopUp Opening Balance Modal-->
+
+<div class="modal-header">
+  <h3 class="modal-title pull-left">Opening Balance</h3>
+  <button
+    class="close"
+    type="button"
+    data-dismiss="modal"
+    aria-label="Close"
+    (click)="onCancel()"
+  >
+    <span aria-hidden="true">×</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container-fluid">
+    <div class="row mt-2">
+      <kendo-grid
+        [data]="subLedgerOpeningBalance.value"
+        (add)="addHandler($event)"
+        (remove)="removeHandler($event)"
+      >
+        <ng-template kendoGridToolbarTemplate>
+          <button kendoGridAddCommand>Add New</button>
+        </ng-template>
+        <kendo-grid-column field="AccClassID" title="Account Class">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-formGroup="formGroup"
+            let-isNew="isNew"
+            let-rowIndex="rowIndex"
+          >
+            <kendo-dropdownlist
+              #dropDown
+              [data]="ledgerService.accountClass"
+              [textField]="'Name'"
+              [valueField]="'ID'"
+              class="form-control"
+              [formControl]="
+                subLedgerOpeningBalance.controls[rowIndex].get('AccClassID')
+              "
+              [valuePrimitive]="true"
+            >
+            </kendo-dropdownlist>
+
+            <kendo-popup
+              [anchor]="dropDown"
+              *ngIf="
+                subLedgerOpeningBalance.controls[rowIndex].get('AccClassID')
+                  .invalid &&
+                rowSubmitted &&
+                !(
+                  isNew &&
+                  subLedgerOpeningBalance.controls[rowIndex].get('AccClassID')
+                    .untouched
+                )
+              "
+              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+            >
+              <span class="k-icon k-i-warning"></span>
+              Account Class is required
+            </kendo-popup>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="OpenBal" title="Opening Balance">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-formGroup="formGroup"
+            let-isNew="isNew"
+            let-rowIndex="rowIndex"
+          >
+            <kendo-numerictextbox
+              #ntb="popupAnchor"
+              popupAnchor
+              class="form-control"
+              [formControl]="
+                subLedgerOpeningBalance.controls[rowIndex].get(column.field)
+              "
+            ></kendo-numerictextbox>
+            <kendo-popup
+              [anchor]="popupAnchor"
+              *ngIf="
+                subLedgerOpeningBalance.controls[rowIndex].get(column.field)
+                  .invalid &&
+                rowSubmitted &&
+                !(
+                  isNew &&
+                  subLedgerOpeningBalance.controls[rowIndex].get(column.field)
+                    .untouched
+                )
+              "
+              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+            >
+              <span class="k-icon k-i-warning"></span>
+              Balance is required
+            </kendo-popup>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="OpenBalDrCr" title="Balance Type">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-formGroup="formGroup"
+            let-isNew="isNew"
+            let-rowIndex="rowIndex"
+          >
+            <kendo-dropdownlist
+              [data]="balanceType"
+              [textField]="'Name'"
+              [valueField]="'type'"
+              class="form-control"
+              [formControl]="
+                subLedgerOpeningBalance.controls[rowIndex].get(column.field)
+              "
+              [valuePrimitive]="true"
+            >
+            </kendo-dropdownlist>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-command-column title="Action" width="80">
+          <button kendoGridRemoveCommand>
+            <i
+              class="fas fa-trash-alt mr-2 cursor-pointer"
+              tooltip="Delete"
+            ></i>
+          </button>
+          <ng-template kendoGridCellTemplate let-isNew="isNew">
+            <button kendoGridRemoveCommand>
+              <i
+                class="fas fa-trash-alt mr-2 cursor-pointer"
+                tooltip="Delete"
+              ></i>
+            </button>
+          </ng-template>
+        </kendo-grid-command-column>
+      </kendo-grid>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    class="btn btn-primary"
+    type="button"
+    data-dismiss="modal"
+    (click)="onCancel()"
+  >
+    OK
+  </button>
+  <button
+    class="btn btn-secondary"
+    type="button"
+    data-dismiss="modal"
+    (click)="onCancel()"
+  >
+    Cancel
+  </button>
+</div>

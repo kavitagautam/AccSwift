@@ -262,5 +262,6 @@ export class SideNavComponent implements OnInit {
       iconName: "fas fa-tools",
       route: "/settings",
     },
+
   ];
 }

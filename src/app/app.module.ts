@@ -17,7 +17,6 @@ import { Observable } from "rxjs";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { SettingsService } from "./modules/settings/services/settings.service";
 import { SettingsModel } from "./modules/settings/models/settings.model";
-import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import "@lib/ne/all"; // For Kendo Nepali Input
 import { registerLocaleData } from "@angular/common";
 // import localeNe from "@angular/common/locales/ne";
@@ -31,6 +30,8 @@ import localeGB from "@angular/common/locales/en-GB";
 import localefr from "@angular/common/locales/fr";
 import "@progress/kendo-angular-intl/locales/en-GB/all";
 import "@progress/kendo-angular-intl/locales/fr/all";
+
+import "hammerjs";
 
 // registerLocaleData(localeNe, "ne");
 registerLocaleData(localefr, "fr");
@@ -85,7 +86,6 @@ export function localFunction(settingsService: SettingsService) {
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    DropDownsModule,
     NgxsModule.forRoot([], {
       developmentMode: !environment.production,
     }),

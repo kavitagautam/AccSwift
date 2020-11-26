@@ -81,6 +81,7 @@ export class EditJournalComponent implements OnInit {
 
   addJournalEntryFormGroup(): FormGroup {
     return this._fb.group({
+      TransactionSubLedger: this._fb.array([this.addSubLedgerFormGroup()]),
       ID: [null],
       MasterID: [null],
       LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
@@ -89,6 +90,17 @@ export class EditJournalComponent implements OnInit {
       DrAmount: [""],
       CrAmount: [""],
       LedgerBalance: [""],
+      Remarks: [""],
+    });
+  }
+
+  addSubLedgerFormGroup(): FormGroup {
+    return this._fb.group({
+      ID: [null],
+      SubLedgerID: [null],
+      Name: [""],
+      Amount: [0],
+      DrCr: [""],
       Remarks: [""],
     });
   }
@@ -103,6 +115,45 @@ export class EditJournalComponent implements OnInit {
     );
   }
 
+  setSubLedgerList(): void {
+    // this.journalVoucherForms.get(
+    //   "Journaldetails",
+    //   this.setSubLedgerListArray(this.ledgerDetails.SubLedgerList)
+    // );
+  }
+
+  // this block of code is used to show form array data in the template.....
+  setSubLedgerListArray(subLedgerList): FormArray {
+    const subLedger = new FormArray([]);
+    if (subLedgerList && subLedgerList.length > 0) {
+      subLedgerList.forEach((element) => {
+        subLedger.push(
+          this._fb.group({
+            ID: [element.ID],
+            SubLedgerID: [element.SubLedgerID],
+            Name: [element.Name],
+            Amount: [element.Amount],
+            DrCr: [element.DrCr],
+            Remarks: [element.Remarks],
+          })
+        );
+      });
+     } 
+   // else {
+    //   subLedger.push(
+    //     this._fb.group({
+    //       ID: [null],
+    //       SubLedgerID: [null],
+    //       Name: [""],
+    //       Amount: [0],
+    //       DrCr: [""],
+    //       Remarks: [""],
+    //     })
+    //   );
+    // }
+    return subLedger;
+  }
+
   get getjournalEntryList(): FormArray {
     return <FormArray>this.journalVoucherForms.get("Journaldetails");
   }
@@ -114,6 +165,9 @@ export class EditJournalComponent implements OnInit {
       journaldetails.forEach((element) => {
         journalFormArray.push(
           this._fb.group({
+            TransactionSubLedger: this.setSubLedgerListArray(
+              element.TransactionSubLedger
+            ),
             ID: [element.ID],
             MasterID: [element.MasterID],
             LedgerCode: [element.LedgerCode ? element.LedgerCode : ""],
@@ -135,6 +189,7 @@ export class EditJournalComponent implements OnInit {
     } else {
       journalFormArray.push(
         this._fb.group({
+          TransactionSubLedger: this._fb.array([this.addSubLedgerFormGroup()]),
           ID: [null],
           MasterID: [null],
           LedgerCode: [
