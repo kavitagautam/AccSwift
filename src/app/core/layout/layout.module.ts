@@ -11,18 +11,15 @@ import { SharedModule } from "@app/shared/shared.module";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { NavBarComponent } from "./admin-panel/nav-bar/nav-bar.component";
 import { SideNavComponent } from "./admin-panel/side-nav/side-nav.component";
-import { MenusModule } from '@progress/kendo-angular-menu';
-
 
 @NgModule({
   declarations: [
     AdminPanelComponent,
-
     FooterComponent,
     MenuItemComponent,
     ConfirmationDialogComponent,
     NavBarComponent,
-    SideNavComponent
+    SideNavComponent,
   ],
   imports: [
     CommonModule,
@@ -31,7 +28,6 @@ import { MenusModule } from '@progress/kendo-angular-menu';
     BrowserAnimationsModule,
     SharedModule,
     BreadcrumbsModule,
-    MenusModule
   ],
   entryComponents: [ConfirmationDialogComponent, FooterComponent],
   exports: [ConfirmationDialogComponent, FooterComponent],
