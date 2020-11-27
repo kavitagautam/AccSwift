@@ -2,12 +2,18 @@
   <kendo-tabstrip>
     <kendo-tabstrip-tab [title]="'Ledger Details'" [selected]="true">
       <ng-template kendoTabContent>
-        <div class="box box-default">
+        <div
+          class="box box-default"
+          [ngClass]="{
+            add_component: selectedItem == null,
+            edit_component: selectedItem != null
+          }"
+        >
           <h5 class="form_heading">
             {{ title }}
             <span *ngIf="ledgerDetails">{{ ledgerDetails.Name }}</span>
           </h5>
-          <div class="row clearfix mt-3">
+          <div class="col-md-12 mt-3">
             <div class="col-md-6 col-sm-6 col-xs-6">
               <div class="col-md-4 pl-0">
                 <div class="form-group">

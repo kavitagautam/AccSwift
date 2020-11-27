@@ -111,6 +111,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         this.setOpeningBalanceList();
         this.setSubLedgerList();
         this.accountLedgerForm.patchValue(this.ledgerDetails);
+        this.selectedLedgerId = this.ledgerDetails.ID;
         this.balanceDrCr = this.ledgerDetails.DrCr == "DR" ? "DEBIT" : "CREDIT";
       });
   }
@@ -149,7 +150,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       CreditLimit: [0],
       IsActive: [true],
       OpeningBalance: this._fb.array([this.addOpeningBalanceFormGroup()]),
-      SubLedgerList: this._fb.array([this.addSubLedgerFormGroup()]),
+      SubLedgerList: this.setMultipleSubLedger(),
       Remarks: [this.ledgerDetails ? this.ledgerDetails.Remarks : ""],
     });
   }
@@ -174,6 +175,31 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       OpenBal: [0],
       OpenBalDrCr: [this.balanceDrCr ? this.balanceDrCr : ""],
     });
+  }
+
+  setMultipleSubLedger(): FormArray {
+    const subLedger = new FormArray([]);
+    for (let i = 0; i < 5; i++) {
+      subLedger.push(
+        this._fb.group({
+          LedgerID: [null],
+          Name: [""],
+          Code: [""],
+          LedgerName: [""],
+          IsActive: [false],
+          IsBuiltIn: [false],
+          OpenBalanceSubLedgers: this._fb.array([
+            this.addSubLedgerBalanceFormGroup(),
+          ]),
+          CreatedBy: [""],
+          CreatedDate: [new Date()],
+          ModifiedBy: [""],
+          ModifiedDate: [""],
+          Remarks: [""],
+        })
+      );
+    }
+    return subLedger;
   }
 
   addSubLedgerFormGroup(): FormGroup {
@@ -347,7 +373,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     const selectedItem = this.ledgerService.ledgerGroupLists.filter(
       (x) => x.ID == groupId
     );
-    if (selectedItem[0].DrCr === "DR") {
+    if (selectedItem && selectedItem[0].DrCr === "DR") {
       this.balanceDrCr = "DEBIT";
     } else {
       this.balanceDrCr = "CREDIT";
