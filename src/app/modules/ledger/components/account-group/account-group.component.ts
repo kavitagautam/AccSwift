@@ -56,6 +56,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
       this.ledgerGroup = response.Entity;
     });
   }
+
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     let log: string[] = [];
     for (let p in changes) {
@@ -69,6 +70,8 @@ export class AccountGroupComponent implements OnInit, OnChanges {
           this.title = "Edit ";
           this.getLedgerGroupDetails();
         } else {
+          this.title = "Add ";
+
           this.addLedgerGroup();
         }
       }

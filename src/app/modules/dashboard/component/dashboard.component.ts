@@ -8,6 +8,41 @@ import { Component, OnInit } from "@angular/core";
 })
 export class DashboardComponent implements OnInit {
   
+  boxes: any[] = [
+    {
+      no:2, title:"Sales", amount:"Rs.4,00/Rs.9,900.00"
+    },
+    {
+      no:10, title:"Purchase", amount:"Rs.8,00/Rs.9,900.00"
+    },
+    {
+      no:3, title:"Products", amount:"Rs.6,00/Rs.9,900.00"
+    },
+    {
+      no:1, title:"Revenue", amount:"Rs.1,00/Rs.9,900.00"
+    }
+
+  ]
+
+  getBgcolor(title)
+  {
+    switch(title)
+    {
+      case "Sales":
+      return "rgb(168,210,223)";
+
+      case "Purchase":
+      return "rgb(244,245,144)";
+
+      case "Products":
+      return "rgb(139,231,139)";
+
+      case "Revenue":
+      return "rgb(242,211,214)";
+    }
+  }
+
+
   voucher = [
     {
         "VoucherNo": 17,
