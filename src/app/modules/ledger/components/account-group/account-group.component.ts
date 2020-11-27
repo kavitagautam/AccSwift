@@ -87,11 +87,11 @@ export class AccountGroupComponent implements OnInit, OnChanges {
 
   getLedgerGroupDetails(): void {
     this.ledgerService
-      .getLedgerGroupDetails(this.ledgerGroupDetails.ID)
+      .getLedgerGroupDetails(this.selectedItem.ID)
       .subscribe((res) => {
         this.ledgerGroupDetails = res.Entity;
         this.buildAccountGroupForm();
-        this.selectedLedgerGroupId = this.ledgerGroupDetails.ID;
+        this.selectedLedgerGroupId = this.selectedItem.ID;
       });
   }
 
