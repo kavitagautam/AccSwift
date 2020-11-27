@@ -46,9 +46,16 @@ export class AccountGroupComponent implements OnInit, OnChanges {
     this.buildAccountGroupForm();
     this.getLedgerGroup();
     this.addMode = true;
-    this.getLedgerGroupDetails();
     if (this.selectedItem == null) {
+      this.editMode = false;
+      this.addMode = true;
+      this.title = "Add ";
       this.addLedgerGroup();
+    } else {
+      this.editMode = true;
+      this.addMode = false;
+      this.title = "Edit ";
+      this.getLedgerGroupDetails();
     }
   }
 
