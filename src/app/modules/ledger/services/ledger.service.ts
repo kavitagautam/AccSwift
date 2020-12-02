@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { environment } from "@env/environment";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import {
+  CodeSuggestModel,
   LedgerDetailsModel,
   LedgerListViewModel,
 } from "../models/ledger.models";
@@ -92,5 +93,14 @@ export class LedgerService {
 
   getLedgerGroupList(): Observable<LedgerGroupModel> {
     return this.httpService.get(`${this._api_URL}LedgerGroup`);
+  }
+
+  getSuggestedCode(type): Observable<CodeSuggestModel> {
+    const params = new HttpParams().set("type", type);
+    return this.httpService.get(
+      `${this._api_URL}Series/SuggestedCode`,
+      null,
+      params
+    );
   }
 }
