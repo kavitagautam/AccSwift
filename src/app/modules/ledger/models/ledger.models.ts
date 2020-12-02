@@ -155,3 +155,8 @@ export interface LedgerLovModel {
   Message: string;
   Entity: LedgerLov[];
 }
+
+export interface CodeSuggestModel {
+  Code: string;
+  Type: string;
+}
