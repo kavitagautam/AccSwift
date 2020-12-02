@@ -174,6 +174,34 @@
     </kendo-grid-column>
 
     <kendo-grid-column
+      title="Sub +"
+      width="80"
+      [hidden]="!columns.includes('TransactionSubLedger')"
+    >
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem="dataItem"
+        let-column="column"
+        let-rowIndex="rowIndex"
+        let-isNew="isNew"
+        let-formGroup="formGroup"
+      >
+      <div class="form-group">
+        <button
+          type="button"
+          class="btn btn-secondory mr-2"
+          (click)="openSubLedgerModal(entryArray, rowIndex)"
+          tooltip="Sub Ledger "
+        >
+          Sub Ledger
+        </button>
+       
+      </div>
+        
+      </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column
       field="DrAmount"
       title="Debit"
       width="150"
@@ -192,7 +220,6 @@
           popupAnchor
           class="form-control"
           [decimals]="decimals"
-          [disabled]="entryArray.controls[rowIndex].get('CrAmount').value > 0"
           [format]="currencyFormat"
           [formControl]="entryArray.controls[rowIndex].get('DrAmount')"
           (change)="checkDebitValue(dataItem, rowIndex)"
@@ -242,7 +269,6 @@
           class="form-control"
           [decimals]="decimals"
           [format]="currencyFormat"
-          [disabled]="entryArray.controls[rowIndex].get('DrAmount').value > 0"
           [formControl]="entryArray.controls[rowIndex].get('CrAmount')"
           (change)="checkCreditValue(dataItem, rowIndex)"
         ></kendo-numerictextbox>
@@ -589,14 +615,14 @@
             ></span
           ></span>
           <span class="small_text"
-          >Tax :&nbsp; &nbsp;
-          <span
-            [innerHTML]="
-              entryArray.controls[rowIndex].get('TaxAmount').value
-                | currencyFormat
-            "
-          ></span
-        ></span>
+            >Tax :&nbsp; &nbsp;
+            <span
+              [innerHTML]="
+                entryArray.controls[rowIndex].get('TaxAmount').value
+                  | currencyFormat
+              "
+            ></span
+          ></span>
         </div>
       </ng-template>
       <ng-template
@@ -762,5 +788,24 @@
         </button>
       </ng-template>
     </kendo-grid-command-column>
+
+    <!-- <ng-template kendoGridDetailTemplate let-dataItem>
+      <div class="row">
+        <h1>This is THIS</h1>
+        <p><strong>In Stock:</strong> units</p>
+        <p><strong>On Order:</strong> units</p>
+        <p><strong>Reorder Level:</strong> units</p>
+        <p><strong>Discontinued:</strong></p>
+        <p><strong>Category:</strong></p>
+      </div>
+      <section *ngIf="!columns.includes('LedgerName')">
+        <h1>This is THIS</h1>
+        <p><strong>In Stock:</strong> units</p>
+        <p><strong>On Order:</strong> units</p>
+        <p><strong>Reorder Level:</strong> units</p>
+        <p><strong>Discontinued:</strong></p>
+        <p><strong>Category:</strong></p>
+      </section>
+    </ng-template> -->
   </kendo-grid>
 </div>

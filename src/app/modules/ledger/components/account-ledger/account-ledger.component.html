@@ -2,66 +2,72 @@
   <kendo-tabstrip>
     <kendo-tabstrip-tab [title]="'Ledger Details'" [selected]="true">
       <ng-template kendoTabContent>
-        <div class="box box-default">
-          <div class="col-md-12">
-            <button
-              class="btn btn-primary m-2 pull-right"
-              (click)="addNewLedger()"
-            >
-              <i class="fa fa-plus" aria-hidden="true"></i> New
-            </button>
-          </div>
+        <div
+          class="box box-default"
+          [ngClass]="{
+            add_component: selectedItem == null,
+            edit_component: selectedItem != null
+          }"
+        >
           <h5 class="form_heading">
             {{ title }}
             <span *ngIf="ledgerDetails">{{ ledgerDetails.Name }}</span>
           </h5>
-          <div class="row clearfix mt-3">
+          <div class="col-md-12 mt-3">
             <div class="col-md-6 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Ledger Name<sup>*</sup> </label>
-                <input
-                  class="form-control"
-                  formControlName="Name"
-                  accSwiftFormValidator
-                />
+              <div class="col-md-4 pl-0">
+                <div class="form-group">
+                  <label> Code <sup>*</sup> </label>
+                  <kendo-autocomplete
+                    [data]="suggestCodeList"
+                    class="form-control"
+                    formControlName="LedgerCode"
+                    [valueField]="'Code'"
+                    [suggest]="true"
+                    [placeholder]="'Code'"
+                    accSwiftFormValidator
+                  ></kendo-autocomplete>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Account Head <sup>*</sup></label>
-                <kendo-dropdownlist
-                  class="form-control"
-                  [data]="ledgerGroup"
-                  [filterable]="true"
-                  [textField]="'CodeName'"
-                  [valueField]="'ID'"
-                  [valuePrimitive]="true"
-                  [formControl]="accountLedgerForm.get('GroupID')"
-                  (filterChange)="ledgerGroupDDFilter($event)"
-                  (valueChange)="changeAccountHead()"
-                >
-                </kendo-dropdownlist>
+              <div class="col-md-8 pr-0">
+                <div class="form-group">
+                  <label> Name<sup>*</sup> </label>
+                  <input
+                    class="form-control"
+                    formControlName="Name"
+                    accSwiftFormValidator
+                  />
+                </div>
               </div>
-
-              <div class="form-group">
-                <button
-                  type="button"
-                  class="btn btn-secondory"
-                  data-toggle="modal"
-                  data-target="#openingBalanceModal"
-                >
-                  Opening Balance <sup>*</sup>
-                </button>
+              <div class="col-md-12 p-0">
+                <div class="form-group">
+                  <label>Account Head <sup>*</sup></label>
+                  <kendo-dropdownlist
+                    class="form-control"
+                    [data]="ledgerGroup"
+                    [filterable]="true"
+                    [textField]="'CodeName'"
+                    [valueField]="'ID'"
+                    [valuePrimitive]="true"
+                    [formControl]="accountLedgerForm.get('GroupID')"
+                    (filterChange)="ledgerGroupDDFilter($event)"
+                    (valueChange)="changeAccountHead()"
+                  >
+                  </kendo-dropdownlist>
+                </div>
+                <div class="form-group">
+                  <button
+                    type="button"
+                    class="btn btn-secondory"
+                    data-toggle="modal"
+                    data-target="#openingBalanceModal"
+                  >
+                    Opening Balance <sup>*</sup>
+                  </button>
+                </div>
               </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6">
-              <div class="form-group">
-                <label>Ledger Code <sup>*</sup> </label>
-                <input
-                  class="form-control"
-                  formControlName="LedgerCode"
-                  accSwiftFormValidator
-                />
-              </div>
-
               <div class="form-group">
                 <label>Currency </label>
                 <input
@@ -92,6 +98,14 @@
           [moreDetailsLedger]="accountLedgerForm"
           [ledgerDetails]="ledgerDetails"
         ></accSwift-account-ledger-more-details>
+      </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab [title]="'Sub Ledger'">
+      <ng-template kendoTabContent>
+        <accSwift-sub-ledger
+          [subLedgerList]="accountLedgerForm.get('SubLedgerList')"
+          [balanceType]="balanceDrCr"
+        ></accSwift-sub-ledger>
       </ng-template>
     </kendo-tabstrip-tab>
   </kendo-tabstrip>
@@ -247,16 +261,7 @@
                       [valuePrimitive]="true"
                     >
                     </kendo-dropdownlist>
-                    <!-- <input
-                      #input
-                      class="k-textbox"
-                      class="form-control"
-                      [formControl]="
-                        getOpeningBalanceList.controls[rowIndex].get(
-                          'AccClassID'
-                        )
-                      "
-                    /> -->
+
                     <kendo-popup
                       [anchor]="dropDown"
                       *ngIf="
@@ -346,15 +351,12 @@
                   </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-command-column title="Action" width="80">
-                  <button kendoGridRemoveCommand>
-                    <i
-                      class="fas fa-trash-alt mr-2 cursor-pointer"
-                      tooltip="Delete"
-                    ></i>
-                  </button>
-                  <ng-template kendoGridCellTemplate let-isNew="isNew">
-                    <button class="k-button" data-dismiss="modal">
-                      <i class="fas fa-save"></i>&nbsp;&nbsp;Save
+                  <ng-template kendoGridCellTemplate>
+                    <button kendoGridRemoveCommand>
+                      <i
+                        class="fas fa-trash-alt mr-2 cursor-pointer"
+                        tooltip="Delete"
+                      ></i>
                     </button>
                   </ng-template>
                 </kendo-grid-command-column>

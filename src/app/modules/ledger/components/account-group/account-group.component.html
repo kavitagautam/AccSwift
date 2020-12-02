@@ -1,9 +1,10 @@
-<div class="box box-default">
-  <div class="col-md-12">
-    <button class="btn btn-primary m-2 pull-right" (click)="addLedgerGroup()">
-      <i class="fa fa-plus" aria-hidden="true"></i> New
-    </button>
-  </div>
+<div
+  class="box box-default"
+  [ngClass]="{
+    add_component: selectedItem == null,
+    edit_component: selectedItem != null
+  }"
+>
   <h5 class="form_heading">
     {{ title }}
     <span *ngIf="ledgerGroupDetails">{{ ledgerGroupDetails.Name }}</span>
@@ -13,44 +14,48 @@
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
-          <div class="form-group">
-            <label>Group Name <sup>*</sup></label>
-            <input
-              class="form-control"
-              formControlName="Name"
-              accSwiftFormValidator
-            />
+          <div class="col-md-12 p-0">
+            <div class="col-md-4 pl-0">
+              <div class="form-group">
+                <label>Group Code<sup>*</sup></label>
+                <kendo-autocomplete
+                  [data]="suggestCodeList"
+                  class="form-control"
+                  formControlName="LedgerCode"
+                  [valueField]="'Code'"
+                  [suggest]="true"
+                  [placeholder]="'Code'"
+                  accSwiftFormValidator
+                ></kendo-autocomplete>
+              </div>
+            </div>
+            <div class="col-md-8 pr-0">
+              <div class="form-group">
+                <label>Group Name <sup>*</sup></label>
+                <input
+                  class="form-control"
+                  formControlName="Name"
+                  accSwiftFormValidator
+                />
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
-          <div class="form-group">
-            <label>Group Code<sup>*</sup></label>
-            <input
-              class="form-control"
-              formControlName="LedgerCode"
-              accSwiftFormValidator
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
-          <div class="form-group">
-            <label>Parent Group <sup>*</sup></label>
-            <kendo-dropdownlist
-              class="form-control"
-              [data]="ledgerGroup"
-              [filterable]="true"
-              [textField]="'CodeName'"
-              [valueField]="'ID'"
-              [valuePrimitive]="true"
-              [formControl]="accountGroupForm.get('ParentGroupID')"
-              (filterChange)="ledgerGroupDDFilter($event)"
-              (valueChange)="changeAccountHead()"
-            >
-            </kendo-dropdownlist>
+          <div class="col-md-12 p-0">
+            <div class="form-group">
+              <label>Parent Group <sup>*</sup></label>
+              <kendo-dropdownlist
+                class="form-control"
+                [data]="ledgerGroup"
+                [filterable]="true"
+                [textField]="'CodeName'"
+                [valueField]="'ID'"
+                [valuePrimitive]="true"
+                [formControl]="accountGroupForm.get('ParentGroupID')"
+                (filterChange)="ledgerGroupDDFilter($event)"
+                (valueChange)="changeAccountHead()"
+              >
+              </kendo-dropdownlist>
+            </div>
           </div>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6 pr-0">

@@ -152,7 +152,8 @@ export class AddPurchaseInvoiceComponent implements OnInit {
             sumTotalDiscountPer =
               sumTotalDiscountPer + invoices[i].DiscPercentage;
           }
-          if (invoices && invoices[i].TaxAmount) {
+
+          if (invoices && invoices[i].TaxAmount && invoices[i].TaxID !== null) {
             sumTaxAmount = sumTaxAmount + invoices[i].TaxAmount;
           }
         }
@@ -164,7 +165,6 @@ export class AddPurchaseInvoiceComponent implements OnInit {
         this.totalDiscountPercentage = sumTotalDiscountPer;
         this.totalTaxAmount = sumTaxAmount;
 
-        this.vatTotalAmount = this.totalNetAmount * 0.13;
         this.grandTotalAmount =
           this.totalGrossAmount -
           this.totalDiscountAmount +

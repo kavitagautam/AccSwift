@@ -14,6 +14,7 @@ export class NavBarComponent implements OnInit {
 
   userInfo: any;
   userName: any;
+  
   constructor(private router: Router) {}
 
   ngOnInit() {

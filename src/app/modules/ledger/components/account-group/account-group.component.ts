@@ -24,6 +24,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
   ledgerGroupDetails: LedgerGroup;
   accountGroupForm: FormGroup;
   ledgerGroup: LedgerGroup[] = [];
+  suggestCodeList = [];
   editMode: boolean;
   addMode: boolean;
   title: string;
@@ -47,7 +48,16 @@ export class AccountGroupComponent implements OnInit, OnChanges {
     this.getLedgerGroup();
     this.addMode = true;
     if (this.selectedItem == null) {
+      this.editMode = false;
+      this.addMode = true;
+      this.title = "Add ";
       this.addLedgerGroup();
+      this.suggestCode();
+    } else {
+      this.editMode = true;
+      this.addMode = false;
+      this.title = "Edit ";
+      this.getLedgerGroupDetails();
     }
   }
 
@@ -56,6 +66,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
       this.ledgerGroup = response.Entity;
     });
   }
+
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     let log: string[] = [];
     for (let p in changes) {
@@ -69,6 +80,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
           this.title = "Edit ";
           this.getLedgerGroupDetails();
         } else {
+          this.title = "Add ";
           this.addLedgerGroup();
         }
       }
@@ -77,10 +89,11 @@ export class AccountGroupComponent implements OnInit, OnChanges {
 
   getLedgerGroupDetails(): void {
     this.ledgerService
-      .getLedgerGroupDetails(this.selectedLedgerGroupId)
+      .getLedgerGroupDetails(this.selectedItem.ID)
       .subscribe((res) => {
         this.ledgerGroupDetails = res.Entity;
         this.buildAccountGroupForm();
+        this.selectedLedgerGroupId = this.selectedItem.ID;
       });
   }
 
@@ -108,6 +121,12 @@ export class AccountGroupComponent implements OnInit, OnChanges {
       ],
       DrCr: [this.ledgerGroupDetails ? this.ledgerGroupDetails.DrCr : ""],
       Remarks: [this.ledgerGroupDetails ? this.ledgerGroupDetails.Remarks : ""],
+    });
+  }
+
+  suggestCode(): void {
+    this.ledgerService.getSuggestedCode("GROUP").subscribe((response) => {
+      this.suggestCodeList.push({ Code: response.Code, Type: response.Type });
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Inject } from "@angular/core";
 import { environment } from "@env/environment";
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { Router } from "@angular/router";
@@ -6,6 +6,7 @@ import { FormGroup } from "@angular/forms";
 import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
 import { HttpResponse } from "@angular/common/http";
 import { saveAs } from "file-saver";
+import { DOCUMENT } from "@angular/common";
 
 @Component({
   selector: "accSwift-create-reports",
@@ -21,7 +22,8 @@ export class CreateReportsComponent implements OnInit {
   cvsList = [];
   constructor(
     private router: Router,
-    private salesInvoiceService: SalesInvoiceService
+    private salesInvoiceService: SalesInvoiceService,
+    @Inject(DOCUMENT) private document: Document
   ) {
     // if (this.router.url.indexOf("/journal") > -1) {
     //   this.voucherType = "JRNL";
@@ -104,6 +106,18 @@ export class CreateReportsComponent implements OnInit {
         }
       );
     }
+    if (this.voucherType == "PURCH") {
+      this.router.navigate(
+        [`/purchase-invoice/edit/${this.form.get("ID").value}/invoice-billing`],
+        {
+          state: this.form.get("PurchInvoiceDetails").value,
+        }
+      );
+      localStorage.setItem(
+        "purchInvoices",
+        JSON.stringify(this.form.get("PurchInvoiceDetails").value)
+      );
+    }
     if (this.voucherType == "BANK_PMNT") {
       this.router.navigate(
         [`/bank-payment/edit/${this.form.get("ID").value}/invoice-billing`],
@@ -141,29 +155,38 @@ export class CreateReportsComponent implements OnInit {
   downloadPDF(): void {
     if (this.voucherType == "SALES") {
       this.salesInvoiceService
-        .getSalesInvoicePDF(this.form.get("ID").value)
+        .getPDF(this.form.get("ID").value)
         .subscribe((response) => {
+          var newBlob = new Blob([response], { type: "application/pdf" });
           console.log("response " + JSON.stringify(response));
-          //  let filename: string = this.getFileName(response);
-          // let blob: any = new Blob([response], {
-          //   type: "text/json; charset=utf-8",
-          // });
-          // const url = window.URL.createObjectURL(blob);
-          // //window.open(url);
-          // //window.location.href = response.url;
-          // fileSaver.saveAs(blob, "employees.json");
-          var blob = new Blob([response], { type: "application/pdf" });
-          console.log(blob);
-          saveAs(blob, "testData.pdf");
-          // let binaryData = [];
-          // binaryData.push(response.body);
-          // let downloadLink = document.createElement("a");
-          // downloadLink.href = window.URL.createObjectURL(
-          //   new Blob(binaryData, { type: "blob" })
-          // );
-          // downloadLink.setAttribute("download", "invoice.pdf");
-          // document.body.appendChild(downloadLink);
-          // downloadLink.click();
+          // IE doesn't allow using a blob object directly as link href
+          // instead it is necessary to use msSaveOrOpenBlob
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(newBlob);
+            return;
+          }
+
+          // For other browsers:
+          // Create a link pointing to the ObjectURL containing the blob.
+          const data = window.URL.createObjectURL(newBlob);
+
+          var link = document.createElement("a");
+          link.href = data;
+          link.download = "Je kar.pdf";
+          // this is necessary as link.click() does not work on the latest firefox
+          link.dispatchEvent(
+            new MouseEvent("click", {
+              bubbles: true,
+              cancelable: true,
+              view: window,
+            })
+          );
+
+          setTimeout(function () {
+            // For Firefox it is necessary to delay revoking the ObjectURL
+            window.URL.revokeObjectURL(data);
+            link.remove();
+          }, 100);
         });
     }
   }
@@ -178,6 +201,10 @@ export class CreateReportsComponent implements OnInit {
     if (this.voucherType == "JRNL") {
       data = this.form.get("Journaldetails").value;
       fileName = "Journal ";
+    }
+    if (this.voucherType == "PURCH") {
+      data = this.form.get("PurchInvoiceDetails").value;
+      fileName = "Purchase Invoice ";
     }
     if (this.voucherType == "CASH_RCPT") {
       data = this.form.get("CashReceiptDetails").value;

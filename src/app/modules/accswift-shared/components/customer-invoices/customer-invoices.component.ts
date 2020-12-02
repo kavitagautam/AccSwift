@@ -28,6 +28,7 @@ export class CustomerInvoicesComponent implements OnInit {
   grandTotalAmount: number = 0;
   companyLogo: any = "";
   // select dropdown
+  currencySign: string;
   voucherType: string;
   companyDetails: Company;
   invoiceDetails: any = [];
@@ -42,6 +43,8 @@ export class CustomerInvoicesComponent implements OnInit {
     private salesInvoiceServices: SalesInvoiceService,
     private store: Store
   ) {
+    this.currencySign = localStorage.getItem("currencySymbol");
+
     this.salesInvoiceServices.getCompanyDetails().subscribe((response) => {
       this.companyDetails = response.Entity;
       if (this.companyDetails) {
@@ -67,6 +70,22 @@ export class CustomerInvoicesComponent implements OnInit {
       // this.store.dispatch([new AddInvoiceDetails(data)]);
       //console.log("this the " + JSON.stringify(data));
       const data1 = JSON.parse(localStorage.getItem("invoices"));
+      if (data1) {
+        this.invoiceDetails = data1;
+        this.calculateTotal(this.invoiceDetails);
+      }
+    }
+    if (this.router.url.indexOf("/purchase-invoice") > -1) {
+      this.voucherType = "PURCH";
+      const data = this.router.getCurrentNavigation().extras.state;
+      const obj = {
+        status: "purchInvoices",
+        InvoicesDetails: data,
+      };
+
+      // this.store.dispatch([new AddInvoiceDetails(data)]);
+      console.log("this the " + JSON.stringify(data));
+      const data1 = JSON.parse(localStorage.getItem("purchInvoices"));
       if (data1) {
         this.invoiceDetails = data1;
         this.calculateTotal(this.invoiceDetails);

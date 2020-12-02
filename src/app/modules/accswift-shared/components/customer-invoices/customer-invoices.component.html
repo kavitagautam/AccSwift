@@ -53,7 +53,7 @@
 
 <kendo-pdf-export
   #pdf
-  paperSize="A4"
+  paperSize="A6"
   margin="1cm"
   [scale]="0.8"
   [repeatHeaders]="true"
@@ -246,7 +246,7 @@
     <div style="font-size: 11px; font-weight: bold"></div>
 
     <table
-      *ngIf="voucherType == 'SALES'"
+      *ngIf="voucherType == 'SALES' || voucherType == 'PURCH'"
       id="header-fixed"
       class="table table-hover table-fixed"
       style="width: 80%"
@@ -268,10 +268,22 @@
           <td *ngIf="invoice.ProductName">{{ i + 1 }}</td>
           <td *ngIf="invoice.ProductName">{{ invoice.ProductName }}</td>
           <td *ngIf="invoice.ProductName">{{ invoice.Quantity }}</td>
-          <td *ngIf="invoice.ProductName">{{ invoice.SalesRate }}</td>
-          <td *ngIf="invoice.ProductName">{{ invoice.Amount }}</td>
-          <td *ngIf="invoice.ProductName">{{ invoice.DiscountAmount }}</td>
-          <td *ngIf="invoice.ProductName">{{ invoice.NetAmount }}</td>
+          <td *ngIf="invoice.ProductName">
+            {{ currencySign }}
+            <span *ngIf="voucherType == 'SALES'">{{ invoice.SalesRate }} </span>
+            <span *ngIf="voucherType == 'PURCH'"
+              >{{ invoice.PurchaseRate }}
+            </span>
+          </td>
+          <td *ngIf="invoice.ProductName">
+            {{ currencySign }} {{ invoice.Amount }}
+          </td>
+          <td *ngIf="invoice.ProductName">
+            {{ currencySign }} {{ invoice.DiscountAmount }}
+          </td>
+          <td *ngIf="invoice.ProductName">
+            {{ currencySign }} {{ invoice.NetAmount }}
+          </td>
         </tr>
         <tr *ngIf="invoiceDetails.length - 1 == 0" align="center">
           <span>No Data Avaiable</span>
@@ -286,27 +298,38 @@
             >
           </td>
           <td colspan="2" align="right">Gross Total</td>
-          <td colspan="1" align="right">{{ totalGrossAmount }}</td>
+          <td colspan="1" align="right">
+            {{ currencySign }} &nbsp; {{ totalGrossAmount | number: "1.2-2" }}
+          </td>
         </tr>
         <tr>
           <td colspan="4"></td>
           <td colspan="2" align="right">Discount</td>
-          <td colspan="1" align="right">{{ totalDiscountAmount }}</td>
+          <td colspan="1" align="right">
+            {{ currencySign }} &nbsp;
+            {{ totalDiscountAmount | number: "1.2-2" }}
+          </td>
         </tr>
         <tr>
           <td colspan="4"></td>
           <td colspan="2" align="right">Net Amount</td>
-          <td colspan="1" align="right">{{ totalNetAmount }}</td>
+          <td colspan="1" align="right">
+            {{ currencySign }} &nbsp; {{ totalNetAmount | number: "1.2-2" }}
+          </td>
         </tr>
         <tr>
           <td colspan="4"></td>
           <td colspan="2" align="right">VAT</td>
-          <td colspan="1" align="right">{{ vatTotalAmount }}</td>
+          <td colspan="1" align="right">
+            {{ currencySign }} &nbsp; {{ vatTotalAmount | number: "1.2-2" }}
+          </td>
         </tr>
         <tr>
           <td colspan="4"></td>
           <td colspan="2" align="right">Grand Total</td>
-          <td colspan="1" align="right">{{ grandTotalAmount }}</td>
+          <td colspan="1" align="right">
+            {{ currencySign }} &nbsp; {{ grandTotalAmount | number: "1.2-2" }}
+          </td>
         </tr>
       </tfoot>
     </table>
