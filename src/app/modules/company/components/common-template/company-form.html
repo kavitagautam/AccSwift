@@ -25,21 +25,25 @@
 
             <div class="form-group">
               <label>Company Code<sup>*</sup></label>
-              <input
+              <kendo-autocomplete
+                [data]="companycode"
                 class="form-control"
                 formControlName="Code"
                 accSwiftFormValidator
-              />
+              >
+              </kendo-autocomplete>
             </div>
 
+
             <div class="form-group">
-              <label>Email</label>
+              <label>Email<sup>*</sup></label>
               <input
                 class="form-control"
                 formControlName="Email"
                 accSwiftFormValidator
               />
             </div>
+            
             <div class="form-group">
               <label>WebSite</label>
               <input
@@ -48,6 +52,15 @@
                 accSwiftFormValidator
               />
             </div>
+
+            <div class="form-group">
+              <label>Phone<sup>*</sup></label>
+              <input ng2TelInput name="phoneNumber" id="phoneNumber" class="form-control" phone autocomplete="off"
+              maxlength="14" (blur)="onSubmit()" [(ngModel)]="phoneNumber" formControlName="Phone"
+              accSwiftFormValidator
+              />
+            </div>
+
           </div>
           <div class="col-md-4">
             <div class="form-group">
@@ -124,13 +137,15 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label>User Name<sup>*</sup></label>
-                <input
-                  class="form-control"
-                  formControlName="UserName"
-                  id="username"
-                  name="username"
-                  accSwiftFormValidator
-                />
+              <kendo-autocomplete
+                id="username"
+                name="username"
+                [data]="username"
+                class="form-control"
+                formControlName="UserName"
+                accSwiftFormValidator
+              >
+              </kendo-autocomplete>
               </div>
             </div>
             <div class="col-md-3">
@@ -151,6 +166,7 @@
     </div>
   </form>
 </div>
+
 <div class="box-footer">
   <div class="mb-2">
     <button
