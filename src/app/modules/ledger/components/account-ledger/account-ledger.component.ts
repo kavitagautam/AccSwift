@@ -36,7 +36,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   rowSubmitted: boolean;
   submitted: boolean;
   ledgerGroup: LedgerGroup[] = [];
-
+  suggestCodeList = [];
   private editedRowIndex: number;
   balanceDrCr: string;
   modalRef: BsModalRef;
@@ -63,11 +63,11 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       this.addMode = true;
       this.title = "Add ";
       this.addAccountLedger();
+      this.suggestCode();
     } else {
       this.editMode = true;
       this.addMode = false;
       this.title = "Edit ";
-
       this.getLedgerDetails();
     }
   }
@@ -366,6 +366,12 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       );
     }
     return subOpeningBlc;
+  }
+
+  suggestCode(): void {
+    this.ledgerService.getSuggestedCode("LEDGER").subscribe((response) => {
+      this.suggestCodeList.push({ Code: response.Code, Type: response.Type });
+    });
   }
 
   changeAccountHead(): void {

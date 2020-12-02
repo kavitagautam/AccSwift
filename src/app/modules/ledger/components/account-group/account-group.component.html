@@ -18,11 +18,15 @@
             <div class="col-md-4 pl-0">
               <div class="form-group">
                 <label>Group Code<sup>*</sup></label>
-                <input
+                <kendo-autocomplete
+                  [data]="suggestCodeList"
                   class="form-control"
                   formControlName="LedgerCode"
+                  [valueField]="'Code'"
+                  [suggest]="true"
+                  [placeholder]="'Code'"
                   accSwiftFormValidator
-                />
+                ></kendo-autocomplete>
               </div>
             </div>
             <div class="col-md-8 pr-0">
