@@ -17,6 +17,7 @@ import { AccountLedgerMoreDetailsComponent } from "./components/account-ledger-m
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 import { SubLedgerComponent } from "./components/sub-ledger/sub-ledger.component";
 import { OpeningBalanceComponent } from "@accSwift-modules/accswift-shared/components/opening-balance/opening-balance.component";
+import { LabelModule } from "@progress/kendo-angular-label";
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { OpeningBalanceComponent } from "@accSwift-modules/accswift-shared/compo
     DropDownListModule,
     DropDownsModule,
     LedgerRoutingModule,
+    LabelModule,
   ],
   entryComponents: [
     OpeningBalanceComponent,

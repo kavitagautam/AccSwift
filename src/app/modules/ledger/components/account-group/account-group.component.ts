@@ -24,6 +24,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
   ledgerGroupDetails: LedgerGroup;
   accountGroupForm: FormGroup;
   ledgerGroup: LedgerGroup[] = [];
+  suggestCodeList = [];
   editMode: boolean;
   addMode: boolean;
   title: string;
@@ -51,6 +52,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
       this.addMode = true;
       this.title = "Add ";
       this.addLedgerGroup();
+      this.suggestCode();
     } else {
       this.editMode = true;
       this.addMode = false;
@@ -119,6 +121,12 @@ export class AccountGroupComponent implements OnInit, OnChanges {
       ],
       DrCr: [this.ledgerGroupDetails ? this.ledgerGroupDetails.DrCr : ""],
       Remarks: [this.ledgerGroupDetails ? this.ledgerGroupDetails.Remarks : ""],
+    });
+  }
+
+  suggestCode(): void {
+    this.ledgerService.getSuggestedCode("GROUP").subscribe((response) => {
+      this.suggestCodeList.push({ Code: response.Code, Type: response.Type });
     });
   }
 
