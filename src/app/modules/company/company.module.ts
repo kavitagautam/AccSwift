@@ -13,7 +13,7 @@ import { EditCompanyComponent } from "./components/edit-company/edit-company.com
 import { SharedModule } from "@app/shared/shared.module";
 import { UploadsModule } from "@progress/kendo-angular-upload";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
-import { PMaskDirective } from "@app/p-mask.directive";
+import { PMaskDirective } from "@app/shared/directives/phone-mask/p-mask.directive";
 import { Ng2TelInputModule } from 'ng2-tel-input';
 
 
