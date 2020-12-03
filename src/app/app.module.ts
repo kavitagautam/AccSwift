@@ -90,7 +90,7 @@ export function localFunction(settingsService: SettingsService) {
       developmentMode: !environment.production,
     }),
     NgxsLoggerPluginModule.forRoot(loggerPluginOptions),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   providers: [
     PreferenceService,
