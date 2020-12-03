@@ -21,6 +21,7 @@ import {
 } from "ngx-bootstrap";
 import { DateFormatPipe } from "./pipes/dateFormat/date-format.pipe";
 import { PhoneMaskDirective } from "./directives/phone-mask/phone-mask.directive";
+import { PMaskDirective } from "./directives/phone-mask/p-mask.directive";
 import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { LayoutModule } from "@progress/kendo-angular-layout";
@@ -39,6 +40,7 @@ import { FormSubmitValidationMessageDirective } from "./directives/validators/su
     PhoneMaskDirective,
     FormControlValidationMessageDirective,
     FormSubmitValidationMessageDirective,
+    PMaskDirective,
   ],
   imports: [
     FormsModule,
@@ -76,6 +78,7 @@ import { FormSubmitValidationMessageDirective } from "./directives/validators/su
     CommonModalComponent,
     DateFormatPipe,
     PhoneMaskDirective,
+    PMaskDirective,
     FormControlValidationMessageDirective,
     FormSubmitValidationMessageDirective,
   ],
