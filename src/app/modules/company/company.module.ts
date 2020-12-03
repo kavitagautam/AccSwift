@@ -13,16 +13,13 @@ import { EditCompanyComponent } from "./components/edit-company/edit-company.com
 import { SharedModule } from "@app/shared/shared.module";
 import { UploadsModule } from "@progress/kendo-angular-upload";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
-import { PMaskDirective } from "@app/shared/directives/phone-mask/p-mask.directive";
-import { Ng2TelInputModule } from 'ng2-tel-input';
-
+import { Ng2TelInputModule } from "ng2-tel-input";
 
 @NgModule({
   declarations: [
     ListCompanyComponent,
     AddCompanyComponent,
     EditCompanyComponent,
-    PMaskDirective
   ],
   imports: [
     CommonModule,
@@ -37,7 +34,7 @@ import { Ng2TelInputModule } from 'ng2-tel-input';
     UploadsModule,
     DropDownListModule,
     DropDownsModule,
-    Ng2TelInputModule
+    Ng2TelInputModule,
   ],
 })
 export class CompanyModule {}

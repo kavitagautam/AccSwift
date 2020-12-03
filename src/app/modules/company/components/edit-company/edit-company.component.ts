@@ -15,6 +15,31 @@ export class EditCompanyComponent implements OnInit {
   companyLogo: any = "";
   companyDetails: Company;
   companyForm: FormGroup;
+  username: string[] = [
+    " Young Innovations ",
+    "Imagine Web Solution ",
+    "Smart Designs ",
+    " 	F1Soft International ",
+    "Bent Ray Technologies ",
+    "Pracas Infosys ",
+    "SoftNEP",
+    "Peace Nepal DOT Com ",
+  ];
+
+  companycode: string[] = [
+    "+977",
+    "+01",
+    "+93",
+    "+02",
+    "+03",
+    "+04",
+    "+05",
+    "+06",
+    "+07",
+    "+08",
+    "+09",
+    "+010",
+  ];
 
   constructor(
     public _fb: FormBuilder,
