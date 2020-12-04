@@ -13,6 +13,6 @@ export interface Items
 export interface ItemsRootModel
 {
     StatusCode: number;
-      Message: string;
-      Entity: Items[];
+    Message: string;
+    Entity: Items[];
 }

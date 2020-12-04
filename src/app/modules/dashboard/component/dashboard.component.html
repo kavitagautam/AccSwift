@@ -136,7 +136,7 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let item of lstitems">
+                <tr *ngFor="let item of items">
                   <td scope="row">
                     <a href="#"
                       >{{ item.VoucherTypeFullName }} ({{
@@ -191,51 +191,25 @@
         <div class="account-watchlist">
           <h3 class="title">Account WatchList</h3>
           <div class="line"></div>
-          <div class="table-responsive">
+          <div
+            class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+          >
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th class="text-left" scope="col">UserName</th>
-                  <th class="text-left" scope="col">Bank</th>
+                  <th class="text-left" scope="col">Ledger Name</th>
+                  <th class="text-left" scope="col">Group Name</th>
                   <th class="text-left" scope="col">Balance</th>
                 </tr>
               </thead>
 
               <tbody>
-                <tr>
-                  <td><a href="#">John Doe</a></td>
-                  <td>Himalayan Life Nepal</td>
-                  <td>17,054.000</td>
-                </tr>
-
-                <tr>
-                  <td scope="row"><a href="#">Merry Roi</a></td>
-                  <td>Himalayan Life Nepal</td>
-                  <td>17,054.000</td>
-                </tr>
-
-                <tr>
-                  <td scope="row"><a href="#">John Doe</a></td>
-                  <td>Himalayan Life Nepal</td>
-                  <td>17,054.000</td>
-                </tr>
-
-                <tr>
-                  <td scope="row"><a href="#">Jenny Joshi</a></td>
-                  <td>Himalayan Life Nepal</td>
-                  <td>17,054.000</td>
-                </tr>
-
-                <tr>
-                  <td scope="row"><a href="#">John Doe</a></td>
-                  <td>Himalayan Life Nepal</td>
-                  <td>17,054.000</td>
-                </tr>
-
-                <tr>
-                  <td><a href="#">Rohn Doe</a></td>
-                  <td>Himalayan Life Nepal</td>
-                  <td>17,054.000</td>
+                <tr *ngFor="let account of accounts">
+                  <td scope="row">
+                    <a href="#">{{ account.LedgerName }}</a>
+                  </td>
+                  <td>{{ account.GroupName }}</td>
+                  <td>{{ account.Balance }}</td>
                 </tr>
               </tbody>
             </table>
@@ -323,7 +297,7 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let field of lstfields">
+                <tr *ngFor="let field of fields">
                   <td scope="row">
                     <a href="#"
                       >{{ field.VoucherTypeFullName }} ({{

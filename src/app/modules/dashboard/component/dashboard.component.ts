@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { AccTransactService } from '@app/core/services/acc-transact/acc-transact.service';
-import { Fields , FieldsRootModel} from "@app/modules/accswift-shared/models/acc-transact.model.ts";
-import { InvTransactService } from '@app/core/services/inv-transact/inv-transact.service';
-import { Items , ItemsRootModel} from "@app/modules/accswift-shared/models/inv-transact.model.ts";
+import { AccTransactService } from "@app/modules/dashboard/services/acc-transact/acc-transact.service";
+import { Fields , FieldsRootModel} from "@accSwift-modules/dashboard/models/acc-transact.model";
+import { Account , AccountRootModel} from "@accSwift-modules/dashboard/models/acc-watchlist.model";
+import { Items , ItemsRootModel} from "@accSwift-modules/dashboard/models/inv-transact.model";
 
 @Component({
   selector: "accSwift-dashboard",
@@ -48,11 +48,11 @@ export class DashboardComponent implements OnInit {
 
   voucher = [
     {
-        "VoucherNo": 17,
-        "Date": new Date(1996, 8, 20),
-        "ProjectName": "All Project",
-        "Series": "Main",
-        "Remarks": "Being Cash deposited into bank."
+      "VoucherNo": 17,
+      "Date": new Date(1996, 8, 20),
+      "ProjectName": "All Project",
+      "Series": "Main",
+      "Remarks": "Being Cash deposited into bank."
     },
     {
       "VoucherNo": 18,
@@ -80,29 +80,38 @@ export class DashboardComponent implements OnInit {
 
   public gridView: any[] = this.voucher;
 
-  constructor(private _AccTransactService: AccTransactService ,
-    private _InvTransactService: InvTransactService) {}
+  constructor(private _AccTransactService: AccTransactService) {}
 
-  lstfields: Fields[]=[];
-  lstitems: Items[]=[];
+  fields: Fields[]=[];
+  accounts: Account[]=[];
+  items: Items[]=[];
   ngOnInit() {
     this._AccTransactService.getfields()
     .subscribe
     (
       (response: FieldsRootModel)=>
      {
-       this.lstfields = response.Entity;
+       this.fields = response.Entity;
      }
     );
 
-    this._InvTransactService.getitems()
+    this._AccTransactService.getaccounts()
+    .subscribe
+    (
+      (response: AccountRootModel)=>
+     {
+       this.accounts = response.Entity;
+     }
+    );
+
+    this._AccTransactService.getitems()
     .subscribe
     (
       (response: ItemsRootModel)=>
      {
-       this.lstitems = response.Entity;
+       this.items = response.Entity;
      }
     );
-  }
 
+  }
 }
