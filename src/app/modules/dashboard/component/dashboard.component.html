@@ -136,18 +136,18 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let item of items">
+                <tr *ngFor="let InvTransaction of InvTransactionList">
                   <td scope="row">
                     <a href="#"
-                      >{{ item.VoucherTypeFullName }} ({{
-                        item.NoOfVouchers
+                      >{{ InvTransaction.VoucherTypeFullName }} ({{
+                        InvTransaction.NoOfVouchers
                       }})</a
                     >
                   </td>
-                  <td>{{ item.InBoundQty }}</td>
-                  <td>{{ item.OutBoundQty }}</td>
-                  <td>{{ item.AmountThisMonth }}</td>
-                  <td>{{ item.AmountTotal }}</td>
+                  <td>{{ InvTransaction.InBoundQty }}</td>
+                  <td>{{ InvTransaction.OutBoundQty }}</td>
+                  <td>{{ InvTransaction.AmountThisMonth }}</td>
+                  <td>{{ InvTransaction.AmountTotal }}</td>
                 </tr>
               </tbody>
             </table>
@@ -204,7 +204,7 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let account of accounts">
+                <tr *ngFor="let account of Accounts">
                   <td scope="row">
                     <a href="#">{{ account.LedgerName }}</a>
                   </td>
@@ -297,16 +297,16 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let field of fields">
+                <tr *ngFor="let AccountTransaction of AccountTransactionList">
                   <td scope="row">
                     <a href="#"
-                      >{{ field.VoucherTypeFullName }} ({{
-                        field.NoOfVouchers
+                      >{{ AccountTransaction.VoucherTypeFullName }} ({{
+                        AccountTransaction.NoOfVouchers
                       }})</a
                     >
                   </td>
-                  <td>{{ field.AmountThisMonth }}</td>
-                  <td>{{ field.AmountTotal }}</td>
+                  <td>{{ AccountTransaction.AmountThisMonth }}</td>
+                  <td>{{ AccountTransaction.AmountTotal }}</td>
                 </tr>
               </tbody>
             </table>

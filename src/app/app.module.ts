@@ -30,7 +30,7 @@ import localeGB from "@angular/common/locales/en-GB";
 import localefr from "@angular/common/locales/fr";
 import "@progress/kendo-angular-intl/locales/en-GB/all";
 import "@progress/kendo-angular-intl/locales/fr/all";
-import { AccTransactService } from "./modules/dashboard/services/acc-transact/acc-transact.service";
+import { AccTransactService } from "./modules/dashboard/services/dashboard-service/acc-transact.service";
 
 import "hammerjs";
 

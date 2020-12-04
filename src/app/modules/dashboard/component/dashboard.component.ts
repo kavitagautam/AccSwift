@@ -1,8 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { AccTransactService } from "@app/modules/dashboard/services/acc-transact/acc-transact.service";
-import { Fields , FieldsRootModel} from "@accSwift-modules/dashboard/models/acc-transact.model";
-import { Account , AccountRootModel} from "@accSwift-modules/dashboard/models/acc-watchlist.model";
-import { Items , ItemsRootModel} from "@accSwift-modules/dashboard/models/inv-transact.model";
+import { AccTransactService } from "@accSwift-modules/dashboard/services/dashboard-service/acc-transact.service";
+import { AccountTransact , AccountTransactRootModel , Account , AccountRootModel , InvTransact , InvTransactRootModel} from "@accSwift-modules/dashboard/models/dashboard-model.";
+
 
 @Component({
   selector: "accSwift-dashboard",
@@ -82,16 +81,16 @@ export class DashboardComponent implements OnInit {
 
   constructor(private _AccTransactService: AccTransactService) {}
 
-  fields: Fields[]=[];
-  accounts: Account[]=[];
-  items: Items[]=[];
+  AccountTransactionList: AccountTransact[]=[];
+  Accounts: Account[]=[];
+  InvTransactionList: InvTransact[]=[];
   ngOnInit() {
-    this._AccTransactService.getfields()
+    this._AccTransactService.getAccountTransact()
     .subscribe
     (
-      (response: FieldsRootModel)=>
+      (response: AccountTransactRootModel)=>
      {
-       this.fields = response.Entity;
+       this.AccountTransactionList = response.Entity;
      }
     );
 
@@ -100,16 +99,16 @@ export class DashboardComponent implements OnInit {
     (
       (response: AccountRootModel)=>
      {
-       this.accounts = response.Entity;
+       this.Accounts = response.Entity;
      }
     );
 
-    this._AccTransactService.getitems()
+    this._AccTransactService.getInvTransact()
     .subscribe
     (
-      (response: ItemsRootModel)=>
+      (response: InvTransactRootModel)=>
      {
-       this.items = response.Entity;
+       this.InvTransactionList = response.Entity;
      }
     );
 
