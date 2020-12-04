@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators} from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { CompanyService } from "../../services/company.service";
 import { ToastrService } from "ngx-toastr";
@@ -11,9 +11,31 @@ import { SelectEvent } from "@progress/kendo-angular-upload";
   styleUrls: ["./add-company.component.scss"],
 })
 export class AddCompanyComponent implements OnInit {
+  username: string[] = [
+    " Young Innovations ",
+    "Imagine Web Solution ",
+    "Smart Designs ",
+    " 	F1Soft International ",
+    "Bent Ray Technologies ",
+    "Pracas Infosys ",
+    "SoftNEP",
+    "Peace Nepal DOT Com ",
+  ];
 
-  user_name :string[]= [' Young Innovations ', 'Imagine Web Solution ', 'Smart Designs ', ' 	F1Soft International ', 'Bent Ray Technologies ', 'Pracas Infosys ', 'SoftNEP', 'Peace Nepal DOT Com '];
-  company_code :string[]= ['+977','+01','+93','+02','+03','+04','+05','+06','+07','+08','+09','+010'];
+  companycode: string[] = [
+    "+977",
+    "+01",
+    "+93",
+    "+02",
+    "+03",
+    "+04",
+    "+05",
+    "+06",
+    "+07",
+    "+08",
+    "+09",
+    "+010",
+  ];
 
   Phone: string;
 
@@ -38,8 +60,8 @@ export class AddCompanyComponent implements OnInit {
       Name: ["", Validators.required],
       Code: ["", Validators.required],
       Telephone: [""],
-      Email: ['', [Validators.required, Validators.email]],
-      Phone: ['', [Validators.required]],
+      Email: ["", [Validators.required, Validators.email]],
+      Phone: ["", [Validators.required]],
       Website: [""],
       POBox: [""],
       PAN: [""],
@@ -60,7 +82,6 @@ export class AddCompanyComponent implements OnInit {
     });
   }
 
-
   public selectEventHandler(e: SelectEvent): void {
     const that = this;
     e.files.forEach((file) => {
@@ -80,6 +101,7 @@ export class AddCompanyComponent implements OnInit {
   }
 
   public save(): void {
+    console.log(JSON.stringify(this.companyForm.getRawValue()));
     if (this.companyForm.invalid) return;
 
     this.companyService.addCompany(this.companyForm.value).subscribe(
@@ -100,12 +122,7 @@ export class AddCompanyComponent implements OnInit {
     this.router.navigate(["/company"]);
   }
 
-  onCountryChange(event)
-  {
+  onCountryChange(event) {
     console.log(event);
   }
-
-
-  public username: string[] = this.user_name;
-  public companycode: string[] = this.company_code;
 }

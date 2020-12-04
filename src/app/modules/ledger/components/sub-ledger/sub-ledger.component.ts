@@ -13,7 +13,7 @@ export class SubLedgerComponent implements OnInit {
   @Input("") subLedgerList: FormArray;
   @Input("") balanceType: string;
   modalRefSubLedger: BsModalRef;
-
+  suggestCodeList = [];
   openingBalance: number;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -24,12 +24,20 @@ export class SubLedgerComponent implements OnInit {
     private modalService: BsModalService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.suggestCode();
+  }
 
   get getSubLedgerList(): FormArray {
     return <FormArray>this.subLedgerList;
   }
 
+  suggestCode(): void {
+    this.suggestCodeList = [];
+    this.ledgerService.getSuggestedCode("SUBLEDGER").subscribe((response) => {
+      this.suggestCodeList.push({ Code: response.Code, Type: response.Type });
+    });
+  }
   public removeHandler({ dataItem, rowIndex }): void {
     const openingList = <FormArray>this.subLedgerList;
     // Remove the Row
