@@ -30,6 +30,8 @@ import localeGB from "@angular/common/locales/en-GB";
 import localefr from "@angular/common/locales/fr";
 import "@progress/kendo-angular-intl/locales/en-GB/all";
 import "@progress/kendo-angular-intl/locales/fr/all";
+import { AccTransactService } from "./core/services/acc-transact/acc-transact.service";
+import { InvTransactService } from "./core/services/inv-transact/inv-transact.service";
 
 import "hammerjs";
 
@@ -93,6 +95,8 @@ export function localFunction(settingsService: SettingsService) {
     NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   providers: [
+    AccTransactService,
+    InvTransactService,
     PreferenceService,
     {
       provide: APP_INITIALIZER,

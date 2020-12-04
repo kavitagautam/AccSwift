@@ -41,6 +41,8 @@ export class EditCompanyComponent implements OnInit {
     "+010",
   ];
 
+  Phone: string;
+
   constructor(
     public _fb: FormBuilder,
     private router: Router,

@@ -1,5 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-
+import { AccTransactService } from '@app/core/services/acc-transact/acc-transact.service';
+import { Fields , FieldsRootModel} from "@app/modules/accswift-shared/models/acc-transact.model.ts";
+import { InvTransactService } from '@app/core/services/inv-transact/inv-transact.service';
+import { Items , ItemsRootModel} from "@app/modules/accswift-shared/models/inv-transact.model.ts";
 
 @Component({
   selector: "accSwift-dashboard",
@@ -76,7 +79,30 @@ export class DashboardComponent implements OnInit {
   ];
 
   public gridView: any[] = this.voucher;
-  constructor() {}
 
-  ngOnInit() {}
+  constructor(private _AccTransactService: AccTransactService ,
+    private _InvTransactService: InvTransactService) {}
+
+  lstfields: Fields[]=[];
+  lstitems: Items[]=[];
+  ngOnInit() {
+    this._AccTransactService.getfields()
+    .subscribe
+    (
+      (response: FieldsRootModel)=>
+     {
+       this.lstfields = response.Entity;
+     }
+    );
+
+    this._InvTransactService.getitems()
+    .subscribe
+    (
+      (response: ItemsRootModel)=>
+     {
+       this.lstitems = response.Entity;
+     }
+    );
+  }
+
 }

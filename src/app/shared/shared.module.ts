@@ -38,9 +38,9 @@ import { FormSubmitValidationMessageDirective } from "./directives/validators/su
     PopupAnchorDirective,
     DateFormatPipe,
     PhoneMaskDirective,
-    FormControlValidationMessageDirective,
-    FormSubmitValidationMessageDirective,
     PMaskDirective,
+    FormControlValidationMessageDirective,
+    FormSubmitValidationMessageDirective
   ],
   imports: [
     FormsModule,
