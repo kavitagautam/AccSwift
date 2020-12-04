@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { AccTransactService } from "@accSwift-modules/dashboard/services/dashboard-service/acc-transact.service";
+import { AccountTransact , AccountTransactRootModel , Account , AccountRootModel , InvTransact , InvTransactRootModel} from "@accSwift-modules/dashboard/models/dashboard-model.";
 
 
 @Component({
@@ -45,11 +47,11 @@ export class DashboardComponent implements OnInit {
 
   voucher = [
     {
-        "VoucherNo": 17,
-        "Date": new Date(1996, 8, 20),
-        "ProjectName": "All Project",
-        "Series": "Main",
-        "Remarks": "Being Cash deposited into bank."
+      "VoucherNo": 17,
+      "Date": new Date(1996, 8, 20),
+      "ProjectName": "All Project",
+      "Series": "Main",
+      "Remarks": "Being Cash deposited into bank."
     },
     {
       "VoucherNo": 18,
@@ -76,7 +78,39 @@ export class DashboardComponent implements OnInit {
   ];
 
   public gridView: any[] = this.voucher;
-  constructor() {}
 
-  ngOnInit() {}
+  constructor(private _AccTransactService: AccTransactService) {}
+
+  AccountTransactionList: AccountTransact[]=[];
+  Accounts: Account[]=[];
+  InvTransactionList: InvTransact[]=[];
+  ngOnInit() {
+    this._AccTransactService.getAccountTransact()
+    .subscribe
+    (
+      (response: AccountTransactRootModel)=>
+     {
+       this.AccountTransactionList = response.Entity;
+     }
+    );
+
+    this._AccTransactService.getaccounts()
+    .subscribe
+    (
+      (response: AccountRootModel)=>
+     {
+       this.Accounts = response.Entity;
+     }
+    );
+
+    this._AccTransactService.getInvTransact()
+    .subscribe
+    (
+      (response: InvTransactRootModel)=>
+     {
+       this.InvTransactionList = response.Entity;
+     }
+    );
+
+  }
 }
