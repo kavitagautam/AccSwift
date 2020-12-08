@@ -10,7 +10,7 @@ import { AccountTransact , AccountTransactRootModel , Account , AccountRootModel
 })
 export class DashboardComponent implements OnInit {
   
-  boxes: any[] = [
+  GeneralSummaryList: any[] = [
     {
       no:2, title:"Sales", amount:"Rs.4,00/Rs.9,900.00"
     },
@@ -18,10 +18,10 @@ export class DashboardComponent implements OnInit {
       no:10, title:"Purchase", amount:"Rs.8,00/Rs.9,900.00"
     },
     {
-      no:3, title:"Products", amount:"Rs.6,00/Rs.9,900.00"
+      no:3, title:"Bank Account", amount:"Rs.6,00/Rs.9,900.00"
     },
     {
-      no:1, title:"Revenue", amount:"Rs.1,00/Rs.9,900.00"
+      no:1, title:"Net Profit", amount:"Rs.1,00/Rs.9,900.00"
     }
 
   ]
@@ -36,10 +36,10 @@ export class DashboardComponent implements OnInit {
       case "Purchase":
       return "rgb(244,245,144)";
 
-      case "Products":
+      case "Bank Account":
       return "rgb(139,231,139)";
 
-      case "Revenue":
+      case "Net Profit":
       return "rgb(242,211,214)";
     }
   }
@@ -84,6 +84,7 @@ export class DashboardComponent implements OnInit {
   AccountTransactionList: AccountTransact[]=[];
   Accounts: Account[]=[];
   InvTransactionList: InvTransact[]=[];
+  
   ngOnInit() {
     this._AccTransactService.getAccountTransact()
     .subscribe
