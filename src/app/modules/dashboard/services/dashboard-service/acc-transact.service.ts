@@ -9,9 +9,9 @@ import { environment } from "@env/environment";
   providedIn: 'root'
 })
 export class AccTransactService {
-  AccountTransactionList: AccountTransact[]=[];
+  accountTransactionList: AccountTransact[]=[];
   Accounts: Account[]=[];
-  InvTransactionList: InvTransact[]=[];
+  invTransactionList: InvTransact[]=[];
   _api_URL = environment.baseAPI;
 
   constructor(private httpclient: HttpClient , 
@@ -24,7 +24,7 @@ export class AccTransactService {
     );
   }
 
-  getaccounts(): Observable<AccountRootModel>
+  getAccounts(): Observable<AccountRootModel>
   {
     return this.httpService.get(
       `${this._api_URL}AccountSummary`

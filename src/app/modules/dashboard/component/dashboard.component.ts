@@ -10,7 +10,7 @@ import { AccountTransact , AccountTransactRootModel , Account , AccountRootModel
 })
 export class DashboardComponent implements OnInit {
   
-  GeneralSummaryList: any[] = [
+  generalSummaryList: any[] = [
     {
       no:2, title:"Sales", amount:"Rs.4,00/Rs.9,900.00"
     },
@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
 
   ]
 
-  getBgcolor(title)
+  getBgColor(title)
   {
     switch(title)
     {
@@ -81,9 +81,9 @@ export class DashboardComponent implements OnInit {
 
   constructor(private _AccTransactService: AccTransactService) {}
 
-  AccountTransactionList: AccountTransact[]=[];
+  accountTransactionList: AccountTransact[]=[];
   Accounts: Account[]=[];
-  InvTransactionList: InvTransact[]=[];
+  invTransactionList: InvTransact[]=[];
   
   ngOnInit() {
     this._AccTransactService.getAccountTransact()
@@ -91,11 +91,11 @@ export class DashboardComponent implements OnInit {
     (
       (response: AccountTransactRootModel)=>
      {
-       this.AccountTransactionList = response.Entity;
+       this.accountTransactionList = response.Entity;
      }
     );
 
-    this._AccTransactService.getaccounts()
+    this._AccTransactService.getAccounts()
     .subscribe
     (
       (response: AccountRootModel)=>
@@ -109,7 +109,7 @@ export class DashboardComponent implements OnInit {
     (
       (response: InvTransactRootModel)=>
      {
-       this.InvTransactionList = response.Entity;
+       this.invTransactionList = response.Entity;
      }
     );
 

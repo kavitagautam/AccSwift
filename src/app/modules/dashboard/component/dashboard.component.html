@@ -2,20 +2,20 @@
   <section class="box_wrap">
     <div class="row">
       <div
-        *ngFor="let GeneralSummary of GeneralSummaryList"
+        *ngFor="let generalSummary of generalSummaryList"
         class="col-lg-3 col-sm-6 col-6"
       >
         <div class="box d-flex">
           <div
-            [ngStyle]="{ 'background-color': getBgcolor(GeneralSummary.title) }"
+            [ngStyle]="{ 'background-color': getBgColor(generalSummary.title) }"
             class="sales icon_cont"
           >
             <i class="ion ion-bag"><i class="fas fa-universal-access"></i></i>
           </div>
           <div class="details">
-            <div class="qty">{{ GeneralSummary.no }}</div>
-            <b>{{ GeneralSummary.title }}</b>
-            <small>{{ GeneralSummary.amount }}</small>
+            <div class="qty">{{ generalSummary.no }}</div>
+            <b>{{ generalSummary.title }}</b>
+            <small>{{ generalSummary.amount }}</small>
           </div>
         </div>
       </div>
@@ -157,47 +157,47 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let InvTransaction of InvTransactionList">
+                <tr *ngFor="let invTransaction of invTransactionList">
                   <td
                     scope="row"
-                    [ngSwitch]="InvTransaction.VoucherTypeFullName"
+                    [ngSwitch]="invTransaction.VoucherTypeFullName"
                   >
                     <a *ngSwitchCase="'Purchase'" routerLink="/purchase-invoice"
-                      >{{ InvTransaction.VoucherTypeFullName }} ({{
-                        InvTransaction.NoOfVouchers
+                      >{{ invTransaction.VoucherTypeFullName }} ({{
+                        invTransaction.NoOfVouchers
                       }})</a
                     >
                     <a
                       *ngSwitchCase="'Purchase Return'"
                       routerLink="/purchase-return"
-                      >{{ InvTransaction.VoucherTypeFullName }} ({{
-                        InvTransaction.NoOfVouchers
+                      >{{ invTransaction.VoucherTypeFullName }} ({{
+                        invTransaction.NoOfVouchers
                       }})</a
                     >
                     <a
                       *ngSwitchCase="'Sales Invoice'"
                       routerLink="/sales-invoice"
-                      >{{ InvTransaction.VoucherTypeFullName }} ({{
-                        InvTransaction.NoOfVouchers
+                      >{{ invTransaction.VoucherTypeFullName }} ({{
+                        invTransaction.NoOfVouchers
                       }})</a
                     >
                     <a *ngSwitchCase="'Sales Return'" routerLink="/sales-return"
-                      >{{ InvTransaction.VoucherTypeFullName }} ({{
-                        InvTransaction.NoOfVouchers
+                      >{{ invTransaction.VoucherTypeFullName }} ({{
+                        invTransaction.NoOfVouchers
                       }})</a
                     >
                   </td>
-                  <td>{{ InvTransaction.InBoundQty }}</td>
-                  <td>{{ InvTransaction.OutBoundQty }}</td>
+                  <td>{{ invTransaction.InBoundQty }}</td>
+                  <td>{{ invTransaction.OutBoundQty }}</td>
                   <td
                     class="text-right"
                     [innerHTML]="
-                      InvTransaction.AmountThisMonth | currencyFormat
+                      invTransaction.AmountThisMonth | currencyFormat
                     "
                   ></td>
                   <td
                     class="text-right"
-                    [innerHTML]="InvTransaction.AmountTotal | currencyFormat"
+                    [innerHTML]="invTransaction.AmountTotal | currencyFormat"
                   ></td>
                 </tr>
               </tbody>
@@ -348,99 +348,99 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let AccountTransaction of AccountTransactionList">
+                <tr *ngFor="let accountTransaction of accountTransactionList">
                   <td
                     scope="row"
-                    [ngSwitch]="AccountTransaction.VoucherTypeFullName"
+                    [ngSwitch]="accountTransaction.VoucherTypeFullName"
                   >
                     <!--<a
                       *ngIf="
-                        AccountTransaction.VoucherTypeFullName == 'Journal'
+                        accountTransaction.VoucherTypeFullName == 'Journal'
                       "
                       routerLink="/journal"
-                      >{{ AccountTransaction.VoucherTypeFullName }} ({{
-                        AccountTransaction.NoOfVouchers
+                      >{{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
                       }})</a
                     >-->
                     <a
                       *ngSwitchCase="'Bank Payment'"
                       routerLink="/bank-payment"
                     >
-                      {{ AccountTransaction.VoucherTypeFullName }} ({{
-                        AccountTransaction.NoOfVouchers
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
                       }})</a
                     >
                     <a
                       *ngSwitchCase="'Bank Receipt'"
                       routerLink="/bank-receipt"
                     >
-                      {{ AccountTransaction.VoucherTypeFullName }} ({{
-                        AccountTransaction.NoOfVouchers
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
                       }})</a
                     >
                     <a
                       *ngSwitchCase="'Bank Reconciliation'"
                       routerLink="/bank-reconciliation"
                     >
-                      {{ AccountTransaction.VoucherTypeFullName }} ({{
-                        AccountTransaction.NoOfVouchers
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
                       }})</a
                     >
                     <a
                       *ngSwitchCase="'Cash Payment'"
                       routerLink="/cash-payment"
                     >
-                      {{ AccountTransaction.VoucherTypeFullName }} ({{
-                        AccountTransaction.NoOfVouchers
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
                       }})</a
                     >
                     <a
                       *ngSwitchCase="'Cash Receipt'"
                       routerLink="/cash-receipt"
                     >
-                      {{ AccountTransaction.VoucherTypeFullName }} ({{
-                        AccountTransaction.NoOfVouchers
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
                       }})</a
                     >
                     <a
                       *ngSwitchCase="'Cheque Receipt'"
                       routerLink="/cheque-receipt"
                     >
-                      {{ AccountTransaction.VoucherTypeFullName }} ({{
-                        AccountTransaction.NoOfVouchers
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
                       }})</a
                     >
                     <a *ngSwitchCase="'Contra'" routerLink="/contra-voucher">
-                      {{ AccountTransaction.VoucherTypeFullName }} ({{
-                        AccountTransaction.NoOfVouchers
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
                       }})</a
                     >
                     <a *ngSwitchCase="'Credit Note'" routerLink="/#">
-                      {{ AccountTransaction.VoucherTypeFullName }} ({{
-                        AccountTransaction.NoOfVouchers
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
                       }})</a
                     >
                     <a *ngSwitchCase="'Debit Note'" routerLink="/#">
-                      {{ AccountTransaction.VoucherTypeFullName }} ({{
-                        AccountTransaction.NoOfVouchers
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
                       }})</a
                     >
                     <a *ngSwitchCase="'Journal'" routerLink="/journal">
-                      {{ AccountTransaction.VoucherTypeFullName }} ({{
-                        AccountTransaction.NoOfVouchers
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
                       }})</a
                     >
                   </td>
                   <td
                     class="text-right"
                     [innerHTML]="
-                      AccountTransaction.AmountThisMonth | currencyFormat
+                      accountTransaction.AmountThisMonth | currencyFormat
                     "
                   ></td>
                   <td
                     class="text-right"
                     [innerHTML]="
-                      AccountTransaction.AmountTotal | currencyFormat
+                      accountTransaction.AmountTotal | currencyFormat
                     "
                   ></td>
                 </tr>
