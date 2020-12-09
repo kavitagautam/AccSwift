@@ -256,8 +256,8 @@
 
               <tbody>
                 <tr *ngFor="let account of Accounts">
-                  <td scope="row">
-                    <a href="#">{{ account.LedgerName }}</a>
+                  <td scope="row" style="color: blue">
+                    {{ account.LedgerName }}
                   </td>
                   <td>{{ account.GroupName }}</td>
                   <td class="text-right">{{ account.Balance }}</td>
@@ -415,12 +415,12 @@
                         accountTransaction.NoOfVouchers
                       }})</a
                     >
-                    <a *ngSwitchCase="'Credit Note'" routerLink="/#">
+                    <a *ngSwitchCase="'Credit Note'" routerLink="">
                       {{ accountTransaction.VoucherTypeFullName }} ({{
                         accountTransaction.NoOfVouchers
                       }})</a
                     >
-                    <a *ngSwitchCase="'Debit Note'" routerLink="/#">
+                    <a *ngSwitchCase="'Debit Note'" routerLink="">
                       {{ accountTransaction.VoucherTypeFullName }} ({{
                         accountTransaction.NoOfVouchers
                       }})</a
