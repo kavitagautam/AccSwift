@@ -49,3 +49,19 @@ export interface InvTransactRootModel
     Message: string;
     Entity: InvTransact[];
 }
+
+export interface GeneralSummary
+{
+    Title: string;
+    Balance: string;
+    AmountThisMonth: 0;
+    AmountThisYear: 0;
+    NoOfVouchers: 0
+}
+
+export interface GeneralSummaryRootModel
+{
+    StatusCode: number;
+    Message: string;
+    Entity: GeneralSummary[];
+}

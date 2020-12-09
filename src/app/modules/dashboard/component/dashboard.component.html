@@ -7,15 +7,21 @@
       >
         <div class="box d-flex">
           <div
-            [ngStyle]="{ 'background-color': getBgColor(generalSummary.title) }"
+            [ngStyle]="{ 'background-color': getBgColor(generalSummary.Title) }"
             class="sales icon_cont"
           >
             <i class="ion ion-bag"><i class="fas fa-universal-access"></i></i>
           </div>
           <div class="details">
-            <div class="qty">{{ generalSummary.no }}</div>
-            <b>{{ generalSummary.title }}</b>
-            <small>{{ generalSummary.amount }}</small>
+            <div class="qty">{{ generalSummary.NoOfVouchers }}</div>
+            <b>{{ generalSummary.Title }}</b>
+            <small *ngIf="generalSummary.Title == 'Bank Balance'">{{
+              generalSummary.Balance
+            }}</small>
+            <small *ngIf="generalSummary.Title != 'Bank Balance'"
+              >{{ generalSummary.AmountThisMonth }} /
+              {{ generalSummary.AmountThisYear }}</small
+            >
           </div>
         </div>
       </div>
@@ -415,12 +421,12 @@
                         accountTransaction.NoOfVouchers
                       }})</a
                     >
-                    <a *ngSwitchCase="'Credit Note'" routerLink="/#">
+                    <a *ngSwitchCase="'Credit Note'" routerLink="">
                       {{ accountTransaction.VoucherTypeFullName }} ({{
                         accountTransaction.NoOfVouchers
                       }})</a
                     >
-                    <a *ngSwitchCase="'Debit Note'" routerLink="/#">
+                    <a *ngSwitchCase="'Debit Note'" routerLink="">
                       {{ accountTransaction.VoucherTypeFullName }} ({{
                         accountTransaction.NoOfVouchers
                       }})</a

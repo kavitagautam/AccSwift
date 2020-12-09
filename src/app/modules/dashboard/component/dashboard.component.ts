@@ -6,6 +6,8 @@ import {
   AccountRootModel,
   InvTransact,
   InvTransactRootModel,
+  GeneralSummary,
+  GeneralSummaryRootModel
 } from "@accSwift-modules/dashboard/models/dashboard-model.";
 import { DashBoardService } from "../services/dashboard.service";
 
@@ -15,41 +17,20 @@ import { DashBoardService } from "../services/dashboard.service";
   styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
-  generalSummaryList: any[] = [
-    {
-      no: 2,
-      title: "Sales",
-      amount: "Rs.4,00/Rs.9,900.00",
-    },
-    {
-      no: 10,
-      title: "Purchase",
-      amount: "Rs.8,00/Rs.9,900.00",
-    },
-    {
-      no: 3,
-      title: "Products",
-      amount: "Rs.6,00/Rs.9,900.00",
-    },
-    {
-      no: 1,
-      title: "Revenue",
-      amount: "Rs.1,00/Rs.9,900.00",
-    },
-  ];
+  
 
-  getBgColor(title) {
-    switch (title) {
+  getBgColor(Title) {
+    switch (Title) {
       case "Sales":
         return "rgb(168,210,223)";
 
       case "Purchase":
         return "rgb(244,245,144)";
 
-      case "Products":
+      case "Profit":
         return "rgb(139,231,139)";
 
-      case "Revenue":
+      case "Bank Balance":
         return "rgb(242,211,214)";
     }
   }
@@ -92,6 +73,7 @@ export class DashboardComponent implements OnInit {
   accountTransactionList: AccountTransact[] = [];
   Accounts: Account[] = [];
   invTransactionList: InvTransact[] = [];
+  generalSummaryList: GeneralSummary[] = [];
   ngOnInit() {
     this.dashBoardService
       .getAccountTransact()
@@ -109,6 +91,12 @@ export class DashboardComponent implements OnInit {
       .getInvTransact()
       .subscribe((response: InvTransactRootModel) => {
         this.invTransactionList = response.Entity;
+      });
+
+    this.dashBoardService
+      .getGeneralSummary()
+      .subscribe((response: GeneralSummaryRootModel) => {
+        this.generalSummaryList = response.Entity;
       });
   }
 }
