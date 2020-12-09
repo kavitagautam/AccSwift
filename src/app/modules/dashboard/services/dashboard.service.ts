@@ -16,9 +16,9 @@ import { environment } from "@env/environment";
   providedIn: "root",
 })
 export class DashBoardService {
-  AccountTransactionList: AccountTransact[] = [];
+  accountTransactionList: AccountTransact[] = [];
   Accounts: Account[] = [];
-  InvTransactionList: InvTransact[] = [];
+  invTransactionList: InvTransact[] = [];
   _api_URL = environment.baseAPI;
 
   constructor(

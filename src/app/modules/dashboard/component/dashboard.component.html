@@ -1,18 +1,21 @@
 <section class="dashboard_content">
   <section class="box_wrap">
     <div class="row">
-      <div *ngFor="let box of boxes" class="col-lg-3 col-sm-6 col-6">
+      <div
+        *ngFor="let generalSummary of generalSummaryList"
+        class="col-lg-3 col-sm-6 col-6"
+      >
         <div class="box d-flex">
           <div
-            [ngStyle]="{ 'background-color': getBgcolor(box.title) }"
+            [ngStyle]="{ 'background-color': getBgColor(generalSummary.title) }"
             class="sales icon_cont"
           >
             <i class="ion ion-bag"><i class="fas fa-universal-access"></i></i>
           </div>
           <div class="details">
-            <div class="qty">{{ box.no }}</div>
-            <b>{{ box.title }}</b>
-            <small>{{ box.amount }}</small>
+            <div class="qty">{{ generalSummary.no }}</div>
+            <b>{{ generalSummary.title }}</b>
+            <small>{{ generalSummary.amount }}</small>
           </div>
         </div>
       </div>
@@ -21,6 +24,24 @@
 
   <section class="inner_content">
     <div class="card-columns">
+      <div class="card padding-top">
+        <h3 class="title">Bills Reminder</h3>
+        <div class="line"></div>
+
+        <div class="bills-reminder">
+          <h3>No More Late Fees!</h3>
+          <b>You have 3 bills due by 20 Dec.</b>
+          <div class="bills-detail">
+            <span>Rs.10,999</span>
+            <a href="#">View Bills</a>
+          </div>
+
+          <div class="days">
+            <b>20</b>
+            <b>Days Left!</b>
+          </div>
+        </div>
+      </div>
       <div class="card padding-top">
         <div class="check-account">
           <h3 class="title">Checking Account</h3>
@@ -130,24 +151,54 @@
                   <th class="text-left" scope="col">Types of Voucher</th>
                   <th class="text-left" scope="col">IBQ</th>
                   <th class="text-left" scope="col">OBQ</th>
-                  <th class="text-left" scope="col">This Month</th>
-                  <th class="text-left" scope="col">YTD</th>
+                  <th class="text-right" scope="col">This Month</th>
+                  <th class="text-right" scope="col">YTD</th>
                 </tr>
               </thead>
 
               <tbody>
-                <tr *ngFor="let InvTransaction of InvTransactionList">
-                  <td scope="row">
-                    <a href="#"
-                      >{{ InvTransaction.VoucherTypeFullName }} ({{
-                        InvTransaction.NoOfVouchers
+                <tr *ngFor="let invTransaction of invTransactionList">
+                  <td
+                    scope="row"
+                    [ngSwitch]="invTransaction.VoucherTypeFullName"
+                  >
+                    <a *ngSwitchCase="'Purchase'" routerLink="/purchase-invoice"
+                      >{{ invTransaction.VoucherTypeFullName }} ({{
+                        invTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Purchase Return'"
+                      routerLink="/purchase-return"
+                      >{{ invTransaction.VoucherTypeFullName }} ({{
+                        invTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Sales Invoice'"
+                      routerLink="/sales-invoice"
+                      >{{ invTransaction.VoucherTypeFullName }} ({{
+                        invTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a *ngSwitchCase="'Sales Return'" routerLink="/sales-return"
+                      >{{ invTransaction.VoucherTypeFullName }} ({{
+                        invTransaction.NoOfVouchers
                       }})</a
                     >
                   </td>
-                  <td>{{ InvTransaction.InBoundQty }}</td>
-                  <td>{{ InvTransaction.OutBoundQty }}</td>
-                  <td>{{ InvTransaction.AmountThisMonth }}</td>
-                  <td>{{ InvTransaction.AmountTotal }}</td>
+                  <td>{{ invTransaction.InBoundQty }}</td>
+                  <td>{{ invTransaction.OutBoundQty }}</td>
+                  <td
+                    class="text-right"
+                    [innerHTML]="
+                      invTransaction.AmountThisMonth | currencyFormat
+                    "
+                  ></td>
+                  <td
+                    class="text-right"
+                    [innerHTML]="invTransaction.AmountTotal | currencyFormat"
+                  ></td>
                 </tr>
               </tbody>
             </table>
@@ -199,7 +250,7 @@
                 <tr>
                   <th class="text-left" scope="col">Ledger Name</th>
                   <th class="text-left" scope="col">Group Name</th>
-                  <th class="text-left" scope="col">Balance</th>
+                  <th class="text-right" scope="col">Balance</th>
                 </tr>
               </thead>
 
@@ -209,7 +260,7 @@
                     <a href="#">{{ account.LedgerName }}</a>
                   </td>
                   <td>{{ account.GroupName }}</td>
-                  <td>{{ account.Balance }}</td>
+                  <td class="text-right">{{ account.Balance }}</td>
                 </tr>
               </tbody>
             </table>
@@ -291,22 +342,107 @@
               <thead>
                 <tr>
                   <th class="text-left" scope="col">Types of Voucher</th>
-                  <th class="text-left" scope="col">This Month</th>
-                  <th class="text-left" scope="col">YTD</th>
+                  <th class="text-right" scope="col">This Month</th>
+                  <th class="text-right" scope="col">YTD</th>
                 </tr>
               </thead>
 
               <tbody>
-                <tr *ngFor="let AccountTransaction of AccountTransactionList">
-                  <td scope="row">
-                    <a href="#"
-                      >{{ AccountTransaction.VoucherTypeFullName }} ({{
-                        AccountTransaction.NoOfVouchers
+                <tr *ngFor="let accountTransaction of accountTransactionList">
+                  <td
+                    scope="row"
+                    [ngSwitch]="accountTransaction.VoucherTypeFullName"
+                  >
+                    <!--<a
+                      *ngIf="
+                        accountTransaction.VoucherTypeFullName == 'Journal'
+                      "
+                      routerLink="/journal"
+                      >{{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >-->
+                    <a
+                      *ngSwitchCase="'Bank Payment'"
+                      routerLink="/bank-payment"
+                    >
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Bank Receipt'"
+                      routerLink="/bank-receipt"
+                    >
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Bank Reconciliation'"
+                      routerLink="/bank-reconciliation"
+                    >
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Cash Payment'"
+                      routerLink="/cash-payment"
+                    >
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Cash Receipt'"
+                      routerLink="/cash-receipt"
+                    >
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Cheque Receipt'"
+                      routerLink="/cheque-receipt"
+                    >
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a *ngSwitchCase="'Contra'" routerLink="/contra-voucher">
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a *ngSwitchCase="'Credit Note'" routerLink="/#">
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a *ngSwitchCase="'Debit Note'" routerLink="/#">
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a *ngSwitchCase="'Journal'" routerLink="/journal">
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
                       }})</a
                     >
                   </td>
-                  <td>{{ AccountTransaction.AmountThisMonth }}</td>
-                  <td>{{ AccountTransaction.AmountTotal }}</td>
+                  <td
+                    class="text-right"
+                    [innerHTML]="
+                      accountTransaction.AmountThisMonth | currencyFormat
+                    "
+                  ></td>
+                  <td
+                    class="text-right"
+                    [innerHTML]="
+                      accountTransaction.AmountTotal | currencyFormat
+                    "
+                  ></td>
                 </tr>
               </tbody>
             </table>
@@ -347,28 +483,12 @@
             <ng-template kendoGridDetailTemplate let-dataItem>
               <section *ngIf="dataItem.VoucherNo">
                 <p><strong>Remarks:</strong> {{ dataItem.Remarks }}</p>
+                <a routerLink="/journal" routerLinkActive="active">
+                  Voucher Transaction List</a
+                >
               </section>
             </ng-template>
           </kendo-grid>
-        </div>
-      </div>
-
-      <div class="card padding-top">
-        <h3 class="title">Bills Reminder</h3>
-        <div class="line"></div>
-
-        <div class="bills-reminder">
-          <h3>No More Late Fees!</h3>
-          <b>You have 3 bills due by 20 Dec.</b>
-          <div class="bills-detail">
-            <span>Rs.10,999</span>
-            <a href="#">View Bills</a>
-          </div>
-
-          <div class="days">
-            <b>20</b>
-            <b>Days Left!</b>
-          </div>
         </div>
       </div>
     </div>

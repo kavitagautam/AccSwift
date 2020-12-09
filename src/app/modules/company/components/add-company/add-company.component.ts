@@ -122,7 +122,4 @@ export class AddCompanyComponent implements OnInit {
     this.router.navigate(["/company"]);
   }
 
-  onCountryChange(event) {
-    console.log(event);
-  }
 }

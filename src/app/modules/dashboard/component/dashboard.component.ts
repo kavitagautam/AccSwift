@@ -15,7 +15,7 @@ import { DashBoardService } from "../services/dashboard.service";
   styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
-  boxes: any[] = [
+  generalSummaryList: any[] = [
     {
       no: 2,
       title: "Sales",
@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
-  getBgcolor(title) {
+  getBgColor(title) {
     switch (title) {
       case "Sales":
         return "rgb(168,210,223)";
@@ -89,14 +89,14 @@ export class DashboardComponent implements OnInit {
 
   constructor(private dashBoardService: DashBoardService) {}
 
-  AccountTransactionList: AccountTransact[] = [];
+  accountTransactionList: AccountTransact[] = [];
   Accounts: Account[] = [];
-  InvTransactionList: InvTransact[] = [];
+  invTransactionList: InvTransact[] = [];
   ngOnInit() {
     this.dashBoardService
       .getAccountTransact()
       .subscribe((response: AccountTransactRootModel) => {
-        this.AccountTransactionList = response.Entity;
+        this.accountTransactionList = response.Entity;
       });
 
     this.dashBoardService
@@ -108,7 +108,7 @@ export class DashboardComponent implements OnInit {
     this.dashBoardService
       .getInvTransact()
       .subscribe((response: InvTransactRootModel) => {
-        this.InvTransactionList = response.Entity;
+        this.invTransactionList = response.Entity;
       });
   }
 }
