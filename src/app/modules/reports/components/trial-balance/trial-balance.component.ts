@@ -16,12 +16,14 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 import { GroupBalanceReportComponent } from "@accSwift-modules/accswift-shared/components/group-balance-report/group-balance-report.component";
 import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component";
+import { IconConst } from "@app/shared/constants/icon.constant";
 @Component({
   selector: "accSwift-trial-balance",
   templateUrl: "./trial-balance.component.html",
 })
 export class TrialBalanceComponent implements OnInit, AfterViewInit {
   trailBalnceList: TrailBalance[] = [];
+  iconConst = IconConst;
 
   listLoading: boolean;
 
@@ -185,5 +187,28 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
           );
         });
     }
+  }
+
+  downloadPDF(): void {
+    let newWin;
+    var divToPrint = document.getElementById("header-fixed");
+    newWin = window.open("");
+    newWin.document.write(divToPrint.outerHTML);
+    newWin.print();
+    // newWin.close();
+    // let printContents, popupWin;
+    // printContents = document.getElementById("header-fixed").innerHTML;
+    // popupWin = window.open("", "_blank", "top=0,left=0,height=100%,width=auto");
+    // popupWin.document.open();
+    // popupWin.document.write(`
+    //   <html>
+    //     <head>
+    //       <title>Print tab</title>
+    //       // You need to insert the stylesheet to the print function
+    //       <link rel="stylesheet" href="correct href to your stylesheet">
+    //     </head>
+    // <body onload="window.print();window.close()">${printContents}</body>
+    //   </html>`);
+    // popupWin.document.close();
   }
 }

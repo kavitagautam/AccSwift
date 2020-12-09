@@ -9,6 +9,46 @@
         Trail Balance Settings
       </button>
     </div>
+    <div class="col-md-12 col-xs-12" style="margin-top: 18px">
+      <div class="move-right">
+        <button
+          class="btn btn-default mr-2 mt-2"
+          tooltip="Generate Pdf"
+          (click)="downloadPDF()"
+        >
+          <!-- (click)="pdf.saveAs('customer-invoice.pdf')" -->
+
+          <i class="{{ iconConst.EXPORT_TO_PDF }}"></i>
+        </button>
+        <button
+          class="btn btn-default mr-2 mt-2"
+          tooltip="CSV Export"
+          (click)="exportToCSV()"
+        >
+          <i class="{{ iconConst.EXPORT_TO_CSV }}"></i>
+        </button>
+        <button
+          class="btn btn-default mr-2 mt-2"
+          tooltip="Preview"
+          (click)="invoiceBilling()"
+        >
+          <i class="{{ iconConst.PREVIEW }}"></i>
+        </button>
+        <!-- <button
+      class="btn btn-default mr-2 mt-2"
+      tooltip="Print"
+      printSectionId="print-section"
+      ngxPrint
+      [useExistingCss]="true"
+      (click)="invoiceBilling()"
+    >
+      <i class="{{ iconConst.PRINT }}"></i>
+    </button> -->
+        <button class="btn btn-default mr-2 mt-2" disabled tooltip="Email">
+          <i class="{{ iconConst.EMAIL }}"></i>
+        </button>
+      </div>
+    </div>
     <h1 style="text-align: center">Trial Balance</h1>
     <h3 style="text-align: center" *ngIf="projectName">
       Project : {{ projectName }}
