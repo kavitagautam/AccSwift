@@ -263,6 +263,18 @@ export class SettingsReportsComponent implements OnInit {
     this.settingsForms.get("ProductGroupID").enable();
   }
 
+  // Filterable Ledger Group
+  ledgerGroupDDFilter(value): void {
+    this.ledgerGroupList = this.reportService.ledgerGroupLists.filter(
+      (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
+  ledgerDDFilter(value): void {
+    this.ledgerMinList = this.reportService.ledgerMinLists.filter(
+      (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
   endOfMonth(): void {
     var today = new Date();
     var lastDayOfMonth = new Date(

@@ -14,7 +14,7 @@
   <form [formGroup]="settingsForms" novalidate>
     <div class="col-md-12">
       <fieldset>
-        <div class="col-md-12 p-0">
+        <legend>
           <div class="form-group">
             <div class="checkbox">
               <label>
@@ -29,6 +29,8 @@
               </label>
             </div>
           </div>
+        </legend>
+        <div class="col-md-12 p-0">
           <div class="col-md-3">
             <div class="form-group" *ngIf="formsField.includes('FromDate')">
               <label>From Date</label>
@@ -79,48 +81,51 @@
             </button>
           </div>
         </div>
+      </fieldset>
+      <fieldset *ngIf="formsField.includes('DisplayFormat')">
         <div class="col-md-12 p-0">
-          <div class="col-md-12">
-            <div class="col-md-6">
-              <div
-                class="form-group"
-                *ngIf="formsField.includes('DisplayFormat')"
-              >
-                <div class="radio">
-                  <label>
-                    <input
-                      type="radio"
-                      name="DisplayFormat"
-                      value="TFormat"
-                      formControlName="DisplayFormat"
-                    />
-                    T-Format
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div
-                class="form-group"
-                *ngIf="formsField.includes('DisplayFormat')"
-              >
-                <div class="radio">
-                  <label>
-                    <input
-                      type="radio"
-                      name="DisplayFormat"
-                      value="Vertical"
-                      formControlName="DisplayFormat"
-                    />
-                    Vertical
-                  </label>
-                </div>
+          <div class="col-md-6">
+            <div
+              class="form-group"
+              *ngIf="formsField.includes('DisplayFormat')"
+            >
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="DisplayFormat"
+                    value="TFormat"
+                    formControlName="DisplayFormat"
+                  />
+                  T-Format
+                </label>
               </div>
             </div>
           </div>
-
+          <div class="col-md-6">
+            <div
+              class="form-group"
+              *ngIf="formsField.includes('DisplayFormat')"
+            >
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="DisplayFormat"
+                    value="Vertical"
+                    formControlName="DisplayFormat"
+                  />
+                  Vertical
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset *ngIf="formsField.includes('IsAllGroups')">
+        <div class="col-md-12 p-0">
           <div class="flex-item p-0">
-            <div class="col-md-4">
+            <div class="col-md-4 p-0">
               <div
                 class="form-group"
                 *ngIf="formsField.includes('IsAllGroups')"
@@ -139,7 +144,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 p-0">
               <div
                 class="form-group"
                 *ngIf="formsField.includes('IsOnlyPrimaryGroups')"
@@ -158,7 +163,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 p-0">
               <div
                 class="form-group"
                 *ngIf="formsField.includes('IsLedgerOnly')"
@@ -179,9 +184,11 @@
             </div>
           </div>
         </div>
-        <div class="col-md-12 p-0" *ngIf="formsField.includes('LedgerID')">
+      </fieldset>
+      <fieldset *ngIf="formsField.includes('LedgerID')">
+        <div class="col-md-12 p-0">
           <div class="flex-item p-0">
-            <div class="col-md-6">
+            <div class="col-md-6 p-0">
               <div class="form-group">
                 <div class="radio">
                   <label>
@@ -197,18 +204,20 @@
                 </div>
               </div>
               <div class="form-group">
-                <select class="form-control" formControlName="LedgerID">
-                  <option [ngValue]="null">Choose Option..</option>
-                  <option
-                    *ngFor="let ledger of ledgerMinList"
-                    [ngValue]="ledger.LedgerID"
-                  >
-                    {{ ledger.LedgerName }}
-                  </option>
-                </select>
+                <kendo-dropdownlist
+                  class="form-control"
+                  [data]="ledgerMinList"
+                  [filterable]="true"
+                  [textField]="'CodeName'"
+                  [valueField]="'LedgerID'"
+                  [valuePrimitive]="true"
+                  formControlName="LedgerID"
+                  (filterChange)="ledgerDDFilter($event)"
+                >
+                </kendo-dropdownlist>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 pr-0">
               <div class="form-group">
                 <div class="radio">
                   <label>
@@ -224,24 +233,25 @@
                 </div>
               </div>
               <div class="form-group" *ngIf="formsField.includes('GroupID')">
-                <select class="form-control" formControlName="GroupID">
-                  <option [ngValue]="null">Choose Option..</option>
-                  <option
-                    *ngFor="let group of ledgerGroupList"
-                    [ngValue]="group.ID"
-                  >
-                    {{ group.Name }}
-                  </option>
-                </select>
+                <kendo-dropdownlist
+                  class="form-control"
+                  [data]="ledgerGroupList"
+                  [filterable]="true"
+                  [textField]="'CodeName'"
+                  [valueField]="'ID'"
+                  [valuePrimitive]="true"
+                  formControlName="GroupID"
+                  (filterChange)="ledgerGroupDDFilter($event)"
+                >
+                </kendo-dropdownlist>
               </div>
             </div>
           </div>
         </div>
       </fieldset>
-
-      <fieldset>
-        <div class="col-md-12">
-          <div class="col-md-2 pl-0">
+      <fieldset *ngIf="formsField.includes('IsProductWise')">
+        <div class="col-md-12 p-0">
+          <div class="col-md-2 p-0">
             <div
               class="form-group"
               *ngIf="formsField.includes('IsProductWise')"
@@ -458,99 +468,11 @@
           </div>
         </div>
       </fieldset>
-      <!-- <fieldset *ngIf="formsField.includes('ProductID')">
-        <div class="col-md-12">
-          <div class="col-sm-6" *ngIf="formsField.includes('ProductID')">
-            <div class="flex-item">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        [value]="allproduct"
-                        [(ngModel)]="isActive"
-                        [ngModelOptions]="{ standalone: true }"
-                        (change)="allProduct($event)"
-                      />
-                      All Product
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="flex-item">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        [value]="singleProduct"
-                        [(ngModel)]="isActive"
-                        [ngModelOptions]="{ standalone: true }"
-                        (change)="singleProduct($event)"
-                      />
-                      Single Product
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="flex-item">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <div class="radio">
-                    <label>
-                      <input
-                        type="radio"
-                        [value]="productGroup"
-                        [(ngModel)]="isActive"
-                        [ngModelOptions]="{ standalone: true }"
-                        (change)="productGroup($event)"
-                      />
-                      Product Group
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 mt-5">
-            <div class="form-group"></div>
-            <div class="form-group" *ngIf="formsField.includes('ProductID')">
-              <select class="form-control" formControlName="ProductID">
-                <option [ngValue]="null">Choose Option..</option>
-                <option
-                  *ngFor="let product of reportService.productList"
-                  [ngValue]="product.ProductID"
-                >
-                  {{ product.ProductName }}
-                </option>
-              </select>
-            </div>
-            <div
-              class="form-group"
-              *ngIf="formsField.includes('ProductGroupID')"
-            >
-              <select class="form-control" formControlName="ProductGroupID">
-                <option [ngValue]="null">Choose Option..</option>
-                <option
-                  *ngFor="let productG of reportService.productGroupList"
-                  [ngValue]="productG.ID"
-                >
-                  {{ productG.Name }}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </fieldset> -->
-
+    
       <fieldset>
         <div class="col-md-12 p-0">
           <div class="col-md-8">
-            <div class="col-md-4">
+            <div class="col-md-4 pl-0">
               <div
                 class="form-group"
                 *ngIf="formsField.includes('IsTransactionWise')"
@@ -722,7 +644,8 @@
             </div>
           </div>
         </div>
-
+      </fieldset>
+      <fieldset *ngIf="formsField.includes('IsShowZeroBalance')">
         <div class="col-md-12 p-0">
           <div class="col-md-4">
             <div
@@ -782,6 +705,8 @@
             </div>
           </div>
         </div>
+      </fieldset>
+      <fieldset *ngIf="formsField.includes('FromQtyRange')">
         <div class="col-md-12 p-0">
           <div class="col-sm-6">
             <div class="form-group" *ngIf="formsField.includes('FromQtyRange')">
