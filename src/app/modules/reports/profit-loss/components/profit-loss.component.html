@@ -1,226 +1,228 @@
 <div class="box box-default">
-  <div class="col-md-12">
-    <button
-      type="button"
-      class="btn-primary m-3"
-      (click)="openProfitLossSettings()"
-    >
-      Profit Loss Settings
-    </button>
-  </div>
-  <h1 style="text-align: center">Profit Loss A/C</h1>
-  <h4 style="text-align: center" *ngIf="projectName">
-    Project : {{ projectName }}
-  </h4>
-  <div class="col-md-12">
-    <div class="grid-wrapper">
-      <div class="table-box">
-        <table
-          id="header-fixed"
-          style="width: 50%"
-          align="left"
-          class="table table-hover table-fixed"
-          *ngIf="profitLossForms.get('DisplayFormat').value === 'TFormat'"
-        >
-          <thead>
-            <tr>
-              <th colspan="1" style="text-align: left">Account Name</th>
-              <th colspan="1" style="text-align: left">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let pl of profitLossList"
-              (dblclick)="openPLDrillDown($event, pl)"
-            >
-              <td
-                *ngIf="pl.Type == 'HEADER' && pl.Category == 1"
-                colspan="2"
-                align="center"
-                style="background-color: darkgray"
-              >
-                {{ pl.AccountName }}
-              </td>
-              <td *ngIf="pl.Category == 1">
-                <span *ngIf="pl.Level == 0 && pl.Type == 'GROUP'">{{
-                  pl.AccountName
-                }}</span>
-                <span
-                  *ngIf="pl.Category == 1 && pl.Type == 'Opening'"
-                  class="bold_text"
-                  >{{ pl.AccountName }}</span
-                >
-                <span
-                  *ngIf="pl.Category == 1 && pl.Type == 'PL'"
-                  class="bold_text"
-                  >{{ pl.AccountName }}</span
-                >
-                <span
-                  *ngIf="pl.Category == 1 && pl.Type == 'TOTAL'"
-                  class="bold_text"
-                  >{{ pl.AccountName }}</span
-                >
-                <span *ngIf="pl.Level == 1" style="margin-left: 10px">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Level == 2" style="margin-left: 20px">{{
-                  pl.AccountName
-                }}</span>
-                <span
-                  *ngIf="pl.Level == 3"
-                  style="margin-left: 30px; color: blue"
-                  >{{ pl.AccountName }}</span
-                >
-              </td>
-              <td
-                *ngIf="pl.Category == 1 && pl.Type !== 'HEADER'"
-                class="balance"
-              >
-                <span [innerHTML]="pl.Amount | currencyFormat"></span>
-              </td>
-            </tr>
-
-            <tr *ngIf="profitLossList.length == 0">
-              <td colspan="7" align="center">No Data Available</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table
-          id="header-fixed"
-          style="width: 50%"
-          align="right"
-          class="table table-hover table-fixed"
-          *ngIf="profitLossForms.get('DisplayFormat').value === 'TFormat'"
-        >
-          <thead>
-            <tr>
-              <th colspan="1" style="text-align: left">Account Name</th>
-              <th colspan="1" style="text-align: left">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let pl of profitLossList"
-              (click)="openPLDrillDown($event, pl)"
-              (dblclick)="openPLDrillDown($event, pl)"
-            >
-              <td
-                *ngIf="pl.Type == 'HEADER' && pl.Category == 2"
-                colspan="2"
-                align="center"
-                style="background-color: darkgray"
-              >
-                {{ pl.AccountName }}
-              </td>
-              <td *ngIf="pl.Category == 2">
-                <span *ngIf="pl.Level == 0 && pl.Type == 'GROUP'">{{
-                  pl.AccountName
-                }}</span>
-                <span
-                  *ngIf="pl.Category == 2 && pl.Type == 'Opening'"
-                  class="bold_text"
-                  >{{ pl.AccountName }}</span
-                >
-                <span
-                  *ngIf="pl.Category == 2 && pl.Type == 'PL'"
-                  class="bold_text"
-                  >{{ pl.AccountName }}</span
-                >
-                <span
-                  *ngIf="pl.Category == 2 && pl.Type == 'TOTAL'"
-                  class="bold_text"
-                  >{{ pl.AccountName }}</span
-                >
-                <span *ngIf="pl.Level == 1" style="margin-left: 10px">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Level == 2" style="margin-left: 20px">{{
-                  pl.AccountName
-                }}</span>
-                <span
-                  *ngIf="pl.Level == 3"
-                  style="margin-left: 30px; color: blue"
-                  >{{ pl.AccountName }}</span
-                >
-              </td>
-              <td
-                *ngIf="pl.Category == 2 && pl.Type !== 'HEADER'"
-                class="balance"
-              >
-                <span [innerHTML]="pl.Amount | currencyFormat"></span>
-              </td>
-            </tr>
-
-            <tr *ngIf="profitLossList.length == 0">
-              <td colspan="7" align="center">No Data Available</td>
-            </tr>
-          </tbody>
-        </table>
-        <table
-          id="header-fixed"
-          class="table table-hover table-fixed"
-          *ngIf="profitLossForms.get('DisplayFormat').value === 'Vertical'"
-        >
-          <thead>
-            <tr>
-              <th colspan="1" style="text-align: left">Account Name</th>
-              <th colspan="1" style="text-align: left">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let pl of profitLossList"
-              (dblclick)="openPLDrillDown($event, pl)"
-            >
-              <td
-                *ngIf="pl.Type == 'HEADER'"
-                colspan="2"
-                align="center"
-                style="background-color: darkgray"
-              >
-                {{ pl.AccountName }}
-              </td>
-              <td>
-                <span *ngIf="pl.Level == 0 && pl.Type == 'GROUP'">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Type == 'Opening'" class="bold_text">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Type == 'PL'" class="bold_text">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Type == 'Closing'" class="bold_text">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Type == 'TOTAL'" class="bold_text">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Level == 1" style="margin-left: 10px">{{
-                  pl.AccountName
-                }}</span>
-                <span *ngIf="pl.Level == 2" style="margin-left: 20px">{{
-                  pl.AccountName
-                }}</span>
-                <span
-                  *ngIf="pl.Level == 3"
-                  style="margin-left: 30px; color: blue"
-                  >{{ pl.AccountName }}</span
-                >
-              </td>
-              <td *ngIf="pl.Type !== 'HEADER'" class="balance">
-                <span [innerHTML]="pl.Amount | currencyFormat"></span>
-              </td>
-            </tr>
-
-            <tr *ngIf="profitLossList.length == 0">
-              <td colspan="4" align="center">No Data Available</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button
+        type="button"
+        class="btn-primary m-3"
+        (click)="openProfitLossSettings()"
+      >
+        Profit Loss Settings
+      </button>
     </div>
-    <div *ngIf="listLoading" class="k-i-loading"></div>
+    <h1 style="text-align: center">Profit Loss A/C</h1>
+    <h4 style="text-align: center" *ngIf="projectName">
+      Project : {{ projectName }}
+    </h4>
+    <div class="col-md-12">
+      <div class="grid-wrapper">
+        <div class="table-box">
+          <table
+            id="header-fixed"
+            style="width: 50%"
+            align="left"
+            class="table table-hover table-fixed"
+            *ngIf="profitLossForms.get('DisplayFormat').value === 'TFormat'"
+          >
+            <thead>
+              <tr>
+                <th colspan="1" style="text-align: left">Account Name</th>
+                <th colspan="1" style="text-align: left">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let pl of profitLossList"
+                (dblclick)="openPLDrillDown($event, pl)"
+              >
+                <td
+                  *ngIf="pl.Type == 'HEADER' && pl.Category == 1"
+                  colspan="2"
+                  align="center"
+                  style="background-color: darkgray"
+                >
+                  {{ pl.AccountName }}
+                </td>
+                <td *ngIf="pl.Category == 1">
+                  <span *ngIf="pl.Level == 0 && pl.Type == 'GROUP'">{{
+                    pl.AccountName
+                  }}</span>
+                  <span
+                    *ngIf="pl.Category == 1 && pl.Type == 'Opening'"
+                    class="bold_text"
+                    >{{ pl.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="pl.Category == 1 && pl.Type == 'PL'"
+                    class="bold_text"
+                    >{{ pl.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="pl.Category == 1 && pl.Type == 'TOTAL'"
+                    class="bold_text"
+                    >{{ pl.AccountName }}</span
+                  >
+                  <span *ngIf="pl.Level == 1" style="margin-left: 10px">{{
+                    pl.AccountName
+                  }}</span>
+                  <span *ngIf="pl.Level == 2" style="margin-left: 20px">{{
+                    pl.AccountName
+                  }}</span>
+                  <span
+                    *ngIf="pl.Level == 3"
+                    style="margin-left: 30px; color: blue"
+                    >{{ pl.AccountName }}</span
+                  >
+                </td>
+                <td
+                  *ngIf="pl.Category == 1 && pl.Type !== 'HEADER'"
+                  class="balance"
+                >
+                  <span [innerHTML]="pl.Amount | currencyFormat"></span>
+                </td>
+              </tr>
+
+              <tr *ngIf="profitLossList.length == 0">
+                <td colspan="7" align="center">No Data Available</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table
+            id="header-fixed"
+            style="width: 50%"
+            align="right"
+            class="table table-hover table-fixed"
+            *ngIf="profitLossForms.get('DisplayFormat').value === 'TFormat'"
+          >
+            <thead>
+              <tr>
+                <th colspan="1" style="text-align: left">Account Name</th>
+                <th colspan="1" style="text-align: left">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let pl of profitLossList"
+                (click)="openPLDrillDown($event, pl)"
+                (dblclick)="openPLDrillDown($event, pl)"
+              >
+                <td
+                  *ngIf="pl.Type == 'HEADER' && pl.Category == 2"
+                  colspan="2"
+                  align="center"
+                  style="background-color: darkgray"
+                >
+                  {{ pl.AccountName }}
+                </td>
+                <td *ngIf="pl.Category == 2">
+                  <span *ngIf="pl.Level == 0 && pl.Type == 'GROUP'">{{
+                    pl.AccountName
+                  }}</span>
+                  <span
+                    *ngIf="pl.Category == 2 && pl.Type == 'Opening'"
+                    class="bold_text"
+                    >{{ pl.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="pl.Category == 2 && pl.Type == 'PL'"
+                    class="bold_text"
+                    >{{ pl.AccountName }}</span
+                  >
+                  <span
+                    *ngIf="pl.Category == 2 && pl.Type == 'TOTAL'"
+                    class="bold_text"
+                    >{{ pl.AccountName }}</span
+                  >
+                  <span *ngIf="pl.Level == 1" style="margin-left: 10px">{{
+                    pl.AccountName
+                  }}</span>
+                  <span *ngIf="pl.Level == 2" style="margin-left: 20px">{{
+                    pl.AccountName
+                  }}</span>
+                  <span
+                    *ngIf="pl.Level == 3"
+                    style="margin-left: 30px; color: blue"
+                    >{{ pl.AccountName }}</span
+                  >
+                </td>
+                <td
+                  *ngIf="pl.Category == 2 && pl.Type !== 'HEADER'"
+                  class="balance"
+                >
+                  <span [innerHTML]="pl.Amount | currencyFormat"></span>
+                </td>
+              </tr>
+
+              <tr *ngIf="profitLossList.length == 0">
+                <td colspan="7" align="center">No Data Available</td>
+              </tr>
+            </tbody>
+          </table>
+          <table
+            id="header-fixed"
+            class="table table-hover table-fixed"
+            *ngIf="profitLossForms.get('DisplayFormat').value === 'Vertical'"
+          >
+            <thead>
+              <tr>
+                <th colspan="1" style="text-align: left">Account Name</th>
+                <th colspan="1" style="text-align: left">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let pl of profitLossList"
+                (dblclick)="openPLDrillDown($event, pl)"
+              >
+                <td
+                  *ngIf="pl.Type == 'HEADER'"
+                  colspan="2"
+                  align="center"
+                  style="background-color: darkgray"
+                >
+                  {{ pl.AccountName }}
+                </td>
+                <td>
+                  <span *ngIf="pl.Level == 0 && pl.Type == 'GROUP'">{{
+                    pl.AccountName
+                  }}</span>
+                  <span *ngIf="pl.Type == 'Opening'" class="bold_text">{{
+                    pl.AccountName
+                  }}</span>
+                  <span *ngIf="pl.Type == 'PL'" class="bold_text">{{
+                    pl.AccountName
+                  }}</span>
+                  <span *ngIf="pl.Type == 'Closing'" class="bold_text">{{
+                    pl.AccountName
+                  }}</span>
+                  <span *ngIf="pl.Type == 'TOTAL'" class="bold_text">{{
+                    pl.AccountName
+                  }}</span>
+                  <span *ngIf="pl.Level == 1" style="margin-left: 10px">{{
+                    pl.AccountName
+                  }}</span>
+                  <span *ngIf="pl.Level == 2" style="margin-left: 20px">{{
+                    pl.AccountName
+                  }}</span>
+                  <span
+                    *ngIf="pl.Level == 3"
+                    style="margin-left: 30px; color: blue"
+                    >{{ pl.AccountName }}</span
+                  >
+                </td>
+                <td *ngIf="pl.Type !== 'HEADER'" class="balance">
+                  <span [innerHTML]="pl.Amount | currencyFormat"></span>
+                </td>
+              </tr>
+
+              <tr *ngIf="profitLossList.length == 0">
+                <td colspan="4" align="center">No Data Available</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="listLoading" class="k-i-loading"></div>
+    </div>
   </div>
 </div>

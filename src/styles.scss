@@ -99,6 +99,13 @@ breadcrumb {
   color: #1a2138;
 }
 
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  background-color: #eee !important;
+  opacity: 1;
+}
+
 //kendo input text overFlow Css
 .k-numeric-wrap .k-input {
   text-overflow: inherit !important;
@@ -303,6 +310,10 @@ th {
   height: 230px;
   overflow-y: auto;
   width: 100%;
+}
+
+.table-fixed > tbody > tr {
+  cursor: pointer;
 }
 
 tfoot > tr > td {

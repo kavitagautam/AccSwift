@@ -22,6 +22,10 @@ export class AuthenticationService {
     return this.httpService.post(`${this._api_URL}User/Login`, obj);
   }
 
+  logout() {
+    this.cookieService.deleteAll("/");
+  }
+
   getToken() {
     return this.cookieService.get("access_token");
   }

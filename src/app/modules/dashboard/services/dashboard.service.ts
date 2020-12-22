@@ -9,6 +9,8 @@ import {
   AccountRootModel,
   InvTransact,
   InvTransactRootModel,
+  GeneralSummary,
+  GeneralSummaryRootModel
 } from "@accSwift-modules/dashboard/models/dashboard-model.";
 import { environment } from "@env/environment";
 
@@ -19,6 +21,7 @@ export class DashBoardService {
   accountTransactionList: AccountTransact[] = [];
   Accounts: Account[] = [];
   invTransactionList: InvTransact[] = [];
+  generalSummaryList: GeneralSummary[] = [];
   _api_URL = environment.baseAPI;
 
   constructor(
@@ -36,5 +39,9 @@ export class DashBoardService {
 
   getInvTransact(): Observable<InvTransactRootModel> {
     return this.httpService.get(`${this._api_URL}InvTransactSummary`);
+  }
+
+  getGeneralSummary(): Observable<GeneralSummaryRootModel> {
+    return this.httpService.get(`${this._api_URL}GeneralSummary`);
   }
 }
