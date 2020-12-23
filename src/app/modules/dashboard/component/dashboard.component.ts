@@ -34,6 +34,29 @@ export class DashboardComponent implements OnInit {
         return "rgb(242,211,214)";
     }
   }
+  invoice = [
+    {
+      InvoiceBalance: 1000,
+      Remarks: "Invoice remarks",
+    },
+    {
+      InvoiceBalance: 1000,
+      Remarks: "Invoice remarks",
+    },
+    {
+      InvoiceBalance: 1000,
+      Remarks: "Invoice remarks",
+    },
+    {
+      InvoiceBalance: 1000,
+      Remarks: "Invoice remarks",
+    },
+    {
+      InvoiceBalance: 1000,
+      Remarks: "Invoice remarks",
+    }
+  ];
+
 
   voucher = [
     {
@@ -67,6 +90,8 @@ export class DashboardComponent implements OnInit {
   ];
 
   public gridView: any[] = this.voucher;
+  public grdView: any[] = this.invoice;
+
 
   constructor(private dashBoardService: DashBoardService) {}
 

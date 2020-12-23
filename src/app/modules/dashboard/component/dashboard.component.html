@@ -14,7 +14,32 @@
           </div>
           <div class="details">
             <div class="qty">{{ generalSummary.NoOfVouchers }}</div>
-            <b>{{ generalSummary.Title }}</b>
+            <div class="links" [ngSwitch]="generalSummary.Title">
+              <a
+                class="generalSummaryLink"
+                *ngSwitchCase="'Sales'"
+                routerLink="/sales-invoice"
+                >{{ generalSummary.Title }}</a
+              >
+              <a
+                class="generalSummaryLink"
+                *ngSwitchCase="'Purchase'"
+                routerLink="/purchase-invoice"
+                >{{ generalSummary.Title }}</a
+              >
+              <a
+                class="generalSummaryLink"
+                *ngSwitchCase="'Profit'"
+                routerLink=""
+                >{{ generalSummary.Title }}</a
+              >
+              <a
+                class="generalSummaryLink"
+                *ngSwitchCase="'Bank Balance'"
+                routerLink=""
+                >{{ generalSummary.Title }}</a
+              >
+            </div>
             <small *ngIf="generalSummary.Title == 'Bank Balance'">{{
               generalSummary.Balance
             }}</small>
@@ -83,34 +108,38 @@
         <div class="invoices">
           <h3 class="title">Invoices owned to you</h3>
           <div class="line"></div>
-          <div class="row">
+          <div class="row invoice-row">
             <div class="col-lg-6">
               <button
                 class="btn btn-primary btn-sm"
                 type="button"
-                [disabled]="true"
+                routerLink="/sales-invoice/add"
               >
                 New Sales Invoice
               </button>
             </div>
 
             <div class="col-lg-6">
-              <div class="table-responsive">
+              <div
+                class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+                style="height: 110px"
+              >
                 <table class="table">
-                  <tr>
-                    <td><a href="#">2 Draft Invoices</a></td>
-                    <td>11,000.00</td>
-                  </tr>
-
-                  <tr>
-                    <td><a href="#">9 Awaiting Payment</a></td>
-                    <td>9,172.00</td>
-                  </tr>
-
-                  <tr>
-                    <td><a href="#">5 Overdue</a></td>
-                    <td>6,978.00</td>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th class="text-left">Remarks</th>
+                      <th class="text-left">Invoice Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let details of invoice">
+                      <td>{{ details.Remarks }}</td>
+                      <td
+                        class="text-right"
+                        [innerHTML]="details.InvoiceBalance | currencyFormat"
+                      ></td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -186,7 +215,7 @@
                       >{{ invTransaction.VoucherTypeFullName }} ({{
                         invTransaction.NoOfVouchers
                       }})</a
-                    >
+                    >0
                     <a *ngSwitchCase="'Sales Return'" routerLink="/sales-return"
                       >{{ invTransaction.VoucherTypeFullName }} ({{
                         invTransaction.NoOfVouchers
