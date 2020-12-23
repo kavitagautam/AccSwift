@@ -160,7 +160,7 @@ export class ReportsService {
     this.getPurchaseAccount();
     this.getDepotList();
     this.getLedgerGroupDropDown();
-    this.getLedgerDropDown()
+    this.getLedgerDropDown();
   }
 
   getTrailBalance(body): Observable<TrailBalanceModel> {
@@ -194,6 +194,10 @@ export class ReportsService {
       });
   }
 
+  getProductMinDD(): Observable<ProductMinRootModel> {
+    return this.httpService.get(`${this._api_URL}/Product/min`);
+  }
+
   getProductGroup(): void {
     this.httpService
       .get(`${this._api_URL}/ProductGroup`)
@@ -202,6 +206,9 @@ export class ReportsService {
       });
   }
 
+  getProductGroupDD(): Observable<ProductGroupModel> {
+    return this.httpService.get(`${this._api_URL}ProductGroup`);
+  }
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
@@ -330,10 +337,8 @@ export class ReportsService {
       });
   }
   getLedgerDropDown(): void {
-    this.httpService
-      .get(`${this._api_URL}Ledger/min`)
-      .subscribe((response) => {
-        this.ledgerMinLists = response.Entity;
-      });
+    this.httpService.get(`${this._api_URL}Ledger/min`).subscribe((response) => {
+      this.ledgerMinLists = response.Entity;
+    });
   }
 }

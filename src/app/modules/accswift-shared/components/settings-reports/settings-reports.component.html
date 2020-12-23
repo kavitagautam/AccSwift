@@ -351,29 +351,33 @@
             <div class="col-md-6 mt-5">
               <div class="form-group"></div>
               <div class="form-group" *ngIf="formsField.includes('ProductID')">
-                <select class="form-control" formControlName="ProductID">
-                  <option [ngValue]="null">Choose Option..</option>
-                  <option
-                    *ngFor="let product of reportService.productList"
-                    [ngValue]="product.ProductID"
-                  >
-                    {{ product.ProductName }}
-                  </option>
-                </select>
+                <kendo-dropdownlist
+                  class="form-control"
+                  [data]="productMin"
+                  [filterable]="true"
+                  [textField]="'CodeName'"
+                  [valueField]="'ProductID'"
+                  [valuePrimitive]="true"
+                  formControlName="ProductID"
+                  (filterChange)="productDDFilter($event)"
+                >
+                </kendo-dropdownlist>
               </div>
               <div
                 class="form-group"
                 *ngIf="formsField.includes('ProductGroupID')"
               >
-                <select class="form-control" formControlName="ProductGroupID">
-                  <option [ngValue]="null">Choose Option..</option>
-                  <option
-                    *ngFor="let productG of reportService.productGroupList"
-                    [ngValue]="productG.ID"
-                  >
-                    {{ productG.Name }}
-                  </option>
-                </select>
+                <kendo-dropdownlist
+                  class="form-control"
+                  [data]="productGroups"
+                  [filterable]="true"
+                  [textField]="'Name'"
+                  [valueField]="'ID'"
+                  [valuePrimitive]="true"
+                  formControlName="ProductGroupID"
+                  (filterChange)="productGroupDDFilter($event)"
+                >
+                </kendo-dropdownlist>
               </div>
             </div>
           </div>
@@ -468,7 +472,7 @@
           </div>
         </div>
       </fieldset>
-    
+
       <fieldset>
         <div class="col-md-12 p-0">
           <div class="col-md-8">

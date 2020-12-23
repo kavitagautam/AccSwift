@@ -67,6 +67,10 @@ export class ProductService {
       });
   }
 
+  getProductGroupDD(): Observable<ProductGroupModel> {
+    return this.httpService.get(`${this._api_URL}ProductGroup`);
+  }
+
   getAccountClass(): void {
     this.httpService
       .get(`${this._api_URL}AccountClass`)

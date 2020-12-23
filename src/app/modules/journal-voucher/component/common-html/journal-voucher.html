@@ -6,6 +6,21 @@
         [voucherType]="'JRNL'"
       ></accSwift-create-reports>
     </div>
+    <div class="col-md-12">
+      <div
+        class="alert alert-warning"
+        style="display: inline-block"
+        role="alert"
+      >
+        NOTE : Transaction amount on debit side and credit side must be equal
+      </div>
+      <div class="box-body">
+        <accSwift-details-entry-grid
+          [entryArray]="journalVoucherForms.controls.Journaldetails"
+          [voucherType]="'JRNL'"
+        ></accSwift-details-entry-grid>
+      </div>
+    </div>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
@@ -45,21 +60,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12">
-        <div
-          class="alert alert-warning"
-          style="display: inline-block"
-          role="alert"
-        >
-          NOTE : Transaction amount on debit side and credit side must be equal
-        </div>
-        <div class="box-body">
-          <accSwift-details-entry-grid
-            [entryArray]="journalVoucherForms.controls.Journaldetails"
-            [voucherType]="'JRNL'"
-          ></accSwift-details-entry-grid>
-        </div>
-      </div>
+
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
