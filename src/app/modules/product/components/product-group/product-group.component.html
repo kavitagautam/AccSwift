@@ -18,7 +18,18 @@
         <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
           <div class="form-group">
             <label>Parent Group <sup>*</sup></label>
-            <select
+            <kendo-dropdownlist
+              class="form-control"
+              [data]="productGroups"
+              [filterable]="true"
+              [textField]="'Name'"
+              [valueField]="'ID'"
+              [valuePrimitive]="true"
+              formControlName="productGroupId"
+              (filterChange)="productGroupDDFilter($event)"
+            >
+            </kendo-dropdownlist>
+            <!-- <select
               class="form-control"
               id="productGroupId"
               formControlName="parentGroupId"
@@ -33,7 +44,7 @@
               >
                 {{ productGroup.Name }}</option
               >
-            </select>
+            </select> -->
           </div>
         </div>
       </div>
@@ -47,7 +58,7 @@
       </div>
     </div>
   </form>
-  <div class="box-footer" style="display: table;margin:auto">
+  <div class="box-footer" style="display: table; margin: auto">
     <div class="mb-2">
       <button
         class="btn btn-primary"

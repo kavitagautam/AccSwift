@@ -12,6 +12,7 @@ import { ToastrService } from "ngx-toastr";
 import { ProductGroupService } from "../../services/product-group.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ProductGroup } from "../../models/product-group.models";
+import { ProductService } from "@accSwift-modules/product/services/product.service";
 
 @Component({
   selector: "accSwift-product-group",
@@ -22,6 +23,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
   @Input("selectedProductGroup") selectedProductGroup;
   groupDetails: ProductGroup;
   productGroupForm: FormGroup;
+  productGroups: ProductGroup[] = [];
   title: string;
   editMode: boolean = false;
   addMode: boolean;
@@ -30,6 +32,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
   constructor(
     private modalService: BsModalService,
     public productGroupService: ProductGroupService,
+    private productService: ProductService,
     private toastr: ToastrService,
     public _fb: FormBuilder
   ) {}
@@ -43,6 +46,7 @@ export class ProductGroupComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.buildProductGroupForm();
+    this.getProducts();
   }
 
   buildProductGroupForm(): void {
@@ -86,6 +90,18 @@ export class ProductGroupComponent implements OnInit, OnChanges {
           this.buildProductGroupForm();
         });
     }
+  }
+
+  getProducts(): void {
+    this.productService.getProductGroupDD().subscribe((response) => {
+      this.productGroups = response.Entity;
+    });
+  }
+  // Filterable Cash Party Drop-down
+  productGroupDDFilter(value): void {
+    this.productGroups = this.productService.productGroupList.filter(
+      (s) => s.Name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
   }
 
   addProductGroup(): void {

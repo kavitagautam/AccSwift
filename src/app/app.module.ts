@@ -93,20 +93,20 @@ export function localFunction(settingsService: SettingsService) {
     NgxsReduxDevtoolsPluginModule.forRoot(),
   ],
   providers: [
-    PreferenceService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initPreferenceData,
-      deps: [PreferenceService],
-      multi: true,
-    },
-    SettingsService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initSettingsData,
-      deps: [SettingsService],
-      multi: true,
-    },
+    // PreferenceService,
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: initPreferenceData,
+    //   deps: [PreferenceService],
+    //   multi: true,
+    // },
+    // SettingsService,
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: initSettingsData,
+    //   deps: [SettingsService],
+    //   multi: true,
+    // },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorsService,

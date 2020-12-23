@@ -52,7 +52,6 @@ export class HttpInterceptorsService implements HttpInterceptor {
           );
 
           this.authService.logout();
-          // this.router.navigate(["/login"]);
         }
         //use error dialog services
         return throwError(error);

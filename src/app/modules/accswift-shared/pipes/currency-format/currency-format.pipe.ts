@@ -16,7 +16,6 @@ export class CurrencyFormatPipe implements PipeTransform {
 
   constructor(protected sanitizer: DomSanitizer) {
     this.currencySign = localStorage.getItem("currencySymbol");
-    console.log("Csign" + this.currencySign);
   }
 
   transform(value: any, event?: number): SafeHtml {
