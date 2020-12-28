@@ -54,7 +54,6 @@ export class ContraVoucherService {
       .get(`${this._api_URL}series`, null, params)
       .subscribe((res: SeriesRootModel) => {
         this.seriesLists = res.Entity;
-        console.log(this.seriesLists);
       });
   }
 

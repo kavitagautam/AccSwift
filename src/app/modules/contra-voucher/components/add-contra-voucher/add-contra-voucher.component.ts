@@ -55,6 +55,7 @@ export class AddContraVoucherComponent implements OnInit {
     return this.fb.group({
       ID: [0],
       LedgerCode: [""],
+      LedgerID: [0],
       LedgerName: ["", Validators.required],
       VoucherNo: ["", [Validators.required]],
       Amount: [""],
