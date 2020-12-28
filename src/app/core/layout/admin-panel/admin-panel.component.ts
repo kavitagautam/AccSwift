@@ -36,6 +36,7 @@ export class AdminPanelComponent implements OnInit {
   logout(): void {
     this.router.navigate(["/login"]);
     this.cookieService.deleteAll("/");
+    localStorage.clear();
     sessionStorage.clear();
   }
 

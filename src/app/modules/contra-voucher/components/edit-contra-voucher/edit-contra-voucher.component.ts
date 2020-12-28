@@ -79,6 +79,7 @@ export class EditContraVoucherComponent implements OnInit {
   addContraVoucherEntryList(): FormGroup {
     return this.fb.group({
       ID: [0],
+      LedgerID: [0],
       LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       LedgerName: ["", Validators.required],
       VoucherNo: ["", [Validators.required]],
@@ -123,6 +124,7 @@ export class EditContraVoucherComponent implements OnInit {
       contraVoucherDetails.forEach((element) => {
         contraVoucherFormArray.push(
           this.fb.group({
+            LedgerID: [element.LedgerID],
             LedgerCode: [element.Ledger],
             LedgerName: [element.Ledger.EngName, Validators.required],
             VoucherNo: [element.VoucherNumber],
@@ -137,6 +139,7 @@ export class EditContraVoucherComponent implements OnInit {
       contraVoucherFormArray.push(
         this.fb.group({
           ID: [0],
+          LedgerID: [0],
           LedgerCode: [
             "",
             null,
