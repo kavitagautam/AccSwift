@@ -38,9 +38,6 @@
           ></accSwift-bank-account>
         </div>
       </div>
-    </div>
-
-    <div class="row">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
@@ -54,37 +51,33 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="col-md-12 p-0">
-      <div class="box-body">
+      <div class="col-md-12">
         <accSwift-details-entry-grid
           [entryArray]="bankPaymentForm.controls.BankPaymentDetailsList"
           [voucherType]="'BANK_PMNT'"
         ></accSwift-details-entry-grid>
       </div>
-    </div>
-
-    <div class="col-md-12">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label>Remarks</label>
-          <input formControlName="Remarks" type="text" class="form-control" />
-        </div>
-      </div>
-    </div>
-    <div class="col-md-12">
-      <div class="col-sm-2">
-        <div class="form-group">
-          <div class="checkbox">
-            <label> <input type="checkbox" />Do not close </label>
+      <div class="col-md-12 mt-3">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Remarks</label>
+            <input formControlName="Remarks" type="text" class="form-control" />
           </div>
         </div>
       </div>
-      <div class="col-sm-2">
-        <div class="form-group">
-          <div class="checkbox">
-            <label> <input type="checkbox" />Print while saving </label>
+      <div class="col-md-12">
+        <div class="col-sm-2">
+          <div class="form-group">
+            <div class="checkbox">
+              <label> <input type="checkbox" />Do not close </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="form-group">
+            <div class="checkbox">
+              <label> <input type="checkbox" />Print while saving </label>
+            </div>
           </div>
         </div>
       </div>
