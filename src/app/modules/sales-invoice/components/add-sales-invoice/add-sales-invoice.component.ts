@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
+import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts"
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
@@ -13,6 +14,7 @@ import { IconConst } from "@app/shared/constants/icon.constant";
 @Component({
   selector: "accSwift-add-sales-invoice",
   templateUrl: "../common-html/common-sales-invoice.html",
+  // templateUrl: "../common-html/basic-sales-invoice.html",
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
@@ -72,6 +74,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.destroyed$.next();
     this.destroyed$.complete();
   }
+
 
   buildAddSalesInvoiceForm(): void {
     this.salesInvoiceForm = this._fb.group({
@@ -311,6 +314,11 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           this.vatTotalAmount +
           this.totalTaxAmount;
       });
+  }
+
+  addNewUser(template: TemplateRef<any>): void {
+    this.modalRef = this.modalService.show(BasicAddEditUserComponent, this.config);
+    this.modalRef.content.action = "Select";
   }
 
   openTender(template: TemplateRef<any>): void {

@@ -1,0 +1,332 @@
+<section id="basic_new_invoice_contents">
+  <div class="container-fluid">
+    <section class="new-invoice-top-bar">
+      <div class="row">
+        <div class="col-lg-9">
+          <h2 class="head-title">New Invoice</h2>
+        </div>
+        <div class="col-lg-3">
+          <div class="top-buttons">
+            <button class="create-invoice-btn">
+              <span
+                >Save and Continue
+                <div class="down-arrow">
+                  <i class="fas fa-sort-down"></i></div
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="invoice-add-body">
+      <div class="invoice-add-info">
+        <button class="add-title">
+          <h4>Business address and contact details, title, summary and logo</h4>
+          <span><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="business-details">
+          <div class="browse-logo">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <div class="browse-info">
+              <span
+                ><span class="browse">Browse</span> or drop your logo
+                here.</span
+              >
+              <small>Maximum 5MB in size.</small>
+              <small>JPG, PNG, or GIF formats.</small>
+              <small>Recommended Size: 300*200 pixels</small>
+            </div>
+          </div>
+          <div class="business-address-details">
+            <div class="invoice-details-input">
+              <div class="form-group">
+                <input type="text" name="invoice" placeholder="Invoice" />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  name="summary"
+                  placeholder="Summary(e.g. project name, description of invoice)"
+                />
+              </div>
+            </div>
+            <div class="edit-business-details">
+              <b>Business</b>
+              <small>United States</small>
+              <a href="">Edit your business details and contact address</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="invoice-highlight">
+      <section class="info-customer-wrap">
+        <div class="row inner-details">
+          <div class="col-lg-4">
+            <div class="add-customer">
+              <button
+                class="add-customer-btn"
+                type="button"
+                data-toggle="modal"
+                data-target="#addCustomerModal"
+                (click)="addNewUser(addUser)"
+              >
+                <span class="user"><i class="far fa-user"></i></span
+                ><span class="plus"><i class="fas fa-plus"></i></span>Add a
+                Customer
+              </button>
+
+              <div class="hotspot-wrap">
+                <div class="trigger"></div>
+                <div class="pulse"></div>
+                <div class="transparent"></div>
+                <div class="center"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="cus-invoice-details">
+              <form [formGroup]="salesInvoiceForm" novalidate>
+                <div class="row cus-invoice-input">
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <accSwift-series-forms
+                        formControlName="SeriesID"
+                        [voucherType]="'SALES'"
+                      ></accSwift-series-forms>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label>Order No.</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        formControlName="OrderNo"
+                        accSwiftFormValidator
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label>Scan Product</label>
+                      <input type="text" disabled class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <accSwift-voucher-forms
+                        *ngIf="!salesInvoiceForm.get('VoucherNo').value"
+                        formControlName="VoucherNo"
+                        [series]="salesInvoiceForm.get('SeriesID').value"
+                      ></accSwift-voucher-forms>
+                      <accSwift-voucher-forms
+                        *ngIf="salesInvoiceForm.get('VoucherNo').value"
+                        formControlName="VoucherNo"
+                        [series]="null"
+                      ></accSwift-voucher-forms>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <accSwift-cash-party-account
+                        formControlName="CashPartyLedgerID"
+                      ></accSwift-cash-party-account>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <accSwift-sales-account
+                        formControlName="SalesLedgerID"
+                      ></accSwift-sales-account>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <accSwift-depot
+                        formControlName="DepotID"
+                      ></accSwift-depot>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label>Date </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="Date"
+                        bsDatepicker
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <accSwift-project-forms
+                        formControlName="ProjectID"
+                      ></accSwift-project-forms>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="info-table-items-wrap margin-top">
+        <div class="edit-column">
+          <a href=""><i class="fas fa-pen"></i>Edit columns</a>
+        </div>
+        <div class="info-table">
+          <table>
+            <thead>
+              <tr class="item-head">
+                <th class="text-left" colspan="1">Product</th>
+                <th class="text-left" colspan="1">Quantity</th>
+                <th class="text-left" colspan="1">Sales Rate</th>
+                <th class="text-left" colspan="1">Discount</th>
+                <th class="text-left" colspan="1">Select Tax</th>
+                <th class="text-left" colspan="1">Amount</th>
+                <th class="text-left" colspan="1">Remarks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="item-details">
+                <td colspan="1">
+                  <div class="form-group">
+                    <input
+                      placeholder="Enter item name"
+                      type="text"
+                      name="product"
+                    />
+                  </div>
+                </td>
+
+                <td class="info-sm-input" colspan="1">
+                  <div class="form-group">
+                    <input
+                      class="text-right"
+                      type="text"
+                      name="quantity"
+                      value="1"
+                    />
+                  </div>
+                </td>
+                <td class="info-sm-input" colspan="1">
+                  <div class="form-group">
+                    <input
+                      class="text-right"
+                      type="text"
+                      name="Sales Rate"
+                      value="0.00"
+                    />
+                  </div>
+                </td>
+                <td class="info-sm-input" colspan="1">
+                  <div class="form-group">
+                    <input
+                      class="text-right"
+                      type="text"
+                      name="discount"
+                      value="1"
+                    />
+                  </div>
+                </td>
+                <td class="info-sm-input" colspan="1">
+                  <div class="form-group">
+                    <input
+                      class="text-right"
+                      type="text"
+                      name="tax"
+                      value="1"
+                    />
+                  </div>
+                </td>
+                <td class="info-sm-input" colspan="1">
+                  <div class="form-group">
+                    <input
+                      class="text-right"
+                      type="text"
+                      name="remarks"
+                      value="1"
+                    />
+                  </div>
+                </td>
+                <td colspan="1">
+                  <div class="tot-amount">
+                    <div class="form-group text-right">
+                      <span>$0.00</span><i class="far fa-trash-alt"></i>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="add-item">
+                <td colspan="7">
+                  <div class="add-wrap">
+                    <button class="add-item-btn">
+                      <span><i class="fas fa-plus-circle"></i>Add an Item</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="invoice-add-details">
+        <div class="invoice-add-amounts">
+          <div class="total-amounts-line">
+            <div class="amount-label">Subtotal</div>
+            <div class="amount-value">$0.00</div>
+          </div>
+          <div class="total-amounts-line">
+            <div class="amount-label">
+              <div class="invoice-amount d-inline-flex">
+                <label for="">Total</label>
+                <input
+                  type="text"
+                  name="amount"
+                  placeholder="USD ($) - U.S. dollar"
+                />
+                <div class="down-arrow">
+                  <i class="fas fa-sort-down"></i>
+                </div>
+              </div>
+            </div>
+            <div class="amount-value">$0.00</div>
+          </div>
+        </div>
+      </section>
+      <hr class="bdr-light lg hline" />
+      <section class="invoice-memo">
+        <div class="notes">Notes/Terms</div>
+        <textarea
+          name="memo"
+          placeholder="Enter notes or terms of service that are visible to  your customer"
+        ></textarea>
+      </section>
+    </section>
+    <section class="invoice-add-footer">
+      <div class="invoice-add-info">
+        <button class="add-title">
+          <h4>Footer</h4>
+          <span><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <textarea
+          name="memo"
+          placeholder="Enter a footer for this invoice (ex:tax-information, thankyou note)"
+        ></textarea>
+      </div>
+    </section>
+    <section class="foot-save-btn top-buttons new-invoice-top-bar">
+      <button class="create-invoice-btn">
+        <span
+          >Save and Continue
+          <div class="down-arrow">
+            <i class="fas fa-sort-down"></i></div
+        ></span>
+      </button>
+    </section>
+  </div>
+</section>
