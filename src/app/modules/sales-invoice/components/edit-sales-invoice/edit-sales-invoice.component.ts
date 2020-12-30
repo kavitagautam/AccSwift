@@ -16,12 +16,14 @@ import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
-  templateUrl: "../common-html/common-sales-invoice.html",
-  // templateUrl: "../common-html/basic-sales-invoice.html",
+  // templateUrl: "../common-html/common-sales-invoice.html",
+  templateUrl: "../common-html/basic-sales-invoice.html",
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
-  public salesInvoiceForm: FormGroup;
+  public show:boolean = true;
+
+  salesInvoiceForm: FormGroup;
   salesDetails: SalesInvoiceDetails;
   editedRowIndex: any;
   submitted: boolean;
@@ -70,6 +72,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
+  toggle() {
+    this.show = !this.show;
+  }
+  
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.complete();
@@ -439,7 +445,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     );
   }
 
-  addNewUser(template: TemplateRef<any>): void {
+  addNewUser(): void {
     this.modalRef = this.modalService.show(BasicAddEditUserComponent, this.config);
     this.modalRef.content.action = "Select";
   }

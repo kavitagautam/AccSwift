@@ -197,12 +197,6 @@
     border-radius: 500px;
     padding: 8px 20px;
   }
-  .nav-pills .nav-link.active,
-  .nav-pills .show > .nav-link {
-    color: #1c252c;
-    font-weight: 600;
-    border-bottom: 4px solid #136acd;
-  }
   /*new-invoice-component.scss*/
   .new_invoice_contents {
     padding: 24px;
@@ -387,9 +381,6 @@
     right: 14px;
     top: 15px;
   }
-  .cus-input {
-    display: flex;
-  }
   .cus-input input {
     border: 1px solid #b2c2cd;
     border-radius: 4px;
@@ -398,15 +389,14 @@
   }
   .cus-input label {
     padding-right: 10px;
-    width: 100px;
-  }
-  .cus-btns button {
-    margin-right: 10px;
   }
   .cus-btns button {
     background-color: #5ea8d4;
     border-radius: 500px;
     padding: 4px 20px;
+    margin-right: 10px;
+    color: #fff;
+    font-weight: 600;
   }
   .edit-column a {
     color: #136acd;
