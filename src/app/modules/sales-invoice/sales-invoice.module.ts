@@ -15,13 +15,11 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
 
-
 @NgModule({
   declarations: [
     ListSalesInvoiceComponent,
     AddSalesInvoiceComponent,
     EditSalesInvoiceComponent,
-   
   ],
   imports: [
     CommonModule,

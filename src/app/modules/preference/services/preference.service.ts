@@ -40,8 +40,6 @@ export class PreferenceService {
   }
 
   getPerference(): void {
-    console.log("Loading  Preference Service ");
-
     this.httpService
       .get(`${this._api_URL}UserPreference`)
       .subscribe((response: PreferenceModel) => {

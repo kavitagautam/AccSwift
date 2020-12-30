@@ -13,8 +13,8 @@ import { IconConst } from "@app/shared/constants/icon.constant";
 
 @Component({
   selector: "accSwift-add-sales-invoice",
-  //templateUrl: "../common-html/common-sales-invoice.html",
-  templateUrl: "../common-html/basic-sales-invoice.html",
+  templateUrl: "../common-html/common-sales-invoice.html",
+  // templateUrl: "../common-html/basic-sales-invoice.html",
   // templateUrl: (function () {
   //   if (localStorage.getItem("user_type") == "Basic") {
   //     return require("../common-html/basic-sales-invoice.html");
@@ -28,9 +28,8 @@ import { IconConst } from "@app/shared/constants/icon.constant";
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
-  public show: boolean = true;
-
-  salesInvoiceForm: FormGroup;
+  userType: string = localStorage.getItem("user_type");
+  public salesInvoiceForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
   IsAutomatic: boolean = false;
@@ -79,10 +78,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.myFormValueChanges$.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
-  }
-
-  toggle() {
-    this.show = !this.show;
   }
 
   ngOnDestroy(): void {
@@ -331,7 +326,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       });
   }
 
-  addNewUser(): void {
+  addNewUser(template: TemplateRef<any>): void {
     this.modalRef = this.modalService.show(
       BasicAddEditUserComponent,
       this.config
