@@ -11,12 +11,19 @@ import { ToastrService } from "ngx-toastr";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { IconConst } from "@app/shared/constants/icon.constant";
-import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts"
+import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
   templateUrl: "../common-html/common-sales-invoice.html",
+  // templateUrl: (function () {
+  //   if (localStorage.getItem("user_type") == "Basic") {
+  //     return require("../common-html/basic-sales-invoice.html");
+  //   } else {
+  //     return require("../common-html/common-sales-invoice.html");
+  //   }
+  // })(),
   // templateUrl: "../common-html/basic-sales-invoice.html",
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
@@ -177,7 +184,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
               this.adjustmentAmount = this.salesDetails.AdjustmentAmount;
               this.vatTotalAmount = this.salesDetails.VAT;
               this.totalDiscountAmount =
-              this.salesDetails.GrossAmount - this.salesDetails.NetAmount;
+                this.salesDetails.GrossAmount - this.salesDetails.NetAmount;
               this.grandTotalAmount = this.salesDetails.TotalAmount;
               //this.salesInvoiceForm.patchValue(this.salesDetails);
               this.assignFormsValue();
@@ -440,7 +447,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   addNewUser(template: TemplateRef<any>): void {
-    this.modalRef = this.modalService.show(BasicAddEditUserComponent, this.config);
+    this.modalRef = this.modalService.show(
+      BasicAddEditUserComponent,
+      this.config
+    );
     this.modalRef.content.action = "Select";
   }
 

@@ -3,6 +3,8 @@ import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { FooterComponent } from "./footer/footer.component";
 import { Location } from "@angular/common";
 import { CookieService } from "ngx-cookie-service";
+import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
+import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
 @Component({
   selector: "accSwift-admin-panel",
   templateUrl: "./admin-panel.component.html",
@@ -16,8 +18,12 @@ export class AdminPanelComponent implements OnInit {
     private router: Router,
     private location: Location,
     private activatedRoute: ActivatedRoute,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private settingsService: SettingsService,
+    private preferenceService: PreferenceService
   ) {
+    this.settingsService.getSettings();
+    this.preferenceService.getPerference();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         let child = this.activatedRoute.firstChild;

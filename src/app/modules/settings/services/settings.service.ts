@@ -34,6 +34,8 @@ export class SettingsService {
   }
 
   getSettings(): void {
+    console.log("Loading  Settings Service ");
+
     this.httpService
       .get(`${this._api_URL}Settings`)
       .subscribe((response: SettingsModel) => {
@@ -50,6 +52,7 @@ export class SettingsService {
       .get(`${this._api_URL}Currency/${currencyID}`)
       .subscribe((response) => {
         const currency = response.Entity;
+        console.log("currency " + JSON.stringify(currency));
         localStorage.setItem("currencySymbol", currency.Symbol);
         localStorage.setItem("currencyLocaleID", currency.LocaleID);
       });

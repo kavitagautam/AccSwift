@@ -6,6 +6,8 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { ToastrModule } from "ngx-toastr";
 import { LoaderModule } from "./loader/loader.module";
+import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
+import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 @NgModule({
   declarations: [],
   imports: [
@@ -14,8 +16,9 @@ import { LoaderModule } from "./loader/loader.module";
     LayoutModule,
     HttpClientModule,
     BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot() // ToastrModule added
+    ToastrModule.forRoot(), // ToastrModule added
   ],
-  exports: [LayoutModule, LoaderModule]
+  providers: [PreferenceService, SettingsService],
+  exports: [LayoutModule, LoaderModule],
 })
 export class CoreModule {}
