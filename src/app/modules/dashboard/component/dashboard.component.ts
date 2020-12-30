@@ -7,7 +7,7 @@ import {
   InvTransact,
   InvTransactRootModel,
   GeneralSummary,
-  GeneralSummaryRootModel
+  GeneralSummaryRootModel,
 } from "@accSwift-modules/dashboard/models/dashboard-model.";
 import { DashBoardService } from "../services/dashboard.service";
 
@@ -17,8 +17,6 @@ import { DashBoardService } from "../services/dashboard.service";
   styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
-  
-
   getBgColor(Title) {
     switch (Title) {
       case "Sales":
@@ -54,9 +52,8 @@ export class DashboardComponent implements OnInit {
     {
       InvoiceBalance: 1000,
       Remarks: "Invoice remarks",
-    }
+    },
   ];
-
 
   voucher = [
     {
@@ -92,7 +89,6 @@ export class DashboardComponent implements OnInit {
   public gridView: any[] = this.voucher;
   public grdView: any[] = this.invoice;
 
-
   constructor(private dashBoardService: DashBoardService) {}
 
   accountTransactionList: AccountTransact[] = [];
@@ -100,6 +96,10 @@ export class DashboardComponent implements OnInit {
   invTransactionList: InvTransact[] = [];
   generalSummaryList: GeneralSummary[] = [];
   ngOnInit() {
+    // setTimeout(() => {
+    //   console.log("reload");
+    //   location.reload();
+    // }, 10);
     this.dashBoardService
       .getAccountTransact()
       .subscribe((response: AccountTransactRootModel) => {

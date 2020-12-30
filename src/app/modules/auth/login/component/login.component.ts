@@ -11,6 +11,8 @@ import {
   AbstractControl,
 } from "@angular/forms";
 import { ValidationMessageService } from "@accSwift-modules/accswift-shared/services/validation-message/validation-message.service";
+import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
+import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 
 @Component({
   selector: "accSwift-login",
@@ -28,13 +30,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authenticationService: AuthenticationService,
     private validationMessageService: ValidationMessageService,
     private toastr: ToastrService,
-    private cookieService: CookieService
+    private cookieService: CookieService // private settingsService: SettingsService, // private preferenceService: PreferenceService
   ) {}
 
   ngOnInit() {
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/";
     this.buildLoginForm();
+    // this.settingsService.getSettingsData();
+    // this.preferenceService.getPreferenceData();
   }
 
   buildLoginForm() {
@@ -103,8 +107,12 @@ export class LoginComponent implements OnInit, OnDestroy {
                 false,
                 "Lax"
               );
+              // this.settingsService.getSettings();
+              // this.preferenceService.getPerference();
+              localStorage.setItem("user_type", data.UserType);
             }
           }
+
           this.router.navigate([""]);
         },
         (error) => {
