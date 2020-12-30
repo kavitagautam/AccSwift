@@ -28,6 +28,8 @@ import { IconConst } from "@app/shared/constants/icon.constant";
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
+  public show: boolean = true;
+
   salesInvoiceForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -77,6 +79,10 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.myFormValueChanges$.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
+  }
+
+  toggle() {
+    this.show = !this.show;
   }
 
   ngOnDestroy(): void {
@@ -325,7 +331,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       });
   }
 
-  addNewUser(template: TemplateRef<any>): void {
+  addNewUser(): void {
     this.modalRef = this.modalService.show(
       BasicAddEditUserComponent,
       this.config

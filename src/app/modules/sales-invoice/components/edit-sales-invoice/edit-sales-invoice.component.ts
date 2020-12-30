@@ -28,7 +28,9 @@ import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
-  public salesInvoiceForm: FormGroup;
+  public show: boolean = true;
+
+  salesInvoiceForm: FormGroup;
   salesDetails: SalesInvoiceDetails;
   editedRowIndex: any;
   submitted: boolean;
@@ -75,6 +77,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm.valueChanges.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
+  }
+
+  toggle() {
+    this.show = !this.show;
   }
 
   ngOnDestroy() {
@@ -446,7 +452,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     );
   }
 
-  addNewUser(template: TemplateRef<any>): void {
+  addNewUser(): void {
     this.modalRef = this.modalService.show(
       BasicAddEditUserComponent,
       this.config
