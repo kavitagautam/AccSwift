@@ -11,15 +11,28 @@ import { ToastrService } from "ngx-toastr";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { IconConst } from "@app/shared/constants/icon.constant";
+import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
   templateUrl: "../common-html/common-sales-invoice.html",
+  // templateUrl: (function () {
+  //   if (localStorage.getItem("user_type") == "Basic") {
+  //     return require("../common-html/basic-sales-invoice.html");
+  //   } else {
+  //     return require("../common-html/common-sales-invoice.html");
+  //   }
+  // })(),
+  // templateUrl: "../common-html/basic-sales-invoice.html",
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
-  public salesInvoiceForm: FormGroup;
+  userType: string = localStorage.getItem("user_type");
+
+  public show: boolean = true;
+
+  salesInvoiceForm: FormGroup;
   salesDetails: SalesInvoiceDetails;
   editedRowIndex: any;
   submitted: boolean;
@@ -66,6 +79,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm.valueChanges.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
+  }
+
+  toggle() {
+    this.show = !this.show;
   }
 
   ngOnDestroy() {
@@ -435,6 +452,14 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       "invoices",
       JSON.stringify(this.salesInvoiceForm.value)
     );
+  }
+
+  addNewUser(): void {
+    this.modalRef = this.modalService.show(
+      BasicAddEditUserComponent,
+      this.config
+    );
+    this.modalRef.content.action = "Select";
   }
 
   openTender(template: TemplateRef<any>): void {

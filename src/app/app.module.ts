@@ -33,6 +33,7 @@ import "@progress/kendo-angular-intl/locales/fr/all";
 
 import "hammerjs";
 
+
 // registerLocaleData(localeNe, "ne");
 registerLocaleData(localefr, "fr");
 

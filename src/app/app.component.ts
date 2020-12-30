@@ -9,11 +9,9 @@ import { PreferenceService } from "@accSwift-modules/preference/services/prefere
 })
 export class AppComponent {
   title = "AccSwift";
-  constructor(
-    private settingsService: SettingsService,
-    private preferenceService: PreferenceService
-  ) {
-    this.settingsService.getSettingsData();
-    this.preferenceService.getPreferenceData();
+  constructor() {
+    // private preferenceService: PreferenceService // private settingsService: SettingsService,
+    // this.settingsService.getSettingsData();
+    // this.preferenceService.getPreferenceData();
   }
 }

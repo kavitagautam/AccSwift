@@ -552,7 +552,7 @@ export class DetailsEntryGridComponent implements OnInit {
     }
   }
 
-  addNewProduct(template: TemplateRef<any>): void {
+  addNewProduct(): void {
     this.modalRef = this.modalService.show(AddProductComponent, this.config);
     this.modalRef.content.action = "Select";
   }
