@@ -16,8 +16,8 @@ import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
-  // templateUrl: "../common-html/common-sales-invoice.html",
-  templateUrl: "../common-html/basic-sales-invoice.html",
+  templateUrl: "../common-html/common-sales-invoice.html",
+  // templateUrl: "../common-html/basic-sales-invoice.html",
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
