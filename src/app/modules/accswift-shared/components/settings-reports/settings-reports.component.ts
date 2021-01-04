@@ -233,6 +233,14 @@ export class SettingsReportsComponent implements OnInit {
     }
   }
 
+  isShowSubLedgerClick(): void {
+    if (this.settingsForms.get("IsShowSubLedger").value === true) {
+      this.settingsForms.get("IsShowSubLedger").setValue(false);
+    } else {
+      this.settingsForms.get("IsShowSubLedger").setValue(true);
+    }
+  }
+
   isShowPreviousYearClick(): void {
     if (this.settingsForms.get("IsShowPreviousYear").value === true) {
       this.settingsForms.get("IsShowPreviousYear").setValue(false);
