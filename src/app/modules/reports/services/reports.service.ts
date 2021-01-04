@@ -10,7 +10,10 @@ import {
   CashPartyGroupModel,
   PurchaseReportModel,
 } from "../models/sales.report.model";
-import { LedgerReportModel } from "../models/ledger.reports.model";
+import {
+  LedgerReportsRootModel,
+  LedgerReportSummaryRootModel,
+} from "../models/ledger.reports.model";
 import {
   ProfitLossRootModel,
   ProfitLossLDRootModel,
@@ -182,7 +185,11 @@ export class ReportsService {
     );
   }
 
-  getLedgerReports(body): Observable<LedgerReportModel> {
+  getLedgerReports(body): Observable<LedgerReportsRootModel> {
+    return this.httpService.post(`${this._api_URL}Reports/LedgerReport`, body);
+  }
+
+  getLedgerSummaryReports(body): Observable<LedgerReportSummaryRootModel> {
     return this.httpService.post(`${this._api_URL}Reports/LedgerReport`, body);
   }
 

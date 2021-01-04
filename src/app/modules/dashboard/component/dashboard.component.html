@@ -12,8 +12,25 @@
           >
             <i class="ion ion-bag"><i class="fas fa-universal-access"></i></i>
           </div>
-          <div class="details">
-            <div class="qty">{{ generalSummary.NoOfVouchers }}</div>
+          <div class="details" [ngSwitch]="generalSummary.Title">
+            <a
+              *ngSwitchCase="'Sales'"
+              routerLink="/sales-invoice"
+              class="qty"
+              >{{ generalSummary.NoOfVouchers }}</a
+            >
+            <a
+              *ngSwitchCase="'Purchase'"
+              routerLink="/purchase-invoice"
+              class="qty"
+              >{{ generalSummary.NoOfVouchers }}</a
+            >
+            <a *ngSwitchCase="'Profit'" routerLink="" class="qty">{{
+              generalSummary.NoOfVouchers
+            }}</a>
+            <a *ngSwitchCase="'Bank Balance'" routerLink="" class="qty">{{
+              generalSummary.NoOfVouchers
+            }}</a>
             <div class="links" [ngSwitch]="generalSummary.Title">
               <a
                 class="generalSummaryLink"
@@ -40,13 +57,21 @@
                 >{{ generalSummary.Title }}</a
               >
             </div>
-            <small *ngIf="generalSummary.Title == 'Bank Balance'">{{
+            <span *ngIf="generalSummary.Title == 'Bank Balance'">{{
               generalSummary.Balance
-            }}</small>
-            <small *ngIf="generalSummary.Title != 'Bank Balance'"
-              >{{ generalSummary.AmountThisMonth }} /
-              {{ generalSummary.AmountThisYear }}</small
+            }}</span>
+            <div
+              *ngIf="generalSummary.Title != 'Bank Balance'"
+              class="format-balance"
             >
+              <span
+                [innerHTML]="generalSummary.AmountThisMonth | currencyFormat"
+              ></span>
+              /
+              <span
+                [innerHTML]="generalSummary.AmountThisYear | currencyFormat"
+              ></span>
+            </div>
           </div>
         </div>
       </div>

@@ -10,9 +10,12 @@ import { ReportsService } from "../../services/reports.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Location } from "@angular/common";
-import { LedgerList } from "../../models/ledger.reports.model";
 import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component";
+import {
+  LedgerReport,
+  LedgerReportSummery,
+} from "@accSwift-modules/reports/models/ledger.reports.model";
 
 @Component({
   selector: "accSwift-ledger-report",
@@ -23,7 +26,8 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
   ledgerReportForms: FormGroup;
   projectName: string;
 
-  ledgerReportList: LedgerList[] = [];
+  ledgerReportList: LedgerReport[] = [];
+  ledgerSummaryReportList: LedgerReportSummery[] = [];
   listLoading: boolean;
   totalDebitAmount: number;
   totalCreditAmount: number;
@@ -62,19 +66,20 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
 
   buildLedgerReportForms(): void {
     this.ledgerReportForms = this._fb.group({
-      LedgerID: [null],
-      GroupID: [null],
+      LedgerID: [{ value: null, disabled: true }],
+      GroupID: [{ value: null, disabled: true }],
       IsShowRemarks: [false],
       IsDateRange: [false],
       IsDetails: [false],
       IsShowZeroBalance: [false],
+      IsShowSubLedger: [false],
       ProjectID: [null],
       AccClassID: [],
       FromDate: [{ value: "", disabled: true }],
       ToDate: [{ value: new Date(), disabled: true }],
     });
-    this.ledgerReportForms.get("LedgerID").disable();
-    this.ledgerReportForms.get("GroupID").disable();
+    // this.ledgerReportForms.get("LedgerID").disable();
+    // this.ledgerReportForms.get("GroupID").disable();
   }
 
   openLedgerSettings(): void {
@@ -89,7 +94,7 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
       this.projectName = value;
     });
     this.modalRef.content.onSubmit.subscribe((data) => {
-      if (data) {
+      if (data.IsDetails) {
         this.listLoading = true;
         this.reportService.getLedgerReports(JSON.stringify(data)).subscribe(
           (response) => {
@@ -105,6 +110,24 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
             this.listLoading = false;
           }
         );
+      } else {
+        this.listLoading = true;
+        this.reportService
+          .getLedgerSummaryReports(JSON.stringify(data))
+          .subscribe(
+            (response) => {
+              this.ledgerSummaryReportList = response.Entity.Entity;
+              this.totalDebitAmount = response.Entity.TotalDebitAmount;
+              this.totalCreditAmount = response.Entity.TotalCreditAmount;
+              this.totalClosingBalance = response.Entity.ClosingBalance;
+            },
+            (error) => {
+              this.listLoading = false;
+            },
+            () => {
+              this.listLoading = false;
+            }
+          );
       }
     });
 
@@ -123,6 +146,7 @@ export class LedgerReportComponent implements OnInit, AfterViewInit {
       IsDateRange: this.ledgerReportForms.get("IsDateRange").value,
       ProjectID: this.ledgerReportForms.get("ProjectID").value,
       AccClassID: this.ledgerReportForms.get("AccClassID").value,
+      IsShowSubLedger: this.ledgerReportForms.get("IsShowSubLedger").value,
     };
     this.reportService
       .getLedgerTransactionDetails(obj)

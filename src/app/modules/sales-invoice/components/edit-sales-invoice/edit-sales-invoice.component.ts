@@ -17,13 +17,6 @@ import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/
 @Component({
   selector: "accSwift-edit-sales-invoice",
   templateUrl: "../common-html/common-sales-invoice.html",
-  // templateUrl: (function () {
-  //   if (localStorage.getItem("user_type") == "Basic") {
-  //     return require("../common-html/basic-sales-invoice.html");
-  //   } else {
-  //     return require("../common-html/common-sales-invoice.html");
-  //   }
-  // })(),
   // templateUrl: "../common-html/basic-sales-invoice.html",
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
