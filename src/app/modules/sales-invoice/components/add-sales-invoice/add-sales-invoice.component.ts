@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts"
+import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
@@ -15,12 +15,21 @@ import { IconConst } from "@app/shared/constants/icon.constant";
   selector: "accSwift-add-sales-invoice",
   templateUrl: "../common-html/common-sales-invoice.html",
   // templateUrl: "../common-html/basic-sales-invoice.html",
+  // templateUrl: (function () {
+  //   if (localStorage.getItem("user_type") == "Basic") {
+  //     return require("../common-html/basic-sales-invoice.html");
+  //   } else {
+  //     return require("../common-html/common-sales-invoice.html");
+  //   }
+  // })(),
+  // template: "<ng-container #dynamicTemplate></ng-container>",
+  // templateUrl: "../common-html/basic-common-sales.html",
+
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
-export class AddSalesInvoiceComponent implements OnInit, OnDestroy { 
-  public show:boolean = true;
-
-  salesInvoiceForm: FormGroup;
+export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
+  userType: string = localStorage.getItem("user_type");
+  public salesInvoiceForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
   IsAutomatic: boolean = false;
@@ -71,16 +80,11 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggle() {
-    this.show = !this.show;
-  }
-
   ngOnDestroy(): void {
     this.myFormValueChanges$.unsubscribe();
     this.destroyed$.next();
     this.destroyed$.complete();
   }
-
 
   buildAddSalesInvoiceForm(): void {
     this.salesInvoiceForm = this._fb.group({
@@ -249,7 +253,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm
       .get("SpecialDiscount")
       .setValue(this.totalDiscountAmount);
-   // if (this.salesInvoiceForm.invalid) return;
+    // if (this.salesInvoiceForm.invalid) return;
     this.salesInvoiceService
       .addSalesInvoice(this.salesInvoiceForm.value)
       .subscribe(
@@ -322,8 +326,11 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       });
   }
 
-  addNewUser(): void {
-    this.modalRef = this.modalService.show(BasicAddEditUserComponent, this.config);
+  addNewUser(template: TemplateRef<any>): void {
+    this.modalRef = this.modalService.show(
+      BasicAddEditUserComponent,
+      this.config
+    );
     this.modalRef.content.action = "Select";
   }
 

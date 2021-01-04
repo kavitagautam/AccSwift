@@ -11,7 +11,7 @@ import { ToastrService } from "ngx-toastr";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { IconConst } from "@app/shared/constants/icon.constant";
-import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts"
+import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 
 @Component({
@@ -21,7 +21,9 @@ import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
-  public show:boolean = true;
+  userType: string = localStorage.getItem("user_type");
+
+  public show: boolean = true;
 
   salesInvoiceForm: FormGroup;
   salesDetails: SalesInvoiceDetails;
@@ -75,7 +77,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   toggle() {
     this.show = !this.show;
   }
-  
+
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.complete();
@@ -183,7 +185,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
               this.adjustmentAmount = this.salesDetails.AdjustmentAmount;
               this.vatTotalAmount = this.salesDetails.VAT;
               this.totalDiscountAmount =
-              this.salesDetails.GrossAmount - this.salesDetails.NetAmount;
+                this.salesDetails.GrossAmount - this.salesDetails.NetAmount;
               this.grandTotalAmount = this.salesDetails.TotalAmount;
               //this.salesInvoiceForm.patchValue(this.salesDetails);
               this.assignFormsValue();
@@ -446,7 +448,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   }
 
   addNewUser(): void {
-    this.modalRef = this.modalService.show(BasicAddEditUserComponent, this.config);
+    this.modalRef = this.modalService.show(
+      BasicAddEditUserComponent,
+      this.config
+    );
     this.modalRef.content.action = "Select";
   }
 

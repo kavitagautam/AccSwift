@@ -84,7 +84,7 @@
     "@angular/language-service": "~7.2.0",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
+    "@types/node": "^8.10.66",
     "codelyzer": "~4.5.0",
     "gulp": "^4.0.2",
     "gulp-gzip": "^1.4.2",
