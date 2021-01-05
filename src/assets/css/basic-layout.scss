@@ -22,8 +22,7 @@
     display: block;
   }
   a,
-  img,
-  span {
+  img {
     display: inline-block;
   }
   li {
@@ -421,14 +420,11 @@
     border: 1px solid #b2c2cd;
     border-radius: 4px;
     font-size: 14px;
-    padding: 8px 10px 6px;
-    width: 300px;
-    margin-right: 10px;
-    margin-top: 10px;
+    // padding: 8px 10px 6px;
+    // margin-right: 10px;
+    // margin-top: 10px;
   }
-  .info-sm-input input {
-    width: 120px;
-  }
+
   .info-table textarea {
     height: 38px;
   }
@@ -501,5 +497,10 @@
   }
   .foot-save-btn {
     padding-bottom: 30px;
+  }
+  .item-details kendo-dropdownlist,
+  kendo-numerictextbox {
+    margin-right: 10px;
+    margin-top: 15px;
   }
 }

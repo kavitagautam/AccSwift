@@ -1,0 +1,148 @@
+<section
+  id="basic_new_invoice_contents"
+  class="info-table-items-wrap margin-top"
+>
+  <div class="edit-column">
+    <i class="fas fa-pen"></i>Edit columns
+  </div>
+
+  <div class="info-table table-responsive">
+    <table>
+      <thead>
+        <tr class="item-head">
+          <th class="text-left" colspan="1">Product</th>
+          <th class="text-left" colspan="1">Quantity</th>
+          <th class="text-left" colspan="1">Sales Rate</th>
+          <th class="text-left" colspan="1">Discount</th>
+          <th class="text-left" colspan="1">Select Tax</th>
+          <th class="text-left" colspan="1">Amount</th>
+          <th class="text-left" colspan="1">Remarks</th>
+          <th class="text-left" colspan="1">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let p of entryArray.controls; let i = index;"
+          class="item-details"
+        >
+          <td colspan="1">
+            <div class="form-group">
+              <kendo-dropdownlist
+                style="width: 260px"
+                [data]="productList"
+                [textField]="'CodeName'"
+                [valueField]="'ProductID'"
+                [valuePrimitive]="true"
+                [virtual]="virtual"
+                [formControl]="entryArray.controls[i].get('ProductID')"
+                (filterChange)="productDDFilter($event,i)"
+                (valueChange)="handleProductChange($event, i)"
+              >
+              </kendo-dropdownlist>
+            </div>
+          </td>
+
+          <td>
+            <div class="form-group">
+              <kendo-numerictextbox
+                style="width: 110px"
+                [format]="'n0'"
+                [min]="1"
+                [formControl]="entryArray.controls[i].get('Quantity')"
+                (valueChange)="changeInvoiceValues(dataItem, i)"
+              >
+              </kendo-numerictextbox>
+            </div>
+          </td>
+
+          <td>
+            <div class="form-group">
+              <kendo-numerictextbox
+                style="width: 110px"
+                [step]="1"
+                [min]="0"
+                [max]="100"
+                [valuePrimitive]="true"
+                [value]="percentage"
+                [formControl]="entryArray.controls[i].get('DiscPercentage')"
+                (valueChange)="discountPerCalc(dataItem, i)"
+              ></kendo-numerictextbox>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <kendo-numerictextbox
+                style="width: 110px"
+                [step]="1"
+                [min]="0"
+                [max]="100"
+                [valuePrimitive]="true"
+                [value]="percentage"
+                [formControl]="entryArray.controls[i].get('DiscPercentage')"
+                (valueChange)="discountPerCalc(dataItem, i)"
+              ></kendo-numerictextbox>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <kendo-dropdownlist
+                style="width: 110px"
+                [defaultItem]="defaultItem"
+                [data]="gridServices.taxList"
+                textField="Name"
+                valueField="ID"
+                [valuePrimitive]="true"
+                [formControl]="entryArray.controls[i].get('TaxID')"
+                (valueChange)="handleTaxChange($event, i)"
+              >
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <span class="template">{{ dataItem.Name }}</span
+                  ><span *ngIf="dataItem.Rate">({{ dataItem.Rate }} %)</span>
+                </ng-template>
+              </kendo-dropdownlist>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <kendo-numerictextbox
+                popupAnchor
+                style="width: 120px"
+                [decimals]="decimals"
+                [spinners]="false"
+                [format]="currencyFormat"
+                [formControl]="entryArray.controls[i].get('Amount')"
+              ></kendo-numerictextbox>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <kendo-textbox
+                style="width: 120px"
+                [formControl]="entryArray.controls[i].get('Remarks')"
+              >
+              </kendo-textbox>
+            </div>
+          </td>
+          <td>
+            <div class="form-group text-right">
+              <div style="width: 40px">
+                <button type="button" (click)="removeHandler($event, i)">
+                  <i class="far fa-trash-alt"></i>
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr class="add-item">
+          <td colspan="7">
+            <div class="add-wrap">
+              <button class="add-item-btn" (click)="addNewRow($event)">
+                <i class="fas fa-plus-circle"></i>Add an Item
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

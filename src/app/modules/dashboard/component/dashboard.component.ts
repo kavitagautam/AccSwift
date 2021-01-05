@@ -17,6 +17,7 @@ import { DashBoardService } from "../services/dashboard.service";
   styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
+  
   getBgColor(Title) {
     switch (Title) {
       case "Sales":
