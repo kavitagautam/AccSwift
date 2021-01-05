@@ -1,13 +1,12 @@
-<!-- <h1>{{entryArray.getRawValue() | json}}</h1> -->
-
 <section
   id="basic_new_invoice_contents"
   class="info-table-items-wrap margin-top"
 >
   <div class="edit-column">
-    <a href=""><i class="fas fa-pen"></i>Edit columns</a>
+    <i class="fas fa-pen"></i>Edit columns
   </div>
-  <div class="info-table">
+
+  <div class="info-table table-responsive">
     <table>
       <thead>
         <tr class="item-head">
@@ -23,84 +22,77 @@
       </thead>
       <tbody>
         <tr
-          *ngFor="let p of entryArray.value; let i = index;"
+          *ngFor="let p of entryArray.controls; let i = index;"
           class="item-details"
         >
           <td colspan="1">
             <div class="form-group">
               <kendo-dropdownlist
                 style="width: 260px"
-                class="form-control"
                 [data]="productList"
                 [textField]="'CodeName'"
                 [valueField]="'ProductID'"
-                [formControl]="ProductID"
-                (filterChange)="productDDFilter($event, i)"
+                [valuePrimitive]="true"
+                [virtual]="virtual"
+                [formControl]="entryArray.controls[i].get('ProductID')"
+                (filterChange)="productDDFilter($event,i)"
                 (valueChange)="handleProductChange($event, i)"
               >
               </kendo-dropdownlist>
             </div>
           </td>
-          <td colspan="1">
+
+          <td>
             <div class="form-group">
               <kendo-numerictextbox
-                popupAnchor
                 style="width: 110px"
-                class="form-control"
                 [format]="'n0'"
                 [min]="1"
                 [formControl]="entryArray.controls[i].get('Quantity')"
                 (valueChange)="changeInvoiceValues(dataItem, i)"
               >
               </kendo-numerictextbox>
-              <ng-template>
-                <span class="pull-right">
-                  Total QTY: {{ calculateQtyTotal() }}
-                </span>
-              </ng-template>
             </div>
           </td>
-          <td colspan="1">
-            <div class="form-group">
-              <kendo-numerictextbox
-                popupAnchor
-                style="width: 110px"
-                class="form-control"
-                [decimals]="decimals"
-                [spinners]="false"
-                [format]="currencyFormat"
-                [formControl]="entryArray.controls[i].get('SalesRate')"
-                (valueChange)="changeInvoiceValues(dataItem, i)"
-              >
-              </kendo-numerictextbox>
-            </div>
-          </td>
-          <td colspan="1">
+
+          <td>
             <div class="form-group">
               <kendo-numerictextbox
                 style="width: 110px"
                 [step]="1"
                 [min]="0"
-                class="form-control"
                 [max]="100"
                 [valuePrimitive]="true"
                 [value]="percentage"
-                [formControl]="DiscPercentage"
+                [formControl]="entryArray.controls[i].get('DiscPercentage')"
                 (valueChange)="discountPerCalc(dataItem, i)"
               ></kendo-numerictextbox>
             </div>
           </td>
-          <td colspan="1">
+          <td>
+            <div class="form-group">
+              <kendo-numerictextbox
+                style="width: 110px"
+                [step]="1"
+                [min]="0"
+                [max]="100"
+                [valuePrimitive]="true"
+                [value]="percentage"
+                [formControl]="entryArray.controls[i].get('DiscPercentage')"
+                (valueChange)="discountPerCalc(dataItem, i)"
+              ></kendo-numerictextbox>
+            </div>
+          </td>
+          <td>
             <div class="form-group">
               <kendo-dropdownlist
                 style="width: 110px"
-                class="form-control"
                 [defaultItem]="defaultItem"
                 [data]="gridServices.taxList"
                 textField="Name"
                 valueField="ID"
-                [formControl]="TaxID"
                 [valuePrimitive]="true"
+                [formControl]="entryArray.controls[i].get('TaxID')"
                 (valueChange)="handleTaxChange($event, i)"
               >
                 <ng-template kendoDropDownListItemTemplate let-dataItem>
@@ -110,12 +102,11 @@
               </kendo-dropdownlist>
             </div>
           </td>
-          <td colspan="1">
+          <td>
             <div class="form-group">
               <kendo-numerictextbox
                 popupAnchor
                 style="width: 120px"
-                class="form-control"
                 [decimals]="decimals"
                 [spinners]="false"
                 [format]="currencyFormat"
@@ -123,31 +114,30 @@
               ></kendo-numerictextbox>
             </div>
           </td>
-          <td colspan="1">
-            <div class="tot-amount">
-              <div class="form-group text-right">
-                <kendo-textbox
-                  style="width: 120px"
-                  [formControl]="entryArray.controls[i].get('Remarks')"
-                >
-                </kendo-textbox>
-              </div>
+          <td>
+            <div class="form-group">
+              <kendo-textbox
+                style="width: 120px"
+                [formControl]="entryArray.controls[i].get('Remarks')"
+              >
+              </kendo-textbox>
             </div>
           </td>
-          <td colspan="1">
+          <td>
             <div class="form-group text-right">
               <div style="width: 40px">
-                <i class="far fa-trash-alt"></i>
+                <button type="button" (click)="removeHandler($event, i)">
+                  <i class="far fa-trash-alt"></i>
+                </button>
               </div>
             </div>
           </td>
         </tr>
-
         <tr class="add-item">
           <td colspan="7">
             <div class="add-wrap">
-              <button class="add-item-btn">
-                <span><i class="fas fa-plus-circle"></i>Add an Item</span>
+              <button class="add-item-btn" (click)="addNewRow($event)">
+                <i class="fas fa-plus-circle"></i>Add an Item
               </button>
             </div>
           </td>
