@@ -44,4 +44,4 @@ deploy_production:
     - node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer
     - cd dist/accswift/
     - ls
-    - scp -o StrictHostKeyChecking=no -P 1157 -r *  devswiftbentray@98.142.99.67:/home/devswiftbentray/public_html/
+    - scp -o StrictHostKeyChecking=no -r *  accswift@44.227.154.72:/home/accswift/public_html/
