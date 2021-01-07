@@ -1,9 +1,4 @@
 #budget-setup-contents {
-  @import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap");
-  html,
-  body {
-    font-family: "Roboto Slab", serif;
-  }
   h1,
   h2,
   h3,
@@ -78,10 +73,30 @@
     padding: 1px 16px;
     background-color: #ebeff2;
   }
-  .add-budget-thead {
+  .add-budget-btns i {
+    margin-right: 10px;
+  }
+  .add-budget-thead th {
     font-size: 13px;
+    padding: 8px 0;
+    padding-left: 5px;
+    background-color: #fff;
   }
   .add-budget-tbody td {
-    padding: 5px;
+    padding: 8px 0;
+    padding-left: 5px;
+  }
+  .budget-date .form-group {
+    position: relative;
+  }
+  .date-picker {
+    position: absolute;
+    top: 27px;
+    right: 1px;
+    background: #ecf0f3;
+    color: #b2c2cd;
+    border-left: 1px solid #b2c2cd;
+    text-align: center;
+    padding: 6px 13px;
   }
 }
