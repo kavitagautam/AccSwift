@@ -1,1 +1,200 @@
-<h1>THIS IS BUDGET ALLOCATION COMPONENT</h1>
+<section id="budget-allocation-contents">
+  <div class="budget-alc-search-box">
+    <fieldset>
+      <legend>Search Box:</legend>
+      <form>
+        <div class="search-box d-flex">
+          <div class="form-group pr-2">
+            <label for="">Search In</label>
+            <kendo-dropdownlist
+              [data]="search"
+              textField="text"
+              valueField="value"
+              class="form-control"
+            >
+            </kendo-dropdownlist>
+          </div>
+          <div class="form-group pr-2">
+            <label for="">Operator</label>
+            <kendo-dropdownlist [data]="operator" class="form-control">
+            </kendo-dropdownlist>
+          </div>
+          <div class="form-group pr-2">
+            <label for="">Parameter</label>
+            <kendo-autocomplete class="form-control"> </kendo-autocomplete>
+          </div>
+          <div class="form-group pr-2">
+            <label for="">Operator</label>
+            <kendo-dropdownlist class="form-control"> </kendo-dropdownlist>
+          </div>
+          <div class="form-group pr-2">
+            <label for="">Parameter</label>
+            <kendo-autocomplete class="form-control"> </kendo-autocomplete>
+          </div>
+        </div>
+      </form>
+      <div class="budget-alc-btns d-flex">
+        <button class="btn btn-primary mr-3">
+          <i class="fas fa-search" aria-hidden="true"></i>Search
+        </button>
+        <button class="btn btn-danger mr-3">
+          <i class="fas fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Forget
+        </button>
+      </div>
+    </fieldset>
+  </div>
+  <div class="budget-alc-details">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="tree-list-tabstrip">
+          <kendo-tabstrip>
+            <kendo-tabstrip-tab [title]="'Tree View'" [selected]="true">
+              <ng-template kendoTabContent>
+                <p>Expenditure</p>
+              </ng-template>
+            </kendo-tabstrip-tab>
+            <kendo-tabstrip-tab [title]="'List View'">
+              <ng-template kendoTabContent>
+                <p>Tab 2 Content</p>
+              </ng-template>
+            </kendo-tabstrip-tab>
+          </kendo-tabstrip>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <kendo-tabstrip>
+          <kendo-tabstrip-tab [title]="'Budget Allocation'" [selected]="true">
+            <ng-template kendoTabContent>
+              <div class="budget-alc-form">
+                <fieldset>
+                  <legend>Budget</legend>
+                  <form>
+                    <div class="add-budget">
+                      <div class="form-group">
+                        <kendo-label [for]="" text="Budget Name"> </kendo-label>
+                        <kendo-dropdownlist class="form-control">
+                        </kendo-dropdownlist>
+                        <button class="btn btn-secondary">
+                          <i class="fas fa-plus" aria-hidden="true"></i>New
+                        </button>
+                      </div>
+                      <div class="budget-date">
+                        <div class="form-group">
+                          <kendo-label [for]="" text="Starting Date">
+                          </kendo-label>
+                          <kendo-autocomplete class="form-control">
+                          </kendo-autocomplete>
+                        </div>
+                        <div class="form-group">
+                          <kendo-label [for]="" text="Up to"> </kendo-label>
+                          <kendo-autocomplete class="form-control">
+                          </kendo-autocomplete>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <kendo-label [for]="" text="Copy From"> </kendo-label>
+                        <kendo-dropdownlist class="form-control">
+                        </kendo-dropdownlist>
+                        <button class="btn btn-secondary">
+                          <i class="fas fa-save" aria-hidden="true"></i>Copy
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </fieldset>
+              </div>
+              <div class="budget-alc-contents">
+                <fieldset>
+                  <legend>Allocation</legend>
+                  <form>
+                    <div class="group-name">
+                      <div class="form-group">
+                        <input
+                          type="radio"
+                          name="alc"
+                          value="group"
+                          #group
+                          kendoRadioButton
+                        />
+                        <label class="k-radio-label" [for]="group"
+                          >Group Name</label
+                        >
+                        <kendo-combobox
+                          style="margin-left: 14px"
+                          [data]="listItems"
+                          [placeholder]="'Assets'"
+                        ></kendo-combobox>
+                      </div>
+                    </div>
+                    <div class="ledger-name">
+                      <div class="form-group">
+                        <input
+                          type="radio"
+                          name="alc"
+                          value="ledger"
+                          #ledger
+                          kendoRadioButton
+                        />
+                        <label class="k-radio-label" [for]="ledger"
+                          >Ledger Name</label
+                        >
+                        <kendo-combobox
+                          style="margin-left: 14px"
+                          [data]="listItems"
+                          [placeholder]="'A Dairy Center'"
+                        ></kendo-combobox>
+                      </div>
+                    </div>
+                  </form>
+                  <div
+                    class="budget-amount-allocation"
+                    style="padding-top: 40px"
+                  >
+                    <button class="btn btn-secondary d-flex m-auto">
+                      Assign Amount
+                    </button>
+                    <div
+                      class="allocation-table"
+                      style="border: 1px solid gray; height: 200px"
+                    >
+                      <table
+                        class="add-budget-table table-striped table-bordered"
+                      >
+                        <thead>
+                          <tr class="add-budget-thead">
+                            <th class="text-left" colspan="1">Del.</th>
+                            <th class="text-left" colspan="1">S.No</th>
+                            <th class="text-left" colspan="1">
+                              Account Head/Ledger Name
+                            </th>
+                            <th class="text-left" colspan="1">Type of A/C</th>
+                            <th class="text-left" colspan="1">
+                              Amount Allocated
+                            </th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
+                    <div class="alc-total d-flex justify-content-between">
+                      <button class="btn btn-secondary">
+                        <i class="fa fa-trash"></i>Delete All
+                      </button>
+                      <kendo-label [for]="" text="Allocated Total">
+                      </kendo-label>
+                      <kendo-numerictextbox class="form-control">
+                      </kendo-numerictextbox>
+                    </div>
+                  </div>
+                </fieldset>
+                <div class="foot-btns d-flex mr-auto">
+                  <button class="btn btn-secondary mr-2">Clear</button>
+                  <button class="btn btn-secondary">Close</button>
+                </div>
+              </div>
+            </ng-template>
+          </kendo-tabstrip-tab>
+        </kendo-tabstrip>
+      </div>
+    </div>
+  </div>
+</section>
