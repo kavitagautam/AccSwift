@@ -2,19 +2,20 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
-import { DatePipe } from "@angular/common";
+import { DatePipe, formatDate } from "@angular/common";
 import { Journal } from "../../models/journal.model";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { ToastrService } from "ngx-toastr";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { IconConst } from "@app/shared/constants/icon.constant";
-
+import { IntlService } from "@progress/kendo-angular-intl";
+import { TimeZoneService } from "@accSwift-modules/accswift-shared/services/time-zone/time-zone.service";
 @Component({
   selector: "accSwift-edit-journal",
   templateUrl: "../common-html/journal-voucher.html",
   styleUrls: ["./edit-journal.component.css"],
-  providers: [DatePipe],
+  providers: [DatePipe, TimeZoneService],
 })
 export class EditJournalComponent implements OnInit {
   private editedRowIndex: number;
@@ -38,6 +39,8 @@ export class EditJournalComponent implements OnInit {
     class: "modal-lg",
   };
 
+  pipe = new DatePipe("ne");
+
   constructor(
     public _fb: FormBuilder,
     private router: Router,
@@ -46,7 +49,8 @@ export class EditJournalComponent implements OnInit {
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public timeZone: TimeZoneService
   ) {}
 
   ngOnInit() {
@@ -67,16 +71,39 @@ export class EditJournalComponent implements OnInit {
     });
   }
 
+  bsValue = new Date();
+
   buildJournalForm(): void {
     this.journalVoucherForms = this._fb.group({
       ID: [this.journalDetail ? this.journalDetail.ID : null],
       SeriesID: [this.journalDetail ? this.journalDetail.SeriesID : null],
       VoucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
-      Date: [this.journalDetail ? new Date(this.journalDetail.Date) : ""],
+      Date: [
+        this.journalDetail
+          ? this.pipe.transform(this.journalDetail.Date, "YYYY-MM-DD")
+          : "",
+      ],
       ProjectID: [this.journalDetail ? this.journalDetail.ProjectID : null],
       Remarks: [this.journalDetail ? this.journalDetail.Remarks : ""],
       Journaldetails: this._fb.array([this.addJournalEntryFormGroup()]),
     });
+
+    const now = new Date(this.journalVoucherForms.get("Date").value);
+    const newDate = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+    console.log("New Date" + newDate);
+    this.journalVoucherForms.get("Date").patchValue(newDate);
+    // this.journalVoucherForms
+    //   .get("Date")
+    //   .patchValue(
+    //     this.convetTimeZone(this.journalVoucherForms.get("Date").value)
+    //   );
+  }
+
+  convetTimeZone(value): string {
+    console.log("Value" + value);
+    const date = new Date(value);
+    console.log("Return Date " + date.toLocaleString());
+    return date.toLocaleString();
   }
 
   addJournalEntryFormGroup(): FormGroup {
@@ -138,19 +165,7 @@ export class EditJournalComponent implements OnInit {
           })
         );
       });
-     } 
-   // else {
-    //   subLedger.push(
-    //     this._fb.group({
-    //       ID: [null],
-    //       SubLedgerID: [null],
-    //       Name: [""],
-    //       Amount: [0],
-    //       DrCr: [""],
-    //       Remarks: [""],
-    //     })
-    //   );
-    // }
+    }
     return subLedger;
   }
 
@@ -211,6 +226,11 @@ export class EditJournalComponent implements OnInit {
 
   public save(): void {
     // if (this.journalVoucherForms.invalid) return;
+
+    // const now = new Date(this.journalVoucherForms.get("Date").value);
+    // const newDate = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+    // console.log("New Date" + newDate);
+    // this.journalVoucherForms.get("Date").patchValue(newDate);
     this.journalService
       .updateJournalVoucher(this.journalVoucherForms.value)
       .subscribe(

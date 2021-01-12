@@ -29,6 +29,7 @@ import { ImageCropperModule } from "ngx-image-cropper";
 import { PopupAnchorDirective } from "./directives/popup-anchor/popup.anchor-target.directive";
 import { FormControlValidationMessageDirective } from "./directives/validators/validation-message.directive";
 import { FormSubmitValidationMessageDirective } from "./directives/validators/submit-validation-msg.directive";
+import { TimezoneDirective } from "./directives/date-timezone/timezone.directive";
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { FormSubmitValidationMessageDirective } from "./directives/validators/su
     PhoneMaskDirective,
     PMaskDirective,
     FormControlValidationMessageDirective,
-    FormSubmitValidationMessageDirective
+    FormSubmitValidationMessageDirective,
+    TimezoneDirective,
   ],
   imports: [
     FormsModule,
