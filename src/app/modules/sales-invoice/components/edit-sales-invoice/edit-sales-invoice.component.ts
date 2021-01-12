@@ -21,10 +21,9 @@ import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
-  userType: string = localStorage.getItem("user_type");
-
   public show: boolean = true;
-
+  
+  userType: string = localStorage.getItem("user_type");
   salesInvoiceForm: FormGroup;
   salesDetails: SalesInvoiceDetails;
   editedRowIndex: any;

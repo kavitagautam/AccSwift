@@ -34,7 +34,7 @@ import { EntrySubLedgerComponent } from "../entry-sub-ledger/entry-sub-ledger.co
 @Component({
   selector: "accSwift-details-entry-grid",
   templateUrl: "./details-entry-grid.component.html",
-  //templateUrl: "./basic-details-entry-grid.html",
+  // templateUrl: "./basic-details-entry-grid.html",
   styleUrls: ["./details-entry-grid.component.scss"],
   providers: [SettingsService],
 })

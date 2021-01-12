@@ -358,7 +358,7 @@
   .center {
     height: 14px;
     width: 14px;
-    background-color: #23c770;
+    background-color: #f7f9fc;
     position: absolute;
     top: 6px;
     left: 6px;
@@ -409,20 +409,29 @@
   .invoice-list-tabs .nav-item {
     margin-right: 20px;
   }
+  .edit-column {
+    width: 12%;
+    padding: 10px;
+    background-color: #ecf0f3;
+    color: #136acd;
+    font-weight: 600;
+  }
   .edit-column i {
     padding-right: 8px;
   }
   .info-table .item-head {
     background: #ecf0f3;
   }
+  .info-table .item-head th {
+    padding: 10px;
+  }
   .info-table input,
   textarea {
     border: 1px solid #b2c2cd;
     border-radius: 4px;
     font-size: 14px;
-    // padding: 8px 10px 6px;
-    // margin-right: 10px;
-    // margin-top: 10px;
+    width: 100%;
+    padding: 10px;
   }
 
   .info-table textarea {
@@ -499,7 +508,8 @@
     padding-bottom: 30px;
   }
   .item-details kendo-dropdownlist,
-  kendo-numerictextbox {
+  kendo-numerictextbox,
+  kendo-textbox {
     margin-right: 10px;
     margin-top: 15px;
   }
