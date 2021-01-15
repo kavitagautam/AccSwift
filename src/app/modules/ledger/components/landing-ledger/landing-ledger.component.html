@@ -32,7 +32,8 @@
                       [ngClass]="colorGroupOrLedger(dataItem)"
                       (click)="selectedNode(dataItem)"
                     >
-                      {{ dataItem.Title }}
+                      <span *ngIf="dataItem.Code"> ({{ dataItem.Code }})</span>
+                      &nbsp; {{ dataItem.Title }}
                     </span>
                   </ng-template>
                 </kendo-treeview>
