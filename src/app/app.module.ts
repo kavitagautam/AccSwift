@@ -33,7 +33,6 @@ import "@progress/kendo-angular-intl/locales/fr/all";
 
 import "hammerjs";
 
-
 // registerLocaleData(localeNe, "ne");
 registerLocaleData(localefr, "fr");
 
@@ -78,7 +77,6 @@ export function localFunction(settingsService: SettingsService) {
   }
   return localeId;
 }
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -94,20 +92,6 @@ export function localFunction(settingsService: SettingsService) {
     NgxsReduxDevtoolsPluginModule.forRoot(),
   ],
   providers: [
-    // PreferenceService,
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: initPreferenceData,
-    //   deps: [PreferenceService],
-    //   multi: true,
-    // },
-    // SettingsService,
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: initSettingsData,
-    //   deps: [SettingsService],
-    //   multi: true,
-    // },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorsService,
