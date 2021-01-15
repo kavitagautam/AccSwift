@@ -1,4 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Output,
+  EventEmitter,
+  ViewContainerRef,
+  ComponentFactoryResolver } from "@angular/core";
 
 @Component({
   selector: "budget-allocation",
@@ -9,9 +16,29 @@ import { Component, OnInit } from "@angular/core";
 export class BudgetAllocationComponent implements OnInit {
   
   public search: Array<any> = [ { text: 'Account Group', value: 1 }];
-  public selectedItem = this.search[1];
+
   public operator: Array<string> = ['Search With'];
-  constructor() {}
+  public Budget: any[] = [
+    {
+        text: 'Budget', items: [
+            { text: 'Setup' },
+            { text: 'Allocation' },
+            { text: 'View' }
+        ]
+    }
+];
+public expandedKeys: any[] = ["Budget"];
+  constructor(
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) {}
 
   ngOnInit() {}
+  expandAllNode(): void {
+    this.expandedKeys = this.Budget;
+  }
+
+  collapseAllNode(): void {
+    this.expandedKeys = [];
+  }
+
 }

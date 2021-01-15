@@ -1,10 +1,10 @@
 <section id="budget-allocation-contents">
-  <div class="budget-alc-search-box">
+  <div class="budget-alc-search-box box box-default">
     <fieldset>
       <legend>Search Box:</legend>
       <form>
         <div class="search-box d-flex">
-          <div class="form-group pr-2">
+          <div class="form-group pr-3" style="width: 20%">
             <label for="">Search In</label>
             <kendo-dropdownlist
               [data]="search"
@@ -14,20 +14,20 @@
             >
             </kendo-dropdownlist>
           </div>
-          <div class="form-group pr-2">
+          <div class="form-group pr-3" style="width: 20%">
             <label for="">Operator</label>
             <kendo-dropdownlist [data]="operator" class="form-control">
             </kendo-dropdownlist>
           </div>
-          <div class="form-group pr-2">
+          <div class="form-group pr-3" style="width: 20%">
             <label for="">Parameter</label>
             <kendo-autocomplete class="form-control"> </kendo-autocomplete>
           </div>
-          <div class="form-group pr-2">
+          <div class="form-group pr-3" style="width: 20%">
             <label for="">Operator</label>
             <kendo-dropdownlist class="form-control"> </kendo-dropdownlist>
           </div>
-          <div class="form-group pr-2">
+          <div class="form-group pr-3" style="width: 20%">
             <label for="">Parameter</label>
             <kendo-autocomplete class="form-control"> </kendo-autocomplete>
           </div>
@@ -45,27 +45,76 @@
   </div>
   <div class="budget-alc-details">
     <div class="row">
-      <div class="col-lg-4">
-        <div class="tree-list-tabstrip">
+      <div class="col-lg-6">
+        <div class="tree-list-tabstrip box box-solid">
           <kendo-tabstrip>
             <kendo-tabstrip-tab [title]="'Tree View'" [selected]="true">
               <ng-template kendoTabContent>
-                <p>Expenditure</p>
+                <div class="treeview-wrapper">
+                  <button class="btn btn-secondary" (click)="expandAllNode()">
+                    Expand All
+                  </button>
+                  <button
+                    class="btn btn-secondary ml-2"
+                    (click)="collapseAllNode()"
+                  >
+                    Collapse All
+                  </button>
+                  <kendo-treeview
+                    [nodes]="Budget"
+                    textField="text"
+                    kendoTreeViewExpandable
+                    kendoTreeViewSelectable
+                    kendoTreeViewHierarchyBinding
+                    childrenField="items"
+                    [expandBy]="'Budget'"
+                    [(expandedKeys)]="expandedKeys"
+                  >
+                  </kendo-treeview>
+                </div>
               </ng-template>
             </kendo-tabstrip-tab>
             <kendo-tabstrip-tab [title]="'List View'">
               <ng-template kendoTabContent>
-                <p>Tab 2 Content</p>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="grid-wrapper-listView">
+                      <kendo-grid [height]="495">
+                        <kendo-grid-column field="SNo" title="S.NO">
+                        </kendo-grid-column>
+                        <kendo-grid-column
+                          field="BudgetName"
+                          title="Budget Name"
+                        >
+                        </kendo-grid-column>
+                        <kendo-grid-column field="StartDate" title="Start Date">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="EndDate" title="End Date">
+                        </kendo-grid-column>
+                        <kendo-grid-column
+                          field="Description"
+                          title="Description"
+                        >
+                        </kendo-grid-column>
+                      </kendo-grid>
+                      <div *ngIf="listViewLoading" class="k-i-loading"></div>
+                    </div>
+                  </div>
+                </div>
               </ng-template>
             </kendo-tabstrip-tab>
           </kendo-tabstrip>
         </div>
       </div>
-      <div class="col-lg-8">
+      <div class="col-lg-6">
         <kendo-tabstrip>
           <kendo-tabstrip-tab [title]="'Budget Allocation'" [selected]="true">
             <ng-template kendoTabContent>
               <div class="budget-alc-form">
+                <button class="btn btn-primary m-2" (click)="addNewBudget()">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Create New
+                  Budget
+                </button>
                 <fieldset>
                   <legend>Budget</legend>
                   <form>
@@ -74,7 +123,10 @@
                         <kendo-label [for]="" text="Budget Name"> </kendo-label>
                         <kendo-dropdownlist class="form-control">
                         </kendo-dropdownlist>
-                        <button class="btn btn-secondary">
+                        <button
+                          class="btn btn-secondary"
+                          style="position: absolute; right: 9%"
+                        >
                           <i class="fas fa-plus" aria-hidden="true"></i>New
                         </button>
                       </div>
@@ -95,7 +147,10 @@
                         <kendo-label [for]="" text="Copy From"> </kendo-label>
                         <kendo-dropdownlist class="form-control">
                         </kendo-dropdownlist>
-                        <button class="btn btn-secondary">
+                        <button
+                          class="btn btn-secondary"
+                          style="position: absolute; right: 9%"
+                        >
                           <i class="fas fa-save" aria-hidden="true"></i>Copy
                         </button>
                       </div>
@@ -106,7 +161,7 @@
               <div class="budget-alc-contents">
                 <fieldset>
                   <legend>Allocation</legend>
-                  <form>
+                  <form class="d-flex">
                     <div class="group-name">
                       <div class="form-group">
                         <input
@@ -120,7 +175,7 @@
                           >Group Name</label
                         >
                         <kendo-combobox
-                          style="margin-left: 14px"
+                          style="margin-left: 14px; padding-top: 8px"
                           [data]="listItems"
                           [placeholder]="'Assets'"
                         ></kendo-combobox>
@@ -139,7 +194,7 @@
                           >Ledger Name</label
                         >
                         <kendo-combobox
-                          style="margin-left: 14px"
+                          style="margin-left: 14px; padding-top: 8px"
                           [data]="listItems"
                           [placeholder]="'A Dairy Center'"
                         ></kendo-combobox>
@@ -155,34 +210,46 @@
                     </button>
                     <div
                       class="allocation-table"
-                      style="border: 1px solid gray; height: 200px"
+                      style="border: 1px solid #e2e2e2"
                     >
-                      <table
-                        class="add-budget-table table-striped table-bordered"
-                      >
-                        <thead>
-                          <tr class="add-budget-thead">
-                            <th class="text-left" colspan="1">Del.</th>
-                            <th class="text-left" colspan="1">S.No</th>
-                            <th class="text-left" colspan="1">
-                              Account Head/Ledger Name
-                            </th>
-                            <th class="text-left" colspan="1">Type of A/C</th>
-                            <th class="text-left" colspan="1">
-                              Amount Allocated
-                            </th>
-                          </tr>
-                        </thead>
-                      </table>
+                      <kendo-grid [height]="200">
+                        <kendo-grid-column width="50" field="SNo" title="Del.">
+                        </kendo-grid-column>
+                        <kendo-grid-column
+                          width="50"
+                          field="BudgetName"
+                          title="S.No"
+                        >
+                        </kendo-grid-column>
+                        <kendo-grid-column
+                          width="190"
+                          field="StartDate"
+                          title="Account Head/Ledger Name"
+                        >
+                        </kendo-grid-column>
+                        <kendo-grid-column
+                          width="100"
+                          field="EndDate"
+                          title="Type of A/C"
+                        >
+                        </kendo-grid-column>
+                        <kendo-grid-column
+                          width="130"
+                          field="Description"
+                          title="Amount Allocated"
+                        >
+                        </kendo-grid-column>
+                      </kendo-grid>
+                      <div *ngIf="listViewLoading" class="k-i-loading"></div>
                     </div>
-                    <div class="alc-total d-flex justify-content-between">
+                    <div class="alc-total d-flex">
+                      <kendo-label [for]="" text="Allocated Total">
+                      </kendo-label>
+                      <kendo-numerictextbox class="form-control" width="100">
+                      </kendo-numerictextbox>
                       <button class="btn btn-secondary">
                         <i class="fa fa-trash"></i>Delete All
                       </button>
-                      <kendo-label [for]="" text="Allocated Total">
-                      </kendo-label>
-                      <kendo-numerictextbox class="form-control">
-                      </kendo-numerictextbox>
                     </div>
                   </div>
                 </fieldset>
