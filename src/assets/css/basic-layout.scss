@@ -15,15 +15,13 @@
   li,
   span {
     margin: 0;
-    padding: 0;
   }
   b,
   small {
     display: block;
   }
   a,
-  img,
-  span {
+  img {
     display: inline-block;
   }
   li {
@@ -257,6 +255,7 @@
   .browse-logo i {
     font-size: 40px;
     padding-bottom: 15px;
+    margin: auto;
   }
   .browse-info small {
     color: #4d6575;
@@ -273,7 +272,12 @@
     border: 1px solid #b2c2cd;
     border-radius: 4px;
     cursor: text;
-    padding: 8px 10px 6px;
+    padding: 12px 14px 12px;
+    font-size: 14px;
+  }
+  .edit-business-details {
+    text-align: right;
+    line-height: 1.8em;
   }
   .edit-business-details b {
     font-size: 14px;
@@ -317,62 +321,6 @@
   .add-customer-btn .plus {
     padding-right: 6px !important;
   }
-  .hotspot-wrap {
-    position: absolute;
-    top: 80px;
-    right: -2px;
-    cursor: pointer;
-    margin: -14px -14px 0;
-  }
-  .trigger {
-    height: 28px;
-    width: 28px;
-    position: relative;
-    opacity: 1;
-    z-index: 2;
-  }
-  .pulse {
-    border: 1px solid #6e8ca0;
-    border-radius: 50%;
-    height: 28px;
-    width: 28px;
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    pointer-events: none;
-    opacity: 0;
-    -webkit-animation: pulsate 1500ms ease infinite;
-    animation: pulsate 1500ms ease infinite;
-  }
-  .transparent {
-    height: 26px;
-    width: 26px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: rgba(35, 199, 112, 0.16);
-    border: 1px solid rgba(110, 140, 160, 0.3);
-    border-radius: 50%;
-    -webkit-animation: pulsate__transparent 1500ms ease infinite;
-    animation: pulsate__transparent 1500ms ease infinite;
-  }
-  .center {
-    height: 14px;
-    width: 14px;
-    background-color: #23c770;
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    border-radius: 50%;
-  }
-  .cus-invoice-input .form-group {
-    position: relative;
-  }
-  .cus-invoice-input input {
-    border: 1px solid #b2c2cd;
-    border-radius: 4px;
-    padding: 8px 10px 6px;
-  }
   .new-customer-contact {
     padding: 20px 0;
   }
@@ -398,17 +346,16 @@
     color: #fff;
     font-weight: 600;
   }
-  .edit-column a {
-    color: #136acd;
-    background: #ecf0f3;
-    padding: 10px;
-    border-radius: 6px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    font-weight: 600;
-  }
+
   .invoice-list-tabs .nav-item {
     margin-right: 20px;
+  }
+  .edit-column {
+    width: 12%;
+    padding: 10px;
+    background-color: #ecf0f3;
+    color: #136acd;
+    font-weight: 600;
   }
   .edit-column i {
     padding-right: 8px;
@@ -416,19 +363,18 @@
   .info-table .item-head {
     background: #ecf0f3;
   }
+  .info-table .item-head th {
+    padding: 10px;
+  }
   .info-table input,
   textarea {
     border: 1px solid #b2c2cd;
     border-radius: 4px;
     font-size: 14px;
-    padding: 8px 10px 6px;
-    width: 300px;
-    margin-right: 10px;
-    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
   }
-  .info-sm-input input {
-    width: 120px;
-  }
+
   .info-table textarea {
     height: 38px;
   }
@@ -458,38 +404,7 @@
   }
   .invoice-add-details {
     display: flex;
-    justify-content: flex-end;
-  }
-  .invoice-add-amounts {
-    display: flex;
     flex-direction: column;
-    text-align: right;
-  }
-  .total-amounts-line {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding-bottom: 16px;
-  }
-  .amount-label {
-    width: 500px;
-  }
-  .amount-value {
-    line-height: 20px;
-    margin-left: 1px;
-    overflow-wrap: break-word;
-    width: 143px;
-  }
-  .invoice-amount {
-    position: relative;
-  }
-  .invoice-amount input {
-    border: 1px solid #b2c2cd;
-    border-radius: 4px;
-    cursor: text;
-  }
-  .invoice-amount label {
-    padding-right: 10px;
   }
   .invoice-memo .notes {
     padding-bottom: 10px;
@@ -501,5 +416,11 @@
   }
   .foot-save-btn {
     padding-bottom: 30px;
+  }
+  .item-details kendo-dropdownlist,
+  kendo-numerictextbox,
+  kendo-textbox {
+    margin-right: 15px;
+    margin-top: 15px;
   }
 }

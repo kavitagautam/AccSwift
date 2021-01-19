@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { DetailsEntryGridComponent } from './details-entry-grid.component';
+import { DetailsEntryGridComponent } from "./details-entry-grid.component";
 
-describe('DetailsEntryGridComponent', () => {
+describe("DetailsEntryGridComponent", () => {
   let component: DetailsEntryGridComponent;
   let fixture: ComponentFixture<DetailsEntryGridComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DetailsEntryGridComponent ]
-    })
-    .compileComponents();
+      declarations: [DetailsEntryGridComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('DetailsEntryGridComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

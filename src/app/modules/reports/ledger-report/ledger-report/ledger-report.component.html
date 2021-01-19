@@ -89,6 +89,31 @@
                   {{ l.Balance }}
                 </td>
               </tr>
+              <tr
+                *ngFor="
+                  let subLedger of ledger.TransactDetails[i].SubLedgerDetails;
+                  let i = index
+                "
+              >
+                <td></td>
+                <td style="color: blue; padding-left: 30px">
+                  {{ subLedger.AccountName }}
+                </td>
+                <td>{{ subLedger.TransactDate }}</td>
+                <td>-</td>
+                <td class="balance">
+                  <span
+                    [innerHTML]="subLedger.DebitAmount | currencyFormat"
+                  ></span>
+                </td>
+                <td class="balance">
+                  <span
+                    [innerHTML]="subLedger.CreditAmount | currencyFormat"
+                  ></span>
+                </td>
+                <td>{{ subLedger.VoucherType }}</td>
+                <td>{{ subLedger.Balance }}</td>
+              </tr>
               <tr style="font-size: 14px; font-weight: 700">
                 <td colspan="1"></td>
                 <td colspan="1" align="right">Total Amount</td>
@@ -144,7 +169,9 @@
                 <th colspan="1">Final Balance</th>
               </tr>
             </thead>
-            <tbody *ngFor="let ledger of ledgerReportList; let i = index">
+            <tbody
+              *ngFor="let ledger of ledgerSummaryReportList; let i = index"
+            >
               <tr (dblclick)="openLedgerDetails($event, ledger)">
                 <td>{{ i + 1 }}</td>
                 <td style="color: blue">

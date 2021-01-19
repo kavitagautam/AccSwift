@@ -50,29 +50,3 @@ export interface GroupBalanceModel {
   Message: string;
   Entity: GroupBalance;
 }
-
-export interface LedgerList {
-  TransactDate?: Date;
-  VoucherNo: string;
-  VoucherType: string;
-  Balance: string;
-  Type: string;
-  Remarks: string;
-  RowID?: number;
-  ID?: number;
-  AccountCode?: any;
-  AccountName: string;
-  DebitAmount?: number;
-  CreditAmount?: number;
-}
-
-export interface LedgerDetails {
-  Entity: LedgerList[];
-  Company: Company;
-}
-
-export interface LedgerDetailsModel {
-  StatusCode: number;
-  Message: string;
-  Entity: LedgerDetails;
-}
