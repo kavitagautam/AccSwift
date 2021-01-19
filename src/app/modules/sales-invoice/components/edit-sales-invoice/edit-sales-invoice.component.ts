@@ -13,6 +13,8 @@ import { takeUntil, debounceTime } from "rxjs/operators";
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { SelectEvent } from "@progress/kendo-angular-upload";
+import { FileRestrictions } from '@progress/kendo-angular-upload';
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
@@ -22,6 +24,9 @@ import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   public show: boolean = true;
+  public myRestrictions: FileRestrictions = {
+    maxFileSize: 5242880 
+};
   
   userType: string = localStorage.getItem("user_type");
   salesInvoiceForm: FormGroup;
@@ -55,6 +60,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     class: "modal-lg",
   };
 
+  companyLogo: any = "";
+
+  companyForm: FormGroup;
+
   constructor(
     private _fb: FormBuilder,
     private router: Router,
@@ -75,6 +84,24 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
 
   toggle() {
     this.show = !this.show;
+  }
+ 
+  public selectEventHandler(e: SelectEvent): void {
+    const that = this;
+    e.files.forEach((file) => {
+      if (!file.validationErrors) {
+        var reader = new FileReader();
+
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          // console.log(event.target.result);
+          this.companyLogo = event.target.result;
+          this.companyForm.get("Logo").setValue(this.companyLogo);
+        };
+
+        reader.readAsDataURL(file.rawFile);
+      }
+    });
   }
 
   ngOnDestroy() {

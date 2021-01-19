@@ -7,7 +7,7 @@ import {
   ElementRef,
   HostListener,
   LOCALE_ID,
-  Inject,
+  Inject
 } from "@angular/core";
 import {
   FormArray,
@@ -33,8 +33,8 @@ import { EntrySubLedgerComponent } from "../entry-sub-ledger/entry-sub-ledger.co
 
 @Component({
   selector: "accSwift-details-entry-grid",
-  templateUrl: "./details-entry-grid.component.html",
-  // templateUrl: "./basic-details-entry-grid.html",
+  // templateUrl: "./details-entry-grid.component.html",
+  templateUrl: "./basic-details-entry-grid.html",
   styleUrls: ["./details-entry-grid.component.scss"],
   providers: [SettingsService],
 })
@@ -91,7 +91,7 @@ export class DetailsEntryGridComponent implements OnInit {
     private modalService: BsModalService,
     private _fb: FormBuilder,
     @Inject(LOCALE_ID) public localeId: string,
-    public intlService: IntlService
+    public intlService: IntlService,
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +106,8 @@ export class DetailsEntryGridComponent implements OnInit {
     for (const key in this.entryArray.value[0]) {
       this.columns.push(key);
     }
+    console.log("ngonOnit")
+    console.log("this.entryArray.value"+JSON.stringify(this.entryArray.value));
   }
 
   // @HostListener("keydown", ["$event"])
@@ -814,7 +816,7 @@ export class DetailsEntryGridComponent implements OnInit {
     this.submitted = true;
     this.rowSubmitted = true;
     const entryListArray = <FormArray>this.entryArray;
-    if (entryListArray.invalid) return;
+    // if (entryListArray.invalid) return;
     this.entryArray.push(this.addEntryList());
     this.rowSubmitted = false;
     this.rowSubmitted = false;
@@ -1062,10 +1064,12 @@ export class DetailsEntryGridComponent implements OnInit {
   public removeHandler({ dataItem, rowIndex }): void {
     const entryListArray = <FormArray>this.entryArray;
     // Remove the Row
+    console.log(JSON.stringify(entryListArray.getRawValue()));
+    console.log(rowIndex);
     this.entryArray.removeAt(rowIndex);
   }
 
-  removeRows(event, rowIndex): void {
+  removeRow(event, rowIndex): void {
     const entryListArray = <FormArray>this.entryArray;
     // Remove the Row
     this.entryArray.removeAt(rowIndex);
@@ -1078,4 +1082,5 @@ export class DetailsEntryGridComponent implements OnInit {
   public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
     sender.closeRow(rowIndex);
   }
+ 
 }
