@@ -1,138 +1,140 @@
 <section id="basic_new_invoice_contents">
   <div class="container-fluid">
-    <section class="new-invoice-top-bar">
-      <div class="row">
-        <div class="col-lg-9">
-          <h2 class="head-title">New Invoice</h2>
-        </div>
-        <div class="col-lg-3">
-          <div class="top-buttons">
-            <button
-              class="create-invoice-btn"
-              (click)="save()"
-              accSwiftFormSubmitValidationMsg
-              [validationControl]="salesInvoiceForm"
-            >
-              <span
-                >Save and Continue
-                <div class="down-arrow">
-                  <i class="fas fa-sort-down"></i></div
-              ></span>
-            </button>
+    <form [formGroup]="salesInvoiceForm" novalidate>
+      <section class="new-invoice-top-bar">
+        <div class="row">
+          <div class="col-lg-9">
+            <h2 class="head-title">New Invoice</h2>
           </div>
-        </div>
-      </div>
-    </section>
-    <section class="invoice-add-body">
-      <div class="invoice-add-info">
-        <button class="add-title" (click)="toggle()" id="bt">
-          <h4>Business address and contact details, title, summary and logo</h4>
-          <span
-            [ngClass]="show ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
-          ></span>
-        </button>
-        <ng-container *ngIf="show">
-          <div class="business-details">
-            <div class="browse-logo">
-              <div
-                class="logo-box"
-                style="
-                  margin: auto;
-                  display: block;
-                  height: 120px;
-                  margin-bottom: 20px;
-                "
-              >
-                <img [src]="companyLogo" />
-              </div>
-              <div class="clearfix">
-                <kendo-fileselect
-                  (select)="selectEventHandler($event)"
-                  [restrictions]="myRestrictions"
-                ></kendo-fileselect>
-              </div>
-              <div class="browse-info">
-                <span
-                  ><span class="browse">Browse</span> or drop your logo
-                  here.</span
-                >
-                <small>Maximum 5MB in size.</small>
-                <small>JPG, PNG, or GIF formats.</small>
-              </div>
-            </div>
-            <div class="business-address-details">
-              <div class="invoice-details-input">
-                <div class="form-group">
-                  <input type="text" name="invoice" placeholder="Invoice" />
-                </div>
-                <div class="form-group">
-                  <input
-                    type="text"
-                    name="summary"
-                    placeholder="Summary(e.g. project name, description of invoice)"
-                  />
-                </div>
-              </div>
-              <div class="edit-business-details">
-                <b>Business</b>
-                <small>United States</small>
-                <a href="">Edit your business details and contact address</a>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-    </section>
-    <section class="invoice-highlight">
-      <section class="info-customer-wrap">
-        <div class="row inner-details">
-          <div class="col-lg-4">
-            <div class="add-customer">
+          <div class="col-lg-3">
+            <div class="top-buttons">
               <button
-                type="button"
-                class="add-customer-btn"
-                data-toggle="modal"
-                data-target="#cash-party-acc"
+                class="create-invoice-btn"
+                (click)="save()"
+                accSwiftFormSubmitValidationMsg
+                [validationControl]="salesInvoiceForm"
               >
-                <span class="user"><i class="far fa-user"></i></span
-                ><span class="plus"><i class="fas fa-plus"></i></span>Add a
-                Customer
+                <span
+                  >Save and Continue
+                  <div class="down-arrow">
+                    <i class="fas fa-sort-down"></i></div
+                ></span>
               </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="invoice-add-body">
+        <div class="invoice-add-info">
+          <button class="add-title" (click)="toggle()" id="bt">
+            <h4>
+              Business address and contact details, title, summary and logo
+            </h4>
+            <span
+              [ngClass]="show ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
+            ></span>
+          </button>
+          <ng-container>
+            <div class="business-details" *ngIf="show">
+              <div class="browse-logo">
+                <div
+                  class="logo-box"
+                  style="
+                    margin: auto;
+                    display: block;
+                    height: 120px;
+                    margin-bottom: 20px;
+                  "
+                >
+                  <img [src]="companyLogo" />
+                </div>
+                <div class="clearfix">
+                  <kendo-fileselect
+                    (select)="selectEventHandler($event)"
+                    [restrictions]="myRestrictions"
+                  ></kendo-fileselect>
+                </div>
+                <div class="browse-info">
+                  <span
+                    ><span class="browse">Browse</span> or drop your logo
+                    here.</span
+                  >
+                  <small>Maximum 5MB in size.</small>
+                  <small>JPG, PNG, or GIF formats.</small>
+                </div>
+              </div>
+              <div class="business-address-details">
+                <div class="invoice-details-input">
+                  <div class="form-group">
+                    <input type="text" name="invoice" placeholder="Invoice" />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      name="summary"
+                      placeholder="Summary(e.g. project name, description of invoice)"
+                    />
+                  </div>
+                </div>
+                <div class="edit-business-details">
+                  <b>Business</b>
+                  <small>United States</small>
+                  <a href="">Edit your business details and contact address</a>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </section>
+      <section class="invoice-highlight">
+        <section class="info-customer-wrap">
+          <div class="row inner-details">
+            <div class="col-lg-4">
+              <div class="add-customer">
+                <button
+                  type="button"
+                  class="add-customer-btn"
+                  data-toggle="modal"
+                  data-target="#cash-party-acc"
+                >
+                  <span class="user"><i class="far fa-user"></i></span
+                  ><span class="plus"><i class="fas fa-plus"></i></span>Add a
+                  Customer
+                </button>
 
-              <div class="modal fade" id="cash-party-acc">
-                <div class="modal-dialog modal-sm">
-                  <div class="modal-content">
-                    <div class="modal-body">
-                      <div class="form-group">
-                        <accSwift-cash-party-account
-                          formControlName="CashPartyLedgerID"
-                        ></accSwift-cash-party-account>
+                <div class="modal fade" id="cash-party-acc">
+                  <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <accSwift-cash-party-account
+                            formControlName="CashPartyLedgerID"
+                          ></accSwift-cash-party-account>
+                        </div>
+                        <button class="add-item-btn" (click)="addNewUser()">
+                          <i
+                            class="fas fa-plus-circle"
+                            style="padding-top: 3px"
+                          ></i>
+                          Add a New User
+                        </button>
                       </div>
-                      <button class="add-item-btn" (click)="addNewUser()">
-                        <i
-                          class="fas fa-plus-circle"
-                          style="padding-top: 3px"
-                        ></i>
-                        Add a New User
-                      </button>
-                    </div>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        Close
-                      </button>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-lg-8">
-            <div class="cus-invoice-details">
-              <form [formGroup]="salesInvoiceForm" novalidate>
+            <div class="col-lg-8">
+              <div class="cus-invoice-details">
                 <div class="row mt-3">
                   <div class="col-md-12">
                     <div class="col-lg-6 col-md-3 col-sm-6 col-xs-6">
@@ -172,88 +174,90 @@
                     </div>
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-      <section class="invoice-add-details">
-        <div class="col-md-12">
-          <accSwift-details-entry-grid
-            [entryArray]="salesInvoiceForm.controls.InvoiceDetails"
-            [voucherType]="'SALES'"
-          ></accSwift-details-entry-grid>
-        </div>
-        <div class="col-md-12">
-          <table
-            class="table"
-            style="float: right; width: 36%; text-align: right"
-          >
-            <tbody>
-              <tr>
-                <td>Gross(Rs)</td>
-                <td>
-                  <span [innerHTML]="totalGrossAmount | currencyFormat "></span>
-                </td>
-              </tr>
-              <tr>
-                <td>Tax</td>
-                <td>
-                  <span [innerHTML]="totalTaxAmount | currencyFormat "></span>
-                </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td class="total_amount">Total</td>
-                <td class="total_amount">
-                  <span
-                    [innerHTML]=" grandTotalAmount | currencyFormat "
-                  ></span>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </section>
-      <hr class="bdr-light lg hline" />
-      <section class="invoice-memo">
-        <div class="notes">Notes/Terms</div>
-        <textarea
-          name="memo"
-          placeholder="Enter notes or terms of service that are visible to  your customer"
-        ></textarea>
-      </section>
-    </section>
-    <section class="invoice-add-footer">
-      <div class="invoice-add-info">
-        <button class="add-title" (click)="toggle()" id="bt">
-          <h4>Footer</h4>
-          <span
-            [ngClass]="show ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
-          ></span>
-        </button>
-        <ng-container *ngIf="show">
+        </section>
+        <section class="invoice-add-details">
+          <div class="col-md-12">
+            <accSwift-details-entry-grid
+              [entryArray]="salesInvoiceForm.controls.InvoiceDetails"
+              [voucherType]="'SALES'"
+            ></accSwift-details-entry-grid>
+          </div>
+          <div class="col-md-12">
+            <table
+              class="table"
+              style="float: right; width: 36%; text-align: right"
+            >
+              <tbody>
+                <tr>
+                  <td>Gross(Rs)</td>
+                  <td>
+                    <span
+                      [innerHTML]="totalGrossAmount | currencyFormat "
+                    ></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Tax</td>
+                  <td>
+                    <span [innerHTML]="totalTaxAmount | currencyFormat "></span>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td class="total_amount">Total</td>
+                  <td class="total_amount">
+                    <span
+                      [innerHTML]=" grandTotalAmount | currencyFormat "
+                    ></span>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </section>
+        <hr class="bdr-light lg hline" />
+        <section class="invoice-memo">
+          <div class="notes">Notes/Terms</div>
           <textarea
             name="memo"
-            placeholder="Enter a footer for this invoice (ex:tax-information, thankyou note)"
+            placeholder="Enter notes or terms of service that are visible to  your customer"
           ></textarea>
-        </ng-container>
-      </div>
-    </section>
-    <section class="foot-save-btn top-buttons new-invoice-top-bar">
-      <button
-        class="create-invoice-btn"
-        (click)="save()"
-        accSwiftFormSubmitValidationMsg
-        [validationControl]="salesInvoiceForm"
-      >
-        <span
-          >Save and Continue
-          <div class="down-arrow">
-            <i class="fas fa-sort-down"></i></div
-        ></span>
-      </button>
-    </section>
+        </section>
+      </section>
+      <section class="invoice-add-footer">
+        <div class="invoice-add-info">
+          <button class="add-title" (click)="toggle()" id="bt">
+            <h4>Footer</h4>
+            <span
+              [ngClass]="show ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
+            ></span>
+          </button>
+          <ng-container *ngIf="show">
+            <textarea
+              name="memo"
+              placeholder="Enter a footer for this invoice (ex:tax-information, thankyou note)"
+            ></textarea>
+          </ng-container>
+        </div>
+      </section>
+      <section class="foot-save-btn top-buttons new-invoice-top-bar">
+        <button
+          class="create-invoice-btn"
+          (click)="save()"
+          accSwiftFormSubmitValidationMsg
+          [validationControl]="salesInvoiceForm"
+        >
+          <span
+            >Save and Continue
+            <div class="down-arrow">
+              <i class="fas fa-sort-down"></i></div
+          ></span>
+        </button>
+      </section>
+    </form>
   </div>
 </section>

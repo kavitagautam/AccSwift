@@ -11,12 +11,12 @@ import { Subject } from "rxjs";
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { SelectEvent } from "@progress/kendo-angular-upload";
-import { FileRestrictions } from '@progress/kendo-angular-upload';
+import { FileRestrictions } from "@progress/kendo-angular-upload";
 
 @Component({
   selector: "accSwift-add-sales-invoice",
-  // templateUrl: "../common-html/common-sales-invoice.html",
-  templateUrl: "../common-html/basic-sales-invoice.html",
+  templateUrl: "../common-html/common-sales-invoice.html",
+  //templateUrl: "../common-html/basic-sales-invoice.html",
   // templateUrl: (function () {
   //   if (localStorage.getItem("user_type") == "Basic") {
   //     return require("../common-html/basic-sales-invoice.html");
@@ -30,10 +30,10 @@ import { FileRestrictions } from '@progress/kendo-angular-upload';
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
-  public show:boolean = true;
+  public show: boolean = true;
   public myRestrictions: FileRestrictions = {
-    maxFileSize: 5242880 
-};
+    maxFileSize: 5242880,
+  };
 
   userType: string = localStorage.getItem("user_type");
   public salesInvoiceForm: FormGroup;
