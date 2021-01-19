@@ -48,6 +48,13 @@ export class FormsService {
     this.getProjectLists();
   }
 
+  getAllDropDownList() {
+    this.getCashPartyAccount();
+    this.getSalesAccount();
+    this.getDepotList();
+    this.getProjectLists();
+  }
+
   getSeriesList(voucherType): Observable<SeriesRootModel> {
     const params = new HttpParams().set("VoucherType", voucherType);
     return this.httpService.get(`${this._api_URL}Series`, null, params);

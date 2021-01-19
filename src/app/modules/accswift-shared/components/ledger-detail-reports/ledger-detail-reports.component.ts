@@ -1,4 +1,4 @@
-import { LedgerList } from "@accSwift-modules/reports/models/trail-balance.model";
+import { LedgerList } from "@accSwift-modules/reports/models/ledger-transaction.model";
 import { ReportsService } from "@accSwift-modules/reports/services/reports.service";
 import { Location } from "@angular/common";
 import { Component, Input, OnInit } from "@angular/core";

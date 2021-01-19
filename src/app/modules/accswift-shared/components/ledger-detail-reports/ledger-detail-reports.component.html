@@ -29,11 +29,8 @@
               <th colspan="1">Balance</th>
             </tr>
           </thead>
-          <tbody>
-            <tr
-              *ngFor="let ledger of ledgerDetailsList; let i = index"
-              (dblclick)="openLedgerDetailsDetails($event, ledger)"
-            >
+          <tbody *ngFor="let ledger of ledgerDetailsList; let i = index">
+            <tr (dblclick)="openLedgerDetailsDetails($event, ledger)">
               <td *ngIf="ledger.Type === 'HEADER'" colspan="8" align="center">
                 {{ ledger.AccountName }}
               </td>
@@ -106,6 +103,21 @@
               <td *ngIf="ledger.Type === 'CLOSING'" class="balance">
                 <span [innerHTML]="ledger.CreditAmount | currencyFormat"></span>
               </td>
+            </tr>
+            <tr *ngFor="let sub of ledger.SubLedgerDetails; let i = index">
+              <td style="color: blue; padding-left: 30px">
+                {{ sub.AccountName }}
+              </td>
+              <td>{{ sub.TransactDate }}</td>
+              <td>-</td>
+              <td class="balance">
+                <span [innerHTML]="sub.DebitAmount | currencyFormat"></span>
+              </td>
+              <td class="balance">
+                <span [innerHTML]="sub.CreditAmount | currencyFormat"></span>
+              </td>
+              <td>{{ sub.VoucherType }}</td>
+              <td>{{ sub.Balance }}</td>
             </tr>
           </tbody>
           <tbody *ngIf="ledgerDetailsList.length == 0">
