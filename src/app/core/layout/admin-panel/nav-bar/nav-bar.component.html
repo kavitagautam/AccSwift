@@ -25,7 +25,7 @@
           <accswift-language-switcher class="nav-link"></accswift-language-switcher>
         </li> -->
         <!-- Messages: style can be found in dropdown.less-->
-        <li class="dropdown messages-menu">
+        <li class="dropdown messages-menu" *ngIf="false">
           <!-- Menu toggle button -->
           <a class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-envelope-o"></i>
@@ -37,7 +37,6 @@
               <!-- inner menu: contains the messages -->
               <ul class="menu">
                 <li>
-                  <!-- start message -->
                   <a>
                     <div class="pull-left">
                       <!-- User Image -->
@@ -66,7 +65,7 @@
         <!-- /.messages-menu -->
 
         <!-- Notifications Menu -->
-        <li class="dropdown notifications-menu">
+        <li class="dropdown notifications-menu" *ngIf="false">
           <!-- Menu toggle button -->
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-bell-o"></i>
@@ -91,7 +90,7 @@
           </ul>
         </li>
         <!-- Tasks Menu -->
-        <li class="dropdown tasks-menu">
+        <li class="dropdown tasks-menu" *ngIf="false">
           <!-- Menu Toggle Button -->
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-flag-o"></i>
@@ -194,7 +193,7 @@
           </ul>
         </li>
         <!-- Control Sidebar Toggle Button -->
-        <li>
+        <li *ngIf="false">
           <a href="#" data-toggle="control-sidebar"
             ><i class="fa fa-gears"></i
           ></a>

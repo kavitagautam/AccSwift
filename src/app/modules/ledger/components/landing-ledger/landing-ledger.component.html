@@ -1,5 +1,5 @@
 <div class="box box-default">
-  <div class="col-md-6 p-0">
+  <div class="col-md-4 p-0">
     <div class="box box-solid">
       <kendo-tabstrip (tabSelect)="onTabSelect($event)">
         <kendo-tabstrip-tab [title]="'Tree View'" [selected]="true">
@@ -32,7 +32,8 @@
                       [ngClass]="colorGroupOrLedger(dataItem)"
                       (click)="selectedNode(dataItem)"
                     >
-                      {{ dataItem.Title }}
+                      <span *ngIf="dataItem.Code"> ({{ dataItem.Code }})</span>
+                      &nbsp; {{ dataItem.Title }}
                     </span>
                   </ng-template>
                 </kendo-treeview>
@@ -65,7 +66,7 @@
       </kendo-tabstrip>
     </div>
   </div>
-  <div class="col-md-6 p-0">
+  <div class="col-md-8 p-0">
     <div class="row">
       <div class="col-md-12 mr-2">
         <div class="col-md-12">

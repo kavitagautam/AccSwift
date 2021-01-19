@@ -32,7 +32,6 @@ import "@progress/kendo-angular-intl/locales/en-GB/all";
 import "@progress/kendo-angular-intl/locales/fr/all";
 
 import "hammerjs";
-import { TreeViewModule } from "@progress/kendo-angular-treeview";
 
 // registerLocaleData(localeNe, "ne");
 registerLocaleData(localefr, "fr");
@@ -78,7 +77,6 @@ export function localFunction(settingsService: SettingsService) {
   }
   return localeId;
 }
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -92,23 +90,8 @@ export function localFunction(settingsService: SettingsService) {
     }),
     NgxsLoggerPluginModule.forRoot(loggerPluginOptions),
     NgxsReduxDevtoolsPluginModule.forRoot(),
-    TreeViewModule,
   ],
   providers: [
-    // PreferenceService,
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: initPreferenceData,
-    //   deps: [PreferenceService],
-    //   multi: true,
-    // },
-    // SettingsService,
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: initSettingsData,
-    //   deps: [SettingsService],
-    //   multi: true,
-    // },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorsService,
