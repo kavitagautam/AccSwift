@@ -7,7 +7,12 @@
         </div>
         <div class="col-lg-3">
           <div class="top-buttons">
-            <button class="create-invoice-btn">
+            <button
+              class="create-invoice-btn"
+              (click)="save()"
+              accSwiftFormSubmitValidationMsg
+              [validationControl]="salesInvoiceForm"
+            >
               <span
                 >Save and Continue
                 <div class="down-arrow">

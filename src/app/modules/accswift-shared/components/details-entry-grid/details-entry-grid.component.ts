@@ -106,8 +106,6 @@ export class DetailsEntryGridComponent implements OnInit {
     for (const key in this.entryArray.value[0]) {
       this.columns.push(key);
     }
-    console.log("ngonOnit")
-    console.log("this.entryArray.value"+JSON.stringify(this.entryArray.value));
   }
 
   // @HostListener("keydown", ["$event"])
@@ -812,7 +810,6 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   addNewRow(event): void {
-    console.log("add New Row");
     this.submitted = true;
     this.rowSubmitted = true;
     const entryListArray = <FormArray>this.entryArray;
@@ -1064,8 +1061,7 @@ export class DetailsEntryGridComponent implements OnInit {
   public removeHandler({ dataItem, rowIndex }): void {
     const entryListArray = <FormArray>this.entryArray;
     // Remove the Row
-    console.log(JSON.stringify(entryListArray.getRawValue()));
-    console.log(rowIndex);
+    
     this.entryArray.removeAt(rowIndex);
   }
 

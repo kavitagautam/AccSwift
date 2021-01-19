@@ -102,7 +102,6 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
         var reader = new FileReader();
         reader.onload = (event: any) => {
-          // console.log(event.target.result);
           this.companyLogo = event.target.result;
           this.companyForm.get("Logo").setValue(this.companyLogo);
         };
