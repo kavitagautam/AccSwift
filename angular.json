@@ -29,9 +29,10 @@
             "styles": [
               "src/styles.scss",
               "./node_modules/font-awesome/css/font-awesome.min.css",
-              "./node_modules/@progress/kendo-theme-default/dist/all.css"
+              "./node_modules/@progress/kendo-theme-default/dist/all.css",
+              "node_modules/intl-tel-input/build/css/intlTelInput.css"
             ],
-            "scripts": [],
+            "scripts": ["node_modules/intl-tel-input/build/js/intlTelInput.min.js"],
             "es5BrowserSupport": true
           },
           "configurations": {

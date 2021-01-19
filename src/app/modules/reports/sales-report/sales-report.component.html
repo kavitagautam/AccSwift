@@ -1,81 +1,85 @@
 <div class="box box-default">
-  <div class="col-md-12">
-    <button
-      type="button"
-      class="btn-primary m-3"
-      (click)="openSalesReportSettings()"
-    >
-      Sales Report Settings
-    </button>
-  </div>
-  <h3
-    style="text-align: center"
-    *ngIf="
-      selectType === 'product' &&
-      salesReportForms.get('ProductID').value === null
-    "
-  >
-    Sales Product-Wise Report
-  </h3>
-  <h3
-    style="text-align: center"
-    *ngIf="selectType === 'product' && salesReportForms.get('ProductID').value"
-  >
-    Sales Product-Wise Transaction Report
-  </h3>
-  <h3 style="text-align: center" *ngIf="selectType === 'party'">
-    Sales Party-Wise Report
-  </h3>
-
-  <div class="col-md-12">
-    <div class="grid-wrapper">
-      <div class="table-box">
-        <table id="header-fixed" class="table table-hover table-fixed">
-          <thead>
-            <tr>
-              <th colspan="1">Product Details</th>
-              <th colspan="1">Unit</th>
-              <th colspan="1">Rate</th>
-              <th colspan="1">Sales Qty</th>
-              <th colspan="1">Return Qty</th>
-              <th colspan="1">Net Sales Qty</th>
-              <th colspan="1">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let l of salesReportList; index as i">
-              <td>{{ l.Name }}</td>
-              <td>{{ l.Unit }}</td>
-              <td class="balance">
-                <span [innerHTML]="l.Rate | currencyFormat"></span>
-              </td>
-              <td align="right">{{ l.SalesQty }}</td>
-              <td align="right">{{ l.ReturnQty }}</td>
-              <td align="right">{{ l.NetSalesQty }}</td>
-              <td class="balance">
-                <span [innerHTML]="l.Amount | currencyFormat"></span>
-              </td>
-            </tr>
-            <tr *ngIf="salesReportList.length == 0">
-              <td colspan="10" align="center">No Data Available</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="1"></td>
-              <td colspan="1"></td>
-              <td colspan="1"></td>
-              <td colspan="1">Total Qty</td>
-              <td colspan="1">{{ totalSalesQty }}</td>
-              <td colspan="1" class="balance">Total Amount</td>
-              <td colspan="1" class="balance">
-                <span [innerHTML]="totalAmount | currencyFormat"></span>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button
+        type="button"
+        class="btn-primary m-3"
+        (click)="openSalesReportSettings()"
+      >
+        Sales Report Settings
+      </button>
     </div>
-    <div *ngIf="listLoading" class="k-i-loading"></div>
+    <h3
+      style="text-align: center"
+      *ngIf="
+        selectType === 'product' &&
+        salesReportForms.get('ProductID').value === null
+      "
+    >
+      Sales Product-Wise Report
+    </h3>
+    <h3
+      style="text-align: center"
+      *ngIf="
+        selectType === 'product' && salesReportForms.get('ProductID').value
+      "
+    >
+      Sales Product-Wise Transaction Report
+    </h3>
+    <h3 style="text-align: center" *ngIf="selectType === 'party'">
+      Sales Party-Wise Report
+    </h3>
+
+    <div class="col-md-12">
+      <div class="grid-wrapper">
+        <div class="table-box">
+          <table id="header-fixed" class="table table-hover table-fixed">
+            <thead>
+              <tr>
+                <th colspan="1">Product Details</th>
+                <th colspan="1">Unit</th>
+                <th colspan="1">Rate</th>
+                <th colspan="1">Sales Qty</th>
+                <th colspan="1">Return Qty</th>
+                <th colspan="1">Net Sales Qty</th>
+                <th colspan="1">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let l of salesReportList; index as i">
+                <td>{{ l.Name }}</td>
+                <td>{{ l.Unit }}</td>
+                <td class="balance">
+                  <span [innerHTML]="l.Rate | currencyFormat"></span>
+                </td>
+                <td align="right">{{ l.SalesQty }}</td>
+                <td align="right">{{ l.ReturnQty }}</td>
+                <td align="right">{{ l.NetSalesQty }}</td>
+                <td class="balance">
+                  <span [innerHTML]="l.Amount | currencyFormat"></span>
+                </td>
+              </tr>
+              <tr *ngIf="salesReportList.length == 0">
+                <td colspan="10" align="center">No Data Available</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="1"></td>
+                <td colspan="1"></td>
+                <td colspan="1"></td>
+                <td colspan="1">Total Qty</td>
+                <td colspan="1">{{ totalSalesQty }}</td>
+                <td colspan="1" class="balance">Total Amount</td>
+                <td colspan="1" class="balance">
+                  <span [innerHTML]="totalAmount | currencyFormat"></span>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="listLoading" class="k-i-loading"></div>
+    </div>
   </div>
 </div>

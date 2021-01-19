@@ -35,6 +35,7 @@ import { GroupBalanceReportComponent } from "./components/group-balance-report/g
 import { LedgerDetailReportsComponent } from "./components/ledger-detail-reports/ledger-detail-reports.component";
 import { EntrySubLedgerComponent } from "./components/entry-sub-ledger/entry-sub-ledger.component";
 import { OpeningBalanceComponent } from "./components/opening-balance/opening-balance.component";
+import { BasicAddEditUserComponent } from './components/basic-add-edit-user/basic-add-edit-user.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { OpeningBalanceComponent } from "./components/opening-balance/opening-ba
     LedgerDetailReportsComponent,
     OpeningBalanceComponent,
     EntrySubLedgerComponent,
+    BasicAddEditUserComponent,
   ],
   imports: [
     FormsModule,
@@ -92,7 +94,7 @@ import { OpeningBalanceComponent } from "./components/opening-balance/opening-ba
     SettingsReportsComponent,
     GroupBalanceReportComponent,
     LedgerDetailReportsComponent,
-    OpeningBalanceComponent,
+    OpeningBalanceComponent
   ],
   providers: [ValidationMsgService],
   entryComponents: [
@@ -100,6 +102,7 @@ import { OpeningBalanceComponent } from "./components/opening-balance/opening-ba
     ProductModalPopupComponent,
     LedgerModalPopupComponent,
     EntrySubLedgerComponent,
+    BasicAddEditUserComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

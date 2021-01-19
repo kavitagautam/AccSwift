@@ -43,8 +43,14 @@ import {
   ProductMinRootModel,
   ProductMin,
 } from "@accSwift-modules/product/models/product-min.model";
-import { LedgerGroupModel } from "@accSwift-modules/ledger/models/ledger-group.model";
-import { LedgerMinModel } from "@accSwift-modules/ledger/models/ledger.models";
+import {
+  LedgerGroup,
+  LedgerGroupModel,
+} from "@accSwift-modules/ledger/models/ledger-group.model";
+import {
+  LedgerMin,
+  LedgerMinModel,
+} from "@accSwift-modules/ledger/models/ledger.models";
 import { GroupBalanceRootModel } from "../models/group-balance.model";
 import { LedgerTransactionRootModel } from "../models/ledger-transaction.model";
 import {
@@ -62,6 +68,8 @@ import {
 export class ReportsService {
   private projectName = new Subject<string>();
   projectName$ = this.projectName.asObservable();
+  ledgerGroupLists: LedgerGroup[] = [];
+  ledgerMinLists: LedgerMin[] = [];
 
   // Service message commands
   selectProject(name: string) {
@@ -151,6 +159,8 @@ export class ReportsService {
     this.getSalesAccount();
     this.getPurchaseAccount();
     this.getDepotList();
+    this.getLedgerGroupDropDown();
+    this.getLedgerDropDown();
   }
 
   getTrailBalance(body): Observable<TrailBalanceModel> {
@@ -184,6 +194,10 @@ export class ReportsService {
       });
   }
 
+  getProductMinDD(): Observable<ProductMinRootModel> {
+    return this.httpService.get(`${this._api_URL}/Product/min`);
+  }
+
   getProductGroup(): void {
     this.httpService
       .get(`${this._api_URL}/ProductGroup`)
@@ -192,6 +206,9 @@ export class ReportsService {
       });
   }
 
+  getProductGroupDD(): Observable<ProductGroupModel> {
+    return this.httpService.get(`${this._api_URL}ProductGroup`);
+  }
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
@@ -310,5 +327,18 @@ export class ReportsService {
       .subscribe((response: VoucherTypeModel) => {
         this.transVoucherType = response.Entity;
       });
+  }
+
+  getLedgerGroupDropDown(): void {
+    this.httpService
+      .get(`${this._api_URL}LedgerGroup`)
+      .subscribe((response) => {
+        this.ledgerGroupLists = response.Entity;
+      });
+  }
+  getLedgerDropDown(): void {
+    this.httpService.get(`${this._api_URL}Ledger/min`).subscribe((response) => {
+      this.ledgerMinLists = response.Entity;
+    });
   }
 }

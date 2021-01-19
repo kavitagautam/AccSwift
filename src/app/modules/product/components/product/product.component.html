@@ -20,20 +20,17 @@
               </div>
               <div class="form-group">
                 <label>Product Group<sup>*</sup> </label>
-                <select
+                <kendo-dropdownlist
                   class="form-control"
-                  id="productGroupId"
-                  formControlName="productGroupId"
-                  accSwiftFormValidator
+                  [data]="productGroups"
+                  [filterable]="true"
+                  [textField]="'Name'"
+                  [valueField]="'ID'"
+                  [valuePrimitive]="true"
+                  [formControl]="productForm.get('productGroupId')"
+                  (filterChange)="productGroupDDFilter($event)"
                 >
-                  <option [ngValue]="null">Choose Option....</option>
-                  <option
-                    *ngFor="let productGroup of productService.productGroupList"
-                    [ngValue]="productGroup.ID"
-                  >
-                    {{ productGroup.Name }}
-                  </option>
-                </select>
+                </kendo-dropdownlist>
               </div>
               <div class="form-group">
                 <label>Base Unit<sup>*</sup></label>

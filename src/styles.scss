@@ -2,6 +2,7 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~ngx-toastr/toastr.css";
 @import "./assets/scss/main.scss";
+@import "./assets/css/basic-layout.scss";
 $color_1: red;
 $color_2: #6c7178;
 $color_3: #007bff;
@@ -97,6 +98,13 @@ breadcrumb {
 .form-control {
   background-color: #f7f9fc !important;
   color: #1a2138;
+}
+
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  background-color: #eee !important;
+  opacity: 1;
 }
 
 //kendo input text overFlow Css
@@ -303,6 +311,10 @@ th {
   height: 230px;
   overflow-y: auto;
   width: 100%;
+}
+
+.table-fixed > tbody > tr {
+  cursor: pointer;
 }
 
 tfoot > tr > td {

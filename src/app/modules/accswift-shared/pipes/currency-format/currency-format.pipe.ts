@@ -28,7 +28,7 @@ export class CurrencyFormatPipe implements PipeTransform {
       var lastThree = result[0].substring(result[0].length - 3);
       var otherNumbers = result[0].substring(0, result[0].length - 3);
       if (otherNumbers != "") lastThree = "," + lastThree;
-      if (this.currencySign == "रू") {
+      if (this.currencySign == "Rs") {
         var output =
           otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
       } else {

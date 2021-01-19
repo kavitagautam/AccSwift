@@ -1,4 +1,4 @@
-<div class="col-md-12 p-0">
+<div class="col-md-12">
   <kendo-grid
     [data]="entryArray.value"
     (cancel)="cancelHandler($event)"
@@ -44,7 +44,7 @@
                 <div>
                   No data found.
                   <br />
-                  <button class="k-button" (click)="addNewProduct(addProduct)">
+                  <button class="k-button" (click)="addNewProduct()">
                     Add new product
                   </button>
                 </div>
@@ -186,18 +186,16 @@
         let-isNew="isNew"
         let-formGroup="formGroup"
       >
-      <div class="form-group">
-        <button
-          type="button"
-          class="btn btn-secondory mr-2"
-          (click)="openSubLedgerModal(entryArray, rowIndex)"
-          tooltip="Sub Ledger "
-        >
-          Sub Ledger
-        </button>
-       
-      </div>
-        
+        <div class="form-group">
+          <button
+            type="button"
+            class="btn btn-secondory mr-2"
+            (click)="openSubLedgerModal(entryArray, rowIndex)"
+            tooltip="Sub Ledger "
+          >
+            Sub Ledger
+          </button>
+        </div>
       </ng-template>
     </kendo-grid-column>
 

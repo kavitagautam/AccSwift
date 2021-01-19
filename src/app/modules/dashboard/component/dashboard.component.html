@@ -1,42 +1,101 @@
 <section class="dashboard_content">
-
   <section class="box_wrap">
     <div class="row">
-      <div *ngFor="let box of boxes" class="col-lg-3 col-sm-6 col-6">
+      <div
+        *ngFor="let generalSummary of generalSummaryList"
+        class="col-lg-3 col-sm-6 col-6"
+      >
         <div class="box d-flex">
-          <div [ngStyle]="{'background-color': getBgcolor(box.title)}" class="sales icon_cont">
+          <div
+            [ngStyle]="{ 'background-color': getBgColor(generalSummary.Title) }"
+            class="sales icon_cont"
+          >
             <i class="ion ion-bag"><i class="fas fa-universal-access"></i></i>
           </div>
           <div class="details">
-            <div class="qty">{{box.no}}</div>
-            <b>{{box.title}}</b>
-            <small>{{box.amount}}</small>
+            <div class="qty">{{ generalSummary.NoOfVouchers }}</div>
+            <div class="links" [ngSwitch]="generalSummary.Title">
+              <a
+                class="generalSummaryLink"
+                *ngSwitchCase="'Sales'"
+                routerLink="/sales-invoice"
+                >{{ generalSummary.Title }}</a
+              >
+              <a
+                class="generalSummaryLink"
+                *ngSwitchCase="'Purchase'"
+                routerLink="/purchase-invoice"
+                >{{ generalSummary.Title }}</a
+              >
+              <a
+                class="generalSummaryLink"
+                *ngSwitchCase="'Profit'"
+                routerLink=""
+                >{{ generalSummary.Title }}</a
+              >
+              <a
+                class="generalSummaryLink"
+                *ngSwitchCase="'Bank Balance'"
+                routerLink=""
+                >{{ generalSummary.Title }}</a
+              >
+            </div>
+            <small *ngIf="generalSummary.Title == 'Bank Balance'">{{
+              generalSummary.Balance
+            }}</small>
+            <small *ngIf="generalSummary.Title != 'Bank Balance'"
+              >{{ generalSummary.AmountThisMonth }} /
+              {{ generalSummary.AmountThisYear }}</small
+            >
           </div>
         </div>
       </div>
     </div>
   </section>
 
- 
-   <section class="inner_content">
-     <div class="row">
-       
-      <div class="col-lg-6">
+  <section class="inner_content">
+    <div class="card-columns">
+      <div class="card padding-top">
+        <h3 class="title">Bills Reminder</h3>
+        <div class="line"></div>
+
+        <div class="bills-reminder">
+          <h3>No More Late Fees!</h3>
+          <b>You have 3 bills due by 20 Dec.</b>
+          <div class="bills-detail">
+            <span>Rs.10,999</span>
+            <a href="#">View Bills</a>
+          </div>
+
+          <div class="days">
+            <b>20</b>
+            <b>Days Left!</b>
+          </div>
+        </div>
+      </div>
+      <div class="card padding-top">
         <div class="check-account">
           <h3 class="title">Checking Account</h3>
           <div class="line"></div>
-          <kendo-chart  style="height:250px">
+          <kendo-chart style="height: 289px">
             <kendo-chart-title></kendo-chart-title>
             <kendo-chart-category-axis>
-                <kendo-chart-category-axis-item
-                    [categories]="['Sep 4', 'Sep 11', 'Sep 18', 'Sep 25']"
-                    [title]="{ text: 'Months' }">
-                </kendo-chart-category-axis-item>
+              <kendo-chart-category-axis-item
+                [categories]="['Sep 4', 'Sep 11', 'Sep 18', 'Sep 25']"
+                [title]="{ text: 'Months' }"
+              >
+              </kendo-chart-category-axis-item>
             </kendo-chart-category-axis>
             <kendo-chart-series>
-              <kendo-chart-series-item type="line" [data]="[123, 276, 310, 212]">
+              <kendo-chart-series-item
+                type="line"
+                [data]="[123, 276, 310, 212]"
+              >
               </kendo-chart-series-item>
-              <kendo-chart-series-item type="line" [data]="[165, 210, 287, 144]">
+              <kendo-chart-series-item
+                type="line"
+                [data]="[165, 210, 287, 144]"
+              >
               </kendo-chart-series-item>
               <kendo-chart-series-item type="line" [data]="[56, 140, 195, 46]">
               </kendo-chart-series-item>
@@ -45,107 +104,63 @@
         </div>
       </div>
 
-      <div class="col-lg-6">
-        <div class="account-watchlist">
-         <h3 class="title">Account WatchList</h3>
-         <div class="line"></div>
-         <div class="table-responsive">
-           <table class="table table-striped">
-   
-            <thead>
-             <tr>
-               <th class="text-left" scope="col">UserName</th>
-               <th class="text-left" scope="col">Bank</th>
-               <th class="text-left" scope="col">Balance</th>
-             </tr>
-            </thead>
-   
-            <tbody>
-             <tr>
-               <td ><a href="#">John Doe</a></td>
-               <td>Himalayan Life Nepal</td>
-               <td>17,054.000</td>
-             </tr>
-   
-             <tr>
-               <td scope="row"><a href="#">Merry Roi</a></td>
-               <td>Himalayan Life Nepal</td>
-               <td>17,054.000</td>
-             </tr>
-   
-             <tr>
-               <td scope="row"><a href="#">John Doe</a></td>
-               <td>Himalayan Life Nepal</td>
-               <td>17,054.000</td>
-             </tr>
-             
-             <tr>
-               <td scope="row"><a href="#">Jenny Joshi</a></td>
-               <td>Himalayan Life Nepal</td>
-               <td>17,054.000</td>
-             </tr>
-   
-             <tr>
-               <td scope="row"><a href="#">John Doe</a></td>
-               <td>Himalayan Life Nepal</td>
-               <td>17,054.000</td>
-             </tr>
-
-             <tr>
-              <td ><a href="#">Rohn Doe</a></td>
-              <td>Himalayan Life Nepal</td>
-              <td>17,054.000</td>
-            </tr>
-             
-            </tbody>
-   
-           </table>
-         </div>
-        </div>
-      </div>
-  
-   
-     <div class="col-lg-6">
+      <div class="card padding-top">
         <div class="invoices">
           <h3 class="title">Invoices owned to you</h3>
           <div class="line"></div>
-          <div class="row">
-  
+          <div class="row invoice-row">
             <div class="col-lg-6">
-              <button class="btn btn-primary btn-sm" type="button" [disabled]="true">New Sales Invoice</button>
+              <button
+                class="btn btn-primary btn-sm"
+                type="button"
+                routerLink="/sales-invoice/add"
+              >
+                New Sales Invoice
+              </button>
             </div>
-    
+
             <div class="col-lg-6">
-              <div class="table-responsive">
+              <div
+                class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+                style="height: 110px"
+              >
                 <table class="table">
-                  <tr>
-                    <td><a href="#">2 Draft Invoices</a></td>
-                    <td>11,000.00</td>
-                  </tr>
-  
-                  <tr>
-                    <td><a href="#">9 Awaiting Payment</a></td>
-                    <td>9,172.00</td>
-                  </tr>
-  
-                  <tr>
-                    <td><a href="#">5 Overdue</a></td>
-                    <td>6,978.00</td>
-                  </tr>
-                </table>  
-              </div>  
+                  <thead>
+                    <tr>
+                      <th class="text-left">Remarks</th>
+                      <th class="text-left">Invoice Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let details of invoice">
+                      <td>{{ details.Remarks }}</td>
+                      <td
+                        class="text-right"
+                        [innerHTML]="details.InvoiceBalance | currencyFormat"
+                      ></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-  
           </div>
-  
+
           <div class="invoice-chart">
-            <kendo-chart style="height:230px">
+            <kendo-chart style="height: 230px">
               <kendo-chart-title></kendo-chart-title>
               <kendo-chart-category-axis>
-                  <kendo-chart-category-axis-item
-                      [categories]="['April', 'May', 'June', 'July', 'August', 'September']"
-                      [title]="{ text: 'Months' }">
-                  </kendo-chart-category-axis-item>
+                <kendo-chart-category-axis-item
+                  [categories]="[
+                    'April',
+                    'May',
+                    'June',
+                    'July',
+                    'August',
+                    'September'
+                  ]"
+                  [title]="{ text: 'Months' }"
+                >
+                </kendo-chart-category-axis-item>
               </kendo-chart-category-axis>
               <kendo-chart-series>
                 <kendo-chart-series-item [data]="[12, 20, 30, 60, 70, 50]">
@@ -157,18 +172,152 @@
           </div>
         </div>
       </div>
-  
-      <div class="col-lg-6">
-  
+
+      <div class="card padding-top">
+        <div class="voucher-watchlist">
+          <h3 class="title">Inventory Voucher List</h3>
+          <div class="line"></div>
+          <div
+            class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+          >
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="text-left" scope="col">Types of Voucher</th>
+                  <th class="text-left" scope="col">IBQ</th>
+                  <th class="text-left" scope="col">OBQ</th>
+                  <th class="text-right" scope="col">This Month</th>
+                  <th class="text-right" scope="col">YTD</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let invTransaction of invTransactionList">
+                  <td
+                    scope="row"
+                    [ngSwitch]="invTransaction.VoucherTypeFullName"
+                  >
+                    <a *ngSwitchCase="'Purchase'" routerLink="/purchase-invoice"
+                      >{{ invTransaction.VoucherTypeFullName }} ({{
+                        invTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Purchase Return'"
+                      routerLink="/purchase-return"
+                      >{{ invTransaction.VoucherTypeFullName }} ({{
+                        invTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Sales Invoice'"
+                      routerLink="/sales-invoice"
+                      >{{ invTransaction.VoucherTypeFullName }} ({{
+                        invTransaction.NoOfVouchers
+                      }})</a
+                    >0
+                    <a *ngSwitchCase="'Sales Return'" routerLink="/sales-return"
+                      >{{ invTransaction.VoucherTypeFullName }} ({{
+                        invTransaction.NoOfVouchers
+                      }})</a
+                    >
+                  </td>
+                  <td>{{ invTransaction.InBoundQty }}</td>
+                  <td>{{ invTransaction.OutBoundQty }}</td>
+                  <td
+                    class="text-right"
+                    [innerHTML]="
+                      invTransaction.AmountThisMonth | currencyFormat
+                    "
+                  ></td>
+                  <td
+                    class="text-right"
+                    [innerHTML]="invTransaction.AmountTotal | currencyFormat"
+                  ></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card padding-top">
+        <div class="cash-flow">
+          <h3 class="title">Cash Flow</h3>
+          <div class="line"></div>
+          <div class="view d-flex">
+            <div><h5>Cash coming in and going out of your business.</h5></div>
+            <div class="ml-auto"><a href="#">View Report</a></div>
+          </div>
+
+          <kendo-chart style="height: 230px">
+            <kendo-chart-category-axis>
+              <kendo-chart-category-axis-item
+                [categories]="['Jan', 'Feb', 'Mar', 'Apr', 'May']"
+              >
+              </kendo-chart-category-axis-item>
+            </kendo-chart-category-axis>
+            <kendo-chart-series>
+              <kendo-chart-series-item
+                type="verticalArea"
+                [data]="[1, 2, 3, 5, 8]"
+              >
+              </kendo-chart-series-item>
+              <kendo-chart-series-item
+                type="verticalArea"
+                [data]="[-1, -2, -3, -5, -8]"
+              >
+              </kendo-chart-series-item>
+            </kendo-chart-series>
+          </kendo-chart>
+        </div>
+      </div>
+
+      <div class="card padding-top">
+        <div class="account-watchlist">
+          <h3 class="title">Account WatchList</h3>
+          <div class="line"></div>
+          <div
+            class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+          >
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="text-left" scope="col">Ledger Name</th>
+                  <th class="text-left" scope="col">Group Name</th>
+                  <th class="text-right" scope="col">Balance</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let account of Accounts">
+                  <td scope="row" style="color: blue">
+                    {{ account.LedgerName }}
+                  </td>
+                  <td>{{ account.GroupName }}</td>
+                  <td class="text-right">{{ account.Balance }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card padding-top">
         <div class="bills">
           <h3 class="title">Bills you need to pay</h3>
           <div class="line"></div>
           <div class="row">
-  
             <div class="col-lg-6">
-              <button class="btn btn-primary btn-sm" type="button" [disabled]="true">New Bill</button>
+              <button
+                class="btn btn-primary btn-sm"
+                type="button"
+                [disabled]="true"
+              >
+                New Bill
+              </button>
             </div>
-    
+
             <div class="col-lg-6">
               <div class="table-responsive">
                 <table class="table">
@@ -176,30 +325,37 @@
                     <td><a href="#">2 Draft Bills</a></td>
                     <td>11,000.00</td>
                   </tr>
-    
+
                   <tr>
                     <td><a href="#">9 Awaiting Payment</a></td>
                     <td>9,172.00</td>
                   </tr>
-    
+
                   <tr>
                     <td><a href="#">5 Overdue</a></td>
                     <td>6,978.00</td>
                   </tr>
-                </table>  
-              </div>  
+                </table>
+              </div>
             </div>
-    
           </div>
-          
+
           <div class="bill-chart">
-            <kendo-chart  style="height:230px">
+            <kendo-chart style="height: 230px">
               <kendo-chart-title></kendo-chart-title>
               <kendo-chart-category-axis>
-                  <kendo-chart-category-axis-item
-                      [categories]="['Older', 'Sep 11', 'This Week', 'Oct 25', 'Oct 20', 'Future']"
-                      [title]="{ text: 'Months' }">
-                  </kendo-chart-category-axis-item>
+                <kendo-chart-category-axis-item
+                  [categories]="[
+                    'Older',
+                    'Sep 11',
+                    'This Week',
+                    'Oct 25',
+                    'Oct 20',
+                    'Future'
+                  ]"
+                  [title]="{ text: 'Months' }"
+                >
+                </kendo-chart-category-axis-item>
               </kendo-chart-category-axis>
               <kendo-chart-series>
                 <kendo-chart-series-item [data]="[12, 276, 310, 50, 10]">
@@ -209,145 +365,169 @@
           </div>
         </div>
       </div>
-      
-      <div class="col-lg-6">
+
+      <div class="card padding-top">
+        <div class="voucher-watchlist">
+          <h3 class="title">Account Voucher List</h3>
+          <div class="line"></div>
+          <div
+            class="table-responsive table-wrapper-scroll-y my-custom-scrollbar"
+          >
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="text-left" scope="col">Types of Voucher</th>
+                  <th class="text-right" scope="col">This Month</th>
+                  <th class="text-right" scope="col">YTD</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let accountTransaction of accountTransactionList">
+                  <td
+                    scope="row"
+                    [ngSwitch]="accountTransaction.VoucherTypeFullName"
+                  >
+                    <!--<a
+                      *ngIf="
+                        accountTransaction.VoucherTypeFullName == 'Journal'
+                      "
+                      routerLink="/journal"
+                      >{{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >-->
+                    <a
+                      *ngSwitchCase="'Bank Payment'"
+                      routerLink="/bank-payment"
+                    >
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Bank Receipt'"
+                      routerLink="/bank-receipt"
+                    >
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Bank Reconciliation'"
+                      routerLink="/bank-reconciliation"
+                    >
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Cash Payment'"
+                      routerLink="/cash-payment"
+                    >
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Cash Receipt'"
+                      routerLink="/cash-receipt"
+                    >
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a
+                      *ngSwitchCase="'Cheque Receipt'"
+                      routerLink="/cheque-receipt"
+                    >
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a *ngSwitchCase="'Contra'" routerLink="/contra-voucher">
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a *ngSwitchCase="'Credit Note'" routerLink="">
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a *ngSwitchCase="'Debit Note'" routerLink="">
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                    <a *ngSwitchCase="'Journal'" routerLink="/journal">
+                      {{ accountTransaction.VoucherTypeFullName }} ({{
+                        accountTransaction.NoOfVouchers
+                      }})</a
+                    >
+                  </td>
+                  <td
+                    class="text-right"
+                    [innerHTML]="
+                      accountTransaction.AmountThisMonth | currencyFormat
+                    "
+                  ></td>
+                  <td
+                    class="text-right"
+                    [innerHTML]="
+                      accountTransaction.AmountTotal | currencyFormat
+                    "
+                  ></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card padding-top">
         <div class="voucher-detail">
           <h3 class="title">Journal Voucher</h3>
-           <div class="line"></div>
-           
-             <kendo-grid
-                   [data]="gridView"
-                   [selectable]="true"
-                 >
-                 <kendo-grid-column field="VoucherNo" title="Voucher No" [width]="85"></kendo-grid-column>
-                 <kendo-grid-column field="Date" title="Date" [width]="180"></kendo-grid-column>
-                 <kendo-grid-column field="ProjectName" title="Project Name" [width]="100"></kendo-grid-column>
-                 <kendo-grid-column field="Series" title="Series Name" [width]="100"></kendo-grid-column>
-                 <ng-template kendoGridDetailTemplate let-dataItem>
-                   <section *ngIf="dataItem.VoucherNo">
-                     <p><strong>Remarks:</strong> {{dataItem.Remarks}}</p>
-                   </section>
-                 </ng-template>
-               </kendo-grid>
-           
-         </div>
-      </div>
+          <div class="line"></div>
 
-      <div class="col-lg-6">
-        <div class="voucher-watchlist">
-         <h3 class="title">Voucher WatchList</h3>
-         <div class="line"></div>
-         <div class="table-responsive">
-           <table class="table table-striped">
-   
-            <thead>
-             <tr>
-               <th class="text-left" scope="col">Types of Voucher</th>
-               <th class="text-left" scope="col">This Month</th>
-               <th class="text-left" scope="col">YTD</th>
-             </tr>
-            </thead>
-   
-            <tbody>
-             <tr>
-               <td ><a href="#">Journal Voucher (29)</a></td>
-               <td>2,2500</td>
-               <td>10,062</td>
-             </tr>
-   
-             <tr>
-               <td scope="row"><a href="#">Cash Receipt (12)</a></td>
-               <td>131</td>
-               <td>958</td>
-             </tr>
-   
-             <tr>
-               <td scope="row"><a href="#">Bank Receipt (12)</a></td>
-               <td>19</td>
-               <td>417</td>
-             </tr>
-             
-             <tr>
-               <td scope="row"><a href="#">Cash Payment (8)</a></td>
-               <td>109</td>
-               <td>476</td>
-             </tr>
-   
-             <tr>
-               <td scope="row"><a href="#">Bank Payment (36)</a></td>
-               <td>109</td>
-               <td>476</td>
-             </tr>
-             
-             <tr>
-               <td scope="row"><a href="#">Bank Reconciliation (0)</a></td>
-               <td>109</td>
-               <td>476</td>
-             </tr>
-   
-             <tr>
-               <td scope="row"><a href="#">Contra Voucher (0)</a></td>
-               <td>109</td>
-               <td>476</td>
-             </tr>
-            </tbody>
-   
-           </table>
-         </div>
+          <kendo-grid
+            [data]="gridView"
+            [selectable]="true"
+            style="height: 314px"
+          >
+            <kendo-grid-column
+              field="VoucherNo"
+              title="Voucher No"
+              [width]="85"
+            ></kendo-grid-column>
+            <kendo-grid-column
+              field="Date"
+              title="Date"
+              [width]="180"
+            ></kendo-grid-column>
+            <kendo-grid-column
+              field="ProjectName"
+              title="Project Name"
+              [width]="100"
+            ></kendo-grid-column>
+            <kendo-grid-column
+              field="Series"
+              title="Series Name"
+              [width]="100"
+            ></kendo-grid-column>
+            <ng-template kendoGridDetailTemplate let-dataItem>
+              <section *ngIf="dataItem.VoucherNo">
+                <p><strong>Remarks:</strong> {{ dataItem.Remarks }}</p>
+                <a routerLink="/journal" routerLinkActive="active">
+                  Voucher Transaction List</a
+                >
+              </section>
+            </ng-template>
+          </kendo-grid>
         </div>
-      </div>
-
- 
-    <div class="col-lg-6">
-      <div class="cash-flow">
-        <h3 class="title">Cash Flow</h3>
-        <div class="line"></div>
-        <div class="view d-flex">
-          <div><h5>Cash coming in and going out of your business.</h5></div>
-          <div class="ml-auto"><a href="#">View Report</a></div>
-        </div>
-       
-        <kendo-chart  style="height:230px;">
-          <kendo-chart-category-axis>
-              <kendo-chart-category-axis-item
-                  [categories]="['Jan', 'Feb', 'Mar', 'Apr', 'May']">
-              </kendo-chart-category-axis-item>
-          </kendo-chart-category-axis>
-          <kendo-chart-series>
-            <kendo-chart-series-item type="verticalArea" [data]="[ 1, 2, 3, 5, 8 ]">
-            </kendo-chart-series-item>
-            <kendo-chart-series-item type="verticalArea" [data]="[ -1, -2, -3, -5, -8]">
-            </kendo-chart-series-item>
-          </kendo-chart-series>
-        </kendo-chart>
       </div>
     </div>
-
-    <div class="col-lg-6 col-sm-6 col-6">
-      <h3 class="title">Bills Reminder</h3>
-      <div class="line"></div>
-
-      <div class="bills-reminder">
-        <h3>No More Late Fees!</h3>
-        <b>You have 3 bills due by 20 Dec.</b>
-        <div class="bills-detail">
-          <span>Rs.10,999</span>
-          <a href="#">View Bills</a>
-        </div>
-
-        <div class="days">
-          <b>20</b>
-          <b>Days Left!</b>
-        </div>
-
-      </div>
-     </div>
-
-    </div>
-
-   </section>
-
-
+  </section>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
   <!-- jQuery UI 1.10.3 -->
@@ -396,5 +576,4 @@
     src="../../../../assets/plugins/iCheck/icheck.min.js"
     type="text/javascript"
   ></script>
-
 </section>

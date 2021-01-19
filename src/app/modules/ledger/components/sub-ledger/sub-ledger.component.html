@@ -31,12 +31,15 @@
           let-isNew="isNew"
           let-rowIndex="rowIndex"
         >
-          <input
-            #ntb="popupAnchor"
-            popupAnchor
+          <kendo-autocomplete
+            [data]="suggestCodeList"
             class="form-control"
             [formControl]="getSubLedgerList.controls[rowIndex].get('Code')"
-          />
+            [valueField]="'Code'"
+            [suggest]="true"
+            [placeholder]="'Code'"
+            (blur)="suggestCode()"
+          ></kendo-autocomplete>
         </ng-template>
       </kendo-grid-column>
       <kendo-grid-column field="Name" title="Name" width="100">

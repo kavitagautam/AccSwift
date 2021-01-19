@@ -2,6 +2,8 @@ import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.m
 import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
 import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
 import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
+import { ProductGroup } from "@accSwift-modules/product/models/product-group.models";
+import { ProductMin } from "@accSwift-modules/product/models/product-min.model";
 import { CashPartyGroup } from "@accSwift-modules/reports/models/sales.report.model";
 import { ReportsService } from "@accSwift-modules/reports/services/reports.service";
 import { Component, Input, OnInit } from "@angular/core";
@@ -33,7 +35,8 @@ export class SettingsReportsComponent implements OnInit {
   accountGroup: boolean = false;
   ledgerMinList: LedgerMin[] = [];
   ledgerGroupList: LedgerGroup[] = [];
-
+  productGroups: ProductGroup[] = [];
+  productMin: ProductMin[] = [];
   cashPartyList: CashParty[] = [];
   cashPartyGroupList: CashPartyGroup[] = [];
   //  modal config to unhide modal when clicked outside
@@ -57,6 +60,8 @@ export class SettingsReportsComponent implements OnInit {
     //this.projectName = new Subject();
     this.getLedger();
     this.getLedgerGroup();
+    this.getProductGroupDD();
+    this.getProductDD();
     this.selectType = "product";
 
     this.settingsForms
@@ -69,6 +74,17 @@ export class SettingsReportsComponent implements OnInit {
     this.formsField = Object.keys(this.settingsForms.controls);
   }
 
+  getProductGroupDD(): void {
+    this.reportService.getProductGroupDD().subscribe((response) => {
+      this.productGroups = response.Entity;
+    });
+  }
+
+  getProductDD(): void {
+    this.reportService.getProductMinDD().subscribe((response) => {
+      this.productMin = response.Entity;
+    });
+  }
   getLedger(): void {
     this.reportService.getLedgerMin().subscribe((response) => {
       this.ledgerMinList = response.Entity;
@@ -263,6 +279,31 @@ export class SettingsReportsComponent implements OnInit {
     this.settingsForms.get("ProductGroupID").enable();
   }
 
+  // Filterable Ledger Group
+  ledgerGroupDDFilter(value): void {
+    this.ledgerGroupList = this.reportService.ledgerGroupLists.filter(
+      (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
+  // Filterable Cash Party Drop-down
+  productGroupDDFilter(value): void {
+    this.productGroups = this.reportService.productGroupList.filter(
+      (s) => s.Name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+  // Filterable Cash Party Drop-down
+  productDDFilter(value): void {
+    this.productMin = this.reportService.productList.filter(
+      (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
+  ledgerDDFilter(value): void {
+    this.ledgerMinList = this.reportService.ledgerMinLists.filter(
+      (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
   endOfMonth(): void {
     var today = new Date();
     var lastDayOfMonth = new Date(

@@ -13,6 +13,7 @@ import { EditCompanyComponent } from "./components/edit-company/edit-company.com
 import { SharedModule } from "@app/shared/shared.module";
 import { UploadsModule } from "@progress/kendo-angular-upload";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
+import { Ng2TelInputModule } from "ng2-tel-input";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module"
     UploadsModule,
     DropDownListModule,
     DropDownsModule,
+    Ng2TelInputModule,
   ],
 })
 export class CompanyModule {}

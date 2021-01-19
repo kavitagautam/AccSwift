@@ -17,6 +17,8 @@ import {
   FormControl,
 } from "@angular/forms";
 import { Product } from "../../models/product.models";
+import { ProductGroup } from "@accSwift-modules/product/models/product-group.models";
+import { ProductGroupComponent } from "../product-group/product-group.component";
 
 @Component({
   selector: "accSwift-product",
@@ -25,7 +27,7 @@ import { Product } from "../../models/product.models";
 })
 export class ProductComponent implements OnInit, OnChanges {
   @Input("selectedProduct") selectedProduct;
-
+  productGroups: ProductGroup[] = [];
   private editedRowIndex: number;
 
   title: string;
@@ -55,6 +57,7 @@ export class ProductComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.buildProductForm();
+    this.getProducts();
   }
 
   //Detect the changes in tree selection of product with ngOnChanges
@@ -120,6 +123,12 @@ export class ProductComponent implements OnInit, OnChanges {
     this.productForm.setControl(name, form);
   }
 
+  getProducts(): void {
+    this.productService.getProductGroupDD().subscribe((response) => {
+      this.productGroups = response.Entity;
+    });
+  }
+
   getProductDetails(): void {
     if (this.selectedProductId) {
       this.productService
@@ -182,6 +191,14 @@ export class ProductComponent implements OnInit, OnChanges {
     }
     return openingQuantitiesFormArray;
   }
+
+  // Filterable Cash Party Drop-down
+  productGroupDDFilter(value): void {
+    this.productGroups = this.productService.productGroupList.filter(
+      (s) => s.Name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+
   addOpeningBalanceFormGroup(): FormGroup {
     return this._fb.group({
       ID: [""],
