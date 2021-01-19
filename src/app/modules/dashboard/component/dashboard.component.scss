@@ -60,8 +60,12 @@ small {
   color: rgb(60, 141, 188);
   padding: 8px 0;
 }
-.details small {
-  font-size: 16px;
+.details span {
+  font-size: 13px;
+  font-weight: 600;
+}
+.details .format-balance span {
+  font-size: 13px;
   font-weight: 600;
 }
 .line {

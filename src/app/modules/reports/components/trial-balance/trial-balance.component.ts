@@ -8,7 +8,6 @@ import {
 import {
   TrailBalance,
   GroupBalanceList,
-  LedgerList,
 } from "../../models/trail-balance.model";
 import { ReportsService } from "../../services/reports.service";
 import { FormGroup, FormBuilder } from "@angular/forms";
@@ -65,6 +64,7 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
       IsShowSecondLevelGroupDtl: [false],
       IsAllGroups: [true],
       IsOnlyPrimaryGroups: [false],
+      IsShowSubLedger: [false],
       IsDateRange: [false],
       IsDetails: [false],
       IsShowZeroBalance: [false],

@@ -519,6 +519,7 @@
                   </label>
                 </div>
               </div>
+
               <div
                 class="form-group"
                 *ngIf="formsField.includes('ShowZeroQunatity')"
@@ -704,6 +705,25 @@
                     formControlName="IsShowSecondLevelGroupDtl"
                   />
                   Show Second Level Group Details
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div
+              class="form-group"
+              *ngIf="formsField.includes('IsShowSubLedger')"
+            >
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="IsShowSubLedger"
+                    [value]="true"
+                    (click)="isShowSubLedgerClick()"
+                    formControlName="IsShowSubLedger"
+                  />
+                  Show Sub Ledger
                 </label>
               </div>
             </div>

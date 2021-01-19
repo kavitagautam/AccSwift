@@ -13,25 +13,22 @@ import { takeUntil, debounceTime } from "rxjs/operators";
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { SelectEvent } from "@progress/kendo-angular-upload";
+import { FileRestrictions } from '@progress/kendo-angular-upload';
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
   templateUrl: "../common-html/common-sales-invoice.html",
-  // templateUrl: (function () {
-  //   if (localStorage.getItem("user_type") == "Basic") {
-  //     return require("../common-html/basic-sales-invoice.html");
-  //   } else {
-  //     return require("../common-html/common-sales-invoice.html");
-  //   }
-  // })(),
   // templateUrl: "../common-html/basic-sales-invoice.html",
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
-  userType: string = localStorage.getItem("user_type");
-
   public show: boolean = true;
-
+  public myRestrictions: FileRestrictions = {
+    maxFileSize: 5242880 
+};
+  
+  userType: string = localStorage.getItem("user_type");
   salesInvoiceForm: FormGroup;
   salesDetails: SalesInvoiceDetails;
   editedRowIndex: any;
@@ -63,6 +60,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     class: "modal-lg",
   };
 
+  companyLogo: any = "";
+
+  companyForm: FormGroup;
+
   constructor(
     private _fb: FormBuilder,
     private router: Router,
@@ -83,6 +84,23 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
 
   toggle() {
     this.show = !this.show;
+  }
+ 
+  public selectEventHandler(e: SelectEvent): void {
+    const that = this;
+    e.files.forEach((file) => {
+      if (!file.validationErrors) {
+        var reader = new FileReader();
+
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.companyLogo = event.target.result;
+          this.companyForm.get("Logo").setValue(this.companyLogo);
+        };
+
+        reader.readAsDataURL(file.rawFile);
+      }
+    });
   }
 
   ngOnDestroy() {

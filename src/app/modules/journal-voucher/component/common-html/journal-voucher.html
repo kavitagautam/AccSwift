@@ -45,12 +45,14 @@
           <div class="form-group">
             <label>Date</label>
             <input
-              type="text"
               class="form-control"
               formControlName="Date"
               bsDatepicker
-              [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD,  h:mm:ss a' }"
             />
+            <!-- (change)="dateChange($event.traget.value)"
+              bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" -->
           </div>
         </div>
       </div>
