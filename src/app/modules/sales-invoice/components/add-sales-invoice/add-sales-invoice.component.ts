@@ -10,11 +10,13 @@ import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { IconConst } from "@app/shared/constants/icon.constant";
+import { SelectEvent } from "@progress/kendo-angular-upload";
+import { FileRestrictions } from "@progress/kendo-angular-upload";
 
 @Component({
   selector: "accSwift-add-sales-invoice",
   templateUrl: "../common-html/common-sales-invoice.html",
-  // templateUrl: "../common-html/basic-sales-invoice.html",
+  //templateUrl: "../common-html/basic-sales-invoice.html",
   // templateUrl: (function () {
   //   if (localStorage.getItem("user_type") == "Basic") {
   //     return require("../common-html/basic-sales-invoice.html");
@@ -28,7 +30,10 @@ import { IconConst } from "@app/shared/constants/icon.constant";
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
-  public show:boolean = true;
+  public show: boolean = true;
+  public myRestrictions: FileRestrictions = {
+    maxFileSize: 5242880,
+  };
 
   userType: string = localStorage.getItem("user_type");
   public salesInvoiceForm: FormGroup;
@@ -61,6 +66,9 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     centered: true,
     class: "modal-lg",
   };
+  companyLogo: any = "";
+
+  companyForm: FormGroup;
 
   constructor(
     private _fb: FormBuilder,
@@ -84,6 +92,23 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   toggle() {
     this.show = !this.show;
+  }
+
+  public selectEventHandler(e: SelectEvent): void {
+    const that = this;
+    e.files.forEach((file) => {
+      if (!file.validationErrors) {
+        var reader = new FileReader();
+
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.companyLogo = event.target.result;
+          this.companyForm.get("Logo").setValue(this.companyLogo);
+        };
+
+        reader.readAsDataURL(file.rawFile);
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -332,7 +357,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       });
   }
 
-  addNewUser(template: TemplateRef<any>): void {
+  addNewUser(): void {
     this.modalRef = this.modalService.show(
       BasicAddEditUserComponent,
       this.config

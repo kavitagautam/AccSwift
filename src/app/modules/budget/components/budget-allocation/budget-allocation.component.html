@@ -48,7 +48,7 @@
       <div class="col-lg-6">
         <div class="tree-list-tabstrip box box-solid">
           <kendo-tabstrip>
-            <kendo-tabstrip-tab [title]="'Tree View'" [selected]="true">
+            <kendo-tabstrip-tab [title]="'Tree View'">
               <ng-template kendoTabContent>
                 <div class="treeview-wrapper">
                   <button class="btn btn-secondary" (click)="expandAllNode()">
@@ -74,7 +74,7 @@
                 </div>
               </ng-template>
             </kendo-tabstrip-tab>
-            <kendo-tabstrip-tab [title]="'List View'">
+            <kendo-tabstrip-tab [title]="'List View'" [selected]="true">
               <ng-template kendoTabContent>
                 <div class="row">
                   <div class="col-md-12">
@@ -91,11 +91,6 @@
                         </kendo-grid-column>
                         <kendo-grid-column field="EndDate" title="End Date">
                         </kendo-grid-column>
-                        <kendo-grid-column
-                          field="Description"
-                          title="Description"
-                        >
-                        </kendo-grid-column>
                       </kendo-grid>
                       <div *ngIf="listViewLoading" class="k-i-loading"></div>
                     </div>
@@ -111,7 +106,7 @@
           <kendo-tabstrip-tab [title]="'Budget Allocation'" [selected]="true">
             <ng-template kendoTabContent>
               <div class="budget-alc-form">
-                <button class="btn btn-primary m-2" (click)="addNewBudget()">
+                <button class="btn btn-primary m-2">
                   <i class="fa fa-plus" aria-hidden="true"></i> Create New
                   Budget
                 </button>
@@ -123,12 +118,6 @@
                         <kendo-label [for]="" text="Budget Name"> </kendo-label>
                         <kendo-dropdownlist class="form-control">
                         </kendo-dropdownlist>
-                        <button
-                          class="btn btn-secondary"
-                          style="position: absolute; right: 9%"
-                        >
-                          <i class="fas fa-plus" aria-hidden="true"></i>New
-                        </button>
                       </div>
                       <div class="budget-date">
                         <div class="form-group">
@@ -147,12 +136,6 @@
                         <kendo-label [for]="" text="Copy From"> </kendo-label>
                         <kendo-dropdownlist class="form-control">
                         </kendo-dropdownlist>
-                        <button
-                          class="btn btn-secondary"
-                          style="position: absolute; right: 9%"
-                        >
-                          <i class="fas fa-save" aria-hidden="true"></i>Copy
-                        </button>
                       </div>
                     </div>
                   </form>
@@ -253,10 +236,6 @@
                     </div>
                   </div>
                 </fieldset>
-                <div class="foot-btns d-flex mr-auto">
-                  <button class="btn btn-secondary mr-2">Clear</button>
-                  <button class="btn btn-secondary">Close</button>
-                </div>
               </div>
             </ng-template>
           </kendo-tabstrip-tab>

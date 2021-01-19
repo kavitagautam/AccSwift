@@ -6,6 +6,7 @@ import { Component,
   EventEmitter,
   ViewContainerRef,
   ComponentFactoryResolver } from "@angular/core";
+ 
 
 @Component({
   selector: "budget-allocation",
@@ -14,6 +15,10 @@ import { Component,
 })
 
 export class BudgetAllocationComponent implements OnInit {
+  @ViewChild("dynamicContentDiv", { read: ViewContainerRef })
+  dynamicContentDiv: ViewContainerRef;
+  @Output("selectedItem") selectedItem = new EventEmitter();
+  
   
   public search: Array<any> = [ { text: 'Account Group', value: 1 }];
 

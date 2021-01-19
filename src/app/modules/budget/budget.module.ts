@@ -17,7 +17,8 @@ import { ViewBudgetComponent } from "./components/view-budget/view-budget.compon
   declarations: [
     BudgetSetupComponent,
     BudgetAllocationComponent,
-    ViewBudgetComponent
+    ViewBudgetComponent,
+    
   ],
   imports: [CommonModule, BudgetRoutingModule, TreeViewModule, DropDownsModule, LayoutModule, LabelModule, InputsModule, GridModule,
   PopupModule, DropDownListModule],

@@ -2,8 +2,7 @@
   id="basic_new_invoice_contents"
   class="info-table-items-wrap margin-top"
 >
-  <div class="edit-column"><i class="fas fa-pen"></i>Edit columns</div>
-
+  <button class="edit-column"><i class="fas fa-pen"></i>Edit columns</button>
   <div class="info-table table-responsive">
     <table>
       <thead>
@@ -36,6 +35,18 @@
                 (filterChange)="productDDFilter($event,i)"
                 (valueChange)="handleProductChange($event, i)"
               >
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <span class="template">{{ dataItem.CodeName }} </span>
+                </ng-template>
+                <ng-template kendoDropDownListNoDataTemplate>
+                  <div>
+                    No data found.
+                    <br />
+                    <button class="k-button" (click)="addNewProduct()">
+                      Add new product
+                    </button>
+                  </div>
+                </ng-template>
               </kendo-dropdownlist>
             </div>
           </td>
@@ -87,13 +98,50 @@
           <td>
             <div class="form-group">
               <kendo-numerictextbox
-                popupAnchor
                 style="width: 130px"
+                *ngIf="
+                voucherType == 'CASH_RCPT' ||
+                voucherType == 'CASH_PMNT' ||
+                voucherType == 'BANK_RCPT' ||
+                voucherType == 'BANK_PMNT' ||
+                voucherType == 'SLS_ORDER'
+              "
+                #ntb="popupAnchor"
+                popupAnchor
                 [decimals]="decimals"
                 [spinners]="false"
                 [format]="currencyFormat"
                 [formControl]="entryArray.controls[i].get('Amount')"
               ></kendo-numerictextbox>
+              <div *ngIf="voucherType == 'SALES' || voucherType == 'PURCH'">
+                <span class="small_text"
+                  >Total :&nbsp; &nbsp;
+                  <span
+                    [innerHTML]="
+                    entryArray.controls[i].get('Amount').value
+                      | currencyFormat
+                  "
+                  ></span
+                ></span>
+                <span class="small_text"
+                  >Net :&nbsp; &nbsp;
+                  <span
+                    [innerHTML]="
+                    entryArray.controls[i].get('NetAmount').value
+                      | currencyFormat
+                  "
+                  ></span
+                ></span>
+                <span class="small_text"
+                  >Tax :&nbsp; &nbsp;
+                  <span
+                    [innerHTML]="
+                    entryArray.controls[i].get('TaxAmount').value
+                      | currencyFormat
+                  "
+                  ></span
+                ></span>
+              </div>
             </div>
           </td>
           <td>
@@ -108,7 +156,7 @@
           <td>
             <div class="form-group text-right">
               <div style="width: 40px">
-                <button type="button" (click)="removeHandler($event, i)">
+                <button type="button" (click)="removeRow($event, i)">
                   <i class="far fa-trash-alt"></i>
                 </button>
               </div>
