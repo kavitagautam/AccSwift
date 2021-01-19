@@ -5,6 +5,7 @@ import { Location } from "@angular/common";
 import { CookieService } from "ngx-cookie-service";
 import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
+import { FormsService } from "@accSwift-modules/accswift-forms/services/forms.service";
 @Component({
   selector: "accSwift-admin-panel",
   templateUrl: "./admin-panel.component.html",
@@ -20,10 +21,12 @@ export class AdminPanelComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private cookieService: CookieService,
     private settingsService: SettingsService,
-    private preferenceService: PreferenceService
+    private preferenceService: PreferenceService,
+    private formService: FormsService
   ) {
     this.settingsService.getSettings();
     this.preferenceService.getPerference();
+    this.formService.getAllDropDownList();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         let child = this.activatedRoute.firstChild;
