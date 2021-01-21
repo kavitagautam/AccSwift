@@ -42,32 +42,43 @@
           </div>
           <div class="col-md-12 p-0">
             <div class="form-group">
-              <label>Parent Group <sup>*</sup></label>
-              <kendo-dropdownlist
+              <label>Remarks</label>
+              <textarea
                 class="form-control"
-                [data]="ledgerGroup"
-                [filterable]="true"
-                [textField]="'CodeName'"
-                [valueField]="'ID'"
-                [valuePrimitive]="true"
-                [formControl]="accountGroupForm.get('ParentGroupID')"
-                (filterChange)="ledgerGroupDDFilter($event)"
-                (valueChange)="changeAccountHead()"
-              >
-              </kendo-dropdownlist>
+                formControlName="Remarks"
+              ></textarea>
             </div>
           </div>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
           <div class="form-group">
-            <label>Remarks</label>
-            <textarea class="form-control" formControlName="Remarks"></textarea>
+            <label>Parent Group <sup>*</sup></label>
+            <kendo-dropdownlist
+              class="form-control"
+              [data]="ledgerGroup"
+              [filterable]="true"
+              [textField]="'CodeName'"
+              [valueField]="'ID'"
+              [valuePrimitive]="true"
+              [formControl]="accountGroupForm.get('ParentGroupID')"
+              (filterChange)="ledgerGroupDDFilter($event)"
+              (valueChange)="changeAccountHead()"
+            >
+            </kendo-dropdownlist>
           </div>
         </div>
       </div>
     </div>
   </form>
-  <div class="box-footer" style="display: table; margin: auto">
+  <div
+    class="box-footer"
+    style="
+      display: table;
+      margin: auto;
+      background: gainsboro;
+      border-top: 1px solid gainsboro;
+    "
+  >
     <div class="mb-2">
       <button
         class="btn btn-primary"
