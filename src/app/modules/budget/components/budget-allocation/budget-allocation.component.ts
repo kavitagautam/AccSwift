@@ -1,11 +1,10 @@
 import { Component,
   OnInit,
   ViewChild,
-  ElementRef,
-  Output,
-  EventEmitter,
-  ViewContainerRef,
-  ComponentFactoryResolver } from "@angular/core";
+  ElementRef} from "@angular/core";
+  import { BudgetMinListView, BudgetMinListViewRootModel
+  } from "@accSwift-modules/budget/models/budget-model";
+  import { BudgetService } from "../../services/budget.service";
  
 
 @Component({
@@ -15,11 +14,9 @@ import { Component,
 })
 
 export class BudgetAllocationComponent implements OnInit {
-  @ViewChild("dynamicContentDiv", { read: ViewContainerRef })
-  dynamicContentDiv: ViewContainerRef;
-  @Output("selectedItem") selectedItem = new EventEmitter();
-  
-  
+  BudgetMinListView: any;
+  listViewLoading: boolean;
+
   public search: Array<any> = [ { text: 'Account Group', value: 1 }];
 
   public operator: Array<string> = ['Search With'];
@@ -33,11 +30,25 @@ export class BudgetAllocationComponent implements OnInit {
     }
 ];
 public expandedKeys: any[] = ["Budget"];
-  constructor(
-    private componentFactoryResolver: ComponentFactoryResolver
-  ) {}
+  constructor(private BudgetService: BudgetService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    
+      this.listViewLoading = true;
+      this.BudgetService.getBudgetMinListView().subscribe(
+        (response) => {
+          this.BudgetMinListView = response.Entity;
+        },
+        (error) => {
+          this.listViewLoading = false;
+        },
+        () => {
+          this.listViewLoading = false;
+        }
+      );
+   
+  }
+
   expandAllNode(): void {
     this.expandedKeys = this.Budget;
   }
