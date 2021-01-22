@@ -79,13 +79,10 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="grid-wrapper-listView">
-                      <kendo-grid [height]="495">
-                        <kendo-grid-column field="SNo" title="S.NO">
+                      <kendo-grid [data]="BudgetMinListView" [height]="495">
+                        <kendo-grid-column field="ID" title="S.NO">
                         </kendo-grid-column>
-                        <kendo-grid-column
-                          field="BudgetName"
-                          title="Budget Name"
-                        >
+                        <kendo-grid-column field="Name" title="Budget Name">
                         </kendo-grid-column>
                         <kendo-grid-column field="StartDate" title="Start Date">
                         </kendo-grid-column>
