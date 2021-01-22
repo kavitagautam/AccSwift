@@ -60,7 +60,6 @@
     padding-top: 20px;
   }
   .top-buttons button {
-    margin-right: 20px;
     border: 1px solid transparent;
     border-radius: 500px;
     padding: 8px 20px;
@@ -235,9 +234,9 @@
     font-weight: 500;
   }
   .business-details {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    // display: flex;
+    // justify-content: space-between;
+    // flex-wrap: wrap;
     background: #fff;
     border-radius: 0 0 8px 8px;
     border-top: 1px solid #d4dde3;
@@ -245,7 +244,6 @@
   }
   .browse-logo {
     cursor: pointer;
-    width: 350px;
     padding: 20px 0;
     text-align: center;
     border-radius: 5px;
@@ -265,10 +263,13 @@
     color: #136acd;
     font-weight: 700;
   }
+  .business-address-details {
+    float: right;
+  }
   .invoice-details-input input {
     text-align: right;
     line-height: normal;
-    width: 343px;
+    width: 100%;
     border: 1px solid #b2c2cd;
     border-radius: 4px;
     cursor: text;
@@ -351,7 +352,6 @@
     margin-right: 20px;
   }
   .edit-column {
-    width: 12%;
     padding: 10px;
     background-color: #ecf0f3;
     color: #136acd;
@@ -422,5 +422,27 @@
   kendo-textbox {
     margin-right: 15px;
     margin-top: 15px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .head-title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .top-buttons {
+      display: flex;
+    }
+    .create-invoice-btn {
+      margin: auto;
+    }
+    .add-customer {
+      margin-bottom: 30px;
+    }
+    .business-address-details {
+      float: left;
+    }
+    .browse-logo {
+      margin-bottom: 30px;
+    }
   }
 }
