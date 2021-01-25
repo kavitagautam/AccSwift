@@ -18,6 +18,31 @@
           </option>
         </select>
       </div>
+      <div class="form-group">
+        <label>Default Accounting Class</label>
+        <select
+          class="form-control"
+          formControlName="DEFAULT_ACC_CLASS"
+          accSwiftFormValidator
+        >
+          <option [ngValue]="null">Choose Option....</option>
+          <option
+            *ngFor="let accClass of accountClassList"
+            [ngValue]="accClass.ID"
+          >
+            {{ accClass.Name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Default Depot/ Location</label>
+        <select class="form-control" formControlName="DEFAULT_PROJECT">
+          <option [ngValue]="null">Choose Option....</option>
+          <option *ngFor="let depot of depotList" [ngValue]="depot.ID">
+            {{ depot.DepotName }}
+          </option>
+        </select>
+      </div>
     </div>
 
     <div class="col-md-6">
@@ -37,21 +62,12 @@
           </option>
         </select>
       </div>
-    </div>
-    <div class="col-md-6">
       <div class="form-group">
-        <label>Default Accounting Class</label>
-        <select
-          class="form-control"
-          formControlName="DEFAULT_ACC_CLASS"
-          accSwiftFormValidator
-        >
+        <label>Default Project</label>
+        <select class="form-control" formControlName="DEFAULT_PROJECT">
           <option [ngValue]="null">Choose Option....</option>
-          <option
-            *ngFor="let accClass of accountClassList"
-            [ngValue]="accClass.ID"
-          >
-            {{ accClass.Name }}
+          <option *ngFor="let project of projectList" [ngValue]="project.ID">
+            {{ project.EngName }}
           </option>
         </select>
       </div>
