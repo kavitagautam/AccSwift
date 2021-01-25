@@ -1,0 +1,135 @@
+<div class="box-header">
+  <button class="btn btn-primary" (click)="addProjectModal(projectFormModal)">
+    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Project
+  </button>
+</div>
+<div class="box box-default">
+  <div class="box-body">
+    <div class="col-md-12 p-0">
+      <div class="grid-wrapper">
+        <kendo-grid
+          [data]="gridView"
+          [filterable]="false"
+          [filter]="filter"
+          [pageSize]="pageSize"
+          [skip]="skip"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+          scrollable="none"
+          (filterChange)="filterChange($event)"
+        >
+          <kendo-grid-column field="EngName" title="Project Name">
+          </kendo-grid-column>
+          <kendo-grid-column field="ParentProjectName" title="Parent Project">
+          </kendo-grid-column>
+          <kendo-grid-column field="CreatedDate" title="CreatedDate">
+          </kendo-grid-column>
+          <kendo-grid-column field="Description" title="Description">
+          </kendo-grid-column>
+
+          <kendo-grid-command-column title="Action" width="150">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
+            >
+              <button
+                kendoGridEditCommand
+                (click)="editProjectModal(projectFormModal, dataItem)"
+                data-toggle="modal"
+                data-target="#viewModal"
+                [primary]="true"
+              >
+                Edit
+              </button>
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialogue(dataItem)"
+              >
+                Delete
+              </button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
+        <div *ngIf="listLoading" class="k-i-loading"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form [formGroup]="projectForm">
+  <ng-template #projectFormModal>
+    <div class="modal-header">
+      <h3 class="modal-title pull-left">{{ modalTitle }}</h3>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="onCancel()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Project Name<sup>*</sup></label>
+            <input
+              class="form-control"
+              formControlName="EngName"
+              id="depotName"
+              name="Depot name"
+              accSwiftFormValidator
+            />
+          </div>
+          <div class="form-group">
+            <label>Parent Project <sup>*</sup></label>
+            <select
+              class="form-control"
+              formControlName="ParentProjectID"
+              accSwiftFormValidator
+            >
+              <option [ngValue]="null">Choose Option....</option>
+              <option
+                *ngFor="let project of projectMinList"
+                [ngValue]="project.ID"
+              >
+                {{ project.EngName }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Description </label>
+            <input
+              class="form-control"
+              id="description"
+              formControlName="Description"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        class="btn btn-primary"
+        type="submit"
+        (click)="onSubmitProject()"
+        accSwiftFormSubmitValidationMsg
+        [validationControl]="projectForm"
+      >
+        {{ submitButton }}
+      </button>
+      <button class="btn btn-secondary ml-2" type="button" (click)="onCancel()">
+        Cancel
+      </button>
+    </div>
+  </ng-template>
+</form>
