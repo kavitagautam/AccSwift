@@ -63,7 +63,7 @@ export class LedgerService {
 
   deleteLedgerGroupByID(ledgerGroupId): Observable<any> {
     return this.httpService.delete(
-      `${this._api_URL}LegderGroup/${ledgerGroupId}`
+      `${this._api_URL}LedgerGroup/${ledgerGroupId}`
     );
   }
 
