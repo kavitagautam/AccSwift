@@ -1,14 +1,53 @@
 .listButton {
-  width: 100px;
+  width: 110px;
   height: 80px;
+  font-size: 13px;
   margin: 5px;
   white-space: normal;
   text-overflow: ellipsis;
   overflow: hidden;
   word-wrap: break-word;
+  border: 1px solid #c2c2c2;
+  box-shadow: 0px 0px 4px -2px;
 }
-
 tr.selected {
   background-color: #cfd8dc;
   color: white;
+}
+.heading {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+}
+.favourite-items {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 0;
+}
+.favourite-items button {
+  border: 1px solid #c2c2c2;
+  box-shadow: 0px 0px 4px -2px;
+  width: 200px;
+  font-size: 15px;
+}
+.btn-group-vertical button {
+  background-color: #f4f2f2;
+}
+.item-bar {
+  margin-bottom: 30px;
+  padding: 10px;
+  border: 1px solid #c2c2c2;
+  box-shadow: 0px 0px 4px -2px;
+}
+.refresh-btns button {
+  border: 1px solid #c2c2c2;
+  margin: 20px 0;
+}
+.amount .clearfix {
+  padding: 8px 0;
+}
+.no-item {
+  margin-left: 20px;
+  font-weight: 500;
+  font-size: 20px;
 }

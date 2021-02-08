@@ -1,0 +1,74 @@
+<div class="container-fluid">
+  <div class="budget-alc-contents">
+    <fieldset>
+      <legend>Allocation</legend>
+      <div class="d-flex">
+        <div class="group-name">
+          <div class="form-group">
+            <input
+              type="radio"
+              name="alc"
+              value="group"
+              #group
+              kendoRadioButton
+            />
+            <label class="k-radio-label" [for]="group">Group Name</label>
+            <kendo-combobox
+              style="margin-left: 14px; padding-top: 8px"
+              [placeholder]="'Assets'"
+            ></kendo-combobox>
+          </div>
+        </div>
+        <div class="ledger-name">
+          <div class="form-group">
+            <input
+              type="radio"
+              name="alc"
+              value="ledger"
+              #ledger
+              kendoRadioButton
+            />
+            <label class="k-radio-label" [for]="ledger">Ledger Name</label>
+            <kendo-combobox
+              style="margin-left: 14px; padding-top: 8px"
+              [placeholder]="'A Dairy Center'"
+            ></kendo-combobox>
+          </div>
+        </div>
+      </div>
+      <div class="budget-amount-allocation" style="padding-top: 40px">
+        <button class="btn btn-secondary d-flex m-auto">Assign Amount</button>
+        <div class="allocation-table" style="border: 1px solid #e2e2e2">
+          <kendo-grid [height]="200">
+            <kendo-grid-column width="50" field="SNo" title="Del.">
+            </kendo-grid-column>
+            <kendo-grid-column width="50" field="BudgetName" title="S.No">
+            </kendo-grid-column>
+            <kendo-grid-column
+              width="190"
+              field="StartDate"
+              title="Account Head/Ledger Name"
+            >
+            </kendo-grid-column>
+            <kendo-grid-column width="100" field="EndDate" title="Type of A/C">
+            </kendo-grid-column>
+            <kendo-grid-column
+              width="130"
+              field="Description"
+              title="Amount Allocated"
+            >
+            </kendo-grid-column>
+          </kendo-grid>
+        </div>
+        <div class="alc-total d-flex">
+          <kendo-label [for]="" text="Allocated Total"> </kendo-label>
+          <kendo-numerictextbox class="form-control" width="100">
+          </kendo-numerictextbox>
+          <button class="btn btn-secondary">
+            <i class="fa fa-trash"></i>Delete All
+          </button>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>
