@@ -2,10 +2,28 @@
   <div class="box box-default">
     <form [formGroup]="salesInvoiceForm" novalidate>
       <div class="row">
-        <accSwift-create-reports
-          [formGroup]="salesInvoiceForm"
-          [voucherType]="'SALES'"
-        ></accSwift-create-reports>
+        <div class="col-md-4">
+          <span *ngIf="salesDetails && salesDetails.IsPay">
+            <span
+              class="badge"
+              style="background: green; font-size: 18px; margin: 10px"
+              >Paid</span
+            ></span
+          >
+          <span *ngIf="salesDetails && !salesDetails.IsPay"
+            ><span
+              class="badge"
+              style="background: red; font-size: 18px; margin: 10px"
+              >Unpaid</span
+            ></span
+          >
+        </div>
+        <div class="col-md-8">
+          <accSwift-create-reports
+            [formGroup]="salesInvoiceForm"
+            [voucherType]="'SALES'"
+          ></accSwift-create-reports>
+        </div>
       </div>
       <div class="row mt-3">
         <div class="col-md-12">

@@ -78,7 +78,7 @@ export class EditCashPaymentComponent implements OnInit {
       MasterID: [0],
       LedgerID: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       LedgerCode: [""],
-      LedgerName: [""],
+      LedgerName: ["", Validators.required],
       LedgerBalance: [""],
       Amount: [""],
       Remarks: [""],

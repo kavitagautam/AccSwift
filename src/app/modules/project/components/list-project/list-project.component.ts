@@ -178,7 +178,7 @@ export class ListProjectComponent implements OnInit {
         this.toastr.error(JSON.stringify(error));
       },
       () => {
-        this.toastr.success("Depot deleted successfully");
+        this.toastr.success("Project deleted successfully");
       }
     );
   }
