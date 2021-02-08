@@ -25,7 +25,7 @@ import { FormsService } from "../../services/forms.service";
       *ngIf="voucherNoType"
       style="
     top: 32px;
-    margin-left: 155px;
+    padding:0 10px;
     display: inline-block;
     position: absolute;
   "

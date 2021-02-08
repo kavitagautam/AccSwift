@@ -59,15 +59,6 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>Quantity</label>
-              <!-- <ng-numeric-input
-                [layout]="'number'"
-                [entertext]="'Next'"
-                [placeholder]="'Enter Quantity'"
-                [disabled]="false"
-                [(ngModel)]="quantityNo"
-                (ngModelChange)="quantityChange()"
-              >
-              </ng-numeric-input> -->
               <input
                 type="number"
                 class="form-control"
@@ -153,44 +144,35 @@
 
         <div class="col-md-12 item-bar">
           <div class="amount">
-            <div class="col-md-4">
-              <div class="clearfix">
-                Total Qty: &nbsp; <b>{{ totalQty }}</b>
-              </div>
+            <div class="clearfix">
+              Total Qty: &nbsp; <b>{{ totalQty }}</b>
             </div>
-            <div class="col-md-4">
-              <div class="clearfix">
-                Sub Amount: &nbsp;
-                <b> <span [innerHTML]="totalAmount | currencyFormat"></span></b>
-              </div>
+
+            <div class="clearfix">
+              Sub Amount: &nbsp;
+              <b> <span [innerHTML]="totalAmount | currencyFormat"></span></b>
             </div>
-            <div class="col-md-4">
-              <div class="clearfix">
-                Discount: &nbsp;
-                <b
-                  ><span [innerHTML]="discountAmount | currencyFormat"></span
-                ></b>
-              </div>
+
+            <div class="clearfix">
+              Discount: &nbsp;
+              <b><span [innerHTML]="discountAmount | currencyFormat"></span></b>
             </div>
-            <div class="col-md-4">
-              <div class="clearfix">
-                Amount: &nbsp;
-                <b><span [innerHTML]="totalAmount | currencyFormat"></span></b>
-              </div>
+
+            <div class="clearfix">
+              Amount: &nbsp;
+              <b><span [innerHTML]="totalAmount | currencyFormat"></span></b>
             </div>
-            <div class="col-md-4">
-              <div class="clearfix">
-                Tax : &nbsp;
-                <b> <span [innerHTML]="taxAmount | currencyFormat"></span></b>
-              </div>
+
+            <div class="clearfix">
+              Tax : &nbsp;
+              <b> <span [innerHTML]="taxAmount | currencyFormat"></span></b>
             </div>
-            <div class="col-md-4">
-              <div class="clearfix">
-                Total Amount: &nbsp;
-                <b>
-                  <span [innerHTML]="grandTotalAmount | currencyFormat"></span>
-                </b>
-              </div>
+
+            <div class="clearfix">
+              Total Amount: &nbsp;
+              <b>
+                <span [innerHTML]="grandTotalAmount | currencyFormat"></span>
+              </b>
             </div>
           </div>
         </div>

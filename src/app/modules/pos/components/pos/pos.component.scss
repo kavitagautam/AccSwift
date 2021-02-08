@@ -10,6 +10,10 @@
   border: 1px solid #c2c2c2;
   box-shadow: 0px 0px 4px -2px;
 }
+.listButton:hover {
+  background-color: rgb(201, 196, 196);
+  transition-duration: 0.4s;
+}
 tr.selected {
   background-color: #cfd8dc;
   color: white;
@@ -27,11 +31,15 @@ tr.selected {
 .favourite-items button {
   border: 1px solid #c2c2c2;
   box-shadow: 0px 0px 4px -2px;
-  width: 200px;
+  width: 155px;
   font-size: 15px;
 }
 .btn-group-vertical button {
   background-color: #f4f2f2;
+}
+.btn-group-vertical button:hover {
+  background-color: rgb(201, 196, 196);
+  transition-duration: 0.4s;
 }
 .item-bar {
   margin-bottom: 30px;
@@ -45,6 +53,13 @@ tr.selected {
 }
 .amount .clearfix {
   padding: 8px 0;
+  display: flex;
+  justify-content: right;
+  border-bottom: 1px solid #f4f4f4;
+}
+.amount {
+  display: flex;
+  flex-direction: column;
 }
 .no-item {
   margin-left: 20px;
