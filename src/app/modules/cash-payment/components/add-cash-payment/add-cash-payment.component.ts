@@ -76,7 +76,7 @@ export class AddCashPaymentComponent implements OnInit {
       MasterID: [0],
       LedgerID: [0],
       LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
-      LedgerName: [""],
+      LedgerName: ["", Validators.required],
       LedgerBalance: [""],
       Amount: [""],
       Remarks: [""],

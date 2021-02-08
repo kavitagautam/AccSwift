@@ -10,9 +10,7 @@
       data-toggle="collapse"
       href="#collapseOne"
     >
-      <h3 class="box-title">
-        Search Terms
-      </h3>
+      <h3 class="box-title">Search Terms</h3>
     </div>
     <div id="collapseOne" class="box-body collapse" data-parent="#accordion">
       <div class="row">
@@ -39,7 +37,7 @@
             </div>
           </div>
           <div class="col-md-12">
-            <div class="col-md-3 col-sm-6 col-xs-6" style="margin-top: -15px;">
+            <div class="col-md-3 col-sm-6 col-xs-6" style="margin-top: -15px">
               <accSwift-cash-party-account
                 formControlName="CashPartyLedgerID"
               ></accSwift-cash-party-account>
@@ -171,6 +169,16 @@
               <span class="float-right">{{ dataItem.NetAmount }}</span>
             </ng-template>
           </kendo-grid-column>
+          <kendo-grid-column field="IsPay" title="Status" width="50">
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span *ngIf="dataItem.IsPay">
+                <span class="badge" style="background: green">Paid</span></span
+              >
+              <span *ngIf="!dataItem.IsPay"
+                ><span class="badge" style="background: red">Unpaid</span></span
+              >
+            </ng-template>
+          </kendo-grid-column>
           <kendo-grid-column field="Remarks" title="Remarks" width="80">
           </kendo-grid-column>
           <kendo-grid-command-column title="Action" width="120">
@@ -252,9 +260,7 @@
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-primary" (click)="modalRef.hide()">
-      OK
-    </button>
+    <button class="btn btn-primary" (click)="modalRef.hide()">OK</button>
     <button
       class="btn btn-secondary ml-2"
       type="button"

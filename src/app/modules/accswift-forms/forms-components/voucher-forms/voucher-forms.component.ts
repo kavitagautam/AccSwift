@@ -5,6 +5,7 @@ import {
   OnDestroy,
   Input,
   OnChanges,
+  AfterViewInit,
 } from "@angular/core";
 import {
   NG_VALUE_ACCESSOR,
@@ -45,7 +46,7 @@ import { FormsService } from "../../services/forms.service";
   ],
 })
 export class VoucherFormsComponent
-  implements ControlValueAccessor, OnDestroy, OnChanges {
+  implements ControlValueAccessor, OnDestroy, OnChanges, AfterViewInit {
   subscriptions: Subscription[] = [];
   VoucherNo = new FormControl("");
   voucherNoType: string = "";
@@ -53,9 +54,11 @@ export class VoucherFormsComponent
   @Input("series") seriesID;
 
   constructor(private formService: FormsService) {
+    // console.log("Constuctor");
     this.subscriptions.push(
       this.VoucherNo.valueChanges.subscribe((value: string) => {
         this.onChange(value);
+        // console.log("subscription");
         this.onTouched();
       })
     );
@@ -63,6 +66,7 @@ export class VoucherFormsComponent
     formService.seriesSelect$.subscribe((value) => {
       this.seriesID = value;
       if (value > 0) {
+        //  console.log("series Value" + value);
         this.seriesValueChange(value);
       }
     });
@@ -70,6 +74,10 @@ export class VoucherFormsComponent
 
   ngOnDestroy() {
     this.subscriptions.forEach((s) => s.unsubscribe());
+  }
+
+  ngAfterViewInit() {
+    //   console.log("View has been inited ");
   }
 
   get value(): string {
@@ -83,9 +91,16 @@ export class VoucherFormsComponent
   }
 
   ngOnChanges(changes): void {
+    // console.log(" on Changes ");
     if (this.seriesID) {
       this.seriesValueChange(this.seriesID);
     }
+    // this.formService.seriesSelect$.subscribe((value) => {
+    //   this.seriesID = value;
+    //   if (value > 0) {
+    //     this.seriesValueChange(value);
+    //   }
+    // });
   }
 
   seriesValueChange(value): void {

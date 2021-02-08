@@ -32,36 +32,36 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildSettingsForm();
-    this.preferenceService.getSalesAccount().subscribe((response) => {
-      this.salesAccountList = response.Entity;
-    });
-    this.preferenceService.getPurchaseAccount().subscribe((response) => {
-      this.purchaseAccountList = response.Entity;
-    });
-    this.preferenceService.getAccountClass().subscribe((response) => {
-      this.accountClassList = response.Entity;
-    });
+    // this.preferenceService.getSalesAccount().subscribe((response) => {
+    //   this.salesAccountList = response.Entity;
+    // });
+    // this.preferenceService.getPurchaseAccount().subscribe((response) => {
+    //   this.purchaseAccountList = response.Entity;
+    // });
+    // this.preferenceService.getAccountClass().subscribe((response) => {
+    //   this.accountClassList = response.Entity;
+    // });
     this.getDepotList();
     this.getProjectLists();
   }
 
   buildSettingsForm(): void {
     this.settingForms = this._fb.group({
-      DEFAULT_PURCHASE_ACCOUNT: [
-        this.preferenceService.preferences
-          ? this.preferenceService.preferences.DEFAULT_PURCHASE_ACCOUNT.Value
-          : null,
-      ],
-      DEFAULT_SALES_ACCOUNT: [
-        this.preferenceService.preferences
-          ? this.preferenceService.preferences.DEFAULT_SALES_ACCOUNT.Value
-          : null,
-      ],
-      DEFAULT_ACC_CLASS: [
-        this.preferenceService.preferences
-          ? this.preferenceService.preferences.DEFAULT_ACC_CLASS.Value
-          : null,
-      ],
+      // DEFAULT_PURCHASE_ACCOUNT: [
+      //   this.preferenceService.preferences
+      //     ? this.preferenceService.preferences.DEFAULT_PURCHASE_ACCOUNT.Value
+      //     : null,
+      // ],
+      // DEFAULT_SALES_ACCOUNT: [
+      //   this.preferenceService.preferences
+      //     ? this.preferenceService.preferences.DEFAULT_SALES_ACCOUNT.Value
+      //     : null,
+      // ],
+      // DEFAULT_ACC_CLASS: [
+      //   this.preferenceService.preferences
+      //     ? this.preferenceService.preferences.DEFAULT_ACC_CLASS.Value
+      //     : null,
+      // ],
       DEFAULT_PROJECT: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_PROJECT.Value

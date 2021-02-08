@@ -171,7 +171,7 @@ export class ProductComponent implements OnInit, OnChanges {
       openingQuantitiesFormArray.push(
         this._fb.group({
           ID: [""],
-          productId: [""],
+          productId: [null],
           accountClassId: [
             this.productService.accountClass
               ? this.productService.accountClass[0].ID
@@ -182,9 +182,9 @@ export class ProductComponent implements OnInit, OnChanges {
               ? this.productService.accountClass[0].Name
               : "",
           ],
-          quantity: "",
-          purchaseRate: [""],
-          salesRate: [""],
+          quantity: 0,
+          purchaseRate: [0],
+          salesRate: [0],
           date: [""],
         })
       );
@@ -202,7 +202,7 @@ export class ProductComponent implements OnInit, OnChanges {
   addOpeningBalanceFormGroup(): FormGroup {
     return this._fb.group({
       ID: [""],
-      productId: [""],
+      productId: [null],
       accountClassId: [
         this.productService.accountClass
           ? this.productService.accountClass[0].ID
@@ -213,9 +213,9 @@ export class ProductComponent implements OnInit, OnChanges {
           ? this.productService.accountClass[0].Name
           : "",
       ],
-      quantity: [""],
-      purchaseRate: [""],
-      salesRate: [""],
+      quantity: [0],
+      purchaseRate: [0],
+      salesRate: [0],
       date: [""],
     });
   }
@@ -362,7 +362,7 @@ export class ProductComponent implements OnInit, OnChanges {
           this.toastr.error(JSON.stringify(error.error.Message));
         },
         () => {
-          this.toastr.success("Product updated successfully");
+          this.toastr.success("Product edited successfully");
         }
       );
     }
