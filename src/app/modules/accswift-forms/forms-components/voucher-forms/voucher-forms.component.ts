@@ -92,9 +92,9 @@ export class VoucherFormsComponent
 
   ngOnChanges(changes): void {
     // console.log(" on Changes ");
-    // if (this.seriesID) {
-    //   this.seriesValueChange(this.seriesID);
-    // }
+    if (this.seriesID) {
+      this.seriesValueChange(this.seriesID);
+    }
     // this.formService.seriesSelect$.subscribe((value) => {
     //   this.seriesID = value;
     //   if (value > 0) {

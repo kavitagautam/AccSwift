@@ -60,7 +60,7 @@ export class SeriesFormsComponent
   constructor(private formSerivice: FormsService) {
     this.subscriptions.push(
       this.SeriesID.valueChanges.subscribe((value: number) => {
-        //    this.formSerivice.seriesSelect(value);
+        this.formSerivice.seriesSelect(value);
         this.onChange(value);
         this.onTouched();
       })
