@@ -1,16 +1,18 @@
 <div class="box box-default">
   <div class="row" style="margin: 15px">
     <div class="col-md-12">
-      <h3>Favourite Items</h3>
-      <div class="col-md-2" *ngFor="let favProduct of favProductOrGroupList">
-        <div class="form-group">
-          <button
-            type="button"
-            class="btn btn-secondary listButton"
-            (click)="productClick(favProduct)"
-          >
-            {{ favProduct.Title }}
-          </button>
+      <h3 class="heading">Favourite Items</h3>
+      <div class="favourite-items">
+        <div class="col-md-2" *ngFor="let favProduct of favProductOrGroupList">
+          <div class="form-group">
+            <button
+              type="button"
+              class="btn btn-secondary listButton"
+              (click)="productClick(favProduct)"
+            >
+              {{ favProduct.Title }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -20,13 +22,19 @@
           type="button"
           class="btn btn-primary"
           (click)="getProductGroup()"
+          style="margin-left: 20px; display: flex"
         >
           Back to Main
         </button>
-        <div class="btn-group-vertical" style="height: 600px; overflow: scroll">
+        <div
+          class="btn-group-vertical"
+          style="height: 600px; overflow: scroll; margin-top: 30px"
+        >
           <div class="col-md-12 p-0">
-            <h5 *ngIf="productOrGroupList.length == 0">No Item Found</h5>
-            <div class="col-md-3" *ngFor="let product of productOrGroupList">
+            <h5 class="no-item" *ngIf="productOrGroupList.length == 0">
+              No Item Found
+            </h5>
+            <div class="col-md-4" *ngFor="let product of productOrGroupList">
               <div class="form-group">
                 <button
                   type="button"
@@ -41,25 +49,16 @@
         </div>
       </div>
       <div class="col-md-5 p-0">
-        <div class="col-md-12">
-          <div class="form-group">
-            <label>Item Bar Code</label>
-            <input type="text" class="form-control" />
+        <div class="col-md-12 item-bar">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label>Item Bar Code</label>
+              <input type="text" class="form-control" />
+            </div>
           </div>
-        </div>
-        <div class="col-md-10">
           <div class="col-md-3">
             <div class="form-group">
               <label>Quantity</label>
-              <!-- <ng-numeric-input
-                [layout]="'number'"
-                [entertext]="'Next'"
-                [placeholder]="'Enter Quantity'"
-                [disabled]="false"
-                [(ngModel)]="quantityNo"
-                (ngModelChange)="quantityChange()"
-              >
-              </ng-numeric-input> -->
               <input
                 type="number"
                 class="form-control"
@@ -103,20 +102,16 @@
             </div>
           </div>
         </div>
-        <div class="col-md-2 mt-4">
-          <!-- <div class="form-group">
-            <button class="btn btn-seconday" type="button">Add</button>
-          </div> -->
-        </div>
-        <div class="col-md-12">
+
+        <div class="col-md-12 item-bar">
           <table class="table">
             <thead>
               <tr>
-                <th align="center">Quantity</th>
-                <th align="center">Item</th>
-                <th align="center">Rate</th>
-                <th align="center">Amount</th>
-                <th align="center">Action</th>
+                <th class="text-center">Quantity</th>
+                <th class="text-center">Item</th>
+                <th class="text-center">Rate</th>
+                <th class="text-center">Amount</th>
+                <th class="text-center">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -125,15 +120,15 @@
                 (click)="selectProduct(i, product)"
                 [class.selected]="i === selectedRow"
               >
-                <td align="right">{{ product.Quantity }}</td>
-                <td>{{ product.ProductName }}</td>
-                <td align="right">
+                <td class="text-center">{{ product.Quantity }}</td>
+                <td class="text-center">{{ product.ProductName }}</td>
+                <td class="text-center">
                   <span [innerHTML]="product.SalesRate | currencyFormat"></span>
                 </td>
-                <td align="right">
+                <td class="text-center">
                   <span [innerHTML]="product.Amount | currencyFormat"></span>
                 </td>
-                <td align="right">
+                <td class="text-center">
                   <button
                     type="button"
                     class="btn btn-danger"
@@ -147,37 +142,32 @@
           </table>
         </div>
 
-        <div class="col-md-12">
-          <div class="pull-left">
-            <h6>Total Qty: &nbsp; {{ totalQty }}</h6>
-          </div>
-          <div class="pull-right">
-            <h6>
-              Amount: &nbsp;
-              <span [innerHTML]="totalAmount | currencyFormat"></span>
-            </h6>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="col-md-3">
+        <div class="col-md-12 item-bar">
+          <div class="amount">
+            <div class="clearfix">
+              Total Qty: &nbsp; <b>{{ totalQty }}</b>
+            </div>
+
             <div class="clearfix">
               Sub Amount: &nbsp;
               <b> <span [innerHTML]="totalAmount | currencyFormat"></span></b>
             </div>
-          </div>
-          <div class="col-md-3">
+
             <div class="clearfix">
               Discount: &nbsp;
               <b><span [innerHTML]="discountAmount | currencyFormat"></span></b>
             </div>
-          </div>
-          <div class="col-md-3">
+
+            <div class="clearfix">
+              Amount: &nbsp;
+              <b><span [innerHTML]="totalAmount | currencyFormat"></span></b>
+            </div>
+
             <div class="clearfix">
               Tax : &nbsp;
               <b> <span [innerHTML]="taxAmount | currencyFormat"></span></b>
             </div>
-          </div>
-          <div class="col-md-3">
+
             <div class="clearfix">
               Total Amount: &nbsp;
               <b>
@@ -186,11 +176,9 @@
             </div>
           </div>
         </div>
-        <div class="col-md-12">
-          <button type="button" class="btn btn-primary" (click)="checkOut()">
-            CheckOut
-          </button>
-        </div>
+        <button type="button" class="btn btn-primary" (click)="checkOut()">
+          CheckOut
+        </button>
       </div>
 
       <div class="col-md-3">
@@ -227,17 +215,25 @@
             </option>
           </select>
         </div>
-        <div class="col-md-6">
-          <button type="button" class="btn btn-secondary">REFRESH</button>
-        </div>
-        <div class="col-md-6">
-          <button type="button" class="btn btn-secondary">PAY ACCOUNT</button>
+        <div class="refresh-btns">
+          <div class="col-md-6">
+            <button type="button" class="btn btn-secondary">REFRESH</button>
+          </div>
+          <div class="col-md-6">
+            <button
+              style="float: right"
+              type="button"
+              class="btn btn-secondary"
+            >
+              PAY ACCOUNT
+            </button>
+          </div>
         </div>
         <table class="table">
           <thead>
             <tr>
-              <th>Payment Method</th>
-              <th>Amount</th>
+              <th class="text-center" style="width: 130px">Payment Method</th>
+              <th class="text-center">Amount</th>
             </tr>
           </thead>
           <tbody>
@@ -284,11 +280,7 @@
         </table>
         <div class="col-md-6">
           <div class="form-group">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="clearAll()"
-            >
+            <button type="button" class="btn btn-danger" (click)="clearAll()">
               CLEAR
             </button>
           </div>
@@ -307,7 +299,8 @@
             <button
               type="button"
               (click)="openCommit(commitModal)"
-              class="btn btn-secondary"
+              class="btn btn-primary"
+              style="float: right"
             >
               COMMIT
             </button>

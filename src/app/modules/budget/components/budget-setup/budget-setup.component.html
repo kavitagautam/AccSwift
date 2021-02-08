@@ -1,0 +1,108 @@
+<form [formGroup]="budgetForm" novalidate>
+  <kendo-tabstrip>
+    <kendo-tabstrip-tab [title]="'Budget Allocation'" [selected]="true">
+      <ng-template kendoTabContent>
+        <div class="budget-alc-form">
+          <fieldset>
+            <legend
+              [ngClass]="{
+                add_component: selectedItem == null,
+                edit_component: selectedItem != null
+              }"
+            >
+              Budget
+            </legend>
+            <div class="add-budget">
+              <div class="form-group">
+                <kendo-label [for]="" text="Budget Name"> </kendo-label>
+                <kendo-dropdownlist
+                  class="form-control"
+                  [data]="BudgetMinListView"
+                  [filterable]="true"
+                  [textField]="'Name'"
+                  [valueField]="'ID'"
+                  [valuePrimitive]="true"
+                  [formControl]="budgetForm.get('Name')"
+                  accSwiftFormValidator
+                >
+                </kendo-dropdownlist>
+              </div>
+              <div class="budget-date">
+                <div class="form-group">
+                  <kendo-label [for]="" text="Starting Date"> </kendo-label>
+                  <kendo-autocomplete
+                    class="form-control"
+                    [data]="BudgetMinListView"
+                    [valueField]="'StartDate'"
+                    formControlName="StartDate"
+                    [suggest]="true"
+                    accSwiftFormValidator
+                  >
+                  </kendo-autocomplete>
+                </div>
+                <div class="form-group">
+                  <kendo-label [for]="" text="End Date"> </kendo-label>
+                  <kendo-autocomplete
+                    class="form-control"
+                    [data]="BudgetMinListView"
+                    [valueField]="'EndDate'"
+                    formControlName="EndDate"
+                    [suggest]="true"
+                    accSwiftFormValidator
+                  >
+                  </kendo-autocomplete>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <kendo-label [for]="" text="Remarks"> </kendo-label>
+                <kendo-autocomplete
+                  class="form-control"
+                  [data]="BudgetDetails"
+                  [valueField]="'Remarks'"
+                  formControlName="Remarks"
+                  [suggest]="true"
+                  accSwiftFormValidator
+                >
+                </kendo-autocomplete>
+              </div>
+            </div>
+
+            <div
+              class="box-footer"
+              style="
+                display: table;
+                margin: auto;
+                background: gainsboro;
+                border-top: 1px solid gainsboro;
+              "
+            >
+              <div class="mb-2">
+                <button
+                  class="btn btn-primary"
+                  (click)="saveBudget()"
+                  accSwiftFormSubmitValidationMsg
+                  [validationControl]="budgetForm"
+                >
+                  <i class="fas fa-save"></i>&nbsp;&nbsp;
+                  <span *ngIf="editMode">Update</span>
+                  <span *ngIf="addMode">Save</span>
+                </button>
+
+                <button class="btn btn-secondary ml-2" (click)="cancelBudget()">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab [title]="'Budget Allocation Master'">
+      <ng-template kendoTabContent>
+        <accSwift-budget-allocation-masters>
+        </accSwift-budget-allocation-masters>
+      </ng-template>
+    </kendo-tabstrip-tab>
+  </kendo-tabstrip>
+</form>

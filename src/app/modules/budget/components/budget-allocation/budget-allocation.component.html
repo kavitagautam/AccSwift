@@ -47,7 +47,7 @@
     <div class="row">
       <div class="col-lg-6">
         <div class="tree-list-tabstrip box box-solid">
-          <kendo-tabstrip>
+          <kendo-tabstrip (tabSelect)="onTabSelect($event)">
             <kendo-tabstrip-tab [title]="'Tree View'">
               <ng-template kendoTabContent>
                 <div class="treeview-wrapper">
@@ -79,7 +79,11 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="grid-wrapper-listView">
-                      <kendo-grid [data]="BudgetMinListView" [height]="495">
+                      <kendo-grid
+                        [data]="BudgetMinListView"
+                        [height]="495"
+                        (cellClick)="selectedNode($event)"
+                      >
                         <kendo-grid-column field="ID" title="S.NO">
                         </kendo-grid-column>
                         <kendo-grid-column field="Name" title="Budget Name">
@@ -99,144 +103,12 @@
         </div>
       </div>
       <div class="col-lg-6">
-        <kendo-tabstrip>
-          <kendo-tabstrip-tab [title]="'Budget Allocation'" [selected]="true">
-            <ng-template kendoTabContent>
-              <div class="budget-alc-form">
-                <button class="btn btn-primary m-2">
-                  <i class="fa fa-plus" aria-hidden="true"></i> Create New
-                  Budget
-                </button>
-                <fieldset>
-                  <legend>Budget</legend>
-                  <form>
-                    <div class="add-budget">
-                      <div class="form-group">
-                        <kendo-label [for]="" text="Budget Name"> </kendo-label>
-                        <kendo-dropdownlist class="form-control">
-                        </kendo-dropdownlist>
-                      </div>
-                      <div class="budget-date">
-                        <div class="form-group">
-                          <kendo-label [for]="" text="Starting Date">
-                          </kendo-label>
-                          <kendo-autocomplete class="form-control">
-                          </kendo-autocomplete>
-                        </div>
-                        <div class="form-group">
-                          <kendo-label [for]="" text="Up to"> </kendo-label>
-                          <kendo-autocomplete class="form-control">
-                          </kendo-autocomplete>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <kendo-label [for]="" text="Copy From"> </kendo-label>
-                        <kendo-dropdownlist class="form-control">
-                        </kendo-dropdownlist>
-                      </div>
-                    </div>
-                  </form>
-                </fieldset>
-              </div>
-              <div class="budget-alc-contents">
-                <fieldset>
-                  <legend>Allocation</legend>
-                  <form class="d-flex">
-                    <div class="group-name">
-                      <div class="form-group">
-                        <input
-                          type="radio"
-                          name="alc"
-                          value="group"
-                          #group
-                          kendoRadioButton
-                        />
-                        <label class="k-radio-label" [for]="group"
-                          >Group Name</label
-                        >
-                        <kendo-combobox
-                          style="margin-left: 14px; padding-top: 8px"
-                          [data]="listItems"
-                          [placeholder]="'Assets'"
-                        ></kendo-combobox>
-                      </div>
-                    </div>
-                    <div class="ledger-name">
-                      <div class="form-group">
-                        <input
-                          type="radio"
-                          name="alc"
-                          value="ledger"
-                          #ledger
-                          kendoRadioButton
-                        />
-                        <label class="k-radio-label" [for]="ledger"
-                          >Ledger Name</label
-                        >
-                        <kendo-combobox
-                          style="margin-left: 14px; padding-top: 8px"
-                          [data]="listItems"
-                          [placeholder]="'A Dairy Center'"
-                        ></kendo-combobox>
-                      </div>
-                    </div>
-                  </form>
-                  <div
-                    class="budget-amount-allocation"
-                    style="padding-top: 40px"
-                  >
-                    <button class="btn btn-secondary d-flex m-auto">
-                      Assign Amount
-                    </button>
-                    <div
-                      class="allocation-table"
-                      style="border: 1px solid #e2e2e2"
-                    >
-                      <kendo-grid [height]="200">
-                        <kendo-grid-column width="50" field="SNo" title="Del.">
-                        </kendo-grid-column>
-                        <kendo-grid-column
-                          width="50"
-                          field="BudgetName"
-                          title="S.No"
-                        >
-                        </kendo-grid-column>
-                        <kendo-grid-column
-                          width="190"
-                          field="StartDate"
-                          title="Account Head/Ledger Name"
-                        >
-                        </kendo-grid-column>
-                        <kendo-grid-column
-                          width="100"
-                          field="EndDate"
-                          title="Type of A/C"
-                        >
-                        </kendo-grid-column>
-                        <kendo-grid-column
-                          width="130"
-                          field="Description"
-                          title="Amount Allocated"
-                        >
-                        </kendo-grid-column>
-                      </kendo-grid>
-                      <div *ngIf="listViewLoading" class="k-i-loading"></div>
-                    </div>
-                    <div class="alc-total d-flex">
-                      <kendo-label [for]="" text="Allocated Total">
-                      </kendo-label>
-                      <kendo-numerictextbox class="form-control" width="100">
-                      </kendo-numerictextbox>
-                      <button class="btn btn-secondary">
-                        <i class="fa fa-trash"></i>Delete All
-                      </button>
-                    </div>
-                  </div>
-                </fieldset>
-              </div>
-            </ng-template>
-          </kendo-tabstrip-tab>
-        </kendo-tabstrip>
+        <button class="btn btn-primary m-2" (click)="addNewBudget()">
+          <i class="fa fa-plus" aria-hidden="true"></i> Create New Budget
+        </button>
+        <div class="col-md-12 mt-5">
+          <div #dynamicContentDiv></div>
+        </div>
       </div>
     </div>
   </div>
