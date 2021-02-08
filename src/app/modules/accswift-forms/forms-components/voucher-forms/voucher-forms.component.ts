@@ -18,7 +18,7 @@ import { FormsService } from "../../services/forms.service";
 @Component({
   selector: "accSwift-voucher-forms",
   template: ` <div class="form-group">
-    <label>Invoice No. <sup>*</sup></label>
+    <label>Voucher No. <sup>*</sup></label>
     <input type="text" class="form-control" [formControl]="VoucherNo" />
     <span
       *ngIf="voucherNoType"
