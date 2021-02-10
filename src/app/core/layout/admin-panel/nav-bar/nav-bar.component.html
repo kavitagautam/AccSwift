@@ -140,17 +140,16 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <!-- The user image in the navbar-->
             <img
-              *ngIf="!userInfo?.staff_photo"
               src="{{ defaultImagePath }}/user2-160x160.jpg"
               class="user-image"
               alt="User Image"
             />
-            <img
-              *ngIf="userInfo?.staff_photo"
-              src="{{ imageUrl }}{{ userInfo?.staff_photo }}"
+            <!-- <img
+              *ngIf="userInfo"
+              src="{{ imageUrl }}{{ userInfo }}"
               class="user-image"
               alt="User Image"
-            />
+            /> -->
             <!-- hidden-xs hides the username on small devices so only the image appears. -->
             <span class="hidden-xs">{{ userName }}</span>
           </a>
@@ -158,17 +157,16 @@
             <!-- The user image in the menu -->
             <li class="user-header">
               <img
-                *ngIf="!userInfo?.staff_photo"
                 src="{{ defaultImagePath }}/user2-160x160.jpg"
                 class="img-circle"
                 alt="User Image"
               />
-              <img
+              <!-- <img
                 *ngIf="userInfo?.staff_photo"
                 src="{{ imageUrl }}{{ userInfo?.staff_photo }}"
                 class="img-circle"
                 alt="User Image"
-              />
+              /> -->
               <p>{{ userInfo?.Name }}</p>
 
               <p>{{ userInfo?.Email }}</p>

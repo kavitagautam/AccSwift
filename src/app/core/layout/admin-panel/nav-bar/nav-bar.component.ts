@@ -14,6 +14,7 @@ export class NavBarComponent implements OnInit {
   imageUrl = environment.defaultImagePath;
   selectedLanguage: string;
   userInfo: User;
+  userName: any;
 
   constructor(private router: Router, private adminPanelService: AdminPanelService) {}
 
