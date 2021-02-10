@@ -30,7 +30,7 @@
                     class="form-control credential-field"
                     id="exampleInputEmail1"
                     aria-describedby="emailHelp"
-                    placeholder="niranjan@bentraytech.com"
+                    placeholder="user@bentraytech.com"
                     formControlName="username"
                   />
                   <div
@@ -79,20 +79,12 @@
                     >Remember Me</label
                   >
                 </div>
-                <a class="secondary-link" href="">Forgot Password?</a>
+                <a class="secondary-link disabled" href="">Forgot Password?</a>
               </div>
               <button type="submit" class="btn btn-login" (click)="login()">
                 Sign In
               </button>
             </form>
-          </div>
-        </div>
-
-        <div class="row alt-login-container">
-          <h5>or Sign In with</h5>
-          <div id="alt-login">
-            <button class="google-btn alt-login-btn">Google</button>
-            <button class="fb-btn alt-login-btn">Facebook</button>
           </div>
         </div>
       </div>
@@ -101,10 +93,9 @@
       <div class="col-sm-4 col-sm-pull-8" id="welcome-section">
         <div class="row">
           <div class="col">
-            <h1>
-              Welcome Back
-            </h1>
-            <button class="btn btn-signup" [routerLink]="['/register']">
+            <h1>Welcome Back</h1>
+            <button (click)="alert($event)" class="btn btn-signup">
+              <!-- [routerLink]="['/register']" -->
               Sign up
             </button>
           </div>
