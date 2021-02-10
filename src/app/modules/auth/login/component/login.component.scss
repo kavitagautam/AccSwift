@@ -34,8 +34,6 @@ body {
 
 #welcome-section h1 {
   font-size: 75px;
-
-  margin-top: 50%;
   font-weight: 500;
 }
 
@@ -90,7 +88,10 @@ body {
 .icon-wrapper {
   position: relative;
 }
-
+.icon-wrapper img:focus {
+  position: absolute;
+  top: 10px;
+}
 .icon-wrapper img {
   position: absolute;
   top: 27%;
@@ -218,7 +219,7 @@ h5 {
 
 .social li {
   display: inline;
-  margin-right: 4px;
+  margin-right: 8px;
 }
 
 .social li a {
@@ -232,6 +233,12 @@ h5 {
 
 a.white:hover {
   color: #fff;
+}
+.form-check-label {
+  margin-left: 5px;
+}
+.disabled {
+  pointer-events: none;
 }
 
 /* media queries---------------------------- */
@@ -250,7 +257,7 @@ a.white:hover {
     margin-top: 0;
   }
   #welcome-section {
-    height: 500px;
+    height: 400px;
     padding: 5.5% 5%;
   }
   .btn-signup {

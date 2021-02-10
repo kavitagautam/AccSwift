@@ -124,6 +124,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       );
   }
 
+  alert(event)
+  {
+    alert("Not implemented!Just sign in!");
+  }
+
   // form controls
   get username(): AbstractControl {
     return this.loginForm.get("username");

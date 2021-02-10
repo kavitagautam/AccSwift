@@ -169,13 +169,19 @@
               <span class="float-right">{{ dataItem.NetAmount }}</span>
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="IsPay" title="Status" width="50">
+          <kendo-grid-column field="Status" title="Status" width="70">
             <ng-template kendoGridCellTemplate let-dataItem="dataItem">
-              <span *ngIf="dataItem.IsPay">
+              <span *ngIf="dataItem.Status == 'PAID'">
                 <span class="badge" style="background: green">Paid</span></span
               >
-              <span *ngIf="!dataItem.IsPay"
+              <span *ngIf="dataItem.Status == 'UNPAID'"
                 ><span class="badge" style="background: red">Unpaid</span></span
+              >
+
+              <span *ngIf="dataItem.Status == 'DRAFT'"
+                ><span class="badge" style="background: yellow; color: #000"
+                  >Draft</span
+                ></span
               >
             </ng-template>
           </kendo-grid-column>

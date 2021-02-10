@@ -13,34 +13,32 @@
   <form [formGroup]="accountGroupForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
-        <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
-          <div class="col-md-12 p-0">
-            <div class="col-md-4 pl-0">
-              <div class="form-group">
-                <label>Group Code<sup>*</sup></label>
-                <kendo-autocomplete
-                  [data]="suggestCodeList"
-                  class="form-control"
-                  formControlName="LedgerCode"
-                  [valueField]="'Code'"
-                  [suggest]="true"
-                  [placeholder]="'Code'"
-                  accSwiftFormValidator
-                ></kendo-autocomplete>
-              </div>
-            </div>
-            <div class="col-md-8 pr-0">
-              <div class="form-group">
-                <label>Group Name <sup>*</sup></label>
-                <input
-                  class="form-control"
-                  formControlName="Name"
-                  accSwiftFormValidator
-                />
-              </div>
+        <div class="col-md-7 col-sm-6 col-xs-6">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Group Code<sup>*</sup></label>
+              <kendo-autocomplete
+                [data]="suggestCodeList"
+                class="form-control"
+                formControlName="LedgerCode"
+                [valueField]="'Code'"
+                [suggest]="true"
+                [placeholder]="'Code'"
+                accSwiftFormValidator
+              ></kendo-autocomplete>
             </div>
           </div>
-          <div class="col-md-12 p-0">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Group Name <sup>*</sup></label>
+              <input
+                class="form-control"
+                formControlName="Name"
+                accSwiftFormValidator
+              />
+            </div>
+          </div>
+          <div class="col-md-12">
             <div class="form-group">
               <label>Remarks</label>
               <textarea
@@ -50,7 +48,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6 col-sm-6 col-xs-6 pr-0">
+        <div class="col-md-5 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Parent Group <sup>*</sup></label>
             <kendo-dropdownlist

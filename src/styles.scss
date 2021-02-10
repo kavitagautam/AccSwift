@@ -34,6 +34,7 @@ sup {
   color: #fff;
   margin: 2px;
 }
+
 .delete_button {
   background: red;
   margin: 2px;
@@ -200,7 +201,8 @@ fieldset[disabled] .form-control {
 
 .form_heading {
   color: #555;
-  margin: 24px 0 16px 0;
+  // margin: 24px 0 16px 0;
+  padding: 10px 0;
   font-size: 20px;
   text-align: center;
   font-weight: 700;
@@ -386,4 +388,32 @@ tfoot > tr > td {
 
 .edit_component {
   background-color: #a6e49b;
+}
+
+.paid_status {
+  background: green;
+  padding: 14px;
+  font-weight: 700;
+  margin-top: -8px;
+  font-size: 15px;
+  border-radius: 20px;
+}
+
+.unpaid_status {
+  background: red;
+  padding: 14px;
+  font-weight: 700;
+  font-size: 15px;
+  margin-top: -8px;
+  border-radius: 20px;
+}
+
+.draft_status {
+  background: yellow;
+  padding: 14px;
+  font-weight: 700;
+  margin-top: -8px;
+  font-size: 15px;
+  border-radius: 20px;
+  color: #000;
 }
