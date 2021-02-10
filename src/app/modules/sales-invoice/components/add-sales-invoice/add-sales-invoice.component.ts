@@ -153,6 +153,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       OrderNo: [""],
       TotalAmount: [0, Validators.required],
       TotalQty: [0, Validators.required],
+      Status: ["DRAFT"], // When Sales invoice Added it will be draft
       GrossAmount: [0, Validators.required],
       NetAmount: [0, Validators.required],
       SpecialDiscount: [0, Validators.required],

@@ -550,6 +550,7 @@ export class DetailsEntryGridComponent implements OnInit {
 
       const length = this.entryArray.value.length;
       if (entryListArray.controls[length - 1].invalid) return;
+
       this.entryArray.push(this.addEntryList());
     }
   }
@@ -862,7 +863,7 @@ export class DetailsEntryGridComponent implements OnInit {
         MasterID: [0],
         LedgerID: [0],
         LedgerCode: [""],
-        LedgerName: [""],
+        LedgerName: ["", Validators.required],
         LedgerBalance: [""],
         Amount: [""],
         Remarks: [""],
