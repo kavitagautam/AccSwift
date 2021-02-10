@@ -4,6 +4,8 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { UserService } from "@accSwift-modules/user/services/user.service";
+import { PreferenceService } from "../../../preference/services/preference.service";
+
 import {
   SortDescriptor,
   CompositeFilterDescriptor,
@@ -22,7 +24,6 @@ export class UserListComponent implements OnInit {
   editableForm: boolean = false;
   editMode: boolean = false;
   submitted: boolean;
-
   submitButton: string;
   modalTitle: string;
   userId: number;
@@ -61,8 +62,10 @@ export class UserListComponent implements OnInit {
     private router: Router,
     private modalService: BsModalService,
     private toastr: ToastrService,
-    public userService: UserService
+    public userService: UserService,
+    public preferenceService: PreferenceService,
   ) {}
+
   ngOnInit() {
     this.getUsers();
     this.buildUserForm();
@@ -81,7 +84,11 @@ export class UserListComponent implements OnInit {
       Department: [""],
       AccessRoleID: [null, Validators.required],
       AccessRoleName: [""],
-      AccClassID: [null],
+      AccClassID: [this.preferenceService.preferences
+        ? this.preferenceService.preferences.DEFAULT_ACC_CLASS.Value
+        : null,
+      Validators.required,],
+    
       AccClassName: [""],
     });
   }
