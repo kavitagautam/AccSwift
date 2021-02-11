@@ -1,7 +1,7 @@
 <div class="box box-default">
   <div class="col-md-4 col-sm-12 col-lg-4 p-0">
     <div class="box box-solid">
-      <h5>Select series to configure</h5>
+      <h5>Select Series to Configure</h5>
       <kendo-treeview
         [nodes]="seriesTreeView"
         textField="Title"
@@ -16,7 +16,7 @@
       >
         <ng-template kendoTreeViewNodeTemplate let-dataItem>
           <span
-            [ngClass]="colorGroupOrProduct(dataItem)"
+            [ngClass]="colorSeries(dataItem)"
             (click)="selectedNode(dataItem)"
           >
             {{ dataItem.Title }}
@@ -26,7 +26,7 @@
       <div *ngIf="treeViewLoading" class="k-i-loading"></div>
     </div>
   </div>
-  <div class="col-md-8 col-sm-12 col-lg-8">
+  <div class="col-md-8 col-sm-12 col-lg-8" *ngIf="configDetails">
     <h5>Voucher Configuration</h5>
     <div class="row">
       <div class="col-md-3">
@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" style="background-color: #ffffff">
       <form [formGroup]="numberingConfigForm" novalidate>
         <kendo-tabstrip>
           <kendo-tabstrip-tab
@@ -406,7 +406,10 @@
             </ng-template>
           </kendo-tabstrip-tab>
         </kendo-tabstrip>
-        <div class="box-footer" style="display: table; margin: auto">
+        <div
+          class="box-footer"
+          style="display: table; margin: auto; border-top: 1px solid gainsboro"
+        >
           <div class="mb-2">
             <button
               class="btn btn-primary"
@@ -423,6 +426,11 @@
         </div>
       </form>
     </div>
+  </div>
+  <div class="col-md-8 col-sm-12 col-lg-8" *ngIf="!configDetails">
+    <strong style="margin: auto; display: table"
+      >Select the Series From the Tree View</strong
+    >
   </div>
 </div>
 
