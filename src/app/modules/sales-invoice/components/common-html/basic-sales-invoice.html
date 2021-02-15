@@ -3,10 +3,37 @@
     <form [formGroup]="salesInvoiceForm" novalidate>
       <section class="new-invoice-top-bar">
         <div class="row">
-          <div class="col-lg-9">
-            <h2 class="head-title">New Invoice</h2>
+          <div class="col-md-9">
+            <div class="col-md-2 p-0 mt-2">
+              <h2 class="head-title" *ngIf="salesDetails">Edit Invoice</h2>
+              <h2 class="head-title" *ngIf="!salesDetails">Add Invoice</h2>
+            </div>
+            <div class="col-md-10 p-0">
+              <div class="col-md-2 pl-0 mb-2">
+                <span *ngIf="salesDetails && salesDetails.Status == 'PAID'">
+                  <span class="badge paid_status">Paid</span>
+                </span>
+                <span *ngIf="salesDetails && salesDetails.Status == 'UNPAID'"
+                  ><span class="badge unpaid_status">Unpaid</span></span
+                >
+                <span *ngIf="salesDetails && salesDetails.Status == 'DRAFT'"
+                  ><span class="badge draft_status">Draft</span></span
+                >
+              </div>
+              <div class="col-md-2">
+                <button
+                  type="button"
+                  class="btn btn-success mr-3"
+                  *ngIf="salesDetails && salesDetails.Status == 'DRAFT'"
+                  (click)="publishInvoice()"
+                >
+                  Publish Invoice
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="col-lg-3">
+
+          <div class="col-md-3">
             <div class="top-buttons">
               <button
                 class="create-invoice-btn"
@@ -223,6 +250,15 @@
                   </tr>
                 </tfoot>
               </table>
+            </div>
+            <div class="col-md-12">
+              <button
+                *ngIf="salesDetails && !salesDetails.IsPay"
+                (click)="openTender(tenderModal)"
+                class="btn-primary pull-right"
+              >
+                Tender Amount
+              </button>
             </div>
           </section>
           <hr class="bdr-light lg hline" />

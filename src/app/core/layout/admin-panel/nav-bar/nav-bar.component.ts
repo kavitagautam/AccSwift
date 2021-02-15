@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { environment } from "@env/environment.prod";
 import { Router } from "@angular/router";
-import { User, UserRootModel } from "@app/core/models/admin.model.ts";
-import { AdminPanelService } from "@app/core/services/admin-panel/admin-panel.service.ts"
+import { Users, UserRootModel, UserNavigate } from "@accSwift-modules/user/models/user.model";
+import { UserService } from '@accSwift-modules/user/services/user.service';
 
 @Component({
   selector: "accswift-nav-bar",
@@ -13,18 +13,29 @@ export class NavBarComponent implements OnInit {
   defaultImagePath = environment.defaultImagePath;
   imageUrl = environment.defaultImagePath;
   selectedLanguage: string;
-  userInfo: User;
+  users: Users;
   userName: any;
 
-  constructor(private router: Router, private adminPanelService: AdminPanelService) {}
+  constructor(private router: Router, public userService: UserService) {}
 
   ngOnInit() {
-    this.adminPanelService.getUserInfo().subscribe((response: UserRootModel) => {
-      this.userInfo = response.Entity;
-    });
-    
+    this.getProfile();
   }
 
+  getProfile():void {
+    this.userService.getUserProfile().subscribe(
+      (response) => {
+        this.users = response.Entity;
+      },
+    );
+  }
+
+  userProfile()
+  {
+    this.router.navigate(["/user/profile",this.users.UserID]);
+  }
+
+  
   navigateToDashboard() {
     this.router.navigate(["/dashboard"]);
   }
