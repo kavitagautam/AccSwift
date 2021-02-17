@@ -16,7 +16,6 @@ import { profile } from 'console';
 })
 export class UserprofileComponent implements OnInit {
   users: Users;
-  editableForm: boolean = false;
   profileForm: FormGroup;
   userID: number;
 
@@ -99,8 +98,7 @@ export class UserprofileComponent implements OnInit {
   }
 
   close(): void {
-    this.editableForm = false;
-    this.buildProfileForm();
+    this.router.navigate(["/user"]);
   }
 
 }

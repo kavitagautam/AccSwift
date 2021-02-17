@@ -76,7 +76,12 @@
             </div>
           </div>
           <div class="col-md-2">
-            <button type="button" class="btn-secondary m-5" (click)="today()">
+            <button
+              type="button"
+              [disabled]="dateCheckbox"
+              class="btn-secondary m-5"
+              (click)="today()"
+            >
               Today
             </button>
           </div>
@@ -84,7 +89,7 @@
       </fieldset>
       <fieldset *ngIf="formsField.includes('DisplayFormat')">
         <div class="col-md-12 p-0">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div
               class="form-group"
               *ngIf="formsField.includes('DisplayFormat')"
@@ -102,7 +107,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div
               class="form-group"
               *ngIf="formsField.includes('DisplayFormat')"
@@ -116,6 +121,24 @@
                     formControlName="DisplayFormat"
                   />
                   Vertical
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div
+              class="form-group"
+              *ngIf="formsField.includes('DisplayFormat')"
+            >
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="DisplayFormat"
+                    value="Standard"
+                    formControlName="DisplayFormat"
+                  />
+                  Standard
                 </label>
               </div>
             </div>
@@ -657,10 +680,10 @@
               class="form-group"
               *ngIf="formsField.includes('IsShowZeroBalance')"
             >
-              <div class="radio">
+              <div class="checkbox">
                 <label>
                   <input
-                    type="radio"
+                    type="checkbox"
                     name="IsShowZeroBalance"
                     [value]="true"
                     (click)="isShowZeroBalanceClick()"
@@ -714,10 +737,10 @@
               class="form-group"
               *ngIf="formsField.includes('IsShowSubLedger')"
             >
-              <div class="radio">
+              <div class="checkbox">
                 <label>
                   <input
-                    type="radio"
+                    type="checkbox"
                     name="IsShowSubLedger"
                     [value]="true"
                     (click)="isShowSubLedgerClick()"

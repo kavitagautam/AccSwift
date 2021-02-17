@@ -226,17 +226,17 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   buildTenderForm(): void {
     this.tenderForm = this._fb.group({
       tenderAmount: [{ value: this.grandTotalAmount, disabled: true }],
-      adjustAmount: [""],
+      adjustAmount: [0],
       payableAmount: [
         {
-          value: "",
+          value: this.grandTotalAmount,
           disabled: true,
         },
       ],
-      paidAmount: [""],
+      paidAmount: [this.grandTotalAmount],
       returnAmount: [
         {
-          value: "",
+          value: 0,
           disabled: true,
         },
       ],
