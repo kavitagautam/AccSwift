@@ -14,7 +14,7 @@ export class NavBarComponent implements OnInit {
   imageUrl = environment.defaultImagePath;
   selectedLanguage: string;
   users: Users;
-  userName: any;
+  userName: string;
 
   constructor(private router: Router, public userService: UserService) {}
 
@@ -22,7 +22,7 @@ export class NavBarComponent implements OnInit {
     this.getProfile();
   }
 
-  getProfile():void {
+  getProfile(): void {
     this.userService.getUserProfile().subscribe(
       (response) => {
         this.users = response.Entity;
@@ -30,13 +30,13 @@ export class NavBarComponent implements OnInit {
     );
   }
 
-  userProfile()
+  userProfile(): void
   {
     this.router.navigate(["/user/profile",this.users.UserID]);
   }
 
   
-  navigateToDashboard() {
+  navigateToDashboard(): void {
     this.router.navigate(["/dashboard"]);
   }
 }

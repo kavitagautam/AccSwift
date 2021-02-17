@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@accSwift-modules/user/services/user.service';
 import { Route } from '@angular/compiler/src/core';
+import { profile } from 'console';
 
 @Component({
   selector: 'accSwift-userprofile',
@@ -15,10 +16,8 @@ import { Route } from '@angular/compiler/src/core';
 })
 export class UserprofileComponent implements OnInit {
   users: Users;
-  profileForm: FormGroup;
   editableForm: boolean = false;
-  editMode: boolean = false;
-  modalRef: BsModalRef;
+  profileForm: FormGroup;
   userID: number;
 
   constructor(
@@ -30,22 +29,18 @@ export class UserprofileComponent implements OnInit {
     private modalService: BsModalService) { }
 
   ngOnInit() {
-    this.getIdFromRoute();
     this.buildProfileForm()
+    this.getIdFromRoute();
     this.getProfile();
   }
-
-
 
   // Get id from route
   getIdFromRoute(): void {
     this.route.paramMap.subscribe((params) => {
       const param = params.get("id");
       if(param){
-        console.log("Params" + params)
-        this.userID=parseInt(param)
+        this.userID=parseInt(param);
       }
-     
     });
   }
 
@@ -53,40 +48,43 @@ export class UserprofileComponent implements OnInit {
     this.userService.getUserProfile().subscribe(
       (response) => {
         this.users = response.Entity;
+        this.profileForm.patchValue(this.users);
       },
     );
   }
 
-  buildProfileForm(): void{
+  buildProfileForm(): void {
     this.profileForm = this._fb.group({
-      Password: ["", Validators.required],
+      Password: [this.users ? this.users.Password : "", Validators.required],
       VerifyPassword: ["", Validators.required],
       UserID: [""],
-      UserName: ["", Validators.required],
+      UserName: [this.users ? this.users.UserName : "", Validators.required],
       Name: [this.users ? this.users.Name : "", Validators.required],
-      Address: [""],
-      Contact: [""],
+      Address: [this.users ? this.users.Address : ""],
+      Contact: [this.users ? this.users.Contact : ""],
       Email: [this.users ? this.users.Email : ""],
-      Department: [""],
-      AccessRoleID: [null, Validators.required],
-      AccessRoleName: [""],
+      Department: [this.users ? this.users.Department : ""],
+      AccessRoleID: [this.users ? this.users.AccessRoleID : null, Validators.required],
+      AccessRoleName: [this.users ? this.users.AccessRoleName : ""],
       AccClassID: [this.preferenceService.preferences
         ? this.preferenceService.preferences.DEFAULT_ACC_CLASS.Value
         : null,
       Validators.required,],
     
-      AccClassName: [""],
+      AccClassName: [this.users ? this.users.AccClassName : ""],
     })
   }
 
   onSubmitUser(): void {
-    // console.log(this.profileForm.invalid);
-    if (this.profileForm.invalid) return;
-    console.log(this.profileForm.value);
-    this.profileForm.get("UserID").setValue(this.userID);
+      if (this.profileForm.invalid) return;
+      console.log(this.profileForm.value);
+      this.profileForm.get("UserID").setValue(this.userID);
+      this.editUser();
+  }
+
+  editUser(): void {
     this.userService.updateUser(this.profileForm.value).subscribe(
       (response) => {
-      //  this.getProfile();
        this.router.navigate(["/user"]);
 
       },
@@ -94,7 +92,6 @@ export class UserprofileComponent implements OnInit {
         this.toastr.error(JSON.stringify(error.error.Message));
       },
       () => {
-        // this.modalRef.hide();
         this.buildProfileForm();
         this.toastr.success("User edited successfully");
       }
@@ -102,9 +99,8 @@ export class UserprofileComponent implements OnInit {
   }
 
   close(): void {
-    // this.modalRef.hide();
     this.editableForm = false;
     this.buildProfileForm();
   }
-  
+
 }

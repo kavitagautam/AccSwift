@@ -8,11 +8,10 @@ body {
   overflow-x: hidden !important;
 }
 
-body {
+.login-bg-container {
   background: linear-gradient(rgba(16, 134, 171, 0.3), rgba(16, 134, 171, 0.4)),
     url("/assets/images/Image4.png");
   background-size: cover !important;
-
   background-blend-mode: multiply;
   overflow: hidden;
 }
