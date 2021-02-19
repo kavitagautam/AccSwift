@@ -277,6 +277,10 @@ export class DetailsEntryGridComponent implements OnInit {
       salesPurchaseRate = entryListArray.controls[index].get("PurchaseRate")
         .value;
     }
+    if (this.voucherType == "SLS_RTN") {
+      salesPurchaseRate = entryListArray.controls[index].get("SalesRate")
+        .value;
+    }
 
     let discountAmountC = entryListArray.controls[index].get("DiscountAmount")
       .value;

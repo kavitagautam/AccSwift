@@ -72,18 +72,30 @@
       >
         <tbody>
           <tr>
+            <td>Adjustment (Rs):</td>
+            <td>
+              <span [innerHTML]="adjustmentAmount | currencyFormat "></span>
+            </td>
             <td>Gov Tax 1</td>
             <td>0.00</td>
             <td>Gross(Rs)</td>
             <td>{{ totalGrossAmount | number: "1.1-2" }}</td>
           </tr>
           <tr>
+            <td>Tender:</td>
+            <td>
+              <span [innerHTML]="tenderAmount | currencyFormat "></span>
+            </td>
             <td>Gov Tax 2</td>
             <td>0.00</td>
             <td>Total Discount Amount (Rs)</td>
             <td>{{ totalDiscountAmount | number: "1.1-2" }}</td>
           </tr>
           <tr>
+            <td>Change:</td>
+            <td>
+              <span [innerHTML]="changeAmount | currencyFormat "></span>
+            </td>
             <td>Gov Tax 3</td>
             <td>0.00</td>
             <td>Gov VAT(13%)</td>
@@ -96,8 +108,10 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>Grand Total</td>
-            <td>{{ grandTotalAmount | number: "1.1-2" }}</td>
+            <td class="total_amount">Grand Total</td>
+            <td class="total_amount">
+              {{ grandTotalAmount | number: "1.1-2" }}
+            </td>
           </tr>
         </tfoot>
       </table>

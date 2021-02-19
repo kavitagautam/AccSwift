@@ -13,6 +13,7 @@ import { PreferenceService } from "@accSwift-modules/preference/services/prefere
 @Component({
   selector: "accSwift-add-sales-return",
   templateUrl: "../common-html/sales-return.html",
+  styleUrls: ["../common-html/sales-return.component.scss"]
 })
 export class AddSalesReturnComponent implements OnInit, OnDestroy {
   salesReturnForm: FormGroup;
