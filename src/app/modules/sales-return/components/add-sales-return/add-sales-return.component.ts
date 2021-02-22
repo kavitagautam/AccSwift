@@ -31,6 +31,9 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
   totalTaxAmount: number = 0;
   vatTotalAmount: number = 0;
   grandTotalAmount: number = 0;
+  tenderAmount: number = 0;
+  changeAmount: number = 0;
+  adjustmentAmount: number = 0;
 
   myFormValueChanges$;
 

@@ -67,6 +67,25 @@
         ></accSwift-details-entry-grid>
       </div>
     </div>
+    <div class="col-md-12">
+      <table
+        class="table"
+        width="60%"
+        style="float: right; width: 65%; text-align: right"
+      >
+        <tfoot>
+          <tr>
+            <td></td>
+            <td></td>
+
+            <td class="total_amount">Grand Total</td>
+            <td class="total_amount">
+              <span [innerHTML]="totalAmount | currencyFormat "></span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   </form>
   <div class="box-footer">
     <div class="mb-2">

@@ -5,12 +5,15 @@ import { Component, OnInit } from "@angular/core";
 import { SalesOrderService } from "../../services/sales-order.service";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { takeUntil, debounceTime } from "rxjs/operators";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { PreferenceService } from "../../../preference/services/preference.service";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "accSwift-add-sales-order",
   templateUrl: "../common-html/sales-order.html",
+  styleUrls: ["../common-html/sales-order.component.scss"]
 })
 export class AddSalesOrderComponent implements OnInit {
   salesOrderForm: FormGroup;
@@ -19,6 +22,10 @@ export class AddSalesOrderComponent implements OnInit {
   IsAutomatic: boolean;
   rowSubmitted: boolean;
   modalRef: BsModalRef;
+  totalAmount: number = 0;
+  myFormValueChanges$;
+  private destroyed$ = new Subject<void>();
+
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -39,7 +46,19 @@ export class AddSalesOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildSalesOrderForm();
+    this.myFormValueChanges$ = this.salesOrderForm.controls[
+      "OrderDetails"
+    ].valueChanges;
+
+    this.myFormValueChanges$.subscribe((changes) =>
+      this.orderValueChange(changes)
+    );
   }
+
+  ngOnDestroy(): void {
+    this.myFormValueChanges$.unsubscribe();
+  }
+
 
   buildSalesOrderForm(): void {
     this.salesOrderForm = this._fb.group({
@@ -85,8 +104,25 @@ export class AddSalesOrderComponent implements OnInit {
     return <FormArray>this.salesOrderForm.get("OrderDetails");
   }
 
+  
+  private orderValueChange(value): void {
+    this.salesOrderForm.controls["OrderDetails"].valueChanges
+      .pipe(takeUntil(this.destroyed$), debounceTime(20))
+      .subscribe((invoices) => {
+       
+        let Amount = 0;
+       
+        for (let i = 0; i < invoices.length; i++) {
+          if (invoices && invoices[i].Amount) {
+            Amount = Amount + invoices[i].Amount;
+          }
+        }
+        this.totalAmount = Amount;
+      });
+  }
+
   public save(): void {
-    // if (this.salesOrderForm.invalid) return;
+    if (this.salesOrderForm.invalid) return;
     this.salesOrderService.addSalesOrder(this.salesOrderForm.value).subscribe(
       (response) => {
         this.router.navigate(["/sales-order"]);
