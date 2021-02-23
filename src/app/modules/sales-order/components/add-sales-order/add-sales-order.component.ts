@@ -64,10 +64,11 @@ export class AddSalesOrderComponent implements OnInit {
     this.salesOrderForm = this._fb.group({
       SeriesID: [
         this.preferenceService.preferences
-          ? this.preferenceService.preferences.DEFAULT_SERIES_SLS_ORDER.Value
+          ? this.preferenceService.preferences. DEFAULT_SERIES_SLS_ORDER.Value
           : null,
+        Validators.required,
       ],
-      OrderNo: ["", [Validators.required]],
+      OrderNo: [""],
       CashPartyLedgerID: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_CASH_ACCOUNT.Value
@@ -122,7 +123,7 @@ export class AddSalesOrderComponent implements OnInit {
   }
 
   public save(): void {
-    if (this.salesOrderForm.invalid) return;
+    // if (this.salesOrderForm.invalid) return;
     this.salesOrderService.addSalesOrder(this.salesOrderForm.value).subscribe(
       (response) => {
         this.router.navigate(["/sales-order"]);

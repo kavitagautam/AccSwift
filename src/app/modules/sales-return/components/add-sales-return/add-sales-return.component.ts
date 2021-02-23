@@ -192,8 +192,7 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    if (this.salesReturnForm.invalid) return;
-
+    // if (this.salesReturnForm.invalid) return;
     this.salesReturnService
       .addSalesReturn(this.salesReturnForm.value)
       .subscribe(

@@ -91,7 +91,7 @@ export class EditSalesOrderComponent implements OnInit {
       ProductName: [""],
       Quantity: [1],
       SalesRate: [""],
-      Amount: [""],
+      Amount: [0],
       UpdatedQuantity: [0],
       PenndingQuantity: [0],
     });
@@ -106,8 +106,9 @@ export class EditSalesOrderComponent implements OnInit {
           .getSalesOrderDetails(param)
           .subscribe((response) => {
             this.salesOrderDetail = response.Entity;
-            this.buildSalesOrderForm();
+            // this.buildSalesOrderForm();
             this.setOrderList();
+            this.salesOrderForm.patchValue(this.salesOrderDetail);
           });
       }
     });
@@ -184,7 +185,7 @@ export class EditSalesOrderComponent implements OnInit {
   }
 
   public save(): void {
-    //if (this.salesOrderForm.invalid) return;
+    if (this.salesOrderForm.invalid) return;
     this.salesOrderService
       .updateSalesOrder(this.salesOrderForm.value)
       .subscribe(
