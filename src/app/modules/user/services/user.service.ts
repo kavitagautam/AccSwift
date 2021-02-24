@@ -44,6 +44,10 @@ export class UserService {
       });
   }
 
+  getUserProfile(): Observable<UserRootModel> {
+    return this.httpService.get(`${this._api_URL}/User/CurrentUser`);
+  }
+
   getUser(body): Observable<UserNavigateModel> {
     return this.httpService.post(`${this._api_URL}User/navigate`, body);
   }

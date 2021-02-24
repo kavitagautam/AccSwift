@@ -277,6 +277,20 @@ export class DetailsEntryGridComponent implements OnInit {
       salesPurchaseRate = entryListArray.controls[index].get("PurchaseRate")
         .value;
     }
+    if (this.voucherType == "SLS_RTN") {
+      salesPurchaseRate = entryListArray.controls[index].get("SalesRate")
+        .value;
+    }
+    if (this.voucherType == "SLS_ORDER") {
+      salesPurchaseRate = entryListArray.controls[index].get("SalesRate")
+        .value;
+        entryListArray.controls[index]
+        .get("Amount")
+        .setValue(
+          entryListArray.controls[index].get("SalesRate").value *
+            entryListArray.controls[index].get("Quantity").value
+        );
+    }
 
     let discountAmountC = entryListArray.controls[index].get("DiscountAmount")
       .value;
@@ -453,6 +467,18 @@ export class DetailsEntryGridComponent implements OnInit {
             );
         }
         entryListArray.controls[index].get("Remarks").setValue("");
+      }
+
+      if (this.voucherType == "SLS_ORDER") {
+        entryListArray.controls[index]
+          .get("SalesRate")
+          .setValue(selectedProductValue[0].SalesRate);
+           entryListArray.controls[index]
+        .get("Amount")
+        .setValue(
+          entryListArray.controls[index].get("SalesRate").value *
+            entryListArray.controls[index].get("Quantity").value
+        );
       }
 
       if (this.voucherType == "PURCH") {

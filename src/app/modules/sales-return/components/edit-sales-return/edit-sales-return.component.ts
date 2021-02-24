@@ -14,6 +14,7 @@ import { Subject } from "rxjs";
 @Component({
   selector: "accSwift-edit-sales-return",
   templateUrl: "../common-html/sales-return.html",
+  styleUrls: ["../common-html/sales-return.component.scss"]
 })
 export class EditSalesReturnComponent implements OnInit, OnDestroy {
   salesReturnForm: FormGroup;
@@ -42,7 +43,9 @@ export class EditSalesReturnComponent implements OnInit, OnDestroy {
   totalTaxAmount: number = 0;
   vatTotalAmount: number = 0;
   grandTotalAmount: number = 0;
-
+  tenderAmount: number = 0;
+  changeAmount: number = 0;
+  adjustmentAmount: number = 0;
   submitted: boolean;
   rowSubmitted: boolean;
 
