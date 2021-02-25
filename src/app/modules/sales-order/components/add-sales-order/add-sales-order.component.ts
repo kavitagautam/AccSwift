@@ -23,6 +23,8 @@ export class AddSalesOrderComponent implements OnInit {
   rowSubmitted: boolean;
   modalRef: BsModalRef;
   totalAmount: number = 0;
+  totalQty: number = 0;
+  grandTotalAmount: number = 0;
   myFormValueChanges$;
   private destroyed$ = new Subject<void>();
 
@@ -82,6 +84,8 @@ export class AddSalesOrderComponent implements OnInit {
       ],
       Date: [new Date()],
       Remarks: [""],
+      TotalQty: [0, Validators.required],
+      TotalAmount: [0, Validators.required],
       OrderDetails: this._fb.array([this.addSalesOrderEntryList()]),
     });
   }
@@ -110,15 +114,21 @@ export class AddSalesOrderComponent implements OnInit {
     this.salesOrderForm.controls["OrderDetails"].valueChanges
       .pipe(takeUntil(this.destroyed$), debounceTime(20))
       .subscribe((invoices) => {
-       
-        let Amount = 0;
-       
+        let sumQty = 0;
+        let sumAmount = 0;
+
         for (let i = 0; i < invoices.length; i++) {
+          if (invoices && invoices[i].Quantity) {
+            sumQty = sumQty + invoices[i].Quantity;
+          }
           if (invoices && invoices[i].Amount) {
-            Amount = Amount + invoices[i].Amount;
+            sumAmount = sumAmount + invoices[i].Amount;
           }
         }
-        this.totalAmount = Amount;
+
+        this.totalQty = sumQty;
+        this.totalAmount = sumAmount;
+        this.grandTotalAmount = this.totalAmount;
       });
   }
 
