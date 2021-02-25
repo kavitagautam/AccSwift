@@ -277,13 +277,7 @@ export class VoucherConfigurationComponent implements OnInit {
     this.modalRef = this.modalService.show(template, config);
   }
 
-  public onTabSelect(e): void {
-    if (e.index == 1) {
-      this.getSeriesTreeView();
-    }
-  }
-
-  public colorGroupOrProduct({ Title, TypeOf }: any): any {
+  public colorSeries({ Title, TypeOf }: any): any {
     return {
       "tree-child": TypeOf == 0,
       "tree-node": TypeOf == 1,
