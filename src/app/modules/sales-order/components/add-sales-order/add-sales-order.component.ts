@@ -134,6 +134,8 @@ export class AddSalesOrderComponent implements OnInit {
 
   public save(): void {
     // if (this.salesOrderForm.invalid) return;
+    this.salesOrderForm.get("TotalQty").setValue(this.totalQty);
+    this.salesOrderForm.get("TotalAmount").setValue(this.grandTotalAmount);
     this.salesOrderService.addSalesOrder(this.salesOrderForm.value).subscribe(
       (response) => {
         this.router.navigate(["/sales-order"]);

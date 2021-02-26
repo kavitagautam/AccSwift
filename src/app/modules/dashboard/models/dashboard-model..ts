@@ -65,3 +65,28 @@ export interface GeneralSummaryRootModel
     Message: string;
     Entity: GeneralSummary[];
 }
+
+export interface SalesMonthly {
+    MonthName: string;
+    TotalAmount: number;
+    TotalNumber: number;
+}
+
+export interface SalesMonthlyRootModel {
+    StatusCode: number;
+    Message: string;
+    Entity: SalesMonthly[];
+}
+
+export interface PurchaseMonthly {
+    MonthName: string;
+    TotalAmount: number;
+    TotalNumber: number;
+}
+
+export interface PurchaseMonthlyRootModel {
+    StatusCode: number;
+    Message: string;
+    Entity: PurchaseMonthly[];
+}
+

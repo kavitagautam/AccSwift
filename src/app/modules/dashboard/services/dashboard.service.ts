@@ -10,7 +10,11 @@ import {
   InvTransact,
   InvTransactRootModel,
   GeneralSummary,
-  GeneralSummaryRootModel
+  GeneralSummaryRootModel,
+  SalesMonthly,
+  SalesMonthlyRootModel,
+  PurchaseMonthly,
+  PurchaseMonthlyRootModel
 } from "@accSwift-modules/dashboard/models/dashboard-model.";
 import { environment } from "@env/environment";
 
@@ -22,6 +26,8 @@ export class DashBoardService {
   Accounts: Account[] = [];
   invTransactionList: InvTransact[] = [];
   generalSummaryList: GeneralSummary[] = [];
+  salesMonthly: SalesMonthly[] = [];
+  purchaseMonthly: PurchaseMonthly[] = [];
   _api_URL = environment.baseAPI;
 
   constructor(
@@ -43,5 +49,13 @@ export class DashBoardService {
 
   getGeneralSummary(): Observable<GeneralSummaryRootModel> {
     return this.httpService.get(`${this._api_URL}GeneralSummary`);
+  }
+
+  getSalesMonthly(): Observable<SalesMonthlyRootModel> {
+    return this.httpService.get(`${this._api_URL}Transaction/SalesMonthly`);
+  }
+
+  getPurchaseMonthly(): Observable<PurchaseMonthlyRootModel> {
+    return this.httpService.get(`${this._api_URL}Transaction/PurchMonthly`);
   }
 }

@@ -33,7 +33,6 @@ export class EditSalesReturnComponent implements OnInit, OnDestroy {
 
   //Total Calculation
   totalQty: number = 0;
-  myFormValueChanges$;
   private destroyed$ = new Subject<void>();
 
   totalGrossAmount: number = 0;
@@ -61,14 +60,15 @@ export class EditSalesReturnComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.buildSalesReturnForm(); //Initialize the form
-    this.myFormValueChanges$ = this.salesReturnForm.controls[
-      "ReturnDetails"
-    ].valueChanges;
-
-    this.myFormValueChanges$.subscribe((changes) =>
-      this.returnValueChange(changes)
-    );
     this.getIdFromRoute();
+    this.salesReturnForm.valueChanges.subscribe((changes) => {
+      this.returnValueChange(changes);
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   buildSalesReturnForm(): void {
@@ -118,6 +118,47 @@ export class EditSalesReturnComponent implements OnInit, OnDestroy {
     });
   }
 
+ /* assignFormsValue(): void {
+    this.salesReturnForm.get("ID").setValue(this.salesReturnDetails.ID);
+    this.salesReturnForm.get("SeriesID").setValue(this.salesReturnDetails.SeriesID);
+    this.salesReturnForm
+      .get("VoucherNo")
+      .setValue(this.salesReturnDetails.VoucherNo);
+    this.salesReturnForm
+      .get("CashPartyLedgerID")
+      .setValue(this.salesReturnDetails.CashPartyLedgerID);
+    this.salesReturnForm
+      .get("ProjectID")
+      .setValue(this.salesReturnDetails.ProjectID);
+    this.salesReturnForm.get("DepotID").setValue(this.salesReturnDetails.DepotID);
+    this.salesReturnForm
+      .get("SalesLedgerID")
+      .setValue(this.salesReturnDetails.SalesLedgerID);
+
+    this.salesReturnForm
+      .get("Date")
+      .setValue(new Date(this.salesReturnDetails.CreatedDate));
+    this.salesReturnForm.get("OrderNo").setValue(this.salesReturnDetails.OrderNo);
+    this.salesReturnForm
+      .get("TotalAmount")
+      .setValue(this.salesReturnDetails.TotalAmount);
+    this.salesReturnForm
+      .get("SpecialDiscount")
+      .setValue(this.salesReturnDetails.SpecialDiscount);
+    this.salesReturnForm.get("TotalQty").setValue(this.salesReturnDetails.TotalQty);
+    this.salesReturnForm
+      .get("GrossAmount")
+      .setValue(this.salesReturnDetails.GrossAmount);
+    this.salesReturnForm
+      .get("TotalTCAmount")
+      .setValue(this.salesReturnDetails.TotalTCAmount);
+    this.salesReturnForm
+      .get("NetAmount")
+      .setValue(this.salesReturnDetails.NetAmount);
+    this.salesReturnForm.get("VAT").setValue(this.salesReturnDetails.VAT);
+    this.salesReturnForm.get("Remarks").setValue(this.salesReturnDetails.Remarks);
+  }*/
+
   getIdFromRoute(): void {
     this.route.paramMap.subscribe((params) => {
       const param = params.get("id");
@@ -137,17 +178,12 @@ export class EditSalesReturnComponent implements OnInit, OnDestroy {
                 this.salesReturnDetails.NetAmount;
               this.grandTotalAmount = this.salesReturnDetails.TotalAmount;
             }
+            // this.assignFormsValue();
             this.setReturnList();
             this.salesReturnForm.patchValue(this.salesReturnDetails);
           });
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.destroyed$.next();
-    this.destroyed$.complete();
-    this.myFormValueChanges$.unsubscribe();
   }
 
   addSalesReturnEntryList(): FormGroup {

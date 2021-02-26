@@ -8,6 +8,10 @@ import {
   InvTransactRootModel,
   GeneralSummary,
   GeneralSummaryRootModel,
+  SalesMonthly,
+  SalesMonthlyRootModel,
+  PurchaseMonthly,
+  PurchaseMonthlyRootModel
 } from "@accSwift-modules/dashboard/models/dashboard-model.";
 import { DashBoardService } from "../services/dashboard.service";
 
@@ -96,6 +100,8 @@ export class DashboardComponent implements OnInit {
   Accounts: Account[] = [];
   invTransactionList: InvTransact[] = [];
   generalSummaryList: GeneralSummary[] = [];
+  salesMonthly: SalesMonthly[] = [];
+  purchaseMonthly: PurchaseMonthly[] = [];
   ngOnInit() {
     // setTimeout(() => {
     //   console.log("reload");
@@ -124,5 +130,17 @@ export class DashboardComponent implements OnInit {
       .subscribe((response: GeneralSummaryRootModel) => {
         this.generalSummaryList = response.Entity;
       });
+      
+    this.dashBoardService
+    .getSalesMonthly()
+    .subscribe((response: SalesMonthlyRootModel) => {
+      this.salesMonthly = response.Entity;
+    });
+
+    this.dashBoardService
+    .getPurchaseMonthly()
+    .subscribe((response: PurchaseMonthlyRootModel) => {
+      this.purchaseMonthly = response.Entity;
+    });
   }
 }
