@@ -208,6 +208,48 @@
           </div>
         </div>
       </fieldset>
+      <fieldset *ngIf="formsField.includes('IsOpeningTrial')">
+        <div class="col-md-12 p-0">
+          <div class="flex-item p-0">
+            <div class="col-md-4 p-0">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('IsOpeningTrial')"
+              >
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="IsOpeningTrial"
+                      [value]="true"
+                      formControlName="IsOpeningTrial"
+                    />
+                    Opening Trial
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 p-0">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('IsOpeningTrial')"
+              >
+                <div class="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="IsOpeningTrial"
+                      [value]="false"
+                      formControlName="IsOpeningTrial"
+                    />
+                    Closing Trial
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
       <fieldset *ngIf="formsField.includes('LedgerID')">
         <div class="col-md-12 p-0">
           <div class="flex-item p-0">
