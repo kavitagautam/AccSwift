@@ -14,7 +14,7 @@
             </legend>
             <div class="add-budget">
               <div class="form-group">
-                <kendo-label [for]="" text="Budget Name"> </kendo-label>
+                <label> Budget Name</label>
                 <kendo-dropdownlist
                   class="form-control"
                   [data]="BudgetMinListView"
@@ -22,50 +22,117 @@
                   [textField]="'Name'"
                   [valueField]="'ID'"
                   [valuePrimitive]="true"
-                  [formControl]="budgetForm.get('Name')"
+                  [formControl]="budgetForm.get('ID')"
                   accSwiftFormValidator
                 >
                 </kendo-dropdownlist>
               </div>
               <div class="budget-date">
                 <div class="form-group">
-                  <kendo-label [for]="" text="Starting Date"> </kendo-label>
-                  <kendo-autocomplete
+                  <label> Start Date</label>
+                  <input
                     class="form-control"
-                    [data]="BudgetMinListView"
-                    [valueField]="'StartDate'"
                     formControlName="StartDate"
-                    [suggest]="true"
+                    bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                     accSwiftFormValidator
-                  >
-                  </kendo-autocomplete>
+                  />
                 </div>
                 <div class="form-group">
-                  <kendo-label [for]="" text="End Date"> </kendo-label>
-                  <kendo-autocomplete
+                  <label>End Date </label>
+                  <input
                     class="form-control"
-                    [data]="BudgetMinListView"
-                    [valueField]="'EndDate'"
                     formControlName="EndDate"
-                    [suggest]="true"
+                    bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                     accSwiftFormValidator
-                  >
-                  </kendo-autocomplete>
+                  />
                 </div>
               </div>
 
               <div class="form-group">
-                <kendo-label [for]="" text="Remarks"> </kendo-label>
-                <kendo-autocomplete
+                <label> Remarks</label>
+                <textarea
+                  row="2"
+                  type="text"
                   class="form-control"
-                  [data]="BudgetDetails"
-                  [valueField]="'Remarks'"
                   formControlName="Remarks"
-                  [suggest]="true"
-                  accSwiftFormValidator
-                >
-                </kendo-autocomplete>
+                ></textarea>
               </div>
+              <fieldset>
+                <legend>Allocation</legend>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <div class="radio">
+                        <label>
+                          <input
+                            type="checkbox"
+                            [(ngModel)]="ledgerGroup"
+                            [ngModelOptions]="{ standalone: true }"
+                            (change)="ledgerGroupChange($event)"
+                          />
+                          Ledger Group
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Ledger Group</label>
+                      <kendo-dropdownlist
+                        class="form-control"
+                        [data]="ledgerGroupList"
+                        [filterable]="true"
+                        [textField]="'CodeName'"
+                        [valueField]="'ID'"
+                        [valuePrimitive]="true"
+                      >
+                      </kendo-dropdownlist>
+                      <!-- [formControl]="accountLedgerForm.get('GroupID')"
+                    (filterChange)="ledgerGroupDDFilter($event)"
+                    (valueChange)="changeAccountHead()" -->
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <div class="radio">
+                      <label>
+                        <input
+                          type="checkbox"
+                          [(ngModel)]="ledger"
+                          [ngModelOptions]="{ standalone: true }"
+                          (change)="ledgerChange($event)"
+                        />
+                        Ledger
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Ledger</label>
+                      <kendo-dropdownlist
+                        class="form-control"
+                        [data]="ledgerMinList"
+                        [filterable]="true"
+                        [textField]="'CodeName'"
+                        [valueField]="'LedgerID'"
+                        [valuePrimitive]="true"
+                      >
+                      </kendo-dropdownlist>
+                      <!-- [formControl]="accountLedgerForm.get('GroupID')"
+                    (filterChange)="ledgerGroupDDFilter($event)"
+                    (valueChange)="changeAccountHead()" -->
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <button type="button" class="btn btn-primary">
+                    Assign Budget
+                  </button>
+                </div>
+              </fieldset>
             </div>
 
             <div
@@ -100,7 +167,9 @@
     </kendo-tabstrip-tab>
     <kendo-tabstrip-tab [title]="'Budget Allocation Master'">
       <ng-template kendoTabContent>
-        <accSwift-budget-allocation-masters>
+        <accSwift-budget-allocation-masters
+          [budgetMaster]="budgetForm.get('BudgetAllocationMasters')"
+        >
         </accSwift-budget-allocation-masters>
       </ng-template>
     </kendo-tabstrip-tab>

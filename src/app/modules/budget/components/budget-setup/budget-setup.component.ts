@@ -1,17 +1,29 @@
-import { Component, OnInit, Input, OnChanges,
-  SimpleChange, } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChange,
+} from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import { BudgetMinListView, BudgetMinListViewRootModel, BudgetDetails, BudgetDetailsRootModel
-  } from "@accSwift-modules/budget/models/budget-model";
+import {
+  BudgetMinListView,
+  BudgetMinListViewRootModel,
+  BudgetDetails,
+  BudgetDetailsRootModel,
+} from "@accSwift-modules/budget/models/budget-model";
 import { BudgetService } from "../../services/budget.service";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
+import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
+import { LedgerService } from "@accSwift-modules/ledger/services/ledger.service";
+import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
 
 @Component({
-  selector: 'budget-setup',
-  templateUrl: './budget-setup.component.html',
-  styleUrls: ['./budget-setup.component.scss']
+  selector: "budget-setup",
+  templateUrl: "./budget-setup.component.html",
+  styleUrls: ["./budget-setup.component.scss"],
 })
 export class BudgetSetupComponent implements OnInit {
   @Input("selectedItem") selectedItem;
@@ -23,30 +35,34 @@ export class BudgetSetupComponent implements OnInit {
   addMode: boolean;
   modalRef: BsModalRef;
 
+  ledgerGroupList: LedgerGroup[] = [];
+  ledgerMinList: LedgerMin[] = [];
+
   constructor(
     private BudgetService: BudgetService,
     public _fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private modalService: BsModalService
-  ) {
-    
-   }
+    private modalService: BsModalService,
+    public ledgerService: LedgerService
+  ) {}
 
   ngOnInit() {
     this.buildBudgetForm();
     this.getBudget();
+    this.getLedgerGroup();
+    this.getLedgerMin();
+    this.addMode = true;
+    if (this.selectedItem == null) {
+      this.editMode = false;
       this.addMode = true;
-      if (this.selectedItem == null) {
-        this.editMode = false;
-        this.addMode = true;
-        this.addBudget();
-      } else {
-        this.editMode = true;
-        this.addMode = false;
-        this.getBudgetDetails();
-      }
+      this.addBudget();
+    } else {
+      this.editMode = true;
+      this.addMode = false;
+      this.getBudgetDetails();
+    }
   }
 
   getBudget(): void {
@@ -55,16 +71,28 @@ export class BudgetSetupComponent implements OnInit {
     });
   }
 
+  getLedgerGroup(): void {
+    this.ledgerService.getLedgerGroupList().subscribe((response) => {
+      this.ledgerGroupList = response.Entity;
+    });
+  }
+
+  getLedgerMin(): void {
+    this.ledgerService.getLedgerMin().subscribe((response) => {
+      this.ledgerMinList = response.Entity;
+    });
+  }
+
   getBudgetDetails(): void {
-    this.BudgetService
-      .getBudgetDetails(this.selectedItem.ID)
-      .subscribe((res) => {
+    this.BudgetService.getBudgetDetails(this.selectedItem.ID).subscribe(
+      (res) => {
         this.BudgetDetails = res.Entity;
         this.setBudgetAllocationDetails();
         this.setBudgetAllocationMasters();
         this.budgetForm.patchValue(this.BudgetDetails);
         this.selectedBudgetId = this.BudgetDetails.ID;
-      });
+      }
+    );
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
@@ -78,12 +106,12 @@ export class BudgetSetupComponent implements OnInit {
           this.editMode = true;
           this.addMode = false;
           this.getBudgetDetails();
-        } 
+        }
       }
     }
   }
 
-  buildBudgetForm(): void{
+  buildBudgetForm(): void {
     this.budgetForm = this._fb.group({
       ID: [this.BudgetMinListView ? this.BudgetMinListView.ID : null],
       Name: [
@@ -98,12 +126,11 @@ export class BudgetSetupComponent implements OnInit {
         this.BudgetMinListView ? this.BudgetMinListView.EndDate : "",
         Validators.required,
       ],
-      Remarks: [
-        this.BudgetDetails ? this.BudgetDetails.Remarks : "",
-        Validators.required,
-      ],
-      BudgetAllocationMasters: this._fb.array([this.budgetAllocationMastersFormGroup()])
-    })
+      Remarks: [this.BudgetDetails ? this.BudgetDetails.Remarks : ""],
+      BudgetAllocationMasters: this._fb.array([
+        this.budgetAllocationMastersFormGroup(),
+      ]),
+    });
   }
 
   get getBudgetAllocationDetails(): FormArray {
@@ -114,7 +141,6 @@ export class BudgetSetupComponent implements OnInit {
     return <FormArray>this.budgetForm.get("BudgetAllocationMasters");
   }
 
-
   budgetAllocationMastersFormGroup(): FormGroup {
     return this._fb.group({
       ID: [null],
@@ -123,36 +149,62 @@ export class BudgetSetupComponent implements OnInit {
       AccountName: "",
       AccountType: "",
       AllocationAmount: [null],
-      BudgetAllocationDetails: this._fb.array([this.budgetAllocationDetailsFormGroup()])
-    })
+      BudgetAllocationDetails: this._fb.array([
+        this.budgetAllocationDetailsFormGroup(),
+      ]),
+    });
   }
 
   budgetAllocationDetailsFormGroup(): FormGroup {
-    return this._fb.group(
-      {
-        ID: [null],
-        BudgetMasterID: [null],
-        AccClassID: [null],
-        AccClassName: "",
-        Amount: [null]
-      }
-    )
+    return this._fb.group({
+      ID: [null],
+      BudgetMasterID: [null],
+      AccClassID: [null],
+      AccClassName: "",
+      Amount: [null],
+    });
   }
 
   setBudgetAllocationDetails(): void {
     this.budgetForm.setControl(
       "BudgetAllocationDetails",
-      this.setBudgetAllocationDetailsArray(this.BudgetDetails.BudgetAllocationMasters[1].BudgetAllocationDetails)
+      this.setBudgetAllocationDetailsArray(
+        this.BudgetDetails.BudgetAllocationMasters[1].BudgetAllocationDetails
+      )
     );
   }
 
   setBudgetAllocationMasters(): void {
     this.budgetForm.setControl(
       "BudgetAllocationMasters",
-      this.setBudgetAllocationMastersArray(this.BudgetDetails.BudgetAllocationMasters)
+      this.setBudgetAllocationMastersArray(
+        this.BudgetDetails.BudgetAllocationMasters
+      )
     );
   }
 
+  ledgerGroup = false;
+  ledgerGroupChange(event): void {
+    console.log("clicked Ledger Group ");
+    if (this.ledgerGroup) {
+      this.ledgerGroup = false;
+    } else {
+      this.ledgerGroup = true;
+    }
+    //this.ledgerGroup = true;
+  }
+
+  ledger = false;
+  ledgerChange(event): void {
+    console.log("clicked Ledger  ");
+
+    if (this.ledger) {
+      this.ledger = false;
+    } else {
+      this.ledger = true;
+    }
+    ///  this.ledger = true;
+  }
   // this block of code is used to show form array data in the template.....
   setBudgetAllocationDetailsArray(budgetAllocationDetails): FormArray {
     const detailsList = new FormArray([]);
@@ -164,7 +216,7 @@ export class BudgetSetupComponent implements OnInit {
             BudgetMasterID: [element.BudgetMasterID],
             AccClassID: [element.AccClassID],
             AccClassName: [element.AccClassName],
-            Amount: [element.Amount]
+            Amount: [element.Amount],
           })
         );
       });
@@ -175,7 +227,7 @@ export class BudgetSetupComponent implements OnInit {
           BudgetMasterID: [null],
           AccClassID: [null],
           AccClassName: [""],
-          Amount: [null]
+          Amount: [null],
         })
       );
     }
@@ -197,7 +249,7 @@ export class BudgetSetupComponent implements OnInit {
             AllocationAmount: [element.AllocationAmount],
             BudgetAllocationDetails: this.setBudgetAllocationDetailsArray(
               element.BudgetAllocationDetails
-            )
+            ),
           })
         );
       });
@@ -211,7 +263,9 @@ export class BudgetSetupComponent implements OnInit {
             AccountName: [""],
             AccountType: [""],
             AllocationAmount: [null],
-            BudgetAllocationDetails: this._fb.array([this.budgetAllocationDetailsFormGroup()]),
+            BudgetAllocationDetails: this._fb.array([
+              this.budgetAllocationDetailsFormGroup(),
+            ]),
           })
         );
       }
@@ -239,21 +293,19 @@ export class BudgetSetupComponent implements OnInit {
     } else {
       if (this.budgetForm.invalid) return;
 
-      this.BudgetService
-        .updateBudget(this.budgetForm.value)
-        .subscribe(
-          (response) => {
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
-          },
-          (error) => {
-            this.toastr.error(JSON.stringify(error.error.Message));
-          },
-          () => {
-            this.toastr.success("Budget edited successfully");
-          }
-        );
+      this.BudgetService.updateBudget(this.budgetForm.value).subscribe(
+        (response) => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Budget edited successfully");
+        }
+      );
     }
   }
 
@@ -267,13 +319,8 @@ export class BudgetSetupComponent implements OnInit {
     this.editMode = false;
     this.budgetForm.reset();
     this.budgetForm
-        .get("ID")
-        .setValue(
-          this.BudgetMinListView ? this.BudgetMinListView.ID : null
-        );
+      .get("ID")
+      .setValue(this.BudgetMinListView ? this.BudgetMinListView.ID : null);
     this.BudgetMinListView = null;
   }
-
-  
-
 }
