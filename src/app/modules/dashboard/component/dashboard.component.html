@@ -173,24 +173,19 @@
           <div class="invoice-chart">
             <kendo-chart style="height: 230px">
               <kendo-chart-title></kendo-chart-title>
-              <kendo-chart-category-axis>
-                <kendo-chart-category-axis-item
-                  [categories]="[
-                    'April',
-                    'May',
-                    'June',
-                    'July',
-                    'August',
-                    'September'
-                  ]"
-                  [title]="{ text: 'Months' }"
-                >
-                </kendo-chart-category-axis-item>
-              </kendo-chart-category-axis>
               <kendo-chart-series>
-                <kendo-chart-series-item [data]="[12, 20, 30, 60, 70, 50]">
+                <kendo-chart-series-item
+                  type="column"
+                  [data]="salesMonthly"
+                  field="TotalNumber"
+                  categoryField="MonthName"
+                >
                 </kendo-chart-series-item>
-                <kendo-chart-series-item [data]="[30, 40, 50]">
+                <kendo-chart-series-item
+                  type="column"
+                  [data]="salesMonthly"
+                  field="TotalAmount"
+                >
                 </kendo-chart-series-item>
               </kendo-chart-series>
             </kendo-chart>
@@ -368,22 +363,19 @@
           <div class="bill-chart">
             <kendo-chart style="height: 230px">
               <kendo-chart-title></kendo-chart-title>
-              <kendo-chart-category-axis>
-                <kendo-chart-category-axis-item
-                  [categories]="[
-                    'Older',
-                    'Sep 11',
-                    'This Week',
-                    'Oct 25',
-                    'Oct 20',
-                    'Future'
-                  ]"
-                  [title]="{ text: 'Months' }"
-                >
-                </kendo-chart-category-axis-item>
-              </kendo-chart-category-axis>
               <kendo-chart-series>
-                <kendo-chart-series-item [data]="[12, 276, 310, 50, 10]">
+                <kendo-chart-series-item
+                  type="column"
+                  [data]="purchaseMonthly"
+                  field="TotalNumber"
+                  categoryField="MonthName"
+                >
+                </kendo-chart-series-item>
+                <kendo-chart-series-item
+                  type="column"
+                  [data]="purchaseMonthly"
+                  field="TotalAmount"
+                >
                 </kendo-chart-series-item>
               </kendo-chart-series>
             </kendo-chart>
