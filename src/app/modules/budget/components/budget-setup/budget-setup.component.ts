@@ -4,6 +4,7 @@ import {
   Input,
   OnChanges,
   SimpleChange,
+  TemplateRef,
 } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import {
@@ -133,9 +134,9 @@ export class BudgetSetupComponent implements OnInit {
     });
   }
 
-  get getBudgetAllocationDetails(): FormArray {
-    return <FormArray>this.budgetForm.get("BudgetAllocationDetails");
-  }
+  // get getBudgetAllocationDetails(): FormArray {
+  //   return <FormArray>this.budgetForm.get("BudgetAllocationDetails");
+  // }
 
   get getBudgetAllocationMasters(): FormArray {
     return <FormArray>this.budgetForm.get("BudgetAllocationMasters");
@@ -181,6 +182,44 @@ export class BudgetSetupComponent implements OnInit {
         this.BudgetDetails.BudgetAllocationMasters
       )
     );
+  }
+
+  assignBudget(template: TemplateRef<any>): void {
+    const config = {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      centered: true,
+      class: "modal-md",
+    };
+    this.modalRef = this.modalService.show(template, config);
+  }
+
+  budget = [
+    {
+      ID: 2,
+      BudgetMasterID: 2,
+      AccClassID: 1,
+      AccClassName: "ROOT",
+      Amount: 500,
+    },
+  ];
+
+  public removeHandler({ dataItem, rowIndex }): void {
+    // const openingList = <FormArray>this.accountLedgerForm.get("OpeningBalance");
+    // // Remove the Row
+    // openingList.removeAt(rowIndex);
+  }
+
+  public addHandler({ sender }) {
+    // this.closeEditor(sender);
+    // this.submitted = true;
+    // this.rowSubmitted = true;
+    // if (this.accountLedgerForm.get("OpeningBalance").invalid) return;
+    // (<FormArray>this.accountLedgerForm.get("OpeningBalance")).push(
+    //   this.addOpeningBalanceFormGroup()
+    // );
+    // this.rowSubmitted = false;
+    // this.rowSubmitted = false;
   }
 
   ledgerGroup = false;

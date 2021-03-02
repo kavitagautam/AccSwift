@@ -128,7 +128,11 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <button type="button" class="btn btn-primary">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    (click)="assignBudget(budgetDetailModal)"
+                  >
                     Assign Budget
                   </button>
                 </div>
@@ -175,3 +179,50 @@
     </kendo-tabstrip-tab>
   </kendo-tabstrip>
 </form>
+
+<ng-template #budgetDetailModal>
+  <div class="modal-header">
+    <h3 class="modal-title pull-left">Budget Details</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <kendo-grid [data]="budget">
+          <kendo-grid-column width="30" title="S.N.">
+            <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+              {{ rowIndex + 1 }}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column
+            width="100"
+            field="AccClassName"
+            title="Account Class"
+          >
+          </kendo-grid-column>
+          <kendo-grid-column width="80" field="Amount" title="Amount">
+          </kendo-grid-column>
+        </kendo-grid>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary">Save</button>
+    <button
+      class="btn btn-secondary ml-2"
+      type="button"
+      (click)="modalRef.hide()"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>
