@@ -36,8 +36,28 @@
           <table id="header-fixed" class="table table-hover table-fixed">
             <thead>
               <tr>
-                <th colspan="1">Product Details</th>
-                <th colspan="1">Unit</th>
+                <th
+                  *ngIf="
+                    selectType === 'party' ||
+                    salesReportForms.get('ProductID').value
+                  "
+                  colspan="1"
+                >
+                  Date
+                </th>
+                <th *ngIf="salesReportForms.get('ProductID').value" colspan="1">
+                  Voucher No.
+                </th>
+                <th *ngIf="salesReportForms.get('ProductID').value" colspan="1">
+                  VoucherType
+                </th>
+                <th colspan="1">Particulars</th>
+                <th
+                  *ngIf="salesReportForms.get('ProductID').value === null"
+                  colspan="1"
+                >
+                  Unit
+                </th>
                 <th colspan="1">Rate</th>
                 <th colspan="1">Sales Qty</th>
                 <th colspan="1">Return Qty</th>
@@ -47,8 +67,19 @@
             </thead>
             <tbody>
               <tr *ngFor="let l of salesReportList; index as i">
+                <td *ngIf="salesReportForms.get('ProductID').value">
+                  {{ l.Date }}
+                </td>
+                <td *ngIf="salesReportForms.get('ProductID').value">
+                  {{ l.VoucherNumber }}
+                </td>
+                <td *ngIf="salesReportForms.get('ProductID').value">
+                  {{ l.VocherType }}
+                </td>
                 <td>{{ l.Name }}</td>
-                <td>{{ l.Unit }}</td>
+                <td *ngIf="salesReportForms.get('ProductID').value === null">
+                  {{ l.Unit }}
+                </td>
                 <td class="balance">
                   <span [innerHTML]="l.Rate | currencyFormat"></span>
                 </td>
