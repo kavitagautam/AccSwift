@@ -90,22 +90,7 @@ export interface PurchaseMonthlyRootModel {
     Entity: PurchaseMonthly[];
 }
 
-export interface MonthlyBalance {
-    MonthIndex: number;
-    MonthName: string;
-    ActualBalance: number;
-    Balance: string;
-}
 
-export interface CheckingAccounts {
-    LedgerID: number;
-    LedgerName: string;
-    MonthlyBalances: MonthlyBalance[];
-}
 
-export interface CheckingAccountsRootModel {
-    StatusCode: number;
-    Message: string;
-    Entity: CheckingAccounts[];
-}
+
 

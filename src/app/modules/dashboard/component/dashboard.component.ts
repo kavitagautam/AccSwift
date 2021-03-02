@@ -11,9 +11,7 @@ import {
   SalesMonthly,
   SalesMonthlyRootModel,
   PurchaseMonthly,
-  PurchaseMonthlyRootModel,
-  CheckingAccounts,
-  CheckingAccountsRootModel
+  PurchaseMonthlyRootModel
 } from "@accSwift-modules/dashboard/models/dashboard-model.";
 import { DashBoardService } from "../services/dashboard.service";
 
@@ -104,7 +102,6 @@ export class DashboardComponent implements OnInit {
   generalSummaryList: GeneralSummary[] = [];
   salesMonthly: SalesMonthly[] = [];
   purchaseMonthly: PurchaseMonthly[] = [];
-  checkingAccounts: CheckingAccounts[] = [];
 
   ngOnInit() {
     // setTimeout(() => {
@@ -146,9 +143,5 @@ export class DashboardComponent implements OnInit {
     .subscribe((response: PurchaseMonthlyRootModel) => {
       this.purchaseMonthly = response.Entity;
     });
-
-    this.dashBoardService.getCheckingAccounts().subscribe((response: CheckingAccountsRootModel) => {
-      this.checkingAccounts = response.Entity;
-    })
   }
 }
