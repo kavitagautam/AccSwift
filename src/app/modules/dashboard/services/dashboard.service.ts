@@ -14,7 +14,7 @@ import {
   SalesMonthly,
   SalesMonthlyRootModel,
   PurchaseMonthly,
-  PurchaseMonthlyRootModel
+  PurchaseMonthlyRootModel,
 } from "@accSwift-modules/dashboard/models/dashboard-model.";
 import { environment } from "@env/environment";
 

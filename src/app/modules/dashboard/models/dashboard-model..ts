@@ -90,3 +90,7 @@ export interface PurchaseMonthlyRootModel {
     Entity: PurchaseMonthly[];
 }
 
+
+
+
+
