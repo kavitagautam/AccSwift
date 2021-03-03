@@ -16,6 +16,7 @@ import { BudgetAllocationComponent } from "./components/budget-allocation/budget
 import { ViewBudgetComponent } from "./components/view-budget/view-budget.component";
 import { BudgetAllocationMastersComponent } from "./components/budget-allocation-masters/budget-allocation-masters.component";
 import { SharedModule } from "@app/shared/shared.module";
+import { BudgetDetailsComponent } from "./components/budget-details/budget-details.component";
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SharedModule } from "@app/shared/shared.module";
     BudgetAllocationComponent,
     ViewBudgetComponent,
     BudgetAllocationMastersComponent,
+    BudgetDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,7 @@ import { SharedModule } from "@app/shared/shared.module";
     AccswiftSharedModule,
   ],
 
-  entryComponents: [BudgetSetupComponent],
+  entryComponents: [BudgetSetupComponent, BudgetDetailsComponent],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

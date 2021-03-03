@@ -13,21 +13,27 @@
               Budget
             </legend>
             <div class="add-budget">
-              <div class="form-group">
-                <label> Budget Name</label>
-                <kendo-dropdownlist
-                  class="form-control"
-                  [data]="BudgetMinListView"
-                  [filterable]="true"
-                  [textField]="'Name'"
-                  [valueField]="'ID'"
-                  [valuePrimitive]="true"
-                  [formControl]="budgetForm.get('ID')"
-                  accSwiftFormValidator
-                >
-                </kendo-dropdownlist>
-              </div>
-              <div class="budget-date">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label> Budget Name</label>
+                  <input
+                    class="form-control"
+                    formControlName="Name"
+                    accSwiftFormValidator
+                  />
+
+                  <!-- <kendo-dropdownlist
+                    class="form-control"
+                    [data]="BudgetMinListView"
+                    [filterable]="true"
+                    [textField]="'Name'"
+                    [valueField]="'ID'"
+                    [valuePrimitive]="true"
+                    [formControl]="budgetForm.get('ID')"
+                    accSwiftFormValidator
+                  >
+                  </kendo-dropdownlist> -->
+                </div>
                 <div class="form-group">
                   <label> Start Date</label>
                   <input
@@ -38,6 +44,9 @@
                     accSwiftFormValidator
                   />
                 </div>
+              </div>
+
+              <div class="col-md-6">
                 <div class="form-group">
                   <label>End Date </label>
                   <input
@@ -48,93 +57,152 @@
                     accSwiftFormValidator
                   />
                 </div>
+                <div class="form-group">
+                  <label> Remarks</label>
+                  <textarea
+                    row="2"
+                    type="text"
+                    class="form-control"
+                    formControlName="Remarks"
+                  ></textarea>
+                </div>
               </div>
 
-              <div class="form-group">
-                <label> Remarks</label>
-                <textarea
-                  row="2"
-                  type="text"
-                  class="form-control"
-                  formControlName="Remarks"
-                ></textarea>
-              </div>
               <fieldset>
                 <legend>Allocation</legend>
                 <div class="col-md-12">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <div class="radio">
-                        <label>
-                          <input
-                            type="checkbox"
-                            [(ngModel)]="ledgerGroup"
-                            [ngModelOptions]="{ standalone: true }"
-                            (change)="ledgerGroupChange($event)"
-                          />
-                          Ledger Group
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Ledger Group</label>
-                      <kendo-dropdownlist
-                        class="form-control"
-                        [data]="ledgerGroupList"
-                        [filterable]="true"
-                        [textField]="'CodeName'"
-                        [valueField]="'ID'"
-                        [valuePrimitive]="true"
-                      >
-                      </kendo-dropdownlist>
-                      <!-- [formControl]="accountLedgerForm.get('GroupID')"
-                    (filterChange)="ledgerGroupDDFilter($event)"
-                    (valueChange)="changeAccountHead()" -->
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <div class="col-md-6">
-                    <div class="radio">
-                      <label>
-                        <input
-                          type="checkbox"
-                          [(ngModel)]="ledger"
-                          [ngModelOptions]="{ standalone: true }"
-                          (change)="ledgerChange($event)"
-                        />
-                        Ledger
-                      </label>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Ledger</label>
-                      <kendo-dropdownlist
-                        class="form-control"
-                        [data]="ledgerMinList"
-                        [filterable]="true"
-                        [textField]="'CodeName'"
-                        [valueField]="'LedgerID'"
-                        [valuePrimitive]="true"
-                      >
-                      </kendo-dropdownlist>
-                      <!-- [formControl]="accountLedgerForm.get('GroupID')"
-                    (filterChange)="ledgerGroupDDFilter($event)"
-                    (valueChange)="changeAccountHead()" -->
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    (click)="assignBudget(budgetDetailModal)"
+                  <kendo-grid
+                    [data]="getBudgetAllocationMasters.value"
+                    (add)="addHandler($event)"
+                    (remove)="removeHandler($event)"
                   >
-                    Assign Budget
-                  </button>
+                    <ng-template kendoGridToolbarTemplate>
+                      <button kendoGridAddCommand>Add New</button>
+                    </ng-template>
+                    <kendo-grid-column
+                      field="AccountID"
+                      title="Account Group"
+                      width="100"
+                    >
+                      <ng-template
+                        kendoGridCellTemplate
+                        let-dataItem="dataItem"
+                        let-column="column"
+                        let-formGroup="formGroup"
+                        let-isNew="isNew"
+                        let-rowIndex="rowIndex"
+                      >
+                        <kendo-dropdownlist
+                          class="form-control"
+                          [data]="ledgerGroupList"
+                          [filterable]="true"
+                          [textField]="'CodeName'"
+                          [valueField]="'ID'"
+                          [disabled]="
+                            getBudgetAllocationMasters.controls[rowIndex].get(
+                              'AccountType'
+                            ).value == 'Ledger'
+                          "
+                          [formControl]="
+                            getBudgetAllocationMasters.controls[rowIndex].get(
+                              'AccountID'
+                            )
+                          "
+                          [valuePrimitive]="true"
+                          (valueChange)="changeAccountGroup(dataItem, rowIndex)"
+                        >
+                        </kendo-dropdownlist>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column title="Ledger" width="100">
+                      <ng-template
+                        kendoGridCellTemplate
+                        let-dataItem="dataItem"
+                        let-column="column"
+                        let-formGroup="formGroup"
+                        let-isNew="isNew"
+                        let-rowIndex="rowIndex"
+                      >
+                        <kendo-dropdownlist
+                          class="form-control"
+                          [data]="ledgerMinList"
+                          [filterable]="true"
+                          [textField]="'CodeName'"
+                          [valueField]="'LedgerID'"
+                          [valuePrimitive]="true"
+                          [disabled]="
+                            getBudgetAllocationMasters.controls[rowIndex].get(
+                              'AccountType'
+                            ).value == 'Group'
+                          "
+                          [formControl]="
+                            getBudgetAllocationMasters.controls[rowIndex].get(
+                              'AccountID'
+                            )
+                          "
+                          (valueChange)="changeLedger(dataItem, rowIndex)"
+                        >
+                        </kendo-dropdownlist>
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column
+                      field="AccountType"
+                      title="Account Type"
+                      width="100"
+                    >
+                      <ng-template
+                        kendoGridCellTemplate
+                        let-dataItem="dataItem"
+                        let-column="column"
+                        let-formGroup="formGroup"
+                        let-isNew="isNew"
+                        let-rowIndex="rowIndex"
+                      >
+                        <input
+                          class="form-control"
+                          disabled="true"
+                          [formControl]="
+                            getBudgetAllocationMasters.controls[rowIndex].get(
+                              'AccountType'
+                            )
+                          "
+                        />
+                      </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-command-column title="Action" width="120">
+                      <ng-template
+                        kendoGridCellTemplate
+                        let-dataItem="dataItem"
+                        let-column="column"
+                        let-formGroup="formGroup"
+                        let-isNew="isNew"
+                        let-rowIndex="rowIndex"
+                      >
+                        <div class="form-group">
+                          <button
+                            type="button"
+                            class="btn btn-secondory mr-2"
+                            (click)="
+                              assignBudget(
+                                budgetDetailModal,
+                                getBudgetAllocationMasters,
+                                rowIndex
+                              )
+                            "
+                            tooltip="Assign Budget "
+                          >
+                            Assign Budget
+                          </button>
+                          <button kendoGridRemoveCommand>
+                            <i
+                              class="fas fa-trash-alt cursor-pointer"
+                              tooltip="Delete"
+                            ></i>
+                          </button>
+                        </div>
+                      </ng-template>
+                    </kendo-grid-command-column>
+                  </kendo-grid>
                 </div>
               </fieldset>
             </div>
@@ -169,14 +237,14 @@
         </div>
       </ng-template>
     </kendo-tabstrip-tab>
-    <kendo-tabstrip-tab [title]="'Budget Allocation Master'">
+    <!-- <kendo-tabstrip-tab [title]="'Budget Allocation Master'">
       <ng-template kendoTabContent>
         <accSwift-budget-allocation-masters
           [budgetMaster]="budgetForm.get('BudgetAllocationMasters')"
         >
         </accSwift-budget-allocation-masters>
       </ng-template>
-    </kendo-tabstrip-tab>
+    </kendo-tabstrip-tab> -->
   </kendo-tabstrip>
 </form>
 

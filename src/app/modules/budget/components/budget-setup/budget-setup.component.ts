@@ -20,6 +20,7 @@ import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
 import { LedgerService } from "@accSwift-modules/ledger/services/ledger.service";
 import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
+import { BudgetDetailsComponent } from "../budget-details/budget-details.component";
 
 @Component({
   selector: "budget-setup",
@@ -35,7 +36,9 @@ export class BudgetSetupComponent implements OnInit {
   editMode: boolean;
   addMode: boolean;
   modalRef: BsModalRef;
-
+  rowSubmitted: boolean;
+  submitted: boolean;
+  private editedRowIndex: number;
   ledgerGroupList: LedgerGroup[] = [];
   ledgerMinList: LedgerMin[] = [];
 
@@ -88,7 +91,7 @@ export class BudgetSetupComponent implements OnInit {
     this.BudgetService.getBudgetDetails(this.selectedItem.ID).subscribe(
       (res) => {
         this.BudgetDetails = res.Entity;
-        this.setBudgetAllocationDetails();
+
         this.setBudgetAllocationMasters();
         this.budgetForm.patchValue(this.BudgetDetails);
         this.selectedBudgetId = this.BudgetDetails.ID;
@@ -115,10 +118,7 @@ export class BudgetSetupComponent implements OnInit {
   buildBudgetForm(): void {
     this.budgetForm = this._fb.group({
       ID: [this.BudgetMinListView ? this.BudgetMinListView.ID : null],
-      Name: [
-        this.BudgetMinListView ? this.BudgetMinListView.Name : "",
-        Validators.required,
-      ],
+      Name: [this.BudgetMinListView ? this.BudgetMinListView.Name : ""],
       StartDate: [
         this.BudgetMinListView ? this.BudgetMinListView.StartDate : "",
         Validators.required,
@@ -134,10 +134,6 @@ export class BudgetSetupComponent implements OnInit {
     });
   }
 
-  // get getBudgetAllocationDetails(): FormArray {
-  //   return <FormArray>this.budgetForm.get("BudgetAllocationDetails");
-  // }
-
   get getBudgetAllocationMasters(): FormArray {
     return <FormArray>this.budgetForm.get("BudgetAllocationMasters");
   }
@@ -147,7 +143,7 @@ export class BudgetSetupComponent implements OnInit {
       ID: [null],
       BudgetID: [null],
       AccountID: [null],
-      AccountName: "",
+      AccountName: [""],
       AccountType: "",
       AllocationAmount: [null],
       BudgetAllocationDetails: this._fb.array([
@@ -166,15 +162,6 @@ export class BudgetSetupComponent implements OnInit {
     });
   }
 
-  setBudgetAllocationDetails(): void {
-    this.budgetForm.setControl(
-      "BudgetAllocationDetails",
-      this.setBudgetAllocationDetailsArray(
-        this.BudgetDetails.BudgetAllocationMasters[1].BudgetAllocationDetails
-      )
-    );
-  }
-
   setBudgetAllocationMasters(): void {
     this.budgetForm.setControl(
       "BudgetAllocationMasters",
@@ -184,14 +171,28 @@ export class BudgetSetupComponent implements OnInit {
     );
   }
 
-  assignBudget(template: TemplateRef<any>): void {
+  assignBudget(template: TemplateRef<any>, formGroup, rowIndex): void {
     const config = {
       backdrop: true,
       ignoreBackdropClick: true,
       centered: true,
       class: "modal-md",
     };
-    this.modalRef = this.modalService.show(template, config);
+    this.modalRef = this.modalService.show(BudgetDetailsComponent, {
+      initialState: {
+        budgetMasterDetails: formGroup.controls[rowIndex].get(
+          "BudgetAllocationDetails"
+        ),
+      },
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-md",
+    });
+    this.modalRef.content.onSubmit.subscribe((data) => {
+      //Do after Close the Modal
+    });
+    //    this.modalRef = this.modalService.show(template, config);
   }
 
   budget = [
@@ -204,46 +205,44 @@ export class BudgetSetupComponent implements OnInit {
     },
   ];
 
+  changeAccountGroup(dataItem, rowIndex): void {
+    const budgetListArray = this.budgetForm.get(
+      "BudgetAllocationMasters"
+    ) as FormArray;
+    budgetListArray.controls[rowIndex].get("AccountType").setValue("Group");
+  }
+
+  changeLedger(dataItem, rowIndex): void {
+    const budgetListArray = this.budgetForm.get(
+      "BudgetAllocationMasters"
+    ) as FormArray;
+    budgetListArray.controls[rowIndex].get("AccountType").setValue("Ledger");
+  }
   public removeHandler({ dataItem, rowIndex }): void {
-    // const openingList = <FormArray>this.accountLedgerForm.get("OpeningBalance");
-    // // Remove the Row
-    // openingList.removeAt(rowIndex);
+    const budgetMasterList = <FormArray>(
+      this.budgetForm.get("BudgetAllocationMasters")
+    );
+    // Remove the Row
+    budgetMasterList.removeAt(rowIndex);
   }
 
   public addHandler({ sender }) {
-    // this.closeEditor(sender);
-    // this.submitted = true;
-    // this.rowSubmitted = true;
-    // if (this.accountLedgerForm.get("OpeningBalance").invalid) return;
-    // (<FormArray>this.accountLedgerForm.get("OpeningBalance")).push(
-    //   this.addOpeningBalanceFormGroup()
-    // );
-    // this.rowSubmitted = false;
-    // this.rowSubmitted = false;
+    this.closeEditor(sender);
+    this.submitted = true;
+    this.rowSubmitted = true;
+    if (this.budgetForm.get("BudgetAllocationMasters").invalid) return;
+    (<FormArray>this.budgetForm.get("BudgetAllocationMasters")).push(
+      this.budgetAllocationMastersFormGroup()
+    );
+    this.rowSubmitted = false;
+    this.rowSubmitted = false;
   }
 
-  ledgerGroup = false;
-  ledgerGroupChange(event): void {
-    console.log("clicked Ledger Group ");
-    if (this.ledgerGroup) {
-      this.ledgerGroup = false;
-    } else {
-      this.ledgerGroup = true;
-    }
-    //this.ledgerGroup = true;
+  private closeEditor(grid, rowIndex = 1) {
+    grid.closeRow(rowIndex);
+    this.editedRowIndex = undefined;
   }
 
-  ledger = false;
-  ledgerChange(event): void {
-    console.log("clicked Ledger  ");
-
-    if (this.ledger) {
-      this.ledger = false;
-    } else {
-      this.ledger = true;
-    }
-    ///  this.ledger = true;
-  }
   // this block of code is used to show form array data in the template.....
   setBudgetAllocationDetailsArray(budgetAllocationDetails): FormArray {
     const detailsList = new FormArray([]);
@@ -313,6 +312,7 @@ export class BudgetSetupComponent implements OnInit {
   }
 
   public saveBudget(): void {
+    console.log("Save Budget API Call");
     if (this.addMode) {
       if (this.budgetForm.invalid) return;
 

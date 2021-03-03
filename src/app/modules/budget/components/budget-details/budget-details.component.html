@@ -1,0 +1,119 @@
+<div class="modal-header">
+  <h3 class="modal-title pull-left">Opening Balance</h3>
+  <button
+    class="close"
+    type="button"
+    data-dismiss="modal"
+    aria-label="Close"
+    (click)="onCancel()"
+  >
+    <span aria-hidden="true">×</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container-fluid">
+    <div class="row mt-2">
+      <kendo-grid [data]="budgetMasterDetails.value">
+        <!-- <ng-template kendoGridToolbarTemplate>
+          <button kendoGridAddCommand>Add New</button>
+        </ng-template> -->
+        <kendo-grid-column field="AccClassID" title="Account Class">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-formGroup="formGroup"
+            let-isNew="isNew"
+            let-rowIndex="rowIndex"
+          >
+            <kendo-dropdownlist
+              #dropDown
+              [data]="ledgerService.accountClass"
+              [textField]="'Name'"
+              [valueField]="'ID'"
+              class="form-control"
+              [formControl]="
+                budgetMasterDetails.controls[rowIndex].get('AccClassID')
+              "
+              [valuePrimitive]="true"
+            >
+            </kendo-dropdownlist>
+
+            <kendo-popup
+              [anchor]="dropDown"
+              *ngIf="
+                budgetMasterDetails.controls[rowIndex].get('AccClassID')
+                  .invalid &&
+                rowSubmitted &&
+                !(
+                  isNew &&
+                  budgetMasterDetails.controls[rowIndex].get('AccClassID')
+                    .untouched
+                )
+              "
+              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+            >
+              <span class="k-icon k-i-warning"></span>
+              Account Class is required
+            </kendo-popup>
+          </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="Amount" title="Amount">
+          <ng-template
+            kendoGridCellTemplate
+            let-dataItem="dataItem"
+            let-column="column"
+            let-formGroup="formGroup"
+            let-isNew="isNew"
+            let-rowIndex="rowIndex"
+          >
+            <kendo-numerictextbox
+              #ntb="popupAnchor"
+              popupAnchor
+              class="form-control"
+              [formControl]="
+                budgetMasterDetails.controls[rowIndex].get(column.field)
+              "
+            ></kendo-numerictextbox>
+            <kendo-popup
+              [anchor]="popupAnchor"
+              *ngIf="
+                budgetMasterDetails.controls[rowIndex].get(column.field)
+                  .invalid &&
+                rowSubmitted &&
+                !(
+                  isNew &&
+                  budgetMasterDetails.controls[rowIndex].get(column.field)
+                    .untouched
+                )
+              "
+              popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+            >
+              <span class="k-icon k-i-warning"></span>
+              Amount is required
+            </kendo-popup>
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    class="btn btn-primary"
+    type="button"
+    data-dismiss="modal"
+    (click)="onCancel()"
+  >
+    OK
+  </button>
+  <button
+    class="btn btn-secondary"
+    type="button"
+    data-dismiss="modal"
+    (click)="onCancel()"
+  >
+    Cancel
+  </button>
+</div>
