@@ -171,7 +171,7 @@ export class BudgetSetupComponent implements OnInit {
     );
   }
 
-  assignBudget(template: TemplateRef<any>, formGroup, rowIndex): void {
+  assignBudget(formGroup, rowIndex): void {
     const config = {
       backdrop: true,
       ignoreBackdropClick: true,
@@ -194,16 +194,6 @@ export class BudgetSetupComponent implements OnInit {
     });
     //    this.modalRef = this.modalService.show(template, config);
   }
-
-  budget = [
-    {
-      ID: 2,
-      BudgetMasterID: 2,
-      AccClassID: 1,
-      AccClassName: "ROOT",
-      Amount: 500,
-    },
-  ];
 
   changeAccountGroup(dataItem, rowIndex): void {
     const budgetListArray = this.budgetForm.get(
@@ -312,7 +302,6 @@ export class BudgetSetupComponent implements OnInit {
   }
 
   public saveBudget(): void {
-    console.log("Save Budget API Call");
     if (this.addMode) {
       if (this.budgetForm.invalid) return;
 

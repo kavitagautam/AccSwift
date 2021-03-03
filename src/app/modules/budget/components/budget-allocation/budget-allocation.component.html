@@ -89,8 +89,20 @@
                         <kendo-grid-column field="Name" title="Budget Name">
                         </kendo-grid-column>
                         <kendo-grid-column field="StartDate" title="Start Date">
+                          <ng-template
+                            kendoGridCellTemplate
+                            let-dataItem="dataItem"
+                          >
+                            {{ dataItem.StartDate | date: "yyyy-MM-dd" }}
+                          </ng-template>
                         </kendo-grid-column>
                         <kendo-grid-column field="EndDate" title="End Date">
+                          <ng-template
+                            kendoGridCellTemplate
+                            let-dataItem="dataItem"
+                          >
+                            {{ dataItem.EndDate | date: "yyyy-MM-dd" }}
+                          </ng-template>
                         </kendo-grid-column>
                       </kendo-grid>
                       <div *ngIf="listViewLoading" class="k-i-loading"></div>
