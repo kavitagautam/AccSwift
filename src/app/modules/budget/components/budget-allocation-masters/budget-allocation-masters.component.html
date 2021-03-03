@@ -40,9 +40,12 @@
         <button class="btn btn-secondary d-flex m-auto">Assign Amount</button>
         <div class="allocation-table" style="border: 1px solid #e2e2e2">
           <kendo-grid [height]="200">
-            <kendo-grid-column width="50" field="SNo" title="Del.">
-            </kendo-grid-column>
-            <kendo-grid-column width="50" field="BudgetName" title="S.No">
+            <kendo-grid-column width="50" title="S.N"> </kendo-grid-column>
+            <kendo-grid-column
+              width="50"
+              field="BudgetName"
+              title="Account Class"
+            >
             </kendo-grid-column>
             <kendo-grid-column
               width="190"
