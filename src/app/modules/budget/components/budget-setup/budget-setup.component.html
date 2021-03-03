@@ -21,32 +21,7 @@
                     formControlName="Name"
                     accSwiftFormValidator
                   />
-
-                  <!-- <kendo-dropdownlist
-                    class="form-control"
-                    [data]="BudgetMinListView"
-                    [filterable]="true"
-                    [textField]="'Name'"
-                    [valueField]="'ID'"
-                    [valuePrimitive]="true"
-                    [formControl]="budgetForm.get('ID')"
-                    accSwiftFormValidator
-                  >
-                  </kendo-dropdownlist> -->
                 </div>
-                <div class="form-group">
-                  <label> Start Date</label>
-                  <input
-                    class="form-control"
-                    formControlName="StartDate"
-                    bsDatepicker
-                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
-                    accSwiftFormValidator
-                  />
-                </div>
-              </div>
-
-              <div class="col-md-6">
                 <div class="form-group">
                   <label>End Date </label>
                   <input
@@ -57,6 +32,20 @@
                     accSwiftFormValidator
                   />
                 </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label> Start Date</label>
+                  <input
+                    class="form-control"
+                    formControlName="StartDate"
+                    bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                    accSwiftFormValidator
+                  />
+                </div>
+
                 <div class="form-group">
                   <label> Remarks</label>
                   <textarea
@@ -183,11 +172,7 @@
                             type="button"
                             class="btn btn-secondory mr-2"
                             (click)="
-                              assignBudget(
-                                budgetDetailModal,
-                                getBudgetAllocationMasters,
-                                rowIndex
-                              )
+                              assignBudget(getBudgetAllocationMasters, rowIndex)
                             "
                             tooltip="Assign Budget "
                           >
@@ -207,15 +192,7 @@
               </fieldset>
             </div>
 
-            <div
-              class="box-footer"
-              style="
-                display: table;
-                margin: auto;
-                background: gainsboro;
-                border-top: 1px solid gainsboro;
-              "
-            >
+            <div class="box-footer" style="display: table; margin: auto">
               <div class="mb-2">
                 <button
                   class="btn btn-primary"
@@ -247,50 +224,3 @@
     </kendo-tabstrip-tab> -->
   </kendo-tabstrip>
 </form>
-
-<ng-template #budgetDetailModal>
-  <div class="modal-header">
-    <h3 class="modal-title pull-left">Budget Details</h3>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef.hide()"
-    >
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
-    <div class="row">
-      <div class="col-md-12">
-        <kendo-grid [data]="budget">
-          <kendo-grid-column width="30" title="S.N.">
-            <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
-              {{ rowIndex + 1 }}
-            </ng-template>
-          </kendo-grid-column>
-          <kendo-grid-column
-            width="100"
-            field="AccClassName"
-            title="Account Class"
-          >
-          </kendo-grid-column>
-          <kendo-grid-column width="80" field="Amount" title="Amount">
-          </kendo-grid-column>
-        </kendo-grid>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-footer">
-    <button class="btn btn-primary">Save</button>
-    <button
-      class="btn btn-secondary ml-2"
-      type="button"
-      (click)="modalRef.hide()"
-    >
-      Cancel
-    </button>
-  </div>
-</ng-template>

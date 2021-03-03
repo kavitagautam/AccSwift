@@ -1,6 +1,6 @@
 import { LedgerService } from "@accSwift-modules/ledger/services/ledger.service";
 import { Component, Input, OnInit } from "@angular/core";
-import { FormArray, FormBuilder } from "@angular/forms";
+import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Subject } from "rxjs";
 
@@ -35,26 +35,33 @@ export class BudgetDetailsComponent implements OnInit {
     this.onSubmit = new Subject();
   }
 
-  // public removeHandler({ dataItem, rowIndex }): void {
-  //   const openingList = <FormArray>(
-  //     this.budgetMasterDetails.get("OpenBalanceSubLedgers")
-  //   );
-  //   // Remove the Row
-  //   openingList.removeAt(rowIndex);
-  // }
+  public removeHandler({ dataItem, rowIndex }): void {
+    const openingList = <FormArray>this.budgetMasterDetails;
+    // Remove the Row
+    openingList.removeAt(rowIndex);
+  }
 
-  // public addHandler({ sender }) {
-  //   this.closeEditor(sender);
-  //   this.submitted = true;
-  //   this.rowSubmitted = true;
-  //   if (this.subLedgerOpeningBalance.invalid) return;
-  //   (<FormArray>this.subLedgerOpeningBalance).push(
-  //     this.addSubLedgerBalanceFormGroup()
-  //   );
-  //   this.rowSubmitted = false;
-  //   this.rowSubmitted = false;
-  // }
+  public addHandler({ sender }) {
+    this.closeEditor(sender);
+    this.submitted = true;
+    this.rowSubmitted = true;
+    if (this.budgetMasterDetails.invalid) return;
+    (<FormArray>this.budgetMasterDetails).push(
+      this.budgetAllocationDetailsFormGroup()
+    );
+    this.rowSubmitted = false;
+    this.rowSubmitted = false;
+  }
 
+  budgetAllocationDetailsFormGroup(): FormGroup {
+    return this._fb.group({
+      ID: [null],
+      BudgetMasterID: [null],
+      AccClassID: [null],
+      AccClassName: "",
+      Amount: [null],
+    });
+  }
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;

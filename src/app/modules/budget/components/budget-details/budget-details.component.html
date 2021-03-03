@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h3 class="modal-title pull-left">Opening Balance</h3>
+  <h3 class="modal-title pull-left">Assign Budget</h3>
   <button
     class="close"
     type="button"
@@ -13,10 +13,14 @@
 <div class="modal-body">
   <div class="container-fluid">
     <div class="row mt-2">
-      <kendo-grid [data]="budgetMasterDetails.value">
-        <!-- <ng-template kendoGridToolbarTemplate>
+      <kendo-grid
+        [data]="budgetMasterDetails.value"
+        (add)="addHandler($event)"
+        (remove)="removeHandler($event)"
+      >
+        <ng-template kendoGridToolbarTemplate>
           <button kendoGridAddCommand>Add New</button>
-        </ng-template> -->
+        </ng-template>
         <kendo-grid-column field="AccClassID" title="Account Class">
           <ng-template
             kendoGridCellTemplate
