@@ -18,6 +18,7 @@
     >
       Sales Product-Wise Report
     </h3>
+
     <h3
       style="text-align: center"
       *ngIf="
@@ -26,6 +27,7 @@
     >
       Sales Product-Wise Transaction Report
     </h3>
+
     <h3 style="text-align: center" *ngIf="selectType === 'party'">
       Sales Party-Wise Report
     </h3>
@@ -38,17 +40,29 @@
               <tr>
                 <th
                   *ngIf="
-                    selectType === 'party' ||
-                    salesReportForms.get('ProductID').value
+                    salesReportForms.get('ProductID').value ||
+                    salesReportForms.get('PartyID').value
                   "
                   colspan="1"
                 >
                   Date
                 </th>
-                <th *ngIf="salesReportForms.get('ProductID').value" colspan="1">
+                <th
+                  *ngIf="
+                    salesReportForms.get('ProductID').value ||
+                    salesReportForms.get('PartyID').value
+                  "
+                  colspan="1"
+                >
                   Voucher No.
                 </th>
-                <th *ngIf="salesReportForms.get('ProductID').value" colspan="1">
+                <th
+                  *ngIf="
+                    salesReportForms.get('ProductID').value ||
+                    salesReportForms.get('PartyID').value
+                  "
+                  colspan="1"
+                >
                   VoucherType
                 </th>
                 <th colspan="1">Particulars</th>
@@ -67,17 +81,37 @@
             </thead>
             <tbody>
               <tr *ngFor="let l of salesReportList; index as i">
-                <td *ngIf="salesReportForms.get('ProductID').value">
-                  {{ l.Date }}
+                <td
+                  *ngIf="
+                    salesReportForms.get('ProductID').value ||
+                    salesReportForms.get('PartyID').value
+                  "
+                >
+                  {{ l.Date | date: "MM-dd-yyyy" }}
                 </td>
-                <td *ngIf="salesReportForms.get('ProductID').value">
+                <td
+                  *ngIf="
+                    salesReportForms.get('ProductID').value ||
+                    salesReportForms.get('PartyID').value
+                  "
+                >
                   {{ l.VoucherNumber }}
                 </td>
-                <td *ngIf="salesReportForms.get('ProductID').value">
+                <td
+                  *ngIf="
+                    salesReportForms.get('ProductID').value ||
+                    salesReportForms.get('PartyID').value
+                  "
+                >
                   {{ l.VocherType }}
                 </td>
                 <td>{{ l.Name }}</td>
-                <td *ngIf="salesReportForms.get('ProductID').value === null">
+                <td
+                  *ngIf="
+                    salesReportForms.get('ProductID').value === null ||
+                    salesReportForms.get('PartyID').value === null
+                  "
+                >
                   {{ l.Unit }}
                 </td>
                 <td class="balance">

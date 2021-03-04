@@ -15,6 +15,9 @@ import {
   SalesMonthlyRootModel,
   PurchaseMonthly,
   PurchaseMonthlyRootModel,
+  CheckingAccounts,
+  CheckingAccountsRootModel
+
 } from "@accSwift-modules/dashboard/models/dashboard-model.";
 import { environment } from "@env/environment";
 
@@ -28,6 +31,7 @@ export class DashBoardService {
   generalSummaryList: GeneralSummary[] = [];
   salesMonthly: SalesMonthly[] = [];
   purchaseMonthly: PurchaseMonthly[] = [];
+  checkingAccounts: CheckingAccounts[] = [];
   _api_URL = environment.baseAPI;
 
   constructor(
@@ -58,4 +62,9 @@ export class DashBoardService {
   getPurchaseMonthly(): Observable<PurchaseMonthlyRootModel> {
     return this.httpService.get(`${this._api_URL}Transaction/PurchMonthly`);
   }
+
+  getCheckingAccounts(): Observable<CheckingAccountsRootModel>  {
+    return this.httpService.get(`${this._api_URL}CheckingAccounts`);
+  }
+
 }

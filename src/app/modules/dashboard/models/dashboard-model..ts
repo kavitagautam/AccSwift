@@ -90,7 +90,15 @@ export interface PurchaseMonthlyRootModel {
     Entity: PurchaseMonthly[];
 }
 
+export interface CheckingAccounts {
+    Months: string[];
+    Balances: number[][];
+}
 
-
+export interface CheckingAccountsRootModel {
+    StatusCode: number;
+    Message: string;
+    Entity: CheckingAccounts[];
+}
 
 

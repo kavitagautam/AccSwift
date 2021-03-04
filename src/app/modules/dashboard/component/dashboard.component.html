@@ -106,152 +106,18 @@
             <kendo-chart-title></kendo-chart-title>
             <kendo-chart-category-axis>
               <kendo-chart-category-axis-item
-                [categories]="[
-                  'Jul',
-                  'Aug',
-                  'Sep',
-                  'Oct',
-                  'Nov',
-                  'Dec',
-                  'Jan',
-                  'Feb',
-                  'Mar',
-                  'Apr',
-                  'May',
-                  'Jun'
-                ]"
+                [categories]="checkingAccounts.Months"
               >
               </kendo-chart-category-axis-item>
             </kendo-chart-category-axis>
+            <h5></h5>
             <kendo-chart-series>
-              <kendo-chart-series-item
-                type="line"
-                [data]="[
-                  10,
-                  10,
-                  10,
-                  10,
-                  10,
-                  10,
-                  10,
-                  10,
-                  10,
-                  -47849,
-                  -47849,
-                  -47849
-                ]"
+              <ng-container
+                *ngFor="let accounts of checkingAccounts.Balances; index as i"
               >
-              </kendo-chart-series-item>
-              <kendo-chart-series-item
-                type="line"
-                [data]="[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]"
-              >
-              </kendo-chart-series-item>
-              <kendo-chart-series-item
-                type="line"
-                [data]="[
-                  500,
-                  500,
-                  500,
-                  500,
-                  500,
-                  500,
-                  500,
-                  500,
-                  500,
-                  500,
-                  500,
-                  500
-                ]"
-              >
-              </kendo-chart-series-item>
-              <kendo-chart-series-item
-                type="line"
-                [data]="[50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50]"
-              >
-              </kendo-chart-series-item>
-              <kendo-chart-series-item
-                type="line"
-                [data]="[
-                  12,
-                  12,
-                  12,
-                  12,
-                  12,
-                  12,
-                  12,
-                  -122,
-                  -122,
-                  -122,
-                  -122,
-                  -122
-                ]"
-              >
-              </kendo-chart-series-item>
-              <kendo-chart-series-item
-                type="line"
-                [data]="[
-                  23394984.62,
-                  21988382.4,
-                  22010615.4,
-                  21844020.4,
-                  21953067.34,
-                  21953067.34,
-                  21953067.34,
-                  21953067.34,
-                  21953067.34,
-                  21973307.34,
-                  21973307.34,
-                  21973307.34
-                ]"
-              >
-              </kendo-chart-series-item>
-              <kendo-chart-series-item
-                type="line"
-                [data]="[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]"
-              >
-              </kendo-chart-series-item>
-              <kendo-chart-series-item
-                type="line"
-                [data]="[
-                  400,
-                  400,
-                  400,
-                  400,
-                  400,
-                  400,
-                  400,
-                  400,
-                  400,
-                  400,
-                  400,
-                  400
-                ]"
-              >
-              </kendo-chart-series-item>
-              <kendo-chart-series-item
-                type="line"
-                [data]="[
-                  0,
-                  50000,
-                  402110,
-                  402110,
-                  402110,
-                  402110,
-                  402110,
-                  402110,
-                  402110,
-                  402110,
-                  402110,
-                  402110
-                ]"
-              >
-              </kendo-chart-series-item>
-              <kendo-chart-series-item
-                type="line"
-                [data]="[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]"
-              >
-              </kendo-chart-series-item>
+                <kendo-chart-series-item type="line" [data]="accounts">
+                </kendo-chart-series-item>
+              </ng-container>
             </kendo-chart-series>
           </kendo-chart>
         </div>
