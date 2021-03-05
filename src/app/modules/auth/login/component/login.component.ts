@@ -124,6 +124,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       );
   }
 
+  forgetPassword(): void {
+    this.router.navigate(["/forgetpw"]);
+  }
+
   alert(event)
   {
     alert("Signup not available currently. Please contact the service provider.");
