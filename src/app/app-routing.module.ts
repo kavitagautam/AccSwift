@@ -303,7 +303,7 @@ const routes: Routes = [
         },
       },
     ],
-  },
+  }
 ];
 
 @NgModule({

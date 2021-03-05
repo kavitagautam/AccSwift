@@ -18,6 +18,7 @@
             <div class="col-md-2">
               <button
                 type="button"
+                style="margin-left: 40px"
                 class="btn btn-success mr-3"
                 *ngIf="salesDetails && salesDetails.Status == 'DRAFT'"
                 (click)="publishInvoice()"
@@ -45,7 +46,7 @@
             <div class="form-group">
               <label>Order No.</label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 formControlName="OrderNo"
                 accSwiftFormValidator
@@ -53,7 +54,7 @@
             </div>
             <div class="form-group">
               <label>Scan Product</label>
-              <input type="text" disabled class="form-control" />
+              <input type="text" class="form-control" />
             </div>
           </div>
           <div class="col-md-3 col-sm-6 col-xs-6">
@@ -173,7 +174,6 @@
         </div>
         <div class="col-md-12">
           <button
-            *ngIf="salesDetails && !salesDetails.IsPay"
             (click)="openTender(tenderModal)"
             class="btn-primary pull-right"
           >
@@ -275,6 +275,7 @@
           <div class="form-group">
             <label>Tender Amount</label>
             <input
+              style="text-align: right"
               type="number"
               class="form-control"
               formControlName="tenderAmount"
@@ -283,6 +284,7 @@
           <div class="form-group">
             <label>Adjust/Round Off Amount</label>
             <input
+              style="text-align: right"
               type="number"
               class="form-control"
               formControlName="adjustAmount"
@@ -291,6 +293,7 @@
           <div class="form-group">
             <label>Payable Amount</label>
             <input
+              style="text-align: right"
               type="number"
               class="form-control"
               formControlName="payableAmount"
@@ -299,6 +302,7 @@
           <div class="form-group">
             <label>Paid Amount</label>
             <input
+              style="text-align: right"
               type="number"
               class="form-control"
               formControlName="paidAmount"
@@ -308,6 +312,7 @@
           <div class="form-group">
             <label>Return Amount</label>
             <input
+              style="text-align: right"
               type="number"
               class="form-control"
               formControlName="returnAmount"
@@ -511,7 +516,7 @@
                         <div class="form-group">
                           <label>Order No.</label>
                           <input
-                            type="number"
+                            type="text"
                             class="form-control"
                             formControlName="OrderNo"
                             accSwiftFormValidator

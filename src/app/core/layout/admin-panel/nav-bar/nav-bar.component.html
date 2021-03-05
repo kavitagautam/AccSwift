@@ -167,14 +167,17 @@
                 class="img-circle"
                 alt="User Image"
               /> -->
-              <p>{{ userInfo?.Name }}</p>
 
-              <p>{{ userInfo?.Email }}</p>
+              <p>{{ users?.Name }}</p>
+
+              <p>{{ users?.Email }}</p>
             </li>
             <!-- Menu Footer-->
             <li class="user-footer">
               <div class="pull-left">
-                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                <a (click)="userProfile()" class="btn btn-default btn-flat"
+                  >Profile</a
+                >
               </div>
               <div class="pull-right">
                 <a

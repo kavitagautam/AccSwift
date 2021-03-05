@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ChartsModule } from "@progress/kendo-angular-charts";
 import { DashboardRoutingModule } from "./dashboard-routing.module";
@@ -18,5 +18,6 @@ import { SettingsService } from "@accSwift-modules/settings/services/settings.se
     AccswiftSharedModule,
   ],
   providers: [PreferenceService, SettingsService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class DashboardModule {}

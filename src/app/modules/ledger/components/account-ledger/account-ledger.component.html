@@ -15,72 +15,66 @@
           </h5>
           <div class="account_ledger" style="padding: 0 30px">
             <div class="row">
-              <div
-                class="in-col"
-                style="display: flex; justify-content: space-between"
-              >
-                <div class="col-md-4 col-sm-4 col-xs-6">
-                  <div class="form-group">
-                    <label> Code <sup>*</sup> </label>
-                    <kendo-autocomplete
-                      [data]="suggestCodeList"
-                      class="form-control"
-                      formControlName="LedgerCode"
-                      [valueField]="'Code'"
-                      [suggest]="true"
-                      [placeholder]="'Code'"
-                      accSwiftFormValidator
-                    ></kendo-autocomplete>
-                  </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <div class="form-group">
-                    <label> Name<sup>*</sup> </label>
-                    <input
-                      class="form-control"
-                      formControlName="Name"
-                      accSwiftFormValidator
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                class="in-col"
-                style="display: flex; justify-content: space-between"
-              >
-                <div class="col-md-4 col-sm-4 col-xs-6">
-                  <div class="form-group">
-                    <label>Currency </label>
-                    <input
-                      class="form-control"
-                      formControlName="Currency"
-                      accSwiftFormValidator
-                    />
-                  </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <div class="form-group">
-                    <label>Account Head <sup>*</sup></label>
-                    <kendo-dropdownlist
-                      class="form-control"
-                      [data]="ledgerGroup"
-                      [filterable]="true"
-                      [textField]="'CodeName'"
-                      [valueField]="'ID'"
-                      [valuePrimitive]="true"
-                      [formControl]="accountLedgerForm.get('GroupID')"
-                      (filterChange)="ledgerGroupDDFilter($event)"
-                      (valueChange)="changeAccountHead()"
-                    >
-                    </kendo-dropdownlist>
-                  </div>
+              <div class="col-md-4 col-sm-4 col-xs-6">
+                <div class="form-group">
+                  <label> Code <sup>*</sup> </label>
+                  <kendo-autocomplete
+                    [data]="suggestCodeList"
+                    class="form-control"
+                    formControlName="LedgerCode"
+                    [valueField]="'Code'"
+                    [suggest]="true"
+                    [placeholder]="'Code'"
+                    accSwiftFormValidator
+                  ></kendo-autocomplete>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
+                  <label> Name<sup>*</sup> </label>
+                  <input
+                    class="form-control"
+                    formControlName="Name"
+                    accSwiftFormValidator
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="form-group">
+                  <label>Account Head <sup>*</sup></label>
+                  <kendo-dropdownlist
+                    class="form-control"
+                    [data]="ledgerGroup"
+                    [filterable]="true"
+                    [textField]="'CodeName'"
+                    [valueField]="'ID'"
+                    [valuePrimitive]="true"
+                    [formControl]="accountLedgerForm.get('GroupID')"
+                    (filterChange)="ledgerGroupDDFilter($event)"
+                    (valueChange)="changeAccountHead()"
+                  >
+                  </kendo-dropdownlist>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="form-group">
+                  <label>Currency </label>
+                  <input
+                    class="form-control"
+                    formControlName="Currency"
+                    accSwiftFormValidator
+                  />
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="form-group">
                   <button
+                    style="margin-top: 24px"
                     type="button"
                     class="btn btn-secondory"
                     data-toggle="modal"
@@ -90,9 +84,10 @@
                   </button>
                 </div>
               </div>
-              <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="col-md-4 col-sm-4 col-xs-4">
                 <div class="form-group">
                   <button
+                    style="margin-top: 24px"
                     type="button"
                     class="btn btn-secondory"
                     data-toggle="modal"

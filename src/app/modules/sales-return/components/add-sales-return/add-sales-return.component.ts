@@ -13,6 +13,7 @@ import { PreferenceService } from "@accSwift-modules/preference/services/prefere
 @Component({
   selector: "accSwift-add-sales-return",
   templateUrl: "../common-html/sales-return.html",
+  styleUrls: ["../common-html/sales-return.component.scss"]
 })
 export class AddSalesReturnComponent implements OnInit, OnDestroy {
   salesReturnForm: FormGroup;
@@ -30,6 +31,9 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
   totalTaxAmount: number = 0;
   vatTotalAmount: number = 0;
   grandTotalAmount: number = 0;
+  tenderAmount: number = 0;
+  changeAmount: number = 0;
+  adjustmentAmount: number = 0;
 
   myFormValueChanges$;
 
@@ -188,8 +192,7 @@ export class AddSalesReturnComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    if (this.salesReturnForm.invalid) return;
-
+    // if (this.salesReturnForm.invalid) return;
     this.salesReturnService
       .addSalesReturn(this.salesReturnForm.value)
       .subscribe(

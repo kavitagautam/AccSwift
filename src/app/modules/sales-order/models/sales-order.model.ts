@@ -30,6 +30,8 @@ export interface OrderDetail {
 export interface SalesOrder {
   ID: number;
   Date: Date;
+  TotalAmount: number;
+  TotalQty: number;
   OrderDetails: OrderDetail[];
   OrderNo: string;
   SeriesID: number;

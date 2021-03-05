@@ -126,7 +126,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   alert(event)
   {
-    alert("Not implemented!Just sign in!");
+    alert("Signup not available currently. Please contact the service provider.");
   }
 
   // form controls

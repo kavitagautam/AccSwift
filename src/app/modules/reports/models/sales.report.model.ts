@@ -1,4 +1,7 @@
 export interface SalesReportList {
+  Date: Date;
+  VoucherNumber: string;
+  VocherType: string;
   SalesQty: number;
   NetSalesQty: number;
   Code?: any;

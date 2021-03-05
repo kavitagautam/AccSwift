@@ -65,7 +65,7 @@
               ></i>
             </a>
           </div>
-          <div *ngIf="voucherType == 'SALES'">
+          <div *ngIf="voucherType == 'SALES' || voucherType == 'SLS_RTN'">
             <div
               class="col-md-12"
               *ngIf="entryArray.controls[rowIndex].get('QtyUnitName').value"
@@ -588,7 +588,13 @@
           [format]="currencyFormat"
           [formControl]="entryArray.controls[rowIndex].get(column.field)"
         ></kendo-numerictextbox>
-        <div *ngIf="voucherType == 'SALES' || voucherType == 'PURCH'">
+        <div
+          *ngIf="
+            voucherType == 'SALES' ||
+            voucherType == 'PURCH' ||
+            voucherType == 'SLS_RTN'
+          "
+        >
           <span class="small_text"
             >Total :&nbsp; &nbsp;
             <span

@@ -270,39 +270,56 @@ export class DetailsEntryGridComponent implements OnInit {
     const entryListArray = this.entryArray as FormArray;
     let qunatityValue = entryListArray.controls[index].get("Quantity").value;
     let salesPurchaseRate = 0;
-    if (this.voucherType == "SALES") {
-      salesPurchaseRate = entryListArray.controls[index].get("SalesRate").value;
-    }
-    if (this.voucherType == "PURCH") {
-      salesPurchaseRate = entryListArray.controls[index].get("PurchaseRate")
+    if (this.voucherType != "SLS_ORDER") {
+      if (this.voucherType == "SALES") {
+        salesPurchaseRate = entryListArray.controls[index].get("SalesRate").value;
+      }
+      if (this.voucherType == "PURCH") {
+        salesPurchaseRate = entryListArray.controls[index].get("PurchaseRate")
+          .value;
+      }
+      if (this.voucherType == "SLS_RTN") {
+        salesPurchaseRate = entryListArray.controls[index].get("SalesRate")
+          .value;
+      }
+    
+
+      let discountAmountC = entryListArray.controls[index].get("DiscountAmount")
         .value;
-    }
 
-    let discountAmountC = entryListArray.controls[index].get("DiscountAmount")
-      .value;
+      let amountC = qunatityValue * salesPurchaseRate;
+      let discountPerC = (discountAmountC / amountC) * 100;
 
-    let amountC = qunatityValue * salesPurchaseRate;
-    let discountPerC = (discountAmountC / amountC) * 100;
-
-    entryListArray.controls[index].get("DiscPercentage").setValue(discountPerC);
-    entryListArray.controls[index].get("Amount").setValue(amountC);
-    entryListArray.controls[index]
-      .get("NetAmount")
-      .setValue(
-        amountC - entryListArray.controls[index].get("DiscountAmount").value
-      );
-    const selectedTaxValue = this.gridServices.taxList.filter(
-      (s) => s.ID === entryListArray.controls[index].get("TaxID").value
-    );
-    if (selectedTaxValue.length > 0) {
+      entryListArray.controls[index].get("DiscPercentage").setValue(discountPerC);
+      entryListArray.controls[index].get("Amount").setValue(amountC);
       entryListArray.controls[index]
-        .get("TaxAmount")
+        .get("NetAmount")
         .setValue(
-          entryListArray.controls[index].get("Quantity").value *
-            entryListArray.controls[index].get("SalesRate").value *
-            (selectedTaxValue[0].Rate / 100)
+          amountC - entryListArray.controls[index].get("DiscountAmount").value
         );
-    }
+      const selectedTaxValue = this.gridServices.taxList.filter(
+        (s) => s.ID === entryListArray.controls[index].get("TaxID").value
+      );
+      if (selectedTaxValue.length > 0) {
+        entryListArray.controls[index]
+          .get("TaxAmount")
+          .setValue(
+            entryListArray.controls[index].get("Quantity").value *
+              entryListArray.controls[index].get("SalesRate").value *
+              (selectedTaxValue[0].Rate / 100)
+          );
+      }
+  }
+  if (this.voucherType == "SLS_ORDER") {
+    salesPurchaseRate = entryListArray.controls[index].get("SalesRate")
+      .value;
+      entryListArray.controls[index]
+      .get("Amount")
+      .setValue(
+        entryListArray.controls[index].get("SalesRate").value *
+          entryListArray.controls[index].get("Quantity").value
+      );
+  }
   }
   //Change Discount Per
   discountPerCalc(dataItem, index): void {
@@ -453,6 +470,18 @@ export class DetailsEntryGridComponent implements OnInit {
             );
         }
         entryListArray.controls[index].get("Remarks").setValue("");
+      }
+
+      if (this.voucherType == "SLS_ORDER") {
+        entryListArray.controls[index]
+          .get("SalesRate")
+          .setValue(selectedProductValue[0].SalesRate);
+           entryListArray.controls[index]
+        .get("Amount")
+        .setValue(
+          entryListArray.controls[index].get("SalesRate").value *
+            entryListArray.controls[index].get("Quantity").value
+        );
       }
 
       if (this.voucherType == "PURCH") {
@@ -948,7 +977,8 @@ export class DetailsEntryGridComponent implements OnInit {
         ProductCode: [""],
         ProductID: [null, Validators.required],
         ProductName: [""],
-        Quantity: [null],
+        Quantity: [0, Validators.required],
+        QtyUnitID: [null, Validators.required],
         SalesRate: [""],
         Amount: [""],
         UpdatedQuantity: [0],
