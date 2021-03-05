@@ -124,6 +124,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       );
   }
 
+  alert(event)
+  {
+    alert("Signup not available currently. Please contact the service provider.");
+  }
+
   // form controls
   get username(): AbstractControl {
     return this.loginForm.get("username");

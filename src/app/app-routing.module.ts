@@ -111,7 +111,13 @@ const routes: Routes = [
           breadcrumb: "Product",
         },
       },
-
+      {
+        path: "project",
+        loadChildren: "@accSwift-modules/project/project.module#ProjectModule",
+        data: {
+          breadcrumb: "Project",
+        },
+      },
       {
         path: "budget",
         loadChildren: "@accSwift-modules/budget/budget.module#BudgetModule",
@@ -297,7 +303,7 @@ const routes: Routes = [
         },
       },
     ],
-  },
+  }
 ];
 
 @NgModule({

@@ -31,7 +31,7 @@
   select,
   button {
     border: none;
-    background-color: transparent;
+    //background-color: transparent;
   }
   /*invoices.component.scss*/
   .padding-top {
@@ -164,13 +164,14 @@
   .date-picker,
   .search {
     position: absolute;
-    top: 2px;
-    right: 7px;
+    top: 27px;
+    right: 17px;
     background: #ecf0f3;
     color: #b2c2cd;
     border-left: 1px solid #b2c2cd;
     text-align: center;
     padding: 6px 13px;
+    font-size: 17px;
   }
   .invoice-list-tabs .active-counter {
     margin-left: 10px;
@@ -200,14 +201,12 @@
   }
   .new-invoice-top-bar .down-arrow {
     position: absolute;
-    top: 0px;
-    right: 10px;
+    top: 5px;
     color: #fff;
-    border-left: 1px solid rgba(255, 255, 255, 0.5);
     height: 100%;
   }
   .new-invoice-top-bar .create-invoice-btn {
-    padding: 8px 44px;
+    padding: 8px 35px;
     float: right;
   }
   .new-invoice-top-bar .create-invoice-btn i {
@@ -234,9 +233,6 @@
     font-weight: 500;
   }
   .business-details {
-    // display: flex;
-    // justify-content: space-between;
-    // flex-wrap: wrap;
     background: #fff;
     border-radius: 0 0 8px 8px;
     border-top: 1px solid #d4dde3;
@@ -270,9 +266,9 @@
     text-align: right;
     line-height: normal;
     width: 100%;
-    border: 1px solid #b2c2cd;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background-color: #f6f6f6;
     border-radius: 4px;
-    cursor: text;
     padding: 12px 14px 12px;
     font-size: 14px;
   }
@@ -330,6 +326,11 @@
     right: 14px;
     top: 15px;
   }
+  .cus-invoice-details input {
+    color: #656565;
+    background-color: #f6f6f6;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
   .cus-input input {
     border: 1px solid #b2c2cd;
     border-radius: 4px;
@@ -368,13 +369,11 @@
   }
   .info-table input,
   textarea {
-    border: 1px solid #b2c2cd;
-    border-radius: 4px;
+    background-color: #f6f6f6;
     font-size: 14px;
     width: 100%;
     padding: 10px;
   }
-
   .info-table textarea {
     height: 38px;
   }

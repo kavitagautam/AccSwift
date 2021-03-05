@@ -166,10 +166,17 @@ export class SettingsReportsComponent implements OnInit {
 
   reportType(type): void {
     this.selectType = type;
+
     if (this.selectType === "party") {
+      this.selectType="party";
       this.getCashParty();
       this.getCashPartyGroup();
+    }else{
+      this.selectType="product";
+      this.getProductDD();
+      this.getProductGroupDD();
     }
+   
   }
 
   getCashParty(): void {
@@ -184,20 +191,20 @@ export class SettingsReportsComponent implements OnInit {
     });
   }
 
-  allCashPArty(): void {
+  allCashPArty(event): void {
     this.settingsForms.get("PartyID").setValue(null);
     this.settingsForms.get("PartyGroupID").setValue(null);
     this.settingsForms.get("PartyID").disable();
     this.settingsForms.get("PartyGroupID").disable();
   }
 
-  singleCashParty(): void {
-    this.settingsForms.get("PartyID").enable();
+  singleCashParty(event): void {
     this.settingsForms.get("PartyGroupID").setValue(null);
     this.settingsForms.get("PartyGroupID").disable();
+    this.settingsForms.get("PartyID").enable();
   }
 
-  cashPartyGroup(): void {
+  cashPartyGroup(event): void {
     this.settingsForms.get("PartyID").setValue(null);
     this.settingsForms.get("PartyID").disable();
     this.settingsForms.get("PartyGroupID").enable();

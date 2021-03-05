@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { PreferenceRoutingModule } from "./preference-routing.module";
 import { PreferenceComponent } from "./components/preference.component";
@@ -8,7 +8,9 @@ import { CompanyInfoComponent } from "./components/company-info/company-info.com
 import { SalesComponent } from "./components/sales/sales.component";
 import { AccountsComponent } from "./components/accounts/accounts.component";
 import { SettingsComponent } from "./components/settings/settings.component";
-import { SeriesPreferenceComponent } from './components/series-preference/series-preference.component';
+import { SeriesPreferenceComponent } from "./components/series-preference/series-preference.component";
+import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift-shared.module";
+import { AccswiftFormsModule } from "@accSwift-modules/accswift-forms/accswift-forms.module";
 
 @NgModule({
   declarations: [
@@ -18,13 +20,16 @@ import { SeriesPreferenceComponent } from './components/series-preference/series
     SalesComponent,
     AccountsComponent,
     SettingsComponent,
-    SeriesPreferenceComponent
+    SeriesPreferenceComponent,
   ],
   imports: [
     CommonModule,
     PreferenceRoutingModule,
     FormsModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    AccswiftFormsModule,
+    AccswiftSharedModule,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PreferenceModule {}

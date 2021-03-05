@@ -96,6 +96,12 @@ export class SideNavComponent implements OnInit {
       route: "/product",
     },
     {
+      id: 55,
+      displayName: "Project",
+      iconName: "fab fa-product-hunt",
+      route: "/project",
+    },
+    {
       id: 6,
       displayName: "Budget",
       iconName: "fas fa-file-invoice-dollar",
@@ -262,6 +268,5 @@ export class SideNavComponent implements OnInit {
       iconName: "fas fa-tools",
       route: "/settings",
     },
-
   ];
 }

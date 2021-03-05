@@ -1,14 +1,68 @@
 .listButton {
-  width: 100px;
+  width: 110px;
   height: 80px;
+  font-size: 13px;
   margin: 5px;
   white-space: normal;
   text-overflow: ellipsis;
   overflow: hidden;
   word-wrap: break-word;
+  border: 1px solid #c2c2c2;
+  box-shadow: 0px 0px 4px -2px;
 }
-
+.listButton:hover {
+  background-color: rgb(201, 196, 196);
+  transition-duration: 0.4s;
+}
 tr.selected {
   background-color: #cfd8dc;
   color: white;
+}
+.heading {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+}
+.favourite-items {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 0;
+}
+.favourite-items button {
+  border: 1px solid #c2c2c2;
+  box-shadow: 0px 0px 4px -2px;
+  width: 155px;
+  font-size: 15px;
+}
+.btn-group-vertical button {
+  background-color: #f4f2f2;
+}
+.btn-group-vertical button:hover {
+  background-color: rgb(201, 196, 196);
+  transition-duration: 0.4s;
+}
+.item-bar {
+  margin-bottom: 30px;
+  padding: 10px;
+  border: 1px solid #c2c2c2;
+  box-shadow: 0px 0px 4px -2px;
+}
+.refresh-btns button {
+  border: 1px solid #c2c2c2;
+  margin: 20px 0;
+}
+.amount .clearfix {
+  padding: 8px 0;
+  display: flex;
+  justify-content: right;
+  border-bottom: 1px solid #f4f4f4;
+}
+.amount {
+  display: flex;
+  flex-direction: column;
+}
+.no-item {
+  margin-left: 20px;
+  font-weight: 500;
+  font-size: 20px;
 }

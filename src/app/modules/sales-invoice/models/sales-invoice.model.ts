@@ -154,6 +154,7 @@ export interface SalesInvoiceDetails {
   CreatedDate: Date;
   ModifiedBy?: any;
   ModifiedDate?: any;
+  Status: string;
 }
 
 export interface SalesInvoiceDetailsModel {

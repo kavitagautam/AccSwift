@@ -3,10 +3,37 @@
     <form [formGroup]="salesInvoiceForm" novalidate>
       <section class="new-invoice-top-bar">
         <div class="row">
-          <div class="col-lg-8 col-sm-6 col-3">
-            <h2 class="head-title">New Invoice</h2>
+          <div class="col-md-9">
+            <div class="col-md-2 p-0 mt-2">
+              <h2 class="head-title" *ngIf="salesDetails">Edit Invoice</h2>
+              <h2 class="head-title" *ngIf="!salesDetails">Add Invoice</h2>
+            </div>
+            <div class="col-md-10 p-0">
+              <div class="col-md-2 pl-0 mb-2">
+                <span *ngIf="salesDetails && salesDetails.Status == 'PAID'">
+                  <span class="badge paid_status">Paid</span>
+                </span>
+                <span *ngIf="salesDetails && salesDetails.Status == 'UNPAID'"
+                  ><span class="badge unpaid_status">Unpaid</span></span
+                >
+                <span *ngIf="salesDetails && salesDetails.Status == 'DRAFT'"
+                  ><span class="badge draft_status">Draft</span></span
+                >
+              </div>
+              <div class="col-md-2">
+                <button
+                  type="button"
+                  class="btn btn-success mr-3"
+                  *ngIf="salesDetails && salesDetails.Status == 'DRAFT'"
+                  (click)="publishInvoice()"
+                >
+                  Publish Invoice
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="col-lg-4 col-sm-6 col-9">
+
+          <div class="col-md-3">
             <div class="top-buttons">
               <button
                 class="create-invoice-btn"
@@ -34,8 +61,8 @@
               [ngClass]="show ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
             ></span>
           </button>
-          <ng-container>
-            <div class="row business-details" *ngIf="show">
+          <ng-container *ngIf="show">
+            <div class="row business-details">
               <div class="col-lg-4 col-sm-6 col-xs-6">
                 <div class="browse-logo">
                   <div
@@ -95,7 +122,7 @@
       <section class="invoice-highlight">
         <section class="info-customer-wrap">
           <div class="row inner-details">
-            <div class="col-lg-4 col-md-6 col-sm-5 col-6">
+            <div class="col-lg-4">
               <div class="add-customer">
                 <button
                   type="button"
@@ -139,114 +166,132 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-8 col-md-6 col-sm-7 col-6">
+            <div class="col-lg-8">
               <div class="cus-invoice-details">
-                <div class="row mt-3">
-                  <div class="col-lg-6 col-sm-6">
-                    <div class="form-group">
-                      <label>Order No.</label>
-                      <input
-                        type="number"
-                        class="form-control"
-                        formControlName="OrderNo"
-                        accSwiftFormValidator
-                      />
+                <form [formGroup]="salesInvoiceForm" novalidate>
+                  <div class="row mt-3">
+                    <div class="col-lg-4 col-sm-6">
+                      <div class="form-group">
+                        <label>Order No.</label>
+                        <input
+                          type="number"
+                          class="form-control"
+                          formControlName="OrderNo"
+                          accSwiftFormValidator
+                        />
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                      <accSwift-voucher-forms
+                        *ngIf="!salesInvoiceForm.get('VoucherNo').value"
+                        formControlName="VoucherNo"
+                        [series]="salesInvoiceForm.get('SeriesID').value"
+                      ></accSwift-voucher-forms>
+                      <accSwift-voucher-forms
+                        *ngIf="salesInvoiceForm.get('VoucherNo').value"
+                        formControlName="VoucherNo"
+                        [series]="null"
+                      ></accSwift-voucher-forms>
+                    </div>
+                    <div class="col-lg-4 col-sm-6">
+                      <div class="form-group">
+                        <label>Date </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="Date"
+                          bsDatepicker
+                        /><i class="far fa-calendar-alt date-picker"></i>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-lg-6 col-sm-6">
-                    <accSwift-voucher-forms
-                      *ngIf="!salesInvoiceForm.get('VoucherNo').value"
-                      formControlName="VoucherNo"
-                      [series]="salesInvoiceForm.get('SeriesID').value"
-                    ></accSwift-voucher-forms>
-                    <accSwift-voucher-forms
-                      *ngIf="salesInvoiceForm.get('VoucherNo').value"
-                      formControlName="VoucherNo"
-                      [series]="null"
-                    ></accSwift-voucher-forms>
-                  </div>
-                  <div class="col-lg-6 col-sm-6">
-                    <div class="form-group">
-                      <label>Date </label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        formControlName="Date"
-                        bsDatepicker
-                      />
-                    </div>
-                  </div>
-                </div>
+                </form>
               </div>
             </div>
           </div>
-        </section>
-        <section class="invoice-add-details">
-          <div class="col-md-12">
-            <accSwift-details-entry-grid
-              [entryArray]="salesInvoiceForm.controls.InvoiceDetails"
-              [voucherType]="'SALES'"
-            ></accSwift-details-entry-grid>
-          </div>
-          <div class="col-md-12">
-            <table
-              class="table"
-              style="float: right; width: 36%; text-align: right"
-            >
-              <tbody>
-                <tr>
-                  <td>Gross(Rs)</td>
-                  <td>
-                    <span
-                      [innerHTML]="totalGrossAmount | currencyFormat "
-                    ></span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Tax</td>
-                  <td>
-                    <span [innerHTML]="totalTaxAmount | currencyFormat "></span>
-                  </td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td class="total_amount">Total</td>
-                  <td class="total_amount">
-                    <span
-                      [innerHTML]=" grandTotalAmount | currencyFormat "
-                    ></span>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </section>
-        <hr class="bdr-light lg hline" />
-        <section class="invoice-memo">
-          <div class="notes">Notes/Terms</div>
-          <textarea
-            name="memo"
-            placeholder="Enter notes or terms of service that are visible to  your customer"
-          ></textarea>
-        </section>
-      </section>
-      <section class="invoice-add-footer">
-        <div class="invoice-add-info">
-          <button class="add-title" (click)="toggle()" id="bt">
-            <h4>Footer</h4>
-            <span
-              [ngClass]="show ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
-            ></span>
-          </button>
-          <ng-container *ngIf="show">
+          <section class="invoice-add-details">
+            <div class="col-md-12">
+              <accSwift-details-entry-grid
+                [entryArray]="salesInvoiceForm.controls.InvoiceDetails"
+                [voucherType]="'SALES'"
+              ></accSwift-details-entry-grid>
+            </div>
+            <div class="col-md-12">
+              <table
+                class="table"
+                style="float: right; width: 36%; text-align: right"
+              >
+                <tbody>
+                  <tr>
+                    <td>Gross(Rs)</td>
+                    <td>
+                      <span
+                        [innerHTML]="totalGrossAmount | currencyFormat "
+                      ></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Tax</td>
+                    <td>
+                      <span
+                        [innerHTML]="totalTaxAmount | currencyFormat "
+                      ></span>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td class="total_amount">Total</td>
+                    <td class="total_amount">
+                      <span
+                        [innerHTML]=" grandTotalAmount | currencyFormat "
+                      ></span>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div class="col-md-12">
+              <button
+                *ngIf="salesDetails && !salesDetails.IsPay"
+                (click)="openTender(tenderModal)"
+                class="btn-primary pull-right"
+              >
+                Tender Amount
+              </button>
+            </div>
+          </section>
+          <hr class="bdr-light lg hline" />
+          <section class="invoice-memo">
+            <div class="notes">Notes/Terms</div>
             <textarea
               name="memo"
-              placeholder="Enter a footer for this invoice (ex:tax-information, thankyou note)"
+              formControlName="Remarks"
+              type="text"
+              class="form-control"
+              placeholder="Enter notes or terms of service that are visible to  your customer"
             ></textarea>
-          </ng-container>
-        </div>
+          </section>
+        </section>
+        <section class="invoice-add-footer">
+          <div class="invoice-add-info">
+            <button class="add-title" (click)="toggle()" id="bt">
+              <h4>Footer</h4>
+              <span
+                [ngClass]="show ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
+              ></span>
+            </button>
+            <ng-container *ngIf="show">
+              <textarea
+                class=""
+                name="footer"
+                placeholder="Enter a footer for this invoice (ex:tax-information, thankyou note)"
+              ></textarea>
+            </ng-container>
+          </div>
+        </section>
       </section>
+
       <section class="foot-save-btn top-buttons new-invoice-top-bar">
         <button
           class="create-invoice-btn"

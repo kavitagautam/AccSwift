@@ -15,6 +15,8 @@ import { BankAccountsModel } from "@accSwift-modules/accswift-shared/models/bank
 import { CashAccountsModel } from "@accSwift-modules/accswift-shared/models/cash-account.model";
 import { SalesAccountModel } from "@accSwift-modules/accswift-shared/models/sales-account.model";
 import { AccountClassModel } from "@accSwift-modules/accswift-shared/models/account-class.model";
+import { DepotModel } from "@accSwift-modules/depot/models/depot.model";
+import { ProjectRootModel } from "@accSwift-modules/accswift-shared/models/project.model";
 
 @Injectable({
   providedIn: "root",
@@ -29,6 +31,14 @@ export class PreferenceService {
     private http: HttpClient
   ) {
     this.getPerference();
+  }
+
+  getDepotDD(): Observable<DepotModel> {
+    return this.httpService.get(`${this._api_URL}Depot`);
+  }
+
+  getProjectDD(): Observable<ProjectRootModel> {
+    return this.httpService.get(`${this._api_URL}project`);
   }
 
   getCashReceiptAccounts(): Observable<CashAccountsModel> {
@@ -72,9 +82,7 @@ export class PreferenceService {
         if (data.DEFAULT_DECIMALPLACES.Value) {
           data.DECIMAL_PLACES_FORMAT = "n" + data.DEFAULT_DECIMALPLACES.Value;
         }
-        console.log("data" + JSON.stringify(data));
         this.preferences = data;
-        console.log("this.preferences" + JSON.stringify(this.preferences));
       });
   }
   getPreferenceData(): Observable<PreferenceModel> {

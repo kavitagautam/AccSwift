@@ -89,6 +89,7 @@
             <li class="footer"><a href="#">View all</a></li>
           </ul>
         </li>
+
         <!-- Tasks Menu -->
         <li class="dropdown tasks-menu" *ngIf="false">
           <!-- Menu Toggle Button -->
@@ -139,17 +140,16 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <!-- The user image in the navbar-->
             <img
-              *ngIf="!userInfo?.staff_photo"
               src="{{ defaultImagePath }}/user2-160x160.jpg"
               class="user-image"
               alt="User Image"
             />
-            <img
-              *ngIf="userInfo?.staff_photo"
-              src="{{ imageUrl }}{{ userInfo?.staff_photo }}"
+            <!-- <img
+              *ngIf="userInfo"
+              src="{{ imageUrl }}{{ userInfo }}"
               class="user-image"
               alt="User Image"
-            />
+            /> -->
             <!-- hidden-xs hides the username on small devices so only the image appears. -->
             <span class="hidden-xs">{{ userName }}</span>
           </a>
@@ -157,28 +157,27 @@
             <!-- The user image in the menu -->
             <li class="user-header">
               <img
-                *ngIf="!userInfo?.staff_photo"
                 src="{{ defaultImagePath }}/user2-160x160.jpg"
                 class="img-circle"
                 alt="User Image"
               />
-              <img
+              <!-- <img
                 *ngIf="userInfo?.staff_photo"
                 src="{{ imageUrl }}{{ userInfo?.staff_photo }}"
                 class="img-circle"
                 alt="User Image"
-              />
-              <p>
-                {{ userName }}
-              </p>
-              <p>
-                {{ userInfo?.email_address }}
-              </p>
+              /> -->
+
+              <p>{{ users?.Name }}</p>
+
+              <p>{{ users?.Email }}</p>
             </li>
             <!-- Menu Footer-->
             <li class="user-footer">
               <div class="pull-left">
-                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                <a (click)="userProfile()" class="btn btn-default btn-flat"
+                  >Profile</a
+                >
               </div>
               <div class="pull-right">
                 <a

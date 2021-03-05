@@ -13,9 +13,11 @@ import {
 import { SharedModule } from "@app/shared/shared.module";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 import { UserListComponent } from "./components/user-list/user-list.component";
+import { UserprofileComponent } from './components/userprofile/userprofile.component';
+
 
 @NgModule({
-  declarations: [UserListComponent],
+  declarations: [UserListComponent, UserprofileComponent],
   imports: [
     CommonModule,
     FormsModule,

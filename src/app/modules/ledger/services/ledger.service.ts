@@ -6,6 +6,8 @@ import {
   CodeSuggestModel,
   LedgerDetailsModel,
   LedgerListViewModel,
+  LedgerMin,
+  LedgerMinModel,
 } from "../models/ledger.models";
 import { Observable } from "rxjs";
 import {
@@ -25,6 +27,7 @@ export class LedgerService {
   _api_URL = environment.baseAPI;
   ledgerGroupLists: LedgerGroup[] = [];
   accountClass: AccountClass[] = [];
+  ledgerMinLists: LedgerMin[] = [];
   constructor(
     private http: HttpClient,
     private httpService: HttpClientService
@@ -63,7 +66,7 @@ export class LedgerService {
 
   deleteLedgerGroupByID(ledgerGroupId): Observable<any> {
     return this.httpService.delete(
-      `${this._api_URL}LegderGroup/${ledgerGroupId}`
+      `${this._api_URL}LedgerGroup/${ledgerGroupId}`
     );
   }
 
@@ -102,5 +105,15 @@ export class LedgerService {
       null,
       params
     );
+  }
+
+  getLedgerDropDown(): void {
+    this.httpService.get(`${this._api_URL}Ledger/min`).subscribe((response) => {
+      this.ledgerMinLists = response.Entity;
+    });
+  }
+
+  getLedgerMin(): Observable<LedgerMinModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/min`);
   }
 }

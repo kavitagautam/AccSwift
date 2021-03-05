@@ -7,11 +7,14 @@ import { Component, OnInit } from "@angular/core";
 import { SalesOrder } from "../../models/sales-order.model";
 import { ToastrService } from "ngx-toastr";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { takeUntil, debounceTime } from "rxjs/operators";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "accSwift-edit-sales-order",
   templateUrl: "../common-html/sales-order.html",
+  styleUrls: ["../common-html/sales-order.component.scss"]
 })
 export class EditSalesOrderComponent implements OnInit {
   salesOrderForm: FormGroup;
@@ -22,6 +25,10 @@ export class EditSalesOrderComponent implements OnInit {
   salesOrderDetail: SalesOrder;
 
   modalRef: BsModalRef;
+  totalAmount: number = 0;
+  totalQty: number = 0;
+  grandTotalAmount: number = 0;
+  private destroyed$ = new Subject<void>();
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -42,6 +49,15 @@ export class EditSalesOrderComponent implements OnInit {
   ngOnInit(): void {
     this.buildSalesOrderForm();
     this.getIdFromRoute();
+    this.salesOrderForm.valueChanges.subscribe((changes) => {
+      this.orderValueChange(changes);
+    });
+    
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   buildSalesOrderForm(): void {
@@ -61,6 +77,8 @@ export class EditSalesOrderComponent implements OnInit {
       ],
       Date: [this.salesOrderDetail ? new Date(this.salesOrderDetail.Date) : ""],
       Remarks: [this.salesOrderDetail ? this.salesOrderDetail.Remarks : ""],
+      TotalQty: [this.salesOrderDetail ? this.salesOrderDetail.TotalQty : 0],
+      TotalAmount: [this.salesOrderDetail ? this.salesOrderDetail.TotalAmount : 0],
       OrderDetails: this._fb.array([this.addSalesOrderEntryList()]),
     });
   }
@@ -74,10 +92,28 @@ export class EditSalesOrderComponent implements OnInit {
       ProductName: [""],
       Quantity: [1],
       SalesRate: [""],
-      Amount: [""],
+      Amount: [0],
       UpdatedQuantity: [0],
       PenndingQuantity: [0],
     });
+  }
+
+  assignFormsValue(): void {
+    this.salesOrderForm.get("ID").setValue(this.salesOrderDetail.ID);
+    this.salesOrderForm.get("SeriesID").setValue(this.salesOrderDetail.SeriesID);
+    this.salesOrderForm
+      .get("CashPartyLedgerID")
+      .setValue(this.salesOrderDetail.CashPartyLedgerID);
+    this.salesOrderForm
+      .get("ProjectID")
+      .setValue(this.salesOrderDetail.ProjectID);
+    this.salesOrderForm
+      .get("Date")
+      .setValue(new Date(this.salesOrderDetail.CreatedDate));
+    this.salesOrderForm.get("TotalQty").setValue(this.salesOrderDetail.TotalQty);
+    this.salesOrderForm.get("TotalAmount").setValue(this.salesOrderDetail.TotalAmount);
+    this.salesOrderForm.get("OrderNo").setValue(this.salesOrderDetail.OrderNo);
+    this.salesOrderForm.get("Remarks").setValue(this.salesOrderDetail.Remarks);
   }
 
   // Get id from route
@@ -89,8 +125,14 @@ export class EditSalesOrderComponent implements OnInit {
           .getSalesOrderDetails(param)
           .subscribe((response) => {
             this.salesOrderDetail = response.Entity;
-            this.buildSalesOrderForm();
+            if (this.salesOrderDetail) {
+              this.totalQty = this.salesOrderDetail.TotalQty;
+              this.grandTotalAmount = this.salesOrderDetail.TotalAmount;
+            }
+            // this.buildSalesOrderForm();
+            this.assignFormsValue();
             this.setOrderList();
+            // this.salesOrderForm.patchValue(this.salesOrderDetail);
           });
       }
     });
@@ -98,6 +140,28 @@ export class EditSalesOrderComponent implements OnInit {
 
   get getSalesOrderEntryList(): FormArray {
     return <FormArray>this.salesOrderForm.get("OrderDetails");
+  }
+
+  private orderValueChange(value): void {
+    this.salesOrderForm.controls["OrderDetails"].valueChanges
+      .pipe(takeUntil(this.destroyed$), debounceTime(20))
+      .subscribe((invoices) => {
+        let sumQty = 0;
+        let sumAmount = 0;
+
+        for (let i = 0; i < invoices.length; i++) {
+          if (invoices && invoices[i].Quantity) {
+            sumQty = sumQty + invoices[i].Quantity;
+          }
+          if (invoices && invoices[i].Amount) {
+            sumAmount = sumAmount + invoices[i].Amount;
+          }
+        }
+
+        this.totalQty = sumQty;
+        this.totalAmount = sumAmount;
+        this.grandTotalAmount = this.totalAmount;
+      });
   }
 
   setOrderList(): void {
@@ -124,6 +188,7 @@ export class EditSalesOrderComponent implements OnInit {
             ProductID: [element.ProductID],
             ProductName: [element.ProductName],
             Quantity: [element.Quantity],
+            QtyUnitID: [element.QtyUnitID],
             SalesRate: [element.SalesRate],
             Amount: [element.Amount],
             UpdatedQuantity: [element.UpdatedQuantity],
@@ -139,7 +204,8 @@ export class EditSalesOrderComponent implements OnInit {
           ProductCode: [""],
           ProductID: [0],
           ProductName: [""],
-          Quantity: [1],
+          Quantity: [0, Validators.required],
+          QtyUnitID: [null, Validators.required],
           SalesRate: [""],
           Amount: [""],
           UpdatedQuantity: [0],
@@ -151,7 +217,9 @@ export class EditSalesOrderComponent implements OnInit {
   }
 
   public save(): void {
-    //if (this.salesOrderForm.invalid) return;
+    this.salesOrderForm.get("TotalQty").setValue(this.totalQty);
+    this.salesOrderForm.get("TotalAmount").setValue(this.grandTotalAmount);
+    if (this.salesOrderForm.invalid) return;
     this.salesOrderService
       .updateSalesOrder(this.salesOrderForm.value)
       .subscribe(

@@ -139,9 +139,8 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Parent Class</label>
+              <label>Account Class</label>
               <select class="form-control" formControlName="AccClassID">
-                <option [ngValue]="null">Choose option..</option>
                 <option
                   *ngFor="let account of userService.accountClass"
                   [ngValue]="account.ID"
@@ -150,6 +149,7 @@
                 </option>
               </select>
             </div>
+
             <fieldset>
               <legend>User Info</legend>
               <div class="form-group">
@@ -173,11 +173,12 @@
                 />
               </div>
               <div class="form-group">
-                <label>Verify Password</label>
+                <label>Retype Password</label>
                 <input
                   class="form-control"
                   formControlName="VerifyPassword"
-                  type="verifypassword"
+                  type="password"
+                  name="verifypassword"
                   accSwiftFormValidator
                 />
               </div>

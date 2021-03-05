@@ -14,7 +14,7 @@ import { IconConst } from "@app/shared/constants/icon.constant";
 import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { SelectEvent } from "@progress/kendo-angular-upload";
-import { FileRestrictions } from '@progress/kendo-angular-upload';
+import { FileRestrictions } from "@progress/kendo-angular-upload";
 
 @Component({
   selector: "accSwift-edit-sales-invoice",
@@ -25,9 +25,9 @@ import { FileRestrictions } from '@progress/kendo-angular-upload';
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   public show: boolean = true;
   public myRestrictions: FileRestrictions = {
-    maxFileSize: 5242880 
-};
-  
+    maxFileSize: 5242880,
+  };
+
   userType: string = localStorage.getItem("user_type");
   salesInvoiceForm: FormGroup;
   salesDetails: SalesInvoiceDetails;
@@ -85,7 +85,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   toggle() {
     this.show = !this.show;
   }
- 
+
   public selectEventHandler(e: SelectEvent): void {
     const that = this;
     e.files.forEach((file) => {
@@ -134,6 +134,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       OrderNo: [this.salesDetails ? this.salesDetails.OrderNo : ""],
       TotalAmount: [this.salesDetails ? this.salesDetails.TotalAmount : 0],
       TotalQty: [this.salesDetails ? this.salesDetails.TotalQty : 0],
+      Status: [this.salesDetails ? this.salesDetails.Status : ""],
       GrossAmount: [
         this.salesDetails ? this.salesDetails.GrossAmount : 0,
         Validators.required,
@@ -225,17 +226,17 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   buildTenderForm(): void {
     this.tenderForm = this._fb.group({
       tenderAmount: [{ value: this.grandTotalAmount, disabled: true }],
-      adjustAmount: [""],
+      adjustAmount: [0],
       payableAmount: [
         {
-          value: "",
+          value: this.grandTotalAmount,
           disabled: true,
         },
       ],
-      paidAmount: [""],
+      paidAmount: [this.grandTotalAmount],
       returnAmount: [
         {
-          value: "",
+          value: 0,
           disabled: true,
         },
       ],
@@ -386,6 +387,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
 
   payInvoice(): void {
     this.salesInvoiceForm.get("IsPay").setValue(true);
+    this.salesInvoiceForm.get("Status").setValue("PAID"); // Paid stutus
     this.salesInvoiceService
       .addSalesInvoice(this.salesInvoiceForm.value)
       .subscribe(
@@ -432,6 +434,34 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
     this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
     this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
+    this.salesInvoiceForm
+      .get("SpecialDiscount")
+      .setValue(this.totalDiscountAmount);
+
+    //  if (this.salesInvoiceForm.invalid) return;
+    this.salesInvoiceService
+      .updateSalesInvoice(this.salesInvoiceForm.value)
+      .subscribe(
+        (response) => {
+          this.router.navigate(["/sales-invoice"]);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Invoice edited successfully");
+        }
+      );
+  }
+
+  publishInvoice(): void {
+    this.salesInvoiceForm.get("TotalQty").setValue(this.totalQty);
+    this.salesInvoiceForm.get("TotalTCAmount").setValue(this.totalTaxAmount);
+
+    this.salesInvoiceForm.get("TotalAmount").setValue(this.grandTotalAmount);
+    this.salesInvoiceForm.get("GrossAmount").setValue(this.totalGrossAmount);
+    this.salesInvoiceForm.get("NetAmount").setValue(this.totalNetAmount);
+    this.salesInvoiceForm.get("Status").setValue("UNPAID"); // publish button will change draft invoices to unpaid
     this.salesInvoiceForm
       .get("SpecialDiscount")
       .setValue(this.totalDiscountAmount);

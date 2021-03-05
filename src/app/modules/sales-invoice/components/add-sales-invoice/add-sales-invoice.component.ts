@@ -153,6 +153,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
       OrderNo: [""],
       TotalAmount: [0, Validators.required],
       TotalQty: [0, Validators.required],
+      Status: ["DRAFT"], // When Sales invoice Added it will be draft
       GrossAmount: [0, Validators.required],
       NetAmount: [0, Validators.required],
       SpecialDiscount: [0, Validators.required],
@@ -188,19 +189,17 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   buildTenderForm(): void {
     this.tenderForm = this._fb.group({
       tenderAmount: [{ value: this.grandTotalAmount, disabled: true }],
-      adjustAmount: [""],
+      adjustAmount: [0],
       payableAmount: [
         {
-          value: "",
-
+          value: this.grandTotalAmount,
           disabled: true,
         },
       ],
-      paidAmount: [""],
+      paidAmount: [this.grandTotalAmount],
       returnAmount: [
         {
-          value: "",
-
+          value: 0,
           disabled: true,
         },
       ],
