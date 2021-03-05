@@ -31,7 +31,7 @@ export class DashBoardService {
   generalSummaryList: GeneralSummary[] = [];
   salesMonthly: SalesMonthly[] = [];
   purchaseMonthly: PurchaseMonthly[] = [];
-  checkingAccounts: CheckingAccounts[] = [];
+  checkingAccounts: CheckingAccounts;
   _api_URL = environment.baseAPI;
 
   constructor(

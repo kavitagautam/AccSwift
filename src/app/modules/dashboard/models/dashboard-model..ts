@@ -91,14 +91,14 @@ export interface PurchaseMonthlyRootModel {
 }
 
 export interface CheckingAccounts {
-    Months: string[];
-    Balances: number[][];
+    Months: [];
+    Balances: [];
 }
 
 export interface CheckingAccountsRootModel {
     StatusCode: number;
     Message: string;
-    Entity: CheckingAccounts[];
+    Entity: CheckingAccounts;
 }
 
 

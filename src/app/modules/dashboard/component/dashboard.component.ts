@@ -105,7 +105,8 @@ export class DashboardComponent implements OnInit {
   generalSummaryList: GeneralSummary[] = [];
   salesMonthly: SalesMonthly[] = [];
   purchaseMonthly: PurchaseMonthly[] = [];
-  checkingAccounts: CheckingAccounts[] = [];
+  checkingAccounts: CheckingAccounts;
+  
 
   ngOnInit() {
     // setTimeout(() => {
