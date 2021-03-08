@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { ForgetPasswordService } from "../services/forget-password.service";
-import { ForgetPassword, ForgetPasswordRootModel } from "../model/forget-password.model";
-import { first } from "rxjs/operators";
+import { ForgetPassword, ForgetPasswordRootModel, ResetPassword, ResetPasswordRootModel } from "../model/forget-password.model";
+import { first, subscribeOn } from "rxjs/operators";
 import { ToastrService } from "ngx-toastr";
 import { CookieService } from "ngx-cookie-service";
 import {
@@ -20,8 +20,10 @@ import { ValidationMessageService } from "@accSwift-modules/accswift-shared/serv
 })
 export class ForgetPasswordComponent implements OnInit {
   forgetPwForm: FormGroup;
+  resetPwForm: FormGroup;
   submitted: boolean;
   forgetPassword: ForgetPassword;
+  resetPassword: ResetPassword;
 
   constructor(  private router: Router,
     private route: ActivatedRoute,
@@ -33,11 +35,20 @@ export class ForgetPasswordComponent implements OnInit {
 
   ngOnInit() {
     this.buildForgetPwForm();
+    this.buildResetPwForm();
   }
 
-  buildForgetPwForm():void {
+  buildForgetPwForm(): void {
     this.forgetPwForm = this._fb.group({
       email: ["", Validators.required]
+    });
+  }
+
+  buildResetPwForm(): void {
+    this.resetPwForm = this._fb.group({
+      Token: ["", Validators.required],
+      Password: ["", Validators.required],
+      VerifyPassword: ["", Validators.required]
     });
   }
 
@@ -45,8 +56,7 @@ export class ForgetPasswordComponent implements OnInit {
     this.submitted = true;
     this.validationMessageService.formSubmitted = true;
     if (this.forgetPwForm.invalid) return;
-    
-    this.forgetPasswordService.onSubmitForgetPassword(this.forgetPwForm.value).subscribe((response: ForgetPasswordRootModel) => {
+    this.forgetPasswordService.onSubmitForgetPassword(this.forgetPwForm.value.email).subscribe((response: ForgetPasswordRootModel) => {
       this.forgetPassword = response.Entity;
     },
     (error) => {
@@ -56,6 +66,23 @@ export class ForgetPasswordComponent implements OnInit {
       this.toastr.success("Token generated successfully");
     }
     );
+  }
+
+  onSubmitReset(): void {
+    this.submitted = true;
+    this.validationMessageService.formSubmitted = true;
+    if (this.resetPwForm.invalid) return;
+    this.forgetPasswordService.onSubmitResetPassword(this.resetPwForm.value.Token, this.resetPwForm.value.Password, this.resetPwForm.value.VerifyPassword).subscribe((response: ResetPasswordRootModel) => {
+      this.resetPassword = response.Entity;
+      this.router.navigate(["/login"]);
+    },
+    (error) => {
+      this.toastr.error(JSON.stringify(error.error.Message));
+    },
+    () => {
+      this.toastr.success("Password Reset successfully");
+    }
+    );  
   }
 
 }

@@ -7,3 +7,15 @@ export interface ForgetPasswordRootModel {
     Message: string;
     Entity: ForgetPassword;
 }
+
+export interface ResetPassword {
+    Token: string;
+    Password: string;
+    VerifyPassword: string;
+}
+
+export interface ResetPasswordRootModel {
+    StatusCode: number;
+    Message: string;
+    Entity: ResetPassword;
+}
