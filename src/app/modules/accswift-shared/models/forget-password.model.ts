@@ -7,7 +7,6 @@ export interface ForgetPasswordRootModel {
     Message: string;
     Entity: ForgetPassword;
 }
-
 export interface ResetPassword {
     Token: string;
     Password: string;

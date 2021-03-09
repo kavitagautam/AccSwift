@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { environment } from "@env/environment.prod";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
-import { ForgetPassword, ForgetPasswordRootModel, ResetPassword, ResetPasswordRootModel } from "../model/forget-password.model";
+import { ForgetPassword, ForgetPasswordRootModel, ResetPassword, ResetPasswordRootModel } from "../../models/forget-password.model";
 import { CookieService } from "ngx-cookie-service";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";

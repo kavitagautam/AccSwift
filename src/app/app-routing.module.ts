@@ -13,10 +13,7 @@ const routes: Routes = [
     loadChildren:
       "@accSwift-modules/auth/register/register.module#RegisterModule",
   },
-  {
-    path: "forgetpw",
-    loadChildren: "@accSwift-modules/auth/forget-password/forget-password.module#ForgetPasswordModule",
-  },
+
   {
     path: "pos",
     loadChildren: "@accSwift-modules/pos/pos.module#PosModule",
