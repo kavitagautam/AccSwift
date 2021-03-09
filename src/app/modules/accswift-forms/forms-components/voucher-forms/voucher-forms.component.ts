@@ -5,7 +5,11 @@ import {
   OnDestroy,
   Input,
   OnChanges,
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewChecked,
   AfterViewInit,
+  DoCheck,
 } from "@angular/core";
 import {
   NG_VALUE_ACCESSOR,
@@ -26,6 +30,7 @@ import { FormsService } from "../../services/forms.service";
       style="
     top: 32px;
     padding:0 10px;
+    right:5%;
     display: inline-block;
     position: absolute;
   "
@@ -46,7 +51,16 @@ import { FormsService } from "../../services/forms.service";
   ],
 })
 export class VoucherFormsComponent
-  implements ControlValueAccessor, OnDestroy, OnChanges, AfterViewInit {
+  implements
+    ControlValueAccessor,
+    OnDestroy,
+    OnChanges,
+    DoCheck,
+    AfterContentInit,
+    AfterContentChecked,
+    AfterViewInit,
+    AfterViewChecked,
+    OnDestroy {
   subscriptions: Subscription[] = [];
   VoucherNo = new FormControl("");
   voucherNoType: string = "";
@@ -63,21 +77,54 @@ export class VoucherFormsComponent
       })
     );
 
-    formService.seriesSelect$.subscribe((value) => {
-      this.seriesID = value;
-      if (value > 0) {
-        //  console.log("series Value" + value);
-        this.seriesValueChange(value);
-      }
-    });
+    // formService.seriesSelect$.subscribe((value) => {
+    //   this.seriesID = value;
+    //   if (value > 0) {
+    //     //  console.log("series Value" + value);
+    //     this.seriesValueChange(value);
+    //   }
+    // });
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
+  ngDoCheck() {
+    // console.log("Series Value" + this.seriesID);
+    // console.log("Voucher No" + this.VoucherNo.value);
+    // console.log("AppComponent: DoCheck");
+    // if (this.seriesID && !this.VoucherNo.value) {
+    //   this.seriesValueChange(this.seriesID);
+    // }
+    // this.formService.seriesSelect$.subscribe((value) => {
+    //   this.seriesID = value;
+    //   if (value > 0) {
+    //     this.seriesValueChange(value);
+    //   }
+    // });
+  }
+
+  ngAfterContentInit() {
+    //console.log("AppComponent: AfterContentInit");
+  }
+
+  ngAfterContentChecked() {
+    // console.log("Series Value" + this.seriesID);
+    // console.log("Voucher No" + this.VoucherNo.value);
+    // console.log("AppComponent:AfterContentChecked");
+  }
+
   ngAfterViewInit() {
-    //   console.log("View has been inited ");
+    // console.log("Series Value" + this.seriesID);
+    // console.log("Voucher No" + this.VoucherNo.value);
+    // console.log("AppComponent:AfterViewInit");
+  }
+
+  ngAfterViewChecked() {
+    // console.log("Series Value" + this.seriesID);
+    // console.log("Voucher No" + this.VoucherNo.value);
+    // console.log("AppComponent:AfterViewChecked");
   }
 
   get value(): string {
@@ -91,10 +138,20 @@ export class VoucherFormsComponent
   }
 
   ngOnChanges(changes): void {
-    // console.log(" on Changes ");
-    if (this.seriesID) {
-      this.seriesValueChange(this.seriesID);
-    }
+    console.log(" on Changes ");
+
+    // this.formService.seriesSelect$.subscribe((value) => {
+    //   this.seriesID = value;
+    //   if (value > 0) {
+    //     this.seriesValueChange(value);
+    //   }
+    // });
+    // if (this.seriesID) {
+    //   this.seriesValueChange(this.seriesID);
+    // }
+    // if (this.seriesID && !this.VoucherNo.value) {
+    //   this.seriesValueChange(this.seriesID);
+    // }
     // this.formService.seriesSelect$.subscribe((value) => {
     //   this.seriesID = value;
     //   if (value > 0) {
