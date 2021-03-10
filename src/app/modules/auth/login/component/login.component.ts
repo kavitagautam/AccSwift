@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthenticationService } from "../services/authentication.service";
+import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { first } from "rxjs/operators";
 import { ToastrService } from "ngx-toastr";
 import { CookieService } from "ngx-cookie-service";
@@ -11,8 +12,7 @@ import {
   AbstractControl,
 } from "@angular/forms";
 import { ValidationMessageService } from "@accSwift-modules/accswift-shared/services/validation-message/validation-message.service";
-import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
-import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
+import { ForgetPasswordComponent } from '@accSwift-modules/accswift-shared/components/forget-password/forget-password.component';
 
 @Component({
   selector: "accSwift-login",
@@ -23,12 +23,21 @@ export class LoginComponent implements OnInit, OnDestroy {
   returnUrl: string;
   loginForm: FormGroup;
   submitted: boolean;
+  modalRef: BsModalRef;
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+    centered: true,
+    class: "modal-sm",
+  };
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private _fb: FormBuilder,
     private authenticationService: AuthenticationService,
     private validationMessageService: ValidationMessageService,
+    private modalService: BsModalService,
     private toastr: ToastrService,
     private cookieService: CookieService // private settingsService: SettingsService, // private preferenceService: PreferenceService
   ) {}
@@ -122,6 +131,15 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.toastr.success("Login Successful!");
         }
       );
+  }
+
+
+  forgetPassword(): void {
+    this.modalRef = this.modalService.show(
+      ForgetPasswordComponent,
+      this.config
+    );
+    this.modalRef.content.action = "Select";
   }
 
   alert(event)

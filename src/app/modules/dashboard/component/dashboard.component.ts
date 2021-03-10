@@ -94,7 +94,6 @@ export class DashboardComponent implements OnInit {
 
   public gridView: any[] = this.voucher;
   public grdView: any[] = this.invoice;
-
   constructor(private dashBoardService: DashBoardService) {}
 
   accountTransactionList: AccountTransact[] = [];

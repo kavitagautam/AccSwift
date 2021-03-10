@@ -50,6 +50,9 @@ export interface CashPartyGroupModel {
 }
 
 export interface PurchaseList {
+  Date: Date;
+  VoucherNumber: string;
+  VocherType: string;
   NetPurchaseQty: number;
   PurchaseQty: number;
   Code: string;

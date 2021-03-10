@@ -110,7 +110,7 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
 
     this.modalRef.content.onSubmit.subscribe((data) => {
       if (data) {
-              this.reportService.getSalesReports(JSON.stringify(data)).subscribe(
+          this.reportService.getSalesReports(JSON.stringify(data)).subscribe(
           (response) => {
             this.salesReportList = response.Entity.Entity;
             this.totalAmount = response.Entity.TotalAmount;

@@ -16,7 +16,7 @@
         salesReportForms.get('ProductID').value === null
       "
     >
-      Sales Product-Wise Report
+      Sales Report
     </h3>
 
     <h3
@@ -25,12 +25,11 @@
         selectType === 'product' && salesReportForms.get('ProductID').value
       "
     >
-      Sales Product-Wise Transaction Report
+      Sales Transaction Report
     </h3>
 
-    <h3 style="text-align: center" *ngIf="selectType === 'party'">
-      Sales Party-Wise Report
-    </h3>
+    <!-- <h3 *ngIf="IsProductWise; else partyReport">Sales Product Report</h3>
+    <ng-template #partyReport>Sales Party Report</ng-template> -->
 
     <div class="col-md-12">
       <div class="grid-wrapper">
