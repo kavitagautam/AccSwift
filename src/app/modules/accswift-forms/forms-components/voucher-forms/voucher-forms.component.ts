@@ -5,7 +5,7 @@ import {
   OnDestroy,
   Input,
   OnChanges,
-  AfterViewInit,
+  SimpleChange,
 } from "@angular/core";
 import {
   NG_VALUE_ACCESSOR,
@@ -13,6 +13,7 @@ import {
   ControlValueAccessor,
   FormControl,
 } from "@angular/forms";
+import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { FormsService } from "../../services/forms.service";
 
@@ -26,6 +27,7 @@ import { FormsService } from "../../services/forms.service";
       style="
     top: 32px;
     padding:0 10px;
+    right:5%;
     display: inline-block;
     position: absolute;
   "
@@ -46,38 +48,26 @@ import { FormsService } from "../../services/forms.service";
   ],
 })
 export class VoucherFormsComponent
-  implements ControlValueAccessor, OnDestroy, OnChanges, AfterViewInit {
+  implements ControlValueAccessor, OnDestroy, OnChanges, OnDestroy {
   subscriptions: Subscription[] = [];
   VoucherNo = new FormControl("");
   voucherNoType: string = "";
 
+  voucherAutoCount: number = 0; // Counter to count the numbers of changes in the component
+
   @Input("series") seriesID;
 
-  constructor(private formService: FormsService) {
-    // console.log("Constuctor");
+  constructor(private formService: FormsService, private router: Router) {
     this.subscriptions.push(
       this.VoucherNo.valueChanges.subscribe((value: string) => {
         this.onChange(value);
-        // console.log("subscription");
         this.onTouched();
       })
     );
-
-    formService.seriesSelect$.subscribe((value) => {
-      this.seriesID = value;
-      if (value > 0) {
-        //  console.log("series Value" + value);
-        this.seriesValueChange(value);
-      }
-    });
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((s) => s.unsubscribe());
-  }
-
-  ngAfterViewInit() {
-    //   console.log("View has been inited ");
   }
 
   get value(): string {
@@ -90,17 +80,38 @@ export class VoucherFormsComponent
     this.onTouched();
   }
 
-  ngOnChanges(changes): void {
-    // console.log(" on Changes ");
-    if (this.seriesID) {
-      this.seriesValueChange(this.seriesID);
+  ngOnChanges(changes: { [propKey: string]: SimpleChange }): void {
+    if (!this.router.url.includes("edit")) {
+      // For  Route  include Edit routing
+      for (let p in changes) {
+        let c = changes[p];
+        this.seriesID = c.currentValue;
+        if (!c.firstChange) {
+          // Check If the Change is not first
+          this.seriesValueChange(c.currentValue);
+        } else {
+          this.seriesValueChange(c.currentValue);
+        }
+      }
+    } else {
+      // Else block is used for Route Include Add  routing
+      for (let p in changes) {
+        let c = changes[p];
+        this.seriesID = c.currentValue;
+        if (c.firstChange) {
+          // Check If the Change  first
+          if (c.currentValue) {
+            this.seriesValueChange(c.currentValue);
+          }
+        } else {
+          this.voucherAutoCount++; // Increment the counter if changes appers
+          if (c.currentValue && this.voucherAutoCount > 1) {
+            // If Changes current Value  has value and voucher count is greater than 1
+            this.seriesValueChange(c.currentValue);
+          }
+        }
+      }
     }
-    // this.formService.seriesSelect$.subscribe((value) => {
-    //   this.seriesID = value;
-    //   if (value > 0) {
-    //     this.seriesValueChange(value);
-    //   }
-    // });
   }
 
   seriesValueChange(value): void {
