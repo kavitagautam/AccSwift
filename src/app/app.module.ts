@@ -107,6 +107,7 @@ export function localFunction(settingsService: SettingsService) {
     CookieService,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}

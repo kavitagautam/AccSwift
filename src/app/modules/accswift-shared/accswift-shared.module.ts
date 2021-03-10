@@ -36,6 +36,7 @@ import { LedgerDetailReportsComponent } from "./components/ledger-detail-reports
 import { EntrySubLedgerComponent } from "./components/entry-sub-ledger/entry-sub-ledger.component";
 import { OpeningBalanceComponent } from "./components/opening-balance/opening-balance.component";
 import { BasicAddEditUserComponent } from './components/basic-add-edit-user/basic-add-edit-user.component';
+import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { BasicAddEditUserComponent } from './components/basic-add-edit-user/basi
     CustomerInvoicesComponent,
     CreateReportsComponent,
     AddressComponent,
+    ForgetPasswordComponent,
     SettingsReportsComponent,
     GroupBalanceReportComponent,
     LedgerDetailReportsComponent,
@@ -94,7 +96,8 @@ import { BasicAddEditUserComponent } from './components/basic-add-edit-user/basi
     SettingsReportsComponent,
     GroupBalanceReportComponent,
     LedgerDetailReportsComponent,
-    OpeningBalanceComponent
+    OpeningBalanceComponent,
+    ForgetPasswordComponent
   ],
   providers: [ValidationMsgService],
   entryComponents: [

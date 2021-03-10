@@ -16,7 +16,7 @@
         purchaseReportForms.get('ProductID').value === null
       "
     >
-      Purchase Product-Wise Report
+      Purchase Report
     </h3>
     <h3
       style="text-align: center"
@@ -24,10 +24,7 @@
         selectType === 'product' && purchaseReportForms.get('ProductID').value
       "
     >
-      Purchase Product-Wise Transaction Report
-    </h3>
-    <h3 style="text-align: center" *ngIf="selectType === 'party'">
-      Purchase Party-Wise Report
+      Purchase Transaction Report
     </h3>
 
     <div class="col-md-12">
@@ -36,8 +33,40 @@
           <table id="header-fixed" class="table table-hover table-fixed">
             <thead>
               <tr>
-                <th colspan="1">Product Details</th>
-                <th colspan="1">Unit</th>
+                <th
+                  *ngIf="
+                    purchaseReportForms.get('ProductID').value ||
+                    purchaseReportForms.get('PartyID').value
+                  "
+                  colspan="1"
+                >
+                  Date
+                </th>
+                <th
+                  *ngIf="
+                    purchaseReportForms.get('ProductID').value ||
+                    purchaseReportForms.get('PartyID').value
+                  "
+                  colspan="1"
+                >
+                  Voucher No.
+                </th>
+                <th
+                  *ngIf="
+                    purchaseReportForms.get('ProductID').value ||
+                    purchaseReportForms.get('PartyID').value
+                  "
+                  colspan="1"
+                >
+                  VoucherType
+                </th>
+                <th colspan="1">Particulars</th>
+                <th
+                  *ngIf="purchaseReportForms.get('ProductID').value === null"
+                  colspan="1"
+                >
+                  Unit
+                </th>
                 <th colspan="1">Rate</th>
                 <th colspan="1">Purchase Qty</th>
                 <th colspan="1">Return Qty</th>
@@ -47,8 +76,35 @@
             </thead>
             <tbody>
               <tr *ngFor="let l of purchaseReportList; index as i">
+                <td
+                  *ngIf="
+                    salesReportForms.get('ProductID').value ||
+                    salesReportForms.get('PartyID').value
+                  "
+                >
+                  {{ l.Date | date: "MM-dd-yyyy" }}
+                </td>
+                <td
+                  *ngIf="
+                    salesReportForms.get('ProductID').value ||
+                    salesReportForms.get('PartyID').value
+                  "
+                >
+                  {{ l.VoucherNumber }}
+                </td>
+                <td
+                  *ngIf="
+                    salesReportForms.get('ProductID').value ||
+                    salesReportForms.get('PartyID').value
+                  "
+                >
+                  {{ l.VocherType }}
+                </td>
                 <td>{{ l.Name }}</td>
-                <td>{{ l.Unit }}</td>
+                <td  *ngIf="
+                salesReportForms.get('ProductID').value === null ||
+                salesReportForms.get('PartyID').value === null
+              ">{{ l.Unit }}</td>
                 <td class="balance">
                   <span [innerHTML]="l.Rate | currencyFormat"></span>
                 </td>
