@@ -71,7 +71,6 @@ export class ForgetPasswordComponent implements OnInit {
     },
     () => {
       this.toastr.success("Token generated successfully");
-      this.forgetPwForm.reset();
     }
     ); 
   }
@@ -89,6 +88,7 @@ export class ForgetPasswordComponent implements OnInit {
     },
     () => {
       this.toastr.success("Password Reset successfully");
+      this.close();
     }
     );  
   }
