@@ -13,6 +13,7 @@ const routes: Routes = [
     loadChildren:
       "@accSwift-modules/auth/register/register.module#RegisterModule",
   },
+
   {
     path: "pos",
     loadChildren: "@accSwift-modules/pos/pos.module#PosModule",

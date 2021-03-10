@@ -16,14 +16,8 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <accSwift-voucher-forms
-            *ngIf="!cashPaymentForm.get('VoucherNo').value"
             formControlName="VoucherNo"
             [series]="cashPaymentForm.get('SeriesID').value"
-          ></accSwift-voucher-forms>
-          <accSwift-voucher-forms
-            *ngIf="cashPaymentForm.get('VoucherNo').value"
-            formControlName="VoucherNo"
-            [series]="null"
           ></accSwift-voucher-forms>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
