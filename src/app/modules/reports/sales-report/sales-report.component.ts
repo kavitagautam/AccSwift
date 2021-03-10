@@ -131,6 +131,36 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
     });
   }
 
+  openProductDetails(e, data): void {
+    const obj = {
+      ProductID: data.ID,
+      SalesLedgerID: this.salesReportForms.get("SalesLedgerID").value,
+      ProjectID: this.salesReportForms.get("ProjectID").value,
+      DepotID: this.salesReportForms.get("DepotID").value,
+      AccClassID: this.salesReportForms.get("AccClassID").value,
+      IsProductWise: this.salesReportForms.get("IsProductWise").value,
+      VoucherType: this.salesReportForms.get("VoucherType").value,
+      IsDateRange: this.salesReportForms.get("IsDateRange").value,
+      SalesReportType: this.salesReportForms.get("SalesReportType").value,
+    };
+    this.reportService.getSalesReports(obj).subscribe(
+      (response) => {
+        this.salesReportList = response.Entity.Entity;
+        this.totalAmount = response.Entity.TotalAmount;
+        this.totalDiscountAmount = response.Entity.TotalDiscountAmount;
+      },
+      (error) => {
+        this.listLoading = false;
+        this.modalRef.hide();
+      },
+      () => {
+        this.listLoading = false;
+        this.modalRef.hide();
+      }
+    );
+  }
+
+
 
   showReport(): void {
     this.listLoading = true;

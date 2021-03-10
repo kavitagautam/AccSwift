@@ -28,9 +28,6 @@
       Sales Transaction Report
     </h3>
 
-    <!-- <h3 *ngIf="IsProductWise; else partyReport">Sales Product Report</h3>
-    <ng-template #partyReport>Sales Party Report</ng-template> -->
-
     <div class="col-md-12">
       <div class="grid-wrapper">
         <div class="table-box">
@@ -78,8 +75,8 @@
                 <th colspan="1">Amount</th>
               </tr>
             </thead>
-            <tbody>
-              <tr *ngFor="let l of salesReportList; index as i">
+            <tbody *ngFor="let l of salesReportList; index as i">
+              <tr (dblclick)="openProductDetails($event, l)">
                 <td
                   *ngIf="
                     salesReportForms.get('ProductID').value ||
@@ -104,7 +101,7 @@
                 >
                   {{ l.VocherType }}
                 </td>
-                <td>{{ l.Name }}</td>
+                <td style="color: blue">{{ l.Name }}</td>
                 <td
                   *ngIf="
                     salesReportForms.get('ProductID').value === null ||
