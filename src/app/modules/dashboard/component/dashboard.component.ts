@@ -13,8 +13,7 @@ import {
   PurchaseMonthly,
   PurchaseMonthlyRootModel,
   CheckingAccounts,
-  CheckingAccountsRootModel
-  
+  CheckingAccountsRootModel,
 } from "@accSwift-modules/dashboard/models/dashboard-model.";
 import { DashBoardService } from "../services/dashboard.service";
 
@@ -24,7 +23,6 @@ import { DashBoardService } from "../services/dashboard.service";
   styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
-  
   getBgColor(Title) {
     switch (Title) {
       case "Sales":
@@ -109,10 +107,6 @@ export class DashboardComponent implements OnInit {
   
 
   ngOnInit() {
-    // setTimeout(() => {
-    //   console.log("reload");
-    //   location.reload();
-    // }, 10);
     this.dashBoardService
       .getAccountTransact()
       .subscribe((response: AccountTransactRootModel) => {
@@ -136,21 +130,23 @@ export class DashboardComponent implements OnInit {
       .subscribe((response: GeneralSummaryRootModel) => {
         this.generalSummaryList = response.Entity;
       });
-      
-    this.dashBoardService
-    .getSalesMonthly()
-    .subscribe((response: SalesMonthlyRootModel) => {
-      this.salesMonthly = response.Entity;
-    });
 
     this.dashBoardService
-    .getPurchaseMonthly()
-    .subscribe((response: PurchaseMonthlyRootModel) => {
-      this.purchaseMonthly = response.Entity;
-    });
+      .getSalesMonthly()
+      .subscribe((response: SalesMonthlyRootModel) => {
+        this.salesMonthly = response.Entity;
+      });
 
-    this.dashBoardService.getCheckingAccounts().subscribe((response: CheckingAccountsRootModel) => {
-      this.checkingAccounts = response.Entity;
-    });
+    this.dashBoardService
+      .getPurchaseMonthly()
+      .subscribe((response: PurchaseMonthlyRootModel) => {
+        this.purchaseMonthly = response.Entity;
+      });
+
+    this.dashBoardService
+      .getCheckingAccounts()
+      .subscribe((response: CheckingAccountsRootModel) => {
+        this.checkingAccounts = response.Entity;
+      });
   }
 }

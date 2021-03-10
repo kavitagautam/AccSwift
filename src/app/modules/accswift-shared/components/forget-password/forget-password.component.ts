@@ -23,8 +23,6 @@ export class ForgetPasswordComponent implements OnInit {
   resetPwForm: FormGroup;
   forgetSubmitted: boolean;
   resetSubmitted: boolean;
-  forgetPassword: ForgetPassword;
-  resetPassword: ResetPassword;
 
   constructor(  private router: Router,
     private route: ActivatedRoute,
@@ -61,10 +59,10 @@ export class ForgetPasswordComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.forgetSubmitted = true;
     if (this.forgetPwForm.invalid) return;
+    
     this.forgetPasswordService.onSubmitForgetPassword(this.forgetPwForm.value.email).subscribe((response: ForgetPasswordRootModel) => {
-      this.forgetPassword = response.Entity;
+      this.forgetSubmitted = true;
     },
     (error) => {
       this.toastr.error(JSON.stringify(error.error.Message));
@@ -77,10 +75,10 @@ export class ForgetPasswordComponent implements OnInit {
   
 
   onSubmitReset(): void {
-    this.resetSubmitted = true;
     if (this.resetPwForm.invalid) return;
+
     this.forgetPasswordService.onSubmitResetPassword(this.resetPwForm.value.Token, this.resetPwForm.value.Password, this.resetPwForm.value.VerifyPassword).subscribe((response: ResetPasswordRootModel) => {
-      this.resetPassword = response.Entity;
+      this.resetSubmitted = true;
       this.router.navigate(["/login"]);
     },
     (error) => {

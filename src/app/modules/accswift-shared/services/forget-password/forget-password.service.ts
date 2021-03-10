@@ -10,10 +10,9 @@ import { Observable } from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
+
 export class ForgetPasswordService {
   _api_URL = environment.baseAPI;
-  forgetPassword: ForgetPassword;
-  resetPassword: ResetPassword;
 
   constructor(
     private http: HttpClient,
