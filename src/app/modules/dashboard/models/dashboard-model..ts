@@ -82,8 +82,8 @@ export interface PurchaseMonthlyRootModel {
 }
 
 export interface CheckingAccounts {
-  Months: string[];
-  Balances: number[][];
+  Months: [];
+  Balances: [];
 }
 
 export interface CheckingAccountsRootModel {
