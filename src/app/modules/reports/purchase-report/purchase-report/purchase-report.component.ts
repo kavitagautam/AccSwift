@@ -32,6 +32,8 @@ export class PurchaseReportComponent implements OnInit {
   totalAmount: number;
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
+
+  modalRefDetails: BsModalRef;
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -121,6 +123,35 @@ export class PurchaseReportComponent implements OnInit {
     this.modalRef.content.onClose.subscribe((data) => {
       this.showReport();
     });
+  }
+
+  productDetails: PurchaseList[]=[]
+  
+  openProductDetails(template: TemplateRef<any>, data): void {
+    const obj = {
+      ProductID: data.ID,
+      PartyID: data.ID,
+      PurchaseLedgerID: this.purchaseReportForms.get("PurchaseLedgerID").value,
+      ProjectID: this.purchaseReportForms.get("ProjectID").value,
+      DepotID: this.purchaseReportForms.get("DepotID").value,
+      AccClassID: this.purchaseReportForms.get("AccClassID").value,
+      IsProductWise: this.purchaseReportForms.get("IsProductWise").value,
+      VoucherType: this.purchaseReportForms.get("VoucherType").value,
+      IsDateRange: this.purchaseReportForms.get("IsDateRange").value,
+      SalesReportType: this.purchaseReportForms.get("SalesReportType").value,
+    };
+    this.reportService.getPurchaseReports(obj).subscribe(
+      (response) => {
+        this.productDetails = response.Entity.Entity;
+      }
+    );
+    const config = {
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-lg",
+    }
+    this.modalRefDetails = this.modalService.show(template, config);
   }
 
   showReport(): void {

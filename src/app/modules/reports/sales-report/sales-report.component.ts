@@ -41,12 +41,15 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   projectName: string;
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
+  
+  modalRefDetails: BsModalRef;
+
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
     centered: true,
-    class: "modal-md",
+    class: "modal-lg",
   };
   constructor(
     private _fb: FormBuilder,
@@ -131,9 +134,13 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openProductDetails(e, data): void {
+
+  productDetails: SalesReportList[]=[]
+  
+  openProductDetails(template: TemplateRef<any>, data): void {
     const obj = {
       ProductID: data.ID,
+      PartyID: data.ID,
       SalesLedgerID: this.salesReportForms.get("SalesLedgerID").value,
       ProjectID: this.salesReportForms.get("ProjectID").value,
       DepotID: this.salesReportForms.get("DepotID").value,
@@ -145,22 +152,17 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
     };
     this.reportService.getSalesReports(obj).subscribe(
       (response) => {
-        this.salesReportList = response.Entity.Entity;
-        this.totalAmount = response.Entity.TotalAmount;
-        this.totalDiscountAmount = response.Entity.TotalDiscountAmount;
-      },
-      (error) => {
-        this.listLoading = false;
-        this.modalRef.hide();
-      },
-      () => {
-        this.listLoading = false;
-        this.modalRef.hide();
+        this.productDetails = response.Entity.Entity;
       }
     );
+    const config = {
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-lg",
+    }
+    this.modalRefDetails = this.modalService.show(template, config);
   }
-
-
 
   showReport(): void {
     this.listLoading = true;
