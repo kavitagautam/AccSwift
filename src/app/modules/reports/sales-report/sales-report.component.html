@@ -208,7 +208,7 @@
                   </tr>
                 </thead>
                 <tbody *ngFor="let l of productDetails; index as i">
-                  <tr>
+                  <tr (dblclick)="openSalesDetailsDetails($event, l)">
                     <td>{{ i + 1 }}</td>
                     <td
                       *ngIf="

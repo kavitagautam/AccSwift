@@ -75,38 +75,38 @@
                 <th colspan="1">Amount</th>
               </tr>
             </thead>
-            <tbody *ngFor="let l of productDetails; index as i">
-              <tr>
+            <tbody *ngFor="let l of purchaseReportList; index as i">
+              <tr (dblclick)="openProductDetails(purchaseDetails, l)">
                 <td>{{ i + 1 }}</td>
                 <td
                   *ngIf="
-                    salesReportForms.get('ProductID').value ||
-                    salesReportForms.get('PartyID').value
+                    purchaseReportForms.get('ProductID').value ||
+                    purchaseReportForms.get('PartyID').value
                   "
                 >
                   {{ l.Date | date: "MM-dd-yyyy" }}
                 </td>
                 <td
                   *ngIf="
-                    salesReportForms.get('ProductID').value ||
-                    salesReportForms.get('PartyID').value
+                    purchaseReportForms.get('ProductID').value ||
+                    purchaseReportForms.get('PartyID').value
                   "
                 >
                   {{ l.VoucherNumber }}
                 </td>
                 <td
                   *ngIf="
-                    salesReportForms.get('ProductID').value ||
-                    salesReportForms.get('PartyID').value
+                    purchaseReportForms.get('ProductID').value ||
+                    purchaseReportForms.get('PartyID').value
                   "
                 >
                   {{ l.VocherType }}
                 </td>
-                <td>{{ l.Name }}</td>
+                <td style="color: blue">{{ l.Name }}</td>
                 <td
                   *ngIf="
-                    salesReportForms.get('ProductID').value === null ||
-                    salesReportForms.get('PartyID').value === null
+                    purchaseReportForms.get('ProductID').value === null ||
+                    purchaseReportForms.get('PartyID').value === null
                   "
                 >
                   {{ l.Unit }}
@@ -209,37 +209,37 @@
               </tr>
             </thead>
             <tbody *ngFor="let l of productDetails; index as i">
-              <tr (dblclick)="openProductDetails(purchaseDetails, l)">
+              <tr (dblclick)="openPurchaseDetailsDetails($event, l)">
                 <td>{{ i + 1 }}</td>
                 <td
                   *ngIf="
-                    salesReportForms.get('ProductID').value ||
-                    salesReportForms.get('PartyID').value
+                    purchaseReportForms.get('ProductID').value ||
+                    purchaseReportForms.get('PartyID').value
                   "
                 >
                   {{ l.Date | date: "MM-dd-yyyy" }}
                 </td>
                 <td
                   *ngIf="
-                    salesReportForms.get('ProductID').value ||
-                    salesReportForms.get('PartyID').value
+                    purchaseReportForms.get('ProductID').value ||
+                    purchaseReportForms.get('PartyID').value
                   "
                 >
                   {{ l.VoucherNumber }}
                 </td>
                 <td
                   *ngIf="
-                    salesReportForms.get('ProductID').value ||
-                    salesReportForms.get('PartyID').value
+                    purchaseReportForms.get('ProductID').value ||
+                    purchaseReportForms.get('PartyID').value
                   "
                 >
                   {{ l.VocherType }}
                 </td>
-                <td>{{ l.Name }}</td>
+                <td style="color: blue">{{ l.Name }}</td>
                 <td
                   *ngIf="
-                    salesReportForms.get('ProductID').value === null ||
-                    salesReportForms.get('PartyID').value === null
+                    purchaseReportForms.get('ProductID').value === null ||
+                    purchaseReportForms.get('PartyID').value === null
                   "
                 >
                   {{ l.Unit }}
