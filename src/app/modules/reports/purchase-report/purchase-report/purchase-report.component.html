@@ -9,6 +9,7 @@
         Purchase Report Settings
       </button>
     </div>
+
     <h3
       style="text-align: center"
       *ngIf="
@@ -16,15 +17,33 @@
         purchaseReportForms.get('ProductID').value === null
       "
     >
-      Purchase Report
+      Purchase Product Report
     </h3>
+
+    <h3
+      style="text-align: center"
+      *ngIf="
+        selectType === 'party' &&
+        purchaseReportForms.get('PartyID').value === null
+      "
+    >
+      Purchase Party Report
+    </h3>
+
     <h3
       style="text-align: center"
       *ngIf="
         selectType === 'product' && purchaseReportForms.get('ProductID').value
       "
     >
-      Purchase Transaction Report
+      Purchase Product Transaction Report
+    </h3>
+
+    <h3
+      style="text-align: center"
+      *ngIf="selectType === 'party' && purchaseReportForms.get('PartyID').value"
+    >
+      Purchase Party Transaction Report
     </h3>
 
     <div class="col-md-12">
@@ -76,7 +95,7 @@
               </tr>
             </thead>
             <tbody *ngFor="let l of purchaseReportList; index as i">
-              <tr (dblclick)="openProductDetails(purchaseDetails, l)">
+              <tr (click)="openProductDetails(purchaseDetails, l)">
                 <td>{{ i + 1 }}</td>
                 <td
                   *ngIf="
@@ -209,7 +228,7 @@
               </tr>
             </thead>
             <tbody *ngFor="let l of productDetails; index as i">
-              <tr (dblclick)="openPurchaseDetailsDetails($event, l)">
+              <tr (click)="openPurchaseDetailsDetails($event, l)">
                 <td>{{ i + 1 }}</td>
                 <td
                   *ngIf="

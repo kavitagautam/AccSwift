@@ -55,7 +55,6 @@ export class PurchaseReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildpurchaseReportForms();
-    this.selectType = "product";
     this.baseURL =
       this.location["_platformStrategy"]._platformLocation["location"].origin +
       "/#/";
@@ -83,7 +82,7 @@ export class PurchaseReportComponent implements OnInit {
           : null,
       ],
       AccClassID: [null],
-      IsProductWise: [true],
+      IsProductWise: [false],
       VocherType: [null],
       ProductGroupID: [{ value: null, disabled: true }],
       ProductID: [{ value: null, disabled: true }],
@@ -111,7 +110,15 @@ export class PurchaseReportComponent implements OnInit {
 
     this.modalRef.content.onSubmit.subscribe((data) => {
       if (data) {
-        this.listLoading = true;
+        if(data.IsProductWise == "true")
+        {
+          this.selectType = "product";
+        }
+        else 
+        {
+          this.selectType = "party";
+        }
+
         this.reportService.getPurchaseReports(JSON.stringify(data)).subscribe(
           (response) => {
             this.purchaseReportList = response.Entity.Entity;
@@ -136,18 +143,36 @@ export class PurchaseReportComponent implements OnInit {
   productDetails: PurchaseList[]=[]
   
   openProductDetails(template: TemplateRef<any>, data): void {
-    const obj = {
-      ProductID: data.ID,
-      PartyID: data.ID,
-      PurchaseLedgerID: this.purchaseReportForms.get("PurchaseLedgerID").value,
-      ProjectID: this.purchaseReportForms.get("ProjectID").value,
-      DepotID: this.purchaseReportForms.get("DepotID").value,
-      AccClassID: this.purchaseReportForms.get("AccClassID").value,
-      IsProductWise: this.purchaseReportForms.get("IsProductWise").value,
-      VocherType: this.purchaseReportForms.get("VocherType").value,
-      IsDateRange: this.purchaseReportForms.get("IsDateRange").value,
-      SalesReportType: this.purchaseReportForms.get("SalesReportType").value,
-    };
+    
+    let obj;
+    if (this.selectType === "product")
+    {
+      obj = {
+        ProductID: data.ID,
+        PurchaseLedgerID: this.purchaseReportForms.get("PurchaseLedgerID").value,
+        ProjectID: this.purchaseReportForms.get("ProjectID").value,
+        DepotID: this.purchaseReportForms.get("DepotID").value,
+        AccClassID: this.purchaseReportForms.get("AccClassID").value,
+        IsProductWise: this.purchaseReportForms.get("IsProductWise").value,
+        VocherType: this.purchaseReportForms.get("VocherType").value,
+        IsDateRange: this.purchaseReportForms.get("IsDateRange").value,
+        SalesReportType: this.purchaseReportForms.get("SalesReportType").value,
+      };
+    }
+    else 
+    {
+      obj = {
+        PartyID: data.ID,
+        PurchaseLedgerID: this.purchaseReportForms.get("PurchaseLedgerID").value,
+        ProjectID: this.purchaseReportForms.get("ProjectID").value,
+        DepotID: this.purchaseReportForms.get("DepotID").value,
+        AccClassID: this.purchaseReportForms.get("AccClassID").value,
+        IsProductWise: this.purchaseReportForms.get("IsProductWise").value,
+        VocherType: this.purchaseReportForms.get("VocherType").value,
+        IsDateRange: this.purchaseReportForms.get("IsDateRange").value,
+        SalesReportType: this.purchaseReportForms.get("SalesReportType").value,
+      };
+    }
     this.reportService.getPurchaseReports(obj).subscribe(
       (response) => {
         this.productDetails = response.Entity.Entity;

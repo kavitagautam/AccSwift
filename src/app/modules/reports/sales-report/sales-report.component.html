@@ -9,6 +9,7 @@
         Sales Report Settings
       </button>
     </div>
+
     <h3
       style="text-align: center"
       *ngIf="
@@ -16,7 +17,16 @@
         salesReportForms.get('ProductID').value === null
       "
     >
-      Sales Report
+      Sales Product Report
+    </h3>
+
+    <h3
+      style="text-align: center"
+      *ngIf="
+        selectType == 'party' && salesReportForms.get('PartyID').value === null
+      "
+    >
+      Sales Party Report
     </h3>
 
     <h3
@@ -25,7 +35,14 @@
         selectType === 'product' && salesReportForms.get('ProductID').value
       "
     >
-      Sales Transaction Report
+      Sales Product Transaction Report
+    </h3>
+
+    <h3
+      style="text-align: center"
+      *ngIf="selectType === 'party' && salesReportForms.get('PartyID').value"
+    >
+      Sales Party Transaction Report
     </h3>
 
     <div class="col-md-12">
@@ -77,7 +94,7 @@
               </tr>
             </thead>
             <tbody *ngFor="let l of salesReportList; index as i">
-              <tr (dblclick)="openProductDetails(salesDetails, l)">
+              <tr (click)="openProductPartyDetails(salesDetails, l)">
                 <td>{{ i + 1 }}</td>
                 <td
                   *ngIf="
@@ -208,7 +225,7 @@
                   </tr>
                 </thead>
                 <tbody *ngFor="let l of productDetails; index as i">
-                  <tr (dblclick)="openSalesDetailsDetails($event, l)">
+                  <tr (click)="openSalesDetailsDetails($event, l)">
                     <td>{{ i + 1 }}</td>
                     <td
                       *ngIf="
