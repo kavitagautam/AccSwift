@@ -64,6 +64,7 @@ import {
   PurchaseAccount,
   PurchaseAccountModel,
 } from "@accSwift-modules/preference/models/preference.model";
+import { CashFlowRootModel } from '../models/cash-flow.model';
 
 @Injectable({
   providedIn: "root",
@@ -235,6 +236,13 @@ export class ReportsService {
   stockStatusReports(body): Observable<StockStatusReportsModel> {
     return this.httpService.post(
       `${this._api_URL}InventoryReports/StockStatus`,
+      body
+    );
+  }
+
+  getCashFlowReports(body): Observable<CashFlowRootModel> {
+    return this.httpService.post(
+      `${this._api_URL}Reports/CashFlow`,
       body
     );
   }

@@ -1,0 +1,52 @@
+<div class="box box-default">
+  <div class="row">
+    <div class="col-md-12">
+      <button
+        type="button"
+        class="btn-primary m-3"
+        (click)="openCashFlowReportSettings()"
+      >
+        Cash Flow Report Settings
+      </button>
+    </div>
+
+    <div class="col-md-12">
+      <div class="grid-wrapper">
+        <div class="table-box">
+          <table id="header-fixed" class="table table-hover table-fixed">
+            <thead>
+              <tr>
+                <th>S.N.</th>
+                <th colspan="1">Account Name</th>
+                <th colspan="1">Amount Inflow</th>
+                <th colspan="1">Amount Outflow</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let r of accountDetails; index as i">
+              <tr>
+                <td>{{ i + 1 }}</td>
+
+                <td>
+                  {{ r.AccountName }}
+                </td>
+                <td>
+                  {{ r.InFlowAmount }}
+                </td>
+                <td>
+                  {{ r.OutFlowAmount }}
+                </td>
+              </tr>
+              <tr *ngIf="accountDetails.length == 0">
+                <td colspan="10" align="center">No Data Available</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr></tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="listLoading" class="k-i-loading"></div>
+    </div>
+  </div>
+</div>

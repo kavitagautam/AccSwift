@@ -175,6 +175,14 @@ const routes: Routes = [
         },
       },
       {
+        path: "cash-flow-report",
+        loadChildren:
+          "@accSwift-modules/reports/cash-flow-report/cash-flow-report.module#CashFlowReportModule",
+        data: {
+          breadcrumb: "Cash Flow Report",
+        },
+      },
+      {
         path: "day-book",
         loadChildren:
           "@accSwift-modules/reports/day-book/day-book.module#DayBookModule",

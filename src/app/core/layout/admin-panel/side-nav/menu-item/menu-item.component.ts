@@ -8,6 +8,7 @@ declare var $: any;
 })
 export class MenuItemComponent implements OnInit {
   @Input() navItems;
+  
   expanded: boolean;
 
   constructor(private router: Router) {}
