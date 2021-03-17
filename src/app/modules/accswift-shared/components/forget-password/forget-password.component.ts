@@ -61,13 +61,13 @@ export class ForgetPasswordComponent implements OnInit {
     
     if (this.forgetPwForm.invalid) return;
     this.forgetPasswordService.onSubmitForgetPassword(this.forgetPwForm.value.email).subscribe((response: ForgetPasswordRootModel) => {
-      this.forgetSubmitted = true;
+      this.toastr.success("Token generated successfully");
     },
     (error) => {
       this.toastr.error(JSON.stringify(error.error.Message));
     },
     () => {
-      this.toastr.success("Token generated successfully");
+      this.forgetSubmitted = true;
     }
     ); 
   }

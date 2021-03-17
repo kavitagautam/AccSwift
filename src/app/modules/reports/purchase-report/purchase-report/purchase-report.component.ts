@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { Router } from "@angular/router";
+import { Location } from "@angular/common";
 import { ReportsService } from "../../services/reports.service";
 import { PurchaseList } from "../../models/sales.report.model";
 import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
@@ -30,8 +32,11 @@ export class PurchaseReportComponent implements OnInit {
   totalNetAmount: number;
   totalDiscountAmount: number;
   totalAmount: number;
+  baseURL: string;
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
+
+  modalRefDetails: BsModalRef;
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -41,6 +46,8 @@ export class PurchaseReportComponent implements OnInit {
   };
   constructor(
     private _fb: FormBuilder,
+    private router: Router,
+    private location: Location,
     public reportService: ReportsService,
     private modalService: BsModalService,
     private preferenceService: PreferenceService
@@ -48,7 +55,9 @@ export class PurchaseReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildpurchaseReportForms();
-    this.selectType = "product";
+    this.baseURL =
+      this.location["_platformStrategy"]._platformLocation["location"].origin +
+      "/#/";
   }
 
   ngAfterViewInit(): void {
@@ -73,8 +82,8 @@ export class PurchaseReportComponent implements OnInit {
           : null,
       ],
       AccClassID: [null],
-      IsProductWise: [true],
-      VoucherType: [null],
+      IsProductWise: [false],
+      VocherType: [null],
       ProductGroupID: [{ value: null, disabled: true }],
       ProductID: [{ value: null, disabled: true }],
       PartyID: [{ value: null, disabled: true }],
@@ -101,7 +110,15 @@ export class PurchaseReportComponent implements OnInit {
 
     this.modalRef.content.onSubmit.subscribe((data) => {
       if (data) {
-        this.listLoading = true;
+        if(data.IsProductWise == "true")
+        {
+          this.selectType = "product";
+        }
+        else 
+        {
+          this.selectType = "party";
+        }
+
         this.reportService.getPurchaseReports(JSON.stringify(data)).subscribe(
           (response) => {
             this.purchaseReportList = response.Entity.Entity;
@@ -121,6 +138,62 @@ export class PurchaseReportComponent implements OnInit {
     this.modalRef.content.onClose.subscribe((data) => {
       this.showReport();
     });
+  }
+
+  productDetails: PurchaseList[]=[]
+  
+  openProductDetails(template: TemplateRef<any>, data): void {
+    
+    let obj;
+    if (this.selectType === "product")
+    {
+      obj = {
+        ProductID: data.ID,
+        PurchaseLedgerID: this.purchaseReportForms.get("PurchaseLedgerID").value,
+        ProjectID: this.purchaseReportForms.get("ProjectID").value,
+        DepotID: this.purchaseReportForms.get("DepotID").value,
+        AccClassID: this.purchaseReportForms.get("AccClassID").value,
+        IsProductWise: this.purchaseReportForms.get("IsProductWise").value,
+        VocherType: this.purchaseReportForms.get("VocherType").value,
+        IsDateRange: this.purchaseReportForms.get("IsDateRange").value,
+        SalesReportType: this.purchaseReportForms.get("SalesReportType").value,
+      };
+    }
+    else 
+    {
+      obj = {
+        PartyID: data.ID,
+        PurchaseLedgerID: this.purchaseReportForms.get("PurchaseLedgerID").value,
+        ProjectID: this.purchaseReportForms.get("ProjectID").value,
+        DepotID: this.purchaseReportForms.get("DepotID").value,
+        AccClassID: this.purchaseReportForms.get("AccClassID").value,
+        IsProductWise: this.purchaseReportForms.get("IsProductWise").value,
+        VocherType: this.purchaseReportForms.get("VocherType").value,
+        IsDateRange: this.purchaseReportForms.get("IsDateRange").value,
+        SalesReportType: this.purchaseReportForms.get("SalesReportType").value,
+      };
+    }
+    this.reportService.getPurchaseReports(obj).subscribe(
+      (response) => {
+        this.productDetails = response.Entity.Entity;
+      }
+    );
+    const config = {
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-lg",
+    }
+    this.modalRefDetails = this.modalService.show(template, config);
+  }
+
+  openPurchaseDetailsDetails(event, data): void {
+    if (data.VocherType === "PURCH") {
+      window.open(this.baseURL + "purchase-invoice/edit/" + data.RowID, "_blank");
+    }
+    if (data.VocherType === "PURCH_RTN") {
+      window.open(this.baseURL + "purchase-return/edit/" + data.RowID, "_blank");
+    }
   }
 
   showReport(): void {
