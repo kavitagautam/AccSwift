@@ -6,6 +6,8 @@ import {
   AfterViewInit,
 } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
+import { Router } from "@angular/router";
+import { Location } from "@angular/common";
 import { ReportsService } from "../services/reports.service";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { SalesReportList, CashPartyGroup } from "../models/sales.report.model";
@@ -39,16 +41,22 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   totalNetAmount: number;
   totalDiscountAmount: number;
   projectName: string;
+  baseURL: string;
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
+  
+  modalRefDetails: BsModalRef;
+
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
     ignoreBackdropClick: true,
     centered: true,
-    class: "modal-md",
+    class: "modal-lg",
   };
   constructor(
+    private router: Router,
+    private location: Location,
     private _fb: FormBuilder,
     public reportService: ReportsService,
     private modalService: BsModalService,
@@ -57,7 +65,9 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.buildSalesReportForms();
-    this.selectType = "product";
+    this.baseURL =
+      this.location["_platformStrategy"]._platformLocation["location"].origin +
+      "/#/";
   }
 
   ngAfterViewInit(): void {
@@ -83,7 +93,7 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
       ],
       AccClassID: [""],
       IsProductWise: [false],
-      VoucherType: [null],
+      VocherType: [null],
       ProductGroupID: [{ value: null, disabled: true }],
       ProductID: [{ value: null, disabled: true }],
       PartyID: [{ value: null, disabled: true }],
@@ -110,6 +120,13 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
 
     this.modalRef.content.onSubmit.subscribe((data) => {
       if (data) {
+        if(data.IsProductWise == "true") {
+          this.selectType="product";
+        }
+        else {
+          this.selectType="party";
+        }
+       
           this.reportService.getSalesReports(JSON.stringify(data)).subscribe(
           (response) => {
             this.salesReportList = response.Entity.Entity;
@@ -131,6 +148,62 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+  productDetails: SalesReportList[]=[]
+  
+  openProductPartyDetails(template: TemplateRef<any>, data): void { 
+
+    let obj;
+    if(this.selectType === 'product')
+    {
+      obj = {
+        ProductID: data.ID,
+        SalesLedgerID: this.salesReportForms.get("SalesLedgerID").value,
+        ProjectID: this.salesReportForms.get("ProjectID").value,
+        DepotID: this.salesReportForms.get("DepotID").value,
+        AccClassID: this.salesReportForms.get("AccClassID").value,
+        IsProductWise: this.salesReportForms.get("IsProductWise").value,
+        VocherType: this.salesReportForms.get("VocherType").value,
+        IsDateRange: this.salesReportForms.get("IsDateRange").value,
+        SalesReportType: this.salesReportForms.get("SalesReportType").value,
+      };
+    }
+    else {
+      obj = {
+        PartyID: data.ID,
+        SalesLedgerID: this.salesReportForms.get("SalesLedgerID").value,
+        ProjectID: this.salesReportForms.get("ProjectID").value,
+        DepotID: this.salesReportForms.get("DepotID").value,
+        AccClassID: this.salesReportForms.get("AccClassID").value,
+        IsProductWise: this.salesReportForms.get("IsProductWise").value,
+        VocherType: this.salesReportForms.get("VocherType").value,
+        IsDateRange: this.salesReportForms.get("IsDateRange").value,
+        SalesReportType: this.salesReportForms.get("SalesReportType").value,
+      };
+    }
+  
+    this.reportService.getSalesReports(obj).subscribe(
+      (response) => {
+        this.productDetails = response.Entity.Entity;
+      }
+    );
+    const config = {
+      ignoreBackdropClick: true,
+      animated: true,
+      keyboard: true,
+      class: "modal-lg",
+    }
+    this.modalRefDetails = this.modalService.show(template, config);
+  }
+
+  openSalesDetailsDetails(event, data): void {
+    if (data.VocherType === "SALES") {
+      window.open(this.baseURL + "sales-invoice/edit/" + data.RowID, "_blank");
+    }
+    if (data.VocherType === "SLS_RTN") {
+      window.open(this.baseURL + "sales-return/edit/" + data.RowID, "_blank");
+    }
+  }
 
   showReport(): void {
     this.listLoading = true;
