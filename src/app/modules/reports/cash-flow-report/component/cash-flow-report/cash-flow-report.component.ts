@@ -17,7 +17,7 @@ import { AccountDetails } from '@accSwift-modules/reports/models/cash-flow.model
 export class CashFlowReportComponent implements OnInit {
 
   cashFlowReportForms: FormGroup;
-  accountDetails: AccountDetails;
+  accountDetails: AccountDetails[] = [];
   modalRef: BsModalRef;
   baseURL: string;
   listLoading: boolean;
@@ -60,6 +60,24 @@ export class CashFlowReportComponent implements OnInit {
       keyboard: true,
       class: "modal-lg",
     });
+
+    this.modalRef.content.onSubmit.subscribe((data) => {
+    if (data) {
+
+    this.reportService.getCashFlowReports(JSON.stringify(data)).subscribe(
+      (response) => {
+        this.accountDetails = response.Entity.Entity;
+      },
+      (error) => {
+        this.listLoading = false;
+      },
+      () => {
+        this.listLoading = false;
+      }
+    );
+  }
+});
+
     this.modalRef.content.onClose.subscribe((data) => {
       this.showCashFlowReport();
     });

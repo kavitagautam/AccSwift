@@ -143,14 +143,22 @@
                 <td colspan="10" align="center">No Data Available</td>
               </tr>
             </tbody>
+
             <tfoot>
               <tr>
                 <td colspan="1"></td>
-                <td colspan="1"></td>
-                <td colspan="1"></td>
-                <td colspan="1">Total Qty</td>
-                <td colspan="1">{{ totalSalesQty }}</td>
-                <td colspan="1" class="balance">Total Amount</td>
+
+                <td colspan="1">Total Sales Quantity:</td>
+                <td colspan="1" class="balance">
+                  <span [innerHTML]="totalSalesQty"></span>
+                </td>
+                <td colspan="1" class="balance">
+                  <span [innerHTML]="totalReturnQty"></span>
+                </td>
+                <td colspan="1" class="balance">
+                  <span [innerHTML]="totalNetSalesQty"></span>
+                </td>
+                <td colspan="1">Total Amount:</td>
                 <td colspan="1" class="balance">
                   <span [innerHTML]="totalAmount | currencyFormat"></span>
                 </td>

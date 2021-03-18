@@ -130,6 +130,7 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
           this.reportService.getSalesReports(JSON.stringify(data)).subscribe(
           (response) => {
             this.salesReportList = response.Entity.Entity;
+            this.totalSalesQty = response.Entity.TotalSalesQty;
             this.totalAmount = response.Entity.TotalAmount;
             this.totalDiscountAmount = response.Entity.TotalDiscountAmount;
           },
@@ -152,49 +153,51 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   productDetails: SalesReportList[]=[]
   
   openProductPartyDetails(template: TemplateRef<any>, data): void { 
-
-    let obj;
-    if(this.selectType === 'product')
-    {
-      obj = {
-        ProductID: data.ID,
-        SalesLedgerID: this.salesReportForms.get("SalesLedgerID").value,
-        ProjectID: this.salesReportForms.get("ProjectID").value,
-        DepotID: this.salesReportForms.get("DepotID").value,
-        AccClassID: this.salesReportForms.get("AccClassID").value,
-        IsProductWise: this.salesReportForms.get("IsProductWise").value,
-        VocherType: this.salesReportForms.get("VocherType").value,
-        IsDateRange: this.salesReportForms.get("IsDateRange").value,
-        SalesReportType: this.salesReportForms.get("SalesReportType").value,
-      };
-    }
-    else {
-      obj = {
-        PartyID: data.ID,
-        SalesLedgerID: this.salesReportForms.get("SalesLedgerID").value,
-        ProjectID: this.salesReportForms.get("ProjectID").value,
-        DepotID: this.salesReportForms.get("DepotID").value,
-        AccClassID: this.salesReportForms.get("AccClassID").value,
-        IsProductWise: this.salesReportForms.get("IsProductWise").value,
-        VocherType: this.salesReportForms.get("VocherType").value,
-        IsDateRange: this.salesReportForms.get("IsDateRange").value,
-        SalesReportType: this.salesReportForms.get("SalesReportType").value,
-      };
-    }
-  
-    this.reportService.getSalesReports(obj).subscribe(
-      (response) => {
-        this.productDetails = response.Entity.Entity;
-      }
-    );
-    const config = {
-      ignoreBackdropClick: true,
-      animated: true,
-      keyboard: true,
-      class: "modal-lg",
-    }
-    this.modalRefDetails = this.modalService.show(template, config);
+    
+  if (this.salesReportForms.get('ProductID').value === null && this.salesReportForms.get('PartyID').value === null){
+  let obj;
+  if(this.selectType === 'product')
+  {
+    obj = {
+      ProductID: data.ID,
+      SalesLedgerID: this.salesReportForms.get("SalesLedgerID").value,
+      ProjectID: this.salesReportForms.get("ProjectID").value,
+      DepotID: this.salesReportForms.get("DepotID").value,
+      AccClassID: this.salesReportForms.get("AccClassID").value,
+      IsProductWise: this.salesReportForms.get("IsProductWise").value,
+      VocherType: this.salesReportForms.get("VocherType").value,
+      IsDateRange: this.salesReportForms.get("IsDateRange").value,
+      SalesReportType: this.salesReportForms.get("SalesReportType").value,
+    };
   }
+  else {
+    obj = {
+      PartyID: data.ID,
+      SalesLedgerID: this.salesReportForms.get("SalesLedgerID").value,
+      ProjectID: this.salesReportForms.get("ProjectID").value,
+      DepotID: this.salesReportForms.get("DepotID").value,
+      AccClassID: this.salesReportForms.get("AccClassID").value,
+      IsProductWise: this.salesReportForms.get("IsProductWise").value,
+      VocherType: this.salesReportForms.get("VocherType").value,
+      IsDateRange: this.salesReportForms.get("IsDateRange").value,
+      SalesReportType: this.salesReportForms.get("SalesReportType").value,
+    };
+  }
+
+  this.reportService.getSalesReports(obj).subscribe(
+    (response) => {
+      this.productDetails = response.Entity.Entity;
+    }
+  );
+  const config = {
+    ignoreBackdropClick: true,
+    animated: true,
+    keyboard: true,
+    class: "modal-lg",
+  }
+  this.modalRefDetails = this.modalService.show(template, config);
+ }
+}
 
   openSalesDetailsDetails(event, data): void {
     if (data.VocherType === "SALES") {
