@@ -187,6 +187,9 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   this.reportService.getSalesReports(obj).subscribe(
     (response) => {
       this.productDetails = response.Entity.Entity;
+      this.totalSalesQty = response.Entity.TotalSalesQty;
+      this.totalAmount = response.Entity.TotalAmount;
+      this.totalDiscountAmount = response.Entity.TotalDiscountAmount;
     }
   );
   const config = {
@@ -213,6 +216,7 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
     this.reportService.getSalesReports(this.salesReportForms.value).subscribe(
       (response) => {
         this.salesReportList = response.Entity.Entity;
+        this.totalSalesQty = response.Entity.TotalSalesQty;
         this.totalAmount = response.Entity.TotalAmount;
         this.totalDiscountAmount = response.Entity.TotalDiscountAmount;
       },

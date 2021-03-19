@@ -18,6 +18,8 @@ export class CashFlowReportComponent implements OnInit {
 
   cashFlowReportForms: FormGroup;
   accountDetails: AccountDetails[] = [];
+  totalInFlowAmount: number;
+  totalOutFlowAmount: number;
   modalRef: BsModalRef;
   baseURL: string;
   listLoading: boolean;
@@ -67,6 +69,8 @@ export class CashFlowReportComponent implements OnInit {
     this.reportService.getCashFlowReports(JSON.stringify(data)).subscribe(
       (response) => {
         this.accountDetails = response.Entity.Entity;
+        this.totalInFlowAmount = response.Entity.TotalInFlowAmount;
+        this.totalOutFlowAmount = response.Entity.TotalOutFlowAmount
       },
       (error) => {
         this.listLoading = false;
