@@ -149,7 +149,9 @@
                     <span [innerHTML]="l.Amount | currencyFormat"></span>
                   </td>
                 </tr>
-                <tr *ngIf="salesReportList.length == 0">
+              </tbody>
+              <tbody *ngIf="salesReportList.length == 0">
+                <tr>
                   <td colspan="10" align="center">No Data Available</td>
                 </tr>
               </tbody>
@@ -175,12 +177,7 @@
                   >
                     {{ l.VoucherNumber }}
                   </td>
-                  <td
-                    *ngIf="
-                      salesReportForms.get('ProductID').value ||
-                      salesReportForms.get('PartyID').value
-                    "
-                  >
+                  <td>
                     {{ l.VocherType }}
                   </td>
                   <td style="color: blue">{{ l.Name }}</td>
@@ -213,7 +210,7 @@
                 <td colspan="1"></td>
                 <td colspan="1"></td>
                 <td colspan="1"></td>
-                <td colspan="1"></td>
+
                 <td class="balance">Total Sales Quantity:</td>
                 <td class="balance">
                   <span [innerHTML]="totalSalesQty"></span>
@@ -280,15 +277,7 @@
                     >
                       Voucher No.
                     </th>
-                    <th
-                      *ngIf="
-                        salesReportForms.get('ProductID').value ||
-                        salesReportForms.get('PartyID').value
-                      "
-                      colspan="1"
-                    >
-                      VoucherType
-                    </th>
+                    <th colspan="1">VoucherType</th>
                     <th colspan="1">Particulars</th>
                     <th colspan="1">Rate</th>
                     <th colspan="1">Sales Qty</th>
@@ -316,12 +305,7 @@
                     >
                       {{ l.VoucherNumber }}
                     </td>
-                    <td
-                      *ngIf="
-                        salesReportForms.get('ProductID').value ||
-                        salesReportForms.get('PartyID').value
-                      "
-                    >
+                    <td>
                       {{ l.VocherType }}
                     </td>
                     <td style="color: blue">{{ l.Name }}</td>

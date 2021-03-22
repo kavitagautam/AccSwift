@@ -35,7 +35,9 @@
                   <span [innerHTML]="r.OutFlowAmount | currencyFormat"></span>
                 </td>
               </tr>
-              <tr *ngIf="accountDetails.length == 0">
+            </tbody>
+            <tbody *ngIf="accountDetails.length == 0">
+              <tr>
                 <td colspan="10" align="center">No Data Available</td>
               </tr>
             </tbody>

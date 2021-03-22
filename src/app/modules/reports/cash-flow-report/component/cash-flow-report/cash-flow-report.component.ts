@@ -42,6 +42,8 @@ export class CashFlowReportComponent implements OnInit {
 
   buildCashFlowReportForms(): void {
     this.cashFlowReportForms = this._fb.group({
+      Type: [""],
+      ID: [null],
       IsGroupWise: [false],
       IsShowLedger: [false],
       IsDetails: [false],
@@ -70,7 +72,7 @@ export class CashFlowReportComponent implements OnInit {
       (response) => {
         this.accountDetails = response.Entity.Entity;
         this.totalInFlowAmount = response.Entity.TotalInFlowAmount;
-        this.totalOutFlowAmount = response.Entity.TotalOutFlowAmount
+        this.totalOutFlowAmount = response.Entity.TotalOutFlowAmount;
       },
       (error) => {
         this.listLoading = false;
@@ -91,6 +93,7 @@ export class CashFlowReportComponent implements OnInit {
     this.listLoading = true;
     this.reportService.getCashFlowReports(this.cashFlowReportForms.value).subscribe(
       (response) => {
+        this.accountDetails = response.Entity.Entity;
       },
       (error) => {
         this.listLoading = false;

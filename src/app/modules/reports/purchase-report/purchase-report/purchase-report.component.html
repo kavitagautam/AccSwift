@@ -140,7 +140,9 @@
                   <span [innerHTML]="l.Amount | currencyFormat"></span>
                 </td>
               </tr>
-              <tr *ngIf="purchaseReportList.length == 0">
+            </tbody>
+            <tbody *ngIf="purchaseReportList.length == 0">
+              <tr>
                 <td colspan="10" align="center">No Data Available</td>
               </tr>
             </tbody>
