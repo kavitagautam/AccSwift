@@ -23,10 +23,19 @@
               </tr>
             </thead>
             <tbody *ngFor="let r of accountDetails; index as i">
-              <tr>
+              <tr (dblclick)="openGroupDetails($event, r)">
                 <td>{{ i + 1 }}</td>
-                <td style="color: blue">
-                  {{ r.AccountName }}
+                <td>
+                  <span *ngIf="r.Level === 0 && r.Type === 'GROUP'">
+                    {{ r.AccountName }}
+                  </span>
+                  <span *ngIf="r.Level === 1 && r.Type === 'GROUP'">
+                    {{ r.AccountName }}
+                  </span>
+                  <span *ngIf="r.Level === 2 && r.Type === 'GROUP'">
+                    {{ r.AccountName }}
+                  </span>
+                  <span *ngIf="r.Type === 'LEDGER'"> {{ r.AccountName }} </span>
                 </td>
                 <td class="balance">
                   <span [innerHTML]="r.InFlowAmount | currencyFormat"></span>
