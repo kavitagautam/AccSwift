@@ -16,26 +16,37 @@
           <table id="header-fixed" class="table table-hover table-fixed">
             <thead>
               <tr>
-                <th>S.N.</th>
                 <th colspan="1">Account Name</th>
                 <th colspan="1">Amount Inflow</th>
                 <th colspan="1">Amount Outflow</th>
               </tr>
             </thead>
             <tbody *ngFor="let r of accountDetails; index as i">
-              <tr (dblclick)="openGroupDetails($event, r)">
-                <td>{{ i + 1 }}</td>
+              <tr (click)="openCashFlowDetails($event, r)">
                 <td>
-                  <span *ngIf="r.Level === 0 && r.Type === 'GROUP'">
+                  <span
+                    *ngIf="r.Level === 0 && r.Type === 'GROUP'"
+                    class="group_name"
+                  >
                     {{ r.AccountName }}
                   </span>
-                  <span *ngIf="r.Level === 1 && r.Type === 'GROUP'">
+                  <span
+                    *ngIf="r.Level === 1 && r.Type === 'GROUP'"
+                    class="group_name"
+                    style="margin-left: 20px"
+                  >
                     {{ r.AccountName }}
                   </span>
-                  <span *ngIf="r.Level === 2 && r.Type === 'GROUP'">
+                  <span
+                    *ngIf="r.Level === 2 && r.Type === 'GROUP'"
+                    class="group_name"
+                    style="margin-left: 30px"
+                  >
                     {{ r.AccountName }}
                   </span>
-                  <span *ngIf="r.Type === 'LEDGER'"> {{ r.AccountName }} </span>
+                  <span style="color: blue" *ngIf="r.Type === 'LEDGER'">
+                    {{ r.AccountName }}
+                  </span>
                 </td>
                 <td class="balance">
                   <span [innerHTML]="r.InFlowAmount | currencyFormat"></span>
@@ -53,11 +64,11 @@
 
             <tfoot>
               <tr>
-                <td class="balance">TotalInFlowAmount</td>
+                <td>Total CashFlow</td>
                 <td class="balance">
                   <span [innerHTML]="totalInFlowAmount | currencyFormat"></span>
                 </td>
-                <td class="balance">TotalOutFlowAmount</td>
+
                 <td class="balance">
                   <span
                     [innerHTML]="totalOutFlowAmount | currencyFormat"

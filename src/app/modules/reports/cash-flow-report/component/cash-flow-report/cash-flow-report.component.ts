@@ -111,7 +111,7 @@ export class CashFlowReportComponent implements OnInit {
     );
   }
 
-  openGroupDetails(event, data): void {
+  openCashFlowDetails(event, data): void {
     if(data.Type === "GROUP") {
       this.cashFlowReportForms.get("Type").setValue(data.Type);
       this.cashFlowReportForms.get("GroupID").setValue(data.ID);

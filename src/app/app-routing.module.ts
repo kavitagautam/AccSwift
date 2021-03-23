@@ -183,6 +183,13 @@ const routes: Routes = [
         },
       },
       {
+        path: "kharid-khata",
+        loadChildren: "@accSwift-modules/reports/kharid-khata/kharid-khata.module#KharidKhataModule",
+        data: {
+          breadcrumb: "Kharid Khata",
+        },
+      },
+      {
         path: "day-book",
         loadChildren:
           "@accSwift-modules/reports/day-book/day-book.module#DayBookModule",

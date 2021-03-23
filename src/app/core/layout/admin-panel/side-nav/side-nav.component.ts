@@ -146,6 +146,11 @@ export class SideNavComponent implements OnInit {
           route: "/cash-flow-report",
         },
         {
+          displayName: "Kharid Khata",
+          iconName: "fa fa-file-excel-o",
+          route: "/kharid-khata",
+        },
+        {
           displayName: "Day Book",
           iconName: "fa fa-file-excel-o",
           route: "/day-book",
