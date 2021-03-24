@@ -5,6 +5,7 @@ export interface AmountDetails {
     SellerPAN?: any;
     TotalPurchaseAmt: number;
     NonTaxableAmt: number;
+    TaxablePurchaseAmt: number;
     TaxPurchaseAmt: number;
     TaxableSalesAmt: number;
     TaxSalesAmt: number;
@@ -16,6 +17,7 @@ export interface KharidKhataModel {
     Entity: AmountDetails[];
     SumTotalPurchaseAmt: number;
     SumNonTaxableAmt: number;
+    SumTaxablePurchaseAmt: number;
     SumTaxPurchaseAmt: number;
     SumTaxableSalesAmt: number;
     SumTaxSalesAmt: number;

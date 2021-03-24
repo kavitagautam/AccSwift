@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { KharidKhataRoutingModule } from './kharid-khata-routing.module';
 import { KharidKhataComponent } from './kharid-khata/kharid-khata.component';
-import { SettingsReportsComponent } from '@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component';
 import { AccswiftSharedModule } from '@accSwift-modules/accswift-shared/accswift-shared.module';
-import { SharedModule } from '@progress/kendo-angular-grid';
+import { SharedModule } from '@app/shared/shared.module';
+import { DateSelectionSettingsComponent } from '@accSwift-modules/accswift-shared/components/date-selection-settings/date-selection-settings.component';
 
 @NgModule({
   declarations: [KharidKhataComponent],
@@ -15,6 +15,6 @@ import { SharedModule } from '@progress/kendo-angular-grid';
     SharedModule,
     AccswiftSharedModule
   ],
-  entryComponents: [SettingsReportsComponent]
+  entryComponents: [DateSelectionSettingsComponent]
 })
 export class KharidKhataModule { }

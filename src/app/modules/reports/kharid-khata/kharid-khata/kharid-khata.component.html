@@ -9,5 +9,99 @@
         Kharid Khata Report Settings
       </button>
     </div>
+
+    <div class="col-md-12">
+      <div class="grid-wrapper">
+        <div class="table-box">
+          <table id="header-fixed" class="table table-hover table-fixed">
+            <thead>
+              <tr>
+                <th colspan="1">SalesDate</th>
+                <th colspan="1">Voucher</th>
+                <th colspan="1">Seller</th>
+                <th colspan="1">SellerPAN</th>
+                <th colspan="1">Total Purchase</th>
+                <th colspan="1">Non Taxable</th>
+                <th colspan="1">Taxable Purchase</th>
+                <th colspan="1">Tax Purchase</th>
+                <th colspan="1">Taxable Sales</th>
+                <th colspan="1">Tax Sales</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let r of amountDetails; index as i">
+              <tr>
+                <td>
+                  {{ r.SalesDate | date: "MM-dd-yyyy" }}
+                </td>
+                <td>{{ r.Voucher }}</td>
+                <td>{{ r.Seller }}</td>
+                <td>{{ r.SellerPAN }}</td>
+                <td class="balance">
+                  <span
+                    [innerHTML]="r.TotalPurchaseAmt | currencyFormat"
+                  ></span>
+                </td>
+                <td class="balance">
+                  <span [innerHTML]="r.NonTaxableAmt | currencyFormat"></span>
+                </td>
+                <td class="balance">
+                  <span
+                    [innerHTML]="r.TaxablePurchaseAmt | currencyFormat"
+                  ></span>
+                </td>
+                <td class="balance">
+                  <span [innerHTML]="r.TaxPurchaseAmt | currencyFormat"></span>
+                </td>
+                <td class="balance">
+                  <span [innerHTML]="r.TaxableSalesAmt | currencyFormat"></span>
+                </td>
+                <td class="balance">
+                  <span [innerHTML]="r.TaxSalesAmt | currencyFormat"></span>
+                </td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="amountDetails.length == 0">
+              <tr>
+                <td colspan="10" align="center">No Data Available</td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td colspan="1">Total Amount</td>
+                <td colspan="1"></td>
+                <td colspan="1"></td>
+                <td colspan="1"></td>
+                <td class="balance" colspan="1">
+                  <span
+                    [innerHTML]="sumTotalPurchaseAmt | currencyFormat"
+                  ></span>
+                </td>
+                <td class="balance" colspan="1">
+                  <span [innerHTML]="sumNonTaxableAmt | currencyFormat"></span>
+                </td>
+                <td class="balance" colspan="1">
+                  <span
+                    [innerHTML]="sumTaxablePurchaseAmt | currencyFormat"
+                  ></span>
+                </td>
+                <td class="balance" colspan="1">
+                  <span [innerHTML]="sumTaxPurchaseAmt | currencyFormat"></span>
+                </td>
+                <td class="balance" colspan="1">
+                  <span
+                    [innerHTML]="sumTaxableSalesAmt | currencyFormat"
+                  ></span>
+                </td>
+                <td class="balance" colspan="1">
+                  <span [innerHTML]="sumTaxSalesAmt | currencyFormat"></span>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="listLoading" class="k-i-loading"></div>
+    </div>
   </div>
 </div>
