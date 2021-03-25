@@ -190,6 +190,13 @@ const routes: Routes = [
         },
       },
       {
+        path: "bikri-khata",
+        loadChildren: "@accSwift-modules/reports/bikri-khata/bikri-khata.module#BikriKhataModule",
+        data: {
+          breadcrumb: "Bikri Khata",
+        },
+      },
+      {
         path: "day-book",
         loadChildren:
           "@accSwift-modules/reports/day-book/day-book.module#DayBookModule",

@@ -66,6 +66,7 @@ import {
 } from "@accSwift-modules/preference/models/preference.model";
 import { CashFlowRootModel } from '../models/cash-flow.model';
 import { KharidKhataRootModel } from '../models/kharid-khata.model';
+import { BikriKhataRootModel } from '../models/bikri-khata.model';
 
 @Injectable({
   providedIn: "root",
@@ -250,6 +251,10 @@ export class ReportsService {
 
   getKharidKhataReports(body): Observable<KharidKhataRootModel> {
     return this.httpService.post(`${this._api_URL}InventoryReports/KharidKhata`, body);
+  }
+
+  getBikriKhataReports(body): Observable<BikriKhataRootModel> {
+    return this.httpService.post(`${this._api_URL}InventoryReports/BikriKhata`, body);
   }
 
   getSalesReports(body): Observable<SalesReportModel> {
