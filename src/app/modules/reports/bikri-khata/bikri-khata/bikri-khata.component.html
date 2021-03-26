@@ -27,34 +27,38 @@
                 <th colspan="1">Tax Amount</th>
               </tr>
             </thead>
-            <tbody *ngFor="let r of amountDetails; index as i">
+            <tbody *ngFor="let bikriKhata of bikriKhataList; index as i">
               <tr>
                 <td>
-                  {{ r.SalesDate | date: "MM-dd-yyyy" }}
+                  {{ bikriKhata.SalesDate | date: "MM-dd-yyyy" }}
                 </td>
-                <td>{{ r.Voucher }}</td>
-                <td>{{ r.BuyersName }}</td>
-                <td>{{ r.BuyersPAN }}</td>
-                <td class="balance">
-                  <span [innerHTML]="r.TotalSalesAmt | currencyFormat"></span>
-                </td>
+                <td>{{ bikriKhata.Voucher }}</td>
+                <td>{{ bikriKhata.BuyersName }}</td>
+                <td>{{ bikriKhata.BuyersPAN }}</td>
                 <td class="balance">
                   <span
-                    [innerHTML]="r.NonTaxableSalesAmt | currencyFormat"
+                    [innerHTML]="bikriKhata.TotalSalesAmt | currencyFormat"
                   ></span>
                 </td>
                 <td class="balance">
-                  <span [innerHTML]="r.Export | currencyFormat"></span>
+                  <span
+                    [innerHTML]="bikriKhata.NonTaxableSalesAmt | currencyFormat"
+                  ></span>
                 </td>
                 <td class="balance">
-                  <span [innerHTML]="r.TaxableAmt | currencyFormat"></span>
+                  <span [innerHTML]="bikriKhata.Export | currencyFormat"></span>
                 </td>
                 <td class="balance">
-                  <span [innerHTML]="r.TaxAmt | currencyFormat"></span>
+                  <span
+                    [innerHTML]="bikriKhata.TaxableAmt | currencyFormat"
+                  ></span>
+                </td>
+                <td class="balance">
+                  <span [innerHTML]="bikriKhata.TaxAmt | currencyFormat"></span>
                 </td>
               </tr>
             </tbody>
-            <tbody *ngIf="amountDetails.length == 0">
+            <tbody *ngIf="bikriKhataList.length == 0">
               <tr>
                 <td colspan="10" align="center">No Data Available</td>
               </tr>

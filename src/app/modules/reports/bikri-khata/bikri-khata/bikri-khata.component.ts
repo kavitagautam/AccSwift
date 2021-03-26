@@ -1,6 +1,6 @@
 import { DateSelectionSettingsComponent } from '@accSwift-modules/accswift-shared/components/date-selection-settings/date-selection-settings.component';
 import { PreferenceService } from '@accSwift-modules/preference/services/preference.service';
-import { AmountDetails } from '@accSwift-modules/reports/models/bikri-khata.model';
+import { BikriKhataList } from '@accSwift-modules/reports/models/bikri-khata.model';
 import { ReportsService } from '@accSwift-modules/reports/services/reports.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -16,7 +16,7 @@ export class BikriKhataComponent implements OnInit {
   modalRef: BsModalRef;
   bikriKhataReportForms: FormGroup;
   listLoading: boolean;
-  amountDetails: AmountDetails[] = [];
+  bikriKhataList: BikriKhataList[] = [];
   sumTotalSalesAmt: number;
   sumNonTaxableSalesAmt: number;
   sumExport: number;
@@ -56,7 +56,7 @@ export class BikriKhataComponent implements OnInit {
         {
           this.reportService.getBikriKhataReports(JSON.stringify(data)).subscribe(
             (response) => {
-              this.amountDetails = response.Entity.Entity;
+              this.bikriKhataList = response.Entity.Entity;
               this.sumTotalSalesAmt = response.Entity.SumTotalSalesAmt;
               this.sumNonTaxableSalesAmt = response.Entity.SumNonTaxableSalesAmt;
               this.sumExport = response.Entity.SumExport;
@@ -81,7 +81,7 @@ export class BikriKhataComponent implements OnInit {
   showBikriKhataReports(): void {
     this.listLoading = true;
     this.reportService.getBikriKhataReports(this.bikriKhataReportForms.value).subscribe((response) => {
-      this.amountDetails = response.Entity.Entity;
+      this.bikriKhataList = response.Entity.Entity;
   },
   (error) => {
     this.listLoading = false;

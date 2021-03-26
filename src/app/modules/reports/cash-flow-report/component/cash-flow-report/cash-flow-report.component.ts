@@ -6,7 +6,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from "@angular/common";
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { AccountDetails } from '@accSwift-modules/reports/models/cash-flow.model';
+import { CashFlowList } from '@accSwift-modules/reports/models/cash-flow.model';
 import { GroupBalanceReportComponent } from '@accSwift-modules/accswift-shared/components/group-balance-report/group-balance-report.component';
 import { LedgerDetailReportsComponent } from '@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component';
 
@@ -19,7 +19,7 @@ import { LedgerDetailReportsComponent } from '@accSwift-modules/accswift-shared/
 export class CashFlowReportComponent implements OnInit {
 
   cashFlowReportForms: FormGroup;
-  accountDetails: AccountDetails[] = [];
+  cashFlowList: CashFlowList[] = [];
   totalInFlowAmount: number;
   totalOutFlowAmount: number;
   modalRef: BsModalRef;
@@ -75,7 +75,7 @@ export class CashFlowReportComponent implements OnInit {
 
     this.reportService.getCashFlowReports(JSON.stringify(data)).subscribe(
       (response) => {
-        this.accountDetails = response.Entity.Entity;
+        this.cashFlowList = response.Entity.Entity;
         this.totalInFlowAmount = response.Entity.TotalInFlowAmount;
         this.totalOutFlowAmount = response.Entity.TotalOutFlowAmount;
       },
@@ -98,7 +98,7 @@ export class CashFlowReportComponent implements OnInit {
     this.listLoading = true;
     this.reportService.getCashFlowReports(this.cashFlowReportForms.value).subscribe(
       (response) => {
-        this.accountDetails = response.Entity.Entity;
+        this.cashFlowList = response.Entity.Entity;
       },
       (error) => {
         this.listLoading = false;

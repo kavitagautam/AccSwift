@@ -21,42 +21,42 @@
                 <th colspan="1">Amount Outflow</th>
               </tr>
             </thead>
-            <tbody *ngFor="let r of accountDetails; index as i">
-              <tr (click)="openCashFlowDetails($event, r)">
+            <tbody *ngFor="let cashFlow of cashFlowList; index as i">
+              <tr (click)="openCashFlowDetails($event, cashFlow)">
                 <td>
                   <span
-                    *ngIf="r.Level === 0 && r.Type === 'GROUP'"
+                    *ngIf="cashFlow.Level === 0 && cashFlow.Type === 'GROUP'"
                     class="group_name"
                   >
-                    {{ r.AccountName }}
+                    {{ cashFlow.AccountName }}
                   </span>
                   <span
-                    *ngIf="r.Level === 1 && r.Type === 'GROUP'"
+                    *ngIf="cashFlow.Level === 1 && cashFlow.Type === 'GROUP'"
                     class="group_name"
                     style="margin-left: 20px"
                   >
-                    {{ r.AccountName }}
+                    {{ cashFlow.AccountName }}
                   </span>
                   <span
-                    *ngIf="r.Level === 2 && r.Type === 'GROUP'"
+                    *ngIf="cashFlow.Level === 2 && cashFlow.Type === 'GROUP'"
                     class="group_name"
                     style="margin-left: 30px"
                   >
-                    {{ r.AccountName }}
+                    {{ cashFlow.AccountName }}
                   </span>
-                  <span style="color: blue" *ngIf="r.Type === 'LEDGER'">
-                    {{ r.AccountName }}
+                  <span style="color: blue" *ngIf="cashFlow.Type === 'LEDGER'">
+                    {{ cashFlow.AccountName }}
                   </span>
                 </td>
                 <td class="balance">
-                  <span [innerHTML]="r.InFlowAmount | currencyFormat"></span>
+                  <span [innerHTML]="cashFlow.InFlowAmount | currencyFormat"></span>
                 </td>
                 <td class="balance">
-                  <span [innerHTML]="r.OutFlowAmount | currencyFormat"></span>
+                  <span [innerHTML]="cashFlow.OutFlowAmount | currencyFormat"></span>
                 </td>
               </tr>
             </tbody>
-            <tbody *ngIf="accountDetails.length == 0">
+            <tbody *ngIf="cashFlowList.length == 0">
               <tr>
                 <td colspan="10" align="center">No Data Available</td>
               </tr>

@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from "@angular/common";
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { AmountDetails } from '@accSwift-modules/reports/models/kharid-khata.model';
+import { KharidKhataList } from '@accSwift-modules/reports/models/kharid-khata.model';
 import { DateSelectionSettingsComponent } from '@accSwift-modules/accswift-shared/components/date-selection-settings/date-selection-settings.component';
 
 @Component({
@@ -19,7 +19,7 @@ export class KharidKhataComponent implements OnInit {
   kharidKhataReportForms: FormGroup;
   baseURL: string;
   listLoading: boolean;
-  amountDetails: AmountDetails[] = [];
+  kharidKhataList: KharidKhataList[] = [];
   sumTotalPurchaseAmt: number;
   sumNonTaxableAmt: number;
   sumTaxablePurchaseAmt: number;
@@ -63,7 +63,7 @@ export class KharidKhataComponent implements OnInit {
       if (data) {
         this.reportService.getKharidKhataReports(JSON.stringify(data)).subscribe(
           (response) => {
-            this.amountDetails = response.Entity.Entity;
+            this.kharidKhataList = response.Entity.Entity;
             this.sumTotalPurchaseAmt = response.Entity.SumTotalPurchaseAmt;
             this.sumNonTaxableAmt = response.Entity.SumNonTaxableAmt;
             this.sumTaxablePurchaseAmt = response.Entity.SumTaxablePurchaseAmt;
@@ -89,7 +89,7 @@ export class KharidKhataComponent implements OnInit {
   showKharidKhataReport(): void{
     this.listLoading = true;
     this.reportService.getKharidKhataReports(this.kharidKhataReportForms.value).subscribe((response) => {
-      this.amountDetails = response.Entity.Entity;
+      this.kharidKhataList = response.Entity.Entity;
     },
     (error) => {
       this.listLoading = false;

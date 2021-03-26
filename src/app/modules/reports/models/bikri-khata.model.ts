@@ -1,6 +1,6 @@
 import { Company } from "@accSwift-modules/company/models/company.model";
 
-export interface AmountDetails {
+export interface BikriKhataList {
     BuyersName: string;
     BuyersPAN?: any;
     TotalSalesAmt: number;
@@ -13,7 +13,7 @@ export interface AmountDetails {
 }
 
 export interface BikriKhataModel {
-    Entity: AmountDetails[];
+    Entity: BikriKhataList[];
     SumTotalSalesAmt: number;
     SumNonTaxableSalesAmt: number;
     SumExport: number;

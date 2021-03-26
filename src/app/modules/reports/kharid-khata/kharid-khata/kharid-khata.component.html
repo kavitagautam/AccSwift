@@ -28,39 +28,49 @@
                 <th colspan="1">Tax Sales</th>
               </tr>
             </thead>
-            <tbody *ngFor="let r of amountDetails; index as i">
+            <tbody *ngFor="let kharidKhata of kharidKhataList; index as i">
               <tr>
                 <td>
-                  {{ r.SalesDate | date: "MM-dd-yyyy" }}
+                  {{ kharidKhata.SalesDate | date: "MM-dd-yyyy" }}
                 </td>
-                <td>{{ r.Voucher }}</td>
-                <td>{{ r.Seller }}</td>
-                <td>{{ r.SellerPAN }}</td>
+                <td>{{ kharidKhata.Voucher }}</td>
+                <td>{{ kharidKhata.Seller }}</td>
+                <td>{{ kharidKhata.SellerPAN }}</td>
                 <td class="balance">
                   <span
-                    [innerHTML]="r.TotalPurchaseAmt | currencyFormat"
+                    [innerHTML]="kharidKhata.TotalPurchaseAmt | currencyFormat"
                   ></span>
                 </td>
                 <td class="balance">
-                  <span [innerHTML]="r.NonTaxableAmt | currencyFormat"></span>
-                </td>
-                <td class="balance">
                   <span
-                    [innerHTML]="r.TaxablePurchaseAmt | currencyFormat"
+                    [innerHTML]="kharidKhata.NonTaxableAmt | currencyFormat"
                   ></span>
                 </td>
                 <td class="balance">
-                  <span [innerHTML]="r.TaxPurchaseAmt | currencyFormat"></span>
+                  <span
+                    [innerHTML]="
+                      kharidKhata.TaxablePurchaseAmt | currencyFormat
+                    "
+                  ></span>
                 </td>
                 <td class="balance">
-                  <span [innerHTML]="r.TaxableSalesAmt | currencyFormat"></span>
+                  <span
+                    [innerHTML]="kharidKhata.TaxPurchaseAmt | currencyFormat"
+                  ></span>
                 </td>
                 <td class="balance">
-                  <span [innerHTML]="r.TaxSalesAmt | currencyFormat"></span>
+                  <span
+                    [innerHTML]="kharidKhata.TaxableSalesAmt | currencyFormat"
+                  ></span>
+                </td>
+                <td class="balance">
+                  <span
+                    [innerHTML]="kharidKhata.TaxSalesAmt | currencyFormat"
+                  ></span>
                 </td>
               </tr>
             </tbody>
-            <tbody *ngIf="amountDetails.length == 0">
+            <tbody *ngIf="kharidKhataList.length == 0">
               <tr>
                 <td colspan="10" align="center">No Data Available</td>
               </tr>

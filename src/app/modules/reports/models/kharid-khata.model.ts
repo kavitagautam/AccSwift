@@ -1,6 +1,6 @@
 import { Company } from "@accSwift-modules/company/models/company.model";
 
-export interface AmountDetails {
+export interface KharidKhataList {
     Seller: string;
     SellerPAN?: any;
     TotalPurchaseAmt: number;
@@ -14,7 +14,7 @@ export interface AmountDetails {
 }
 
 export interface KharidKhataModel {
-    Entity: AmountDetails[];
+    Entity: KharidKhataList[];
     SumTotalPurchaseAmt: number;
     SumNonTaxableAmt: number;
     SumTaxablePurchaseAmt: number;

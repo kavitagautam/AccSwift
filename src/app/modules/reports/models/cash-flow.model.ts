@@ -1,6 +1,6 @@
 import { Company } from "@accSwift-modules/company/models/company.model";
 
-export interface AccountDetails {
+export interface CashFlowList {
     InFlowAmount: number;
     OutFlowAmount: number;
     Type: string;
@@ -11,7 +11,7 @@ export interface AccountDetails {
 }
 
 export interface CashFlowModel {
-    Entity: AccountDetails[];
+    Entity: CashFlowList[];
     TotalInFlowAmount: number;
     TotalOutFlowAmount: number;
     Company: Company;
