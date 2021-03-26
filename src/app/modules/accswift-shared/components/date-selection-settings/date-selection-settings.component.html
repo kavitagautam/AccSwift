@@ -1,0 +1,80 @@
+<div class="modal-header">
+  <h3 class="modal-title pull-left">Date Selection Settings</h3>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="onCancel()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="dateSettingsForms">
+    <div class="col-md-12">
+      <fieldset>
+        <legend>Date Selection</legend>
+      </fieldset>
+    </div>
+    <div class="col-md-12 p-0">
+      <div class="col-md-6">
+        <div class="form-group" *ngIf="formsField.includes('FromDate')">
+          <label>From Date</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="FromDate"
+            bsDatepicker
+            [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+          />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>End of Month</label>
+          <select
+            class="form-control"
+            [(ngModel)]="toDateSelect"
+            [ngModelOptions]="{ standalone: true }"
+            (change)="endOfMonth()"
+          >
+            <option [ngValue]="null">Choose Option..</option>
+            <option
+              *ngFor="let month of reportService.monthList"
+              [ngValue]="month.number"
+            >
+              {{ month.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group" *ngIf="formsField.includes('ToDate')">
+          <label>At the End of</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="ToDate"
+            bsDatepicker
+            [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+          />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn-secondary m-5" (click)="today()">
+          Today
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="showReport()">
+    Show
+  </button>
+  <button type="button" class="btn btn-danger" (click)="onCancel()">
+    Cancel
+  </button>
+</div>
