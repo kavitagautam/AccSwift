@@ -37,6 +37,7 @@ import { EntrySubLedgerComponent } from "./components/entry-sub-ledger/entry-sub
 import { OpeningBalanceComponent } from "./components/opening-balance/opening-balance.component";
 import { BasicAddEditUserComponent } from './components/basic-add-edit-user/basic-add-edit-user.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
+import { DateSelectionSettingsComponent } from './components/date-selection-settings/date-selection-settings.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ForgetPasswordComponent } from './components/forget-password/forget-pas
     OpeningBalanceComponent,
     EntrySubLedgerComponent,
     BasicAddEditUserComponent,
+    DateSelectionSettingsComponent,
   ],
   imports: [
     FormsModule,

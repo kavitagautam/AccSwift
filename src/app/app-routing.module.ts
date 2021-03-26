@@ -175,6 +175,28 @@ const routes: Routes = [
         },
       },
       {
+        path: "cash-flow-report",
+        loadChildren:
+          "@accSwift-modules/reports/cash-flow-report/cash-flow-report.module#CashFlowReportModule",
+        data: {
+          breadcrumb: "Cash Flow Report",
+        },
+      },
+      {
+        path: "kharid-khata",
+        loadChildren: "@accSwift-modules/reports/kharid-khata/kharid-khata.module#KharidKhataModule",
+        data: {
+          breadcrumb: "Kharid Khata",
+        },
+      },
+      {
+        path: "bikri-khata",
+        loadChildren: "@accSwift-modules/reports/bikri-khata/bikri-khata.module#BikriKhataModule",
+        data: {
+          breadcrumb: "Bikri Khata",
+        },
+      },
+      {
         path: "day-book",
         loadChildren:
           "@accSwift-modules/reports/day-book/day-book.module#DayBookModule",
