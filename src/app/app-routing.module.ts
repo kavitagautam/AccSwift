@@ -197,6 +197,13 @@ const routes: Routes = [
         },
       },
       {
+        path: "materialized-view",
+        loadChildren: "@accSwift-modules/reports/materialized-view/materialized-view.module#MaterializedViewModule",
+        data: {
+          breadcrumb: "Materialized View",
+        }
+      },
+      {
         path: "day-book",
         loadChildren:
           "@accSwift-modules/reports/day-book/day-book.module#DayBookModule",

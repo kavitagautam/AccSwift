@@ -156,6 +156,11 @@ export class SideNavComponent implements OnInit {
           route: "/bikri-khata",
         },
         {
+          displayName: "Materialized View",
+          iconName: "fa fa-file-excel-o" ,
+          route: "/materialized-view"
+        },
+        {
           displayName: "Day Book",
           iconName: "fa fa-file-excel-o",
           route: "/day-book",

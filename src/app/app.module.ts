@@ -32,6 +32,7 @@ import "@progress/kendo-angular-intl/locales/en-GB/all";
 import "@progress/kendo-angular-intl/locales/fr/all";
 
 import "hammerjs";
+import { ColumnResizingService } from '@progress/kendo-angular-grid';
 
 // registerLocaleData(localeNe, "ne");
 registerLocaleData(localefr, "fr");
@@ -105,6 +106,7 @@ export function localFunction(settingsService: SettingsService) {
     //   useFactory: localFunction,
     // },
     CookieService,
+    ColumnResizingService,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

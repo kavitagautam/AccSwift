@@ -67,6 +67,7 @@ import {
 import { CashFlowRootModel } from '../models/cash-flow.model';
 import { KharidKhataRootModel } from '../models/kharid-khata.model';
 import { BikriKhataRootModel } from '../models/bikri-khata.model';
+import { MaterializedViewList, MaterializedViewRootModel } from '../models/materialized-view.model';
 
 @Injectable({
   providedIn: "root",
@@ -255,6 +256,10 @@ export class ReportsService {
 
   getBikriKhataReports(body): Observable<BikriKhataRootModel> {
     return this.httpService.post(`${this._api_URL}InventoryReports/BikriKhata`, body);
+  }
+
+  getMaterializedViewReports(body): Observable<MaterializedViewRootModel> {
+    return this.httpService.post(`${this._api_URL}InventoryReports/MaterializedView`, body);
   }
 
   getSalesReports(body): Observable<SalesReportModel> {
