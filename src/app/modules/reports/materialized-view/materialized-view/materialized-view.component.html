@@ -16,7 +16,7 @@
           <table id="header-fixed" class="table table-hover table-fixed">
             <thead>
               <tr>
-                <th colspan="1">FY</th>
+                <th colspan="1">Fiscal Year</th>
                 <th colspan="1">Customer Name</th>
                 <th colspan="1">PAN</th>
                 <th colspan="1">Gross Amount</th>
@@ -25,6 +25,7 @@
                 <th colspan="1">Tax</th>
                 <th colspan="1">Total Amount</th>
                 <th colspan="1">Print Date</th>
+                <th colspan="1">Active</th>
               </tr>
             </thead>
             <tbody
@@ -36,7 +37,6 @@
                 </td>
                 <td>{{ materialized.BuyerName }}</td>
                 <td>{{ materialized.BuyerPan }}</td>
-
                 <td class="balance">
                   <span
                     [innerHTML]="materialized.GrossAmount | currencyFormat"
@@ -63,6 +63,7 @@
                   ></span>
                 </td>
                 <td>{{ materialized.PrintedTime }}</td>
+                <td>{{ materialized.IsActive }}</td>
               </tr>
             </tbody>
             <tbody *ngIf="materializedViewList.length == 0">
@@ -71,17 +72,20 @@
               </tr>
             </tbody>
 
-            <tfoot>
+            <tfoot *ngIf="materializedViewList.length > 0">
               <tr>
                 <td colspan="1">Total Amount</td>
                 <td colspan="1"></td>
                 <td colspan="1"></td>
-                <td colspan="1"></td>
+
                 <td class="balance" colspan="1">
                   <span [innerHTML]="sumGrossAmount | currencyFormat"></span>
                 </td>
                 <td class="balance" colspan="1">
                   <span [innerHTML]="sumDiscount | currencyFormat"></span>
+                </td>
+                <td class="balance" colspan="1">
+                  <span [innerHTML]="sumNetAmount | currencyFormat"></span>
                 </td>
                 <td class="balance" colspan="1">
                   <span [innerHTML]="sumTaxAmount | currencyFormat"></span>

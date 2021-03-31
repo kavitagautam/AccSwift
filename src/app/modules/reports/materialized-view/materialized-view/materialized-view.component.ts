@@ -22,7 +22,7 @@ export class MaterializedViewComponent implements OnInit {
   sumDiscount: number;
   sumTaxAmount: number;
   sumTotalAmount: number;
-  // sumNetAmount: number;
+  sumNetAmount: number;
   listLoading: boolean;
   baseURL: string;
 
@@ -40,6 +40,10 @@ export class MaterializedViewComponent implements OnInit {
     this.baseURL =
     this.location["_platformStrategy"]._platformLocation["location"].origin +
     "/#/";
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.openMaterializedViewReportSettings(), 100);
   }
 
   buildMaterializedViewForm(): void {
@@ -67,7 +71,7 @@ export class MaterializedViewComponent implements OnInit {
           this.sumDiscount = response.Entity.SumDiscount;
           this.sumTaxAmount = response.Entity.SumTaxAmount;
           this.sumTotalAmount = response.Entity.SumTotalAmount;
-          // this.sumNetAmount = response.Entity.SumNetAmount;
+          this.sumNetAmount = response.Entity.SumNetAmount;
         },
         (error) => {
           this.listLoading = false;
@@ -89,6 +93,11 @@ export class MaterializedViewComponent implements OnInit {
     this.listLoading = true;
     this.reportService.getMaterializedViewReports(this.materializedViewForm.value).subscribe((response) => {
       this.materializedViewList = response.Entity.Entity;
+      this.sumGrossAmount = response.Entity.SumGrossAmount;
+      this.sumDiscount = response.Entity.SumDiscount;
+      this.sumTaxAmount = response.Entity.SumTaxAmount;
+      this.sumTotalAmount = response.Entity.SumTotalAmount;
+      this.sumNetAmount = response.Entity.SumNetAmount;
     },
     (error) => {
       this.listLoading = false;
@@ -96,6 +105,7 @@ export class MaterializedViewComponent implements OnInit {
     },
     () => {
       this.modalRef.hide();
+      this.listLoading = false;
     });
   }
 

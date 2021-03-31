@@ -24,6 +24,7 @@ export interface MaterializedViewModel {
     SumGrossAmount: number;
     SumDiscount: number;
     SumTaxAmount: number;
+    SumNetAmount: number;
     SumTotalAmount: number;
     Company: Company;
 }

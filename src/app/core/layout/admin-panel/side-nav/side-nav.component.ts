@@ -161,6 +161,23 @@ export class SideNavComponent implements OnInit {
           route: "/materialized-view"
         },
         {
+          id:56,
+          displayName: "Debtors",
+          iconName: "fa fa-file-excel-o",
+          children: [
+            {
+              displayName: "Debtors Ageing",
+              iconName: "fa fa-file-excel-o",
+              route: "/debtors-ageing"
+            },
+            {
+              displayName: "Debtors Due date",
+              iconName: "fa fa-file-excel-o",
+              route: "/debtors-duedate"
+            },
+          ]
+        },
+        {
           displayName: "Day Book",
           iconName: "fa fa-file-excel-o",
           route: "/day-book",

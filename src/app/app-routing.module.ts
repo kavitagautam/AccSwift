@@ -183,6 +183,20 @@ const routes: Routes = [
         },
       },
       {
+        path: "debtors-ageing",
+        loadChildren: "@accSwift-modules/reports/debtors/debtors.module#DebtorsModule",
+        data: {
+          breadcrumb: "Debtors Ageing"
+        }
+      },
+      {
+        path: "debtors-duedate",
+        loadChildren: "@accSwift-modules/reports/debtors/debtors.module#DebtorsModule",
+        data: {
+          breadcrumb: "Debtors Due Date"
+        }
+      },
+      {
         path: "kharid-khata",
         loadChildren: "@accSwift-modules/reports/kharid-khata/kharid-khata.module#KharidKhataModule",
         data: {
