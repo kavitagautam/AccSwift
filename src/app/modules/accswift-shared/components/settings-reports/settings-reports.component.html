@@ -87,6 +87,36 @@
           </div>
         </div>
       </fieldset>
+
+      <fieldset>
+        <div class="form-group" *ngIf="formsField.includes('IsShowAllDebtors')">
+          <div class="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                name="ShowAllDebtors"
+                value="true"
+                formControlName="IsShowAllDebtors"
+              />
+              Show All Debtors
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" *ngIf="formsField.includes('IsShowAllDebtors')">
+          <div class="form-group">
+            <label>Debtors Account</label>
+
+            <select class="form-control" formControlName="IsShowAllDebtors">
+              <option [ngValue]="null">Choose Option..</option>
+              <option *ngFor="let account of reportService.ledgerDebtors">
+                {{ account.LedgerName }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
       <fieldset *ngIf="formsField.includes('DisplayFormat')">
         <div class="col-md-12 p-0">
           <div class="col-md-4">

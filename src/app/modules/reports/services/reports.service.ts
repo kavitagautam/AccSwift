@@ -51,6 +51,8 @@ import {
   LedgerGroupModel,
 } from "@accSwift-modules/ledger/models/ledger-group.model";
 import {
+  LedgerDebtors,
+  LedgerDebtorsRootModel,
   LedgerMin,
   LedgerMinModel,
 } from "@accSwift-modules/ledger/models/ledger.models";
@@ -68,6 +70,7 @@ import { CashFlowRootModel } from '../models/cash-flow.model';
 import { KharidKhataRootModel } from '../models/kharid-khata.model';
 import { BikriKhataRootModel } from '../models/bikri-khata.model';
 import { MaterializedViewList, MaterializedViewRootModel } from '../models/materialized-view.model';
+import { DebtorsAgeingList, DebtorsAgeingRootModel } from '../models/debtors-ageing.model';
 
 @Injectable({
   providedIn: "root",
@@ -77,6 +80,8 @@ export class ReportsService {
   projectName$ = this.projectName.asObservable();
   ledgerGroupLists: LedgerGroup[] = [];
   ledgerMinLists: LedgerMin[] = [];
+  ledgerDebtors: LedgerDebtors[] = [];
+  debtorsAgeingList: DebtorsAgeingList[] = [];
 
   // Service message commands
   selectProject(name: string) {
@@ -262,6 +267,19 @@ export class ReportsService {
     return this.httpService.post(`${this._api_URL}InventoryReports/MaterializedView`, body);
   }
 
+  getDebtorsAgeingList(body): Observable<DebtorsAgeingRootModel> {
+    return this.httpService.post(
+      `${this._api_URL}Reports/DebtorsAgeing`,
+      body
+    );
+  }
+
+  getLedgerDebtors(): Observable<LedgerDebtorsRootModel> {
+    return this.httpService.get(
+      `${this._api_URL}Ledger/debtors`
+    );
+  }
+
   getSalesReports(body): Observable<SalesReportModel> {
     return this.httpService.post(
       `${this._api_URL}InventoryReports/Sales`,
@@ -320,6 +338,7 @@ export class ReportsService {
     return this.httpService.get(`${this._api_URL}LedgerGroup/CashPartyGroups`);
   }
 
+ 
   getDepotList(): void {
     this.httpService
       .get(`${this._api_URL}Depot/min`)
@@ -371,4 +390,5 @@ export class ReportsService {
       this.ledgerMinLists = response.Entity;
     });
   }
+
 }

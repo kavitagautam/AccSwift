@@ -1,5 +1,6 @@
 import { SettingsReportsComponent } from '@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component';
 import { PreferenceService } from '@accSwift-modules/preference/services/preference.service';
+import { DebtorsAgeingList } from '@accSwift-modules/reports/models/debtors-ageing.model';
 import { ReportsService } from '@accSwift-modules/reports/services/reports.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -14,6 +15,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 export class AgeingComponent implements OnInit {
   ageingForm: FormGroup;
   modalRef: BsModalRef;
+  debtorsAgeingList: DebtorsAgeingList[] = [];
+  listLoading: boolean;
 
   constructor(
     private _fb: FormBuilder,
@@ -25,6 +28,10 @@ export class AgeingComponent implements OnInit {
 
   ngOnInit() {
     this.buildAgeingForm();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.openDebtorsAgeingReportSettings(), 100);
   }
 
   buildAgeingForm(): void {
@@ -55,6 +62,45 @@ export class AgeingComponent implements OnInit {
       keyboard: true,
       class: "modal-lg",
     })
+
+    this.modalRef.content.onSubmit.subscribe((data) => {
+      if (data) {
+  
+      this.reportsService.getDebtorsAgeingList(JSON.stringify(data)).subscribe(
+        (response) => {
+          this.debtorsAgeingList = response.Entity.Entity;
+        },
+        (error) => {
+          this.listLoading = false;
+        },
+        () => {
+          this.listLoading = false;
+        }
+      );
+    }
+  });
+  
+      this.modalRef.content.onClose.subscribe((data) => {
+        this.showDebtorsAgeingReport();
+      });
+    
+  }
+
+  showDebtorsAgeingReport(): void {
+    this.listLoading = true;
+    this.reportsService.getDebtorsAgeingList(this.ageingForm.value).subscribe(
+      (response) => {
+        this.debtorsAgeingList = response.Entity.Entity;
+      },
+      (error) => {
+        this.listLoading = false;
+        this.modalRef.hide();
+      },
+      () => {
+        this.modalRef.hide();
+        this.listLoading = false;
+      }
+    );
   }
 
 }

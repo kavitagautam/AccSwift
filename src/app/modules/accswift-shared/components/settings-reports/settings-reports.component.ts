@@ -1,6 +1,6 @@
 import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
-import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
+import { LedgerDebtorsRootModel, LedgerDebtors, LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
 import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
 import { ProductGroup } from "@accSwift-modules/product/models/product-group.models";
 import { ProductMin } from "@accSwift-modules/product/models/product-min.model";
@@ -33,6 +33,7 @@ export class SettingsReportsComponent implements OnInit {
   accountsSelect: number;
 
   accountGroup: boolean = false;
+  ledgerDebtors: LedgerDebtors[] = [];
   ledgerMinList: LedgerMin[] = [];
   ledgerGroupList: LedgerGroup[] = [];
   productGroups: ProductGroup[] = [];
@@ -57,7 +58,6 @@ export class SettingsReportsComponent implements OnInit {
     this.formsField = [];
     this.onClose = new Subject();
     this.onSubmit = new Subject();
-    //this.projectName = new Subject();
     this.getLedger();
     this.getLedgerGroup();
     this.getProductGroupDD();
@@ -94,6 +94,12 @@ export class SettingsReportsComponent implements OnInit {
   getLedgerGroup(): void {
     this.reportService.getLedgerGroup().subscribe((response) => {
       this.ledgerGroupList = response.Entity;
+    });
+  }
+
+  getLedgerDebts(): void {
+    this.reportService.getLedgerDebtors().subscribe((response) => {
+      this.ledgerDebtors = response.Entity;
     });
   }
 
@@ -160,7 +166,6 @@ export class SettingsReportsComponent implements OnInit {
     const filterValue = this.reportService.projectList.filter(
       (s) => s.ID == projectID
     );
-    //this.projectName.next(filterValue[0].EngName);
     this.reportService.selectProject(filterValue[0].EngName);
   }
 

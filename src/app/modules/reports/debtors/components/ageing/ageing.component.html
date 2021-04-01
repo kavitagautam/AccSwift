@@ -9,5 +9,33 @@
         Debtors Ageing Report Settings
       </button>
     </div>
+
+    <div class="col-md-12">
+      <div class="grid-wrapper">
+        <div class="table-box">
+          <table id="header-fixed" class="table table-hover table-fixed">
+            <thead>
+              <tr>
+                <th colspan="1">Debtors</th>
+              </tr>
+            </thead>
+            <h1>{{ this.debtorsAgeingList | json }}</h1>
+            <tbody *ngFor="let debtorsAgeing of debtorsAgeingList; index as i">
+              <tr>
+                <td>
+                  {{ debtorsAgeing.Debtors }}
+                </td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="debtorsAgeingList.length == 0">
+              <tr>
+                <td colspan="10" align="center">No Data Available</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="listLoading" class="k-i-loading"></div>
+    </div>
   </div>
 </div>
