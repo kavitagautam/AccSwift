@@ -17,13 +17,43 @@
             <thead>
               <tr>
                 <th colspan="1">Debtors</th>
+                <th colspan="1">Total Amount</th>
+                <th colspan="1">Current</th>
+                <th colspan="1">First Period</th>
+                <th colspan="1">Second Period</th>
+                <th colspan="1">Third Period</th>
+                <th colspan="1">Fourth Period</th>
+                <th colspan="1">Fifth Period</th>
               </tr>
             </thead>
-            <h1>{{ this.debtorsAgeingList | json }}</h1>
+
             <tbody *ngFor="let debtorsAgeing of debtorsAgeingList; index as i">
               <tr>
                 <td>
                   {{ debtorsAgeing.Debtors }}
+                </td>
+                <td class="balance">
+                  <span
+                    [innerHTML]="debtorsAgeing.TotalAmount | currencyFormat"
+                  ></span>
+                </td>
+                <td>
+                  {{ debtorsAgeing.Current }}
+                </td>
+                <td>
+                  {{ debtorsAgeing.FirstPeriod }}
+                </td>
+                <td>
+                  {{ debtorsAgeing.SecondPeriod }}
+                </td>
+                <td>
+                  {{ debtorsAgeing.ThirdPeriod }}
+                </td>
+                <td>
+                  {{ debtorsAgeing.FourthPeriod }}
+                </td>
+                <td>
+                  {{ debtorsAgeing.FifthPeriod }}
                 </td>
               </tr>
             </tbody>

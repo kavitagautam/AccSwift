@@ -89,30 +89,47 @@
       </fieldset>
 
       <fieldset>
-        <div class="form-group" *ngIf="formsField.includes('IsShowAllDebtors')">
-          <div class="checkbox">
-            <label>
-              <input
-                type="checkbox"
-                name="ShowAllDebtors"
-                value="true"
-                formControlName="IsShowAllDebtors"
-              />
-              Show All Debtors
-            </label>
+        <div class="col-md-12 p-0">
+          <div class="col-md-6">
+            <div
+              class="form-group"
+              *ngIf="formsField.includes('IsShowAllDebtors')"
+            >
+              <div class="checkbox">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="ShowAllDebtors"
+                    value="true"
+                    formControlName="IsShowAllDebtors"
+                    (change)="enableDebtorsAccount()"
+                  />
+                  Show All Debtors
+                </label>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div class="form-group" *ngIf="formsField.includes('IsShowAllDebtors')">
-          <div class="form-group">
-            <label>Debtors Account</label>
+          <div class="col-md-6">
+            <div class="form-group" *ngIf="formsField.includes('DebtorsID')">
+              <div class="form-group">
+                <label>Debtors Account</label>
 
-            <select class="form-control" formControlName="IsShowAllDebtors">
-              <option [ngValue]="null">Choose Option..</option>
-              <option *ngFor="let account of reportService.ledgerDebtors">
-                {{ account.LedgerName }}
-              </option>
-            </select>
+                <select
+                  class="form-control"
+                  [disabled]="showDebtorsCheckbox"
+                  formControlName="DebtorsID"
+                >
+                  <option [ngValue]="null">Choose Option..</option>
+                  <option
+                    *ngFor="let account of reportService.ledgerDebtors"
+                    [ngValue]="account.LedgerID"
+                  >
+                    {{ account.LedgerName }}
+                  </option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
       </fieldset>
@@ -430,7 +447,7 @@
                       <label>
                         <input
                           type="radio"
-                          [value]="allproduct"
+                          [value]="allProduct"
                           [(ngModel)]="isActive"
                           [ngModelOptions]="{ standalone: true }"
                           (change)="allProduct($event)"
@@ -523,7 +540,7 @@
                       <label>
                         <input
                           type="radio"
-                          [value]="allCashParty"
+                          [value]="allCashPArty"
                           [(ngModel)]="isActiveParty"
                           [ngModelOptions]="{ standalone: true }"
                           (change)="allCashPArty($event)"
@@ -605,6 +622,67 @@
 
       <fieldset>
         <div class="col-md-12 p-0">
+          <fieldset>
+            <legend>Choose Ageing Period</legend>
+            <div class="col-md-3">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('FirstPeriod')"
+              >
+                <label>First Period</label>
+                <input
+                  class="form-control"
+                  name="first_period"
+                  formControlName="FirstPeriod"
+                  accSwiftFormValidator
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('SecondPeriod')"
+              >
+                <label>Second Period</label>
+                <input
+                  class="form-control"
+                  name="second_period"
+                  formControlName="SecondPeriod"
+                  accSwiftFormValidator
+                />
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('ThirdPeriod')"
+              >
+                <label>Third Period</label>
+                <input
+                  class="form-control"
+                  name="third_period"
+                  formControlName="ThirdPeriod"
+                  accSwiftFormValidator
+                />
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div
+                class="form-group"
+                *ngIf="formsField.includes('FourthPeriod')"
+              >
+                <label>Fourth Period</label>
+                <input
+                  class="form-control"
+                  name="fourth_period"
+                  formControlName="FourthPeriod"
+                  accSwiftFormValidator
+                />
+              </div>
+            </div>
+          </fieldset>
           <div class="col-md-8">
             <div class="col-md-4 pl-0">
               <div
@@ -632,7 +710,7 @@
                     *ngFor="let depot of reportService.depotList"
                     [ngValue]="depot.ID"
                   >
-                    {{ depot.Name }}
+                    {{ depot.DepotName }}
                   </option>
                 </select>
               </div>
@@ -748,6 +826,7 @@
                   </option>
                 </select>
               </div>
+
               <div class="form-group" *ngIf="formsField.includes('ProjectID')">
                 <label>Project</label>
                 <select

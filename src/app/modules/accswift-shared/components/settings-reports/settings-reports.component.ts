@@ -7,7 +7,7 @@ import { ProductMin } from "@accSwift-modules/product/models/product-min.model";
 import { CashPartyGroup } from "@accSwift-modules/reports/models/sales.report.model";
 import { ReportsService } from "@accSwift-modules/reports/services/reports.service";
 import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { BsModalRef } from "ngx-bootstrap";
 import { Subject } from "rxjs";
 
@@ -20,6 +20,7 @@ export class SettingsReportsComponent implements OnInit {
   @Input() settingsForms: FormGroup;
   toDateSelect: number;
   dateCheckbox: boolean = true;
+  showDebtorsCheckbox: boolean = true;
   public onClose = new Subject();
   public onSubmit: Subject<boolean>;
   // public projectName: Subject<string>;
@@ -72,6 +73,7 @@ export class SettingsReportsComponent implements OnInit {
           : null
       );
     this.formsField = Object.keys(this.settingsForms.controls);
+
   }
 
   getProductGroupDD(): void {
@@ -97,12 +99,6 @@ export class SettingsReportsComponent implements OnInit {
     });
   }
 
-  getLedgerDebts(): void {
-    this.reportService.getLedgerDebtors().subscribe((response) => {
-      this.ledgerDebtors = response.Entity;
-    });
-  }
-
   enableDate(): void {
     if (this.settingsForms.get("IsDateRange").value) {
       this.dateCheckbox = false;
@@ -112,6 +108,17 @@ export class SettingsReportsComponent implements OnInit {
       this.dateCheckbox = true;
       this.settingsForms.get("ToDate").disable();
       this.settingsForms.get("FromDate").disable();
+    }
+  }
+
+  enableDebtorsAccount(): void {
+    if(this.settingsForms.get("IsShowAllDebtors").value) {
+      this.showDebtorsCheckbox = false;
+      this.settingsForms.get("DebtorsID").enable();
+    }
+    else {
+      this.showDebtorsCheckbox = true;
+      this.settingsForms.get("DebtorsID").disable();
     }
   }
 

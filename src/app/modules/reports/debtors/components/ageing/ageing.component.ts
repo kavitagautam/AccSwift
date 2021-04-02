@@ -3,8 +3,9 @@ import { PreferenceService } from '@accSwift-modules/preference/services/prefere
 import { DebtorsAgeingList } from '@accSwift-modules/reports/models/debtors-ageing.model';
 import { ReportsService } from '@accSwift-modules/reports/services/reports.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RxwebValidators } from '@rxweb/reactive-form-validators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
@@ -36,15 +37,15 @@ export class AgeingComponent implements OnInit {
 
   buildAgeingForm(): void {
     this.ageingForm = this._fb.group({
-      IsAgeing: [false],
+      IsAgeing: [true],
       IsBillwiseAgeing: [false],
       IsShowVoucherBalance: [false],
-      FirstPeriod: 0,
-      SecondPeriod: 0,
-      ThirdPeriod: 0,
-      FourthPeriod: 0,
+      FirstPeriod: [0],
+      SecondPeriod: [0, RxwebValidators.greaterThan({fieldName: 'FirstPeriod'})],
+      ThirdPeriod: [0, RxwebValidators.greaterThan({fieldName: 'SecondPeriod'})],
+      FourthPeriod: [0, RxwebValidators.greaterThan({fieldName: 'ThirdPeriod'} )],
       IsShowAllDebtors: [false],
-      DebtorsID: 0,
+      DebtorsID: [{value: 0, disabled: true}],
       FromDate: [{value: null, disabled: true}],
       ToDate: [{value: null, disabled: true}],
       IsDateRange: [false],
@@ -54,7 +55,6 @@ export class AgeingComponent implements OnInit {
   }
 
   openDebtorsAgeingReportSettings(): void {
-    console.log("Forms value " + JSON.stringify(this.ageingForm.value))
     this.modalRef = this.modalService.show(SettingsReportsComponent, {
       initialState: { settingsForms: this.ageingForm },
       ignoreBackdropClick: true,
@@ -64,6 +64,7 @@ export class AgeingComponent implements OnInit {
     })
 
     this.modalRef.content.onSubmit.subscribe((data) => {
+     if (this.ageingForm.invalid) return;
       if (data) {
   
       this.reportsService.getDebtorsAgeingList(JSON.stringify(data)).subscribe(
@@ -81,6 +82,7 @@ export class AgeingComponent implements OnInit {
   });
   
       this.modalRef.content.onClose.subscribe((data) => {
+        if (this.ageingForm.invalid) return;
         this.showDebtorsAgeingReport();
       });
     

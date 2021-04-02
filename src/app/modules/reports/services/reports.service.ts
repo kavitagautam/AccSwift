@@ -173,6 +173,7 @@ export class ReportsService {
     this.getDepotList();
     this.getLedgerGroupDropDown();
     this.getLedgerDropDown();
+    this.getLedgerDebtors()
   }
 
   getTrailBalance(body): Observable<TrailBalanceModel> {
@@ -274,10 +275,12 @@ export class ReportsService {
     );
   }
 
-  getLedgerDebtors(): Observable<LedgerDebtorsRootModel> {
-    return this.httpService.get(
+  getLedgerDebtors(): void {
+     this.httpService.get(
       `${this._api_URL}Ledger/debtors`
-    );
+    ).subscribe(response=>{
+      this.ledgerDebtors=response.Entity
+    });
   }
 
   getSalesReports(body): Observable<SalesReportModel> {

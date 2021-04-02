@@ -6,6 +6,7 @@ import {
   LOCALE_ID,
 } from "@angular/core";
 import { AppRoutingModule } from "./app-routing.module";
+import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 import { AppComponent } from "./app.component";
 import { CoreModule } from "./core/core.module";
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
@@ -86,6 +87,7 @@ export function localFunction(settingsService: SettingsService) {
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    RxReactiveFormsModule,
     NgxsModule.forRoot([], {
       developmentMode: !environment.production,
     }),
