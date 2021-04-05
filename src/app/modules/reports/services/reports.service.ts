@@ -71,6 +71,7 @@ import { KharidKhataRootModel } from '../models/kharid-khata.model';
 import { BikriKhataRootModel } from '../models/bikri-khata.model';
 import { MaterializedViewList, MaterializedViewRootModel } from '../models/materialized-view.model';
 import { DebtorsAgeingList, DebtorsAgeingRootModel } from '../models/debtors-ageing.model';
+import { DebtorsDuedateList, DebtorsDuedateRootModel } from '../models/debtors-duedate.model';
 
 @Injectable({
   providedIn: "root",
@@ -82,6 +83,7 @@ export class ReportsService {
   ledgerMinLists: LedgerMin[] = [];
   ledgerDebtors: LedgerDebtors[] = [];
   debtorsAgeingList: DebtorsAgeingList[] = [];
+  debtorsDuedateList: DebtorsDuedateList[] = [];
 
   // Service message commands
   selectProject(name: string) {
@@ -273,6 +275,10 @@ export class ReportsService {
       `${this._api_URL}Reports/DebtorsAgeing`,
       body
     );
+  }
+
+  getDebtorsDuedateList(body): Observable<DebtorsDuedateRootModel> {
+    return this.httpService.post(`${this._api_URL}Reports/DebtorsAgeingDetails`, body);
   }
 
   getLedgerDebtors(): void {

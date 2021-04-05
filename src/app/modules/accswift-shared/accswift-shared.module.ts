@@ -63,7 +63,7 @@ import { DateSelectionSettingsComponent } from './components/date-selection-sett
     OpeningBalanceComponent,
     EntrySubLedgerComponent,
     BasicAddEditUserComponent,
-    DateSelectionSettingsComponent,
+    DateSelectionSettingsComponent
   ],
   imports: [
     FormsModule,

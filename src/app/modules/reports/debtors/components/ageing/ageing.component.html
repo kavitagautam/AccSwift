@@ -28,8 +28,8 @@
             </thead>
 
             <tbody *ngFor="let debtorsAgeing of debtorsAgeingList; index as i">
-              <tr>
-                <td>
+              <tr (click)="openDebtorsDuedateDetails(dueDate, debtorsAgeing)">
+                <td style="color: blue">
                   {{ debtorsAgeing.Debtors }}
                 </td>
                 <td class="balance">
@@ -67,5 +67,89 @@
       </div>
       <div *ngIf="listLoading" class="k-i-loading"></div>
     </div>
+
+    <ng-template #dueDate>
+      <div class="modal-header">
+        <h3 class="modal-title pull-left">Debtors DueDate</h3>
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="modalRefDueDate.hide()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="col-md-12">
+          <div class="grid-wrapper" style="height: 250px; overflow-y: scroll">
+            <div class="">
+              <table id="header-fixed" class="table table-hover table-fixed">
+                <thead>
+                  <tr>
+                    <th>S.N.</th>
+                    <th>Transaction Date</th>
+                    <th>Voucher Type</th>
+                    <th>Due Date</th>
+                    <th>Over Due Days</th>
+                    <th>Balance</th>
+                  </tr>
+                </thead>
+                <tbody  *ngFor="let duedateList of debtorsDuedateList; index as i">
+                  <tr (click)="openVoucherEdit($event, duedateList)">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ duedateList.TransactDate | date: "MM-dd-yyyy" }}</td>
+                    <td>{{ duedateList.VoucherType }}</td>
+                    <td>{{ duedateList.DueDate | date: "MM-dd-yyyy" }}</td>
+                    <td>{{ duedateList.OverDueDays }}</td>
+                    <td class="balance">
+                      <span
+                        [innerHTML]="duedateList.Balance | currencyFormat"
+                      ></span>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr *ngIf="debtorsDuedateList.length == 0">
+                    <td class="text-center" colospan="10">No data Available</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr *ngIf="debtorsDuedateList.length > 0">
+                    <td colspan="1"></td>
+                    <td colspan="1"></td>
+                    <td colspan="1"></td>
+                    <td colspan="1"></td>
+                    <td colspan="1">Total Amount</td>
+                    <td class="balance" colspan="1">
+                      <span [innerHTML]="totalAmount | currencyFormat"></span>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="listLoading" class="k-i-loading"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="modalRefDueDate.hide()"
+        >
+          OK
+        </button>
+        <button
+          class="btn btn-secondary ml-2"
+          type="button"
+          (click)="modalRefDueDate.hide()"
+        >
+          Cancel
+        </button>
+      </div>
+    </ng-template>
   </div>
 </div>
