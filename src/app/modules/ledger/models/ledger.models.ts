@@ -160,3 +160,19 @@ export interface CodeSuggestModel {
   Code: string;
   Type: string;
 }
+
+export interface LedgerDebtors {
+  LedgerID: number;
+  LedgerCode: string;
+  LedgerName: string;
+  LedgerBalance: string;
+  CodeName: string;
+  GroupID: number;
+}
+
+export interface LedgerDebtorsRootModel {
+  StatusCode: number;
+  Message: string;
+  Entity: LedgerDebtors[];
+}
+

@@ -49,10 +49,14 @@
                   </span>
                 </td>
                 <td class="balance">
-                  <span [innerHTML]="cashFlow.InFlowAmount | currencyFormat"></span>
+                  <span
+                    [innerHTML]="cashFlow.InFlowAmount | currencyFormat"
+                  ></span>
                 </td>
                 <td class="balance">
-                  <span [innerHTML]="cashFlow.OutFlowAmount | currencyFormat"></span>
+                  <span
+                    [innerHTML]="cashFlow.OutFlowAmount | currencyFormat"
+                  ></span>
                 </td>
               </tr>
             </tbody>
@@ -62,7 +66,7 @@
               </tr>
             </tbody>
 
-            <tfoot>
+            <tfoot *ngIf="cashFlowList.length > 0">
               <tr>
                 <td>Total CashFlow</td>
                 <td class="balance">
