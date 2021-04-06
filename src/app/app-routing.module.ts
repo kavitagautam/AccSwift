@@ -183,14 +183,14 @@ const routes: Routes = [
         },
       },
       {
-        path: "debtors-ageing",
+        path: "debtors/debtors-ageing",
         loadChildren: "@accSwift-modules/reports/debtors/debtors.module#DebtorsModule",
         data: {
           breadcrumb: "Debtors Ageing"
         }
       },
       {
-        path: "debtors-duedate",
+        path: "debtors/debtors-duedate",
         loadChildren: "@accSwift-modules/reports/debtors/debtors.module#DebtorsModule",
         data: {
           breadcrumb: "Debtors Due Date"

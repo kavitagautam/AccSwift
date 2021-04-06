@@ -96,11 +96,13 @@
                     <th>Balance</th>
                   </tr>
                 </thead>
-                <tbody  *ngFor="let duedateList of debtorsDuedateList; index as i">
+                <tbody
+                  *ngFor="let duedateList of debtorsDuedateList; index as i"
+                >
                   <tr (click)="openVoucherEdit($event, duedateList)">
                     <td>{{ i + 1 }}</td>
                     <td>{{ duedateList.TransactDate | date: "MM-dd-yyyy" }}</td>
-                    <td>{{ duedateList.VoucherType }}</td>
+                    <td style="color: blue">{{ duedateList.VoucherType }}</td>
                     <td>{{ duedateList.DueDate | date: "MM-dd-yyyy" }}</td>
                     <td>{{ duedateList.OverDueDays }}</td>
                     <td class="balance">

@@ -4,10 +4,60 @@
       <button
         type="button"
         class="btn-primary m-3"
-        (click)="openDebtorsDuedateReportSettings()"
+        (click)="openDebtorsDueDateReportSettings()"
       >
         Debtors Due Date Report Settings
       </button>
     </div>
   </div>
+</div>
+
+<div class="col-md-12">
+  <div class="grid-wrapper">
+    <div class="table-box">
+      <table id="header-fixed" class="table table-hover table-fixed">
+        <thead>
+          <tr>
+            <th>S.N.</th>
+            <th>Transaction Date</th>
+            <th>Voucher Type</th>
+            <th>Due Date</th>
+            <th>Over Due Days</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+
+        <tbody *ngFor="let duedateList of debtorsDuedateList; index as i">
+          <tr (click)="openVoucherEdit($event, duedateList)">
+            <td>{{ i + 1 }}</td>
+            <td>{{ duedateList.TransactDate | date: "MM-dd-yyyy" }}</td>
+            <td style="color: blue">{{ duedateList.VoucherType }}</td>
+            <td>{{ duedateList.DueDate | date: "MM-dd-yyyy" }}</td>
+            <td>{{ duedateList.OverDueDays }}</td>
+            <td class="balance">
+              <span [innerHTML]="duedateList.Balance | currencyFormat"></span>
+            </td>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr *ngIf="debtorsDuedateList.length == 0">
+            <td class="text-center" colospan="10">No data Available</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr *ngIf="debtorsDuedateList.length > 0">
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1"></td>
+            <td colspan="1">Total Amount</td>
+            <td class="balance" colspan="1">
+              <span [innerHTML]="totalAmount | currencyFormat"></span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  <div *ngIf="listLoading" class="k-i-loading"></div>
 </div>

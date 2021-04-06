@@ -133,6 +133,40 @@
           </div>
         </div>
       </fieldset>
+      <fieldset *ngIf="formsField.includes('IsDueBills')">
+        <div class="col-md-12 p-0">
+          <div class="col-md-6">
+            <div class="form-group" *ngIf="formsField.includes('IsDueBills')">
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="IsDueBills"
+                    [value]="true"
+                    formControlName="IsDueBills"
+                  />
+                  Due Bills
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group" *ngIf="formsField.includes('IsDueBills')">
+              <div class="radio">
+                <label>
+                  <input
+                    type="radio"
+                    name="IsDueBills"
+                    [value]="false"
+                    formControlName="IsDueBills"
+                  />
+                  Over Due Bills
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
 
       <fieldset *ngIf="formsField.includes('DisplayFormat')">
         <div class="col-md-12 p-0">
@@ -622,7 +656,7 @@
 
       <fieldset>
         <div class="col-md-12 p-0">
-          <fieldset>
+          <fieldset *ngIf="formsField.includes('IsAgeing')">
             <legend>Choose Ageing Period</legend>
             <div class="col-md-3">
               <div

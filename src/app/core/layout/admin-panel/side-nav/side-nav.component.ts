@@ -168,12 +168,12 @@ export class SideNavComponent implements OnInit {
             {
               displayName: "Debtors Ageing",
               iconName: "fa fa-file-excel-o",
-              route: "/debtors-ageing"
+              route: "/debtors/debtors-ageing/ageing"
             },
             {
               displayName: "Debtors Due date",
               iconName: "fa fa-file-excel-o",
-              route: "/debtors-duedate"
+              route: "/debtors/debtors-duedate/duedate"
             },
           ]
         },
