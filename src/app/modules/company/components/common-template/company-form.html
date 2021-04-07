@@ -8,7 +8,9 @@
         <div class="clearfix">
           <kendo-fileselect
             (select)="selectEventHandler($event)"
-          ></kendo-fileselect>
+            [restrictions]="myRestrictions"
+          >
+          </kendo-fileselect>
         </div>
       </div>
       <div class="col-md-10">

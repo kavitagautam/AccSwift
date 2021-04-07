@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CompanyService } from "../../services/company.service";
 import { Company } from "../../models/company.model";
 import { ToastrService } from "ngx-toastr";
-import { SelectEvent } from "@progress/kendo-angular-upload";
+import { FileRestrictions, SelectEvent } from "@progress/kendo-angular-upload";
 
 @Component({
   selector: "accSwift-edit-company",
@@ -15,6 +15,10 @@ export class EditCompanyComponent implements OnInit {
   companyLogo: any = "";
   companyDetails: Company;
   companyForm: FormGroup;
+  public myRestrictions: FileRestrictions = {
+    allowedExtensions: ['.jpg', '.png']
+  };
+
   username: string[] = [
     " Young Innovations ",
     "Imagine Web Solution ",

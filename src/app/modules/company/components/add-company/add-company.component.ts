@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { CompanyService } from "../../services/company.service";
 import { ToastrService } from "ngx-toastr";
 import { SelectEvent } from "@progress/kendo-angular-upload";
+import { FileRestrictions } from '@progress/kendo-angular-upload';
 
 @Component({
   selector: "accSwift-add-company",
@@ -42,6 +43,10 @@ export class AddCompanyComponent implements OnInit {
   companyLogo: any = "";
 
   companyForm: FormGroup;
+
+  public myRestrictions: FileRestrictions = {
+    allowedExtensions: ['.jpg', '.png']
+  };
 
   constructor(
     private _fb: FormBuilder,
