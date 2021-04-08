@@ -5,6 +5,7 @@ import { CompanyService } from "../../services/company.service";
 import { ToastrService } from "ngx-toastr";
 import { SelectEvent } from "@progress/kendo-angular-upload";
 import { FileRestrictions } from '@progress/kendo-angular-upload';
+import { Suggestion } from '@accSwift-modules/company/models/company.model';
 
 @Component({
   selector: "accSwift-add-company",
@@ -38,6 +39,8 @@ export class AddCompanyComponent implements OnInit {
     "+010",
   ];
 
+  suggestion:Suggestion;
+
   Phone: string;
 
   companyLogo: any = "";
@@ -63,7 +66,10 @@ export class AddCompanyComponent implements OnInit {
     this.companyForm = this._fb.group({
       ID: [0],
       Name: ["", Validators.required],
-      Code: ["", Validators.required],
+      Code: [
+        this.suggestion ? this.suggestion.SuggestedCompanyCode : "",
+        Validators.required,
+      ],
       Telephone: [""],
       Email: ["", [Validators.required, Validators.email]],
       Phone: ["", [Validators.required]],
@@ -85,6 +91,7 @@ export class AddCompanyComponent implements OnInit {
       BookBeginFrom: [""],
       Remarks: [""],
     });
+    console.log(this.companyForm.value)
   }
 
   public selectEventHandler(e: SelectEvent): void {
@@ -105,6 +112,19 @@ export class AddCompanyComponent implements OnInit {
     });
   }
 
+  public getSuggestionData(): void {
+    this.companyService.getCompanySuggestion(this.companyForm.value,this.companyForm.value.Name).subscribe(
+      (response) => {
+        this.suggestion = response.Entity;
+      }
+    )
+  }
+
+
+  suggestCode():void{
+    this.getSuggestionData()
+  }
+  
   public save(): void {
     console.log(JSON.stringify(this.companyForm.getRawValue()));
     if (this.companyForm.invalid) return;

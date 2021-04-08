@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CompanyService } from "../../services/company.service";
-import { Company } from "../../models/company.model";
+import { Company, Suggestion } from "../../models/company.model";
 import { ToastrService } from "ngx-toastr";
 import { FileRestrictions, SelectEvent } from "@progress/kendo-angular-upload";
 
@@ -45,6 +45,8 @@ export class EditCompanyComponent implements OnInit {
     "+010",
   ];
 
+  suggestion:Suggestion;
+
   Phone: string;
 
   constructor(
@@ -81,10 +83,7 @@ export class EditCompanyComponent implements OnInit {
         this.companyDetails ? this.companyDetails.Name : "",
         Validators.required,
       ],
-      Code: [
-        this.companyDetails ? this.companyDetails.Code : "",
-        Validators.required,
-      ],
+      Code: ["", Validators.required],
       Telephone: [this.companyDetails ? this.companyDetails.Telephone : ""],
       Email: [this.companyDetails ? this.companyDetails.Email : ""],
       Website: [this.companyDetails ? this.companyDetails.Website : ""],
@@ -135,6 +134,19 @@ export class EditCompanyComponent implements OnInit {
         reader.readAsDataURL(file.rawFile);
       }
     });
+  }
+
+
+
+  suggestCode():void{
+    this.getSuggestionData()
+  }
+  public getSuggestionData(): void {
+    this.companyService.getCompanySuggestion(this.companyForm.value, this.companyForm.value.Name).subscribe(
+      (response) => {
+        this.suggestion = response.Entity;
+      }
+    )
   }
 
   public save(): void {

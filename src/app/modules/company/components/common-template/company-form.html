@@ -21,6 +21,7 @@
               <input
                 class="form-control"
                 formControlName="Name"
+                (blur)="suggestCode()"
                 accSwiftFormValidator
               />
             </div>
@@ -28,7 +29,8 @@
             <div class="form-group">
               <label>Company Code<sup>*</sup></label>
               <kendo-autocomplete
-                [data]="companycode"
+                [data]="suggestion"
+                [valueField]="'SuggestedCompanyCode'"
                 class="form-control"
                 formControlName="Code"
                 accSwiftFormValidator

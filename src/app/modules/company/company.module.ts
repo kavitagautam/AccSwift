@@ -14,6 +14,7 @@ import { SharedModule } from "@app/shared/shared.module";
 import { UploadsModule } from "@progress/kendo-angular-upload";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 import { Ng2TelInputModule } from "ng2-tel-input";
+import { ImageCropperModule } from "ngx-image-cropper";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { Ng2TelInputModule } from "ng2-tel-input";
     DropDownListModule,
     DropDownsModule,
     Ng2TelInputModule,
+    ImageCropperModule
   ],
 })
 export class CompanyModule {}
