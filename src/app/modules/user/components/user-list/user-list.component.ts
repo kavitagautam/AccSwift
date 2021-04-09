@@ -20,6 +20,7 @@ import { ConfirmationDialogComponent } from "@app/shared/components/confirmation
   styleUrls: ["./user-list.component.scss"],
 })
 export class UserListComponent implements OnInit {
+  fieldTextType: boolean;
   users: Users[];
   editableForm: boolean = false;
   editMode: boolean = false;
@@ -134,6 +135,10 @@ export class UserListComponent implements OnInit {
       this.currentPage = pageNo;
     }
     this.getUsers();
+  }
+
+  togglePwFieldType():void {
+    this.fieldTextType = !this.fieldTextType;
   }
 
   getUsers(): void {
