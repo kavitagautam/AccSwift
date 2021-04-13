@@ -4,6 +4,8 @@ import { Router } from "@angular/router";
 import { CompanyService } from "../../services/company.service";
 import { ToastrService } from "ngx-toastr";
 import { SelectEvent } from "@progress/kendo-angular-upload";
+import { FileRestrictions } from '@progress/kendo-angular-upload';
+import { Suggestion } from '@accSwift-modules/company/models/company.model';
 
 @Component({
   selector: "accSwift-add-company",
@@ -11,37 +13,20 @@ import { SelectEvent } from "@progress/kendo-angular-upload";
   styleUrls: ["./add-company.component.scss"],
 })
 export class AddCompanyComponent implements OnInit {
-  username: string[] = [
-    " Young Innovations ",
-    "Imagine Web Solution ",
-    "Smart Designs ",
-    " 	F1Soft International ",
-    "Bent Ray Technologies ",
-    "Pracas Infosys ",
-    "SoftNEP",
-    "Peace Nepal DOT Com ",
-  ];
 
-  companycode: string[] = [
-    "+977",
-    "+01",
-    "+93",
-    "+02",
-    "+03",
-    "+04",
-    "+05",
-    "+06",
-    "+07",
-    "+08",
-    "+09",
-    "+010",
-  ];
+  fieldTextType: boolean;
+
+  suggestion:Suggestion;
 
   Phone: string;
 
   companyLogo: any = "";
 
   companyForm: FormGroup;
+
+  public myRestrictions: FileRestrictions = {
+    allowedExtensions: ['.jpg', '.png']
+  };
 
   constructor(
     private _fb: FormBuilder,
@@ -58,7 +43,10 @@ export class AddCompanyComponent implements OnInit {
     this.companyForm = this._fb.group({
       ID: [0],
       Name: ["", Validators.required],
-      Code: ["", Validators.required],
+      Code: [
+        this.suggestion ? this.suggestion.SuggestedCompanyCode : "",
+        Validators.required,
+      ],
       Telephone: [""],
       Email: ["", [Validators.required, Validators.email]],
       Phone: ["", [Validators.required]],
@@ -73,13 +61,14 @@ export class AddCompanyComponent implements OnInit {
       City: [""],
       District: [""],
       Zone: [""],
-      UserName: ["", Validators.required],
+      UserName: [this.suggestion ? this.suggestion.SuggestedUserName: "", Validators.required],
       Password: ["", Validators.required],
       FYFrom: [new Date()],
       FiscalYear: ["075/76"],
       BookBeginFrom: [""],
       Remarks: [""],
     });
+    console.log(this.companyForm.value)
   }
 
   public selectEventHandler(e: SelectEvent): void {
@@ -100,8 +89,25 @@ export class AddCompanyComponent implements OnInit {
     });
   }
 
+  public getSuggestionData(): void {
+    this.companyService.getCompanySuggestion(this.companyForm.value,this.companyForm.value.Name).subscribe(
+      (response) => {
+        this.suggestion = response.Entity;
+        this.companyForm.get("Code").setValue(response.Entity.SuggestedCompanyCode);
+        this.companyForm.get("UserName").setValue(response.Entity.SuggestedUserName);
+      }
+    )
+  }
+
+  suggestCode():void{
+    this.getSuggestionData();
+  }
+  
+  togglePwFieldType():void {
+    this.fieldTextType = !this.fieldTextType;
+  }
+
   public save(): void {
-    console.log(JSON.stringify(this.companyForm.getRawValue()));
     if (this.companyForm.invalid) return;
 
     this.companyService.addCompany(this.companyForm.value).subscribe(

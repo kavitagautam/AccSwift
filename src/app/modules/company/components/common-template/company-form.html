@@ -8,7 +8,9 @@
         <div class="clearfix">
           <kendo-fileselect
             (select)="selectEventHandler($event)"
-          ></kendo-fileselect>
+            [restrictions]="myRestrictions"
+          >
+          </kendo-fileselect>
         </div>
       </div>
       <div class="col-md-10">
@@ -19,6 +21,7 @@
               <input
                 class="form-control"
                 formControlName="Name"
+                (blur)="suggestCode()"
                 accSwiftFormValidator
               />
             </div>
@@ -26,12 +29,14 @@
             <div class="form-group">
               <label>Company Code<sup>*</sup></label>
               <kendo-autocomplete
-                [data]="companycode"
+                [data]="suggestion"
                 class="form-control"
                 formControlName="Code"
+                [valueField]="'SuggestedCompanyCode'"
+                [suggest]="true"
+                [placeholder]="'Code'"
                 accSwiftFormValidator
-              >
-              </kendo-autocomplete>
+              ></kendo-autocomplete>
             </div>
 
             <div class="form-group">
@@ -143,26 +148,35 @@
               <div class="form-group">
                 <label>User Name<sup>*</sup></label>
                 <kendo-autocomplete
-                  id="username"
-                  name="username"
-                  [data]="username"
+                  [data]="suggestion"
+                  [valueField]="'SuggestedUserName'"
                   class="form-control"
                   formControlName="UserName"
+                  [suggest]="true"
                   accSwiftFormValidator
                 >
                 </kendo-autocomplete>
               </div>
             </div>
             <div class="col-md-3">
-              <div class="form-group">
+              <div class="form-group" style="position: relative">
                 <label>Password</label>
                 <input
                   class="form-control"
                   formControlName="Password"
-                  type="password"
+                  [type]="fieldTextType ? 'text' : 'password'"
                   name="password"
                   accSwiftFormValidator
                 />
+                <i
+                  style="position: absolute; top: 36px; right: 21px"
+                  class="fa fa-eye-slash"
+                  [ngClass]="{
+                  'fa-eye-slash': !fieldTextType,
+                  'fa-eye': fieldTextType
+                }"
+                  (click)="togglePwFieldType()"
+                ></i>
               </div>
             </div>
           </fieldset>

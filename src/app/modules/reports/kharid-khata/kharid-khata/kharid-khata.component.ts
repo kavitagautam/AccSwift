@@ -43,6 +43,10 @@ export class KharidKhataComponent implements OnInit {
     "/#/";
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => this.openKharidKhataReportSettings(), 100);
+  }
+
   buildKharidKhataReportForms(): void {
     this.kharidKhataReportForms = this._fb.group({
       FromDate: [{ value: "", disabled: false }],
@@ -90,6 +94,12 @@ export class KharidKhataComponent implements OnInit {
     this.listLoading = true;
     this.reportService.getKharidKhataReports(this.kharidKhataReportForms.value).subscribe((response) => {
       this.kharidKhataList = response.Entity.Entity;
+      this.sumTotalPurchaseAmt = response.Entity.SumTotalPurchaseAmt;
+      this.sumNonTaxableAmt = response.Entity.SumNonTaxableAmt;
+      this.sumTaxablePurchaseAmt = response.Entity.SumTaxablePurchaseAmt;
+      this.sumTaxPurchaseAmt = response.Entity.SumTaxPurchaseAmt;
+      this.sumTaxableSalesAmt = response.Entity.SumTaxableSalesAmt;
+      this.sumTaxSalesAmt = response.Entity.SumTaxSalesAmt;
     },
     (error) => {
       this.listLoading = false;
@@ -97,6 +107,7 @@ export class KharidKhataComponent implements OnInit {
     },
     () => {
       this.modalRef.hide();
+      this.listLoading = false;
     }
     );
   }

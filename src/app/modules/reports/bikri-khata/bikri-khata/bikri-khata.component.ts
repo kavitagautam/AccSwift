@@ -34,6 +34,10 @@ export class BikriKhataComponent implements OnInit {
     this.buildBikriKhataReportForms();
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => this.openBikriKhataReportSettings(), 100);
+  }
+
   buildBikriKhataReportForms(): void{
     this.bikriKhataReportForms = this._fb.group({
       FromDate: [{ value: "", disabled: false}],
@@ -82,6 +86,11 @@ export class BikriKhataComponent implements OnInit {
     this.listLoading = true;
     this.reportService.getBikriKhataReports(this.bikriKhataReportForms.value).subscribe((response) => {
       this.bikriKhataList = response.Entity.Entity;
+      this.sumTotalSalesAmt = response.Entity.SumTotalSalesAmt;
+      this.sumNonTaxableSalesAmt = response.Entity.SumNonTaxableSalesAmt;
+      this.sumExport = response.Entity.SumExport;
+      this.sumTaxableAmount = response.Entity.SumTaxableAmount;
+      this.sumTaxAmount = response.Entity.SumTaxAmount;
   },
   (error) => {
     this.listLoading = false;
@@ -89,6 +98,7 @@ export class BikriKhataComponent implements OnInit {
   },
   () =>{
     this.modalRef.hide();
+    this.listLoading = false;
     }
     );
   }

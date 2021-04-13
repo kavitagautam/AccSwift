@@ -52,7 +52,7 @@ private log(event: string): void {
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
   }
-  imageLoaded() {
+  imageLoaded(image: HTMLImageElement) {
     // show cropper
   }
   cropperReady() {

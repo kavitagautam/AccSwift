@@ -15,6 +15,8 @@ import { profile } from 'console';
   styleUrls: ['./userprofile.component.scss']
 })
 export class UserprofileComponent implements OnInit {
+
+  fieldTextType: boolean;
   users: Users;
   profileForm: FormGroup;
   userID: number;
@@ -72,6 +74,10 @@ export class UserprofileComponent implements OnInit {
     
       AccClassName: [this.users ? this.users.AccClassName : ""],
     })
+  }
+
+  togglePwFieldType():void {
+    this.fieldTextType = !this.fieldTextType;
   }
 
   onSubmitUser(): void {

@@ -43,6 +43,10 @@ export class CashFlowReportComponent implements OnInit {
       "/#/";
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => this.openCashFlowReportSettings(), 100);
+  }
+
   buildCashFlowReportForms(): void {
     this.cashFlowReportForms = this._fb.group({
       Type: [""],
@@ -99,14 +103,16 @@ export class CashFlowReportComponent implements OnInit {
     this.reportService.getCashFlowReports(this.cashFlowReportForms.value).subscribe(
       (response) => {
         this.cashFlowList = response.Entity.Entity;
+        this.totalInFlowAmount = response.Entity.TotalInFlowAmount;
+        this.totalOutFlowAmount = response.Entity.TotalOutFlowAmount;
       },
       (error) => {
         this.listLoading = false;
         this.modalRef.hide();
       },
       () => {
-        this.listLoading = false;
         this.modalRef.hide();
+        this.listLoading = false;
       }
     );
   }

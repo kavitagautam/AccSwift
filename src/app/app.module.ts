@@ -6,6 +6,7 @@ import {
   LOCALE_ID,
 } from "@angular/core";
 import { AppRoutingModule } from "./app-routing.module";
+import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 import { AppComponent } from "./app.component";
 import { CoreModule } from "./core/core.module";
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
@@ -32,6 +33,7 @@ import "@progress/kendo-angular-intl/locales/en-GB/all";
 import "@progress/kendo-angular-intl/locales/fr/all";
 
 import "hammerjs";
+import { ColumnResizingService } from '@progress/kendo-angular-grid';
 
 // registerLocaleData(localeNe, "ne");
 registerLocaleData(localefr, "fr");
@@ -85,6 +87,7 @@ export function localFunction(settingsService: SettingsService) {
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    RxReactiveFormsModule,
     NgxsModule.forRoot([], {
       developmentMode: !environment.production,
     }),
@@ -105,6 +108,7 @@ export function localFunction(settingsService: SettingsService) {
     //   useFactory: localFunction,
     // },
     CookieService,
+    ColumnResizingService,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

@@ -1,13 +1,13 @@
 import { CashParty } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
-import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
+import { LedgerDebtorsRootModel, LedgerDebtors, LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
 import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
 import { ProductGroup } from "@accSwift-modules/product/models/product-group.models";
 import { ProductMin } from "@accSwift-modules/product/models/product-min.model";
 import { CashPartyGroup } from "@accSwift-modules/reports/models/sales.report.model";
 import { ReportsService } from "@accSwift-modules/reports/services/reports.service";
 import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { BsModalRef } from "ngx-bootstrap";
 import { Subject } from "rxjs";
 
@@ -20,6 +20,7 @@ export class SettingsReportsComponent implements OnInit {
   @Input() settingsForms: FormGroup;
   toDateSelect: number;
   dateCheckbox: boolean = true;
+  showDebtorsCheckbox: boolean = true;
   public onClose = new Subject();
   public onSubmit: Subject<boolean>;
   // public projectName: Subject<string>;
@@ -33,6 +34,7 @@ export class SettingsReportsComponent implements OnInit {
   accountsSelect: number;
 
   accountGroup: boolean = false;
+  ledgerDebtors: LedgerDebtors[] = [];
   ledgerMinList: LedgerMin[] = [];
   ledgerGroupList: LedgerGroup[] = [];
   productGroups: ProductGroup[] = [];
@@ -57,7 +59,6 @@ export class SettingsReportsComponent implements OnInit {
     this.formsField = [];
     this.onClose = new Subject();
     this.onSubmit = new Subject();
-    //this.projectName = new Subject();
     this.getLedger();
     this.getLedgerGroup();
     this.getProductGroupDD();
@@ -72,6 +73,7 @@ export class SettingsReportsComponent implements OnInit {
           : null
       );
     this.formsField = Object.keys(this.settingsForms.controls);
+
   }
 
   getProductGroupDD(): void {
@@ -106,6 +108,17 @@ export class SettingsReportsComponent implements OnInit {
       this.dateCheckbox = true;
       this.settingsForms.get("ToDate").disable();
       this.settingsForms.get("FromDate").disable();
+    }
+  }
+
+  enableDebtorsAccount(): void {
+    if(this.settingsForms.get("IsShowAllDebtors").value) {
+      this.showDebtorsCheckbox = false;
+      this.settingsForms.get("DebtorsID").enable();
+    }
+    else {
+      this.showDebtorsCheckbox = true;
+      this.settingsForms.get("DebtorsID").disable();
     }
   }
 
@@ -160,7 +173,6 @@ export class SettingsReportsComponent implements OnInit {
     const filterValue = this.reportService.projectList.filter(
       (s) => s.ID == projectID
     );
-    //this.projectName.next(filterValue[0].EngName);
     this.reportService.selectProject(filterValue[0].EngName);
   }
 

@@ -183,6 +183,20 @@ const routes: Routes = [
         },
       },
       {
+        path: "debtors/debtors-ageing",
+        loadChildren: "@accSwift-modules/reports/debtors/debtors.module#DebtorsModule",
+        data: {
+          breadcrumb: "Debtors Ageing"
+        }
+      },
+      {
+        path: "debtors/debtors-duedate",
+        loadChildren: "@accSwift-modules/reports/debtors/debtors.module#DebtorsModule",
+        data: {
+          breadcrumb: "Debtors Due Date"
+        }
+      },
+      {
         path: "kharid-khata",
         loadChildren: "@accSwift-modules/reports/kharid-khata/kharid-khata.module#KharidKhataModule",
         data: {
@@ -195,6 +209,13 @@ const routes: Routes = [
         data: {
           breadcrumb: "Bikri Khata",
         },
+      },
+      {
+        path: "materialized-view",
+        loadChildren: "@accSwift-modules/reports/materialized-view/materialized-view.module#MaterializedViewModule",
+        data: {
+          breadcrumb: "Materialized View",
+        }
       },
       {
         path: "day-book",
