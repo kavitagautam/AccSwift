@@ -149,7 +149,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       VatPanNo: [this.ledgerDetails ? this.ledgerDetails.VatPanNo : ""],
       CreditLimit: [0],
       IsActive: [true],
-      OpeningBalance: this._fb.array([this.addOpeningBalanceFormGroup()]),
+      OpeningBalance: this.addOpeningBalanceFormGroup(),
       SubLedgerList: this.setMultipleSubLedger(),
       Remarks: [this.ledgerDetails ? this.ledgerDetails.Remarks : ""],
     });
@@ -163,18 +163,22 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     return <FormArray>this.accountLedgerForm.get("SubLedgerList");
   }
 
-  addOpeningBalanceFormGroup(): FormGroup {
-    return this._fb.group({
+  addOpeningBalanceFormGroup(): FormArray {
+    const subOpeningBlc = new FormArray([]);
+    for (let i = 0;  i < this.ledgerService.accountClass.length; i++) {
+      subOpeningBlc.push(this._fb.group({
       ID: [null],
       AccClassID: [
         this.ledgerService.accountClass.length > 0
-          ? this.ledgerService.accountClass[0].ID
+          ? this.ledgerService.accountClass[i].ID
           : null,
         Validators.required,
       ],
       OpenBal: [0],
       OpenBalDrCr: [this.balanceDrCr ? this.balanceDrCr : ""],
-    });
+    }));
+  }
+  return subOpeningBlc;
   }
 
   setMultipleSubLedger(): FormArray {

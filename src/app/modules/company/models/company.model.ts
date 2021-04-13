@@ -51,3 +51,14 @@ export interface CompanyDetailsModel {
   Message: string;
   Entity: Company;
 }
+
+export interface Suggestion {
+  SuggestedCompanyCode: string;
+  SuggestedUserName: string;
+}
+
+export interface SuggestionRootModel {
+  StatusCode: number;
+  Message: string;
+  Entity: Suggestion;
+}

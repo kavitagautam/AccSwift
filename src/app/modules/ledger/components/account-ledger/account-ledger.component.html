@@ -245,9 +245,9 @@
                 (add)="addHandler($event)"
                 (remove)="removeHandler($event)"
               >
-                <ng-template kendoGridToolbarTemplate>
+                <!-- <ng-template kendoGridToolbarTemplate>
                   <button kendoGridAddCommand>Add New</button>
-                </ng-template>
+                </ng-template> -->
                 <kendo-grid-column field="AccClassID" title="Account Class">
                   <ng-template
                     kendoGridCellTemplate
@@ -360,7 +360,7 @@
                     </kendo-dropdownlist>
                   </ng-template>
                 </kendo-grid-column>
-                <kendo-grid-command-column title="Action" width="80">
+                <!-- <kendo-grid-command-column title="Action" width="80">
                   <ng-template kendoGridCellTemplate>
                     <button kendoGridRemoveCommand>
                       <i
@@ -369,7 +369,7 @@
                       ></i>
                     </button>
                   </ng-template>
-                </kendo-grid-command-column>
+                </kendo-grid-command-column> -->
               </kendo-grid>
 
               <!-- <div formGroupName="OpeningBalance">
