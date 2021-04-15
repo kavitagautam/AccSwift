@@ -109,7 +109,7 @@
                 formControlName="FiscalYear"
               />
             </div>
-            <div class="form-group">
+            <div class="form-group" style="position: relative">
               <label>Fiscal Year From</label>
               <input
                 type="text"
@@ -119,9 +119,10 @@
                 [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                 bsDatepicker
               />
+              <span class="glyphicon glyphicon-calendar calendar-icon"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" style="position: relative">
               <label>Books Beginning From</label>
               <input
                 type="text"
@@ -131,6 +132,7 @@
                 formControlName="BookBeginFrom"
                 bsDatepicker
               />
+              <span class="glyphicon glyphicon-calendar calendar-icon"></span>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ import { Preferences } from "../../../preference/models/preference.model";
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { SettingsService } from '@accSwift-modules/settings/services/settings.service';
 import { Settings } from '@accSwift-modules/settings/models/settings.model';
+import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 
 @Component({
   selector: "accSwift-add-journal",
@@ -22,6 +23,7 @@ import { Settings } from '@accSwift-modules/settings/models/settings.model';
 export class AddJournalComponent implements OnInit {
   private editedRowIndex: number;
   settings: Settings;
+  public selectedDate:string =''
   // datePick = this.settingsService.settings ? this.settingsService.settings.DEFAULT_DATE.Value:'';
   //Input Field Property
   iconConst = IconConst;
@@ -56,10 +58,13 @@ export class AddJournalComponent implements OnInit {
     private toastr: ToastrService,
     private preferenceService: PreferenceService,
     private settingsService: SettingsService,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
     this.buildJournalVoucherForms();
+   this.selectedDate= this.localStorageService.getLocalStorageItem(
+      "SelectedDate");
   }
 
   buildJournalVoucherForms(): void {

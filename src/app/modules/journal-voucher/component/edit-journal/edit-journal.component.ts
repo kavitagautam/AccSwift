@@ -11,6 +11,7 @@ import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/val
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { IntlService } from "@progress/kendo-angular-intl";
 import { TimeZoneService } from "@accSwift-modules/accswift-shared/services/time-zone/time-zone.service";
+import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 @Component({
   selector: "accSwift-edit-journal",
   templateUrl: "../common-html/journal-voucher.html",
@@ -20,6 +21,7 @@ import { TimeZoneService } from "@accSwift-modules/accswift-shared/services/time
 export class EditJournalComponent implements OnInit {
   private editedRowIndex: number;
   iconConst = IconConst;
+  public selectedDate:string =''
 
   journalVoucherForms: FormGroup;
   journalDetail: Journal;
@@ -50,7 +52,10 @@ export class EditJournalComponent implements OnInit {
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     private toastr: ToastrService,
-    public timeZone: TimeZoneService
+    public timeZone: TimeZoneService,
+    private localStorageService: LocalStorageService
+
+    
   ) {}
 
   ngOnInit() {
@@ -69,6 +74,9 @@ export class EditJournalComponent implements OnInit {
           });
       }
     });
+
+    this.selectedDate= this.localStorageService.getLocalStorageItem(
+      "SelectedDate");
   }
 
   bsValue = new Date();

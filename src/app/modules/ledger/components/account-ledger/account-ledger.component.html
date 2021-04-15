@@ -64,11 +64,17 @@
               <div class="col-md-4 col-sm-4 col-xs-4">
                 <div class="form-group">
                   <label>Currency </label>
-                  <input
+
+                  <kendo-dropdownlist
                     class="form-control"
+                    [data]="ledgerDetails"
+                    [filterable]="true"
+                    [textField]="'Currency'"
+                    [valueField]="'OpCCYID'"
+                    [valuePrimitive]="true"
                     formControlName="Currency"
-                    accSwiftFormValidator
-                  />
+                  >
+                  </kendo-dropdownlist>
                 </div>
               </div>
               <div class="col-md-4 col-sm-4 col-xs-4">
