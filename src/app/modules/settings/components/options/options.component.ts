@@ -66,6 +66,8 @@ export class OptionsComponent implements OnInit {
       ],
     });
     this.dateFormatChange(this.settingsForm.get("DATE_FORMAT").value);
+    console.log(this.settingsForm.value.DEFAULT_DATE);
+    console.log(this.settingsService.settings ? this.settingsService.settings.DEFAULT_DATE.Value:'')
   }
 
   dateFormatChange(value): void {

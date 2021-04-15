@@ -10,6 +10,8 @@ import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/val
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { Preferences } from "../../../preference/models/preference.model";
 import { IconConst } from "@app/shared/constants/icon.constant";
+import { SettingsService } from '@accSwift-modules/settings/services/settings.service';
+import { Settings } from '@accSwift-modules/settings/models/settings.model';
 
 @Component({
   selector: "accSwift-add-journal",
@@ -19,6 +21,8 @@ import { IconConst } from "@app/shared/constants/icon.constant";
 })
 export class AddJournalComponent implements OnInit {
   private editedRowIndex: number;
+  settings: Settings;
+  // datePick = this.settingsService.settings ? this.settingsService.settings.DEFAULT_DATE.Value:'';
   //Input Field Property
   iconConst = IconConst;
 
@@ -50,7 +54,8 @@ export class AddJournalComponent implements OnInit {
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     private toastr: ToastrService,
-    private preferenceService: PreferenceService
+    private preferenceService: PreferenceService,
+    private settingsService: SettingsService,
   ) {}
 
   ngOnInit(): void {
