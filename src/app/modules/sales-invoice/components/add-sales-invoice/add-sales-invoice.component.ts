@@ -12,6 +12,7 @@ import { PreferenceService } from "../../../preference/services/preference.servi
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { SelectEvent } from "@progress/kendo-angular-upload";
 import { FileRestrictions } from "@progress/kendo-angular-upload";
+import { SalesInvoiceDetails } from '@accSwift-modules/sales-invoice/models/sales-invoice.model';
 
 @Component({
   selector: "accSwift-add-sales-invoice",
@@ -56,6 +57,8 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   adjustmentAmount: number = 0;
   vatTotalAmount: number = 0;
   grandTotalAmount: number = 0;
+
+  salesDetails: SalesInvoiceDetails;
 
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
@@ -119,7 +122,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   buildAddSalesInvoiceForm(): void {
     this.salesInvoiceForm = this._fb.group({
-      ID: [null],
+      ID: [this.salesDetails ? this.salesDetails.ID : 0],
       SeriesID: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_SERIES_SALES.Value
@@ -166,7 +169,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   addInvoiceEntryList(): FormGroup {
     return this._fb.group({
-      ID: [0],
+      ID: [this.salesDetails ? this.salesDetails.ID : 0],
       ProductCode: [""],
       ProductID: [""],
       ProductName: [""],

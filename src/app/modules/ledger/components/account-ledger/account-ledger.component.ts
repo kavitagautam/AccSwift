@@ -10,7 +10,7 @@ import {
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
-import { LedgerDetails } from "../../models/ledger.models";
+import { Currency, LedgerDetails } from "../../models/ledger.models";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
@@ -30,6 +30,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   selectedLedgerId: number;
   accountLedgerForm: FormGroup;
   ledgerDetails: LedgerDetails;
+  currency: Currency[];
   editMode: boolean;
   addMode: boolean;
   title: string;
@@ -58,6 +59,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.buildAccountLedgerForm();
     this.getLedgerGroup();
+    this.suggestCurrency();
     if (this.selectedItem == null) {
       this.editMode = false;
       this.addMode = true;
@@ -375,6 +377,12 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   suggestCode(): void {
     this.ledgerService.getSuggestedCode("LEDGER").subscribe((response) => {
       this.suggestCodeList.push({ Code: response.Code, Type: response.Type });
+    });
+  }
+
+  suggestCurrency(): void {
+    this.ledgerService.getCurrency().subscribe((response) => {
+      this.currency = response.Entity;
     });
   }
 

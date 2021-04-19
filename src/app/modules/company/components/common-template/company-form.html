@@ -7,6 +7,7 @@
         </div>
         <div class="clearfix">
           <kendo-fileselect
+            [multiple]="false"
             (select)="selectEventHandler($event)"
             [restrictions]="myRestrictions"
           >
