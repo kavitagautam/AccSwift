@@ -10,12 +10,14 @@ import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sa
 import { Company } from "@accSwift-modules/company/models/company.model";
 import { Store } from "@ngxs/store";
 import { AddInvoiceDetails } from "@accSwift-modules/accswift-shared/state/sales-invoice.state";
+import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 @Component({
   selector: "simpliflysaas-customer-invoices",
   templateUrl: "./customer-invoices.component.html",
   styleUrls: ["./customer-invoices.component.scss"],
 })
 export class CustomerInvoicesComponent implements OnInit {
+
   defaultImageUrl = environment.defaultImageUrl;
   iconConst = IconConst;
   totalQty: number = 0;
@@ -36,13 +38,20 @@ export class CustomerInvoicesComponent implements OnInit {
   cashDetails: any = [];
   bankDetails: any = [];
   customerDescription: any[];
+  totalInFlowAmount: number;
+  totalOutFlowAmount: number;
+  cashFlowReportPreview: any[];
+  cashFlowPreview: any = [];
+
   constructor(
     private exportService: ExportToCsvService,
+    private localStorageService: LocalStorageService,
     private route: ActivatedRoute,
     private router: Router,
     private salesInvoiceServices: SalesInvoiceService,
     private store: Store
   ) {
+    console.log(localStorage.getItem("cashFlowReportPreview"));
     this.currencySign = localStorage.getItem("currencySymbol");
 
     this.salesInvoiceServices.getCompanyDetails().subscribe((response) => {
@@ -117,7 +126,17 @@ export class CustomerInvoicesComponent implements OnInit {
       const data = this.router.getCurrentNavigation().extras.state;
       if (data) {
         this.bankDetails = data;
+        console.log(data)
       }
+    }
+    if (this.router.url.indexOf("/cash-flow-report") > -1) {
+      const data = this.router.getCurrentNavigation().extras.state;
+      console.log(data)
+      if (data) {
+       this.cashFlowPreview = JSON.parse(localStorage.getItem("cashFlowReportPreview"));
+       console.log(this.cashFlowPreview)
+         // this.cashFlowPreview = data; 
+           }
     }
   }
 

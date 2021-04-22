@@ -105,6 +105,9 @@ export class CashFlowReportComponent implements OnInit {
         this.cashFlowList = response.Entity.Entity;
         this.totalInFlowAmount = response.Entity.TotalInFlowAmount;
         this.totalOutFlowAmount = response.Entity.TotalOutFlowAmount;
+        console.log(JSON.stringify(this.cashFlowList));
+        localStorage.setItem("cashFlowReportPreview", JSON.stringify(this.cashFlowList));
+
       },
       (error) => {
         this.listLoading = false;

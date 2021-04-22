@@ -70,6 +70,7 @@ export class EditJournalComponent implements OnInit {
           .getJournalDetails(params.get("id"))
           .subscribe((response) => {
             this.journalDetail = response.Entity;
+            console.log(this.journalDetail)
             if (this.journalDetail) {
               this.setJournalList();
               this.journalVoucherForms.patchValue(this.journalDetail);
@@ -101,7 +102,7 @@ export class EditJournalComponent implements OnInit {
 
     const now = new Date(this.journalVoucherForms.get("Date").value);
     const newDate = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
-    console.log("New Date" + newDate);
+    // console.log("New Date" + newDate);
     this.journalVoucherForms.get("Date").patchValue(newDate);
     // this.journalVoucherForms
     //   .get("Date")
@@ -111,9 +112,9 @@ export class EditJournalComponent implements OnInit {
   }
 
   convetTimeZone(value): string {
-    console.log("Value" + value);
+    // console.log("Value" + value);
     const date = new Date(value);
-    console.log("Return Date " + date.toLocaleString());
+    // console.log("Return Date " + date.toLocaleString());
     return date.toLocaleString();
   }
 
@@ -186,7 +187,7 @@ export class EditJournalComponent implements OnInit {
         }
       });
       
-      console.log(" SublEdger Details for each ledger  " + JSON.stringify(subLedgerList))
+      // console.log(" SublEdger Details for each ledger  " + JSON.stringify(subLedgerList))
    
     return subLedger;
   }

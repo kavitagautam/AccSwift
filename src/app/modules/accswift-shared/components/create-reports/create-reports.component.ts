@@ -7,6 +7,7 @@ import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sa
 import { HttpResponse } from "@angular/common/http";
 import { saveAs } from "file-saver";
 import { DOCUMENT } from "@angular/common";
+import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 
 @Component({
   selector: "accSwift-create-reports",
@@ -14,6 +15,8 @@ import { DOCUMENT } from "@angular/common";
   styleUrls: ["./create-reports.component.scss"],
 })
 export class CreateReportsComponent implements OnInit {
+
+  cashFlowPreview: string;
   defaultImageUrl = environment.defaultImageUrl;
   @Input("formGroup")
   public form: FormGroup;
@@ -23,6 +26,7 @@ export class CreateReportsComponent implements OnInit {
   constructor(
     private router: Router,
     private salesInvoiceService: SalesInvoiceService,
+    private localStorageService: LocalStorageService,
     @Inject(DOCUMENT) private document: Document
   ) {
     // if (this.router.url.indexOf("/journal") > -1) {
@@ -77,6 +81,11 @@ export class CreateReportsComponent implements OnInit {
   ngOnInit() {}
 
   invoiceBilling(): void {
+    this.router.navigate([`/cash-flow-report/invoice-billing`],
+   );
+    this.cashFlowPreview = this.localStorageService.getLocalStorageItem(
+      "cashFlowReportPreview");
+  
     if (this.voucherType == "SALES") {
       this.router.navigate(
         [`/sales-invoice/edit/${this.form.get("ID").value}/invoice-billing`],
@@ -143,6 +152,7 @@ export class CreateReportsComponent implements OnInit {
       );
     }
     if (this.voucherType == "JRNL") {
+      // console.log("form", JSON.stringify(this.form.value))
       this.router.navigate(
         [`/journal/edit/${this.form.get("ID").value}/invoice-billing`],
         {
