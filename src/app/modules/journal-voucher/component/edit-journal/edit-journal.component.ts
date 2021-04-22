@@ -12,6 +12,8 @@ import { IconConst } from "@app/shared/constants/icon.constant";
 import { IntlService } from "@progress/kendo-angular-intl";
 import { TimeZoneService } from "@accSwift-modules/accswift-shared/services/time-zone/time-zone.service";
 import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
+import { DetailsEntryGridService } from '@accSwift-modules/accswift-shared/services/details-entry-grid/details-entry-grid.service';
+
 @Component({
   selector: "accSwift-edit-journal",
   templateUrl: "../common-html/journal-voucher.html",
@@ -47,6 +49,7 @@ export class EditJournalComponent implements OnInit {
     public _fb: FormBuilder,
     private router: Router,
     public journalService: JournalService,
+    public gridServices: DetailsEntryGridService,
     private modalService: BsModalService,
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
@@ -158,22 +161,33 @@ export class EditJournalComponent implements OnInit {
   }
 
   // this block of code is used to show form array data in the template.....
-  setSubLedgerListArray(subLedgerList): FormArray {
+  setSubLedgerListArray(LedgerID): FormArray {
     const subLedger = new FormArray([]);
-    if (subLedgerList && subLedgerList.length > 0) {
-      subLedgerList.forEach((element) => {
-        subLedger.push(
-          this._fb.group({
-            ID: [element.ID],
-            SubLedgerID: [element.SubLedgerID],
-            Name: [element.Name],
-            Amount: [element.Amount],
-            DrCr: [element.DrCr],
-            Remarks: [element.Remarks],
-          })
-        );
+
+    let subLedgerList=[];
+    this.gridServices
+    .getSubLedgerMin(LedgerID)
+      .subscribe((response) => {
+        console.log(" Response" + JSON.stringify(response))
+        subLedgerList=response.Entity;
+        if (subLedgerList && subLedgerList.length > 0) {
+          subLedgerList.forEach((element) => {
+            subLedger.push(
+              this._fb.group({
+                ID: [element.ID],
+                SubLedegerID: [element.SubLedegerID],
+                Name: [element.Name],
+                Amount: [element.Amount],
+                DrCr: [element.DrCr],
+                Remarks: [element.Remarks],
+              })
+            );
+          });
+        }
       });
-    }
+      
+      console.log(" SublEdger Details for each ledger  " + JSON.stringify(subLedgerList))
+   
     return subLedger;
   }
 
@@ -189,7 +203,7 @@ export class EditJournalComponent implements OnInit {
         journalFormArray.push(
           this._fb.group({
             TransactionSubLedger: this.setSubLedgerListArray(
-              element.TransactionSubLedger
+              element.LedgerID
             ),
             ID: [element.ID],
             MasterID: [element.MasterID],

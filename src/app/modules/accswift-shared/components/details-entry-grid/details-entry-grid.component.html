@@ -4,6 +4,7 @@
     userType == 'Advanced' || (userType == 'Basic' && voucherType !== 'SALES')
   "
 >
+  <h5>{{ entryArray.getRawValue() | json }}</h5>
   <kendo-grid
     [data]="entryArray.value"
     (cancel)="cancelHandler($event)"

@@ -40,6 +40,7 @@
     </div>
 
     <div class="row mt-2">
+      <h1>{{ getSubLedgerList.value | json }}</h1>
       <kendo-grid [data]="getSubLedgerList.value">
         <kendo-grid-column field="Name" title="Name" width="100">
           <ng-template
