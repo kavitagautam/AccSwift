@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { environment } from "@env/environment.prod";
 import { IExport } from "@app/shared/models/iexport";
 import { ExportToCsvService } from "@app/shared/services/export-to-csv/export-to-csv.service";
@@ -11,6 +11,8 @@ import { Company } from "@accSwift-modules/company/models/company.model";
 import { Store } from "@ngxs/store";
 import { AddInvoiceDetails } from "@accSwift-modules/accswift-shared/state/sales-invoice.state";
 import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
+import { ReportsService } from '@accSwift-modules/reports/services/reports.service';
+import { FormGroup } from '@angular/forms';
 @Component({
   selector: "simpliflysaas-customer-invoices",
   templateUrl: "./customer-invoices.component.html",
@@ -18,6 +20,7 @@ import { LocalStorageService } from '@app/shared/services/local-storage/local-st
 })
 export class CustomerInvoicesComponent implements OnInit {
 
+  @Input("settingsForms") public settingsForms:FormGroup;
   defaultImageUrl = environment.defaultImageUrl;
   iconConst = IconConst;
   totalQty: number = 0;
@@ -42,6 +45,7 @@ export class CustomerInvoicesComponent implements OnInit {
   totalOutFlowAmount: number;
   cashFlowReportPreview: any[];
   cashFlowPreview: any = [];
+  cashFlowList: any;
 
   constructor(
     private exportService: ExportToCsvService,
@@ -49,6 +53,7 @@ export class CustomerInvoicesComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private salesInvoiceServices: SalesInvoiceService,
+    private reportService: ReportsService,
     private store: Store
   ) {
     console.log(localStorage.getItem("cashFlowReportPreview"));
@@ -133,9 +138,15 @@ export class CustomerInvoicesComponent implements OnInit {
       const data = this.router.getCurrentNavigation().extras.state;
       console.log(data)
       if (data) {
+        // this.reportService.getCashFlowReports(JSON.stringify(data)).subscribe(
+        //   (response) => {
+        //     this.cashFlowList = response.Entity.Entity;
+        //     this.totalInFlowAmount = response.Entity.TotalInFlowAmount;
+        //     this.totalOutFlowAmount = response.Entity.TotalOutFlowAmount;
+        //   });
        this.cashFlowPreview = JSON.parse(localStorage.getItem("cashFlowReportPreview"));
        console.log(this.cashFlowPreview)
-         // this.cashFlowPreview = data; 
+         this.cashFlowPreview = data; 
            }
     }
   }

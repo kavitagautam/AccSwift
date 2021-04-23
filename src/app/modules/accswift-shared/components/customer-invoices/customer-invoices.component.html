@@ -255,6 +255,7 @@
       </thead>
       <tbody *ngFor="let cashFlow of cashFlowPreview; index as i">
         <tr>
+          <!-- <h1>{{ cashFlow.Type === "GROUP" }}</h1> -->
           <td>
             <span
               *ngIf="cashFlow.Level === 0 && cashFlow.Type === 'GROUP'"
@@ -288,13 +289,13 @@
           </td>
         </tr>
       </tbody>
-      <!-- <tbody *ngIf=".length - 1 == 0">
+      <tbody *ngIf="cashFlowPreview.length - 1 == 0">
         <tr>
           <td colspan="10" align="center">No Data Available</td>
         </tr>
       </tbody>
 
-      <tfoot *ngIf=".length - 1 == 0">
+      <tfoot *ngIf="cashFlowPreview.length - 1 == 0">
         <tr>
           <td>Total CashFlow</td>
           <td class="balance">
@@ -302,12 +303,10 @@
           </td>
 
           <td class="balance">
-            <span
-              [innerHTML]="totalOutFlowAmount | currencyFormat"
-            ></span>
+            <span [innerHTML]="totalOutFlowAmount | currencyFormat"></span>
           </td>
         </tr>
-      </tfoot> -->
+      </tfoot>
     </table>
     <table
       *ngIf="voucherType == 'SALES' || voucherType == 'PURCH'"

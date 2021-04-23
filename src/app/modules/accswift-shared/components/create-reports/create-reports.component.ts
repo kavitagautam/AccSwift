@@ -8,6 +8,7 @@ import { HttpResponse } from "@angular/common/http";
 import { saveAs } from "file-saver";
 import { DOCUMENT } from "@angular/common";
 import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
+import { state } from '@angular/animations';
 
 @Component({
   selector: "accSwift-create-reports",
@@ -82,10 +83,12 @@ export class CreateReportsComponent implements OnInit {
 
   invoiceBilling(): void {
     this.router.navigate([`/cash-flow-report/invoice-billing`],
+    {
+      state: this.localStorageService.getLocalStorageItem(
+        "cashFlowReportPreview"),
+    }   
    );
-    this.cashFlowPreview = this.localStorageService.getLocalStorageItem(
-      "cashFlowReportPreview");
-  
+    
     if (this.voucherType == "SALES") {
       this.router.navigate(
         [`/sales-invoice/edit/${this.form.get("ID").value}/invoice-billing`],
