@@ -22,6 +22,7 @@ export class CreateReportsComponent implements OnInit {
   @Input("formGroup")
   public form: FormGroup;
   @Input("voucherType") public voucherType: string;
+  @Input("reportType") public reportType: string;
   iconConst = IconConst;
   cvsList = [];
   constructor(
@@ -82,13 +83,7 @@ export class CreateReportsComponent implements OnInit {
   ngOnInit() {}
 
   invoiceBilling(): void {
-    this.router.navigate([`/cash-flow-report/invoice-billing`],
-    {
-      state: this.localStorageService.getLocalStorageItem(
-        "cashFlowReportPreview"),
-    }   
-   );
-    
+   
     if (this.voucherType == "SALES") {
       this.router.navigate(
         [`/sales-invoice/edit/${this.form.get("ID").value}/invoice-billing`],
@@ -155,7 +150,6 @@ export class CreateReportsComponent implements OnInit {
       );
     }
     if (this.voucherType == "JRNL") {
-      // console.log("form", JSON.stringify(this.form.value))
       this.router.navigate(
         [`/journal/edit/${this.form.get("ID").value}/invoice-billing`],
         {
@@ -163,6 +157,17 @@ export class CreateReportsComponent implements OnInit {
         }
       );
     }
+
+    if (this.reportType == "CASH_FLOW") {
+      this.router.navigate(
+        [`/cash-flow-report/report-preview`],
+        {
+          state: this.localStorageService.getLocalStorageItem(
+            "cashFlowReportPreview"),
+        }
+      );
+    }
+    
   }
 
   downloadPDF(): void {

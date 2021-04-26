@@ -11,7 +11,6 @@ import { Company } from "@accSwift-modules/company/models/company.model";
 import { Store } from "@ngxs/store";
 import { AddInvoiceDetails } from "@accSwift-modules/accswift-shared/state/sales-invoice.state";
 import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
-import { ReportsService } from '@accSwift-modules/reports/services/reports.service';
 import { FormGroup } from '@angular/forms';
 @Component({
   selector: "simpliflysaas-customer-invoices",
@@ -41,11 +40,6 @@ export class CustomerInvoicesComponent implements OnInit {
   cashDetails: any = [];
   bankDetails: any = [];
   customerDescription: any[];
-  totalInFlowAmount: number;
-  totalOutFlowAmount: number;
-  cashFlowReportPreview: any[];
-  cashFlowPreview: any = [];
-  cashFlowList: any;
 
   constructor(
     private exportService: ExportToCsvService,
@@ -53,10 +47,10 @@ export class CustomerInvoicesComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private salesInvoiceServices: SalesInvoiceService,
-    private reportService: ReportsService,
     private store: Store
   ) {
-    console.log(localStorage.getItem("cashFlowReportPreview"));
+
+  
     this.currencySign = localStorage.getItem("currencySymbol");
 
     this.salesInvoiceServices.getCompanyDetails().subscribe((response) => {
@@ -131,24 +125,9 @@ export class CustomerInvoicesComponent implements OnInit {
       const data = this.router.getCurrentNavigation().extras.state;
       if (data) {
         this.bankDetails = data;
-        console.log(data)
       }
     }
-    if (this.router.url.indexOf("/cash-flow-report") > -1) {
-      const data = this.router.getCurrentNavigation().extras.state;
-      console.log(data)
-      if (data) {
-        // this.reportService.getCashFlowReports(JSON.stringify(data)).subscribe(
-        //   (response) => {
-        //     this.cashFlowList = response.Entity.Entity;
-        //     this.totalInFlowAmount = response.Entity.TotalInFlowAmount;
-        //     this.totalOutFlowAmount = response.Entity.TotalOutFlowAmount;
-        //   });
-       this.cashFlowPreview = JSON.parse(localStorage.getItem("cashFlowReportPreview"));
-       console.log(this.cashFlowPreview)
-         this.cashFlowPreview = data; 
-           }
-    }
+
   }
 
   ngOnInit() {

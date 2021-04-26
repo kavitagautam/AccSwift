@@ -22,6 +22,7 @@ export class CashFlowReportComponent implements OnInit {
   cashFlowList: CashFlowList[] = [];
   totalInFlowAmount: number;
   totalOutFlowAmount: number;
+  reportType: string;
   modalRef: BsModalRef;
   modalRefLedger: BsModalRef
   baseURL: string;
@@ -82,6 +83,10 @@ export class CashFlowReportComponent implements OnInit {
         this.cashFlowList = response.Entity.Entity;
         this.totalInFlowAmount = response.Entity.TotalInFlowAmount;
         this.totalOutFlowAmount = response.Entity.TotalOutFlowAmount;
+        localStorage.setItem("totalInFlowAmount", JSON.stringify(this.totalInFlowAmount));
+        localStorage.setItem("totalOutFlowAmount", JSON.stringify(this.totalOutFlowAmount));
+        this.reportType = response.Entity.ReportType;
+        localStorage.setItem("cashFlowReportPreview", JSON.stringify(this.cashFlowList));
       },
       (error) => {
         this.listLoading = false;
@@ -106,7 +111,7 @@ export class CashFlowReportComponent implements OnInit {
         this.totalInFlowAmount = response.Entity.TotalInFlowAmount;
         this.totalOutFlowAmount = response.Entity.TotalOutFlowAmount;
         console.log(JSON.stringify(this.cashFlowList));
-        localStorage.setItem("cashFlowReportPreview", JSON.stringify(this.cashFlowList));
+        
 
       },
       (error) => {

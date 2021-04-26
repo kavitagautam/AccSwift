@@ -245,69 +245,6 @@
     <br />
     <div style="font-size: 11px; font-weight: bold"></div>
 
-    <table id="header-fixed" class="table table-hover table-fixed">
-      <thead>
-        <tr>
-          <th colspan="1">Account Name</th>
-          <th colspan="1">Amount Inflow</th>
-          <th colspan="1">Amount Outflow</th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let cashFlow of cashFlowPreview; index as i">
-        <tr>
-          <!-- <h1>{{ cashFlow.Type === "GROUP" }}</h1> -->
-          <td>
-            <span
-              *ngIf="cashFlow.Level === 0 && cashFlow.Type === 'GROUP'"
-              class="group_name"
-            >
-              {{ cashFlow.AccountName }}
-            </span>
-            <span
-              *ngIf="cashFlow.Level === 1 && cashFlow.Type === 'GROUP'"
-              class="group_name"
-              style="margin-left: 20px"
-            >
-              {{ cashFlow.AccountName }}
-            </span>
-            <span
-              *ngIf="cashFlow.Level === 2 && cashFlow.Type === 'GROUP'"
-              class="group_name"
-              style="margin-left: 30px"
-            >
-              {{ cashFlow.AccountName }}
-            </span>
-            <span style="color: blue" *ngIf="cashFlow.Type === 'LEDGER'">
-              {{ cashFlow.AccountName }}
-            </span>
-          </td>
-          <td class="balance">
-            <span [innerHTML]="cashFlow.InFlowAmount | currencyFormat"></span>
-          </td>
-          <td class="balance">
-            <span [innerHTML]="cashFlow.OutFlowAmount | currencyFormat"></span>
-          </td>
-        </tr>
-      </tbody>
-      <tbody *ngIf="cashFlowPreview.length - 1 == 0">
-        <tr>
-          <td colspan="10" align="center">No Data Available</td>
-        </tr>
-      </tbody>
-
-      <tfoot *ngIf="cashFlowPreview.length - 1 == 0">
-        <tr>
-          <td>Total CashFlow</td>
-          <td class="balance">
-            <span [innerHTML]="totalInFlowAmount | currencyFormat"></span>
-          </td>
-
-          <td class="balance">
-            <span [innerHTML]="totalOutFlowAmount | currencyFormat"></span>
-          </td>
-        </tr>
-      </tfoot>
-    </table>
     <table
       *ngIf="voucherType == 'SALES' || voucherType == 'PURCH'"
       id="header-fixed"

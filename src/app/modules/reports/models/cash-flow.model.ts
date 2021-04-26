@@ -15,6 +15,7 @@ export interface CashFlowModel {
     TotalInFlowAmount: number;
     TotalOutFlowAmount: number;
     Company: Company;
+    ReportType: string;
 }
 
 export interface CashFlowRootModel {

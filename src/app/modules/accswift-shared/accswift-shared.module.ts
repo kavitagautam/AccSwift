@@ -38,6 +38,7 @@ import { OpeningBalanceComponent } from "./components/opening-balance/opening-ba
 import { BasicAddEditUserComponent } from './components/basic-add-edit-user/basic-add-edit-user.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { DateSelectionSettingsComponent } from './components/date-selection-settings/date-selection-settings.component';
+import { ReportPreviewComponent } from './components/report-preview/report-preview.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { DateSelectionSettingsComponent } from './components/date-selection-sett
     OpeningBalanceComponent,
     EntrySubLedgerComponent,
     BasicAddEditUserComponent,
-    DateSelectionSettingsComponent
+    DateSelectionSettingsComponent,
+    ReportPreviewComponent
   ],
   imports: [
     FormsModule,
@@ -93,6 +95,7 @@ import { DateSelectionSettingsComponent } from './components/date-selection-sett
     FormControlValidationMsgDirective,
     DetailsEntryGridComponent,
     CustomerInvoicesComponent,
+    ReportPreviewComponent,
     CreateReportsComponent,
     AddressComponent,
     SettingsReportsComponent,
