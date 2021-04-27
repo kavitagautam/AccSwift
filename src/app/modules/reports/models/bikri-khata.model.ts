@@ -20,6 +20,7 @@ export interface BikriKhataModel {
     SumTaxableAmount: number;
     SumTaxAmount: number;
     Company: Company;
+    ReportType: string;
 }
 
 export interface BikriKhataRootModel {

@@ -4,6 +4,8 @@ import { LocalStorageService } from '@app/shared/services/local-storage/local-st
 import { IconConst } from "@shared/constants/icon.constant";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngxs/store";
+import { SalesInvoiceService } from '@accSwift-modules/sales-invoice/services/sales-invoice.service';
+import { Company } from '@accSwift-modules/company/models/company.model';
 
 
 @Component({
@@ -14,17 +16,34 @@ import { Store } from "@ngxs/store";
 export class ReportPreviewComponent implements OnInit {
   iconConst = IconConst;
   reportType: string;
-  cashFlowReportPreview: any[];
   cashFlowPreview: any = [];
   totalInFlowAmount: number;
   totalOutFlowAmount: number;
-
+  companyLogo: any = "";
+  companyDetails: Company;
+  bikriKhataList: any = [];
+  sumTotalSalesAmt: number;
+  sumNonTaxableSalesAmt: number;
+  sumExport: number;
+  sumTaxableAmount: number;
+  sumTaxAmount: number;
+ 
 
   constructor(private exportService: ExportToCsvService,
     private localStorageService: LocalStorageService,
+    private salesInvoiceService: SalesInvoiceService,
+
     private route: ActivatedRoute,
     private router: Router,
     private store: Store) {
+
+   
+    this.salesInvoiceService.getCompanyDetails().subscribe((response) => {
+      this.companyDetails = response.Entity;
+      if (this.companyDetails) {
+        this.companyLogo = this.companyDetails.Logo;
+      }
+    });  
       
     if (this.router.url.indexOf("/cash-flow-report") > -1) {
       this.reportType = "CASH_FLOW";
@@ -35,6 +54,20 @@ export class ReportPreviewComponent implements OnInit {
       }
       this.totalInFlowAmount = JSON.parse(localStorage.getItem("totalInFlowAmount"));
       this.totalOutFlowAmount = JSON.parse(localStorage.getItem("totalOutFlowAmount"));
+    }
+
+    if (this.router.url.indexOf("/bikri-khata") > -1) {
+      this.reportType = "BIKRI_KHATA"
+      const data = this.router.getCurrentNavigation().extras.state;
+      if (data) {
+        this.bikriKhataList = JSON.parse(localStorage.getItem("bikriKhataList"));
+        this.bikriKhataList = data;
+        this.sumTotalSalesAmt = JSON.parse(localStorage.getItem("sumTotalSalesAmt"));
+        this.sumNonTaxableSalesAmt = JSON.parse(localStorage.getItem("sumNonTaxableSalesAmt"));
+        this.sumExport = JSON.parse(localStorage.getItem("sumExport"));
+        this.sumTaxableAmount = JSON.parse(localStorage.getItem("sumTaxableAmount"));
+        this.sumTaxAmount = JSON.parse(localStorage.getItem("sumTaxAmount"));
+      }
     }
    }
 

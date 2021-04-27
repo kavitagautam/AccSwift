@@ -22,6 +22,7 @@ export class BikriKhataComponent implements OnInit {
   sumExport: number;
   sumTaxableAmount: number;
   sumTaxAmount: number;
+  reportType: string;
 
   constructor(
     private _fb: FormBuilder, 
@@ -66,6 +67,14 @@ export class BikriKhataComponent implements OnInit {
               this.sumExport = response.Entity.SumExport;
               this.sumTaxableAmount = response.Entity.SumTaxableAmount;
               this.sumTaxAmount = response.Entity.SumTaxAmount;
+              this.reportType = response.Entity.ReportType;
+              localStorage.setItem("bikriKhataList", JSON.stringify(response.Entity.Entity));
+              localStorage.setItem("sumTotalSalesAmt", JSON.stringify(response.Entity.SumTotalSalesAmt));
+              localStorage.setItem("sumNonTaxableSalesAmt", JSON.stringify(response.Entity.SumNonTaxableSalesAmt));
+              localStorage.setItem("sumExport", JSON.stringify(response.Entity.SumExport));
+              localStorage.setItem("sumTaxableAmount", JSON.stringify(response.Entity.SumTaxableAmount));
+              localStorage.setItem("sumTaxAmount", JSON.stringify(response.Entity.SumTaxAmount));
+
           },
           (error) => {
             this.listLoading = false;

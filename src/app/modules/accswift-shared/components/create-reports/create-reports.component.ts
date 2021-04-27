@@ -82,7 +82,7 @@ export class CreateReportsComponent implements OnInit {
 
   ngOnInit() {}
 
-  invoiceBilling(): void {
+  printPreview(): void {
    
     if (this.voucherType == "SALES") {
       this.router.navigate(
@@ -163,7 +163,17 @@ export class CreateReportsComponent implements OnInit {
         [`/cash-flow-report/report-preview`],
         {
           state: this.localStorageService.getLocalStorageItem(
-            "cashFlowReportPreview"),
+            "cashFlowReportPreview")
+        }
+      );
+    }
+
+    if (this.reportType == "BIKRI_KHATA") {
+      this.router.navigate(
+        [`/bikri-khata/report-preview`],
+        {
+          state: this.localStorageService.getLocalStorageItem(
+            "bikriKhataList")
         }
       );
     }
