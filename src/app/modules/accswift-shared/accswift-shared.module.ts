@@ -110,7 +110,8 @@ import { ReportPreviewComponent } from './components/report-preview/report-previ
     ProductModalPopupComponent,
     LedgerModalPopupComponent,
     EntrySubLedgerComponent,
-    BasicAddEditUserComponent
+    BasicAddEditUserComponent,
+    ReportPreviewComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

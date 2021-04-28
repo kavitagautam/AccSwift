@@ -2,10 +2,12 @@ import { DateSelectionSettingsComponent } from '@accSwift-modules/accswift-share
 import { PreferenceService } from '@accSwift-modules/preference/services/preference.service';
 import { BikriKhataList } from '@accSwift-modules/reports/models/bikri-khata.model';
 import { ReportsService } from '@accSwift-modules/reports/services/reports.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IconConst } from '@app/shared/constants/icon.constant';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+
 
 @Component({
   selector: 'accSwift-bikri-khata',
@@ -23,6 +25,8 @@ export class BikriKhataComponent implements OnInit {
   sumTaxableAmount: number;
   sumTaxAmount: number;
   reportType: string;
+  iconConst = IconConst;
+  
 
   constructor(
     private _fb: FormBuilder, 

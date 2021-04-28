@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngxs/store";
 import { SalesInvoiceService } from '@accSwift-modules/sales-invoice/services/sales-invoice.service';
 import { Company } from '@accSwift-modules/company/models/company.model';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 
 @Component({
@@ -14,6 +15,7 @@ import { Company } from '@accSwift-modules/company/models/company.model';
   styleUrls: ['./report-preview.component.scss']
 })
 export class ReportPreviewComponent implements OnInit {
+
   iconConst = IconConst;
   reportType: string;
   cashFlowPreview: any = [];
@@ -27,12 +29,12 @@ export class ReportPreviewComponent implements OnInit {
   sumExport: number;
   sumTaxableAmount: number;
   sumTaxAmount: number;
- 
 
   constructor(private exportService: ExportToCsvService,
     private localStorageService: LocalStorageService,
     private salesInvoiceService: SalesInvoiceService,
-
+    public modalRef: BsModalRef,
+    private modalService: BsModalService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store) {
@@ -47,27 +49,25 @@ export class ReportPreviewComponent implements OnInit {
       
     if (this.router.url.indexOf("/cash-flow-report") > -1) {
       this.reportType = "CASH_FLOW";
-      const data = this.router.getCurrentNavigation().extras.state;
+      let data;
       if (data) {
        this.cashFlowPreview = JSON.parse(localStorage.getItem("cashFlowReportPreview"));
-       this.cashFlowPreview = data; 
       }
       this.totalInFlowAmount = JSON.parse(localStorage.getItem("totalInFlowAmount"));
       this.totalOutFlowAmount = JSON.parse(localStorage.getItem("totalOutFlowAmount"));
     }
 
     if (this.router.url.indexOf("/bikri-khata") > -1) {
-      this.reportType = "BIKRI_KHATA"
-      const data = this.router.getCurrentNavigation().extras.state;
+      this.reportType = "BIKRI_KHATA";
+      let data;
       if (data) {
-        this.bikriKhataList = JSON.parse(localStorage.getItem("bikriKhataList"));
-        this.bikriKhataList = data;
-        this.sumTotalSalesAmt = JSON.parse(localStorage.getItem("sumTotalSalesAmt"));
-        this.sumNonTaxableSalesAmt = JSON.parse(localStorage.getItem("sumNonTaxableSalesAmt"));
-        this.sumExport = JSON.parse(localStorage.getItem("sumExport"));
-        this.sumTaxableAmount = JSON.parse(localStorage.getItem("sumTaxableAmount"));
-        this.sumTaxAmount = JSON.parse(localStorage.getItem("sumTaxAmount"));
+        this.bikriKhataList = JSON.parse(localStorage.getItem("bikriKhataList")); 
       }
+      this.sumTotalSalesAmt = JSON.parse(localStorage.getItem("sumTotalSalesAmt"));
+      this.sumNonTaxableSalesAmt = JSON.parse(localStorage.getItem("sumNonTaxableSalesAmt"));
+      this.sumExport = JSON.parse(localStorage.getItem("sumExport"));
+      this.sumTaxableAmount = JSON.parse(localStorage.getItem("sumTaxableAmount"));
+      this.sumTaxAmount = JSON.parse(localStorage.getItem("sumTaxAmount"));
     }
    }
 
@@ -84,5 +84,10 @@ export class ReportPreviewComponent implements OnInit {
     // };
     // this.exportService.ExportToCSV(exportData);
   }
+
+  public onCancel(): void {
+    this.modalRef.hide();
+  }
+
 
 }

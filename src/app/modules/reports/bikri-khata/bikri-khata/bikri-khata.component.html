@@ -3,6 +3,7 @@
     <accSwift-create-reports [reportType]="'BIKRI_KHATA'">
     </accSwift-create-reports>
   </div>
+
   <div class="row">
     <div class="col-md-12">
       <button
@@ -12,91 +13,121 @@
       >
         Bikri Khata Report Settings
       </button>
+      <button
+        class="btn btn-default mr-2 mt-2"
+        style="float: right"
+        tooltip="Print"
+        printSectionId="print-section"
+        ngxPrint
+        [useExistingCss]="true"
+      >
+        <i class="{{ iconConst.PRINT }}"></i>
+      </button>
     </div>
 
-    <div class="col-md-12">
-      <div class="grid-wrapper">
-        <div class="table-box">
-          <table id="header-fixed" class="table table-hover table-fixed">
-            <thead>
-              <tr>
-                <th colspan="1">SalesDate</th>
-                <th colspan="1">Voucher</th>
-                <th colspan="1">Buyer Name</th>
-                <th colspan="1">Buyer PAN</th>
-                <th colspan="1">Total Sales</th>
-                <th colspan="1">Non Taxable Sales</th>
-                <th colspan="1">Export</th>
-                <th colspan="1">Taxable Amount</th>
-                <th colspan="1">Tax Amount</th>
-              </tr>
-            </thead>
-            <tbody *ngFor="let bikriKhata of bikriKhataList; index as i">
-              <tr>
-                <td>
-                  {{ bikriKhata.SalesDate | date: "MM-dd-yyyy" }}
-                </td>
-                <td>{{ bikriKhata.Voucher }}</td>
-                <td>{{ bikriKhata.BuyersName }}</td>
-                <td>{{ bikriKhata.BuyersPAN }}</td>
-                <td class="balance">
-                  <span
-                    [innerHTML]="bikriKhata.TotalSalesAmt | currencyFormat"
-                  ></span>
-                </td>
-                <td class="balance">
-                  <span
-                    [innerHTML]="bikriKhata.NonTaxableSalesAmt | currencyFormat"
-                  ></span>
-                </td>
-                <td class="balance">
-                  <span [innerHTML]="bikriKhata.Export | currencyFormat"></span>
-                </td>
-                <td class="balance">
-                  <span
-                    [innerHTML]="bikriKhata.TaxableAmt | currencyFormat"
-                  ></span>
-                </td>
-                <td class="balance">
-                  <span [innerHTML]="bikriKhata.TaxAmt | currencyFormat"></span>
-                </td>
-              </tr>
-            </tbody>
-            <tbody *ngIf="bikriKhataList.length == 0">
-              <tr>
-                <td colspan="10" align="center">No Data Available</td>
-              </tr>
-            </tbody>
+    <kendo-pdf-export
+      #pdf
+      paperSize="A6"
+      margin="1cm"
+      [scale]="0.8"
+      [repeatHeaders]="true"
+    >
+      <div class="col-md-12">
+        <div class="grid-wrapper">
+          <div class="table-box">
+            <div id="print-section">
+              <table id="header-fixed" class="table table-hover table-fixed">
+                <thead>
+                  <tr>
+                    <th colspan="1">SalesDate</th>
+                    <th colspan="1">Voucher</th>
+                    <th colspan="1">Buyer Name</th>
+                    <th colspan="1">Buyer PAN</th>
+                    <th colspan="1">Total Sales</th>
+                    <th colspan="1">Non Taxable Sales</th>
+                    <th colspan="1">Export</th>
+                    <th colspan="1">Taxable Amount</th>
+                    <th colspan="1">Tax Amount</th>
+                  </tr>
+                </thead>
+                <tbody *ngFor="let bikriKhata of bikriKhataList; index as i">
+                  <tr>
+                    <td>
+                      {{ bikriKhata.SalesDate | date: "MM-dd-yyyy" }}
+                    </td>
+                    <td>{{ bikriKhata.Voucher }}</td>
+                    <td>{{ bikriKhata.BuyersName }}</td>
+                    <td>{{ bikriKhata.BuyersPAN }}</td>
+                    <td class="balance">
+                      <span
+                        [innerHTML]="bikriKhata.TotalSalesAmt | currencyFormat"
+                      ></span>
+                    </td>
+                    <td class="balance">
+                      <span
+                        [innerHTML]="
+                          bikriKhata.NonTaxableSalesAmt | currencyFormat
+                        "
+                      ></span>
+                    </td>
+                    <td class="balance">
+                      <span
+                        [innerHTML]="bikriKhata.Export | currencyFormat"
+                      ></span>
+                    </td>
+                    <td class="balance">
+                      <span
+                        [innerHTML]="bikriKhata.TaxableAmt | currencyFormat"
+                      ></span>
+                    </td>
+                    <td class="balance">
+                      <span
+                        [innerHTML]="bikriKhata.TaxAmt | currencyFormat"
+                      ></span>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="bikriKhataList.length == 0">
+                  <tr>
+                    <td colspan="10" align="center">No Data Available</td>
+                  </tr>
+                </tbody>
 
-            <tfoot *ngIf="bikriKhataList.length > 0">
-              <tr>
-                <td colspan="1">Total Amount</td>
-                <td colspan="1"></td>
-                <td colspan="1"></td>
-                <td colspan="1"></td>
-                <td class="balance" colspan="1">
-                  <span [innerHTML]="sumTotalSalesAmt | currencyFormat"></span>
-                </td>
-                <td class="balance" colspan="1">
-                  <span
-                    [innerHTML]="sumNonTaxableSalesAmt | currencyFormat"
-                  ></span>
-                </td>
-                <td class="balance" colspan="1">
-                  <span [innerHTML]="sumExport | currencyFormat"></span>
-                </td>
-                <td class="balance" colspan="1">
-                  <span [innerHTML]="sumTaxableAmount | currencyFormat"></span>
-                </td>
-                <td class="balance" colspan="1">
-                  <span [innerHTML]="sumTaxAmount | currencyFormat"></span>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+                <tfoot *ngIf="bikriKhataList.length > 0">
+                  <tr>
+                    <td colspan="1">Total Amount</td>
+                    <td colspan="1"></td>
+                    <td colspan="1"></td>
+                    <td colspan="1"></td>
+                    <td class="balance" colspan="1">
+                      <span
+                        [innerHTML]="sumTotalSalesAmt | currencyFormat"
+                      ></span>
+                    </td>
+                    <td class="balance" colspan="1">
+                      <span
+                        [innerHTML]="sumNonTaxableSalesAmt | currencyFormat"
+                      ></span>
+                    </td>
+                    <td class="balance" colspan="1">
+                      <span [innerHTML]="sumExport | currencyFormat"></span>
+                    </td>
+                    <td class="balance" colspan="1">
+                      <span
+                        [innerHTML]="sumTaxableAmount | currencyFormat"
+                      ></span>
+                    </td>
+                    <td class="balance" colspan="1">
+                      <span [innerHTML]="sumTaxAmount | currencyFormat"></span>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
         </div>
+        <div *ngIf="listLoading" class="k-i-loading"></div>
       </div>
-      <div *ngIf="listLoading" class="k-i-loading"></div>
-    </div>
+    </kendo-pdf-export>
   </div>
 </div>

@@ -1,224 +1,255 @@
-<div class="row">
-  <div class="col-md-12 col-xs-12" style="margin-top: 18px">
-    <div class="move-right">
-      <button
-        class="btn btn-default mr-2 mt-2"
-        tooltip="Generate Pdf"
-        (click)="pdf.saveAs('customer-invoice.pdf')"
-      >
-        <i class="{{ iconConst.EXPORT_TO_PDF }}"></i>
-      </button>
-      <button
-        class="btn btn-default mr-2 mt-2"
-        tooltip="CSV Export"
-        (click)="exportToCSV()"
-      >
-        <i class="{{ iconConst.EXPORT_TO_CSV }}"></i>
-      </button>
-      <button
-        class="btn btn-default mr-2 mt-2"
-        tooltip="Print"
-        printSectionId="print-section"
-        ngxPrint
-        [useExistingCss]="true"
-      >
-        <i class="{{ iconConst.PRINT }}"></i>
-      </button>
-      <button class="btn btn-default mr-2 mt-2" tooltip="Email">
-        <i class="{{ iconConst.EMAIL }}"></i>
-      </button>
+<div class="modal-header">
+  <h3 class="modal-title pull-left">{{ reportType }}</h3>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="onCancel()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 col-xs-12" style="margin-top: 18px">
+        <div class="move-right">
+          <button
+            class="btn btn-default mr-2 mt-2"
+            tooltip="Generate Pdf"
+            (click)="pdf.saveAs('customer-invoice.pdf')"
+          >
+            <i class="{{ iconConst.EXPORT_TO_PDF }}"></i>
+          </button>
+          <button
+            class="btn btn-default mr-2 mt-2"
+            tooltip="CSV Export"
+            (click)="exportToCSV()"
+          >
+            <i class="{{ iconConst.EXPORT_TO_CSV }}"></i>
+          </button>
+          <button
+            class="btn btn-default mr-2 mt-2"
+            tooltip="Print"
+            printSectionId="print-section"
+            ngxPrint
+            [useExistingCss]="true"
+          >
+            <i class="{{ iconConst.PRINT }}"></i>
+          </button>
+          <button class="btn btn-default mr-2 mt-2" tooltip="Email">
+            <i class="{{ iconConst.EMAIL }}"></i>
+          </button>
+        </div>
+      </div>
     </div>
+
+    <kendo-pdf-export
+      #pdf
+      paperSize="A6"
+      margin="1cm"
+      [scale]="0.8"
+      [repeatHeaders]="true"
+    >
+      <div id="print-section">
+        <div class="report_format">
+          <div class="col-lg-12" align="center" style="padding-bottom: 20px">
+            <div class="company-logo">
+              <img style="width: 120px" [src]="companyLogo" alt="companyLogo" />
+            </div>
+            <div class="company-details" style="text-align: center">
+              <b>{{ companyDetails?.Name }}</b>
+              <span style="display: block"
+                >{{ companyDetails?.Address1 }},{{
+                  companyDetails?.Address2
+                }}</span
+              >
+              <span style="display: block">
+                <small>Phone:</small>{{ companyDetails?.Telephone }}</span
+              >
+              <span style="display: block"
+                ><small>PAN:</small>{{ companyDetails?.PAN }}</span
+              >
+            </div>
+          </div>
+
+          <div class="fiscal-date">
+            <div class="col-lg-12">
+              <div class="col-lg-9">
+                <span
+                  >Fiscal Year:<b>{{ companyDetails?.FiscalYear }}</b></span
+                >
+              </div>
+              <div class="col-lg-3">
+                <span
+                  >As On Date:<b>{{ companyDetails?.FYFrom }}</b></span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <table
+          *ngIf="reportType == 'CASH_FLOW'"
+          id="header-fixed"
+          class="table table-hover table-fixed"
+          align="center"
+        >
+          <thead>
+            <tr>
+              <th colspan="1">Account Name</th>
+              <th colspan="1">Amount Inflow</th>
+              <th colspan="1">Amount Outflow</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let cashFlow of cashFlowPreview; index as i">
+            <tr>
+              <!-- <h1>{{ cashFlow.Type === "GROUP" }}</h1> -->
+              <td>
+                <span
+                  *ngIf="cashFlow.Level === 0 && cashFlow.Type === 'GROUP'"
+                  class="group_name"
+                >
+                  {{ cashFlow.AccountName }}
+                </span>
+                <span
+                  *ngIf="cashFlow.Level === 1 && cashFlow.Type === 'GROUP'"
+                  class="group_name"
+                  style="margin-left: 20px"
+                >
+                  {{ cashFlow.AccountName }}
+                </span>
+                <span
+                  *ngIf="cashFlow.Level === 2 && cashFlow.Type === 'GROUP'"
+                  class="group_name"
+                  style="margin-left: 30px"
+                >
+                  {{ cashFlow.AccountName }}
+                </span>
+                <span style="color: blue" *ngIf="cashFlow.Type === 'LEDGER'">
+                  {{ cashFlow.AccountName }}
+                </span>
+              </td>
+              <td class="balance">
+                <span
+                  [innerHTML]="cashFlow.InFlowAmount | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance">
+                <span
+                  [innerHTML]="cashFlow.OutFlowAmount | currencyFormat"
+                ></span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="cashFlowPreview.length == 0">
+            <tr>
+              <td colspan="10" align="center">No Data Available</td>
+            </tr>
+          </tbody>
+
+          <tfoot *ngIf="cashFlowPreview.length > 0">
+            <tr>
+              <td>Total CashFlow</td>
+              <td class="balance">
+                <span [innerHTML]="totalInFlowAmount | currencyFormat"></span>
+              </td>
+
+              <td class="balance">
+                <span [innerHTML]="totalOutFlowAmount | currencyFormat"></span>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <table
+          *ngIf="reportType == 'BIKRI_KHATA'"
+          id="header-fixed"
+          class="table table-hover table-fixed"
+        >
+          <thead>
+            <tr>
+              <th colspan="1">SalesDate</th>
+              <th colspan="1">Voucher</th>
+              <th colspan="1">Buyer Name</th>
+              <th colspan="1">Buyer PAN</th>
+              <th colspan="1">Total Sales</th>
+              <th colspan="1">Non Taxable Sales</th>
+              <th colspan="1">Export</th>
+              <th colspan="1">Taxable Amount</th>
+              <th colspan="1">Tax Amount</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let bikriKhata of bikriKhataList; index as i">
+            <tr>
+              <td>
+                {{ bikriKhata.SalesDate | date: "MM-dd-yyyy" }}
+              </td>
+              <td>{{ bikriKhata.Voucher }}</td>
+              <td>{{ bikriKhata.BuyersName }}</td>
+              <td>{{ bikriKhata.BuyersPAN }}</td>
+              <td class="balance">
+                <span
+                  [innerHTML]="bikriKhata.TotalSalesAmt | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance">
+                <span
+                  [innerHTML]="bikriKhata.NonTaxableSalesAmt | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance">
+                <span [innerHTML]="bikriKhata.Export | currencyFormat"></span>
+              </td>
+              <td class="balance">
+                <span
+                  [innerHTML]="bikriKhata.TaxableAmt | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance">
+                <span [innerHTML]="bikriKhata.TaxAmt | currencyFormat"></span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="bikriKhataList.length == 0">
+            <tr>
+              <td colspan="10" align="center">No Data Available</td>
+            </tr>
+          </tbody>
+
+          <tfoot *ngIf="bikriKhataList.length > 0">
+            <tr>
+              <td colspan="1">Total Amount</td>
+              <td colspan="1"></td>
+              <td colspan="1"></td>
+              <td colspan="1"></td>
+              <td class="balance" colspan="1">
+                <span [innerHTML]="sumTotalSalesAmt | currencyFormat"></span>
+              </td>
+              <td class="balance" colspan="1">
+                <span
+                  [innerHTML]="sumNonTaxableSalesAmt | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance" colspan="1">
+                <span [innerHTML]="sumExport | currencyFormat"></span>
+              </td>
+              <td class="balance" colspan="1">
+                <span [innerHTML]="sumTaxableAmount | currencyFormat"></span>
+              </td>
+              <td class="balance" colspan="1">
+                <span [innerHTML]="sumTaxAmount | currencyFormat"></span>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </kendo-pdf-export>
   </div>
 </div>
-
-<kendo-pdf-export
-  #pdf
-  paperSize="A6"
-  margin="1cm"
-  [scale]="0.8"
-  [repeatHeaders]="true"
->
-  <div id="print-section">
-    <div class="report_format">
-      <div class="col-lg-12" align="center" style="padding-bottom: 20px">
-        <div class="company-logo">
-          <img style="width: 120px" [src]="companyLogo" alt="companyLogo" />
-        </div>
-        <div class="company-details" style="text-align: center">
-          <b>{{ companyDetails?.Name }}</b>
-          <span style="display: block"
-            >{{ companyDetails?.Address1 }},{{ companyDetails?.Address2 }}</span
-          >
-          <span style="display: block">
-            <small>Phone:</small>{{ companyDetails?.Telephone }}</span
-          >
-          <span style="display: block"
-            ><small>PAN:</small>{{ companyDetails?.PAN }}</span
-          >
-        </div>
-      </div>
-
-      <div class="fiscal-date">
-        <div class="col-lg-12">
-          <div class="col-lg-9">
-            <span
-              >Fiscal Year:<b>{{ companyDetails?.FiscalYear }}</b></span
-            >
-          </div>
-          <div class="col-lg-3">
-            <span
-              >As On Date:<b>{{ companyDetails?.FYFrom }}</b></span
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <table
-      *ngIf="reportType == 'CASH_FLOW'"
-      id="header-fixed"
-      class="table table-hover table-fixed"
-      align="center"
-    >
-      <thead>
-        <tr>
-          <th colspan="1">Account Name</th>
-          <th colspan="1">Amount Inflow</th>
-          <th colspan="1">Amount Outflow</th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let cashFlow of cashFlowPreview; index as i">
-        <tr>
-          <!-- <h1>{{ cashFlow.Type === "GROUP" }}</h1> -->
-          <td>
-            <span
-              *ngIf="cashFlow.Level === 0 && cashFlow.Type === 'GROUP'"
-              class="group_name"
-            >
-              {{ cashFlow.AccountName }}
-            </span>
-            <span
-              *ngIf="cashFlow.Level === 1 && cashFlow.Type === 'GROUP'"
-              class="group_name"
-              style="margin-left: 20px"
-            >
-              {{ cashFlow.AccountName }}
-            </span>
-            <span
-              *ngIf="cashFlow.Level === 2 && cashFlow.Type === 'GROUP'"
-              class="group_name"
-              style="margin-left: 30px"
-            >
-              {{ cashFlow.AccountName }}
-            </span>
-            <span style="color: blue" *ngIf="cashFlow.Type === 'LEDGER'">
-              {{ cashFlow.AccountName }}
-            </span>
-          </td>
-          <td class="balance">
-            <span [innerHTML]="cashFlow.InFlowAmount | currencyFormat"></span>
-          </td>
-          <td class="balance">
-            <span [innerHTML]="cashFlow.OutFlowAmount | currencyFormat"></span>
-          </td>
-        </tr>
-      </tbody>
-      <tbody *ngIf="cashFlowPreview.length == 0">
-        <tr>
-          <td colspan="10" align="center">No Data Available</td>
-        </tr>
-      </tbody>
-
-      <tfoot *ngIf="cashFlowPreview.length > 0">
-        <tr>
-          <td>Total CashFlow</td>
-          <td class="balance">
-            <span [innerHTML]="totalInFlowAmount | currencyFormat"></span>
-          </td>
-
-          <td class="balance">
-            <span [innerHTML]="totalOutFlowAmount | currencyFormat"></span>
-          </td>
-        </tr>
-      </tfoot>
-    </table>
-
-    <table
-      *ngIf="reportType == 'BIKRI_KHATA'"
-      id="header-fixed"
-      class="table table-hover table-fixed"
-    >
-      <thead>
-        <tr>
-          <th colspan="1">SalesDate</th>
-          <th colspan="1">Voucher</th>
-          <th colspan="1">Buyer Name</th>
-          <th colspan="1">Buyer PAN</th>
-          <th colspan="1">Total Sales</th>
-          <th colspan="1">Non Taxable Sales</th>
-          <th colspan="1">Export</th>
-          <th colspan="1">Taxable Amount</th>
-          <th colspan="1">Tax Amount</th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let bikriKhata of bikriKhataList; index as i">
-        <tr>
-          <td>
-            {{ bikriKhata.SalesDate | date: "MM-dd-yyyy" }}
-          </td>
-          <td>{{ bikriKhata.Voucher }}</td>
-          <td>{{ bikriKhata.BuyersName }}</td>
-          <td>{{ bikriKhata.BuyersPAN }}</td>
-          <td class="balance">
-            <span
-              [innerHTML]="bikriKhata.TotalSalesAmt | currencyFormat"
-            ></span>
-          </td>
-          <td class="balance">
-            <span
-              [innerHTML]="bikriKhata.NonTaxableSalesAmt | currencyFormat"
-            ></span>
-          </td>
-          <td class="balance">
-            <span [innerHTML]="bikriKhata.Export | currencyFormat"></span>
-          </td>
-          <td class="balance">
-            <span [innerHTML]="bikriKhata.TaxableAmt | currencyFormat"></span>
-          </td>
-          <td class="balance">
-            <span [innerHTML]="bikriKhata.TaxAmt | currencyFormat"></span>
-          </td>
-        </tr>
-      </tbody>
-      <tbody *ngIf="bikriKhataList.length == 0">
-        <tr>
-          <td colspan="10" align="center">No Data Available</td>
-        </tr>
-      </tbody>
-
-      <tfoot *ngIf="bikriKhataList.length > 0">
-        <tr>
-          <td colspan="1">Total Amount</td>
-          <td colspan="1"></td>
-          <td colspan="1"></td>
-          <td colspan="1"></td>
-          <td class="balance" colspan="1">
-            <span [innerHTML]="sumTotalSalesAmt | currencyFormat"></span>
-          </td>
-          <td class="balance" colspan="1">
-            <span [innerHTML]="sumNonTaxableSalesAmt | currencyFormat"></span>
-          </td>
-          <td class="balance" colspan="1">
-            <span [innerHTML]="sumExport | currencyFormat"></span>
-          </td>
-          <td class="balance" colspan="1">
-            <span [innerHTML]="sumTaxableAmount | currencyFormat"></span>
-          </td>
-          <td class="balance" colspan="1">
-            <span [innerHTML]="sumTaxAmount | currencyFormat"></span>
-          </td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-</kendo-pdf-export>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" (click)="onCancel()">Ok</button>
+  <button class="btn btn-secondary ml-2" type="button" (click)="onCancel()">
+    Cancel
+  </button>
+</div>

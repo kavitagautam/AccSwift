@@ -9,6 +9,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { CashFlowList } from '@accSwift-modules/reports/models/cash-flow.model';
 import { GroupBalanceReportComponent } from '@accSwift-modules/accswift-shared/components/group-balance-report/group-balance-report.component';
 import { LedgerDetailReportsComponent } from '@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component';
+import { IconConst } from '@app/shared/constants/icon.constant';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class CashFlowReportComponent implements OnInit {
   modalRefLedger: BsModalRef
   baseURL: string;
   listLoading: boolean;
+  iconConst = IconConst;
 
   constructor(
     private modalService: BsModalService,

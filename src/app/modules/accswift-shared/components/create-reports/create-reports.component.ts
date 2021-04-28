@@ -9,6 +9,8 @@ import { saveAs } from "file-saver";
 import { DOCUMENT } from "@angular/common";
 import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 import { state } from '@angular/animations';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { ReportPreviewComponent } from '../report-preview/report-preview.component';
 
 @Component({
   selector: "accSwift-create-reports",
@@ -24,11 +26,14 @@ export class CreateReportsComponent implements OnInit {
   @Input("voucherType") public voucherType: string;
   @Input("reportType") public reportType: string;
   iconConst = IconConst;
+  modalRef: BsModalRef;
   cvsList = [];
+
   constructor(
     private router: Router,
     private salesInvoiceService: SalesInvoiceService,
     private localStorageService: LocalStorageService,
+    private modalService: BsModalService,
     @Inject(DOCUMENT) private document: Document
   ) {
     // if (this.router.url.indexOf("/journal") > -1) {
@@ -159,23 +164,25 @@ export class CreateReportsComponent implements OnInit {
     }
 
     if (this.reportType == "CASH_FLOW") {
-      this.router.navigate(
-        [`/cash-flow-report/report-preview`],
-        {
-          state: this.localStorageService.getLocalStorageItem(
-            "cashFlowReportPreview")
-        }
-      );
+      this.modalRef = this.modalService.show(ReportPreviewComponent, {
+        initialState: { cashFlowPreview: this.localStorageService.getLocalStorageItem(
+          "cashFlowReportPreview") },
+          ignoreBackdropClick: true,
+          animated: true,
+          keyboard: true,
+          class: "modal-lg",
+      });
     }
 
     if (this.reportType == "BIKRI_KHATA") {
-      this.router.navigate(
-        [`/bikri-khata/report-preview`],
-        {
-          state: this.localStorageService.getLocalStorageItem(
-            "bikriKhataList")
-        }
-      );
+      this.modalRef = this.modalService.show(ReportPreviewComponent, {
+        initialState: { bikriKhataList: this.localStorageService.getLocalStorageItem(
+          "bikriKhataList") },
+          ignoreBackdropClick: true,
+          animated: true,
+          keyboard: true,
+          class: "modal-lg",
+      });
     }
     
   }

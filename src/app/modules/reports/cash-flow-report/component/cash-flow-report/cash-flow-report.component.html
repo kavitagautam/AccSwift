@@ -1,10 +1,9 @@
 <div class="box box-default">
   <div class="row">
-    <accSwift-create-reports
-      [reportType]="'CASH_FLOW'"
-    >
+    <accSwift-create-reports [reportType]="'CASH_FLOW'">
     </accSwift-create-reports>
   </div>
+
   <div class="row">
     <div class="col-md-12">
       <button
@@ -14,82 +13,113 @@
       >
         Cash Flow Report Settings
       </button>
+      <button
+        class="btn btn-default mr-2 mt-2"
+        style="float: right"
+        tooltip="Print"
+        printSectionId="print-section"
+        ngxPrint
+        [useExistingCss]="true"
+      >
+        <i class="{{ iconConst.PRINT }}"></i>
+      </button>
     </div>
 
-    <div class="col-md-12">
-      <div class="grid-wrapper">
-        <div class="table-box">
-          <table id="header-fixed" class="table table-hover table-fixed">
-            <thead>
-              <tr>
-                <th colspan="1">Account Name</th>
-                <th colspan="1">Amount Inflow</th>
-                <th colspan="1">Amount Outflow</th>
-              </tr>
-            </thead>
-            <tbody *ngFor="let cashFlow of cashFlowList; index as i">
-              <tr (click)="openCashFlowDetails($event, cashFlow)">
-                <td>
-                  <span
-                    *ngIf="cashFlow.Level === 0 && cashFlow.Type === 'GROUP'"
-                    class="group_name"
-                  >
-                    {{ cashFlow.AccountName }}
-                  </span>
-                  <span
-                    *ngIf="cashFlow.Level === 1 && cashFlow.Type === 'GROUP'"
-                    class="group_name"
-                    style="margin-left: 20px"
-                  >
-                    {{ cashFlow.AccountName }}
-                  </span>
-                  <span
-                    *ngIf="cashFlow.Level === 2 && cashFlow.Type === 'GROUP'"
-                    class="group_name"
-                    style="margin-left: 30px"
-                  >
-                    {{ cashFlow.AccountName }}
-                  </span>
-                  <span style="color: blue" *ngIf="cashFlow.Type === 'LEDGER'">
-                    {{ cashFlow.AccountName }}
-                  </span>
-                </td>
-                <td class="balance">
-                  <span
-                    [innerHTML]="cashFlow.InFlowAmount | currencyFormat"
-                  ></span>
-                </td>
-                <td class="balance">
-                  <span
-                    [innerHTML]="cashFlow.OutFlowAmount | currencyFormat"
-                  ></span>
-                </td>
-              </tr>
-            </tbody>
-            <tbody *ngIf="cashFlowList.length == 0">
-              <tr>
-                <td colspan="10" align="center">No Data Available</td>
-              </tr>
-            </tbody>
+    <kendo-pdf-export
+      #pdf
+      paperSize="A6"
+      margin="1cm"
+      [scale]="0.8"
+      [repeatHeaders]="true"
+    >
+      <div class="col-md-12">
+        <div class="grid-wrapper">
+          <div class="table-box">
+            <div id="print-section">
+              <table id="header-fixed" class="table table-hover table-fixed">
+                <thead>
+                  <tr>
+                    <th colspan="1">Account Name</th>
+                    <th colspan="1">Amount Inflow</th>
+                    <th colspan="1">Amount Outflow</th>
+                  </tr>
+                </thead>
+                <tbody *ngFor="let cashFlow of cashFlowList; index as i">
+                  <tr (click)="openCashFlowDetails($event, cashFlow)">
+                    <td>
+                      <span
+                        *ngIf="
+                          cashFlow.Level === 0 && cashFlow.Type === 'GROUP'
+                        "
+                        class="group_name"
+                      >
+                        {{ cashFlow.AccountName }}
+                      </span>
+                      <span
+                        *ngIf="
+                          cashFlow.Level === 1 && cashFlow.Type === 'GROUP'
+                        "
+                        class="group_name"
+                        style="margin-left: 20px"
+                      >
+                        {{ cashFlow.AccountName }}
+                      </span>
+                      <span
+                        *ngIf="
+                          cashFlow.Level === 2 && cashFlow.Type === 'GROUP'
+                        "
+                        class="group_name"
+                        style="margin-left: 30px"
+                      >
+                        {{ cashFlow.AccountName }}
+                      </span>
+                      <span
+                        style="color: blue"
+                        *ngIf="cashFlow.Type === 'LEDGER'"
+                      >
+                        {{ cashFlow.AccountName }}
+                      </span>
+                    </td>
+                    <td class="balance">
+                      <span
+                        [innerHTML]="cashFlow.InFlowAmount | currencyFormat"
+                      ></span>
+                    </td>
+                    <td class="balance">
+                      <span
+                        [innerHTML]="cashFlow.OutFlowAmount | currencyFormat"
+                      ></span>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="cashFlowList.length == 0">
+                  <tr>
+                    <td colspan="10" align="center">No Data Available</td>
+                  </tr>
+                </tbody>
 
-            <tfoot *ngIf="cashFlowList.length > 0">
-              <tr>
-                <td>Total CashFlow</td>
-                <td class="balance">
-                  <span [innerHTML]="totalInFlowAmount | currencyFormat"></span>
-                </td>
+                <tfoot *ngIf="cashFlowList.length > 0">
+                  <tr>
+                    <td>Total CashFlow</td>
+                    <td class="balance">
+                      <span
+                        [innerHTML]="totalInFlowAmount | currencyFormat"
+                      ></span>
+                    </td>
 
-                <td class="balance">
-                  <span
-                    [innerHTML]="totalOutFlowAmount | currencyFormat"
-                  ></span>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+                    <td class="balance">
+                      <span
+                        [innerHTML]="totalOutFlowAmount | currencyFormat"
+                      ></span>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
         </div>
+        <div *ngIf="listLoading" class="k-i-loading"></div>
       </div>
-      <div *ngIf="listLoading" class="k-i-loading"></div>
-    </div>
+    </kendo-pdf-export>
   </div>
 </div>
