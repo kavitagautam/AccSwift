@@ -35,7 +35,11 @@
         </div>
         <div class="form-group">
           <label>Department</label>
-          <input class="form-control" formControlName="Department" />
+          <input
+            class="form-control"
+            formControlName="Department"
+            [disabled]="isDisabled"
+          />
         </div>
       </div>
 
@@ -45,6 +49,7 @@
           <select
             class="form-control"
             formControlName="AccessRoleID"
+            [disabled]="isDisabled"
             accSwiftFormValidator
           >
             <option [ngValue]="null">Choose option..</option>
@@ -58,7 +63,11 @@
         </div>
         <div class="form-group">
           <label>Account Class</label>
-          <select class="form-control" formControlName="AccClassID">
+          <select
+            class="form-control"
+            formControlName="AccClassID"
+            [disabled]="isDisabled"
+          >
             <option
               *ngFor="let account of userService.accountClass"
               [ngValue]="account.ID"
@@ -77,6 +86,7 @@
               formControlName="UserName"
               id="username"
               name="username"
+              [disabled]="isDisabled"
               accSwiftFormValidator
             />
           </div>

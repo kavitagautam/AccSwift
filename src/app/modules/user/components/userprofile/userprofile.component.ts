@@ -20,6 +20,7 @@ export class UserprofileComponent implements OnInit {
   users: Users;
   profileForm: FormGroup;
   userID: number;
+  isDisabled:boolean = true;
 
   constructor(
     public preferenceService: PreferenceService,
@@ -56,24 +57,25 @@ export class UserprofileComponent implements OnInit {
 
   buildProfileForm(): void {
     this.profileForm = this._fb.group({
-      Password: [this.users ? this.users.Password : "", Validators.required],
-      VerifyPassword: ["", Validators.required],
+      Password: [this.users ? this.users.Password : ""],
+      VerifyPassword: [""],
       UserID: [""],
-      UserName: [this.users ? this.users.UserName : "", Validators.required],
+      UserName: [{value:this.users ? this.users.UserName : "", disabled: this.isDisabled}, Validators.required],
       Name: [this.users ? this.users.Name : "", Validators.required],
       Address: [this.users ? this.users.Address : ""],
       Contact: [this.users ? this.users.Contact : ""],
       Email: [this.users ? this.users.Email : ""],
-      Department: [this.users ? this.users.Department : ""],
-      AccessRoleID: [this.users ? this.users.AccessRoleID : null, Validators.required],
-      AccessRoleName: [this.users ? this.users.AccessRoleName : ""],
-      AccClassID: [this.preferenceService.preferences
+      Department: [{value:this.users ? this.users.Department : "", disabled: this.isDisabled}],
+      AccessRoleID: [{value:this.users ? this.users.AccessRoleID : null, disabled: this.isDisabled}, Validators.required],
+      AccessRoleName: [{value:this.users ? this.users.AccessRoleName : ""}],
+      AccClassID: [{value:this.preferenceService.preferences
         ? this.preferenceService.preferences.DEFAULT_ACC_CLASS.Value
-        : null,
+        : null, disabled: this.isDisabled},
       Validators.required,],
     
-      AccClassName: [this.users ? this.users.AccClassName : ""],
+      AccClassName: [{value:this.users ? this.users.AccClassName : ""}],
     })
+    console.log(this.profileForm.value)
   }
 
   togglePwFieldType():void {
@@ -81,17 +83,19 @@ export class UserprofileComponent implements OnInit {
   }
 
   onSubmitUser(): void {
+    console.log(this.users);
       if (this.profileForm.invalid) return;
-      console.log(this.profileForm.value);
+      console.log(JSON.stringify(this.profileForm.value));
       this.profileForm.get("UserID").setValue(this.userID);
       this.editUser();
   }
 
   editUser(): void {
+    console.log(this.users);
+    console.log(this.profileForm.value);
     this.userService.updateUser(this.profileForm.value).subscribe(
       (response) => {
        this.router.navigate(["/user"]);
-
       },
       (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
