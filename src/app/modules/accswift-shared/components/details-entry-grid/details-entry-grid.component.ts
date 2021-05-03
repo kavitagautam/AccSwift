@@ -785,6 +785,7 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   openSubLedgerModal(formGroup, rowIndex): void {
+    // console.log("Value " + formGroup.getRawValue() )
     this.modalRef = this.modalService.show(EntrySubLedgerComponent, {
       initialState: {
         getSubLedgerList: formGroup.controls[rowIndex].get(

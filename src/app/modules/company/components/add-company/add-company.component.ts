@@ -68,7 +68,6 @@ export class AddCompanyComponent implements OnInit {
       BookBeginFrom: [""],
       Remarks: [""],
     });
-    console.log(this.companyForm.value)
   }
 
   public selectEventHandler(e: SelectEvent): void {

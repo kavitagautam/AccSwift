@@ -11,6 +11,9 @@ import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/val
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { IntlService } from "@progress/kendo-angular-intl";
 import { TimeZoneService } from "@accSwift-modules/accswift-shared/services/time-zone/time-zone.service";
+import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
+import { DetailsEntryGridService } from '@accSwift-modules/accswift-shared/services/details-entry-grid/details-entry-grid.service';
+
 @Component({
   selector: "accSwift-edit-journal",
   templateUrl: "../common-html/journal-voucher.html",
@@ -20,6 +23,7 @@ import { TimeZoneService } from "@accSwift-modules/accswift-shared/services/time
 export class EditJournalComponent implements OnInit {
   private editedRowIndex: number;
   iconConst = IconConst;
+  public selectedDate:string =''
 
   journalVoucherForms: FormGroup;
   journalDetail: Journal;
@@ -45,12 +49,16 @@ export class EditJournalComponent implements OnInit {
     public _fb: FormBuilder,
     private router: Router,
     public journalService: JournalService,
+    public gridServices: DetailsEntryGridService,
     private modalService: BsModalService,
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     private toastr: ToastrService,
-    public timeZone: TimeZoneService
+    public timeZone: TimeZoneService,
+    private localStorageService: LocalStorageService
+
+    
   ) {}
 
   ngOnInit() {
@@ -62,6 +70,7 @@ export class EditJournalComponent implements OnInit {
           .getJournalDetails(params.get("id"))
           .subscribe((response) => {
             this.journalDetail = response.Entity;
+            console.log(this.journalDetail)
             if (this.journalDetail) {
               this.setJournalList();
               this.journalVoucherForms.patchValue(this.journalDetail);
@@ -69,6 +78,9 @@ export class EditJournalComponent implements OnInit {
           });
       }
     });
+
+    this.selectedDate= this.localStorageService.getLocalStorageItem(
+      "SelectedDate");
   }
 
   bsValue = new Date();
@@ -90,7 +102,7 @@ export class EditJournalComponent implements OnInit {
 
     const now = new Date(this.journalVoucherForms.get("Date").value);
     const newDate = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
-    console.log("New Date" + newDate);
+    // console.log("New Date" + newDate);
     this.journalVoucherForms.get("Date").patchValue(newDate);
     // this.journalVoucherForms
     //   .get("Date")
@@ -100,9 +112,9 @@ export class EditJournalComponent implements OnInit {
   }
 
   convetTimeZone(value): string {
-    console.log("Value" + value);
+    // console.log("Value" + value);
     const date = new Date(value);
-    console.log("Return Date " + date.toLocaleString());
+    // console.log("Return Date " + date.toLocaleString());
     return date.toLocaleString();
   }
 
@@ -150,22 +162,33 @@ export class EditJournalComponent implements OnInit {
   }
 
   // this block of code is used to show form array data in the template.....
-  setSubLedgerListArray(subLedgerList): FormArray {
+  setSubLedgerListArray(LedgerID): FormArray {
     const subLedger = new FormArray([]);
-    if (subLedgerList && subLedgerList.length > 0) {
-      subLedgerList.forEach((element) => {
-        subLedger.push(
-          this._fb.group({
-            ID: [element.ID],
-            SubLedgerID: [element.SubLedgerID],
-            Name: [element.Name],
-            Amount: [element.Amount],
-            DrCr: [element.DrCr],
-            Remarks: [element.Remarks],
-          })
-        );
+
+    let subLedgerList=[];
+    this.gridServices
+    .getSubLedgerMin(LedgerID)
+      .subscribe((response) => {
+        console.log(" Response" + JSON.stringify(response))
+        subLedgerList=response.Entity;
+        if (subLedgerList && subLedgerList.length > 0) {
+          subLedgerList.forEach((element) => {
+            subLedger.push(
+              this._fb.group({
+                ID: [element.ID],
+                SubLedegerID: [element.SubLedegerID],
+                Name: [element.Name],
+                Amount: [element.Amount],
+                DrCr: [element.DrCr],
+                Remarks: [element.Remarks],
+              })
+            );
+          });
+        }
       });
-    }
+      
+      // console.log(" SublEdger Details for each ledger  " + JSON.stringify(subLedgerList))
+   
     return subLedger;
   }
 
@@ -181,7 +204,7 @@ export class EditJournalComponent implements OnInit {
         journalFormArray.push(
           this._fb.group({
             TransactionSubLedger: this.setSubLedgerListArray(
-              element.TransactionSubLedger
+              element.LedgerID
             ),
             ID: [element.ID],
             MasterID: [element.MasterID],

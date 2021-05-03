@@ -8,6 +8,7 @@ import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/val
 import { ToastrService } from "ngx-toastr";
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { IconConst } from "@app/shared/constants/icon.constant";
+import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 
 @Component({
   selector: "accSwift-add-cash-receipt",
@@ -16,6 +17,7 @@ import { IconConst } from "@app/shared/constants/icon.constant";
 })
 export class AddCashReceiptComponent implements OnInit {
   cashReceiptForm: FormGroup;
+  selectedDate: string ='';
 
   submitted: boolean;
   rowSubmitted: boolean;
@@ -38,11 +40,14 @@ export class AddCashReceiptComponent implements OnInit {
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     private preferenceService: PreferenceService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
     this.buildcashReceiptForm();
+    this.selectedDate = this.localStorageService.getLocalStorageItem(
+      "SelectedDate");
   }
 
   buildcashReceiptForm(): void {

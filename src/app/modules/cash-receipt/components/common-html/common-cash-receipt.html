@@ -41,9 +41,14 @@
           ></accSwift-project-forms>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
+          <div *ngIf="selectedDate == 'English'" class="form-group">
             <label>Date</label>
             <input formControlName="Date" class="form-control" bsDatepicker />
+            <span class="glyphicon glyphicon-calendar calendar-icon"></span>
+          </div>
+          <div *ngIf="selectedDate == 'Nepali'" class="form-group">
+            <label>Date</label>
+            <np-datepicker formControlName="Date"> </np-datepicker>
             <span class="glyphicon glyphicon-calendar calendar-icon"></span>
           </div>
         </div>

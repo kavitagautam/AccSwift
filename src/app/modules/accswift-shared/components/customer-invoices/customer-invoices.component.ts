@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { environment } from "@env/environment.prod";
 import { IExport } from "@app/shared/models/iexport";
 import { ExportToCsvService } from "@app/shared/services/export-to-csv/export-to-csv.service";
@@ -10,12 +10,16 @@ import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sa
 import { Company } from "@accSwift-modules/company/models/company.model";
 import { Store } from "@ngxs/store";
 import { AddInvoiceDetails } from "@accSwift-modules/accswift-shared/state/sales-invoice.state";
+import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
+import { FormGroup } from '@angular/forms';
 @Component({
   selector: "simpliflysaas-customer-invoices",
   templateUrl: "./customer-invoices.component.html",
   styleUrls: ["./customer-invoices.component.scss"],
 })
 export class CustomerInvoicesComponent implements OnInit {
+
+  @Input("settingsForms") public settingsForms:FormGroup;
   defaultImageUrl = environment.defaultImageUrl;
   iconConst = IconConst;
   totalQty: number = 0;
@@ -36,13 +40,17 @@ export class CustomerInvoicesComponent implements OnInit {
   cashDetails: any = [];
   bankDetails: any = [];
   customerDescription: any[];
+
   constructor(
     private exportService: ExportToCsvService,
+    private localStorageService: LocalStorageService,
     private route: ActivatedRoute,
     private router: Router,
     private salesInvoiceServices: SalesInvoiceService,
     private store: Store
   ) {
+
+  
     this.currencySign = localStorage.getItem("currencySymbol");
 
     this.salesInvoiceServices.getCompanyDetails().subscribe((response) => {
@@ -119,6 +127,7 @@ export class CustomerInvoicesComponent implements OnInit {
         this.bankDetails = data;
       }
     }
+
   }
 
   ngOnInit() {

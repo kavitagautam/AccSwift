@@ -346,6 +346,13 @@ const routes: Routes = [
           breadcrumb: "Configuration",
         },
       },
+      {
+        path: "delivery-notes",
+        loadChildren: "@accSwift-modules/delivery-notes/delivery-notes.module#DeliveryNotesModule",
+        data: {
+          breadcrumb: "Delivery Notes"
+        }
+      }
     ],
   }
 ];
