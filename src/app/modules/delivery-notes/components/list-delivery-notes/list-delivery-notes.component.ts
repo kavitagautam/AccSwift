@@ -96,8 +96,8 @@ export class ListDeliveryNotesComponent implements OnInit {
       this.skip = event.skip;
       const pageNo = event.skip / event.take + 1;
       this.currentPage = pageNo;
-      this.getDeliveryNotesList();
     }
+    this.getDeliveryNotesList();
   }
 
 }

@@ -1,5 +1,5 @@
 <div class="box-header">
-  <button class="btn btn-primary">
+  <button [routerLink]="['add']" class="btn btn-primary">
     <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Sales Invoice
   </button>
 </div>
@@ -37,7 +37,7 @@
               </div>
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column title="Code" width="80">
+          <kendo-grid-column field="Code" title="Code" width="80">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -51,7 +51,11 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column title="Product Name" width="130">
+          <kendo-grid-column
+            field="Product Name"
+            title="Product Name"
+            width="130"
+          >
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -65,7 +69,11 @@
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column title="General Name" width="130">
+          <kendo-grid-column
+            field="General Name"
+            title="General Name"
+            width="130"
+          >
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -80,16 +88,19 @@
           </kendo-grid-column>
 
           <kendo-grid-column
-            field="CashPartName"
+            field="Description"
             title="Description"
             width="130"
           >
+            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
+              <span>{{ dataItem.DeliveryProductsList[0].Description }}</span>
+            </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column field="ClientAddress" title="Quantity" width="100">
+          <kendo-grid-column field="Quantity" title="Quantity" width="100">
             <ng-template kendoGridCellTemplate let-dataItem="dataItem">
               <span class="float-right">{{
-                dataItem.DeliveryProductsList[0].ProductCode
+                dataItem.DeliveryProductsList[0].Quantity
               }}</span>
             </ng-template>
           </kendo-grid-column>
