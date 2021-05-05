@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@core/services/http-client/http-client.service";
 import { Observable } from "rxjs";
 import { environment } from "@env/environment";
-import { DeliveryNotesNavigateRootModel, DeliveryNotesRootModel } from '../models/delivery-notes.model';
+import { DeliveryNotesNavigateRootModel } from '../models/delivery-notes.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class DeliveryNotesService {
       );
     }
 
-    getDeliveryNotes(body): Observable<DeliveryNotesRootModel> {
+    getDeliveryNotes(body): Observable<DeliveryNotesNavigateRootModel> {
       return this.httpService.post(`${this._api_URL}DeliveryNotes`, body);
     }
 }

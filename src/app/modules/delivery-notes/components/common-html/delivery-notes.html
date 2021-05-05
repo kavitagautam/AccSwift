@@ -1,11 +1,10 @@
 <div class="box box-default">
-  <h1>{{deliveryNotesForm.getRawValue() | json}}</h1>
   <form [formGroup]="deliveryNotesForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Delivery Head</label>
+            <label>Delivery Head</label> <sup>*</sup>
             <input
               type="text"
               class="form-control"
@@ -16,7 +15,7 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Order Date</label>
+            <label>Order Date</label> <sup>*</sup>
             <input
               type="text"
               class="form-control"
@@ -27,7 +26,7 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Delivery Date</label>
+            <label>Delivery Date</label> <sup>*</sup>
             <input
               type="text"
               class="form-control"
@@ -38,7 +37,7 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Delivered By</label>
+            <label>Delivered By</label> <sup>*</sup>
             <input
               type="text"
               class="form-control"
@@ -49,7 +48,7 @@
         </div>
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Deliver Contact</label>
+            <label>Deliver Contact</label> <sup>*</sup>
             <input
               type="text"
               class="form-control"
@@ -63,7 +62,7 @@
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
-            <label>Client Name</label>
+            <label>Client Name</label> <sup>*</sup>
             <input
               type="text"
               class="form-control"
@@ -117,35 +116,153 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="col-md-12">
-        <div class="col-md-4">
-          <div class="form-group">
-            <label>Remarks</label>
-            <input formControlName="Remarks" type="text" class="form-control" />
+    <div class="box-body">
+      <div class="col-md-12 p-0">
+        <div class="grid-wrapper">
+          <kendo-grid [data]="productArray.value">
+            <ng-template kendoGridToolbarTemplate>
+              <button kendoGridAddCommand>Add New</button>
+            </ng-template>
+            <kendo-grid-column field="ProductCode" title="Code" width="80">
+              <ng-template
+                kendoGridCellTemplate
+                let-dataItem="dataItem"
+                let-column="column"
+                let-formGroup="formGroup"
+                let-rowIndex="rowIndex"
+              >
+                <input
+                  #input
+                  class="k-textbox"
+                  style="text-align: right"
+                  class="form-control"
+                  [readonly]="false"
+                  [formControl]="productArray.controls[rowIndex].get(column.field)"
+                />
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column
+              field="ProductName"
+              title="Product Name"
+              width="130"
+            >
+              <ng-template
+                kendoGridCellTemplate
+                let-dataItem="dataItem"
+                let-column="column"
+                let-formGroup="formGroup"
+                let-rowIndex="rowIndex"
+              >
+                <input
+                  #input
+                  class="k-textbox"
+                  style="text-align: right"
+                  class="form-control"
+                  [readonly]="false"
+                  [formControl]="productArray.controls[rowIndex].get(column.field)"
+                />
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column
+              field="GeneralName"
+              title="General Name"
+              width="130"
+            >
+              <ng-template
+                kendoGridCellTemplate
+                let-dataItem="dataItem"
+                let-column="column"
+                let-formGroup="formGroup"
+                let-rowIndex="rowIndex"
+              >
+                <input
+                  #input
+                  class="k-textbox"
+                  style="text-align: right"
+                  class="form-control"
+                  [readonly]="false"
+                  [formControl]="productArray.controls[rowIndex].get(column.field)"
+                />
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column
+              field="Description"
+              title="Description"
+              width="130"
+            >
+              <ng-template
+                kendoGridCellTemplate
+                let-dataItem="dataItem"
+                let-column="column"
+                let-formGroup="formGroup"
+                let-rowIndex="rowIndex"
+              >
+                <input
+                  #input
+                  class="k-textbox"
+                  style="text-align: right"
+                  class="form-control"
+                  [readonly]="false"
+                  [formControl]="productArray.controls[rowIndex].get(column.field)"
+                />
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="Quantity" title="Quantity" width="100">
+              <ng-template
+                kendoGridCellTemplate
+                let-dataItem="dataItem"
+                let-column="column"
+                let-formGroup="formGroup"
+                let-isNew="isNew"
+                let-column="column"
+                let-rowIndex="rowIndex"
+              >
+                <kendo-numerictextbox
+                  popupAnchor
+                  class="form-control"
+                  [format]="'n0'"
+                  [min]="1"
+                  [formControl]="productArray.controls[rowIndex].get(column.field)"
+                >
+                </kendo-numerictextbox>
+              </ng-template>
+            </kendo-grid-column>
+          </kendo-grid>
+          <div *ngIf="listLoading" class="k-i-loading"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Remarks</label>
+          <input formControlName="Remarks" type="text" class="form-control" />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="col-sm-2">
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input type="checkbox" />Do not close </label>
           </div>
         </div>
       </div>
-      <div class="col-md-12">
-        <div class="col-sm-2">
-          <div class="form-group">
-            <div class="checkbox">
-              <label> <input type="checkbox" />Do not close </label>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-2">
-          <div class="form-group">
-            <div class="checkbox">
-              <label> <input type="checkbox" />Print while saving </label>
-              <!-- <button [routerLink]="['invoice-billing']" class="btn btn-primary">
-              Print Invoice
-            </button> -->
-            </div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          <div class="checkbox">
+            <label> <input type="checkbox" />Print while saving </label>
+            <!-- <button [routerLink]="['invoice-billing']" class="btn btn-primary">
+            Print Invoice
+          </button> -->
           </div>
         </div>
       </div>
     </div>
+
     <div class="box-footer">
       <div class="mb-2">
         <button

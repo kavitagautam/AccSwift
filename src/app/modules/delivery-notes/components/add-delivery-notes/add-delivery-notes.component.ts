@@ -1,4 +1,4 @@
-import { DeliveryNote, DeliveryProductList } from '@accSwift-modules/delivery-notes/models/delivery-notes.model';
+import { DeliveryNotes } from '@accSwift-modules/delivery-notes/models/delivery-notes.model';
 import { DeliveryNotesService } from '@accSwift-modules/delivery-notes/services/delivery-notes.service';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -13,8 +13,9 @@ import { Router } from '@angular/router';
 export class AddDeliveryNotesComponent implements OnInit {
 
   public deliveryNotesForm: FormGroup;
-  deliveryNotes: DeliveryNote;
-  deliveryProductList: DeliveryProductList;
+  listLoading: boolean;
+  deliveryNotes: DeliveryNotes[];
+  productArray;
 
   constructor(
     private _fb: FormBuilder,
@@ -24,47 +25,63 @@ export class AddDeliveryNotesComponent implements OnInit {
 
   ngOnInit() {
     this.buildDeliveryNotesForm();
+    this.productArray = <FormArray>(
+        this.deliveryNotesForm.get("DeliveryProductsList")
+      );
+    console.log(this.productArray.at(0).value)
   }
 
   buildDeliveryNotesForm(): void {
     this.deliveryNotesForm = this._fb.group({
-      ID: [this.deliveryNotes ? this.deliveryNotes.ID:0],
-      Title: [this.deliveryNotes ? this.deliveryNotes.Title:"Test"],
-      OrderDate: [this.deliveryNotes ? this.deliveryNotes.OrderDate:"2021-05-04"],
-      DeliveryDate: [this.deliveryNotes ? this.deliveryNotes.DeliveryDate:"2021-05-04"],
+      ID: [0],
+      Title: ["", Validators.required],
+      OrderDate: [new Date(), Validators.required],
+      DeliveryDate: [new Date(), Validators.required],
       ClientLedgerID: [null],
-      ClientName: ["Testing"],
+      ClientName: ["", Validators.required],
       ClientAddress: [""],
       ClientContact: [""],
       ClientPAN: [""],
-      CLientEmail: [""],
-      DeliveredBy: ["kavita"],
-      DeliverContact: ["12345"],
-      DeliveryProductsList: this._fb.array([this.getDeliveryProductList()]),
+      ClientEmail: [""],
+      DeliveredBy: ["", Validators.required],
+      DeliverContact: ["", Validators.required],
+      DeliveryProductsList: this._fb.array([this.addDeliveryProductList()]),
       Remarks: [""],
       CompanyID: [null]
     })
-    console.log(this.deliveryNotesForm.value);
+    console.log(this.deliveryNotesForm.controls.DeliveryProductsList.value)
   }
 
-  getDeliveryProductList():FormGroup {
+  get getDeliveryProductList():FormArray {
+    return <FormArray> this.deliveryNotesForm.get("DeliveryProductsList");
+  }
+
+  addDeliveryProductList():FormGroup {
     return this._fb.group({
-      ID: [this.deliveryNotes? this.deliveryNotes.ID:0],
+      ID: [0],
       DeliveryNoteID: [null],
-      ProductID: [this.deliveryProductList ? this.deliveryProductList.ProductID:13681],
+      ProductID: [13681],
       ProductCode: [""],
       ProductName: [""],
       GeneralName: [""],
       Description: [""],
-      Quantity: [this.deliveryProductList ? this.deliveryProductList.Quantity:12],
+      Quantity: ["", Validators.required],
       IsService: true
     })
   }
-
-  getDeliveryNotesDetails(): void {
+  // 13681
+  getDeliveryNotesDetails(index:number): void {
+    // const productArray = <FormArray>(
+    //   this.deliveryNotesForm.get("DeliveryProductsList")
+    // );
+    // console.log(productArray.at(0).value)
+    // productArray.controls[index].get("ProductID").setValue(13681);
     this.deliveryNotesService.getDeliveryNotes(this.deliveryNotesForm.value).subscribe(
       (response) => {
-        // this.deliveryNotes = response.Entity;
+        if (response)
+        {
+          
+        }
       },
       (error) => {
       },
