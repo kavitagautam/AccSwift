@@ -1,120 +1,145 @@
 <div class="box box-default">
+  <h1>{{deliveryNotesForm.value | json}}</h1>
   <form [formGroup]="deliveryNotesForm" novalidate>
     <div class="row mt-3">
-      <div class="col-md-12">
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Delivery Head</label> <sup>*</sup>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="Title"
-              accSwiftFormValidator
-            />
+      <div class="col-md-6">
+        <fieldset>
+          <legend>Delivery Details</legend>
+          <div class="col-md-12 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Delivery Head</label> <sup>*</sup>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="Title"
+                accSwiftFormValidator
+              />
+            </div>
           </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Order Date</label> <sup>*</sup>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="OrderDate"
-              accSwiftFormValidator
-            />
+          <div class="col-md-12 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Order Date</label> <sup>*</sup>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="OrderDate"
+                bsDatepicker
+                accSwiftFormValidator
+              />
+              <span class="glyphicon glyphicon-calendar calendar-icon"></span>
+            </div>
           </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Delivery Date</label> <sup>*</sup>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="DeliveryDate"
-              accSwiftFormValidator
-            />
+          <div class="col-md-12 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Delivery Date</label> <sup>*</sup>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="DeliveryDate"
+                bsDatepicker
+                accSwiftFormValidator
+              />
+              <span class="glyphicon glyphicon-calendar calendar-icon"></span>
+            </div>
           </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Delivered By</label> <sup>*</sup>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="DeliveredBy"
-              accSwiftFormValidator
-            />
+          <div class="col-md-12 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Delivered By</label> <sup>*</sup>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="DeliveredBy"
+                accSwiftFormValidator
+              />
+            </div>
           </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Deliver Contact</label> <sup>*</sup>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="DeliverContact"
-              accSwiftFormValidator
-            />
+          <div class="col-md-12 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Deliver Contact</label> <sup>*</sup>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="DeliverContact"
+                accSwiftFormValidator
+              />
+            </div>
           </div>
-        </div>
+        </fieldset>
       </div>
 
-      <div class="col-md-12">
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Client Name</label> <sup>*</sup>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="ClientName"
-              accSwiftFormValidator
-            />
+      <div class="col-md-6">
+        <fieldset>
+          <legend>Client Details</legend>
+          <div class="col-md-12 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Client Name</label> <sup>*</sup>
+              <kendo-dropdownlist
+                class="form-control"
+                [data]="ledgerList"
+                [filterable]="true"
+                [textField]="'CodeName'"
+                [valueField]="'CodeName'"
+                formControlName="ClientName"
+                [valuePrimitive]="true"
+                (filterChange)="ledgerDDFilter($event)"
+              >
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <span class="template">{{ dataItem.CodeName }} </span>
+                </ng-template>
+                <ng-template kendoDropDownListNoDataTemplate>
+                  <div>
+                    No data found.
+                    <br />
+                  </div>
+                </ng-template>
+              </kendo-dropdownlist>
+            </div>
           </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Client Address</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="ClientAddress"
-              accSwiftFormValidator
-            />
+          <div class="col-md-12 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Client Address</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ClientAddress"
+                accSwiftFormValidator
+              />
+            </div>
           </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Client Contact</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="ClientContact"
-              accSwiftFormValidator
-            />
+          <div class="col-md-12 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Client Contact</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ClientContact"
+                accSwiftFormValidator
+              />
+            </div>
           </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Client PAN/VAT</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="ClientPAN"
-              accSwiftFormValidator
-            />
+          <div class="col-md-12 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Client PAN/VAT</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ClientPAN"
+                accSwiftFormValidator
+              />
+            </div>
           </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Client Email</label>
-            <input
-              type="email"
-              class="form-control"
-              formControlName="ClientEmail"
-              accSwiftFormValidator
-            />
+          <div class="col-md-12 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Client Email</label>
+              <input
+                type="email"
+                class="form-control"
+                formControlName="ClientEmail"
+                accSwiftFormValidator
+              />
+            </div>
           </div>
-        </div>
+        </fieldset>
       </div>
     </div>
 
@@ -123,48 +148,43 @@
         <div class="grid-wrapper">
           <kendo-grid [data]="productArray.value">
             <ng-template kendoGridToolbarTemplate>
-              <button kendoGridAddCommand>Add New</button>
+              <button kendoGridAddCommand>Add New Product</button>
             </ng-template>
-            <kendo-grid-column field="ProductCode" title="Code" width="80">
-              <ng-template
-                kendoGridCellTemplate
-                let-dataItem="dataItem"
-                let-column="column"
-                let-formGroup="formGroup"
-                let-rowIndex="rowIndex"
-              >
-                <input
-                  #input
-                  class="k-textbox"
-                  style="text-align: right"
-                  class="form-control"
-                  [readonly]="false"
-                  [formControl]="productArray.controls[rowIndex].get(column.field)"
-                />
-              </ng-template>
-            </kendo-grid-column>
+
             <kendo-grid-column
               field="ProductName"
               title="Product Name"
-              width="130"
+              width="150"
             >
               <ng-template
                 kendoGridCellTemplate
                 let-dataItem="dataItem"
                 let-column="column"
                 let-formGroup="formGroup"
+                let-isNew="isNew"
                 let-rowIndex="rowIndex"
               >
-                <input
-                  #input
-                  class="k-textbox"
-                  style="text-align: right"
-                  class="form-control"
-                  [readonly]="false"
-                  [formControl]="productArray.controls[rowIndex].get(column.field)"
-                />
+                <div class="form-group mt-4">
+                  <div class="col-md-11 pl-0">
+                    <kendo-dropdownlist
+                      class="form-control"
+                      [data]="productList"
+                      [filterable]="true"
+                      [textField]="'CodeName'"
+                      [valueField]="'ProductName'"
+                      [formControl]="productArray.controls[rowIndex].get(column.field)"
+                      [valuePrimitive]="true"
+                      (filterChange)="productDDFilter($event, rowIndex)"
+                    >
+                      <ng-template kendoDropDownListItemTemplate let-dataItem>
+                        <span class="template">{{ dataItem.CodeName }} </span>
+                      </ng-template>
+                    </kendo-dropdownlist>
+                  </div>
+                </div>
               </ng-template>
             </kendo-grid-column>
+
             <kendo-grid-column
               field="GeneralName"
               title="General Name"
@@ -229,6 +249,16 @@
                 </kendo-numerictextbox>
               </ng-template>
             </kendo-grid-column>
+            <kendo-grid-command-column title="Action" width="60">
+              <ng-template kendoGridCellTemplate let-isNew="isNew">
+                <button kendoGridRemoveCommand>
+                  <i
+                    class="fas fa-trash-alt mr-2 cursor-pointer"
+                    tooltip="Delete"
+                  ></i>
+                </button>
+              </ng-template>
+            </kendo-grid-command-column>
           </kendo-grid>
           <div *ngIf="listLoading" class="k-i-loading"></div>
         </div>

@@ -37,7 +37,7 @@
               </div>
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="Code" title="Code" width="80">
+          <kendo-grid-column field="Title" title="Delivery Head" width="130">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -46,13 +46,25 @@
               let-rowIndex="rowIndex"
             >
               <div class="col-sm-12">
-                <span>{{ dataItem.DeliveryProductsList[0].ProductCode }}</span>
+                <span>{{ dataItem.Title }}</span>
               </div>
             </ng-template>
           </kendo-grid-column>
-
+          <kendo-grid-column field="ClientName" title="Client Name" width="130">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-sm-12">
+                <span>{{ dataItem.ClientName }}</span>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
           <kendo-grid-column
-            field="Product Name"
+            field="ProductName"
             title="Product Name"
             width="130"
           >
