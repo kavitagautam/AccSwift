@@ -23,6 +23,7 @@ export interface DeliveryNotes {
     ClientEmail: string;
     DeliveredBy: string;
     DeliverContact: string;
+    TotalQty: number;
     DeliveryProductsList: DeliveryProductsList[];
     Remarks?: any;
     CompanyID: number;

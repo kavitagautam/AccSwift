@@ -1,5 +1,5 @@
 <div class="box box-default">
-  <h1>{{deliveryNotesForm.value | json}}</h1>
+  <!-- <h1>{{deliveryNotesForm.value | json}}</h1> -->
   <form [formGroup]="deliveryNotesForm" novalidate>
     <div class="row mt-3">
       <div class="col-md-6">
@@ -78,7 +78,7 @@
                 [data]="ledgerList"
                 [filterable]="true"
                 [textField]="'CodeName'"
-                [valueField]="'CodeName'"
+                [valueField]="'LedgerName'"
                 formControlName="ClientName"
                 [valuePrimitive]="true"
                 (filterChange)="ledgerDDFilter($event)"
@@ -150,7 +150,23 @@
             <ng-template kendoGridToolbarTemplate>
               <button kendoGridAddCommand>Add New Product</button>
             </ng-template>
-
+            <kendo-grid-column field="ProductCode" title="Code" width="80">
+              <ng-template
+                kendoGridCellTemplate
+                let-dataItem="dataItem"
+                let-column="column"
+                let-formGroup="formGroup"
+                let-isNew="isNew"
+                let-column="column"
+                let-rowIndex="rowIndex"
+              >
+                <kendo-autocomplete
+                  class="form-control"
+                  [formControl]="productArray.controls[rowIndex].get(column.field)"
+                >
+                </kendo-autocomplete>
+              </ng-template>
+            </kendo-grid-column>
             <kendo-grid-column
               field="ProductName"
               title="Product Name"
@@ -171,10 +187,11 @@
                       [data]="productList"
                       [filterable]="true"
                       [textField]="'CodeName'"
-                      [valueField]="'ProductName'"
+                      [valueField]="'ProductID'"
                       [formControl]="productArray.controls[rowIndex].get(column.field)"
                       [valuePrimitive]="true"
                       (filterChange)="productDDFilter($event, rowIndex)"
+                      (valueChange)="handleProductChange($event, rowIndex)"
                     >
                       <ng-template kendoDropDownListItemTemplate let-dataItem>
                         <span class="template">{{ dataItem.CodeName }} </span>
@@ -247,6 +264,13 @@
                   [formControl]="productArray.controls[rowIndex].get(column.field)"
                 >
                 </kendo-numerictextbox>
+              </ng-template>
+              <ng-template
+                kendoGridFooterTemplate
+                let-column
+                let-columnIndex="columnIndex"
+              >
+                <span class="pull-right"> Total QTY:{{ calTotalQty()}} </span>
               </ng-template>
             </kendo-grid-column>
             <kendo-grid-command-column title="Action" width="60">

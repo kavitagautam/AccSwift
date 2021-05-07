@@ -302,6 +302,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       });
   }
 
+  get getInvoiceEntryList(): FormArray {
+    return <FormArray>this.salesInvoiceForm.get("InvoiceDetails");
+  }
+
   addInvoiceEntryList(): FormGroup {
     return this._fb.group({
       ID: [0],
@@ -519,10 +523,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       class: "modal-sm",
     };
     this.modalRef = this.modalService.show(template, config);
-  }
-
-  get getInvoiceEntryList(): FormArray {
-    return <FormArray>this.salesInvoiceForm.get("InvoiceDetails");
   }
 
   private closeEditor(grid, rowIndex = 1) {

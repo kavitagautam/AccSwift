@@ -1,6 +1,6 @@
 import { AddProductComponent } from '@accSwift-modules/accswift-shared/components/add-product/add-product/add-product.component';
 import { DetailsEntryGridService } from '@accSwift-modules/accswift-shared/services/details-entry-grid/details-entry-grid.service';
-import { DeliveryNotes } from '@accSwift-modules/delivery-notes/models/delivery-notes.model';
+import { DeliveryNotes, DeliveryProductsList } from '@accSwift-modules/delivery-notes/models/delivery-notes.model';
 import { DeliveryNotesService } from '@accSwift-modules/delivery-notes/services/delivery-notes.service';
 import { LedgerMin } from '@accSwift-modules/ledger/models/ledger.models';
 import { ProductMin } from '@accSwift-modules/product/models/product-min.model';
@@ -9,6 +9,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { repeat } from 'rxjs/operators';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class AddDeliveryNotesComponent implements OnInit {
 
   public deliveryNotesForm: FormGroup;
   listLoading: boolean;
-  deliveryNotes: DeliveryNotes[];
+  deliveryNotes: DeliveryNotes;
+  deliveryProductsList: DeliveryProductsList;
   modalRef: BsModalRef;
   productArray;
   config = {
@@ -31,6 +33,7 @@ export class AddDeliveryNotesComponent implements OnInit {
   };
   public productList: ProductMin[] = [];
   public ledgerList: LedgerMin[] = [];
+  totalQty: number = 0;
 
   constructor(
     private _fb: FormBuilder,
@@ -68,6 +71,7 @@ export class AddDeliveryNotesComponent implements OnInit {
       ClientEmail: [""],
       DeliveredBy: ["", Validators.required],
       DeliverContact: ["", Validators.required],
+      TotalQty: [0, Validators.required],
       DeliveryProductsList: this._fb.array([this.addDeliveryProductList()]),
       Remarks: [""],
       CompanyID: [null]
@@ -83,7 +87,7 @@ export class AddDeliveryNotesComponent implements OnInit {
     return this._fb.group({
       ID: [0],
       DeliveryNoteID: [null],
-      ProductID: [13681],
+      ProductID: [""],
       ProductCode: [""],
       ProductName: [""],
       GeneralName: [""],
@@ -93,12 +97,15 @@ export class AddDeliveryNotesComponent implements OnInit {
     })
   }
   // 13681
-  getDeliveryNotesDetails(index:number): void {
-    // const productArray = <FormArray>(
-    //   this.deliveryNotesForm.get("DeliveryProductsList")
-    // );
+  getDeliveryNotesDetails(value): void {
+    const productArray = <FormArray>(
+      this.deliveryNotesForm.get("DeliveryProductsList")
+    );
     // console.log(productArray.at(0).value)
-    // productArray.controls[index].get("ProductID").setValue(13681);
+    for (let i = 0; i < productArray.length; i++) {
+     productArray.controls[i].get("ProductID").setValue(this.deliveryProductsList ? this.deliveryProductsList.ProductID:13681);
+    }
+    this.deliveryNotesForm.get("TotalQty").setValue(this.totalQty);
     if (this.deliveryNotesForm.invalid) return;
     this.deliveryNotesService.getDeliveryNotes(this.deliveryNotesForm.value).subscribe(
       (response) => {
@@ -115,6 +122,19 @@ export class AddDeliveryNotesComponent implements OnInit {
       }
     );
   }
+
+  calTotalQty() {
+    const productListArray = this.productArray.value;
+    let sumQty = 0;
+    for (let i = 0; i < productListArray.length; i++) {
+      if (productListArray && productListArray[i].Quantity) {
+        sumQty = sumQty + productListArray[i].Quantity;
+      }
+    }
+    this.totalQty = sumQty;
+    return sumQty;
+  }
+
 
   productDDFilter(value, i): void {
     this.productList = this.gridServices.productList.filter(
@@ -133,5 +153,22 @@ export class AddDeliveryNotesComponent implements OnInit {
       (s) => s.LedgerID === value
     );
   }
+
+  handleProductChange(value, index): void {
+    const selectedProductValue = this.gridServices.productList.filter((s) => s.ProductID === value );
+    const ProductListArray = <FormArray>this.productArray;
+    console.log(selectedProductValue);
+    console.log(ProductListArray);
+    if (selectedProductValue && selectedProductValue.length > 0)
+    {
+      ProductListArray.controls[index]
+        .get("ProductCode")
+        .setValue(selectedProductValue[0].ProductCode);
+      ProductListArray.controls[index]
+        .get("GeneralName")
+        .setValue(selectedProductValue[0].ProductName);
+    }
+  }
+  
 
 }
