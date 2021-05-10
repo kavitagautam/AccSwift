@@ -10,7 +10,7 @@ export interface DeliveryProductsList {
     IsService: boolean;
 }
 
-export interface DeliveryNotes {
+export interface DeliveryNoteList {
     ID: number;
     Title: string;
     OrderDate: Date;
@@ -34,7 +34,7 @@ export interface DeliveryNotes {
 }
 
 export interface DeliveryNotesNavigate {
-    Entity: DeliveryNotes[];
+    Entity: DeliveryNoteList[];
     ItemsPerPage: number;
     ItemsReturned: number;
     TotalItemsAvailable: number;
@@ -48,7 +48,7 @@ export interface DeliveryNotesNavigateRootModel {
     Entity: DeliveryNotesNavigate;
 }
 
-export interface DeliveryProductList {
+export interface DeliveryProductsList {
     ID: number;
     DeliveryNoteID: number;
     ProductID: number;
@@ -60,7 +60,7 @@ export interface DeliveryProductList {
     IsService: boolean;
 }
 
-export interface DeliveryNote {
+export interface DeliveryNotes {
     ID: number;
     Title: string;
     OrderDate: Date;
@@ -73,7 +73,8 @@ export interface DeliveryNote {
     ClientEmail: string;
     DeliveredBy: string;
     DeliverContact: string;
-    DeliveryProductsList: DeliveryProductList[];
+    TotalQty: number;
+    DeliveryProductsList: DeliveryProductsList[];
     Remarks?: any;
     CompanyID: number;
     CreatedBy: string;
@@ -85,5 +86,5 @@ export interface DeliveryNote {
 export interface DeliveryNotesRootModel {
     StatusCode: number;
     Message: string;
-    Entity: DeliveryNote[];
+    Entity: DeliveryNotes;
 }

@@ -96,18 +96,18 @@ export class AddDeliveryNotesComponent implements OnInit {
       IsService: true
     })
   }
-  // 13681
-  getDeliveryNotesDetails(value): void {
+
+  public save(): void {
     const productArray = <FormArray>(
       this.deliveryNotesForm.get("DeliveryProductsList")
     );
     // console.log(productArray.at(0).value)
     for (let i = 0; i < productArray.length; i++) {
-     productArray.controls[i].get("ProductID").setValue(this.deliveryProductsList ? this.deliveryProductsList.ProductID:13681);
+     productArray.controls[i].get("ProductID").setValue(localStorage.getItem("ProductID"));
     }
     this.deliveryNotesForm.get("TotalQty").setValue(this.totalQty);
     if (this.deliveryNotesForm.invalid) return;
-    this.deliveryNotesService.getDeliveryNotes(this.deliveryNotesForm.value).subscribe(
+    this.deliveryNotesService.addDeliveryNotes(this.deliveryNotesForm.value).subscribe(
       (response) => {
         if (response)
         {

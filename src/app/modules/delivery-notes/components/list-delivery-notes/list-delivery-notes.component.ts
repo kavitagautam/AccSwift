@@ -6,7 +6,8 @@ import {
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
 import { BsModalRef } from 'ngx-bootstrap';
 import { DeliveryNotesService } from '@accSwift-modules/delivery-notes/services/delivery-notes.service';
-import { DeliveryNotes } from '@accSwift-modules/delivery-notes/models/delivery-notes.model';
+import { DeliveryNoteList } from '@accSwift-modules/delivery-notes/models/delivery-notes.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'accSwift-list-delivery-notes',
@@ -16,7 +17,7 @@ import { DeliveryNotes } from '@accSwift-modules/delivery-notes/models/delivery-
 export class ListDeliveryNotesComponent implements OnInit {
 
   listLoading: Boolean;
-  deliveryNotes: DeliveryNotes[];
+  deliveryNoteList: DeliveryNoteList[];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
   public pageSize = 10;
@@ -43,7 +44,8 @@ export class ListDeliveryNotesComponent implements OnInit {
   };
 
   constructor(
-    public deliveryNotesService: DeliveryNotesService
+    public deliveryNotesService: DeliveryNotesService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -61,10 +63,10 @@ export class ListDeliveryNotesComponent implements OnInit {
     };
     this.deliveryNotesService.getDeliveryNotesNavigate(obj).subscribe(
       (response) => {
-        this.deliveryNotes = response.Entity.Entity;
-        console.log(JSON.stringify(this.deliveryNotes))
+        this.deliveryNoteList = response.Entity.Entity;
+        console.log(JSON.stringify(this.deliveryNoteList))
         this.gridView = {
-          data: this.deliveryNotes,
+          data: this.deliveryNoteList,
           total: response.Entity.TotalItemsAvailable,
         };
       },
@@ -98,6 +100,11 @@ export class ListDeliveryNotesComponent implements OnInit {
       this.currentPage = pageNo;
     }
     this.getDeliveryNotesList();
+  }
+
+  edit(item): void
+  {
+    this.router.navigate(["/delivery-notes/edit", item.ID]);
   }
 
 }
