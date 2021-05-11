@@ -31,6 +31,10 @@ export class DeliveryNotesService {
       return this.httpService.put(`${this._api_URL}DeliveryNotes`, body);
     }
 
+    deleteDeliveryNotesById(id: any): Observable<any> {
+      return this.httpService.delete(`${this._api_URL}DeliveryNotes/${id}`);
+    }
+
     getDeliveryNotesById(id: any): Observable<DeliveryNotesRootModel> {
       return this.httpService.get(`${this._api_URL}DeliveryNotes/${id}`);
     }

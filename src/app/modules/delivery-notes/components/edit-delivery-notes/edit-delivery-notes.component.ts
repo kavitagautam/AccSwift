@@ -21,7 +21,6 @@ export class EditDeliveryNotesComponent implements OnInit {
   public deliveryNotesForm: FormGroup;
   listLoading: boolean;
   deliveryNotes: DeliveryNotes;
-  deliveryProductsList: DeliveryProductsList;
   modalRef: BsModalRef;
   productArray;
   config = {
@@ -32,6 +31,9 @@ export class EditDeliveryNotesComponent implements OnInit {
   };
   public productList: ProductMin[] = [];
   public ledgerList: LedgerMin[] = [];
+  submitted: boolean;
+  rowSubmitted: boolean;
+  private editedRowIndex: number;
   totalQty: number = 0;
 
   constructor( 
@@ -125,14 +127,12 @@ export class EditDeliveryNotesComponent implements OnInit {
             console.log(JSON.stringify(this.deliveryNotes))
             if (this.deliveryNotes) {
               this.totalQty = this.deliveryNotes.TotalQty;
+              // this.deliveryNotesForm.patchValue(this.deliveryNotes);
               this.assignFormsValue();
               this.setDeliveryList();
             }
           });
       }
-      // this.deliveryNotesForm.patchValue(this.deliveryNotes);
-      this.assignFormsValue();
-      this.setDeliveryList();
     });
   }
 
@@ -162,7 +162,7 @@ export class EditDeliveryNotesComponent implements OnInit {
             GeneralName: [element.GeneralName],
             Description: [element.Description],
             Quantity: [element.Quantity, Validators.required],
-            IsService: true
+            IsService: [element.IsService]
           })
         );
       });
@@ -258,6 +258,27 @@ export class EditDeliveryNotesComponent implements OnInit {
         .get("GeneralName")
         .setValue(selectedProductValue[0].ProductName);
     }
+  }
+
+  // private closeEditor(grid, rowIndex = 1) {
+  //   grid.closeRow(rowIndex);
+  //   this.editedRowIndex = undefined;
+  // }
+
+  public addHandler({ sender }) {
+    // this.closeEditor(sender);
+    // this.submitted = true;
+    // this.rowSubmitted = true;
+    const productListArray = <FormArray>this.productArray;
+    if (productListArray.invalid) return;
+    productListArray.push(this.addDeliveryProductList());
+    // this.rowSubmitted = false;
+    // this.rowSubmitted = false;
+  }
+
+  public removeHandler({ dataItem, rowIndex }): void {
+    const productListArray = <FormArray>this.productArray;
+    productListArray.removeAt(rowIndex);
   }
 
 }

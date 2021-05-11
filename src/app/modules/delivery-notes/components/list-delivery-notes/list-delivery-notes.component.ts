@@ -4,10 +4,12 @@ import {
   SortDescriptor,
 } from "@progress/kendo-data-query";
 import { GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
-import { BsModalRef } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { DeliveryNotesService } from '@accSwift-modules/delivery-notes/services/delivery-notes.service';
 import { DeliveryNoteList } from '@accSwift-modules/delivery-notes/models/delivery-notes.model';
 import { Router } from '@angular/router';
+import { ConfirmationDialogComponent } from '@app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'accSwift-list-delivery-notes',
@@ -45,7 +47,9 @@ export class ListDeliveryNotesComponent implements OnInit {
 
   constructor(
     public deliveryNotesService: DeliveryNotesService,
-    private router: Router
+    private router: Router,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -105,6 +109,33 @@ export class ListDeliveryNotesComponent implements OnInit {
   edit(item): void
   {
     this.router.navigate(["/delivery-notes/edit", item.ID]);
+  }
+
+  openConfirmationDialog(item): void 
+  {
+    const deliveryNotesID = { id:item.ID }
+    this.modalRef = this.modalService.show(ConfirmationDialogComponent, this.config);
+    this.modalRef.content.action = "delete";
+    this.modalRef.content.onClose.subscribe((confirm) => {
+      if (confirm) {
+        this.deleteDeliveryNotes(deliveryNotesID.id);
+      }
+    });
+  }
+
+  deleteDeliveryNotes(id): void {
+    this.deliveryNotesService.deleteDeliveryNotesById(id).subscribe(
+      (response) => {
+        this.getDeliveryNotesList();
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error));
+      },
+      () => {
+        this.toastr.success("Invoice deleted successfully");
+        this.getDeliveryNotesList();
+      }
+    );
   }
 
 }

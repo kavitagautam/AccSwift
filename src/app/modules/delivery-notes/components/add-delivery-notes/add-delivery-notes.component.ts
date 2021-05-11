@@ -22,7 +22,6 @@ export class AddDeliveryNotesComponent implements OnInit {
   public deliveryNotesForm: FormGroup;
   listLoading: boolean;
   deliveryNotes: DeliveryNotes;
-  deliveryProductsList: DeliveryProductsList;
   modalRef: BsModalRef;
   productArray;
   config = {
@@ -33,6 +32,9 @@ export class AddDeliveryNotesComponent implements OnInit {
   };
   public productList: ProductMin[] = [];
   public ledgerList: LedgerMin[] = [];
+  submitted: boolean;
+  rowSubmitted: boolean;
+  private editedRowIndex: number;
   totalQty: number = 0;
 
   constructor(
@@ -169,6 +171,26 @@ export class AddDeliveryNotesComponent implements OnInit {
         .setValue(selectedProductValue[0].ProductName);
     }
   }
-  
+
+  // private closeEditor(grid, rowIndex = 1) {
+  //   grid.closeRow(rowIndex);
+  //   this.editedRowIndex = undefined;
+  // }
+
+  public addHandler({ sender }) {
+    // this.closeEditor(sender);
+    // this.submitted = true;
+    // this.rowSubmitted = true;
+    const productListArray = <FormArray>this.productArray;
+    if (productListArray.invalid) return;
+    productListArray.push(this.addDeliveryProductList());
+    // this.rowSubmitted = false;
+    // this.rowSubmitted = false;
+  }
+
+  public removeHandler({ dataItem, rowIndex }): void {
+    const productListArray = <FormArray>this.productArray;
+    productListArray.removeAt(rowIndex);
+  }
 
 }

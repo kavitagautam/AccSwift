@@ -146,7 +146,11 @@
     <div class="box-body">
       <div class="col-md-12 p-0">
         <div class="grid-wrapper">
-          <kendo-grid [data]="productArray.value">
+          <kendo-grid
+            [data]="productArray.value"
+            (add)="addHandler($event)"
+            (remove)="removeHandler($event)"
+          >
             <ng-template kendoGridToolbarTemplate>
               <button kendoGridAddCommand>Add New Product</button>
             </ng-template>
