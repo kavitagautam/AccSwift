@@ -4,12 +4,15 @@ import { DeliveryNotes, DeliveryProductsList } from '@accSwift-modules/delivery-
 import { DeliveryNotesService } from '@accSwift-modules/delivery-notes/services/delivery-notes.service';
 import { LedgerMin } from '@accSwift-modules/ledger/models/ledger.models';
 import { ProductMin } from '@accSwift-modules/product/models/product-min.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
+import { takeUntil, debounceTime } from "rxjs/operators";
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { repeat } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
 
 
 @Component({
@@ -17,7 +20,7 @@ import { repeat } from 'rxjs/operators';
   templateUrl: '../common-html/delivery-notes.html',
   styleUrls: ['../common-html/delivery-notes.scss']
 })
-export class AddDeliveryNotesComponent implements OnInit {
+export class AddDeliveryNotesComponent implements OnInit, OnDestroy {
 
   public deliveryNotesForm: FormGroup;
   listLoading: boolean;
@@ -36,6 +39,8 @@ export class AddDeliveryNotesComponent implements OnInit {
   rowSubmitted: boolean;
   private editedRowIndex: number;
   totalQty: number = 0;
+  myFormValueChanges$;
+  private destroyed$ = new Subject<void>();
 
   constructor(
     private _fb: FormBuilder,
@@ -48,6 +53,13 @@ export class AddDeliveryNotesComponent implements OnInit {
 
   ngOnInit() {
     this.buildDeliveryNotesForm();
+    this.myFormValueChanges$ = this.deliveryNotesForm.controls[
+      "DeliveryProductsList"
+    ].valueChanges;
+    this.myFormValueChanges$.subscribe((changes) => {
+      this.notesValueChange(changes);
+    });
+   
     this.productArray = <FormArray>(
         this.deliveryNotesForm.get("DeliveryProductsList")
       );
@@ -57,6 +69,12 @@ export class AddDeliveryNotesComponent implements OnInit {
       this.gridServices.getLedgerDD().subscribe((response) => {
         this.ledgerList = response.Entity;
       });
+  }
+
+  ngOnDestroy() {
+    this.myFormValueChanges$.unsubscribe();
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   buildDeliveryNotesForm(): void {
@@ -94,7 +112,7 @@ export class AddDeliveryNotesComponent implements OnInit {
       ProductName: [""],
       GeneralName: [""],
       Description: [""],
-      Quantity: ["", Validators.required],
+      Quantity: [0, Validators.required],
       IsService: true
     })
   }
@@ -108,7 +126,8 @@ export class AddDeliveryNotesComponent implements OnInit {
      productArray.controls[i].get("ProductID").setValue(localStorage.getItem("ProductID"));
     }
     this.deliveryNotesForm.get("TotalQty").setValue(this.totalQty);
-    if (this.deliveryNotesForm.invalid) return;
+    
+    // if (this.deliveryNotesForm.invalid) return;
     this.deliveryNotesService.addDeliveryNotes(this.deliveryNotesForm.value).subscribe(
       (response) => {
         if (response)
@@ -125,7 +144,7 @@ export class AddDeliveryNotesComponent implements OnInit {
     );
   }
 
-  calTotalQty() {
+  calTotalQty():number {
     const productListArray = this.productArray.value;
     let sumQty = 0;
     for (let i = 0; i < productListArray.length; i++) {
@@ -164,33 +183,60 @@ export class AddDeliveryNotesComponent implements OnInit {
     if (selectedProductValue && selectedProductValue.length > 0)
     {
       ProductListArray.controls[index]
+      .get("ProductID")
+      .setValue(selectedProductValue[0].ProductID);
+      ProductListArray.controls[index]
         .get("ProductCode")
         .setValue(selectedProductValue[0].ProductCode);
       ProductListArray.controls[index]
         .get("GeneralName")
         .setValue(selectedProductValue[0].ProductName);
+      ProductListArray.controls[index].get("Quantity").setValue(1);
     }
   }
 
-  // private closeEditor(grid, rowIndex = 1) {
-  //   grid.closeRow(rowIndex);
-  //   this.editedRowIndex = undefined;
-  // }
+  private closeEditor(grid, rowIndex = 1) {
+    grid.closeRow(rowIndex);
+    this.editedRowIndex = undefined;
+  }
 
   public addHandler({ sender }) {
-    // this.closeEditor(sender);
-    // this.submitted = true;
-    // this.rowSubmitted = true;
+    this.closeEditor(sender);
+    this.submitted = true;
+    this.rowSubmitted = true;
     const productListArray = <FormArray>this.productArray;
     if (productListArray.invalid) return;
     productListArray.push(this.addDeliveryProductList());
-    // this.rowSubmitted = false;
-    // this.rowSubmitted = false;
+    this.rowSubmitted = false;
+    this.rowSubmitted = false;
+  }
+
+  public cancelHandler({ sender, rowIndex }) {
+    this.closeEditor(sender, rowIndex);
+  }
+
+  public saveHandler({ sender, rowIndex, formGroup, isNew }): void {
+    sender.closeRow(rowIndex);
   }
 
   public removeHandler({ dataItem, rowIndex }): void {
     const productListArray = <FormArray>this.productArray;
     productListArray.removeAt(rowIndex);
+  }
+
+   notesValueChange(value):void {
+    this.deliveryNotesForm.controls["DeliveryProductsList"].valueChanges.pipe(takeUntil(this.destroyed$),debounceTime(20))
+    .subscribe((notes)=> {
+      let sumQty = 0;
+      for (let i = 0; i < notes.length; i++)
+      {
+        if (notes && notes[i].Quantity)
+        {
+          sumQty= sumQty + notes[i].Quantity;
+        }
+      }
+      this.totalQty = sumQty
+    });
   }
 
 }

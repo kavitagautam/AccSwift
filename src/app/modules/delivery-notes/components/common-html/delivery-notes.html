@@ -150,6 +150,8 @@
             [data]="productArray.value"
             (add)="addHandler($event)"
             (remove)="removeHandler($event)"
+            (save)="saveHandler($event)"
+            (cancel)="cancelHandler($event)"
           >
             <ng-template kendoGridToolbarTemplate>
               <button kendoGridAddCommand>Add New Product</button>
@@ -172,7 +174,7 @@
               </ng-template>
             </kendo-grid-column>
             <kendo-grid-column
-              field="ProductName"
+              field="ProductID"
               title="Product Name"
               width="150"
             >
@@ -192,7 +194,7 @@
                       [filterable]="true"
                       [textField]="'CodeName'"
                       [valueField]="'ProductID'"
-                      [formControl]="productArray.controls[rowIndex].get(column.field)"
+                      [formControl]="productArray.controls[rowIndex].get('ProductID')"
                       [valuePrimitive]="true"
                       (filterChange)="productDDFilter($event, rowIndex)"
                       (valueChange)="handleProductChange($event, rowIndex)"
@@ -274,7 +276,7 @@
                 let-column
                 let-columnIndex="columnIndex"
               >
-                <span class="pull-right"> Total QTY:{{ calTotalQty()}} </span>
+                <span class="pull-right"> Total QTY:{{ calTotalQty() }} </span>
               </ng-template>
             </kendo-grid-column>
             <kendo-grid-command-column title="Action" width="60">
