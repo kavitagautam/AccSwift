@@ -23,6 +23,10 @@ export class AccessRoleService {
     return this.httpService.get(`${this._api_URL}AccessRole`);
   }
 
+  addAccessRoles(body): Observable<any> {
+    return this.httpService.post(`${this._api_URL}AccessRole`, body);
+  }
+
   getAccessRolesTreeView(): Observable<AccessRoleTreeViewModel> {
     return this.httpService.get(`${this._api_URL}Access/TreeView`);
   }

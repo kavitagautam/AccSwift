@@ -6,6 +6,10 @@ import {
 } from "@progress/kendo-angular-treeview";
 import { AccessRoleService } from "@accSwift-modules/access-role/services/access-role.service";
 import { AccessRoles } from "@accSwift-modules/access-role/models/access-role.model";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
+import { access } from "fs";
 
 @Component({
   selector: "accSwift-access-role",
@@ -13,6 +17,7 @@ import { AccessRoles } from "@accSwift-modules/access-role/models/access-role.mo
   styleUrls: ["./access-role.component.scss"],
 })
 export class AccessRoleComponent implements OnInit {
+  public accessForm: FormGroup
   public checkedKeys: any[] = [];
   public key = "Title";
   treeViewLoading: boolean;
@@ -37,9 +42,15 @@ export class AccessRoleComponent implements OnInit {
     };
   }
 
-  constructor(private accessService: AccessRoleService) {}
+  constructor(
+    private accessService: AccessRoleService,
+    private _fb: FormBuilder,
+    private toastr: ToastrService,
+    private router: Router) {}
 
   ngOnInit() {
+
+    this.buildAccessForm();
     this.accessService.getAccessRoles().subscribe((response) => {
       this.accessRoles = response.Entity;
     });
@@ -59,7 +70,19 @@ export class AccessRoleComponent implements OnInit {
     );
   }
 
-  onSelect(roles: AccessRoles): void {
+  buildAccessForm(): void 
+  {
+    this.accessForm = this._fb.group({
+      ID: [0],
+      Name: [""],
+      IsBuiltIn: true,
+      AccessRoleDetails:[],
+      CompanyID: [null],
+      Remarks: [""]
+    })
+  }
+
+  onSelect(roles): void {
     this.treeViewLoading = true;
     this.accessType = roles.Name;
     this.selectedRoles = roles.ID;
@@ -67,6 +90,7 @@ export class AccessRoleComponent implements OnInit {
       (response) => {
         this.accessRoleTreeView = response.Tree;
         this.treeViewLoading = false;
+        console.log(response.Tree)
       },
       (error) => {
         this.treeViewLoading = false;
@@ -75,6 +99,22 @@ export class AccessRoleComponent implements OnInit {
         this.treeViewLoading = false;
       }
     );
+  }
+
+  saveForm(): void {
+    this.treeViewLoading = true;
+    this.accessService.addAccessRoles(this.accessForm.value).subscribe((response)=>
+    {
+      this.accessRoles = response.Entity;
+    },  
+    (error) => {
+      this.toastr.error(JSON.stringify(error.error.Message));
+      this.treeViewLoading = false;
+    },
+    () => {
+      this.toastr.success("Access Roles added successfully");
+      this.treeViewLoading = false;
+    })
   }
 
   public itemChecked: boolean = false;
