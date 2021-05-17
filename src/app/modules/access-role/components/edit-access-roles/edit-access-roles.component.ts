@@ -1,27 +1,27 @@
-import { Component, OnInit } from "@angular/core";
+import { AccessRoles } from '@accSwift-modules/access-role/models/access-role.model';
+import { AccessRoleService } from '@accSwift-modules/access-role/services/access-role.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   CheckableSettings,
   CheckedState,
   TreeItemLookup,
 } from "@progress/kendo-angular-treeview";
-import { AccessRoleService } from "@accSwift-modules/access-role/services/access-role.service";
-import { AccessRoles } from "@accSwift-modules/access-role/models/access-role.model";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
-import { access } from "fs";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: "accSwift-access-role",
-  templateUrl: "./access-role.component.html",
-  styleUrls: ["./access-role.component.scss"],
+  selector: 'accSwift-edit-access-roles',
+  templateUrl: '../common-html/access-role.html',
+  styleUrls: ['../common-html/access-role.scss']
 })
-export class AccessRoleComponent implements OnInit {
-  public accessForm: FormGroup
+export class EditAccessRolesComponent implements OnInit {
+  
+  public accessForm: FormGroup;
+  accessRoles: AccessRoles[]=[];
+  treeViewLoading: boolean;
   public checkedKeys: any[] = [];
   public key = "Title";
-  treeViewLoading: boolean;
-  accessRoles: AccessRoles[] = [];
   accessType: string;
   selectedRoles: number;
   accessRoleTreeView: any;
@@ -38,40 +38,39 @@ export class AccessRoleComponent implements OnInit {
       checkParents: this.checkParents,
       enabled: this.enableCheck,
       mode: this.checkMode,
-      checkOnClick: this.checkOnClick,
-    };
+      checkOnClick: this.checkOnClick
+    }
   }
 
   constructor(
     private accessService: AccessRoleService,
     private _fb: FormBuilder,
     private toastr: ToastrService,
-    private router: Router) {}
+    private router: Router
+  ) { }
 
   ngOnInit() {
-
     this.buildAccessForm();
-    this.accessService.getAccessRoles().subscribe((response) => {
+
+    this.accessService.getAccessRoles().subscribe((response)=> {
       this.accessRoles = response.Entity;
     });
 
     this.treeViewLoading = true;
-    this.accessService.getAccessRolesTreeView().subscribe(
-      (response) => {
-        this.accessRoleTreeView = response.Tree;
-        this.treeViewLoading = false;
-      },
-      (error) => {
-        this.treeViewLoading = false;
-      },
-      () => {
-        this.treeViewLoading = false;
-      }
-    );
+    this.accessService. getAccessRolesTreeView().subscribe((response)=> {
+      this.accessRoleTreeView = response.Tree;
+      this.treeViewLoading = false;
+    }, 
+    (error)=> {
+      this.treeViewLoading = false;
+    },
+    ()=> {
+      this.treeViewLoading = false;
+    });
+
   }
 
-  buildAccessForm(): void 
-  {
+  buildAccessForm(): void {
     this.accessForm = this._fb.group({
       ID: [0],
       Name: [""],
@@ -156,5 +155,5 @@ export class AccessRoleComponent implements OnInit {
   }
 
   save(): void {}
-  cancel(): void {}
+
 }

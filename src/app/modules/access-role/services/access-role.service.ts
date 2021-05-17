@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@app/core/services/http-client/http-client.service";
 import { Observable } from "rxjs";
 import {
+  AccessNavigateRootModel,
   AccessRoleRootModel,
   AccessRoleTreeViewModel,
 } from "../models/access-role.model";
@@ -33,5 +34,10 @@ export class AccessRoleService {
 
   getAccessRolesTreeViewID(id): Observable<AccessRoleTreeViewModel> {
     return this.httpService.get(`${this._api_URL}Access/${id}`);
+  }
+
+  getAccessRolesNavigate(body): Observable<AccessNavigateRootModel>
+  {
+    return this.httpService.post(`${this._api_URL}AccessRole/navigate`, body)
   }
 }
