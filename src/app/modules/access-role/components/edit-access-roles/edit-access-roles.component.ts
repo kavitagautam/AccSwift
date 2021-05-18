@@ -1,8 +1,8 @@
 import { AccessRoles } from '@accSwift-modules/access-role/models/access-role.model';
 import { AccessRoleService } from '@accSwift-modules/access-role/services/access-role.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   CheckableSettings,
   CheckedState,
@@ -18,7 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 export class EditAccessRolesComponent implements OnInit {
   
   public accessForm: FormGroup;
-  accessRoles: AccessRoles[]=[];
+  accessRoles: AccessRoles;
   treeViewLoading: boolean;
   public checkedKeys: any[] = [];
   public key = "Title";
@@ -46,10 +46,16 @@ export class EditAccessRolesComponent implements OnInit {
     private accessService: AccessRoleService,
     private _fb: FormBuilder,
     private toastr: ToastrService,
+    private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit() {
+
+    this.getTreeViewID();
+
+    this.getIdFromRoute();
+
     this.buildAccessForm();
 
     this.accessService.getAccessRoles().subscribe((response)=> {
@@ -57,7 +63,7 @@ export class EditAccessRolesComponent implements OnInit {
     });
 
     this.treeViewLoading = true;
-    this.accessService. getAccessRolesTreeView().subscribe((response)=> {
+    this.accessService.getAccessRolesTreeView().subscribe((response)=> {
       this.accessRoleTreeView = response.Tree;
       this.treeViewLoading = false;
     }, 
@@ -70,39 +76,141 @@ export class EditAccessRolesComponent implements OnInit {
 
   }
 
-  buildAccessForm(): void {
+  getIdFromRoute(): void {
+    this.route.paramMap.subscribe((params) => {
+      const param = params.get("id");
+      if (param) {
+        this.accessService.getAccessRoleById(param)
+          .subscribe((response) => {
+            this.accessRoles = response.Entity;
+            console.log(JSON.stringify(this.accessRoles))
+            if (this.accessRoles) {
+              this.assignFormValue();
+              this.accessForm.patchValue(this.accessRoles);
+              this.setAccessDetailsList();
+            }
+          });
+      }
+    });
+  }
+
+  getTreeViewID():void {
+    this.route.paramMap.subscribe((params) => {
+      const param = params.get("id");
+      if (param) {
+        this.accessService.getAccessRolesTreeViewID(param)
+          .subscribe((response) => {
+            this.accessRoleTreeView = response.Tree;
+            console.log(JSON.stringify(this.accessRoleTreeView))
+          });
+      }
+    });
+  }
+  
+  buildAccessForm(): void 
+  {
     this.accessForm = this._fb.group({
-      ID: [0],
-      Name: [""],
-      IsBuiltIn: true,
-      AccessRoleDetails:[],
-      CompanyID: [null],
-      Remarks: [""]
+      ID: [this.accessRoles ? this.accessRoles.ID: ""],
+      Name: [this.accessRoles ? this.accessRoles.Name: ""],
+      IsBuiltIn: [this.accessRoles ? this.accessRoles.IsBuiltIn: false],
+      AccessRoleDetails:this._fb.group([this.addAccessRoleDetails()]),
+      CompanyID: [this.accessRoles ? this.accessRoles.CompanyID: ""],
+      Remarks: [this.accessRoles ? this.accessRoles.Remarks: ""]
     })
   }
 
-  onSelect(roles): void {
-    this.treeViewLoading = true;
-    this.accessType = roles.Name;
-    this.selectedRoles = roles.ID;
-    this.accessService.getAccessRolesTreeViewID(this.selectedRoles).subscribe(
-      (response) => {
-        this.accessRoleTreeView = response.Tree;
-        this.treeViewLoading = false;
-        console.log(response.Tree)
-      },
-      (error) => {
-        this.treeViewLoading = false;
-      },
-      () => {
-        this.treeViewLoading = false;
-      }
+  get getAccessRoleDetails():FormArray {
+    return <FormArray> this.accessForm.get("AccessRoleDetails");
+  }
+
+  addAccessRoleDetails():FormGroup {
+    return this._fb.group ({
+      ID: [0],
+      AccessID: [""],
+      RoleID: [""],
+      Access: []
+    })
+  }
+
+  assignFormValue(): void {
+    this.accessForm.get("ID").setValue(this.accessRoles.ID);
+    this.accessForm.get("Name").setValue(this.accessRoles.Name);
+    this.accessForm.get("IsBuiltIn").setValue(this.accessRoles.IsBuiltIn);
+    this.accessForm.get("CompanyID").setValue(this.accessRoles.CompanyID);
+    this.accessForm.get("Remarks").setValue(this.accessRoles.Remarks);
+  }
+
+
+  setAccessDetailsList(): void {
+    // this.accessForm.setControl(
+    //   "AccessRoleDetails",
+    //   this.setAccessDetailsFormArray(this.accessRoles.AccessRoleDetails)
+    // );
+
+    (<FormArray>this.accessForm.get("AccessRoleDetails")).push(
+      this.addAccessRoleDetails()
     );
   }
 
+  setAccessDetailsFormArray(accessDetails): FormArray {
+    const accessFormArray = new FormArray([]);
+    console.log(accessDetails)
+    if (accessDetails && accessDetails.length > 0) {
+      accessDetails.forEach((element) => {
+        accessFormArray.push(
+          this._fb.group({
+            ID: [element.ID ? element.ID: 0],
+            AccessID: [element.AccessID ? element.AccessID: ""],
+            RoleID: [element.RoleID ? element.RoleID: ""],
+            Access: [element.Access ? element.Access: ""],
+          })
+        );
+      });
+    } else {
+      accessFormArray.push(
+        this._fb.group({
+          ID: [0],
+          AccessID: [""],
+          RoleID: [],
+          Access: [""],
+        })
+      );
+    }
+    console.log(accessFormArray.controls[0].value);
+    return accessFormArray;
+  }
+
+  
+  // onSelect(roles): void {
+  //   this.treeViewLoading = true;
+  //   this.accessType = roles.Name;
+  //   this.selectedRoles = roles.ID;
+  //   this.accessService.getAccessRolesTreeViewID(this.selectedRoles).subscribe(
+  //     (response) => {
+  //       this.accessRoleTreeView = response.Tree;
+  //       this.treeViewLoading = false;
+  //       console.log(response.Tree)
+  //     },
+  //     (error) => {
+  //       this.treeViewLoading = false;
+  //     },
+  //     () => {
+  //       this.treeViewLoading = false;
+  //     }
+  //   );
+  // }
+
   saveForm(): void {
     this.treeViewLoading = true;
-    this.accessService.addAccessRoles(this.accessForm.value).subscribe((response)=>
+    // this.accessForm.get("ID").setValue(this.accessRoles.ID);
+
+    const accessArray = <FormArray>(
+      this.accessForm.get("AccessRoleDetails")
+    );
+    for (let i = 0; i < accessArray.length; i++) {
+     accessArray.controls[i].get("AccessID").setValue(9);
+    }
+    this.accessService.updateAccessRoles(this.accessForm.value).subscribe((response)=>
     {
       this.accessRoles = response.Entity;
     },  
@@ -111,7 +219,7 @@ export class EditAccessRolesComponent implements OnInit {
       this.treeViewLoading = false;
     },
     () => {
-      this.toastr.success("Access Roles added successfully");
+      this.toastr.success("Access Roles Updated successfully");
       this.treeViewLoading = false;
     })
   }
@@ -153,7 +261,5 @@ export class EditAccessRolesComponent implements OnInit {
   public handleChecking(itemLookup: TreeItemLookup): void {
     this.checkedKeys = [itemLookup.item.index];
   }
-
-  save(): void {}
-
+  
 }

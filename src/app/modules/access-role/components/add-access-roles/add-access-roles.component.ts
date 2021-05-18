@@ -21,7 +21,7 @@ export class AddAccessRolesComponent implements OnInit {
   public checkedKeys: any[] = [];
   public key = "Title";
   treeViewLoading: boolean;
-  accessRoles: AccessRoles[] = [];
+  accessRoles: AccessRoles;
   accessType: string;
   selectedRoles: number;
   accessRoleTreeView: any;
@@ -77,10 +77,23 @@ export class AddAccessRolesComponent implements OnInit {
     this.accessForm = this._fb.group({
       ID: [0],
       Name: [""],
-      IsBuiltIn: true,
+      IsBuiltIn: false,
       AccessRoleDetails:[],
       CompanyID: [null],
       Remarks: [""]
+    })
+  }
+  
+  get getDeliveryProductList():FormArray {
+    return <FormArray> this.accessForm.get("AccessRoleDetails");
+  }
+
+  addAccessRoleDetails():FormGroup {
+    return this._fb.group ({
+      ID: [0],
+      AccessID: [""],
+      RoleID: [""],
+      Access: []
     })
   }
 
@@ -105,6 +118,14 @@ export class AddAccessRolesComponent implements OnInit {
 
   saveForm(): void {
     this.treeViewLoading = true;
+    // this.accessForm.get("ID").setValue(this.accessRoles.ID);
+
+    const accessArray = <FormArray>(
+      this.accessForm.get("AccessRoleDetails")
+    );
+    for (let i = 0; i < accessArray.length; i++) {
+     accessArray.controls[i].get("AccessID").setValue(9);
+    }
     this.accessService.addAccessRoles(this.accessForm.value).subscribe((response)=>
     {
       this.accessRoles = response.Entity;
@@ -126,7 +147,7 @@ export class AddAccessRolesComponent implements OnInit {
       return "checked";
     }
 
-    return "none";
+    return "checked";
 
     // if (this.isIndeterminate(dataItem.items)) {
     //   return "indeterminate";
@@ -157,7 +178,5 @@ export class AddAccessRolesComponent implements OnInit {
     this.checkedKeys = [itemLookup.item.index];
   }
 
-  save(): void {}
-  
 
 }

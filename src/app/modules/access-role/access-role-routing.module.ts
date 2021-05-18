@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { AccessRoleComponent } from "./components/access-role/access-role.component";
 import { AddAccessRolesComponent } from "./components/add-access-roles/add-access-roles.component";
 import { EditAccessRolesComponent } from "./components/edit-access-roles/edit-access-roles.component";
 import { ListAccessRolesComponent } from "./components/list-access-roles/list-access-roles.component";

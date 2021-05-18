@@ -24,8 +24,16 @@ export class AccessRoleService {
     return this.httpService.get(`${this._api_URL}AccessRole`);
   }
 
-  addAccessRoles(body): Observable<any> {
+  getAccessRoleById(id): Observable<AccessRoleRootModel> {
+    return this.httpService.get(`${this._api_URL}AccessRole`, id);
+  }
+  
+  addAccessRoles(body): Observable<AccessRoleRootModel> {
     return this.httpService.post(`${this._api_URL}AccessRole`, body);
+  }
+
+  updateAccessRoles(body): Observable<AccessRoleRootModel> {
+    return this.httpService.put(`${this._api_URL}AccessRole`, body);
   }
 
   getAccessRolesTreeView(): Observable<AccessRoleTreeViewModel> {

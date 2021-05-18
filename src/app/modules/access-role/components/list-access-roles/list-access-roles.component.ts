@@ -20,7 +20,7 @@ import { AccessRoles } from '@accSwift-modules/access-role/models/access-role.mo
 export class ListAccessRolesComponent implements OnInit {
 
   listLoading: Boolean;
-  accessRoles: AccessRoles;
+  accessRoles: AccessRoles[];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
   public pageSize = 10;
@@ -108,8 +108,9 @@ export class ListAccessRolesComponent implements OnInit {
     this.getAccessRoleList();
   }
 
-  edit(item): void {
-    this.router.navigate(["/access-roles/edit", item.ID])
+  edit(item): void
+  {
+    this.router.navigate(["/access-role/edit", item.ID]);
   }
 
 }

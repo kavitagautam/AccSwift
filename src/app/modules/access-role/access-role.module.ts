@@ -5,7 +5,6 @@ import { AccessRoleRoutingModule } from "./access-role-routing.module";
 import { TreeViewModule } from "@progress/kendo-angular-treeview";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AccswiftSharedModule } from "@accSwift-modules/accswift-shared/accswift-shared.module";
-import { SharedModule } from "@app/shared/shared.module";
 import { AddAccessRolesComponent } from './components/add-access-roles/add-access-roles.component';
 import { EditAccessRolesComponent } from './components/edit-access-roles/edit-access-roles.component';
 import { ListAccessRolesComponent } from './components/list-access-roles/list-access-roles.component';
@@ -28,8 +27,7 @@ import { LayoutModule } from "@progress/kendo-angular-layout";
     TreeViewModule, 
     FormsModule,
     ReactiveFormsModule, 
-    AccswiftSharedModule, 
-    SharedModule, 
+    AccswiftSharedModule,
     GridModule,
     LayoutModule,
     DropDownListModule,
