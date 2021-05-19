@@ -51,16 +51,17 @@ export class EditAccessRolesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+  
     this.getTreeViewID();
 
     this.getIdFromRoute();
 
     this.buildAccessForm();
 
-    this.accessService.getAccessRoles().subscribe((response)=> {
-      this.accessRoles = response.Entity;
-    });
+    // this.accessService.getAccessRoles().subscribe((response)=> {
+    //   this.accessRoles = response.Entity;
+    //   console.log(response.Entity)
+    // });
 
     this.treeViewLoading = true;
     this.accessService.getAccessRolesTreeView().subscribe((response)=> {
@@ -79,11 +80,13 @@ export class EditAccessRolesComponent implements OnInit {
   getIdFromRoute(): void {
     this.route.paramMap.subscribe((params) => {
       const param = params.get("id");
+      console.log(param)
+      localStorage.setItem("AccessRoleId", param)
       if (param) {
         this.accessService.getAccessRoleById(param)
           .subscribe((response) => {
             this.accessRoles = response.Entity;
-            console.log(JSON.stringify(this.accessRoles))
+            console.log(JSON.stringify(this.accessRoles.ID))
             if (this.accessRoles) {
               this.assignFormValue();
               this.accessForm.patchValue(this.accessRoles);
@@ -113,10 +116,11 @@ export class EditAccessRolesComponent implements OnInit {
       ID: [this.accessRoles ? this.accessRoles.ID: ""],
       Name: [this.accessRoles ? this.accessRoles.Name: ""],
       IsBuiltIn: [this.accessRoles ? this.accessRoles.IsBuiltIn: false],
-      AccessRoleDetails:this._fb.group([this.addAccessRoleDetails()]),
+      AccessRoleDetails:this._fb.array([this.addAccessRoleDetails()]),
       CompanyID: [this.accessRoles ? this.accessRoles.CompanyID: ""],
       Remarks: [this.accessRoles ? this.accessRoles.Remarks: ""]
     })
+    console.log(this.accessForm.controls.AccessRoleDetails.value)
   }
 
   get getAccessRoleDetails():FormArray {
@@ -126,7 +130,33 @@ export class EditAccessRolesComponent implements OnInit {
   addAccessRoleDetails():FormGroup {
     return this._fb.group ({
       ID: [0],
-      AccessID: [""],
+      AccessID: [{
+        "AccessID": 9
+      },
+      {    
+        "AccessID": 10
+      },
+      {
+        "AccessID": 11
+      },
+      {
+        "AccessID": 12
+      },
+      {
+        "AccessID": 13
+      },
+      {
+        "AccessID": 14
+      },
+      {
+        "AccessID": 15
+      },
+      {
+        "AccessID": 22
+      },
+      {
+        "AccessID": 23
+      }],
       RoleID: [""],
       Access: []
     })
@@ -152,33 +182,32 @@ export class EditAccessRolesComponent implements OnInit {
     );
   }
 
-  setAccessDetailsFormArray(accessDetails): FormArray {
-    const accessFormArray = new FormArray([]);
-    console.log(accessDetails)
-    if (accessDetails && accessDetails.length > 0) {
-      accessDetails.forEach((element) => {
-        accessFormArray.push(
-          this._fb.group({
-            ID: [element.ID ? element.ID: 0],
-            AccessID: [element.AccessID ? element.AccessID: ""],
-            RoleID: [element.RoleID ? element.RoleID: ""],
-            Access: [element.Access ? element.Access: ""],
-          })
-        );
-      });
-    } else {
-      accessFormArray.push(
-        this._fb.group({
-          ID: [0],
-          AccessID: [""],
-          RoleID: [],
-          Access: [""],
-        })
-      );
-    }
-    console.log(accessFormArray.controls[0].value);
-    return accessFormArray;
-  }
+  // setAccessDetailsFormArray(accessDetails): FormArray {
+  //   const accessFormArray = new FormArray([]);
+  //   if (accessDetails && accessDetails.length > 0) {
+  //     accessDetails.forEach((element) => {
+  //       accessFormArray.push(
+  //         this._fb.group({
+  //           ID: [element.ID ? element.ID: 0],
+  //           AccessID: [element.AccessID ? element.AccessID: ""],
+  //           RoleID: [element.RoleID ? element.RoleID: ""],
+  //           Access: [element.Access ? element.Access: ""],
+  //         })
+  //       );
+  //     });
+  //   } else {
+  //     accessFormArray.push(
+  //       this._fb.group({
+  //         ID: [0],
+  //         AccessID: [""],
+  //         RoleID: [],
+  //         Access: [""],
+  //       })
+  //     );
+  //   }
+  //   console.log(accessFormArray.controls[0].value);
+  //   return accessFormArray;
+  // }
 
   
   // onSelect(roles): void {
@@ -202,13 +231,40 @@ export class EditAccessRolesComponent implements OnInit {
 
   saveForm(): void {
     this.treeViewLoading = true;
-    // this.accessForm.get("ID").setValue(this.accessRoles.ID);
-
+    this.accessForm.get("ID").setValue(localStorage.getItem("AccessRoleId"));
     const accessArray = <FormArray>(
       this.accessForm.get("AccessRoleDetails")
     );
     for (let i = 0; i < accessArray.length; i++) {
-     accessArray.controls[i].get("AccessID").setValue(9);
+     accessArray.controls[i].get("AccessID").setValue([
+    {
+      "AccessID": 9
+    },
+    {    
+      "AccessID": 10
+    },
+    {
+      "AccessID": 11
+    },
+    {
+      "AccessID": 12
+    },
+    {
+      "AccessID": 13
+    },
+    {
+      "AccessID": 14
+    },
+    {
+      "AccessID": 15
+    },
+    {
+      "AccessID": 22
+    },
+    {
+      "AccessID": 23
+    }
+    ]);
     }
     this.accessService.updateAccessRoles(this.accessForm.value).subscribe((response)=>
     {
@@ -225,19 +281,33 @@ export class EditAccessRolesComponent implements OnInit {
   }
 
   public itemChecked: boolean = false;
+  // To show already checked items
+  // public isChecked = (dataItem: any, index: string): CheckedState => {
+  //   if (dataItem.IsChecked) {
+  //     return "checked";
+  //   }
 
+  //   return "none";
+
+  //   // if (this.isIndeterminate(dataItem.items)) {
+  //   //   return "indeterminate";
+  //   // }
+
+  //   // return "none";
+  // };
+  
+
+  // To add Checkmarks
   public isChecked = (dataItem: any, index: string): CheckedState => {
-    if (dataItem.IsChecked) {
+    if (this.containsItem(dataItem)) {
       return "checked";
     }
 
+    if (this.isIndeterminate(dataItem.items)) {
+      return "indeterminate";
+    }
+
     return "none";
-
-    // if (this.isIndeterminate(dataItem.items)) {
-    //   return "indeterminate";
-    // }
-
-    // return "none";
   };
 
   private isIndeterminate(items: any[] = []): boolean {

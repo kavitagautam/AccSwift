@@ -52,9 +52,10 @@ export class AddAccessRolesComponent implements OnInit {
   ngOnInit() {
     this.buildAccessForm();
     
-    this.accessService.getAccessRoles().subscribe((response) => {
-      this.accessRoles = response.Entity;
-    });
+    // this.accessService.getAccessRoles().subscribe((response) => {
+    //   this.accessRoles = response.Entity;
+    //   console.log(JSON.stringify(response.Entity))
+    // });
 
     this.treeViewLoading = true;
     this.accessService.getAccessRolesTreeView().subscribe(
@@ -75,23 +76,50 @@ export class AddAccessRolesComponent implements OnInit {
   buildAccessForm(): void 
   {
     this.accessForm = this._fb.group({
-      ID: [0],
+      ID: [],
       Name: [""],
       IsBuiltIn: false,
-      AccessRoleDetails:[],
+      AccessRoleDetails:this._fb.array([this.addAccessRoleDetails()]),
       CompanyID: [null],
       Remarks: [""]
     })
+    console.log(this.accessForm.value)
   }
   
-  get getDeliveryProductList():FormArray {
-    return <FormArray> this.accessForm.get("AccessRoleDetails");
-  }
+  // get getAccessRoleDetails():FormArray {
+  //   return <FormArray> this.accessForm.get("AccessRoleDetails");
+  // }
 
   addAccessRoleDetails():FormGroup {
     return this._fb.group ({
       ID: [0],
-      AccessID: [""],
+      AccessID: [{
+        "AccessID": 9
+      },
+      {    
+        "AccessID": 10
+      },
+      {
+        "AccessID": 11
+      },
+      {
+        "AccessID": 12
+      },
+      {
+        "AccessID": 13
+      },
+      {
+        "AccessID": 14
+      },
+      {
+        "AccessID": 15
+      },
+      {
+        "AccessID": 22
+      },
+      {
+        "AccessID": 23
+      }],
       RoleID: [""],
       Access: []
     })
@@ -118,13 +146,38 @@ export class AddAccessRolesComponent implements OnInit {
 
   saveForm(): void {
     this.treeViewLoading = true;
-    // this.accessForm.get("ID").setValue(this.accessRoles.ID);
 
     const accessArray = <FormArray>(
       this.accessForm.get("AccessRoleDetails")
     );
     for (let i = 0; i < accessArray.length; i++) {
-     accessArray.controls[i].get("AccessID").setValue(9);
+     accessArray.controls[i].get("AccessID").setValue([{
+      "AccessID": 9
+    },
+    {    
+      "AccessID": 10
+    },
+    {
+      "AccessID": 11
+    },
+    {
+      "AccessID": 12
+    },
+    {
+      "AccessID": 13
+    },
+    {
+      "AccessID": 14
+    },
+    {
+      "AccessID": 15
+    },
+    {
+      "AccessID": 22
+    },
+    {
+      "AccessID": 23
+    }]);
     }
     this.accessService.addAccessRoles(this.accessForm.value).subscribe((response)=>
     {
@@ -142,18 +195,30 @@ export class AddAccessRolesComponent implements OnInit {
 
   public itemChecked: boolean = false;
 
+  // public isChecked = (dataItem: any, index: string): CheckedState => {
+  //   if (dataItem.IsChecked) {
+  //     return "checked";
+  //   }
+
+  //   return "none";
+
+  //   // if (this.isIndeterminate(dataItem.items)) {
+  //   //   return "indeterminate";
+  //   // }
+
+  //   // return "none";
+  // };
+
   public isChecked = (dataItem: any, index: string): CheckedState => {
-    if (dataItem.IsChecked) {
+    if (this.containsItem(dataItem)) {
       return "checked";
     }
 
-    return "checked";
+    if (this.isIndeterminate(dataItem.items)) {
+      return "indeterminate";
+    }
 
-    // if (this.isIndeterminate(dataItem.items)) {
-    //   return "indeterminate";
-    // }
-
-    // return "none";
+    return "none";
   };
 
   private isIndeterminate(items: any[] = []): boolean {

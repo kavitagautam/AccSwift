@@ -25,9 +25,9 @@ export class AccessRoleService {
   }
 
   getAccessRoleById(id): Observable<AccessRoleRootModel> {
-    return this.httpService.get(`${this._api_URL}AccessRole`, id);
+    return this.httpService.get(`${this._api_URL}AccessRole/${id}`);
   }
-  
+ 
   addAccessRoles(body): Observable<AccessRoleRootModel> {
     return this.httpService.post(`${this._api_URL}AccessRole`, body);
   }
@@ -47,5 +47,9 @@ export class AccessRoleService {
   getAccessRolesNavigate(body): Observable<AccessNavigateRootModel>
   {
     return this.httpService.post(`${this._api_URL}AccessRole/navigate`, body)
+  }
+  
+  deleteAccessRoles(id): Observable<AccessRoleRootModel> {
+    return this.httpService.delete(`${this._api_URL}AccessRole/${id}`);
   }
 }

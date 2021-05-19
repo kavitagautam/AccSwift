@@ -83,6 +83,7 @@
           textField="Title"
           [kendoTreeViewCheckable]="checkableSettings"
           (checkedChange)="handleChecking($event)"
+          [(checkedKeys)]="checkedKeys"
           [checkBy]="key"
           [isChecked]="isChecked"
         >

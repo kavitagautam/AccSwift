@@ -10,7 +10,8 @@ import { ConfirmationDialogComponent } from '@app/shared/components/confirmation
 import { ToastrService } from 'ngx-toastr';
 import { AccessRoleService } from '@accSwift-modules/access-role/services/access-role.service';
 import { FormBuilder } from '@angular/forms';
-import { AccessRoles } from '@accSwift-modules/access-role/models/access-role.model';
+import { AccessRoleList } from '@accSwift-modules/access-role/models/access-role.model';
+import { access } from 'fs';
 
 @Component({
   selector: 'accSwift-list-access-roles',
@@ -20,7 +21,7 @@ import { AccessRoles } from '@accSwift-modules/access-role/models/access-role.mo
 export class ListAccessRolesComponent implements OnInit {
 
   listLoading: Boolean;
-  accessRoles: AccessRoles[];
+  accessRoles: AccessRoleList[];
   public gridView: GridDataResult;
   public filter: CompositeFilterDescriptor;
   public pageSize = 10;
@@ -51,7 +52,8 @@ export class ListAccessRolesComponent implements OnInit {
     private accessService: AccessRoleService,
     private _fb: FormBuilder,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private modalService: BsModalService
   ) { }
 
   ngOnInit() {
@@ -111,6 +113,34 @@ export class ListAccessRolesComponent implements OnInit {
   edit(item): void
   {
     this.router.navigate(["/access-role/edit", item.ID]);
+  }
+
+  openConfirmationDialog(item): void 
+  {
+    const accessRoleId = {id: item.ID};
+    this.modalRef = this.modalService.show(ConfirmationDialogComponent), this.config;
+    this.modalRef.content.action = "delete";
+    this.modalRef.content.onClose.subscribe((confirm)=>
+    {
+      if (confirm)
+      {
+        this.deleteAccessRoleById(accessRoleId.id);
+      }
+    })
+  }
+
+  deleteAccessRoleById(id): void 
+  {
+    this.accessService.deleteAccessRoles(id).subscribe((response)=> {
+      this.getAccessRoleList();
+    },
+    (error)=> {
+      this.toastr.error(JSON.stringify(error));
+    },
+    ()=> {
+      this.toastr.success("Access Role deleted Successfully")
+      this.getAccessRoleList();
+    })
   }
 
 }

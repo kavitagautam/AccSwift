@@ -1,21 +1,3 @@
-// export interface AccessRoles {
-//   ID: number;
-//   Name: string;
-//   IsBuiltIn: boolean;
-//   AccessRoleDetails: AccessRoleDetail[];
-//   CompanyID: number;
-//   Remarks: string;
-//   CreatedBy: string;
-//   CreatedDate: Date;
-//   ModifiedBy?: any;
-//   ModifiedDate?: any;
-// }
-
-// export interface AccessRoleRootModel {
-//   StatusCode: number;
-//   Message: string;
-//   Entity: AccessRoles;
-// }
 
 export interface Access {
   ID: number;
@@ -119,7 +101,7 @@ export interface AccessRoleDetail {
   Access: Access;
 }
 
-export interface AccessRoles {
+export interface AccessRoleList {
   ID: number;
   Name: string;
   IsBuiltIn: boolean;
@@ -133,7 +115,7 @@ export interface AccessRoles {
 }
 
 export interface AccessNavigate {
-  Entity: AccessRoles[];
+  Entity: AccessRoleList[];
   ItemsPerPage: number;
   ItemsReturned: number;
   TotalItemsAvailable: number;
