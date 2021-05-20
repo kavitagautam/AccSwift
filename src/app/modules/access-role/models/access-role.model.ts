@@ -36,7 +36,7 @@ export interface AccessRoleRootModel {
 
 
 
-export interface AccessRolesMin {
+export interface AccessRolesMin  {
   ID: number;
   Name: string;
 }
@@ -126,9 +126,8 @@ export interface AccessNavigate {
 export interface AccessNavigateRootModel {
   StatusCode: number;
   Message: string;
-  Entity: AccessNavigate
+  Entity: AccessNavigate;
 }
-
 
 
 

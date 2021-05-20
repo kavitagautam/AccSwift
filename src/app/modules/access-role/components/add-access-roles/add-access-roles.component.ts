@@ -5,9 +5,9 @@ import {
   TreeItemLookup,
 } from "@progress/kendo-angular-treeview";
 import { AccessRoleService } from "@accSwift-modules/access-role/services/access-role.service";
-import { AccessRoles } from "@accSwift-modules/access-role/models/access-role.model";
+import { AccessRoles, AccessRolesMin } from "@accSwift-modules/access-role/models/access-role.model";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
@@ -21,6 +21,7 @@ export class AddAccessRolesComponent implements OnInit {
   public checkedKeys: any[] = [];
   public key = "Title";
   treeViewLoading: boolean;
+  accessRolesMin: AccessRolesMin[]=[];
   accessRoles: AccessRoles;
   accessType: string;
   selectedRoles: number;
@@ -46,16 +47,14 @@ export class AddAccessRolesComponent implements OnInit {
     private accessService: AccessRoleService,
     private _fb: FormBuilder,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.buildAccessForm();
-    
-    // this.accessService.getAccessRoles().subscribe((response) => {
-    //   this.accessRoles = response.Entity;
-    //   console.log(JSON.stringify(response.Entity))
-    // });
+  
+    this.getAccessRolesDropDown();
 
     this.treeViewLoading = true;
     this.accessService.getAccessRolesTreeView().subscribe(
@@ -76,7 +75,7 @@ export class AddAccessRolesComponent implements OnInit {
   buildAccessForm(): void 
   {
     this.accessForm = this._fb.group({
-      ID: [],
+      ID: [0],
       Name: [""],
       IsBuiltIn: false,
       AccessRoleDetails:this._fb.array([this.addAccessRoleDetails()]),
@@ -86,42 +85,30 @@ export class AddAccessRolesComponent implements OnInit {
     console.log(this.accessForm.value)
   }
   
-  // get getAccessRoleDetails():FormArray {
-  //   return <FormArray> this.accessForm.get("AccessRoleDetails");
-  // }
+  get getAccessRoleDetails():FormArray {
+    return <FormArray> this.accessForm.get("AccessRoleDetails");
+  }
 
   addAccessRoleDetails():FormGroup {
     return this._fb.group ({
       ID: [0],
-      AccessID: [{
-        "AccessID": 9
-      },
-      {    
-        "AccessID": 10
-      },
-      {
-        "AccessID": 11
-      },
-      {
-        "AccessID": 12
-      },
-      {
-        "AccessID": 13
-      },
-      {
-        "AccessID": 14
-      },
-      {
-        "AccessID": 15
-      },
-      {
-        "AccessID": 22
-      },
-      {
-        "AccessID": 23
-      }],
+      AccessID: [9],
       RoleID: [""],
-      Access: []
+      Access: this._fb.array([this.addAccess()]),
+    })
+  }
+
+  get getAccess():FormArray {
+    return <FormArray>this.accessForm.controls.AccessRoleDetails.get("Access");
+  }
+
+  addAccess():FormGroup {
+    return this._fb.group ({
+      ID: [0],
+      Name: [""],
+      Code: [""],
+      ParentID: [0],
+      Description: [""]
     })
   }
 
@@ -144,6 +131,35 @@ export class AddAccessRolesComponent implements OnInit {
   //   );
   // }
 
+  getAccessRolesDropDown():void {
+    this.accessService.getAccessRoleDropdown().subscribe((response)=> {
+      this.accessRolesMin = response.Entity;
+    })
+  }
+
+  loadTreeView(roles): void {
+    this.selectedRoles = roles.ID
+    console.log(roles.ID);
+    this.accessService.getAccessRolesTreeViewID(this.selectedRoles)
+    .subscribe((response) => {
+      this.accessRoleTreeView = response.Tree;
+      console.log(JSON.stringify(this.accessRoleTreeView))
+    });
+  }
+
+  getTreeViewID():void {
+    this.route.paramMap.subscribe((params) => {
+      const param = params.get("id");
+      if (param) {
+        this.accessService.getAccessRolesTreeViewID(param)
+          .subscribe((response) => {
+            this.accessRoleTreeView = response.Tree;
+            console.log(JSON.stringify(this.accessRoleTreeView))
+          });
+      }
+    });
+  }
+
   saveForm(): void {
     this.treeViewLoading = true;
 
@@ -151,34 +167,9 @@ export class AddAccessRolesComponent implements OnInit {
       this.accessForm.get("AccessRoleDetails")
     );
     for (let i = 0; i < accessArray.length; i++) {
-     accessArray.controls[i].get("AccessID").setValue([{
-      "AccessID": 9
-    },
-    {    
-      "AccessID": 10
-    },
-    {
-      "AccessID": 11
-    },
-    {
-      "AccessID": 12
-    },
-    {
-      "AccessID": 13
-    },
-    {
-      "AccessID": 14
-    },
-    {
-      "AccessID": 15
-    },
-    {
-      "AccessID": 22
-    },
-    {
-      "AccessID": 23
-    }]);
-    }
+      accessArray.controls[i].get("AccessID").setValue(9);
+     }
+   
     this.accessService.addAccessRoles(this.accessForm.value).subscribe((response)=>
     {
       this.accessRoles = response.Entity;
@@ -194,32 +185,26 @@ export class AddAccessRolesComponent implements OnInit {
   }
 
   public itemChecked: boolean = false;
-
-  // public isChecked = (dataItem: any, index: string): CheckedState => {
-  //   if (dataItem.IsChecked) {
-  //     return "checked";
-  //   }
-
-  //   return "none";
-
-  //   // if (this.isIndeterminate(dataItem.items)) {
-  //   //   return "indeterminate";
-  //   // }
-
-  //   // return "none";
-  // };
-
+   
   public isChecked = (dataItem: any, index: string): CheckedState => {
-    if (this.containsItem(dataItem)) {
+
+    if (dataItem.IsChecked) // To show already checked items
+    {
       return "checked";
     }
-
-    if (this.isIndeterminate(dataItem.items)) {
-      return "indeterminate";
+    else if (this.containsItem(dataItem)) // To Add CheckMarks
+    {
+      return "checked";
     }
-
     return "none";
+
+    // if (this.isIndeterminate(dataItem.items)) {
+    //   return "indeterminate";
+    // }
+
+    // return "none";
   };
+  
 
   private isIndeterminate(items: any[] = []): boolean {
     let idx = 0;

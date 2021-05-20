@@ -5,6 +5,7 @@ import { HttpClientService } from "@app/core/services/http-client/http-client.se
 import { Observable } from "rxjs";
 import {
   AccessNavigateRootModel,
+  AccessRoleMinRootModel,
   AccessRoleRootModel,
   AccessRoleTreeViewModel,
 } from "../models/access-role.model";
@@ -19,6 +20,10 @@ export class AccessRoleService {
     private http: HttpClient,
     private httpService: HttpClientService
   ) {}
+
+  getAccessRoleDropdown(): Observable<AccessRoleMinRootModel> {
+    return this.httpService.get(`${this._api_URL}AccessRole/min`);
+  }
 
   getAccessRoles(): Observable<AccessRoleRootModel> {
     return this.httpService.get(`${this._api_URL}AccessRole`);
@@ -44,11 +49,13 @@ export class AccessRoleService {
     return this.httpService.get(`${this._api_URL}Access/${id}`);
   }
 
-  getAccessRolesNavigate(body): Observable<AccessNavigateRootModel>
-  {
-    return this.httpService.post(`${this._api_URL}AccessRole/navigate`, body)
+  getAccessRolesNavigate(body): Observable<AccessNavigateRootModel> {
+    return this.httpService.post(
+      `${this._api_URL}AccessRole/navigate`,
+      body
+    );
   }
-  
+
   deleteAccessRoles(id): Observable<AccessRoleRootModel> {
     return this.httpService.delete(`${this._api_URL}AccessRole/${id}`);
   }

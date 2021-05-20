@@ -112,7 +112,13 @@ export class ListAccessRolesComponent implements OnInit {
 
   edit(item): void
   {
+    if (item.IsBuiltIn == false){
     this.router.navigate(["/access-role/edit", item.ID]);
+    }
+    else
+    {
+      this.toastr.error("This Access Role cannot be edited. Please edit other Access Role, or create a new one.", item.Name);
+    }
   }
 
   openConfirmationDialog(item): void 

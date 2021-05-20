@@ -1,4 +1,4 @@
-import { AccessRoles } from '@accSwift-modules/access-role/models/access-role.model';
+import { AccessRoles, AccessRolesMin } from '@accSwift-modules/access-role/models/access-role.model';
 import { AccessRoleService } from '@accSwift-modules/access-role/services/access-role.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
@@ -18,6 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 export class EditAccessRolesComponent implements OnInit {
   
   public accessForm: FormGroup;
+  accessRolesMin: AccessRolesMin[]=[];
   accessRoles: AccessRoles;
   treeViewLoading: boolean;
   public checkedKeys: any[] = [];
@@ -58,10 +59,7 @@ export class EditAccessRolesComponent implements OnInit {
 
     this.buildAccessForm();
 
-    // this.accessService.getAccessRoles().subscribe((response)=> {
-    //   this.accessRoles = response.Entity;
-    //   console.log(response.Entity)
-    // });
+    this.getAccessRolesDropDown();
 
     this.treeViewLoading = true;
     this.accessService.getAccessRolesTreeView().subscribe((response)=> {
@@ -86,7 +84,7 @@ export class EditAccessRolesComponent implements OnInit {
         this.accessService.getAccessRoleById(param)
           .subscribe((response) => {
             this.accessRoles = response.Entity;
-            console.log(JSON.stringify(this.accessRoles.ID))
+            console.log(JSON.stringify(this.accessRoles))
             if (this.accessRoles) {
               this.assignFormValue();
               this.accessForm.patchValue(this.accessRoles);
@@ -107,6 +105,22 @@ export class EditAccessRolesComponent implements OnInit {
             console.log(JSON.stringify(this.accessRoleTreeView))
           });
       }
+    });
+  }
+
+  getAccessRolesDropDown():void {
+    this.accessService.getAccessRoleDropdown().subscribe((response)=> {
+      this.accessRolesMin = response.Entity;
+    })
+  }
+
+  loadTreeView(roles): void {
+    this.selectedRoles = roles.ID
+    console.log(roles.ID);
+    this.accessService.getAccessRolesTreeViewID(this.selectedRoles)
+    .subscribe((response) => {
+      this.accessRoleTreeView = response.Tree;
+      console.log(JSON.stringify(this.accessRoleTreeView))
     });
   }
   
@@ -130,35 +144,23 @@ export class EditAccessRolesComponent implements OnInit {
   addAccessRoleDetails():FormGroup {
     return this._fb.group ({
       ID: [0],
-      AccessID: [{
-        "AccessID": 9
-      },
-      {    
-        "AccessID": 10
-      },
-      {
-        "AccessID": 11
-      },
-      {
-        "AccessID": 12
-      },
-      {
-        "AccessID": 13
-      },
-      {
-        "AccessID": 14
-      },
-      {
-        "AccessID": 15
-      },
-      {
-        "AccessID": 22
-      },
-      {
-        "AccessID": 23
-      }],
+      AccessID: [9],
       RoleID: [""],
-      Access: []
+      Access: this._fb.array([this.addAccess()]),
+    })
+  }
+
+  get getAccess():FormArray {
+    return <FormArray>this.accessForm.controls.AccessRoleDetails.get("Access");
+  }
+
+  addAccess():FormGroup {
+    return this._fb.group ({
+      ID: [0],
+      Name: [""],
+      Code: [""],
+      ParentID: [0],
+      Description: [""]
     })
   }
 
@@ -236,36 +238,9 @@ export class EditAccessRolesComponent implements OnInit {
       this.accessForm.get("AccessRoleDetails")
     );
     for (let i = 0; i < accessArray.length; i++) {
-     accessArray.controls[i].get("AccessID").setValue([
-    {
-      "AccessID": 9
-    },
-    {    
-      "AccessID": 10
-    },
-    {
-      "AccessID": 11
-    },
-    {
-      "AccessID": 12
-    },
-    {
-      "AccessID": 13
-    },
-    {
-      "AccessID": 14
-    },
-    {
-      "AccessID": 15
-    },
-    {
-      "AccessID": 22
-    },
-    {
-      "AccessID": 23
-    }
-    ]);
-    }
+      accessArray.controls[i].get("AccessID").setValue(9);
+     }
+
     this.accessService.updateAccessRoles(this.accessForm.value).subscribe((response)=>
     {
       this.accessRoles = response.Entity;
@@ -281,35 +256,26 @@ export class EditAccessRolesComponent implements OnInit {
   }
 
   public itemChecked: boolean = false;
-  // To show already checked items
-  // public isChecked = (dataItem: any, index: string): CheckedState => {
-  //   if (dataItem.IsChecked) {
-  //     return "checked";
-  //   }
-
-  //   return "none";
-
-  //   // if (this.isIndeterminate(dataItem.items)) {
-  //   //   return "indeterminate";
-  //   // }
-
-  //   // return "none";
-  // };
   
-
-  // To add Checkmarks
   public isChecked = (dataItem: any, index: string): CheckedState => {
-    if (this.containsItem(dataItem)) {
+
+    if (dataItem.IsChecked) // To show already checked items
+    {
       return "checked";
     }
-
-    if (this.isIndeterminate(dataItem.items)) {
-      return "indeterminate";
+    else if (this.containsItem(dataItem)) // To Add CheckMarks
+    {
+      return "checked";
     }
-
     return "none";
-  };
 
+    // if (this.isIndeterminate(dataItem.items)) {
+    //   return "indeterminate";
+    // }
+
+    // return "none";
+  };
+  
   private isIndeterminate(items: any[] = []): boolean {
     let idx = 0;
     let item;

@@ -7,90 +7,76 @@
         access role and provide the access role to the users.
       </div>
     </div>
-    <div class="col-md-12">
-      <div class="row">
-        <div class="col-md-6 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Role Name</label> <sup>*</sup>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="Name"
-              accSwiftFormValidator
-            />
+    <fieldset>
+      <legend>Access Role Details</legend>
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Role Name</label> <sup>*</sup>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="Name"
+                accSwiftFormValidator
+              />
+            </div>
           </div>
-        </div>
-        <div class="col-md-6 col-sm-6 col-xs-6">
-          <div class="form-group">
-            <label>Remarks</label> <sup>*</sup>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="Remarks"
-              accSwiftFormValidator
-            />
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- <div class="col-md-4">
-      <h5>Existing Access Roles:</h5>
-      <ul class="heroes">
-        <li
-          *ngFor="let roles of accessRoles"
-          [class.selected]="roles.ID === selectedRoles"
-          (click)="onSelect(roles)"
-        >
-          {{ roles.Name }}
-        </li>
-      </ul>
-    </div> -->
-    <div class="col-md-12">
-      <div class="row">
-        <div class="col-sm-5">
-          <div class="form-group">
-            <label>Role Name</label>
-            <input
-              type="text"
-              class="form-control"
-              [ngModel]="accessType"
-              [ngModelOptions]="{standalone: true}"
-              disabled
-            />
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Copy From Access Role</label>
+              <select
+                class="form-control"
+                *ngFor="let roles of accessRolesMin"
+                [value]="roles.ID"
+                (change)="loadTreeView(roles)"
+              >
+                <option [ngValue]="null">Choose Option...</option>
+                <option>{{ roles.Name }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Remarks</label> <sup>*</sup>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="Remarks"
+                accSwiftFormValidator
+              />
+            </div>
           </div>
         </div>
-        <!-- <div class="col-sm-5">
-          <label>Copy Access Role Form:</label>
-          <select class="form-control">
-            <option value="null">Choose Option...</option>
-            <option *ngFor="let roles of accessRoles" [ngValue]="roles.ID">
-              {{ roles.Name }}
-            </option>
-          </select>
-        </div> -->
       </div>
+    </fieldset>
 
-      <div class="treeview-wrapper">
-        <kendo-treeview
-          [nodes]="accessRoleTreeView"
-          childrenField="Child"
-          [expandBy]="'Title'"
-          kendoTreeViewExpandable
-          kendoTreeViewSelectable
-          kendoTreeViewHierarchyBinding
-          kendoTreeViewExpandable
-          textField="Title"
-          [kendoTreeViewCheckable]="checkableSettings"
-          (checkedChange)="handleChecking($event)"
-          [(checkedKeys)]="checkedKeys"
-          [checkBy]="key"
-          [isChecked]="isChecked"
-        >
-        </kendo-treeview>
-        <div *ngIf="treeViewLoading" class="k-i-loading"></div>
+    <fieldset>
+      <legend>Access TreeView</legend>
+      <div class="col-md-12">
+        <div class="treeview-wrapper">
+          <kendo-treeview
+            [nodes]="accessRoleTreeView"
+            childrenField="Child"
+            [expandBy]="'Title'"
+            kendoTreeViewExpandable
+            kendoTreeViewSelectable
+            kendoTreeViewHierarchyBinding
+            kendoTreeViewExpandable
+            textField="Title"
+            [kendoTreeViewCheckable]="checkableSettings"
+            (checkedChange)="handleChecking($event)"
+            [(checkedKeys)]="checkedKeys"
+            [checkBy]="key"
+            [isChecked]="isChecked"
+          >
+          </kendo-treeview>
+          <div *ngIf="treeViewLoading" class="k-i-loading"></div>
+        </div>
       </div>
-    </div>
+    </fieldset>
 
     <div class="box-footer">
       <div class="mb-2">
@@ -107,3 +93,27 @@
     </div>
   </div>
 </form>
+
+<!-- <h5>Existing Access Roles:</h5>
+      <ul class="heroes">
+        <li
+          *ngFor="let roles of accessRoles"
+          [class.selected]="roles.ID === selectedRoles"
+          (click)="onSelect(roles)"
+        >
+          {{ roles.Name }}
+        </li>
+      </ul> -->
+
+<!-- <div class="col-sm-5">
+          <div class="form-group">
+            <label>Role Name</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngModel]="accessType"
+              [ngModelOptions]="{standalone: true}"
+              disabled
+            />
+          </div>
+        </div> -->
