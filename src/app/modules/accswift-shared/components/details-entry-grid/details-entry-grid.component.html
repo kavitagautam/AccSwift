@@ -7,8 +7,6 @@
   <!-- <h5>{{ entryArray.getRawValue() | json }}</h5> -->
   <kendo-grid
     [data]="entryArray.value"
-    (cancel)="cancelHandler($event)"
-    (save)="saveHandler($event)"
     (add)="addHandler($event)"
     (remove)="removeHandler($event)"
   >
@@ -391,7 +389,6 @@
           [format]="'n0'"
           [min]="1"
           [formControl]="entryArray.controls[rowIndex].get(column.field)"
-          (valueChange)="changeInvoiceValues(dataItem, rowIndex)"
         >
         </kendo-numerictextbox>
       </ng-template>

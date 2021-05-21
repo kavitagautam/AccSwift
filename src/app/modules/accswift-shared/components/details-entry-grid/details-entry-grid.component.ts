@@ -404,7 +404,8 @@ export class DetailsEntryGridComponent implements OnInit {
     const selectedProductValue = this.gridServices.productList.filter(
       (s) => s.ProductID === value
     );
-
+    console.log(selectedProductValue);
+    console.log(value);
     const entryListArray = <FormArray>this.entryArray;
     if (selectedProductValue && selectedProductValue.length > 0) {
       entryListArray.controls[index]

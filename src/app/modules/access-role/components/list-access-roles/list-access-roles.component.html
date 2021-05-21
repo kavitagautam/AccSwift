@@ -24,7 +24,7 @@
           [pageable]="true"
           (pageChange)="pageChange($event)"
         >
-          <kendo-grid-column title="S.N." width="80">
+          <kendo-grid-column title="S.N." width="40">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -37,7 +37,7 @@
               </div>
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="Title" title="Delivery Head" width="130">
+          <kendo-grid-column field="Name" title="Role Name" width="130">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -46,11 +46,11 @@
               let-rowIndex="rowIndex"
             >
               <div class="col-sm-12">
-                <span>{{ dataItem.Title }}</span>
+                <span>{{ dataItem.Name }}</span>
               </div>
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column field="ClientName" title="Client Name" width="130">
+          <kendo-grid-column field="IsBuiltIn" title="IsBuiltIn" width="130">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -59,15 +59,11 @@
               let-rowIndex="rowIndex"
             >
               <div class="col-sm-12">
-                <span>{{ dataItem.ClientName }}</span>
+                <span>{{ dataItem.IsBuiltIn }}</span>
               </div>
             </ng-template>
           </kendo-grid-column>
-          <kendo-grid-column
-            field="ProductName"
-            title="Product Name"
-            width="130"
-          >
+          <kendo-grid-column field="Remarks" title="Remarks" width="130">
             <ng-template
               kendoGridCellTemplate
               let-dataItem="dataItem"
@@ -76,48 +72,12 @@
               let-rowIndex="rowIndex"
             >
               <div class="col-sm-12">
-                <span>{{ dataItem.DeliveryProductsList[0].ProductName }}</span>
+                <span>{{ dataItem.Remarks }}</span>
               </div>
             </ng-template>
           </kendo-grid-column>
 
-          <kendo-grid-column
-            field="General Name"
-            title="General Name"
-            width="130"
-          >
-            <ng-template
-              kendoGridCellTemplate
-              let-dataItem="dataItem"
-              let-column="column"
-              let-formGroup="formGroup"
-              let-rowIndex="rowIndex"
-            >
-              <div class="col-sm-12">
-                <span>{{ dataItem.DeliveryProductsList[0].GeneralName }}</span>
-              </div>
-            </ng-template>
-          </kendo-grid-column>
-
-          <kendo-grid-column
-            field="Description"
-            title="Description"
-            width="130"
-          >
-            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
-              <span>{{ dataItem.DeliveryProductsList[0].Description }}</span>
-            </ng-template>
-          </kendo-grid-column>
-
-          <kendo-grid-column field="Quantity" title="Quantity" width="100">
-            <ng-template kendoGridCellTemplate let-dataItem="dataItem">
-              <span class="float-right">{{
-                dataItem.DeliveryProductsList[0].Quantity
-              }}</span>
-            </ng-template>
-          </kendo-grid-column>
-
-          <kendo-grid-command-column title="Action" width="120">
+          <kendo-grid-command-column title="Action" width="80">
             <ng-template
               kendoGridCellTemplate
               let-isNew="isNew"
@@ -132,9 +92,12 @@
               >
                 Edit
               </button>
-              <button kendoGridRemoveCommand
-              (click)="openConfirmationDialog(dataItem)"
-              >Delete</button>
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialog(dataItem)"
+              >
+                Delete
+              </button>
             </ng-template>
           </kendo-grid-command-column>
         </kendo-grid>

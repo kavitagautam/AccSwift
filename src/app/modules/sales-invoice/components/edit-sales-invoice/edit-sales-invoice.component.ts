@@ -11,7 +11,7 @@ import { ToastrService } from "ngx-toastr";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { IconConst } from "@app/shared/constants/icon.constant";
-import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts";
+import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { SelectEvent } from "@progress/kendo-angular-upload";
 import { FileRestrictions } from "@progress/kendo-angular-upload";
@@ -302,6 +302,10 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       });
   }
 
+  get getInvoiceEntryList(): FormArray {
+    return <FormArray>this.salesInvoiceForm.get("InvoiceDetails");
+  }
+
   addInvoiceEntryList(): FormGroup {
     return this._fb.group({
       ID: [0],
@@ -519,10 +523,6 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       class: "modal-sm",
     };
     this.modalRef = this.modalService.show(template, config);
-  }
-
-  get getInvoiceEntryList(): FormArray {
-    return <FormArray>this.salesInvoiceForm.get("InvoiceDetails");
   }
 
   private closeEditor(grid, rowIndex = 1) {

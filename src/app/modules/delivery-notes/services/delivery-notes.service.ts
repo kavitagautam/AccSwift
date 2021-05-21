@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { HttpClientService } from "@core/services/http-client/http-client.service";
 import { Observable } from "rxjs";
 import { environment } from "@env/environment";
-import { DeliveryNotesRootModel } from '../models/delivery-notes.model';
+import { DeliveryNotesNavigateRootModel, DeliveryNotesRootModel } from '../models/delivery-notes.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +16,26 @@ export class DeliveryNotesService {
     private http: HttpClient) { }
 
 
-    getDeliveryNotesNavigate(body): Observable<DeliveryNotesRootModel> {
+    getDeliveryNotesNavigate(body): Observable<DeliveryNotesNavigateRootModel> {
       return this.httpService.post(
         `${this._api_URL}DeliveryNotes/navigate`,
         body
       );
     }
-}
 
+    addDeliveryNotes(body): Observable<any> {
+      return this.httpService.post(`${this._api_URL}DeliveryNotes`, body);
+    }
 
+    updateDeliveryNotes(body): Observable<any> {
+      return this.httpService.put(`${this._api_URL}DeliveryNotes`, body);
+    }
+
+    deleteDeliveryNotesById(id: any): Observable<any> {
+      return this.httpService.delete(`${this._api_URL}DeliveryNotes/${id}`);
+    }
+
+    getDeliveryNotesById(id: any): Observable<DeliveryNotesRootModel> {
+      return this.httpService.get(`${this._api_URL}DeliveryNotes/${id}`);
+    }
+  }

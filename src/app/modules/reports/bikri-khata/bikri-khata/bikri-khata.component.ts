@@ -1,7 +1,9 @@
 import { DateSelectionSettingsComponent } from '@accSwift-modules/accswift-shared/components/date-selection-settings/date-selection-settings.component';
+import { Company } from '@accSwift-modules/company/models/company.model';
 import { PreferenceService } from '@accSwift-modules/preference/services/preference.service';
 import { BikriKhataList } from '@accSwift-modules/reports/models/bikri-khata.model';
 import { ReportsService } from '@accSwift-modules/reports/services/reports.service';
+import { SalesInvoiceService } from '@accSwift-modules/sales-invoice/services/sales-invoice.service';
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -26,6 +28,8 @@ export class BikriKhataComponent implements OnInit {
   sumTaxAmount: number;
   reportType: string;
   iconConst = IconConst;
+  companyLogo: any = "";
+  companyDetails: Company;
   
 
   constructor(
@@ -33,10 +37,18 @@ export class BikriKhataComponent implements OnInit {
     private router: Router, 
     private modalService: BsModalService, 
     private reportService: ReportsService, 
+    private salesInvoiceService: SalesInvoiceService,
     private preferenceService: PreferenceService) { }
 
   ngOnInit() {
     this.buildBikriKhataReportForms();
+
+    this.salesInvoiceService.getCompanyDetails().subscribe((response) => {
+      this.companyDetails = response.Entity;
+      if (this.companyDetails) {
+        this.companyLogo = this.companyDetails.Logo;
+      }
+    });  
   }
 
   ngAfterViewInit(): void {
@@ -49,6 +61,7 @@ export class BikriKhataComponent implements OnInit {
       ToDate: [{ value: "", disabled: false}]
     })
   }
+  
 
   openBikriKhataReportSettings(): void {
     this.modalRef = this.modalService.show(DateSelectionSettingsComponent,
