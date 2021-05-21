@@ -28,12 +28,12 @@
               <label>Copy From Access Role</label>
               <select
                 class="form-control"
-                *ngFor="let roles of accessRolesMin"
-                [value]="roles.ID"
-                (change)="loadTreeView(roles)"
+                (change)="loadTreeView($event.target.value)"
               >
-                <option [ngValue]="null">Choose Option...</option>
-                <option>{{ roles.Name }}</option>
+                <option [value]="null">Choose Option...</option>
+                <option *ngFor="let roles of accessRolesMin" [value]="roles.ID">
+                  {{ roles.Name }}
+                </option>
               </select>
             </div>
           </div>

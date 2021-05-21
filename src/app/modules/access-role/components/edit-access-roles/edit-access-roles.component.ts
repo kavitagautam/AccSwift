@@ -24,7 +24,7 @@ export class EditAccessRolesComponent implements OnInit {
   public checkedKeys: any[] = [];
   public key = "Title";
   accessType: string;
-  selectedRoles: number;
+  selectedRoleId: number;
   accessRoleTreeView: any;
   public enableCheck = true;
   public checkChildren = true;
@@ -114,13 +114,13 @@ export class EditAccessRolesComponent implements OnInit {
     })
   }
 
-  loadTreeView(roles): void {
-    this.selectedRoles = roles.ID
-    console.log(roles.ID);
-    this.accessService.getAccessRolesTreeViewID(this.selectedRoles)
-    .subscribe((response) => {
-      this.accessRoleTreeView = response.Tree;
-      console.log(JSON.stringify(this.accessRoleTreeView))
+  loadTreeView(roleId): void {
+    console.log(roleId);
+    this.selectedRoleId = roleId;
+    this.accessService.getAccessRolesTreeViewID(this.selectedRoleId)
+    .subscribe((response) => { 
+    this.accessRoleTreeView = response.Tree;
+    console.log(JSON.stringify(this.accessRoleTreeView))
     });
   }
   
