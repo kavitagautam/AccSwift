@@ -13,12 +13,13 @@ import { IconConst } from "@app/shared/constants/icon.constant";
 import { SettingsService } from '@accSwift-modules/settings/services/settings.service';
 import { Settings } from '@accSwift-modules/settings/models/settings.model';
 import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
+import { DateConverterService } from "@app/shared/services/dateConverter/date-converter.service";
 
 @Component({
   selector: "accSwift-add-journal",
   templateUrl: "../common-html/journal-voucher.html",
   styleUrls: ["./add-journal.component.scss"],
-  providers: [DatePipe],
+  providers: [DatePipe]
 })
 export class AddJournalComponent implements OnInit {
   private editedRowIndex: number;
@@ -58,7 +59,9 @@ export class AddJournalComponent implements OnInit {
     private toastr: ToastrService,
     private preferenceService: PreferenceService,
     private settingsService: SettingsService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private dateConverter: DateConverterService,
+    private datePipe: DatePipe,
   ) {}
 
   ngOnInit(): void {
@@ -167,4 +170,14 @@ export class AddJournalComponent implements OnInit {
     this.journalVoucherForms.reset();
     this.router.navigate(["/journal"]);
   }
+
+  // bsToAdInStrng(dateInBs)
+  // {
+  //   return this.dateConverter.bsToAdInString(dateInBs);
+  // }
+
+  // adToBsInStrng(dateInAd)
+  // {
+  //   return this.dateConverter.adToBsDateInString(dateInAd);
+  // }
 }
