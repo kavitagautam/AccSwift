@@ -67,10 +67,10 @@
             kendoTreeViewExpandable
             textField="Title"
             [kendoTreeViewCheckable]="checkableSettings"
-            (checkedChange)="handleChecking($event)"
             [(checkedKeys)]="checkedKeys"
             [checkBy]="key"
             [isChecked]="isChecked"
+            (checkedChange)="handleChecking($event)"
           >
           </kendo-treeview>
           <div *ngIf="treeViewLoading" class="k-i-loading"></div>

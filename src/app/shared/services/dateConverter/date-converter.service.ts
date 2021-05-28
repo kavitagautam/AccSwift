@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { DatePipe } from "@angular/common";
 import { HttpParams, HttpHeaders, HttpClient } from "@angular/common/http";
 
 import { environment } from "@env/environment";
@@ -12,10 +11,10 @@ var adbs = require("ad-bs-converter");
 export class DateConverterService {
   _api_URL=environment.baseAPI;
 
-  constructor(
+  constructor
+  (
     private httpClientService: HttpClientService,
-    private httlClient: HttpClient,
-    private datePipe: DatePipe
+    private httlClient: HttpClient
   ) { }
 
   bsToAdInString(dateInBs)
@@ -32,12 +31,12 @@ export class DateConverterService {
     return `${dateObject.en.year}-${dateObject.en.month}-${dateObject.en.day}`
   }
 
-  getNepali(date)
+  getNepalidateObjectToString(date)
   {
     return `${date.en.year}/${parseInt(date.en.month) + 1}/${date.en.day}`;
   }
   
-  getEnglish(date)
+  adToBsInObject(date)
   {
     let dateInAd = this.dateStringFormatter(date);
     let dateObject = adbs.bs2ad(dateInAd);
@@ -48,7 +47,6 @@ export class DateConverterService {
     };
     return dateEnglish;
   }
-
 
   // formats yyyy-MM-dd to yyyy/MM/dd
   dateStringFormatter(dateInString)

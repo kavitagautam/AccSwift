@@ -1,6 +1,6 @@
 <div class="box-header">
   <button [routerLink]="['add']" class="btn btn-primary">
-    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Sales Invoice
+    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Delivery Notes
   </button>
 </div>
 
@@ -132,9 +132,12 @@
               >
                 Edit
               </button>
-              <button kendoGridRemoveCommand
-              (click)="openConfirmationDialog(dataItem)"
-              >Delete</button>
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialog(dataItem)"
+              >
+                Delete
+              </button>
             </ng-template>
           </kendo-grid-command-column>
         </kendo-grid>

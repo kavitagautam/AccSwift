@@ -151,54 +151,55 @@ export class EditDeliveryNotesComponent implements OnInit, OnDestroy {
   }
 
   setDeliveryList(): void {
-    // this.deliveryNotesForm.setControl(
-    //   "DeliveryProductsList",
-    //   this.setDeliveryDetailsFormArray(this.deliveryNotes.DeliveryProductsList)
-    // );
+    this.deliveryNotesForm.setControl(
+      "DeliveryProductsList",
+      this.setDeliveryDetailsFormArray(this.deliveryNotes.DeliveryProductsList)
+    );
 
     (<FormArray>this.deliveryNotesForm.get("DeliveryProductsList")).push(
       this.addDeliveryProductList()
     );
   }
 
-  // setDeliveryDetailsFormArray(deliveryDetails): FormArray {
-  //   const deliveryFormArray = new FormArray([]);
-  //   console.log(deliveryDetails)
-  //   if (deliveryDetails && deliveryDetails.length > 0) {
-  //     deliveryDetails.forEach((element) => {
-  //       deliveryFormArray.push(
-  //         this._fb.group({
-  //           ID: [element.ID ? element.ID: 0],
-  //           DeliveryNoteID: [element.DeliveryNoteID ? element.DeliveryNoteID: null],
-  //           ProductID: [element.ProductID ? element.ProductID: ""],
-  //           ProductCode: [element.ProductCode ? element.ProductCode: ""],
-  //           ProductName: [element.ProductName ? element.ProductName: ""],
-  //           GeneralName: [element.GeneralName ? element.GeneralName: ""],
-  //           Description: [element.Description ? element.Description: ""],
-  //           Quantity: [element.Quantity ? element.Quantity:"", Validators.required],
-  //           IsService: [element.IsService]
-  //         })
-  //       );
-  //     });
-  //   } else {
-  //     deliveryFormArray.push(
-  //       this._fb.group({
-  //         ID: [0],
-  //         DeliveryNoteID: [null],
-  //         ProductID: [""],
-  //         ProductCode: [""],
-  //         ProductName: [""],
-  //         GeneralName: [""],
-  //         Description: [""],
-  //         Quantity: ["", Validators.required],
-  //         IsService: true
-  //       })
-  //     );
-  //   }
-  //   console.log(deliveryFormArray.controls[0].value.ProductID);
-  //   localStorage.setItem("ProductID", deliveryFormArray.controls[0].value.ProductID);
-  //   return deliveryFormArray;
-  // }
+  setDeliveryDetailsFormArray(deliveryDetails): FormArray {
+    const deliveryFormArray = new FormArray([]);
+    console.log(deliveryDetails)
+    if (deliveryDetails && deliveryDetails.length > 0) {
+      deliveryDetails.forEach((element) => {
+        deliveryFormArray.push(
+          this._fb.group({
+            ID: [element.ID ? element.ID: 0],
+            DeliveryNoteID: [element.DeliveryNoteID ? element.DeliveryNoteID: null],
+            ProductID: [element.ProductID ? element.ProductID: ""],
+            ProductCode: [element.ProductCode ? element.ProductCode: ""],
+            ProductName: [element.ProductName ? element.ProductName: ""],
+            GeneralName: [element.GeneralName ? element.GeneralName: ""],
+            Description: [element.Description ? element.Description: ""],
+            Quantity: [element.Quantity ? element.Quantity:"", Validators.required],
+            IsService: [element.IsService]
+          })
+        );
+      });
+    } else {
+      deliveryFormArray.push(
+        this._fb.group({
+          ID: [0],
+          DeliveryNoteID: [null],
+          ProductID: [""],
+          ProductCode: [""],
+          ProductName: [""],
+          GeneralName: [""],
+          Description: [""],
+          Quantity: ["", Validators.required],
+          IsService: true
+        })
+      );
+    }
+    console.log(deliveryFormArray.controls[0].value.ProductID);
+    localStorage.setItem("ProductID", deliveryFormArray.controls[0].value.ProductID);
+    console.log(localStorage.getItem("ProductID"));
+    return deliveryFormArray;
+  }
 
 
   public save(): void {

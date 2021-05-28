@@ -60,6 +60,7 @@ export class AddAccessRolesComponent implements OnInit {
     this.accessService.getAccessRolesTreeView().subscribe(
       (response) => {
         this.accessRoleTreeView = response.Tree;
+        console.log(JSON.stringify(this.accessRoleTreeView));
         this.treeViewLoading = false;
       },
       (error) => {
@@ -90,26 +91,35 @@ export class AddAccessRolesComponent implements OnInit {
   }
 
   addAccessRoleDetails():FormGroup {
-    return this._fb.group ({
-      ID: [0],
-      AccessID: [9],
-      RoleID: [""],
-      Access: this._fb.array([this.addAccess()]),
-    })
-  }
-
-  get getAccess():FormArray {
-    return <FormArray>this.accessForm.controls.AccessRoleDetails.get("Access");
-  }
-
-  addAccess():FormGroup {
-    return this._fb.group ({
-      ID: [0],
-      Name: [""],
-      Code: [""],
-      ParentID: [0],
-      Description: [""]
-    })
+    return this._fb.group (
+      {
+        AccessID: 9
+      },
+      {
+        AccessID: 10
+      },
+      // {
+      //   AccessID: 11
+      // },
+      // {
+      //   AccessID: 12
+      // },
+      // {
+      //   AccessID: 13
+      // },
+      // {
+      //   AccessID: 14
+      // },
+      // {
+      //   AccessID: 15
+      // },
+      // {
+      //   AccessID: 22
+      // },
+      // {
+      //   AccessID: 23
+      // }
+  )
   }
 
   // onSelect(roles): void {
@@ -148,32 +158,20 @@ export class AddAccessRolesComponent implements OnInit {
   }
 
 
-  getTreeViewID():void {
-    this.route.paramMap.subscribe((params) => {
-      const param = params.get("id");
-      if (param) {
-        this.accessService.getAccessRolesTreeViewID(param)
-          .subscribe((response) => {
-            this.accessRoleTreeView = response.Tree;
-            console.log(JSON.stringify(this.accessRoleTreeView))
-          });
-      }
-    });
-  }
-
   saveForm(): void {
     this.treeViewLoading = true;
 
-    const accessArray = <FormArray>(
-      this.accessForm.get("AccessRoleDetails")
-    );
-    for (let i = 0; i < accessArray.length; i++) {
-      accessArray.controls[i].get("AccessID").setValue(9);
-     }
+    // const accessArray = <FormArray>(
+    //   this.accessForm.get("AccessRoleDetails")
+    // );
+    // for (let i = 0; i < accessArray.length; i++) {
+    //   accessArray.controls[i].get("AccessID").setValue();
+    //  }
    
     this.accessService.addAccessRoles(this.accessForm.value).subscribe((response)=>
     {
       this.accessRoles = response.Entity;
+      console.log(JSON.stringify(this.accessRoles));
     },  
     (error) => {
       this.toastr.error(JSON.stringify(error.error.Message));
@@ -188,8 +186,8 @@ export class AddAccessRolesComponent implements OnInit {
   public itemChecked: boolean = false;
    
   public isChecked = (dataItem: any, index: string): CheckedState => {
-
-    if (dataItem.IsChecked) // To show already checked items
+    console.log(dataItem);
+    if (dataItem.IsChecked == true) // To show already checked items
     {
       return "checked";
     }
@@ -221,8 +219,10 @@ export class AddAccessRolesComponent implements OnInit {
 
     return false;
   }
+
   private containsItem(item: any): boolean {
     return this.checkedKeys.indexOf(item[this.key]) > -1;
+    //indexOf = Returns the index of the last occurrence of a specified value in an array, or -1 if it is not present.
   }
 
   public handleChecking(itemLookup: TreeItemLookup): void {

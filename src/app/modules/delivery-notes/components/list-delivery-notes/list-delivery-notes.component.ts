@@ -132,7 +132,7 @@ export class ListDeliveryNotesComponent implements OnInit {
         this.toastr.error(JSON.stringify(error));
       },
       () => {
-        this.toastr.success("Invoice deleted successfully");
+        this.toastr.success("Delivery Notes deleted successfully");
         this.getDeliveryNotesList();
       }
     );

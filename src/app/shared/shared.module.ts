@@ -30,7 +30,6 @@ import { PopupAnchorDirective } from "./directives/popup-anchor/popup.anchor-tar
 import { FormControlValidationMessageDirective } from "./directives/validators/validation-message.directive";
 import { FormSubmitValidationMessageDirective } from "./directives/validators/submit-validation-msg.directive";
 import { TimezoneDirective } from "./directives/date-timezone/timezone.directive";
-import { DateConversionPipe } from './pipes/date-conversion/date-conversion.pipe';
 
 @NgModule({
   declarations: [
@@ -43,8 +42,7 @@ import { DateConversionPipe } from './pipes/date-conversion/date-conversion.pipe
     PMaskDirective,
     FormControlValidationMessageDirective,
     FormSubmitValidationMessageDirective,
-    TimezoneDirective,
-    DateConversionPipe,
+    TimezoneDirective
   ],
   imports: [
     FormsModule,
