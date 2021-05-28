@@ -13,6 +13,7 @@ import { IntlService } from "@progress/kendo-angular-intl";
 import { TimeZoneService } from "@accSwift-modules/accswift-shared/services/time-zone/time-zone.service";
 import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 import { DetailsEntryGridService } from '@accSwift-modules/accswift-shared/services/details-entry-grid/details-entry-grid.service';
+import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
 
 @Component({
   selector: "accSwift-edit-journal",
@@ -267,6 +268,15 @@ export class EditJournalComponent implements OnInit {
           this.toastr.success("Journal edited successfully");
         }
       );
+  }
+
+  dateConverterPopup(): void
+  {
+    this.modalRef = this.modalService.show(DateConverterComponent, {
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm",
+    })
   }
 
   public cancel(): void {

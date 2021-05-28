@@ -42,11 +42,13 @@
             <input
               class="form-control"
               formControlName="Date"
-              (change)="getChangedDate($event.target.value)"
               bsDatepicker
               [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
             />
-            <span class="glyphicon glyphicon-calendar calendar-icon"></span>
+            <span
+              (click)="dateConverterPopup()"
+              class="glyphicon glyphicon-calendar calendar-icon"
+            ></span>
           </div>
 
           <div *ngIf="selectedDate == 'Nepali'" class="form-group">

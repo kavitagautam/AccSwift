@@ -14,7 +14,7 @@ import { Settings } from '@accSwift-modules/settings/models/settings.model';
 import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 import { DateConverterService } from "@app/shared/services/dateConverter/date-converter.service";
 import { DatePipe } from "@angular/common";
-var adbs = require("ad-bs-converter");
+import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
 
 @Component({
   selector: "accSwift-add-journal",
@@ -27,7 +27,6 @@ export class AddJournalComponent implements OnInit {
   settings: Settings;
   public selectedDate:string =''
   // datePick = this.settingsService.settings ? this.settingsService.settings.DEFAULT_DATE.Value:'';
-  //Input Field Property
   iconConst = IconConst;
 
   public decimals: number = 2;
@@ -49,7 +48,6 @@ export class AddJournalComponent implements OnInit {
     ignoreBackdropClick: true,
     class: "modal-lg",
   };
-  todaysDateInEnglish: any;
 
   constructor(
     public _fb: FormBuilder,
@@ -168,52 +166,19 @@ export class AddJournalComponent implements OnInit {
       );
   }
 
+  dateConverterPopup(): void
+  {
+    this.modalRef = this.modalService.show(DateConverterComponent, {
+      initialState: { journalVouchForm: this.journalVoucherForms },
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm",
+    })
+  }
+
   public cancel(): void {
     this.journalVoucherForms.reset();
     this.router.navigate(["/journal"]);
   }
 
-  getChangedDate(value)
-  {
-    // this.todaysDateInEnglish=new Date();
-    // value = this.datePipe.transform(this.todaysDateInEnglish, "YYYY-MM-DD");
-    // this.adToBsInStrng(value);
-    // this.journalVoucherForms
-    //     .get("Date")
-    //     .patchValue(value);
-    // console.log(value);
-
-
-    // let date = this.dateConverter.adToBsInObject(
-    //   this.journalVoucherForms.value.Date
-    // );
-    // let dateInEnglish = this.adToBsInStrng(date);
-    // this.journalVoucherForms.get("Date").patchValue(dateInEnglish);
-    // this.journalVoucherForms.value.Date = this.datePipe.transform(
-    //   this.journalVoucherForms.value.Date,
-    //   "yyyy-MM-dd"
-    // );
-    // console.log(dateInEnglish);
-
-    value = this.datePipe.transform(value, "yyyy/MM/dd");
-    console.log(value);
-    let dateObject = adbs.ad2bs(value);
-    console.log(dateObject)
-    this.journalVoucherForms.get("Date").patchValue(dateObject);
-    let resultDate =  `${dateObject.en.year}-${dateObject.en.month}-${dateObject.en.day}`;
-    console.log(resultDate);
-    return resultDate;
-  }
-
-  bsToAdInStrng(dateInBs)
-  {
-    console.log(dateInBs);
-    return this.dateConverter.bsToAdInString(dateInBs);
-  }
-
-  adToBsInStrng(dateInAd)
-  {
-    console.log(dateInAd);
-    return this.dateConverter.adToBsDateInString(dateInAd);
-  }
 }
