@@ -1,7 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap';
+import { DateConverterService } from '@app/shared/services/dateConverter/date-converter.service';
+import { BsModalRef, isDateValid } from 'ngx-bootstrap';
 import { observable } from 'rxjs';
 var adbs = require("ad-bs-converter");
 
@@ -18,45 +19,40 @@ export class DateConverterComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private modalRef: BsModalRef,
-    public datePipe: DatePipe
+    public datePipe: DatePipe,
+    public dateConverterService: DateConverterService
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.journalVouchForm.value.Date)
+  }
 
-  getChangedDate(value)
+  getAdToBs(value)
   {
-    //To send while save/submit Form
-    // let date = this.dateConverter.adToBsInObject(
-    //   this.journalVoucherForms.value.Date
-    // );
-    // let dateInEnglish = this.adToBsInStrng(date);
-    // this.journalVoucherForms.get("Date").patchValue(dateInEnglish);
-    // this.journalVoucherForms.value.Date = this.datePipe.transform(
-    //   this.journalVoucherForms.value.Date,
-    //   "yyyy-MM-dd"
-    // );
-    // console.log(dateInEnglish);
+    // To convert AD to BS
 
+    value = this.datePipe.transform(value, "yyyy/MM/dd");
+    console.log(value);
+    let dateObject = adbs.ad2bs(value);
+    console.log(dateObject)
+    let nepaliDate =  `${dateObject.en.year}-${dateObject.en.month}-${dateObject.en.day}`;
+    console.log(nepaliDate);
+    this.journalVouchForm.get("Date").patchValue(nepaliDate);
+    return nepaliDate;
+  }
 
-    //To convert AD to BS
-    // value = this.datePipe.transform(value, "yyyy/MM/dd");
-    // console.log(value);
-    // let dateObject = adbs.ad2bs(value);
-    // console.log(dateObject)
-    // // this.journalVoucherForms.get("Date").patchValue(dateObject);
-    // let resultDate =  `${dateObject.en.year}-${dateObject.en.month}-${dateObject.en.day}`;
-    // console.log(resultDate);
-    // return resultDate;
-    
+  getBsToAd(value)
+  {
     //To convert BS to AD
+  
     value = this.datePipe.transform(value, "yyyy/MM/dd");
     console.log(value);
     let dateObject = adbs.bs2ad(value);
     console.log(dateObject)
-    let resultDate =  `${dateObject.year}-${dateObject.month}-${dateObject.day}`;
-    console.log(resultDate);
-    this.journalVouchForm.get("Date").patchValue(resultDate);
-    return resultDate;
+    let engDate =  `${dateObject.year}-${dateObject.month}-${dateObject.day}`;
+    console.log(engDate);
+    this.journalVouchForm.get("Date").patchValue(engDate);
+    return engDate;
   }
 
 
@@ -77,6 +73,25 @@ export class DateConverterComponent implements OnInit {
     this.modalRef.hide();
     this.modalRef = null;
   }
+
+  //To send while save/submit Form
+    // let converted = this.datePipe.transform(nepaliDate,"yyyy/MM/dd");
+    // let var1 = adbs.bs2ad(converted);
+    // let var2 = `${var1.year}-${var1.month}-${var1.day}`
+    // this.journalVouchForm.get("Date").patchValue(var2);
+    // console.log(var2);
+
+
+    // let date = this.dateConverterService.adToBsInObject(
+    //   this.journalVoucherForms.value.Date
+    // );
+    // let dateInEnglish = this.adToBsInStrng(date);
+    // this.journalVoucherForms.get("Date").patchValue(dateInEnglish);
+    // this.journalVoucherForms.value.Date = this.datePipe.transform(
+    //   this.journalVoucherForms.value.Date,
+    //   "yyyy-MM-dd"
+    // );
+    // console.log(dateInEnglish);
 
 
 }

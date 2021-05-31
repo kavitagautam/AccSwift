@@ -11,24 +11,34 @@
 <div class="modal-body">
   <form [formGroup]="journalVouchForm">
     <div class="form-group">
-      <label>Date in BS</label>
+      <label>Enter Date(AD) to convert</label>
       <input
+        type="date"
         class="form-control"
-        (change)="getChangedDate($event.target.value)"
-        bsDatepicker
-        [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+        (change)="getAdToBs($event.target.value)"
       />
     </div>
 
     <div class="form-group">
-      <label>Date in AD</label>
+      <label>Enter Date(BS) to convert</label>
       <input
+        type="date"
         class="form-control"
-        formControlName="Date"
-        bsDatepicker
-        [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+        (change)="getBsToAd($event.target.value)"
       />
     </div>
+
+    <fieldset>
+      <legend>Converted Date(AD/BS)</legend>
+      <div class="form-group">
+        <input
+          class="form-control"
+          formControlName="Date"
+          bsDatepicker
+          [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+        />
+      </div>
+    </fieldset>
   </form>
 </div>
 

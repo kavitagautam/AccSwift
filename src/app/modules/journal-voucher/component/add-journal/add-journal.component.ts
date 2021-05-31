@@ -15,6 +15,7 @@ import { LocalStorageService } from '@app/shared/services/local-storage/local-st
 import { DateConverterService } from "@app/shared/services/dateConverter/date-converter.service";
 import { DatePipe } from "@angular/common";
 import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
+var adbs = require("ad-bs-converter");
 
 @Component({
   selector: "accSwift-add-journal",
@@ -151,6 +152,12 @@ export class AddJournalComponent implements OnInit {
 
   public save(): void {
     // if (this.journalVoucherForms.invalid) return;
+    let dateFormat = this.datePipe.transform(this.journalVoucherForms.value.Date,"yyyy/MM/dd");
+    console.log(this.journalVoucherForms.value.Date)
+    let var1 = adbs.bs2ad(dateFormat);
+    let resultDate = `${var1.year}-${var1.month}-${var1.day}`
+    this.journalVoucherForms.get("Date").patchValue(resultDate);
+    console.log(this.journalVoucherForms.value.Date);
     this.journalService
       .addJournalVoucher(this.journalVoucherForms.value)
       .subscribe(
