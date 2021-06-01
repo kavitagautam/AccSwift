@@ -152,12 +152,14 @@ export class AddJournalComponent implements OnInit {
 
   public save(): void {
     // if (this.journalVoucherForms.invalid) return;
+
     let dateFormat = this.datePipe.transform(this.journalVoucherForms.value.Date,"yyyy/MM/dd");
-    console.log(this.journalVoucherForms.value.Date)
+    console.log(this.journalVoucherForms.value.Date);
     let var1 = adbs.bs2ad(dateFormat);
-    let resultDate = `${var1.year}-${var1.month}-${var1.day}`
+    let resultDate = `${var1.year}-${var1.month}-${var1.day}`;
     this.journalVoucherForms.get("Date").patchValue(resultDate);
     console.log(this.journalVoucherForms.value.Date);
+
     this.journalService
       .addJournalVoucher(this.journalVoucherForms.value)
       .subscribe(

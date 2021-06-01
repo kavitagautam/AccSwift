@@ -45,10 +45,12 @@
               bsDatepicker
               [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
             />
-            <span
-              (click)="dateConverterPopup()"
-              class="glyphicon glyphicon-calendar calendar-icon"
-            ></span>
+            <span class="glyphicon glyphicon-calendar calendar-icon"></span>
+            <a (click)="dateConverterPopup()"
+              ><i style="font-size: 12px; font-weight: 900"
+                >Click to convert date(AD/BS)</i
+              ></a
+            >
           </div>
 
           <div *ngIf="selectedDate == 'Nepali'" class="form-group">

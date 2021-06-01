@@ -14,6 +14,7 @@ import { TimeZoneService } from "@accSwift-modules/accswift-shared/services/time
 import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 import { DetailsEntryGridService } from '@accSwift-modules/accswift-shared/services/details-entry-grid/details-entry-grid.service';
 import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
+var adbs = require("ad-bs-converter");
 
 @Component({
   selector: "accSwift-edit-journal",
@@ -57,6 +58,7 @@ export class EditJournalComponent implements OnInit {
     public ledgerCodeService: LedgerCodeMatchService,
     private toastr: ToastrService,
     public timeZone: TimeZoneService,
+    public datePipe: DatePipe,
     private localStorageService: LocalStorageService
 
     
@@ -250,11 +252,14 @@ export class EditJournalComponent implements OnInit {
 
   public save(): void {
     // if (this.journalVoucherForms.invalid) return;
+    
+    let dateFormat = this.datePipe.transform(this.journalVoucherForms.value.Date,"yyyy/MM/dd");
+    console.log(this.journalVoucherForms.value.Date);
+    let var1 = adbs.bs2ad(dateFormat);
+    let resultDate = `${var1.year}-${var1.month}-${var1.day}`;
+    this.journalVoucherForms.get("Date").patchValue(resultDate);
+    console.log(this.journalVoucherForms.value.Date);
 
-    // const now = new Date(this.journalVoucherForms.get("Date").value);
-    // const newDate = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
-    // console.log("New Date" + newDate);
-    // this.journalVoucherForms.get("Date").patchValue(newDate);
     this.journalService
       .updateJournalVoucher(this.journalVoucherForms.value)
       .subscribe(
@@ -273,6 +278,7 @@ export class EditJournalComponent implements OnInit {
   dateConverterPopup(): void
   {
     this.modalRef = this.modalService.show(DateConverterComponent, {
+      initialState: { journalVouchForm: this.journalVoucherForms },
       backdrop: true,
       ignoreBackdropClick: true,
       class: "modal-sm",

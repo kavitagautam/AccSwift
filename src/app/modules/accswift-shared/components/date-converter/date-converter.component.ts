@@ -27,71 +27,66 @@ export class DateConverterComponent implements OnInit {
     console.log(this.journalVouchForm.value.Date)
   }
 
-  getAdToBs(value)
+  checkValidityADBS()
+  {
+    var testdate=document.getElementById('adToBs').value;
+    console.log(testdate);
+    var date_regex = /^((0?[1-9]|1[012])[/](0?[1-9]|[12][0-9]|3[01])[/](19|20)?[0-9]{2})*$/ ;
+    if(date_regex.test(testdate)) return 
+    {
+      console.log(this.getAdToBs(testdate));
+      this.getAdToBs(testdate)
+    }
+  }
+
+  checkValidityBSAD()
+  {
+    var testdate=document.getElementById('bsToAd').value;
+    console.log(testdate);
+    var date_regex = /^((0?[1-9]|1[012])[/](0?[1-9]|[12][0-9]|3[01])[/](19|20)?[0-9]{2})*$/ ;
+    if(date_regex.test(testdate)) return 
+    {
+      console.log(this.getBsToAd(testdate));
+      this.getBsToAd(testdate)
+    }
+  }
+
+  getAdToBs(inputValue)
   {
     // To convert AD to BS
 
-    value = this.datePipe.transform(value, "yyyy/MM/dd");
-    console.log(value);
-    let dateObject = adbs.ad2bs(value);
+    inputValue = this.datePipe.transform(inputValue, "yyyy/MM/dd");
+    console.log(inputValue);
+    let dateObject = adbs.ad2bs(inputValue);
     console.log(dateObject)
     let nepaliDate =  `${dateObject.en.year}-${dateObject.en.month}-${dateObject.en.day}`;
     console.log(nepaliDate);
     this.journalVouchForm.get("Date").patchValue(nepaliDate);
+    // document.getElementById("bsToAd").replaceWith(nepaliDate);
+    document.getElementById('bsToAd').value = nepaliDate;
     return nepaliDate;
   }
 
-  getBsToAd(value)
+  getBsToAd(inputValue)
   {
     //To convert BS to AD
   
-    value = this.datePipe.transform(value, "yyyy/MM/dd");
-    console.log(value);
-    let dateObject = adbs.bs2ad(value);
+    inputValue = this.datePipe.transform(inputValue, "yyyy/MM/dd");
+    console.log(inputValue);
+    let dateObject = adbs.bs2ad(inputValue);
     console.log(dateObject)
     let engDate =  `${dateObject.year}-${dateObject.month}-${dateObject.day}`;
     console.log(engDate);
     this.journalVouchForm.get("Date").patchValue(engDate);
+    // document.getElementById("adToBs").replaceWith(engDate);
+    document.getElementById('adToBs').value = engDate;
     return engDate;
   }
-
-
-  // bsToAdInStrng(dateInBs)
-  // {
-  //   console.log(dateInBs);
-  //   return this.dateConverter.bsToAdInString(dateInBs);
-  // }
-
-  // adToBsInStrng(dateInAd)
-  // {
-  //   console.log(dateInAd);
-  //   return this.dateConverter.adToBsDateInString(dateInAd);
-  // }
-
+  
 
   public onCancel(): void {
     this.modalRef.hide();
     this.modalRef = null;
   }
-
-  //To send while save/submit Form
-    // let converted = this.datePipe.transform(nepaliDate,"yyyy/MM/dd");
-    // let var1 = adbs.bs2ad(converted);
-    // let var2 = `${var1.year}-${var1.month}-${var1.day}`
-    // this.journalVouchForm.get("Date").patchValue(var2);
-    // console.log(var2);
-
-
-    // let date = this.dateConverterService.adToBsInObject(
-    //   this.journalVoucherForms.value.Date
-    // );
-    // let dateInEnglish = this.adToBsInStrng(date);
-    // this.journalVoucherForms.get("Date").patchValue(dateInEnglish);
-    // this.journalVoucherForms.value.Date = this.datePipe.transform(
-    //   this.journalVoucherForms.value.Date,
-    //   "yyyy-MM-dd"
-    // );
-    // console.log(dateInEnglish);
-
 
 }
