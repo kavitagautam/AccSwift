@@ -9,7 +9,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 import { AppComponent } from "./app.component";
 import { CoreModule } from "./core/core.module";
-import { LocationStrategy, HashLocationStrategy } from "@angular/common";
+import { LocationStrategy, HashLocationStrategy, DatePipe } from "@angular/common";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { HttpInterceptorsService } from "./core/services/http-interceptors/http-interceptors.service";
 import { PreferenceService } from "./modules/preference/services/preference.service";
@@ -109,6 +109,7 @@ export function localFunction(settingsService: SettingsService) {
     // },
     CookieService,
     ColumnResizingService,
+    DatePipe
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

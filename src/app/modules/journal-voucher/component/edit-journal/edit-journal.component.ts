@@ -252,14 +252,16 @@ export class EditJournalComponent implements OnInit {
 
   public save(): void {
     // if (this.journalVoucherForms.invalid) return;
+    if (this.selectedDate == 'Nepali')
+    {
+      let dateFormat = this.datePipe.transform(this.journalVoucherForms.value.Date,"yyyy/MM/dd");
+      console.log(this.journalVoucherForms.value.Date);
+      let var1 = adbs.bs2ad(dateFormat);
+      let resultDate = `${var1.year}-${var1.month}-${var1.day}`;
+      this.journalVoucherForms.get("Date").patchValue(resultDate);
+      console.log(this.journalVoucherForms.value.Date);
+    }
     
-    let dateFormat = this.datePipe.transform(this.journalVoucherForms.value.Date,"yyyy/MM/dd");
-    console.log(this.journalVoucherForms.value.Date);
-    let var1 = adbs.bs2ad(dateFormat);
-    let resultDate = `${var1.year}-${var1.month}-${var1.day}`;
-    this.journalVoucherForms.get("Date").patchValue(resultDate);
-    console.log(this.journalVoucherForms.value.Date);
-
     this.journalService
       .updateJournalVoucher(this.journalVoucherForms.value)
       .subscribe(
@@ -274,6 +276,12 @@ export class EditJournalComponent implements OnInit {
         }
       );
   }
+
+  dateFormatter(date) {
+    const formatedDate = `${date.year}-${parseInt(date.month) + 1}-${date.day}`;
+    return formatedDate;
+  }
+
 
   dateConverterPopup(): void
   {
