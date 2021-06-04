@@ -17,7 +17,8 @@ import { ToastrService } from "ngx-toastr";
 })
 export class AddAccessRolesComponent implements OnInit {
 
-  public accessForm: FormGroup
+  public accessForm: FormGroup;
+  // public checkedKeys: any[] = ["Account", "Create", "Delete", "Modify", "Tax1", "Tax2", "Tax3"];
   public checkedKeys: any[] = [];
   public key = "Title";
   treeViewLoading: boolean;
