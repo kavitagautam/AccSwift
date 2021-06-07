@@ -243,6 +243,110 @@
             </tr>
           </tfoot>
         </table>
+
+        <table *ngIf="reportType == 'KHARID_KHATA'" id="header-fixed" class="table table-hover table-fixed">
+          <thead>
+            <tr>
+              <th colspan="1">SalesDate</th>
+              <th colspan="1">Voucher</th>
+              <th colspan="1">Seller</th>
+              <th colspan="1">SellerPAN</th>
+              <th colspan="1">Total Purchase</th>
+              <th colspan="1">Non Taxable</th>
+              <th colspan="1">Taxable Purchase</th>
+              <th colspan="1">Tax Purchase</th>
+              <th colspan="1">Taxable Sales</th>
+              <th colspan="1">Tax Sales</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let kharidKhata of kharidKhataList; index as i">
+            <tr>
+              <td>
+                {{ kharidKhata.SalesDate | date: "MM-dd-yyyy" }}
+              </td>
+              <td>{{ kharidKhata.Voucher }}</td>
+              <td>{{ kharidKhata.Seller }}</td>
+              <td>{{ kharidKhata.SellerPAN }}</td>
+              <td class="balance">
+                <span
+                  [innerHTML]="
+                    kharidKhata.TotalPurchaseAmt | currencyFormat
+                  "
+                ></span>
+              </td>
+              <td class="balance">
+                <span
+                  [innerHTML]="kharidKhata.NonTaxableAmt | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance">
+                <span
+                  [innerHTML]="
+                    kharidKhata.TaxablePurchaseAmt | currencyFormat
+                  "
+                ></span>
+              </td>
+              <td class="balance">
+                <span
+                  [innerHTML]="kharidKhata.TaxPurchaseAmt | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance">
+                <span
+                  [innerHTML]="kharidKhata.TaxableSalesAmt | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance">
+                <span
+                  [innerHTML]="kharidKhata.TaxSalesAmt | currencyFormat"
+                ></span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="kharidKhataList.length == 0">
+            <tr>
+              <td colspan="10" align="center">No Data Available</td>
+            </tr>
+          </tbody>
+
+          <tfoot *ngIf="kharidKhataList.length > 0">
+            <tr>
+              <td colspan="1">Total Amount</td>
+              <td colspan="1"></td>
+              <td colspan="1"></td>
+              <td colspan="1"></td>
+              <td class="balance" colspan="1">
+                <span
+                  [innerHTML]="sumTotalPurchaseAmt | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance" colspan="1">
+                <span
+                  [innerHTML]="sumNonTaxableAmt | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance" colspan="1">
+                <span
+                  [innerHTML]="sumTaxablePurchaseAmt | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance" colspan="1">
+                <span
+                  [innerHTML]="sumTaxPurchaseAmt | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance" colspan="1">
+                <span
+                  [innerHTML]="sumTaxableSalesAmt | currencyFormat"
+                ></span>
+              </td>
+              <td class="balance" colspan="1">
+                <span [innerHTML]="sumTaxSalesAmt | currencyFormat"></span>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        
       </div>
     </kendo-pdf-export>
   </div>
