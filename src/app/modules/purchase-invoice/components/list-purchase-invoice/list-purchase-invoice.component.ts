@@ -9,6 +9,8 @@ import { Component, OnInit, TemplateRef } from "@angular/core";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import {
   PurchaseInvoice,
+  PurchaseListModel,
+  PurchInvoice,
   PurchInvoiceDetail,
 } from "../../models/purchase-invoice.model";
 
@@ -19,6 +21,7 @@ import {
 export class ListPurchaseInvoiceComponent implements OnInit {
   purchaseForm: FormGroup;
   purchaseInvoiceList: PurchaseInvoice[] = [];
+  purchaseList: PurchInvoice[] = [];
   date: Date = new Date();
   listLoading: Boolean;
   public gridView: GridDataResult;
@@ -57,7 +60,8 @@ export class ListPurchaseInvoiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildPurchaseInvoiceForm();
-    this.getPurchaseInvoiceList();
+    // this.getPurchaseInvoiceList();
+    this.getPurchaseLists();
   }
 
   buildPurchaseInvoiceForm(): void {
@@ -109,6 +113,24 @@ export class ListPurchaseInvoiceComponent implements OnInit {
         this.listLoading = false;
       }
     );
+  }
+
+  getPurchaseLists():void {
+    this.listLoading = true;
+    this.purchaseService.getPurchaseList().subscribe((response)=> {
+      this.purchaseList = response.Entity;
+      console.log(this.purchaseList)
+      this.gridView = {
+        data: this.purchaseList,
+        total: 4
+      };
+    },
+    (error) => {
+      this.listLoading = false;
+    },
+    () => {
+      this.listLoading = false;
+    })
   }
 
   public searchForm(): void {

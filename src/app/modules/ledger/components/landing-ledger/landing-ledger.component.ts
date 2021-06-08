@@ -32,6 +32,8 @@ export class LandingLedgerComponent implements OnInit {
   treeViewLoading: boolean;
   listViewLoading: boolean;
 
+  userType: string = localStorage.getItem("user_type");
+
   //Expanding the tree view
   public expandedKeys: any[] = ["Assets", "Current Assets", "Banks"];
   constructor(

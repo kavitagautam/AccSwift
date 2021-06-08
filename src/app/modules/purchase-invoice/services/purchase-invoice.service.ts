@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import {
   PurchaseInvoiceNavigateModel,
   PurchaseInvoiceDetailModel,
+  PurchaseListModel,
 } from "./../models/purchase-invoice.model";
 import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
@@ -24,6 +25,10 @@ export class PurchaseInvoiceService {
       `${this._api_URL}PurchaseInvoiceMaster/navigate`,
       body
     );
+  }
+
+  getPurchaseList(): Observable<PurchaseListModel> {
+    return this.httpService.get(`${this._api_URL}PurchaseInvoiceMaster`);
   }
 
   getPurchaseInvoiceDetails(id: any): Observable<PurchaseInvoiceDetailModel> {

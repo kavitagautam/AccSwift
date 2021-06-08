@@ -96,7 +96,6 @@
   color: black;
 }
 
-
 .col-md-8::-webkit-scrollbar {
   height: 0;
   width: 0;
@@ -105,8 +104,21 @@
   overflow: hidden !important;
   padding: 0 !important;
   position: relative;
-  color:red;
+  color: red;
 }
 
-
-
+/*New COA styles*/
+.group-tabs {
+  display: flex;
+  justify-content: space-between;
+  background: rgba(60, 141, 188, 0.3);
+  border-radius: 4px 4px 0px 0px;
+}
+.ledger-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: black;
+}
+.edit i {
+  color: #204d74;
+}
