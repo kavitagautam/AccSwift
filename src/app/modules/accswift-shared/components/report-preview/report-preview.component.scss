@@ -1,0 +1,25 @@
+tfoot > tr > td {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+#header-fixed tfoot td {
+  background-color: #fff;
+  color: #000;
+  position: sticky;
+  top: 0;
+}
+
+#header-fixed tfoot th {
+  position: sticky;
+  bottom: 0;
+  background-color: rgb(233, 233, 233);
+}
+
+#header-fixed tbody tr {
+  cursor: pointer;
+}
+
+#header-fixed tbody tr:hover {
+  background-color: rgb(243, 243, 243);
+}

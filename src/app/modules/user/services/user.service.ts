@@ -67,4 +67,8 @@ export class UserService {
   updateUser(body): Observable<any> {
     return this.httpService.put(`${this._api_URL}User`, body);
   }
+
+  updateUserProfile(body): Observable<any> {
+    return this.httpService.put(`${this._api_URL}User/Profile`, body);
+  }
 }

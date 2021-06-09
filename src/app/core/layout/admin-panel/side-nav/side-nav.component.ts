@@ -305,5 +305,11 @@ export class SideNavComponent implements OnInit {
       iconName: "fas fa-tools",
       route: "/settings",
     },
+    {
+      id: 20,
+      displayName: "Delivery Notes",
+      iconName: "fas fa-edit",
+      route: "/delivery-notes",
+    }
   ];
 }

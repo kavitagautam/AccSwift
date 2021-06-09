@@ -8,6 +8,12 @@
       [multiple]="true"
       (change)="fileChangeEvent($event)"
     ></kendo-fileselect> -->
+    <img
+      *ngIf="croppedImage"
+      [src]="croppedImage"
+      style="width: 400px; height: 200px; margin-top: 20px"
+    />
+
     <image-cropper
       [imageChangedEvent]="imageChangedEvent"
       [maintainAspectRatio]="true"
@@ -17,13 +23,18 @@
       (imageLoaded)="imageLoaded()"
       (cropperReady)="cropperReady()"
       (loadImageFailed)="loadImageFailed()"
-      style="width: 400px; height: 200px; object-fit: cover;"
+      style="width: 400px; object-fit: cover; margin: 15px 0"
     ></image-cropper>
 
-    <img
-      *ngIf="croppedImage"
-      [src]="croppedImage"
-      style="width: 400px; height: 200px; object-fit: cover;"
-    />
+    <div class="box-footer" style="display: table; margin: auto">
+      <div class="mb-2">
+        <button class="btn btn-primary" (click)="saveCroppedImg()">
+          <i class="fas fa-save"></i>&nbsp;&nbsp;Save
+        </button>
+        <button class="btn btn-secondary ml-2" (click)="cancel($event)">
+          Cancel
+        </button>
+      </div>
+    </div>
   </div>
 </div>

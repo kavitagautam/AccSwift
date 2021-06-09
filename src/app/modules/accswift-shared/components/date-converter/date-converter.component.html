@@ -1,0 +1,58 @@
+<div class="modal-header">
+  <h3 class="modal-title pull-left">Date Converter</h3>
+  <button
+    type="button"
+    class="close pull-right"
+    aria-label="Close"
+    (click)="onCancel()"
+  ></button>
+</div>
+
+<div class="modal-body">
+  <form>
+    <div class="form-group">
+      <label>Enter Date(AD) to convert</label>
+      <input
+        placeholder="yyyy-mm-dd"
+        maxlength="10"
+        id="adToBs"
+        class="form-control"
+        (keyup)="checkValidityADBS()"
+        onkeyup="
+          var v = this.value;
+          if (v.match(/^\d{4}$/) !== null) {                     
+              this.value = v + '-';
+          } else if (v.match(/^\d{4}\-\d{2}$/) !== null) {
+              this.value = v + '-';
+          }"
+        (change)="getAdToBs($event.target.value)"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Enter Date(BS) to convert</label>
+      <input
+        placeholder="yyyy-mm-dd"
+        maxlength="10"
+        id="bsToAd"
+        class="form-control"
+        (keyup)="checkValidityBSAD()"
+        onkeyup="
+          var v = this.value;
+          if (v.match(/^\d{4}$/) !== null) {                     
+              this.value = v + '-';
+          } else if (v.match(/^\d{4}\-\d{2}$/) !== null) {
+              this.value = v + '-';
+          }"
+        (change)="getBsToAd($event.target.value)"
+      />
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="onOkay()">Ok</button>
+  <button type="button" class="btn btn-danger" (click)="onCancel()">
+    Cancel
+  </button>
+</div>

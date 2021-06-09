@@ -9,6 +9,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { CashFlowList } from '@accSwift-modules/reports/models/cash-flow.model';
 import { GroupBalanceReportComponent } from '@accSwift-modules/accswift-shared/components/group-balance-report/group-balance-report.component';
 import { LedgerDetailReportsComponent } from '@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component';
+import { IconConst } from '@app/shared/constants/icon.constant';
 
 
 @Component({
@@ -22,10 +23,12 @@ export class CashFlowReportComponent implements OnInit {
   cashFlowList: CashFlowList[] = [];
   totalInFlowAmount: number;
   totalOutFlowAmount: number;
+  reportType: string;
   modalRef: BsModalRef;
   modalRefLedger: BsModalRef
   baseURL: string;
   listLoading: boolean;
+  iconConst = IconConst;
 
   constructor(
     private modalService: BsModalService,
@@ -82,6 +85,10 @@ export class CashFlowReportComponent implements OnInit {
         this.cashFlowList = response.Entity.Entity;
         this.totalInFlowAmount = response.Entity.TotalInFlowAmount;
         this.totalOutFlowAmount = response.Entity.TotalOutFlowAmount;
+        localStorage.setItem("totalInFlowAmount", JSON.stringify(this.totalInFlowAmount));
+        localStorage.setItem("totalOutFlowAmount", JSON.stringify(this.totalOutFlowAmount));
+        this.reportType = response.Entity.ReportType;
+        localStorage.setItem("cashFlowReportPreview", JSON.stringify(this.cashFlowList));
       },
       (error) => {
         this.listLoading = false;
@@ -105,6 +112,9 @@ export class CashFlowReportComponent implements OnInit {
         this.cashFlowList = response.Entity.Entity;
         this.totalInFlowAmount = response.Entity.TotalInFlowAmount;
         this.totalOutFlowAmount = response.Entity.TotalOutFlowAmount;
+        console.log(JSON.stringify(this.cashFlowList));
+        
+
       },
       (error) => {
         this.listLoading = false;

@@ -4,6 +4,7 @@ import { HttpClientService } from "@app/core/services/http-client/http-client.se
 import { HttpClient, HttpParams } from "@angular/common/http";
 import {
   CodeSuggestModel,
+  CurrencyModel,
   LedgerDetailsModel,
   LedgerListViewModel,
   LedgerMin,
@@ -80,6 +81,10 @@ export class LedgerService {
 
   getLedgerDetails(ledgerId): Observable<LedgerDetailsModel> {
     return this.httpService.get(`${this._api_URL}Ledger/${ledgerId}`);
+  }
+
+  getCurrency(): Observable<CurrencyModel> {
+    return this.httpService.get(`${this._api_URL}Currency/min`);
   }
 
   deleteLedgerById(ledgerId): Observable<any> {

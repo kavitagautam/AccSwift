@@ -176,3 +176,15 @@ export interface LedgerDebtorsRootModel {
   Entity: LedgerDebtors[];
 }
 
+export interface Currency {
+  ID: number;
+  Name: string;
+}
+
+export interface CurrencyModel {
+  StatusCode: number;
+  Message: string;
+  Entity: Currency[];
+}
+
+

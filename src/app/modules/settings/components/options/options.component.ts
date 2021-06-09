@@ -6,6 +6,7 @@ import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { DATE_FORMAT, Settings } from "../../models/settings.model";
 import { Currency } from "@accSwift-modules/accswift-shared/models/currency-model";
+import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 @Component({
   selector: "accSwift-options",
   templateUrl: "./options.component.html",
@@ -21,7 +22,8 @@ export class OptionsComponent implements OnInit {
     private _fb: FormBuilder,
     private settingsService: SettingsService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +36,7 @@ export class OptionsComponent implements OnInit {
   getSettings(): void {
     this.settingsService.getSettingsData().subscribe((response) => {
       this.settings = response.Entity;
+      localStorage.setItem("SelectedDate", JSON.stringify(this.settings.DEFAULT_DATE.Value));
       this.buildSettingsForm();
     });
   }
@@ -66,6 +69,8 @@ export class OptionsComponent implements OnInit {
       ],
     });
     this.dateFormatChange(this.settingsForm.get("DATE_FORMAT").value);
+    // console.log(this.settingsForm.value.DEFAULT_DATE);
+    // console.log(this.settingsService.settings ? this.settingsService.settings.DEFAULT_DATE.Value:'')
   }
 
   dateFormatChange(value): void {

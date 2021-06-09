@@ -16,6 +16,7 @@ import {
 import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
+import { NepaliDatepickerModule } from '@lib/nepali-datepicker/src/public-api';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
     CashReceiptRoutingModule,
     AccswiftSharedModule,
     AccswiftFormsModule,
+    NepaliDatepickerModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [LedgerModalPopupComponent],

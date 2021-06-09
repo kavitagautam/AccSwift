@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component.ts";
+import { BasicAddEditUserComponent } from "@accSwift-modules/accswift-shared/components/basic-add-edit-user/basic-add-edit-user.component";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { Subject } from "rxjs";
@@ -12,6 +12,7 @@ import { PreferenceService } from "../../../preference/services/preference.servi
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { SelectEvent } from "@progress/kendo-angular-upload";
 import { FileRestrictions } from "@progress/kendo-angular-upload";
+import { SalesInvoiceDetails } from '@accSwift-modules/sales-invoice/models/sales-invoice.model';
 
 @Component({
   selector: "accSwift-add-sales-invoice",
@@ -56,6 +57,8 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
   adjustmentAmount: number = 0;
   vatTotalAmount: number = 0;
   grandTotalAmount: number = 0;
+
+  salesDetails: SalesInvoiceDetails;
 
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
@@ -119,7 +122,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   buildAddSalesInvoiceForm(): void {
     this.salesInvoiceForm = this._fb.group({
-      ID: [null],
+      ID: [this.salesDetails ? this.salesDetails.ID : 0],
       SeriesID: [
         this.preferenceService.preferences
           ? this.preferenceService.preferences.DEFAULT_SERIES_SALES.Value
@@ -166,7 +169,7 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   addInvoiceEntryList(): FormGroup {
     return this._fb.group({
-      ID: [0],
+      ID: [this.salesDetails ? this.salesDetails.ID : 0],
       ProductCode: [""],
       ProductID: [""],
       ProductName: [""],

@@ -22,6 +22,7 @@ export interface KharidKhataModel {
     SumTaxableSalesAmt: number;
     SumTaxSalesAmt: number;
     Company: Company;
+    ReportType: string;
 }
 
 export interface KharidKhataRootModel {

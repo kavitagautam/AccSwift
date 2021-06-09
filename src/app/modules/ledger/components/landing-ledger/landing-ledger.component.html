@@ -1,112 +1,186 @@
-<div class="box box-default">
-  <div class="col-md-4 p-0">
-    <div class="box box-solid">
-      <kendo-tabstrip (tabSelect)="onTabSelect($event)">
-        <kendo-tabstrip-tab [title]="'Tree View'" [selected]="true">
-          <ng-template kendoTabContent>
-            <div class="col-md-12 mt-3">
-              <div class="treeview-wrapper">
-                <button class="btn btn-secondary" (click)="expandAllNode()">
-                  Expand All
-                </button>
-                <button
-                  class="btn btn-secondary ml-2"
-                  (click)="collapseAllNode()"
-                >
-                  Collapse All
-                </button>
-                <kendo-treeview
-                  #kendoTreeView
-                  [nodes]="ledgerTreeList"
-                  textField="Title"
-                  kendoTreeViewExpandable
-                  kendoTreeViewSelectable
-                  kendoTreeViewHierarchyBinding
-                  childrenField="Child"
-                  [expandBy]="'Title'"
-                  [(expandedKeys)]="expandedKeys"
-                  style="height: 76vh; overflow: scroll"
-                >
-                  <ng-template kendoTreeViewNodeTemplate let-dataItem>
-                    <span
-                      [ngClass]="colorGroupOrLedger(dataItem)"
-                      (click)="selectedNode(dataItem)"
-                    >
-                      <span *ngIf="dataItem.Code"> ({{ dataItem.Code }})</span>
-                      &nbsp; {{ dataItem.Title }}
-                    </span>
-                  </ng-template>
-                </kendo-treeview>
-                <div *ngIf="treeViewLoading" class="k-i-loading"></div>
+<div *ngIf="userType == 'Advanced'">
+  <div class="box box-default">
+    <div class="col-md-4 p-0">
+      <div class="box box-solid">
+        <kendo-tabstrip (tabSelect)="onTabSelect($event)">
+          <kendo-tabstrip-tab [title]="'Tree View'" [selected]="true">
+            <ng-template kendoTabContent>
+              <div class="col-md-12 mt-3">
+                <div class="treeview-wrapper">
+                  <button class="btn btn-secondary" (click)="expandAllNode()">
+                    Expand All
+                  </button>
+                  <button
+                    class="btn btn-secondary ml-2"
+                    (click)="collapseAllNode()"
+                  >
+                    Collapse All
+                  </button>
+                  <kendo-treeview
+                    #kendoTreeView
+                    [nodes]="ledgerTreeList"
+                    textField="Title"
+                    kendoTreeViewExpandable
+                    kendoTreeViewSelectable
+                    kendoTreeViewHierarchyBinding
+                    childrenField="Child"
+                    [expandBy]="'Title'"
+                    [(expandedKeys)]="expandedKeys"
+                    style="height: 76vh; overflow: scroll"
+                  >
+                    <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                      <span
+                        [ngClass]="colorGroupOrLedger(dataItem)"
+                        (click)="selectedNode(dataItem)"
+                      >
+                        <span *ngIf="dataItem.Code">
+                          ({{ dataItem.Code }})</span
+                        >
+                        &nbsp; {{ dataItem.Title }}
+                      </span>
+                    </ng-template>
+                  </kendo-treeview>
+                  <div *ngIf="treeViewLoading" class="k-i-loading"></div>
+                </div>
               </div>
+            </ng-template>
+          </kendo-tabstrip-tab>
+          <kendo-tabstrip-tab [title]="'List View'">
+            <ng-template kendoTabContent>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="grid-wrapper-listView">
+                    <kendo-grid [data]="ledgerListView" [height]="495">
+                      <kendo-grid-column field="AccGroup" title="Account Group">
+                      </kendo-grid-column>
+                      <kendo-grid-column
+                        field="ParentGroup"
+                        title="Parent Group"
+                      >
+                      </kendo-grid-column>
+                      <kendo-grid-column field="Ledger" title="Ledger">
+                      </kendo-grid-column>
+                      <kendo-grid-column field="Type" title="Type">
+                      </kendo-grid-column>
+                    </kendo-grid>
+                    <div *ngIf="listViewLoading" class="k-i-loading"></div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </kendo-tabstrip-tab>
+        </kendo-tabstrip>
+      </div>
+    </div>
+    <div class="col-md-8 p-0">
+      <div class="row">
+        <div class="col-md-12 mr-2">
+          <div class="col-md-12">
+            <button
+              class="btn btn-primary m-2 pull-left"
+              (click)="addLedgerGroup()"
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i> Create Ledger Group
+            </button>
+            <button class="btn btn-primary m-2" (click)="addNewLedger()">
+              <i class="fa fa-plus" aria-hidden="true"></i> Create Ledger
+            </button>
+          </div>
+          <div class="col-md-12 mt-5">
+            <div #dynamicContentDiv></div>
+          </div>
+
+          <!-- <kendo-tabstrip>
+            <kendo-tabstrip-tab
+              [title]="'Account Group'"
+              [selected]="selectedGroupTab ? true : false"
+            >
+              <ng-template kendoTabContent>
+                <accSwift-account-group
+                  [selectedItem]="selectedItem"
+                ></accSwift-account-group>
+              </ng-template>
+            </kendo-tabstrip-tab>
+            <kendo-tabstrip-tab
+              [title]="'Account Ledger'"
+              [selected]="selectedLedgerTab ? true : false"
+            >
+              <ng-template kendoTabContent>
+                <accSwift-account-ledger
+                  [selectedItem]="selectedItem"
+                ></accSwift-account-ledger>
+              </ng-template>
+            </kendo-tabstrip-tab>
+          </kendo-tabstrip> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="userType == 'Basic'">
+  <div class="coa_contents box box-default">
+    <kendo-tabstrip (tabSelect)="onTabSelect()">
+      <kendo-tabstrip-tab [title]="'Assets'" [selected]="true">
+        <ng-template kendoTabContent>
+          <fieldset>
+            <div class="group-tabs">
+              <h2 class="ledger-name">Cash and Bank</h2>
+              <button
+                class="btn btn-primary m-2 pull-left"
+                (click)="addLedgerGroup()"
+              >
+                <i class="fa fa-plus" aria-hidden="true"></i> Add New
+              </button>
             </div>
-          </ng-template>
-        </kendo-tabstrip-tab>
-        <kendo-tabstrip-tab [title]="'List View'">
-          <ng-template kendoTabContent>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="grid-wrapper-listView">
-                  <kendo-grid [data]="ledgerListView" [height]="495">
-                    <kendo-grid-column field="AccGroup" title="Account Group">
-                    </kendo-grid-column>
-                    <kendo-grid-column field="ParentGroup" title="Parent Group">
-                    </kendo-grid-column>
-                    <kendo-grid-column field="Ledger" title="Ledger">
-                    </kendo-grid-column>
-                    <kendo-grid-column field="Type" title="Type">
-                    </kendo-grid-column>
-                  </kendo-grid>
-                  <div *ngIf="listViewLoading" class="k-i-loading"></div>
+            <div class="ledger-tabs">
+              <div class="row">
+                <div class="col-lg-1">
+                  <div class="number">
+                    <small>5215</small>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="ledger">
+                    <h5>Cash on Hand</h5>
+                    <span>No transaction for this account</span>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="warn">
+                    <p>
+                      Cash you haven’t deposited in the bank. Add your bank and
+                      creidit card accounts to accurately categorize
+                      transactions that aren’t cash.
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-1">
+                  <div class="edit">
+                    <i class="fas fa-edit"></i>
+                  </div>
                 </div>
               </div>
             </div>
-          </ng-template>
-        </kendo-tabstrip-tab>
-      </kendo-tabstrip>
-    </div>
-  </div>
-  <div class="col-md-8 p-0">
-    <div class="row">
-      <div class="col-md-12 mr-2">
-        <div class="col-md-12">
-          <button
-            class="btn btn-primary m-2 pull-left"
-            (click)="addLedgerGroup()"
-          >
-            <i class="fa fa-plus" aria-hidden="true"></i> Create Ledger Group
-          </button>
-          <button class="btn btn-primary m-2" (click)="addNewLedger()">
-            <i class="fa fa-plus" aria-hidden="true"></i> Create Ledger
-          </button>
-        </div>
-        <div class="col-md-12 mt-5">
-          <div #dynamicContentDiv></div>
-        </div>
+          </fieldset>
+        </ng-template>
+      </kendo-tabstrip-tab>
 
-        <!-- <kendo-tabstrip>
-          <kendo-tabstrip-tab
-            [title]="'Account Group'"
-            [selected]="selectedGroupTab ? true : false"
-          >
-            <ng-template kendoTabContent>
-              <accSwift-account-group
-                [selectedItem]="selectedItem"
-              ></accSwift-account-group>
-            </ng-template>
-          </kendo-tabstrip-tab>
-          <kendo-tabstrip-tab
-            [title]="'Account Ledger'"
-            [selected]="selectedLedgerTab ? true : false"
-          >
-            <ng-template kendoTabContent>
-              <accSwift-account-ledger
-                [selectedItem]="selectedItem"
-              ></accSwift-account-ledger>
-            </ng-template>
-          </kendo-tabstrip-tab>
-        </kendo-tabstrip> -->
-      </div>
-    </div>
+      <kendo-tabstrip-tab [title]="'Liabilities & Credit Card'">
+        <ng-template kendoTabContent> </ng-template>
+      </kendo-tabstrip-tab>
+
+      <kendo-tabstrip-tab [title]="'Income'">
+        <ng-template kendoTabContent> </ng-template>
+      </kendo-tabstrip-tab>
+
+      <kendo-tabstrip-tab [title]="'Expenses'">
+        <ng-template kendoTabContent> </ng-template>
+      </kendo-tabstrip-tab>
+
+      <kendo-tabstrip-tab [title]="'Equity'">
+        <ng-template kendoTabContent> </ng-template>
+      </kendo-tabstrip-tab>
+    </kendo-tabstrip>
   </div>
 </div>

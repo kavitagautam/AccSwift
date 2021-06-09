@@ -1,0 +1,109 @@
+<div class="box-header">
+  <button [routerLink]="['add']" class="btn btn-primary">
+    <i class="fa fa-plus pull-left" aria-hidden="true"></i>Add Access Role
+  </button>
+</div>
+
+<div class="box box-default">
+  <div class="box-body">
+    <div class="col-md-12 p-0">
+      <div class="grid-wrapper">
+        <kendo-grid
+          [data]="gridView"
+          [filterable]="false"
+          [filter]="filter"
+          [pageSize]="pageSize"
+          [resizable]="true"
+          [skip]="skip"
+          [sortable]="{
+            allowUnsort: allowUnsort,
+            mode: 'single'
+          }"
+          [sort]="sort"
+          (sortChange)="sortChange($event)"
+          [pageable]="true"
+          (pageChange)="pageChange($event)"
+        >
+          <kendo-grid-column title="S.N." width="40">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-sm-12">
+                <span>{{ rowIndex + 1 }}</span>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="Name" title="Role Name" width="130">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-sm-12">
+                <span>{{ dataItem.Name }}</span>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="IsBuiltIn" title="IsBuiltIn" width="130">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-sm-12">
+                <span>{{ dataItem.IsBuiltIn }}</span>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="Remarks" title="Remarks" width="130">
+            <ng-template
+              kendoGridCellTemplate
+              let-dataItem="dataItem"
+              let-column="column"
+              let-formGroup="formGroup"
+              let-rowIndex="rowIndex"
+            >
+              <div class="col-sm-12">
+                <span>{{ dataItem.Remarks }}</span>
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+
+          <kendo-grid-command-column title="Action" width="80">
+            <ng-template
+              kendoGridCellTemplate
+              let-isNew="isNew"
+              let-dataItem="dataItem"
+            >
+              <button
+                kendoGridEditCommand
+                data-toggle="modal"
+                data-target="#viewModal"
+                [primary]="true"
+                (click)="edit(dataItem)"
+              >
+                Edit
+              </button>
+              <button
+                kendoGridRemoveCommand
+                (click)="openConfirmationDialog(dataItem)"
+              >
+                Delete
+              </button>
+            </ng-template>
+          </kendo-grid-command-column>
+        </kendo-grid>
+
+        <div *ngIf="listLoading" class="k-i-loading"></div>
+      </div>
+    </div>
+  </div>
+</div>

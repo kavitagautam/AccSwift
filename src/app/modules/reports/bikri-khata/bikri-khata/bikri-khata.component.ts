@@ -1,11 +1,15 @@
 import { DateSelectionSettingsComponent } from '@accSwift-modules/accswift-shared/components/date-selection-settings/date-selection-settings.component';
+import { Company } from '@accSwift-modules/company/models/company.model';
 import { PreferenceService } from '@accSwift-modules/preference/services/preference.service';
 import { BikriKhataList } from '@accSwift-modules/reports/models/bikri-khata.model';
 import { ReportsService } from '@accSwift-modules/reports/services/reports.service';
-import { Component, OnInit } from '@angular/core';
+import { SalesInvoiceService } from '@accSwift-modules/sales-invoice/services/sales-invoice.service';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IconConst } from '@app/shared/constants/icon.constant';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+
 
 @Component({
   selector: 'accSwift-bikri-khata',
@@ -22,16 +26,29 @@ export class BikriKhataComponent implements OnInit {
   sumExport: number;
   sumTaxableAmount: number;
   sumTaxAmount: number;
+  reportType: string;
+  iconConst = IconConst;
+  companyLogo: any = "";
+  companyDetails: Company;
+  
 
   constructor(
     private _fb: FormBuilder, 
     private router: Router, 
     private modalService: BsModalService, 
     private reportService: ReportsService, 
+    private salesInvoiceService: SalesInvoiceService,
     private preferenceService: PreferenceService) { }
 
   ngOnInit() {
     this.buildBikriKhataReportForms();
+
+    this.salesInvoiceService.getCompanyDetails().subscribe((response) => {
+      this.companyDetails = response.Entity;
+      if (this.companyDetails) {
+        this.companyLogo = this.companyDetails.Logo;
+      }
+    });  
   }
 
   ngAfterViewInit(): void {
@@ -44,6 +61,7 @@ export class BikriKhataComponent implements OnInit {
       ToDate: [{ value: "", disabled: false}]
     })
   }
+  
 
   openBikriKhataReportSettings(): void {
     this.modalRef = this.modalService.show(DateSelectionSettingsComponent,
@@ -66,6 +84,14 @@ export class BikriKhataComponent implements OnInit {
               this.sumExport = response.Entity.SumExport;
               this.sumTaxableAmount = response.Entity.SumTaxableAmount;
               this.sumTaxAmount = response.Entity.SumTaxAmount;
+              this.reportType = response.Entity.ReportType;
+              localStorage.setItem("bikriKhataList", JSON.stringify(response.Entity.Entity));
+              localStorage.setItem("sumTotalSalesAmt", JSON.stringify(response.Entity.SumTotalSalesAmt));
+              localStorage.setItem("sumNonTaxableSalesAmt", JSON.stringify(response.Entity.SumNonTaxableSalesAmt));
+              localStorage.setItem("sumExport", JSON.stringify(response.Entity.SumExport));
+              localStorage.setItem("sumTaxableAmount", JSON.stringify(response.Entity.SumTaxableAmount));
+              localStorage.setItem("sumTaxAmount", JSON.stringify(response.Entity.SumTaxAmount));
+
           },
           (error) => {
             this.listLoading = false;

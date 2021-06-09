@@ -8,6 +8,7 @@ import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/val
 import { CashReceipt } from "../../models/cash-receipt.model";
 import { ToastrService } from "ngx-toastr";
 import { IconConst } from "@app/shared/constants/icon.constant";
+import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 
 @Component({
   selector: "accSwift-edit-cash-receipt",
@@ -29,6 +30,7 @@ export class EditCashReceiptComponent implements OnInit {
     centered: true,
     class: "modal-lg",
   };
+  selectedDate: string = '';
 
   constructor(
     public _fb: FormBuilder,
@@ -38,12 +40,15 @@ export class EditCashReceiptComponent implements OnInit {
     private route: ActivatedRoute,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit() {
     this.getIdFromRoute(); // Get Id From the Route URL and get the Details
     this.buildCashReceiptForm(); // Initialize the form
+    this.selectedDate = this.localStorageService.getLocalStorageItem(
+      "SelectedDate");
   }
 
   buildCashReceiptForm(): void {

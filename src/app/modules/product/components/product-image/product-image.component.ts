@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ImageCroppedEvent } from "ngx-image-cropper";
+import { ImageCroppedEvent} from "ngx-image-cropper";
 import { SelectEvent } from "@progress/kendo-angular-upload";
 
 @Component({
@@ -20,6 +20,29 @@ export class ProductImageComponent implements OnInit {
     this.imageChangedEvent = event;
     console.log("data of image " + JSON.stringify(this.imageChangedEvent));
   }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  saveCroppedImg(): void {
+    this.imageChangedEvent = null;
+  }
+
+  cancel(event): void {
+   
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+  cropperReady() {
+    // cropper ready
+  }
+  loadImageFailed() {
+    // show message
+  }
+  
   public events: string[] = [];
   public imagePreviews: any[] = [];
   
@@ -46,20 +69,8 @@ export class ProductImageComponent implements OnInit {
     });
 }
 
-private log(event: string): void {
-  this.events.unshift(`${event}`);
-}
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
-  imageLoaded(image: HTMLImageElement) {
-    // show cropper
-  }
-  cropperReady() {
-    // cropper ready
-  }
-  loadImageFailed() {
-    // show message
+  private log(event: string): void {
+    this.events.unshift(`${event}`);
   }
 
   //File Select

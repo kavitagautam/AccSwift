@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { Router } from "@angular/router";
 import { JournalService } from "../../services/journal.service";
-import { DatePipe } from "@angular/common";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
 import { ToastrService } from "ngx-toastr";
@@ -10,16 +9,25 @@ import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/val
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { Preferences } from "../../../preference/models/preference.model";
 import { IconConst } from "@app/shared/constants/icon.constant";
+import { SettingsService } from '@accSwift-modules/settings/services/settings.service';
+import { Settings } from '@accSwift-modules/settings/models/settings.model';
+import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
+import { DateConverterService } from "@app/shared/services/dateConverter/date-converter.service";
+import { DatePipe } from "@angular/common";
+import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
+var adbs = require("ad-bs-converter");
 
 @Component({
   selector: "accSwift-add-journal",
   templateUrl: "../common-html/journal-voucher.html",
   styleUrls: ["./add-journal.component.scss"],
-  providers: [DatePipe],
+  providers: [DatePipe]
 })
 export class AddJournalComponent implements OnInit {
   private editedRowIndex: number;
-  //Input Field Property
+  settings: Settings;
+  public selectedDate:string =''
+  // datePick = this.settingsService.settings ? this.settingsService.settings.DEFAULT_DATE.Value:'';
   iconConst = IconConst;
 
   public decimals: number = 2;
@@ -50,11 +58,17 @@ export class AddJournalComponent implements OnInit {
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     private toastr: ToastrService,
-    private preferenceService: PreferenceService
+    private preferenceService: PreferenceService,
+    private settingsService: SettingsService,
+    private localStorageService: LocalStorageService,
+    private dateConverter: DateConverterService,
+    private datePipe: DatePipe,
   ) {}
 
   ngOnInit(): void {
     this.buildJournalVoucherForms();
+   this.selectedDate= this.localStorageService.getLocalStorageItem(
+      "SelectedDate");
   }
 
   buildJournalVoucherForms(): void {
@@ -138,6 +152,15 @@ export class AddJournalComponent implements OnInit {
 
   public save(): void {
     // if (this.journalVoucherForms.invalid) return;
+    if (this.selectedDate == 'Nepali')
+    {
+      let dateFormat = this.datePipe.transform(this.journalVoucherForms.value.Date,"yyyy/MM/dd");
+      console.log(this.journalVoucherForms.value.Date);
+      let var1 = adbs.bs2ad(dateFormat);
+      let resultDate = `${var1.year}-${var1.month}-${var1.day}`;
+      this.journalVoucherForms.get("Date").patchValue(resultDate);
+      console.log(this.journalVoucherForms.value.Date);
+    }
     this.journalService
       .addJournalVoucher(this.journalVoucherForms.value)
       .subscribe(
@@ -153,8 +176,24 @@ export class AddJournalComponent implements OnInit {
       );
   }
 
+  dateFormatter(date) {
+    const formatedDate = `${date.year}-${parseInt(date.month) + 1}-${date.day}`;
+    return formatedDate;
+  }
+
+  dateConverterPopup(): void
+  {
+    this.modalRef = this.modalService.show(DateConverterComponent, {
+      initialState: { journalVouchForm: this.journalVoucherForms },
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm",
+    })
+  }
+
   public cancel(): void {
     this.journalVoucherForms.reset();
     this.router.navigate(["/journal"]);
   }
+
 }

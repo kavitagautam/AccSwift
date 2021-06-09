@@ -38,6 +38,8 @@ import { OpeningBalanceComponent } from "./components/opening-balance/opening-ba
 import { BasicAddEditUserComponent } from './components/basic-add-edit-user/basic-add-edit-user.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { DateSelectionSettingsComponent } from './components/date-selection-settings/date-selection-settings.component';
+import { ReportPreviewComponent } from './components/report-preview/report-preview.component';
+import { DateConverterComponent } from './components/date-converter/date-converter.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { DateSelectionSettingsComponent } from './components/date-selection-sett
     OpeningBalanceComponent,
     EntrySubLedgerComponent,
     BasicAddEditUserComponent,
-    DateSelectionSettingsComponent
+    DateSelectionSettingsComponent,
+    ReportPreviewComponent,
+    DateConverterComponent
   ],
   imports: [
     FormsModule,
@@ -93,6 +97,7 @@ import { DateSelectionSettingsComponent } from './components/date-selection-sett
     FormControlValidationMsgDirective,
     DetailsEntryGridComponent,
     CustomerInvoicesComponent,
+    ReportPreviewComponent,
     CreateReportsComponent,
     AddressComponent,
     SettingsReportsComponent,
@@ -107,7 +112,9 @@ import { DateSelectionSettingsComponent } from './components/date-selection-sett
     ProductModalPopupComponent,
     LedgerModalPopupComponent,
     EntrySubLedgerComponent,
-    BasicAddEditUserComponent
+    BasicAddEditUserComponent,
+    ReportPreviewComponent,
+    DateConverterComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
