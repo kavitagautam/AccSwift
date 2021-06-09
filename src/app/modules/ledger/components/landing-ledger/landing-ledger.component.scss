@@ -108,16 +108,25 @@
 }
 
 /*New COA styles*/
+.coa_contents fieldset {
+  padding: 0px !important;
+}
 .group-tabs {
   display: flex;
   justify-content: space-between;
   background: rgba(60, 141, 188, 0.3);
-  border-radius: 4px 4px 0px 0px;
+  padding: 0 12px;
+}
+.ledger-tabs {
+  padding: 14px 0;
 }
 .ledger-name {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
   color: black;
+}
+.number {
+  padding: 12px;
 }
 .edit i {
   color: #204d74;
