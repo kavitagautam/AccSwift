@@ -184,6 +184,17 @@ export class CreateReportsComponent implements OnInit {
           class: "modal-lg",
       });
     }
+
+    if (this.reportType == "KHARID_KHATA") {
+      this.modalRef = this.modalService.show(ReportPreviewComponent, {
+        initialState: { kharidKhataList: this.localStorageService.getLocalStorageItem(
+          "kharidKhataList") },
+          ignoreBackdropClick: true,
+          animated: true,
+          keyboard: true,
+          class: "modal-lg",
+      });
+    }
     
   }
 

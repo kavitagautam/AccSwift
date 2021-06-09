@@ -42,7 +42,7 @@ import { TimezoneDirective } from "./directives/date-timezone/timezone.directive
     PMaskDirective,
     FormControlValidationMessageDirective,
     FormSubmitValidationMessageDirective,
-    TimezoneDirective,
+    TimezoneDirective
   ],
   imports: [
     FormsModule,

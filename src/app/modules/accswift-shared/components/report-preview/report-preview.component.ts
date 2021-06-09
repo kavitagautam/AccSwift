@@ -17,18 +17,27 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 export class ReportPreviewComponent implements OnInit {
 
   iconConst = IconConst;
-  reportType: string;
+  reportType: string;companyLogo: any = "";
+  companyDetails: Company;
+  
   cashFlowPreview: any = [];
   totalInFlowAmount: number;
   totalOutFlowAmount: number;
-  companyLogo: any = "";
-  companyDetails: Company;
+
   bikriKhataList: any = [];
   sumTotalSalesAmt: number;
   sumNonTaxableSalesAmt: number;
   sumExport: number;
   sumTaxableAmount: number;
   sumTaxAmount: number;
+
+  kharidKhataList: any = [];
+  sumTotalPurchaseAmt: number;
+  sumNonTaxableAmt: number;
+  sumTaxablePurchaseAmt: number;
+  sumTaxPurchaseAmt: number;
+  sumTaxableSalesAmt: number;
+  sumTaxSalesAmt: number;
 
   constructor(private exportService: ExportToCsvService,
     private localStorageService: LocalStorageService,
@@ -63,12 +72,29 @@ export class ReportPreviewComponent implements OnInit {
       if (data) {
         this.bikriKhataList = JSON.parse(localStorage.getItem("bikriKhataList")); 
       }
+      console.log(this.bikriKhataList);
       this.sumTotalSalesAmt = JSON.parse(localStorage.getItem("sumTotalSalesAmt"));
       this.sumNonTaxableSalesAmt = JSON.parse(localStorage.getItem("sumNonTaxableSalesAmt"));
       this.sumExport = JSON.parse(localStorage.getItem("sumExport"));
       this.sumTaxableAmount = JSON.parse(localStorage.getItem("sumTaxableAmount"));
       this.sumTaxAmount = JSON.parse(localStorage.getItem("sumTaxAmount"));
     }
+
+    if (this.router.url.indexOf("/kharid-khata") > -1) {
+      this.reportType = "KHARID_KHATA";
+      let data;
+      if (data) {
+        this.kharidKhataList = JSON.parse(localStorage.getItem("kharidKhataList")); 
+      }
+      console.log(this.kharidKhataList);
+      this.sumTotalPurchaseAmt = JSON.parse(localStorage.getItem("sumTotalPurchaseAmt"));
+      this.sumNonTaxableAmt = JSON.parse(localStorage.getItem("sumNonTaxableAmt"));
+      this.sumTaxablePurchaseAmt = JSON.parse(localStorage.getItem("sumTaxablePurchaseAmt"));
+      this.sumTaxPurchaseAmt = JSON.parse(localStorage.getItem("sumTaxPurchaseAmt"));
+      this.sumTaxableSalesAmt = JSON.parse(localStorage.getItem("sumTaxableSalesAmt"));
+      this.sumTaxSalesAmt = JSON.parse(localStorage.getItem("sumTaxSalesAmt"));
+    }
+
    }
 
   ngOnInit() {

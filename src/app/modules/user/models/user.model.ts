@@ -1,3 +1,13 @@
+export interface UserProfile {
+  UserID: number;
+  Name: string;
+  Address: string;
+  Contact: string;
+  Email: string;
+  Password: string;
+  VerifyPassword: string;
+}
+
 export interface Users {
   Password: string;
   UserID: number;

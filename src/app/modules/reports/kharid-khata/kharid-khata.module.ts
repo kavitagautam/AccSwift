@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {NgxPrintModule} from 'ngx-print';
 
 import { KharidKhataRoutingModule } from './kharid-khata-routing.module';
 import { KharidKhataComponent } from './kharid-khata/kharid-khata.component';
@@ -13,7 +14,8 @@ import { DateSelectionSettingsComponent } from '@accSwift-modules/accswift-share
     CommonModule,
     KharidKhataRoutingModule,
     SharedModule,
-    AccswiftSharedModule
+    AccswiftSharedModule,
+    NgxPrintModule
   ],
   entryComponents: [DateSelectionSettingsComponent]
 })

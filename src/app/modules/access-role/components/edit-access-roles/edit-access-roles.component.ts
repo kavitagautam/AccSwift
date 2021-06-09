@@ -64,6 +64,7 @@ export class EditAccessRolesComponent implements OnInit {
     this.treeViewLoading = true;
     this.accessService.getAccessRolesTreeView().subscribe((response)=> {
       this.accessRoleTreeView = response.Tree;
+      console.log(JSON.stringify(this.accessRoleTreeView));
       this.treeViewLoading = false;
     }, 
     (error)=> {
@@ -88,7 +89,7 @@ export class EditAccessRolesComponent implements OnInit {
             if (this.accessRoles) {
               this.assignFormValue();
               this.accessForm.patchValue(this.accessRoles);
-              this.setAccessDetailsList();
+              // this.setAccessDetailsList();
             }
           });
       }
@@ -142,26 +143,35 @@ export class EditAccessRolesComponent implements OnInit {
   }
 
   addAccessRoleDetails():FormGroup {
-    return this._fb.group ({
-      ID: [0],
-      AccessID: [9],
-      RoleID: [""],
-      Access: this._fb.array([this.addAccess()]),
-    })
-  }
-
-  get getAccess():FormArray {
-    return <FormArray>this.accessForm.controls.AccessRoleDetails.get("Access");
-  }
-
-  addAccess():FormGroup {
-    return this._fb.group ({
-      ID: [0],
-      Name: [""],
-      Code: [""],
-      ParentID: [0],
-      Description: [""]
-    })
+    return this._fb.group (
+      {
+        AccessID: 9
+      },
+      {
+        AccessID: 10
+      }
+      // {
+      //   AccessID: 11
+      // },
+      // {
+      //   AccessID: 12
+      // },
+      // {
+      //   AccessID: 13
+      // },
+      // {
+      //   AccessID: 14
+      // },
+      // {
+      //   AccessID: 15
+      // },
+      // {
+      //   AccessID: 22
+      // },
+      // {
+      //   AccessID: 23
+      // }
+  )
   }
 
   assignFormValue(): void {
@@ -173,16 +183,16 @@ export class EditAccessRolesComponent implements OnInit {
   }
 
 
-  setAccessDetailsList(): void {
-    // this.accessForm.setControl(
-    //   "AccessRoleDetails",
-    //   this.setAccessDetailsFormArray(this.accessRoles.AccessRoleDetails)
-    // );
+  // setAccessDetailsList(): void {
+  //   // this.accessForm.setControl(
+  //   //   "AccessRoleDetails",
+  //   //   this.setAccessDetailsFormArray(this.accessRoles.AccessRoleDetails)
+  //   // );
 
-    (<FormArray>this.accessForm.get("AccessRoleDetails")).push(
-      this.addAccessRoleDetails()
-    );
-  }
+  //   (<FormArray>this.accessForm.get("AccessRoleDetails")).push(
+  //     this.addAccessRoleDetails()
+  //   );
+  // }
 
   // setAccessDetailsFormArray(accessDetails): FormArray {
   //   const accessFormArray = new FormArray([]);
@@ -233,17 +243,18 @@ export class EditAccessRolesComponent implements OnInit {
 
   saveForm(): void {
     this.treeViewLoading = true;
-    this.accessForm.get("ID").setValue(localStorage.getItem("AccessRoleId"));
-    const accessArray = <FormArray>(
-      this.accessForm.get("AccessRoleDetails")
-    );
-    for (let i = 0; i < accessArray.length; i++) {
-      accessArray.controls[i].get("AccessID").setValue(9);
-     }
+    // this.accessForm.get("ID").setValue(localStorage.getItem("AccessRoleId"));
+    // const accessArray = <FormArray>(
+    //   this.accessForm.get("AccessRoleDetails")
+    // );
+    // for (let i = 0; i < accessArray.length; i++) {
+    //   accessArray.controls[i].get("AccessID").setValue();
+    //  }
 
     this.accessService.updateAccessRoles(this.accessForm.value).subscribe((response)=>
     {
       this.accessRoles = response.Entity;
+      console.log(JSON.stringify(this.accessRoles));
     },  
     (error) => {
       this.toastr.error(JSON.stringify(error.error.Message));
@@ -259,7 +270,7 @@ export class EditAccessRolesComponent implements OnInit {
   
   public isChecked = (dataItem: any, index: string): CheckedState => {
 
-    if (dataItem.IsChecked) // To show already checked items
+    if (dataItem.IsChecked == true) // To show already checked items
     {
       return "checked";
     }
@@ -290,6 +301,7 @@ export class EditAccessRolesComponent implements OnInit {
 
     return false;
   }
+
   private containsItem(item: any): boolean {
     return this.checkedKeys.indexOf(item[this.key]) > -1;
   }

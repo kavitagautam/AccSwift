@@ -7,6 +7,9 @@ import { Location } from "@angular/common";
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { KharidKhataList } from '@accSwift-modules/reports/models/kharid-khata.model';
 import { DateSelectionSettingsComponent } from '@accSwift-modules/accswift-shared/components/date-selection-settings/date-selection-settings.component';
+import { IconConst } from '@app/shared/constants/icon.constant';
+import { Company } from '@accSwift-modules/company/models/company.model';
+import { SalesInvoiceService } from '@accSwift-modules/sales-invoice/services/sales-invoice.service';
 
 @Component({
   selector: 'accSwift-kharid-khata',
@@ -26,6 +29,9 @@ export class KharidKhataComponent implements OnInit {
   sumTaxPurchaseAmt: number;
   sumTaxableSalesAmt: number;
   sumTaxSalesAmt: number;
+  iconConst = IconConst;
+  companyLogo: any = "";
+  companyDetails: Company;
 
   constructor(
     private router: Router,
@@ -33,7 +39,8 @@ export class KharidKhataComponent implements OnInit {
     private _fb: FormBuilder,
     private modalService: BsModalService,
     private reportService: ReportsService,
-    private preferenceService: PreferenceService
+    private preferenceService: PreferenceService,
+    private salesInvoiceService: SalesInvoiceService
   ) { }
 
   ngOnInit() {
@@ -41,6 +48,13 @@ export class KharidKhataComponent implements OnInit {
     this.baseURL =
     this.location["_platformStrategy"]._platformLocation["location"].origin +
     "/#/";
+
+    this.salesInvoiceService.getCompanyDetails().subscribe((response) => {
+      this.companyDetails = response.Entity;
+      if (this.companyDetails) {
+        this.companyLogo = this.companyDetails.Logo;
+      }
+    }); 
   }
 
   ngAfterViewInit(): void {
@@ -74,6 +88,13 @@ export class KharidKhataComponent implements OnInit {
             this.sumTaxPurchaseAmt = response.Entity.SumTaxPurchaseAmt;
             this.sumTaxableSalesAmt = response.Entity.SumTaxableSalesAmt;
             this.sumTaxSalesAmt = response.Entity.SumTaxSalesAmt;
+            localStorage.setItem("kharidKhataList", JSON.stringify(response.Entity.Entity));
+            localStorage.setItem("sumTotalPurchaseAmt", JSON.stringify(response.Entity.SumTotalPurchaseAmt));
+            localStorage.setItem("sumNonTaxableAmt", JSON.stringify(response.Entity.SumNonTaxableAmt));
+            localStorage.setItem("sumTaxablePurchaseAmt", JSON.stringify(response.Entity.SumTaxablePurchaseAmt));
+            localStorage.setItem("sumTaxPurchaseAmt", JSON.stringify(response.Entity.SumTaxPurchaseAmt));
+            localStorage.setItem("sumTaxableSalesAmt", JSON.stringify(response.Entity.SumTaxableSalesAmt));
+            localStorage.setItem("sumTaxSalesAmt", JSON.stringify(response.Entity.SumTaxSalesAmt));
           },
           (error) => {
             this.listLoading = false;

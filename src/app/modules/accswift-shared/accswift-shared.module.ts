@@ -39,6 +39,7 @@ import { BasicAddEditUserComponent } from './components/basic-add-edit-user/basi
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { DateSelectionSettingsComponent } from './components/date-selection-settings/date-selection-settings.component';
 import { ReportPreviewComponent } from './components/report-preview/report-preview.component';
+import { DateConverterComponent } from './components/date-converter/date-converter.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { ReportPreviewComponent } from './components/report-preview/report-previ
     EntrySubLedgerComponent,
     BasicAddEditUserComponent,
     DateSelectionSettingsComponent,
-    ReportPreviewComponent
+    ReportPreviewComponent,
+    DateConverterComponent
   ],
   imports: [
     FormsModule,
@@ -111,7 +113,8 @@ import { ReportPreviewComponent } from './components/report-preview/report-previ
     LedgerModalPopupComponent,
     EntrySubLedgerComponent,
     BasicAddEditUserComponent,
-    ReportPreviewComponent
+    ReportPreviewComponent,
+    DateConverterComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

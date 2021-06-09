@@ -2,12 +2,11 @@ import { Component, OnInit} from '@angular/core';
 import { PreferenceService } from "../../../preference/services/preference.service";
 import { ToastrService } from "ngx-toastr";
 import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { Users } from "@accSwift-modules/user/models/user.model";
+import { UserProfile, Users } from "@accSwift-modules/user/models/user.model";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@accSwift-modules/user/services/user.service';
 import { Route } from '@angular/compiler/src/core';
-import { profile } from 'console';
 
 @Component({
   selector: 'accSwift-userprofile',
@@ -18,6 +17,7 @@ export class UserprofileComponent implements OnInit {
 
   fieldTextType: boolean;
   users: Users;
+  userProfile: UserProfile;
   profileForm: FormGroup;
   userID: number;
   isDisabled:boolean = true;
@@ -93,7 +93,7 @@ export class UserprofileComponent implements OnInit {
   editUser(): void {
     console.log(this.users);
     console.log(this.profileForm.value);
-    this.userService.updateUser(this.profileForm.value).subscribe(
+    this.userService.updateUserProfile(this.profileForm.value).subscribe(
       (response) => {
        this.router.navigate(["/user"]);
       },
