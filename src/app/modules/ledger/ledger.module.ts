@@ -18,6 +18,7 @@ import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module"
 import { SubLedgerComponent } from "./components/sub-ledger/sub-ledger.component";
 import { OpeningBalanceComponent } from "@accSwift-modules/accswift-shared/components/opening-balance/opening-balance.component";
 import { LabelModule } from "@progress/kendo-angular-label";
+import { TreeListModule } from "@progress/kendo-angular-treelist";
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { LabelModule } from "@progress/kendo-angular-label";
     SharedModule,
     AccswiftSharedModule,
     TreeViewModule,
+    TreeListModule,
     LayoutModule,
     GridModule,
     PopupModule,
