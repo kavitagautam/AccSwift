@@ -34,6 +34,8 @@ import "@progress/kendo-angular-intl/locales/fr/all";
 
 import "hammerjs";
 import { ColumnResizingService } from '@progress/kendo-angular-grid';
+import { TreeListModule } from '@progress/kendo-angular-treelist';
+
 
 // registerLocaleData(localeNe, "ne");
 registerLocaleData(localefr, "fr");
@@ -93,6 +95,7 @@ export function localFunction(settingsService: SettingsService) {
     }),
     NgxsLoggerPluginModule.forRoot(loggerPluginOptions),
     NgxsReduxDevtoolsPluginModule.forRoot(),
+    TreeListModule,
   ],
   providers: [
     {

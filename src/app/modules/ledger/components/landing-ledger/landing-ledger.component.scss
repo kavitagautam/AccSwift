@@ -108,8 +108,12 @@
 }
 
 /*New COA styles*/
+.coa_contents {
+  margin: 20px 0;
+}
 .coa_contents fieldset {
   padding: 0px !important;
+  margin: 15px 10px !important;
 }
 .group-tabs {
   display: flex;
@@ -117,11 +121,15 @@
   background: rgba(60, 141, 188, 0.3);
   padding: 0 12px;
 }
+.group-tabs button {
+  margin: 1rem;
+}
 .ledger-tabs {
   padding: 14px 0;
+  color: black;
 }
 .ledger-name {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: black;
 }
@@ -130,4 +138,10 @@
 }
 .edit i {
   color: #204d74;
+}
+.no-trns {
+  color: rgba(0, 0, 0, 0.6);
+}
+.k-tabstrip-items .k-item {
+  color: #204d74 !important;
 }

@@ -31,7 +31,7 @@ export class LandingLedgerComponent implements OnInit {
   ledgerListView: any;
   treeViewLoading: boolean;
   listViewLoading: boolean;
-
+  ledgerGroupList: any; 
   userType: string = localStorage.getItem("user_type");
 
   //Expanding the tree view
@@ -46,6 +46,7 @@ export class LandingLedgerComponent implements OnInit {
   ngOnInit() {
     this.selectedGroupTab = true;
     this.loadLedgerTreeView();
+    this.loadLedgerGroupList();
   }
 
   loadLedgerTreeView(): void {
@@ -55,6 +56,7 @@ export class LandingLedgerComponent implements OnInit {
         this.ledgerTreeNode = response.Entity.Node;
         this.ledgerTreeList = response.Entity.Tree;
         this.treeViewLoading = false;
+        
       },
       (error) => {
         this.treeViewLoading = false;
@@ -63,6 +65,14 @@ export class LandingLedgerComponent implements OnInit {
         this.treeViewLoading = false;
       }
     );
+    
+  }
+
+  loadLedgerGroupList(): void 
+  {
+    this.ledgerService.getLedgerGroupList().subscribe((response)=> {
+        this.ledgerGroupList = response.Entity;
+    })
   }
 
   loadLedgerlistView(): void {
@@ -145,5 +155,13 @@ export class LandingLedgerComponent implements OnInit {
 
   collapseAllNode(): void {
     this.expandedKeys = [];
+  }
+
+  //New COA
+  onTabSelectn(e):void {
+    if (e.index == 0)
+    {
+      this.loadLedgerTreeView();
+    }
   }
 }
