@@ -146,6 +146,13 @@
                       > -->
                       <!-- <h1>{{ ledgerTreeList | json }}</h1>
                       <h1>{{ ledgerAssets | json }}</h1> -->
+                      <!-- <ng-container>
+                        <div class="lesson" *ngFor="let item of ledgerAssets">
+                          <div class="lesson-detail">
+                            {{ item.Title }}
+                          </div>
+                        </div>
+                      </ng-container> -->
                       <kendo-treelist
                         kendoTreeListExpandable
                         [kendoTreeListHierarchyBinding]="ledgerAssets"
