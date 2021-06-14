@@ -141,19 +141,27 @@
                   <div class="col-lg-4">
                     <div class="ledger">
                       <h5>Cash on Hand</h5>
-                      <span class="no-trns"
+                      <!-- <span class="no-trns"
                         >No transaction for this account</span
-                      >
-                      {{ ledgerGroupList | json }}
+                      > -->
+                      <!-- <h1>{{ ledgerTreeList | json }}</h1>
+                      <h1>{{ ledgerAssets | json }}</h1> -->
+                      <!-- <ng-container>
+                        <div class="lesson" *ngFor="let item of ledgerAssets">
+                          <div class="lesson-detail">
+                            {{ item.Title }}
+                          </div>
+                        </div>
+                      </ng-container> -->
                       <kendo-treelist
                         kendoTreeListExpandable
-                        [kendoTreeListHierarchyBinding]="ledgerTreeList"
+                        [kendoTreeListHierarchyBinding]="ledgerAssets"
                         childrenField="Child"
                       >
                         <kendo-treelist-column
                           [expandable]="true"
-                          field="Code"
-                          title="Code"
+                          field="Title"
+                          title="Assets"
                           [width]="300"
                         ></kendo-treelist-column>
                       </kendo-treelist>
@@ -286,7 +294,60 @@
         </kendo-tabstrip-tab>
 
         <kendo-tabstrip-tab [title]="'Liabilities & Credit Card'">
-          <ng-template kendoTabContent> </ng-template>
+          <ng-template kendoTabContent>
+            <fieldset>
+              <div class="group-tabs">
+                <h2 class="ledger-name">Cash and Bank</h2>
+                <button class="btn btn-primary pull-left">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                </button>
+              </div>
+              <div class="ledger-tabs">
+                <div class="row">
+                  <div class="col-lg-1">
+                    <div class="number">
+                      <small>5215</small>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="ledger">
+                      <h5>Cash on Hand</h5>
+                      <!-- <span class="no-trns"
+                        >No transaction for this account</span
+                      > -->
+                      <!-- <h1>{{ ledgerLiab | json }}</h1> -->
+                      <kendo-treelist
+                        kendoTreeListExpandable
+                        [kendoTreeListHierarchyBinding]="ledgerLiab"
+                        childrenField="Child"
+                      >
+                        <kendo-treelist-column
+                          [expandable]="true"
+                          field="Title"
+                          title="Liabilities"
+                          [width]="300"
+                        ></kendo-treelist-column>
+                      </kendo-treelist>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="warn">
+                      <p>
+                        Cash you haven’t deposited in the bank. Add your bank
+                        and credit card accounts to accurately categorize
+                        transactions that aren’t cash.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-lg-1">
+                    <div class="edit">
+                      <i class="fas fa-edit"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </ng-template>
         </kendo-tabstrip-tab>
 
         <kendo-tabstrip-tab [title]="'Income'">

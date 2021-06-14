@@ -33,6 +33,8 @@ export class LandingLedgerComponent implements OnInit {
   listViewLoading: boolean;
   ledgerGroupList: any; 
   userType: string = localStorage.getItem("user_type");
+  ledgerAssets:string = JSON.parse(localStorage.getItem("LedgerAssets"));
+  ledgerLiab:string = JSON.parse(localStorage.getItem("LedgerLiab"));
 
   //Expanding the tree view
   public expandedKeys: any[] = ["Assets", "Current Assets", "Banks"];
@@ -56,7 +58,7 @@ export class LandingLedgerComponent implements OnInit {
         this.ledgerTreeNode = response.Entity.Node;
         this.ledgerTreeList = response.Entity.Tree;
         this.treeViewLoading = false;
-        
+        localStorage.setItem("LedgerTreeList", JSON.stringify(response.Entity.Tree));
       },
       (error) => {
         this.treeViewLoading = false;
@@ -65,7 +67,38 @@ export class LandingLedgerComponent implements OnInit {
         this.treeViewLoading = false;
       }
     );
-    
+
+  }
+
+  assetsFilter(sortedArray) {
+    var ledgerTree = JSON.parse(localStorage.getItem("LedgerTreeList"));
+    console.log(ledgerTree);
+    sortedArray = ledgerTree.filter(function(val)
+    {
+      console.log(val.Code);
+      console.log(val.GroupOrLedgerNo);
+      console.log(val.Child);
+      if (val.Code=="fgfg" &&
+      val.GroupOrLedgerNo == 1)
+      return sortedArray;
+    });
+    localStorage.setItem("LedgerAssets", JSON.stringify(sortedArray));
+    return sortedArray;
+  }
+
+  liabFilter(sortedArray) {
+    var ledgerTree = JSON.parse(localStorage.getItem("LedgerTreeList"));
+    console.log(ledgerTree);
+    sortedArray = ledgerTree.filter(function(val)
+    {
+      console.log(val.Code);
+      console.log(val.GroupOrLedgerNo);
+      if (val.Code==null &&
+      val.GroupOrLedgerNo == 2)
+      return sortedArray;
+    });
+    localStorage.setItem("LedgerLiab", JSON.stringify(sortedArray));
+    return sortedArray;
   }
 
   loadLedgerGroupList(): void 
@@ -89,6 +122,8 @@ export class LandingLedgerComponent implements OnInit {
       }
     );
   }
+
+  
 
   public colorGroupOrLedger({ Title, TypeOf }: any): any {
     return {
@@ -161,7 +196,13 @@ export class LandingLedgerComponent implements OnInit {
   onTabSelectn(e):void {
     if (e.index == 0)
     {
-      this.loadLedgerTreeView();
+      this.assetsFilter(e);
+      console.log(this.assetsFilter(e));
+    }
+    else if (e.index == 1)
+    {
+      this.liabFilter(e);
+      console.log(this.liabFilter(e));
     }
   }
 }
