@@ -150,6 +150,16 @@
                           <span>{{ ledger }}</span>
                         </ul>
                       </div>
+                      <div class="ledger" *ngIf="item.Title === 'Income'">
+                        <ul *ngFor="let ledger of directIncome; index as i">
+                          <span>{{ ledger }}</span>
+                        </ul>
+                      </div>
+                      <div class="ledger" *ngIf="item.Title === 'Expenditure'">
+                        <ul *ngFor="let ledger of directExpense; index as i">
+                          <span>{{ ledger }}</span>
+                        </ul>
+                      </div>
                       <!-- <span class="no-trns"
                         >No transaction for this account</span
                       > -->
@@ -193,6 +203,16 @@
                       </div>
                       <div class="ledger" *ngIf="item.Title === 'Liabilities'">
                         <ul *ngFor="let ledger of ownerFund; index as i">
+                          <span>{{ ledger }}</span>
+                        </ul>
+                      </div>
+                      <div class="ledger" *ngIf="item.Title === 'Income'">
+                        <ul *ngFor="let ledger of indirectIncome; index as i">
+                          <span>{{ ledger }}</span>
+                        </ul>
+                      </div>
+                      <div class="ledger" *ngIf="item.Title === 'Expenditure'">
+                        <ul *ngFor="let ledger of indirectExpense; index as i">
                           <span>{{ ledger }}</span>
                         </ul>
                       </div>

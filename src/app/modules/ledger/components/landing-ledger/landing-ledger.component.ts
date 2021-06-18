@@ -46,7 +46,12 @@ export class LandingLedgerComponent implements OnInit {
   loanFund: any;
 
   incomeData: any;
+  directIncome: any;
+  indirectIncome: any;
+
   expenditureData: any;
+  directExpense: any;
+  indirectExpense: any;
   
 
 
@@ -122,7 +127,6 @@ export class LandingLedgerComponent implements OnInit {
   recursiveLedger()
   {
     const ledgersData = this.ledgerData;
-    console.log(ledgersData);
 
     const assets = [this.assetsData];
     this.currentAssets = [];
@@ -133,21 +137,23 @@ export class LandingLedgerComponent implements OnInit {
     this.ownerFund = [];
     this.loanFund = [];
 
-    // console.log("This is assets data")
-    // console.log(assets);
+    const income = [this.incomeData];
+    this.directIncome = [];
+    this.indirectIncome = [];
+
+    const expenditure = [this.expenditureData];
+    this.directExpense = [];
+    this.indirectExpense = [];
+
     for (const ledger of ledgersData)
     {
-      console.log(ledger)
       if (ledger["Title"] === "Assets")
       {
         for (const val of assets){
-          // console.log(val);
           if(val.hasOwnProperty('Child') && val["Child"]) //First Child Data i.e Current, Fixed Assets
           {
-            console.log(val['Child']); 
             for(const val1 of val["Child"])
             {
-              // console.log(val1);
               if (val1["TypeOf"] === 1)
               {
                 this.fixedAssets.push("("+val1["Code"]+")"+" "+val1["Title"]); //Access Ledgers of Fixed Assets
@@ -156,7 +162,6 @@ export class LandingLedgerComponent implements OnInit {
               {
                 for(const val2 of val1["Child"])
                 {
-                  // console.log(val2["Title"]);
                   if (val2["TypeOf"]=== 1)
                   {
                     if(val1["Title"] === "Current Assets")
@@ -172,7 +177,6 @@ export class LandingLedgerComponent implements OnInit {
                   {
                     for (const val3 of val2["Child"])
                     {
-                      // console.log(val3["Title"]);
                       if (val3["TypeOf"] === 1)
                       {
                         if(val1["Title"] === "Current Assets")
@@ -188,7 +192,6 @@ export class LandingLedgerComponent implements OnInit {
                       {
                         for (const val4 of val3["Child"])
                         {
-                          // console.log(val4["Title"]);
                           if (val4["TypeOf"] === 1)
                             {
                               if(val1["Title"] === "Current Assets")
@@ -214,23 +217,18 @@ export class LandingLedgerComponent implements OnInit {
       if (ledger["Title"] === "Liabilities")
       {
         for (const val of liabilities){
-          // console.log(val);
           if(val.hasOwnProperty('Child') && val["Child"]) //First Child Data i.e Current, Fixed Assets
           {
-            // console.log(val['Child']); 
             for(const val1 of val["Child"])
             {
-              // console.log(val1);
               if(val1.hasOwnProperty('Child') && val1["Child"]) //Child of Current, Fixed Assets
               {
                 for(const val2 of val1["Child"])
                 {
-                  // console.log(val2["Title"]);
                   if (val2.hasOwnProperty('Child') && val2["Child"])
                   {
                     for (const val3 of val2["Child"])
                     {
-                      // console.log(val3["Title"]);
                       if (val3["TypeOf"] === 1)
                       {
                         if(val1["Title"] === "Current Liabilities")
@@ -246,23 +244,75 @@ export class LandingLedgerComponent implements OnInit {
                             this.loanFund.push("("+val3["Code"]+")"+" "+val3["Title"]);
                           }
                       }
-                      if (val3.hasOwnProperty('Child') && val3["Child"])
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if (ledger["Title"] === "Income")
+      {
+        for (const val of income)
+        {
+          if (val.hasOwnProperty("Child") && val["Child"])
+          {
+            for (const val1 of val["Child"])
+            {
+              if (val1.hasOwnProperty("Child") && val1["Child"])
+              {
+                for (const val2 of val1["Child"])
+                {
+                  if (val2["TypeOf"] === 1)
+                  {
+                    this.directIncome.push("("+val2["Code"]+")"+" "+val2["Title"]);
+                  }
+                  if (val2.hasOwnProperty("Child") && val2["Child"])
+                  {
+                    for (const val3 of val2["Child"])
+                    {
+                      if (val1["Title"] === "DirectIncome")
                       {
-                        for (const val4 of val3["Child"])
-                        {
-                          // console.log(val4["Title"]);
-                          if (val4["TypeOf"] === 1)
-                            {
-                              if(val1["Title"] === "Current Assets")
-                                {
-                                  this.currentAssets.push("("+val4["Code"]+")"+" "+val4["Title"]);
-                                }
-                              else if(val1["Title"] === "Fixed Assests")
-                                {
-                                  this.fixedAssets.push("("+val4["Code"]+")"+" "+val4["Title"]);
-                                }
-                            }
-                        }
+                        this.directIncome.push("("+val3["Code"]+")"+" "+val3["Title"]);
+                      }
+                      else if (val1["Title"] === "Indirect Income")
+                      {
+                        this.indirectIncome.push("("+val3["Code"]+")"+" "+val3["Title"]);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if (ledger["Title"] === "Expenditure")
+      {
+        for (const val of expenditure)
+        {
+          if (val.hasOwnProperty("Child") && val["Child"])
+          {
+            for (const val1 of val["Child"])
+            {
+              if (val1.hasOwnProperty("Child") && val1["Child"])
+              {
+                for (const val2 of val1["Child"])
+                {
+                  if (val2.hasOwnProperty("Child") && val2["Child"])
+                  {
+                    for (const val3 of val2["Child"])
+                    {
+                      if (val1["Title"] === "Direct Expenses")
+                      {
+                        this.directExpense.push("("+val3["Code"]+")"+" "+val3["Title"]);
+                      }
+                      else if (val1["Title"] === "Indirect Expenses")
+                      {
+                        this.indirectExpense.push("("+val3["Code"]+")"+" "+val3["Title"]);
                       }
                     }
                   }
@@ -278,6 +328,8 @@ export class LandingLedgerComponent implements OnInit {
     console.log(this.currentLiability);
     console.log(this.ownerFund);
     console.log(this.loanFund);
+    console.log(this.indirectIncome);
+    console.log(this.directIncome);
   }
 
   // assetsFilter(sortedArray) {
