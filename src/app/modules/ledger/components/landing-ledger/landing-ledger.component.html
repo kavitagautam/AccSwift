@@ -127,8 +127,11 @@
             <ng-template kendoTabContent>
               <fieldset>
                 <div class="group-tabs">
-                  <h2 class="ledger-name">{{ item.Child[0].Title }}</h2>
-                  <button class="btn btn-primary pull-left">
+                  <h2 class="group-name">{{ item.Child[0].Title }}</h2>
+                  <button
+                    class="btn btn-primary pull-left"
+                    (click)="addNewLedgerGroup()"
+                  >
                     <i class="fa fa-plus" aria-hidden="true"></i> Add New
                   </button>
                 </div>
@@ -142,7 +145,12 @@
                     <div class="col-lg-4">
                       <div class="ledger" *ngIf="item.Title === 'Assets'">
                         <ul *ngFor="let ledger of currentAssets; index as i">
-                          <span>{{ ledger }}</span>
+                          <span
+                            [ngClass]="colorGroupOrLedger(item)"
+                            (click)="selectedNewNode(item)"
+                          >
+                            <span>{{ ledger }}</span>
+                          </span>
                         </ul>
                       </div>
                       <div class="ledger" *ngIf="item.Title === 'Liabilities'">
@@ -171,19 +179,22 @@
                           and credit card accounts to accurately categorize
                           transactions that aren’t cash.
                         </p>
+                        <div class="col-md-12 mt-5">
+                          <div #dynamicContentDiv></div>
+                        </div>
                       </div>
                     </div>
                     <div class="col-lg-1">
-                      <div class="edit">
+                      <button class="edit" (click)="addNewerLedger()">
                         <i class="fas fa-edit"></i>
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </div>
               </fieldset>
               <fieldset>
                 <div class="group-tabs">
-                  <h2 class="ledger-name">{{ item.Child[1].Title }}</h2>
+                  <h2 class="group-name">{{ item.Child[1].Title }}</h2>
                   <button class="btn btn-primary pull-left">
                     <i class="fa fa-plus" aria-hidden="true"></i> Add New
                   </button>
@@ -237,15 +248,13 @@
               <fieldset>
                 <div class="group-tabs">
                   <h2
-                    class="ledger-name"
+                    class="group-name"
                     *ngIf="item.Title === 'Liabilities'; else elseBlock"
                   >
                     {{ item.Child[2].Title }}
                   </h2>
                   <ng-template #elseBlock>
-                    <h2 class="ledger-name">
-                      Expected Payments from Customers
-                    </h2>
+                    <h2 class="group-name">Expected Payments from Customers</h2>
                   </ng-template>
                   <button class="btn btn-primary pull-left">
                     <i class="fa fa-plus" aria-hidden="true"></i> Add New
@@ -288,7 +297,7 @@
               </fieldset>
               <fieldset>
                 <div class="group-tabs">
-                  <h2 class="ledger-name">Inventory</h2>
+                  <h2 class="group-name">Inventory</h2>
                   <button class="btn btn-primary pull-left">
                     <i class="fa fa-plus" aria-hidden="true"></i> Add New
                   </button>

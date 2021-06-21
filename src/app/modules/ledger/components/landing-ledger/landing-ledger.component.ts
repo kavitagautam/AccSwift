@@ -13,11 +13,13 @@ import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
 import { AccountLedgerComponent } from "../account-ledger/account-ledger.component";
 import { AccountGroupComponent } from "../account-group/account-group.component";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
 
 @Component({
   selector: "accSwift-landing-ledger",
   templateUrl: "./landing-ledger.component.html",
   styleUrls: ["./landing-ledger.component.scss"],
+  providers: [BsModalRef]
 })
 export class LandingLedgerComponent implements OnInit {
   @ViewChild("dynamicContentDiv", { read: ViewContainerRef })
@@ -33,6 +35,8 @@ export class LandingLedgerComponent implements OnInit {
   listViewLoading: boolean;
   ledgerGroupList: any; 
   userType: string = localStorage.getItem("user_type");
+
+  modalRef: BsModalRef;
 
   ledgerData: any;
 
@@ -52,16 +56,22 @@ export class LandingLedgerComponent implements OnInit {
   expenditureData: any;
   directExpense: any;
   indirectExpense: any;
+
+  config = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+  };
+
   
-
-
   //Expanding the tree view
   public expandedKeys: any[] = ["Assets", "Current Assets", "Banks"];
   constructor(
     public _fb: FormBuilder,
     private ledgerService: LedgerService,
     private router: Router,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
+    // private modalRef: BsModalRef,
+    private modalService: BsModalService
   ) {}
 
   ngOnInit() {
@@ -70,6 +80,7 @@ export class LandingLedgerComponent implements OnInit {
     this.loadLedgerGroupList();
     this.groupLedgerTreeItems();
     this.recursiveLedger();
+    console.log(this.selectedItem);
   }
 
   loadLedgerTreeView(): void {
@@ -323,13 +334,13 @@ export class LandingLedgerComponent implements OnInit {
         }
       }
     }
-    console.log(this.currentAssets);
-    console.log(this.fixedAssets);
-    console.log(this.currentLiability);
-    console.log(this.ownerFund);
-    console.log(this.loanFund);
-    console.log(this.indirectIncome);
-    console.log(this.directIncome);
+    // console.log(this.currentAssets);
+    // console.log(this.fixedAssets);
+    // console.log(this.currentLiability);
+    // console.log(this.ownerFund);
+    // console.log(this.loanFund);
+    // console.log(this.indirectIncome);
+    // console.log(this.directIncome);
   }
 
   // assetsFilter(sortedArray) {
@@ -398,18 +409,20 @@ export class LandingLedgerComponent implements OnInit {
   }
 
   selectedNode(dataItem): void {
+    console.log(dataItem);
     if (dataItem.TypeOf === 0) {
       this.selectedItem = dataItem;
-
+      console.log(this.selectedItem)
       this.dynamicContentDiv.clear();
       const factory = this.componentFactoryResolver.resolveComponentFactory(
         AccountGroupComponent
       );
       const componentRef = this.dynamicContentDiv.createComponent(factory);
+      console.log(componentRef)
       componentRef.instance.selectedItem = dataItem;
     } else {
       this.selectedItem = dataItem;
-
+      console.log(this.selectedItem)
       this.dynamicContentDiv.clear();
       const factory = this.componentFactoryResolver.resolveComponentFactory(
         AccountLedgerComponent
@@ -417,6 +430,25 @@ export class LandingLedgerComponent implements OnInit {
       const componentRef = this.dynamicContentDiv.createComponent(factory);
       componentRef.instance.selectedItem = dataItem;
     }
+  }
+
+  selectedNewNode(item): void {
+    console.log(item);
+      this.selectedItem = item;
+      console.log(this.selectedItem);
+
+      this.modalRef = this.modalService.show(AccountLedgerComponent, this.config);
+      this.modalRef.content.selectedItem = item;
+      console.log(this.modalRef.content);
+
+
+      // const factory = this.componentFactoryResolver.resolveComponentFactory(
+      //   AccountLedgerComponent
+      // );
+      // const componentRef = this.dynamicContentDiv.createComponent(factory);
+      // componentRef.instance.selectedItem = item;
+      // console.log(componentRef.instance);
+      
   }
 
   addNewLedger(): void {
@@ -434,6 +466,12 @@ export class LandingLedgerComponent implements OnInit {
     // });
   }
 
+  addNewerLedger():void 
+  {
+    this.modalRef = this.modalService.show(AccountLedgerComponent, this.config);
+    this.modalRef.content.selectedItem = null;
+  }
+
   addLedgerGroup(): void {
     this.dynamicContentDiv.clear();
     const factory = this.componentFactoryResolver.resolveComponentFactory(
@@ -441,6 +479,12 @@ export class LandingLedgerComponent implements OnInit {
     );
     const componentRef = this.dynamicContentDiv.createComponent(factory);
     componentRef.instance.selectedItem = null;
+  }
+
+  addNewLedgerGroup():void 
+  {
+    this.modalRef = this.modalService.show(AccountGroupComponent, this.config);
+    this.modalRef.content.selectedItem = null;
   }
 
   public onTabSelect(e) {

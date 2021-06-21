@@ -29,7 +29,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
   addMode: boolean;
   title: string;
 
-  modalRef: BsModalRef;
+  // modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -39,6 +39,7 @@ export class AccountGroupComponent implements OnInit, OnChanges {
   constructor(
     public _fb: FormBuilder,
     public ledgerService: LedgerService,
+    private modalRef: BsModalRef,
     private modalService: BsModalService,
     private toastr: ToastrService
   ) {}
@@ -235,5 +236,11 @@ export class AccountGroupComponent implements OnInit, OnChanges {
         this.deleteLedgerGroupByID(this.selectedLedgerGroupId);
       }
     });
+  }
+
+  close():void
+  {
+    this.modalRef.hide();
+    this.modalRef = null;
   }
 }

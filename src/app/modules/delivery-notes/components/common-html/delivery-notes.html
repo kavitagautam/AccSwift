@@ -146,6 +146,7 @@
     <div class="box-body">
       <div class="col-md-12 p-0">
         <div class="grid-wrapper">
+          <!-- <h2>{{productArray.value | json}}</h2> -->
           <kendo-grid
             [data]="productArray.value"
             (add)="addHandler($event)"
@@ -163,7 +164,6 @@
                 let-column="column"
                 let-formGroup="formGroup"
                 let-isNew="isNew"
-                let-column="column"
                 let-rowIndex="rowIndex"
               >
                 <kendo-autocomplete

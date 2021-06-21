@@ -128,7 +128,7 @@
   padding: 14px 0;
   color: black;
 }
-.ledger-name {
+.group-name {
   font-size: 15px;
   font-weight: 600;
   color: black;
@@ -147,4 +147,7 @@
 }
 .ledger span {
   color: #007bff;
+}
+.ledger span:hover {
+  cursor: pointer;
 }

@@ -40,7 +40,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   suggestCodeList = [];
   private editedRowIndex: number;
   balanceDrCr: string;
-  modalRef: BsModalRef;
+  // modalRef: BsModalRef;
   modelRefSubLedger: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
@@ -53,6 +53,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     public ledgerService: LedgerService,
     private router: Router,
     private toastr: ToastrService,
+    private modalRef: BsModalRef,
     private modalService: BsModalService
   ) {}
 
@@ -526,5 +527,11 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
+  }
+  
+  close():void 
+  {
+    this.modalRef.hide();
+    this.modalRef = null;
   }
 }
