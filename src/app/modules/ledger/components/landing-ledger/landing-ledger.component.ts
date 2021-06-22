@@ -26,6 +26,7 @@ export class LandingLedgerComponent implements OnInit {
   dynamicContentDiv: ViewContainerRef;
   @Output("selectedItem") selectedItem = new EventEmitter();
   @Output("addNew") addNew: boolean;
+  @Output("selectedLedgerID") selectedLedgerID = new EventEmitter();
   selectedGroupTab: boolean;
   selectedLedgerTab: boolean;
   ledgerTreeList: any;
@@ -61,7 +62,7 @@ export class LandingLedgerComponent implements OnInit {
     backdrop: true,
     ignoreBackdropClick: true,
   };
-
+  
   
   //Expanding the tree view
   public expandedKeys: any[] = ["Assets", "Current Assets", "Banks"];
@@ -81,6 +82,7 @@ export class LandingLedgerComponent implements OnInit {
     this.groupLedgerTreeItems();
     this.recursiveLedger();
     console.log(this.selectedItem);
+    console.log(this.selectedLedgerID);
   }
 
   loadLedgerTreeView(): void {
@@ -418,8 +420,9 @@ export class LandingLedgerComponent implements OnInit {
         AccountGroupComponent
       );
       const componentRef = this.dynamicContentDiv.createComponent(factory);
-      console.log(componentRef)
+      console.log(componentRef);
       componentRef.instance.selectedItem = dataItem;
+      console.log(componentRef.instance.selectedItem);
     } else {
       this.selectedItem = dataItem;
       console.log(this.selectedItem)
@@ -435,10 +438,14 @@ export class LandingLedgerComponent implements OnInit {
   selectedNewNode(item): void {
     console.log(item);
       this.selectedItem = item;
+      this.selectedLedgerID = item.ID;
       console.log(this.selectedItem);
-
-      this.modalRef = this.modalService.show(AccountLedgerComponent, this.config);
+      console.log(this.selectedLedgerID);
+      console.log(item.ID);
+      const initialState = { selectedItem: 'selectedItem', selectedLedgerID: this.selectedLedgerID};
+      this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
       this.modalRef.content.selectedItem = item;
+      console.log(this.modalRef);
       console.log(this.modalRef.content);
 
 
@@ -458,6 +465,7 @@ export class LandingLedgerComponent implements OnInit {
     );
     const componentRef = this.dynamicContentDiv.createComponent(factory);
     componentRef.instance.selectedItem = null;
+    console.log(componentRef.instance.selectedItem);
 
     // componentRef.instance.onCancel.subscribe((data) => {
     //   if (data) {
@@ -470,6 +478,7 @@ export class LandingLedgerComponent implements OnInit {
   {
     this.modalRef = this.modalService.show(AccountLedgerComponent, this.config);
     this.modalRef.content.selectedItem = null;
+    console.log(this.modalRef.content.selectedItem = null);
   }
 
   addLedgerGroup(): void {

@@ -155,7 +155,12 @@
                       </div>
                       <div class="ledger" *ngIf="item.Title === 'Liabilities'">
                         <ul *ngFor="let ledger of currentLiability; index as i">
-                          <span>{{ ledger }}</span>
+                          <span
+                            [ngClass]="colorGroupOrLedger(item)"
+                            (click)="selectedNewNode(item)"
+                          >
+                            <span>{{ ledger }}</span>
+                          </span>
                         </ul>
                       </div>
                       <div class="ledger" *ngIf="item.Title === 'Income'">

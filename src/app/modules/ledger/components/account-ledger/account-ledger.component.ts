@@ -25,7 +25,6 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   @ViewChild("openingBalanceModal") openingBalanceModal: ElementRef;
   @ViewChild("previousYearBalanceModal") previousYearBalanceModal: ElementRef;
   @Input("selectedItem") selectedItem;
-
   date: Date = new Date();
   selectedLedgerId: number;
   accountLedgerForm: FormGroup;
@@ -47,6 +46,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     backdrop: true,
     ignoreBackdropClick: true,
   };
+
+  ledgerSelectID:any = JSON.parse(localStorage.getItem("LedgerSelectID"));
 
   constructor(
     private _fb: FormBuilder,
@@ -115,6 +116,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         this.setSubLedgerList();
         this.accountLedgerForm.patchValue(this.ledgerDetails);
         this.selectedLedgerId = this.ledgerDetails.ID;
+        localStorage.setItem("LedgerSelectID", JSON.stringify(this.selectedLedgerId));
         this.balanceDrCr = this.ledgerDetails.DrCr == "DR" ? "DEBIT" : "CREDIT";
       });
   }
