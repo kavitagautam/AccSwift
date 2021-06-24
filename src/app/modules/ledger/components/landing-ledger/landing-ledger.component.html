@@ -146,31 +146,41 @@
                       <div class="ledger" *ngIf="item.Title === 'Assets'">
                         <ul *ngFor="let ledger of currentAssets; index as i">
                           <span
-                            [ngClass]="colorGroupOrLedger(item)"
-                            (click)="selectedNewNode(item)"
+                            [ngClass]="colorGroupOrLedger(ledger)"
+                            (click)="selectedNewNode(ledger)"
                           >
-                            <span>{{ ledger }}</span>
+                            <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
+                            &nbsp; {{ ledger.Title }}
                           </span>
                         </ul>
                       </div>
                       <div class="ledger" *ngIf="item.Title === 'Liabilities'">
                         <ul *ngFor="let ledger of currentLiability; index as i">
                           <span
-                            [ngClass]="colorGroupOrLedger(item)"
-                            (click)="selectedNewNode(item)"
+                            [ngClass]="colorGroupOrLedger(ledger)"
+                            (click)="selectedNewNode(ledger)"
                           >
-                            <span>{{ ledger }}</span>
+                            <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
+                            &nbsp; {{ ledger.Title }}
                           </span>
                         </ul>
                       </div>
                       <div class="ledger" *ngIf="item.Title === 'Income'">
                         <ul *ngFor="let ledger of directIncome; index as i">
-                          <span>{{ ledger }}</span>
+                          <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
+                          &nbsp;
+                          {{
+                            ledger.Title
+                          }}
                         </ul>
                       </div>
                       <div class="ledger" *ngIf="item.Title === 'Expenditure'">
                         <ul *ngFor="let ledger of directExpense; index as i">
-                          <span>{{ ledger }}</span>
+                          <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
+                          &nbsp;
+                          {{
+                            ledger.Title
+                          }}
                         </ul>
                       </div>
                       <!-- <span class="no-trns"
@@ -214,28 +224,44 @@
                     <div class="col-lg-4">
                       <div class="ledger" *ngIf="item.Title === 'Assets'">
                         <ul *ngFor="let ledger of fixedAssets; index as i">
-                          <span>{{ ledger }}</span>
+                          <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
+                          &nbsp;
+                          {{
+                            ledger.Title
+                          }}
                         </ul>
                       </div>
                       <div class="ledger" *ngIf="item.Title === 'Liabilities'">
                         <ul *ngFor="let ledger of ownerFund; index as i">
-                          <span>{{ ledger }}</span>
+                          <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
+                          &nbsp;
+                          {{
+                            ledger.Title
+                          }}
                         </ul>
                       </div>
                       <div class="ledger" *ngIf="item.Title === 'Income'">
                         <ul *ngFor="let ledger of indirectIncome; index as i">
-                          <span>{{ ledger }}</span>
+                          <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
+                          &nbsp;
+                          {{
+                            ledger.Title
+                          }}
                         </ul>
                       </div>
                       <div class="ledger" *ngIf="item.Title === 'Expenditure'">
                         <ul *ngFor="let ledger of indirectExpense; index as i">
-                          <span>{{ ledger }}</span>
+                          <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
+                          &nbsp;
+                          {{
+                            ledger.Title
+                          }}
                         </ul>
                       </div>
                       <!-- <span class="no-trns"
-                          >You haven’t added any Money in Transit accounts
-                          yet.</span
-                        > -->
+                        >You haven’t added any Money in Transit accounts
+                        yet.</span
+                      > -->
                     </div>
                     <div class="col-lg-6">
                       <div class="warn">
@@ -279,7 +305,11 @@
                           *ngIf="item.Title === 'Liabilities'"
                         >
                           <ul *ngFor="let ledger of loanFund; index as i">
-                            <span>{{ ledger }}</span>
+                            <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
+                            &nbsp;
+                            {{
+                              ledger.Title
+                            }}
                           </ul>
                         </div>
                         <span class="no-trns"

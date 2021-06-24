@@ -26,7 +26,7 @@ export class LandingLedgerComponent implements OnInit {
   dynamicContentDiv: ViewContainerRef;
   @Output("selectedItem") selectedItem = new EventEmitter();
   @Output("addNew") addNew: boolean;
-  @Output("selectedLedgerID") selectedLedgerID = new EventEmitter();
+  
   selectedGroupTab: boolean;
   selectedLedgerTab: boolean;
   ledgerTreeList: any;
@@ -82,7 +82,6 @@ export class LandingLedgerComponent implements OnInit {
     this.groupLedgerTreeItems();
     this.recursiveLedger();
     console.log(this.selectedItem);
-    console.log(this.selectedLedgerID);
   }
 
   loadLedgerTreeView(): void {
@@ -91,6 +90,7 @@ export class LandingLedgerComponent implements OnInit {
       (response) => {
         this.ledgerTreeNode = response.Entity.Node;
         this.ledgerTreeList = response.Entity.Tree;
+        // console.log(this.ledgerTreeList)
         this.treeViewLoading = false;
         localStorage.setItem("LedgerTreeList", JSON.stringify(response.Entity.Tree));
       },
@@ -169,7 +169,8 @@ export class LandingLedgerComponent implements OnInit {
             {
               if (val1["TypeOf"] === 1)
               {
-                this.fixedAssets.push("("+val1["Code"]+")"+" "+val1["Title"]); //Access Ledgers of Fixed Assets
+                this.fixedAssets.push(val1);
+                // this.fixedAssets.push("("+val1["Code"]+")"+" "+val1["Title"]); //Access Ledgers of Fixed Assets
               }
               if(val1.hasOwnProperty('Child') && val1["Child"]) //Child of Current, Fixed Assets
               {
@@ -179,11 +180,13 @@ export class LandingLedgerComponent implements OnInit {
                   {
                     if(val1["Title"] === "Current Assets")
                     {
-                      this.currentAssets.push("("+val2["Code"]+")"+" "+val2["Title"]);
+                      this.currentAssets.push(val2);
+                      // this.currentAssets.push("("+val2["Code"]+")"+" "+val2["Title"]);
                     }
                     else if(val1["Title"] === "Fixed Assests")
                     {
-                      this.fixedAssets.push("("+val2["Code"]+")"+" "+val2["Title"]);
+                      this.fixedAssets.push(val2);
+                      // this.fixedAssets.push("("+val2["Code"]+")"+" "+val2["Title"]);
                     }
                   }
                   if (val2.hasOwnProperty('Child') && val2["Child"])
@@ -194,11 +197,13 @@ export class LandingLedgerComponent implements OnInit {
                       {
                         if(val1["Title"] === "Current Assets")
                           {
-                            this.currentAssets.push("("+val3["Code"]+")"+" "+val3["Title"]);
+                            this.currentAssets.push(val3);
+                            // this.currentAssets.push("("+val3["Code"]+")"+" "+val3["Title"]);
                           }
                         else if(val1["Title"] === "Fixed Assests")
                           {
-                            this.fixedAssets.push("("+val3["Code"]+")"+" "+val3["Title"]);
+                            this.fixedAssets.push(val3);
+                            // this.fixedAssets.push("("+val3["Code"]+")"+" "+val3["Title"]);
                           }
                       }
                       if (val3.hasOwnProperty('Child') && val3["Child"])
@@ -209,11 +214,13 @@ export class LandingLedgerComponent implements OnInit {
                             {
                               if(val1["Title"] === "Current Assets")
                                 {
-                                  this.currentAssets.push("("+val4["Code"]+")"+" "+val4["Title"]);
+                                  this.currentAssets.push(val4);
+                                  // this.currentAssets.push("("+val4["Code"]+")"+" "+val4["Title"]);
                                 }
                               else if(val1["Title"] === "Fixed Assests")
                                 {
-                                  this.fixedAssets.push("("+val4["Code"]+")"+" "+val4["Title"]);
+                                  this.fixedAssets.push(val4);
+                                  // this.fixedAssets.push("("+val4["Code"]+")"+" "+val4["Title"]);
                                 }
                             }
                         }
@@ -246,15 +253,18 @@ export class LandingLedgerComponent implements OnInit {
                       {
                         if(val1["Title"] === "Current Liabilities")
                           {
-                            this.currentLiability.push("("+val3["Code"]+")"+" "+val3["Title"]);
+                            this.currentLiability.push(val3);
+                            // this.currentLiability.push("("+val3["Code"]+")"+" "+val3["Title"]);
                           }
                         else if(val1["Title"] === "Owners Fund")
                           {
-                            this.ownerFund.push("("+val3["Code"]+")"+" "+val3["Title"]);
+                            this.ownerFund.push(val3);
+                            // this.ownerFund.push("("+val3["Code"]+")"+" "+val3["Title"]);
                           }
                         else if(val1["Title"] === "Loan Funds")
                           {
-                            this.loanFund.push("("+val3["Code"]+")"+" "+val3["Title"]);
+                            this.loanFund.push(val3);
+                            // this.loanFund.push("("+val3["Code"]+")"+" "+val3["Title"]);
                           }
                       }
                     }
@@ -280,7 +290,8 @@ export class LandingLedgerComponent implements OnInit {
                 {
                   if (val2["TypeOf"] === 1)
                   {
-                    this.directIncome.push("("+val2["Code"]+")"+" "+val2["Title"]);
+                    this.directIncome.push(val2);
+                    // this.directIncome.push("("+val2["Code"]+")"+" "+val2["Title"]);
                   }
                   if (val2.hasOwnProperty("Child") && val2["Child"])
                   {
@@ -288,11 +299,13 @@ export class LandingLedgerComponent implements OnInit {
                     {
                       if (val1["Title"] === "DirectIncome")
                       {
-                        this.directIncome.push("("+val3["Code"]+")"+" "+val3["Title"]);
+                        this.directIncome.push(val3);
+                        // this.directIncome.push("("+val3["Code"]+")"+" "+val3["Title"]);
                       }
                       else if (val1["Title"] === "Indirect Income")
                       {
-                        this.indirectIncome.push("("+val3["Code"]+")"+" "+val3["Title"]);
+                        this.indirectIncome.push(val3);
+                        // this.indirectIncome.push("("+val3["Code"]+")"+" "+val3["Title"]);
                       }
                     }
                   }
@@ -321,11 +334,13 @@ export class LandingLedgerComponent implements OnInit {
                     {
                       if (val1["Title"] === "Direct Expenses")
                       {
-                        this.directExpense.push("("+val3["Code"]+")"+" "+val3["Title"]);
+                        this.directExpense.push(val3);
+                        // this.directExpense.push("("+val3["Code"]+")"+" "+val3["Title"]);
                       }
                       else if (val1["Title"] === "Indirect Expenses")
                       {
-                        this.indirectExpense.push("("+val3["Code"]+")"+" "+val3["Title"]);
+                        this.indirectExpense.push(val3);
+                        // this.indirectExpense.push("("+val3["Code"]+")"+" "+val3["Title"]);
                       }
                     }
                   }
@@ -336,8 +351,8 @@ export class LandingLedgerComponent implements OnInit {
         }
       }
     }
-    // console.log(this.currentAssets);
-    // console.log(this.fixedAssets);
+    console.log(this.currentAssets);
+    console.log(this.fixedAssets);
     // console.log(this.currentLiability);
     // console.log(this.ownerFund);
     // console.log(this.loanFund);
@@ -413,8 +428,9 @@ export class LandingLedgerComponent implements OnInit {
   selectedNode(dataItem): void {
     console.log(dataItem);
     if (dataItem.TypeOf === 0) {
+      console.log(this.selectedItem);
       this.selectedItem = dataItem;
-      console.log(this.selectedItem)
+      console.log(this.selectedItem);
       this.dynamicContentDiv.clear();
       const factory = this.componentFactoryResolver.resolveComponentFactory(
         AccountGroupComponent
@@ -431,31 +447,29 @@ export class LandingLedgerComponent implements OnInit {
         AccountLedgerComponent
       );
       const componentRef = this.dynamicContentDiv.createComponent(factory);
+      console.log(componentRef);
       componentRef.instance.selectedItem = dataItem;
     }
   }
 
-  selectedNewNode(item): void {
-    console.log(item);
-      this.selectedItem = item;
-      this.selectedLedgerID = item.ID;
-      console.log(this.selectedItem);
-      console.log(this.selectedLedgerID);
-      console.log(item.ID);
-      const initialState = { selectedItem: 'selectedItem', selectedLedgerID: this.selectedLedgerID};
-      this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
-      this.modalRef.content.selectedItem = item;
-      console.log(this.modalRef);
-      console.log(this.modalRef.content);
+  selectedNewNode(ledger): void {
+    console.log(ledger);
+    console.log(this.selectedItem);
+    this.selectedItem = ledger;
+    console.log(this.selectedItem);
+    // const initialState = { selectedItem: 'selectedItem'};
+    // this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
+    // this.modalRef.content.selectedItem = ledger;
+    // console.log(this.modalRef);
+    // console.log(this.modalRef.content);
 
-
-      // const factory = this.componentFactoryResolver.resolveComponentFactory(
-      //   AccountLedgerComponent
-      // );
-      // const componentRef = this.dynamicContentDiv.createComponent(factory);
-      // componentRef.instance.selectedItem = item;
-      // console.log(componentRef.instance);
-      
+    this.dynamicContentDiv.clear();
+    const factory = this.componentFactoryResolver.resolveComponentFactory(
+      AccountLedgerComponent
+    );
+    const componentRef = this.dynamicContentDiv.createComponent(factory);
+    componentRef.instance.selectedItem = ledger;
+    console.log(componentRef.instance);
   }
 
   addNewLedger(): void {

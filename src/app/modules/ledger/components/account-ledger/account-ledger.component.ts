@@ -47,8 +47,6 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     ignoreBackdropClick: true,
   };
 
-  ledgerSelectID:any = JSON.parse(localStorage.getItem("LedgerSelectID"));
-
   constructor(
     private _fb: FormBuilder,
     public ledgerService: LedgerService,
@@ -62,6 +60,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     this.buildAccountLedgerForm();
     this.getLedgerGroup();
     this.suggestCurrency();
+    console.log(this.selectedItem);
     if (this.selectedItem == null) {
       this.editMode = false;
       this.addMode = true;
@@ -108,6 +107,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   }
 
   getLedgerDetails(): void {
+    console.log(this.selectedItem.ID);
     this.ledgerService
       .getLedgerDetails(this.selectedItem.ID)
       .subscribe((res) => {
@@ -116,7 +116,6 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         this.setSubLedgerList();
         this.accountLedgerForm.patchValue(this.ledgerDetails);
         this.selectedLedgerId = this.ledgerDetails.ID;
-        localStorage.setItem("LedgerSelectID", JSON.stringify(this.selectedLedgerId));
         this.balanceDrCr = this.ledgerDetails.DrCr == "DR" ? "DEBIT" : "CREDIT";
       });
   }
