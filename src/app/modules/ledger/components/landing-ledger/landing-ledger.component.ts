@@ -14,6 +14,8 @@ import { Router } from "@angular/router";
 import { AccountLedgerComponent } from "../account-ledger/account-ledger.component";
 import { AccountGroupComponent } from "../account-group/account-group.component";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
+import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "accSwift-landing-ledger",
@@ -72,7 +74,8 @@ export class LandingLedgerComponent implements OnInit {
     private router: Router,
     private componentFactoryResolver: ComponentFactoryResolver,
     // private modalRef: BsModalRef,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit() {
@@ -416,8 +419,6 @@ export class LandingLedgerComponent implements OnInit {
     );
   }
 
-  
-
   public colorGroupOrLedger({ Title, TypeOf }: any): any {
     return {
       "tree-node": TypeOf == 1,
@@ -457,19 +458,11 @@ export class LandingLedgerComponent implements OnInit {
     console.log(this.selectedItem);
     this.selectedItem = ledger;
     console.log(this.selectedItem);
-    // const initialState = { selectedItem: 'selectedItem'};
-    // this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
-    // this.modalRef.content.selectedItem = ledger;
-    // console.log(this.modalRef);
-    // console.log(this.modalRef.content);
-
-    this.dynamicContentDiv.clear();
-    const factory = this.componentFactoryResolver.resolveComponentFactory(
-      AccountLedgerComponent
-    );
-    const componentRef = this.dynamicContentDiv.createComponent(factory);
-    componentRef.instance.selectedItem = ledger;
-    console.log(componentRef.instance);
+    const initialState = {selectedItem: this.selectedItem};
+    this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
+    this.modalRef.content.selectedItem = ledger;
+    console.log(this.modalRef);
+    console.log(this.modalRef.content);
   }
 
   addNewLedger(): void {
@@ -508,6 +501,39 @@ export class LandingLedgerComponent implements OnInit {
   {
     this.modalRef = this.modalService.show(AccountGroupComponent, this.config);
     this.modalRef.content.selectedItem = null;
+  }
+
+  deleteAccountLedger(ledger): void {
+    this.selectedItem = ledger;
+    const initialState = { selectedItem: this.selectedItem};
+    this.modalRef = this.modalService.show(
+      ConfirmationDialogComponent, {initialState}
+      
+    );
+    this.modalRef.content.data = "Ledger Account";
+    this.modalRef.content.action = "delete";
+    console.log(this.modalRef.content.selectedItem.ID);
+    this.modalRef.content.onClose.subscribe((confirm) => {
+      if (confirm) {
+        this.deleteAccountLedgertByID(this.modalRef.content.selectedItem.ID);
+      }
+    });
+  }
+  
+  public deleteAccountLedgertByID(id): void {
+    this.ledgerService.deleteLedgerById(id).subscribe(
+      (response) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Account Ledger deleted successfully");
+      }
+    );
   }
 
   public onTabSelect(e) {

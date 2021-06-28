@@ -133,9 +133,6 @@
   font-weight: 600;
   color: black;
 }
-.number {
-  padding: 12px;
-}
 .edit i {
   color: #204d74;
 }
@@ -145,10 +142,27 @@
 .k-tabstrip-items .k-item {
   color: #204d74 !important;
 }
+.ledger ul {
+  display: flex;
+}
 .ledger ul,
 span {
   color: #007bff;
 }
 .ledger span:hover {
   cursor: pointer;
+}
+.ledger .icon {
+  display: flex;
+}
+.ledger .icon i {
+  display: none;
+  padding-left: 15px;
+  font-size: 13px;
+}
+.ledger ul:hover .icon i {
+  display: block;
+}
+.groupAddButton {
+  margin: 10px;
 }

@@ -107,6 +107,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   }
 
   getLedgerDetails(): void {
+    console.log(this.selectedItem);
     console.log(this.selectedItem.ID);
     this.ledgerService
       .getLedgerDetails(this.selectedItem.ID)
