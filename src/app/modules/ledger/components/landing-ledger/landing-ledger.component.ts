@@ -44,8 +44,9 @@ export class LandingLedgerComponent implements OnInit {
   ledgerData: any;
 
   assetsData: any;
-  currentAssets = [];
-  fixedAssets = [];
+  currentAssets:any;
+  fixedAssets:any;
+  allAssets:any;
 
   liabilityData: any;
   currentLiability: any;
@@ -147,6 +148,7 @@ export class LandingLedgerComponent implements OnInit {
     const assets = [this.assetsData];
     this.currentAssets = [];
     this.fixedAssets = [];
+    this.allAssets = [];
 
     const liabilities = [this.liabilityData];
     this.currentLiability = [];
@@ -161,6 +163,7 @@ export class LandingLedgerComponent implements OnInit {
     this.directExpense = [];
     this.indirectExpense = [];
 
+
     for (const ledger of ledgersData)
     {
       if (ledger["Title"] === "Assets")
@@ -170,6 +173,9 @@ export class LandingLedgerComponent implements OnInit {
           {
             for(const val1 of val["Child"])
             {
+              console.log(val1);
+              console.log(val1.Title); //Current Assets, Fixed Assets
+              this.allAssets.push(val1);
               if (val1["TypeOf"] === 1)
               {
                 this.fixedAssets.push(val1);
@@ -356,11 +362,12 @@ export class LandingLedgerComponent implements OnInit {
     }
     console.log(this.currentAssets);
     console.log(this.fixedAssets);
-    // console.log(this.currentLiability);
-    // console.log(this.ownerFund);
-    // console.log(this.loanFund);
-    // console.log(this.indirectIncome);
-    // console.log(this.directIncome);
+    console.log(this.allAssets);
+    console.log(this.currentLiability);
+    console.log(this.ownerFund);
+    console.log(this.loanFund);
+    console.log(this.indirectIncome);
+    console.log(this.directIncome);
   }
 
   // assetsFilter(sortedArray) {
@@ -453,7 +460,7 @@ export class LandingLedgerComponent implements OnInit {
     }
   }
 
-  selectedNewNode(ledger): void {
+  editNewLedger(ledger): void {
     console.log(ledger);
     console.log(this.selectedItem);
     this.selectedItem = ledger;
@@ -461,6 +468,18 @@ export class LandingLedgerComponent implements OnInit {
     const initialState = {selectedItem: this.selectedItem};
     this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
     this.modalRef.content.selectedItem = ledger;
+    console.log(this.modalRef);
+    console.log(this.modalRef.content);
+  }
+
+  editNewGroup(group):void {
+    console.log(group);
+    console.log(this.selectedItem);
+    this.selectedItem = group;
+    console.log(this.selectedItem);
+    const initialState = {selectedItem: this.selectedItem};
+    this.modalRef = this.modalService.show(AccountGroupComponent, {initialState});
+    this.modalRef.content.selectedItem = group;
     console.log(this.modalRef);
     console.log(this.modalRef.content);
   }
@@ -532,6 +551,39 @@ export class LandingLedgerComponent implements OnInit {
       },
       () => {
         this.toastr.success("Account Ledger deleted successfully");
+      }
+    );
+  }
+
+
+  deleteLedgerGroup(group): void {
+    this.selectedItem = group;
+    const initialState = { selectedItem: this.selectedItem};
+    this.modalRef = this.modalService.show(
+      ConfirmationDialogComponent,{initialState}
+    );
+    this.modalRef.content.data = "Ledger group";
+    this.modalRef.content.action = "delete ";
+    console.log(this.modalRef.content.selectedItem.ID);
+    this.modalRef.content.onClose.subscribe((confirm) => {
+      if (confirm) {
+        this.deleteLedgerGroupByID(this.modalRef.content.selectedItem.ID);
+      }
+    });
+  }
+
+  public deleteLedgerGroupByID(id): void {
+    this.ledgerService.deleteLedgerGroupByID(id).subscribe(
+      (response) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      },
+      (error) => {
+        this.toastr.error(JSON.stringify(error.error.Message));
+      },
+      () => {
+        this.toastr.success("Ledger Group deleted successfully");
       }
     );
   }

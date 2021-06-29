@@ -133,7 +133,13 @@
   font-weight: 600;
   color: black;
 }
-.edit i {
+.btns {
+  display: flex;
+}
+.modify-btn {
+  margin-right: 10px;
+}
+.modify-btn i {
   color: #204d74;
 }
 .no-trns {
@@ -145,8 +151,10 @@
 .ledger ul {
   display: flex;
 }
-.ledger ul,
-span {
+.ledger-tabs .ledger ul {
+  color: #007bff;
+}
+.ledger-tabs .ledger span {
   color: #007bff;
 }
 .ledger span:hover {

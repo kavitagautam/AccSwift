@@ -131,110 +131,162 @@
         <ng-container *ngFor="let item of ledgerData; index as i">
           <kendo-tabstrip-tab title="{{ item.Title }}" [selected]="i === 0">
             <ng-template kendoTabContent>
-              <fieldset>
-                <div class="group-tabs">
-                  <h2 class="group-name">{{ item.Child[0].Title }}</h2>
-                  <button
-                    class="btn btn-primary pull-left"
-                    (click)="addNewerLedger()"
-                  >
-                    <i class="fa fa-plus" aria-hidden="true"></i> Add New Ledger
-                  </button>
-                </div>
-                <div class="ledger-tabs">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <div class="ledger" *ngIf="item.Title === 'Assets'">
-                        <ul *ngFor="let ledger of currentAssets; index as i">
-                          <span [ngClass]="colorGroupOrLedger(ledger)">
-                            <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
-                            &nbsp; {{ ledger.Title }}
-                          </span>
-                          <span class="icon">
-                            <i
-                              class="fas fa-edit"
-                              (click)="selectedNewNode(ledger)"
-                            ></i>
-                            <i
-                              class="fas fa-trash-alt"
-                              (click)="deleteAccountLedger(ledger)"
-                            ></i>
-                          </span>
-                        </ul>
+              <ng-container *ngFor="let item1 of item.Child">
+                <fieldset>
+                  <div class="group-tabs">
+                    <h2 class="group-name">{{ item1.Title }}</h2>
+                    <button
+                      class="btn btn-primary pull-left"
+                      (click)="addNewerLedger()"
+                    >
+                      <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                      Ledger
+                    </button>
+                  </div>
+                  <div class="ledger-tabs">
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <div class="ledger" *ngIf="item.Title === 'Assets'">
+                          <ng-container *ngIf="item1.Title == 'Current Assets'">
+                            <ul
+                              *ngFor="let ledger of currentAssets; index as i"
+                            >
+                              <span [ngClass]="colorGroupOrLedger(ledger)">
+                                <span *ngIf="ledger.Code"
+                                  >({{ ledger.Code }})</span
+                                >
+                                &nbsp; {{ ledger.Title }}
+                              </span>
+                              <span class="icon">
+                                <i
+                                  class="fas fa-edit"
+                                  (click)="editNewLedger(ledger)"
+                                ></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  (click)="deleteAccountLedger(ledger)"
+                                ></i>
+                              </span>
+                            </ul>
+                          </ng-container>
+                          <ng-container *ngIf="item1.Title == 'Fixed Assests'">
+                            <ul *ngFor="let ledger of fixedAssets; index as i">
+                              <span [ngClass]="colorGroupOrLedger(ledger)">
+                                <span *ngIf="ledger.Code"
+                                  >({{ ledger.Code }})</span
+                                >
+                                &nbsp; {{ ledger.Title }}
+                              </span>
+                              <span class="icon">
+                                <i
+                                  class="fas fa-edit"
+                                  (click)="editNewLedger(ledger)"
+                                ></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  (click)="deleteAccountLedger(ledger)"
+                                ></i>
+                              </span>
+                            </ul>
+                          </ng-container>
+                        </div>
+                        <div
+                          class="ledger"
+                          *ngIf="item.Title === 'Liabilities'"
+                        >
+                          <ul
+                            *ngFor="let ledger of currentLiability; index as i"
+                          >
+                            <span [ngClass]="colorGroupOrLedger(ledger)">
+                              <span *ngIf="ledger.Code"
+                                >({{ ledger.Code }})</span
+                              >
+                              &nbsp; {{ ledger.Title }}
+                            </span>
+                            <span class="icon">
+                              <i
+                                class="fas fa-edit"
+                                (click)="editNewLedger(ledger)"
+                              ></i>
+                              <i
+                                class="fas fa-trash-alt"
+                                (click)="deleteAccountLedger(ledger)"
+                              ></i>
+                            </span>
+                          </ul>
+                        </div>
+                        <div class="ledger" *ngIf="item.Title === 'Income'">
+                          <ul *ngFor="let ledger of directIncome; index as i">
+                            <span [ngClass]="colorGroupOrLedger(ledger)">
+                              <span *ngIf="ledger.Code"
+                                >({{ ledger.Code }})</span
+                              >
+                              &nbsp; {{ ledger.Title }}
+                            </span>
+                            <span class="icon">
+                              <i
+                                class="fas fa-edit"
+                                (click)="editNewLedger(ledger)"
+                              ></i>
+                              <i
+                                class="fas fa-trash-alt"
+                                (click)="deleteAccountLedger(ledger)"
+                              ></i>
+                            </span>
+                          </ul>
+                        </div>
+                        <div
+                          class="ledger"
+                          *ngIf="item.Title === 'Expenditure'"
+                        >
+                          <ul *ngFor="let ledger of directExpense; index as i">
+                            <span [ngClass]="colorGroupOrLedger(ledger)">
+                              <span *ngIf="ledger.Code"
+                                >({{ ledger.Code }})</span
+                              >
+                              &nbsp; {{ ledger.Title }}
+                            </span>
+                            <span class="icon">
+                              <i
+                                class="fas fa-edit"
+                                (click)="editNewLedger(ledger)"
+                              ></i>
+                              <i
+                                class="fas fa-trash-alt"
+                                (click)="deleteAccountLedger(ledger)"
+                              ></i>
+                            </span>
+                          </ul>
+                        </div>
                       </div>
-                      <div class="ledger" *ngIf="item.Title === 'Liabilities'">
-                        <ul *ngFor="let ledger of currentLiability; index as i">
-                          <span [ngClass]="colorGroupOrLedger(ledger)">
-                            <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
-                            &nbsp; {{ ledger.Title }}
-                          </span>
-                          <span class="icon">
-                            <i
-                              class="fas fa-edit"
-                              (click)="selectedNewNode(ledger)"
-                            ></i>
-                            <i
-                              class="fas fa-trash-alt"
-                              (click)="deleteAccountLedger(ledger)"
-                            ></i>
-                          </span>
-                        </ul>
+                      <div class="col-lg-5">
+                        <div class="warn">
+                          <p>
+                            Cash you haven’t deposited in the bank. Add your
+                            bank and credit card accounts to accurately
+                            categorize transactions that aren’t cash.
+                          </p>
+                        </div>
                       </div>
-                      <div class="ledger" *ngIf="item.Title === 'Income'">
-                        <ul *ngFor="let ledger of directIncome; index as i">
-                          <span [ngClass]="colorGroupOrLedger(ledger)">
-                            <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
-                            &nbsp; {{ ledger.Title }}
-                          </span>
-                          <span class="icon">
-                            <i
-                              class="fas fa-edit"
-                              (click)="selectedNewNode(ledger)"
-                            ></i>
-                            <i
-                              class="fas fa-trash-alt"
-                              (click)="deleteAccountLedger(ledger)"
-                            ></i>
-                          </span>
-                        </ul>
+                      <div class="col-lg-2 btns">
+                        <button class="modify-btn">
+                          <i
+                            class="fas fa-edit"
+                            (click)="editNewGroup(item1)"
+                          ></i>
+                        </button>
+                        <button class="modify-btn">
+                          <i
+                            class="fas fa-trash-alt"
+                            (click)="deleteLedgerGroup(item1)"
+                          ></i>
+                        </button>
                       </div>
-                      <div class="ledger" *ngIf="item.Title === 'Expenditure'">
-                        <ul *ngFor="let ledger of directExpense; index as i">
-                          <span [ngClass]="colorGroupOrLedger(ledger)">
-                            <span *ngIf="ledger.Code">({{ ledger.Code }})</span>
-                            &nbsp; {{ ledger.Title }}
-                          </span>
-                          <span class="icon">
-                            <i
-                              class="fas fa-edit"
-                              (click)="selectedNewNode(ledger)"
-                            ></i>
-                            <i
-                              class="fas fa-trash-alt"
-                              (click)="deleteAccountLedger(ledger)"
-                            ></i>
-                          </span>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="col-lg-5">
-                      <div class="warn">
-                        <p>
-                          Cash you haven’t deposited in the bank. Add your bank
-                          and credit card accounts to accurately categorize
-                          transactions that aren’t cash.
-                        </p>
-                      </div>
-                    </div>
-                    <div class="col-lg-1">
-                      <button class="edit">
-                        <i class="fas fa-edit"></i>
-                      </button>
                     </div>
                   </div>
-                </div>
-              </fieldset>
-              <fieldset>
+                </fieldset>
+              </ng-container>
+              <!-- <fieldset>
                 <div class="group-tabs">
                   <h2 class="group-name">{{ item.Child[1].Title }}</h2>
                   <button
@@ -421,7 +473,7 @@
                     </div>
                   </div>
                 </div>
-              </fieldset>
+              </fieldset> -->
             </ng-template>
           </kendo-tabstrip-tab>
         </ng-container>

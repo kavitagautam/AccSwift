@@ -465,9 +465,11 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   }
 
   cancel(event): void {
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 1000);
+    this.ledgerDetails = null;
+    this.buildAccountLedgerForm();
   }
 
   addAccountLedger(): void {
