@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from "@angular/common";
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { RxwebValidators } from '@rxweb/reactive-form-validators';
 
 @Component({
   selector: 'accSwift-ageing',
@@ -53,9 +54,12 @@ export class AgeingComponent implements OnInit {
       IsBillwiseAgeing: [false],
       IsShowVoucherBalance: [false],
       FirstPeriod: [15],
-      SecondPeriod: [30],
-      ThirdPeriod: [45],
-      FourthPeriod: [60],
+      // SecondPeriod: [30],
+      // ThirdPeriod: [45],
+      // FourthPeriod: [60],
+      SecondPeriod: [30, RxwebValidators.greaterThan({fieldName: 'FirstPeriod'})],
+      ThirdPeriod: [45, RxwebValidators.greaterThan({fieldName: 'SecondPeriod'})],
+      FourthPeriod: [60, RxwebValidators.greaterThan({fieldName: 'ThirdPeriod'} )],
       IsShowAllDebtors: [false],
       DebtorsID: [0],
       FromDate: [{value: null, disabled: true}],

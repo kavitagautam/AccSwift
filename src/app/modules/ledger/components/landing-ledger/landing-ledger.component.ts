@@ -46,7 +46,6 @@ export class LandingLedgerComponent implements OnInit {
   assetsData: any;
   currentAssets:any;
   fixedAssets:any;
-  allAssets:any;
 
   liabilityData: any;
   currentLiability: any;
@@ -148,7 +147,6 @@ export class LandingLedgerComponent implements OnInit {
     const assets = [this.assetsData];
     this.currentAssets = [];
     this.fixedAssets = [];
-    this.allAssets = [];
 
     const liabilities = [this.liabilityData];
     this.currentLiability = [];
@@ -175,7 +173,6 @@ export class LandingLedgerComponent implements OnInit {
             {
               console.log(val1);
               console.log(val1.Title); //Current Assets, Fixed Assets
-              this.allAssets.push(val1);
               if (val1["TypeOf"] === 1)
               {
                 this.fixedAssets.push(val1);
@@ -185,6 +182,7 @@ export class LandingLedgerComponent implements OnInit {
               {
                 for(const val2 of val1["Child"])
                 {
+                  console.log(val2);
                   if (val2["TypeOf"]=== 1)
                   {
                     if(val1["Title"] === "Current Assets")
@@ -202,6 +200,7 @@ export class LandingLedgerComponent implements OnInit {
                   {
                     for (const val3 of val2["Child"])
                     {
+                      console.log(val3);
                       if (val3["TypeOf"] === 1)
                       {
                         if(val1["Title"] === "Current Assets")
@@ -218,7 +217,7 @@ export class LandingLedgerComponent implements OnInit {
                       if (val3.hasOwnProperty('Child') && val3["Child"])
                       {
                         for (const val4 of val3["Child"])
-                        {
+                        {                     
                           if (val4["TypeOf"] === 1)
                             {
                               if(val1["Title"] === "Current Assets")
@@ -227,7 +226,7 @@ export class LandingLedgerComponent implements OnInit {
                                   // this.currentAssets.push("("+val4["Code"]+")"+" "+val4["Title"]);
                                 }
                               else if(val1["Title"] === "Fixed Assests")
-                                {
+                                {    
                                   this.fixedAssets.push(val4);
                                   // this.fixedAssets.push("("+val4["Code"]+")"+" "+val4["Title"]);
                                 }
@@ -362,7 +361,6 @@ export class LandingLedgerComponent implements OnInit {
     }
     console.log(this.currentAssets);
     console.log(this.fixedAssets);
-    console.log(this.allAssets);
     console.log(this.currentLiability);
     console.log(this.ownerFund);
     console.log(this.loanFund);

@@ -7,6 +7,7 @@ import { AgeingComponent } from './components/ageing/ageing.component';
 import { DueDateComponent } from './components/due-date/due-date.component';
 import { SettingsReportsComponent } from '@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 
 @NgModule({
   declarations: [AgeingComponent, DueDateComponent],
@@ -15,7 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DebtorsRoutingModule,
     AccswiftSharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RxReactiveFormsModule
   ],
   entryComponents: [SettingsReportsComponent]
 })
