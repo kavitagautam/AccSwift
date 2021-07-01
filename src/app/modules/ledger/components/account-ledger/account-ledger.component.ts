@@ -25,7 +25,6 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   @ViewChild("openingBalanceModal") openingBalanceModal: ElementRef;
   @ViewChild("previousYearBalanceModal") previousYearBalanceModal: ElementRef;
   @Input("selectedItem") selectedItem;
-
   date: Date = new Date();
   selectedLedgerId: number;
   accountLedgerForm: FormGroup;
@@ -40,7 +39,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   suggestCodeList = [];
   private editedRowIndex: number;
   balanceDrCr: string;
-  modalRef: BsModalRef;
+  // modalRef: BsModalRef;
   modelRefSubLedger: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
@@ -53,6 +52,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     public ledgerService: LedgerService,
     private router: Router,
     private toastr: ToastrService,
+    private modalRef: BsModalRef,
     private modalService: BsModalService
   ) {}
 
@@ -60,6 +60,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     this.buildAccountLedgerForm();
     this.getLedgerGroup();
     this.suggestCurrency();
+    console.log(this.selectedItem);
     if (this.selectedItem == null) {
       this.editMode = false;
       this.addMode = true;
@@ -106,6 +107,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   }
 
   getLedgerDetails(): void {
+    console.log(this.selectedItem);
+    console.log(this.selectedItem.ID);
     this.ledgerService
       .getLedgerDetails(this.selectedItem.ID)
       .subscribe((res) => {
@@ -462,9 +465,11 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   }
 
   cancel(event): void {
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 1000);
+    this.ledgerDetails = null;
+    this.buildAccountLedgerForm();
   }
 
   addAccountLedger(): void {
@@ -526,5 +531,11 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   private closeEditor(grid, rowIndex = 1) {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
+  }
+  
+  close():void 
+  {
+    this.modalRef.hide();
+    this.modalRef = null;
   }
 }

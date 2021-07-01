@@ -128,15 +128,18 @@
   padding: 14px 0;
   color: black;
 }
-.ledger-name {
+.group-name {
   font-size: 15px;
   font-weight: 600;
   color: black;
 }
-.number {
-  padding: 12px;
+.btns {
+  display: flex;
 }
-.edit i {
+.modify-btn {
+  margin-right: 10px;
+}
+.modify-btn i {
   color: #204d74;
 }
 .no-trns {
@@ -144,4 +147,30 @@
 }
 .k-tabstrip-items .k-item {
   color: #204d74 !important;
+}
+.ledger ul {
+  display: flex;
+}
+.ledger-tabs .ledger ul {
+  color: #007bff;
+}
+.ledger-tabs .ledger span {
+  color: #007bff;
+}
+.ledger span:hover {
+  cursor: pointer;
+}
+.ledger .icon {
+  display: flex;
+}
+.ledger .icon i {
+  display: none;
+  padding-left: 15px;
+  font-size: 13px;
+}
+.ledger ul:hover .icon i {
+  display: block;
+}
+.groupAddButton {
+  margin: 10px;
 }

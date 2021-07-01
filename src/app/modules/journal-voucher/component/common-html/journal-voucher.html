@@ -63,13 +63,19 @@
 
           <div *ngIf="selectedDate == 'Nepali'" class="form-group">
             <label>Date</label>
-            <np-datepicker
+            <!-- <np-datepicker
               formControlName="Date"
               inputClass="form-control"
               language="en"
               [dateFormatter]="dateFormatter"
               appFormControlValidationMsg
-            ></np-datepicker>
+            ></np-datepicker> -->
+            <input
+              class="form-control"
+              formControlName="Date"
+              bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+            />
             <span class="glyphicon glyphicon-calendar calendar-icon"></span>
             <button
               (click)="dateConverterPopup()"

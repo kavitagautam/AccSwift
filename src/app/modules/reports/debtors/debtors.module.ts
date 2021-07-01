@@ -15,8 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DebtorsRoutingModule,
     AccswiftSharedModule,
     FormsModule,
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule],
   entryComponents: [SettingsReportsComponent]
 })
 export class DebtorsModule { }

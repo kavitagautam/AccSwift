@@ -120,247 +120,278 @@
 
 <div *ngIf="userType == 'Basic'">
   <div class="box box-default">
+    <button
+      class="btn btn-primary groupAddButton"
+      (click)="addNewLedgerGroup()"
+    >
+      <i class="fa fa-plus" aria-hidden="true"></i> Add New Group
+    </button>
     <div class="coa_contents">
-      <kendo-tabstrip (tabSelect)="onTabSelectn($event)">
-        <kendo-tabstrip-tab title="Assets" [selected]="true">
-          <ng-template kendoTabContent>
-            <fieldset>
-              <div class="group-tabs">
-                <h2 class="ledger-name">Cash and Bank</h2>
-                <button class="btn btn-primary pull-left">
-                  <i class="fa fa-plus" aria-hidden="true"></i> Add New
-                </button>
-              </div>
-              <div class="ledger-tabs">
-                <div class="row">
-                  <div class="col-lg-1">
-                    <div class="number">
-                      <small>5215</small>
-                    </div>
+      <kendo-tabstrip>
+        <ng-container *ngFor="let item of ledgerData; index as i">
+          <kendo-tabstrip-tab title="{{ item.Title }}" [selected]="i === 0">
+            <ng-template kendoTabContent>
+              <ng-container *ngFor="let item1 of item.Child">
+                <fieldset>
+                  <div class="group-tabs">
+                    <h2 class="group-name">{{ item1.Title }}</h2>
+                    <button
+                      class="btn btn-primary pull-left"
+                      (click)="addNewerLedger()"
+                    >
+                      <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                      Ledger
+                    </button>
                   </div>
-                  <div class="col-lg-4">
-                    <div class="ledger">
-                      <h5>Cash on Hand</h5>
-                      <!-- <span class="no-trns"
-                        >No transaction for this account</span
-                      > -->
-                      <!-- <h1>{{ ledgerTreeList | json }}</h1>
-                      <h1>{{ ledgerAssets | json }}</h1> -->
-                      <!-- <ng-container>
-                        <div class="lesson" *ngFor="let item of ledgerAssets">
-                          <div class="lesson-detail">
-                            {{ item.Title }}
-                          </div>
+                  <div class="ledger-tabs">
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <div class="ledger" *ngIf="item.Title === 'Assets'">
+                          <ng-container *ngIf="item1.Title == 'Current Assets'">
+                            <ul
+                              *ngFor="let ledger of currentAssets; index as i"
+                            >
+                              <span [ngClass]="colorGroupOrLedger(ledger)">
+                                <span *ngIf="ledger.Code"
+                                  >({{ ledger.Code }})</span
+                                >
+                                &nbsp; {{ ledger.Title }}
+                              </span>
+                              <span class="icon">
+                                <i
+                                  class="fas fa-edit"
+                                  (click)="editNewLedger(ledger)"
+                                ></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  (click)="deleteAccountLedger(ledger)"
+                                ></i>
+                              </span>
+                            </ul>
+                          </ng-container>
+                          <ng-container *ngIf="item1.Title == 'Fixed Assests'">
+                            <ul *ngFor="let ledger of fixedAssets; index as i">
+                              <span [ngClass]="colorGroupOrLedger(ledger)">
+                                <span *ngIf="ledger.Code"
+                                  >({{ ledger.Code }})</span
+                                >
+                                &nbsp; {{ ledger.Title }}
+                              </span>
+                              <span class="icon">
+                                <i
+                                  class="fas fa-edit"
+                                  (click)="editNewLedger(ledger)"
+                                ></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  (click)="deleteAccountLedger(ledger)"
+                                ></i>
+                              </span>
+                            </ul>
+                          </ng-container>
                         </div>
-                      </ng-container> -->
-                      <kendo-treelist
-                        kendoTreeListExpandable
-                        [kendoTreeListHierarchyBinding]="ledgerAssets"
-                        childrenField="Child"
-                      >
-                        <kendo-treelist-column
-                          [expandable]="true"
-                          field="Title"
-                          title="Assets"
-                          [width]="300"
-                        ></kendo-treelist-column>
-                      </kendo-treelist>
+                        <div
+                          class="ledger"
+                          *ngIf="item.Title === 'Liabilities'"
+                        >
+                          <ng-container
+                            *ngIf="item1.Title == 'Current Liabilities'"
+                          >
+                            <ul
+                              *ngFor="
+                                let ledger of currentLiability;
+                                index as i
+                              "
+                            >
+                              <span [ngClass]="colorGroupOrLedger(ledger)">
+                                <span *ngIf="ledger.Code"
+                                  >({{ ledger.Code }})</span
+                                >
+                                &nbsp; {{ ledger.Title }}
+                              </span>
+                              <span class="icon">
+                                <i
+                                  class="fas fa-edit"
+                                  (click)="editNewLedger(ledger)"
+                                ></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  (click)="deleteAccountLedger(ledger)"
+                                ></i>
+                              </span>
+                            </ul>
+                          </ng-container>
+                          <ng-container *ngIf="item1.Title == 'Owners Fund'">
+                            <ul *ngFor="let ledger of ownerFund; index as i">
+                              <span [ngClass]="colorGroupOrLedger(ledger)">
+                                <span *ngIf="ledger.Code"
+                                  >({{ ledger.Code }})</span
+                                >
+                                &nbsp; {{ ledger.Title }}
+                              </span>
+                              <span class="icon">
+                                <i
+                                  class="fas fa-edit"
+                                  (click)="editNewLedger(ledger)"
+                                ></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  (click)="deleteAccountLedger(ledger)"
+                                ></i>
+                              </span>
+                            </ul>
+                          </ng-container>
+                          <ng-container *ngIf="item1.Title == 'Loan Funds'">
+                            <ul *ngFor="let ledger of loanFund; index as i">
+                              <span [ngClass]="colorGroupOrLedger(ledger)">
+                                <span *ngIf="ledger.Code"
+                                  >({{ ledger.Code }})</span
+                                >
+                                &nbsp; {{ ledger.Title }}
+                              </span>
+                              <span class="icon">
+                                <i
+                                  class="fas fa-edit"
+                                  (click)="editNewLedger(ledger)"
+                                ></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  (click)="deleteAccountLedger(ledger)"
+                                ></i>
+                              </span>
+                            </ul>
+                          </ng-container>
+                        </div>
+                        <div class="ledger" *ngIf="item.Title === 'Income'">
+                          <ng-container *ngIf="item1.Title == 'DirectIncome'">
+                            <ul *ngFor="let ledger of directIncome; index as i">
+                              <span [ngClass]="colorGroupOrLedger(ledger)">
+                                <span *ngIf="ledger.Code"
+                                  >({{ ledger.Code }})</span
+                                >
+                                &nbsp; {{ ledger.Title }}
+                              </span>
+                              <span class="icon">
+                                <i
+                                  class="fas fa-edit"
+                                  (click)="editNewLedger(ledger)"
+                                ></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  (click)="deleteAccountLedger(ledger)"
+                                ></i>
+                              </span>
+                            </ul>
+                          </ng-container>
+                          <ng-container
+                            *ngIf="item1.Title == 'Indirect Income'"
+                          >
+                            <ul
+                              *ngFor="let ledger of indirectIncome; index as i"
+                            >
+                              <span [ngClass]="colorGroupOrLedger(ledger)">
+                                <span *ngIf="ledger.Code"
+                                  >({{ ledger.Code }})</span
+                                >
+                                &nbsp; {{ ledger.Title }}
+                              </span>
+                              <span class="icon">
+                                <i
+                                  class="fas fa-edit"
+                                  (click)="editNewLedger(ledger)"
+                                ></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  (click)="deleteAccountLedger(ledger)"
+                                ></i>
+                              </span>
+                            </ul>
+                          </ng-container>
+                        </div>
+                        <div
+                          class="ledger"
+                          *ngIf="item.Title === 'Expenditure'"
+                        >
+                          <ng-container
+                            *ngIf="item1.Title == 'Direct Expenses'"
+                          >
+                            <ul
+                              *ngFor="let ledger of directExpense; index as i"
+                            >
+                              <span [ngClass]="colorGroupOrLedger(ledger)">
+                                <span *ngIf="ledger.Code"
+                                  >({{ ledger.Code }})</span
+                                >
+                                &nbsp; {{ ledger.Title }}
+                              </span>
+                              <span class="icon">
+                                <i
+                                  class="fas fa-edit"
+                                  (click)="editNewLedger(ledger)"
+                                ></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  (click)="deleteAccountLedger(ledger)"
+                                ></i>
+                              </span>
+                            </ul>
+                          </ng-container>
+                          <ng-container
+                            *ngIf="item1.Title == 'Indirect Expenses'"
+                          >
+                            <ul
+                              *ngFor="let ledger of indirectExpense; index as i"
+                            >
+                              <span [ngClass]="colorGroupOrLedger(ledger)">
+                                <span *ngIf="ledger.Code"
+                                  >({{ ledger.Code }})</span
+                                >
+                                &nbsp; {{ ledger.Title }}
+                              </span>
+                              <span class="icon">
+                                <i
+                                  class="fas fa-edit"
+                                  (click)="editNewLedger(ledger)"
+                                ></i>
+                                <i
+                                  class="fas fa-trash-alt"
+                                  (click)="deleteAccountLedger(ledger)"
+                                ></i>
+                              </span>
+                            </ul>
+                          </ng-container>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <div class="warn">
+                          <p>
+                            Cash you haven’t deposited in the bank. Add your
+                            bank and credit card accounts to accurately
+                            categorize transactions that aren’t cash.
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 btns">
+                        <button class="modify-btn">
+                          <i
+                            class="fas fa-edit"
+                            (click)="editNewGroup(item1)"
+                          ></i>
+                        </button>
+                        <button class="modify-btn">
+                          <i
+                            class="fas fa-trash-alt"
+                            (click)="deleteLedgerGroup(item1)"
+                          ></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-lg-6">
-                    <div class="warn">
-                      <p>
-                        Cash you haven’t deposited in the bank. Add your bank
-                        and credit card accounts to accurately categorize
-                        transactions that aren’t cash.
-                      </p>
-                    </div>
-                  </div>
-                  <div class="col-lg-1">
-                    <div class="edit">
-                      <i class="fas fa-edit"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-            <fieldset>
-              <div class="group-tabs">
-                <h2 class="ledger-name">Money in Transit</h2>
-                <button class="btn btn-primary pull-left">
-                  <i class="fa fa-plus" aria-hidden="true"></i> Add New
-                </button>
-              </div>
-              <div class="ledger-tabs">
-                <div class="row">
-                  <div class="col-lg-1">
-                    <div class="number">
-                      <small>5215</small>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="ledger">
-                      <h5>Cash on Hand</h5>
-                      <span class="no-trns"
-                        >You haven’t added any Money in Transit accounts
-                        yet.</span
-                      >
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="warn">
-                      <p></p>
-                    </div>
-                  </div>
-                  <div class="col-lg-1">
-                    <div class="edit">
-                      <i class="fas fa-edit"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-            <fieldset>
-              <div class="group-tabs">
-                <h2 class="ledger-name">Expected Payments from Customers</h2>
-                <button class="btn btn-primary pull-left">
-                  <i class="fa fa-plus" aria-hidden="true"></i> Add New
-                </button>
-              </div>
-              <div class="ledger-tabs">
-                <div class="row">
-                  <div class="col-lg-1">
-                    <div class="number">
-                      <small>5215</small>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="ledger">
-                      <h5>Account Receivable</h5>
-                      <span class="no-trns"
-                        >Last transaction on May 5, 2021</span
-                      >
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="warn">
-                      <p></p>
-                    </div>
-                  </div>
-                  <div class="col-lg-1">
-                    <div class="edit">
-                      <i class="fas fa-edit"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-            <fieldset>
-              <div class="group-tabs">
-                <h2 class="ledger-name">Inventory</h2>
-                <button class="btn btn-primary pull-left">
-                  <i class="fa fa-plus" aria-hidden="true"></i> Add New
-                </button>
-              </div>
-              <div class="ledger-tabs">
-                <div class="row">
-                  <div class="col-lg-1">
-                    <div class="number">
-                      <small>5215</small>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="ledger">
-                      <h5>Cash on Hand</h5>
-                      <span class="no-trns"
-                        >You haven’t added any Inventory accounts yet.</span
-                      >
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="warn">
-                      <p></p>
-                    </div>
-                  </div>
-                  <div class="col-lg-1">
-                    <div class="edit">
-                      <i class="fas fa-edit"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-          </ng-template>
-        </kendo-tabstrip-tab>
-
-        <kendo-tabstrip-tab [title]="'Liabilities & Credit Card'">
-          <ng-template kendoTabContent>
-            <fieldset>
-              <div class="group-tabs">
-                <h2 class="ledger-name">Cash and Bank</h2>
-                <button class="btn btn-primary pull-left">
-                  <i class="fa fa-plus" aria-hidden="true"></i> Add New
-                </button>
-              </div>
-              <div class="ledger-tabs">
-                <div class="row">
-                  <div class="col-lg-1">
-                    <div class="number">
-                      <small>5215</small>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="ledger">
-                      <h5>Cash on Hand</h5>
-                      <!-- <span class="no-trns"
-                        >No transaction for this account</span
-                      > -->
-                      <!-- <h1>{{ ledgerLiab | json }}</h1> -->
-                      <kendo-treelist
-                        kendoTreeListExpandable
-                        [kendoTreeListHierarchyBinding]="ledgerLiab"
-                        childrenField="Child"
-                      >
-                        <kendo-treelist-column
-                          [expandable]="true"
-                          field="Title"
-                          title="Liabilities"
-                          [width]="300"
-                        ></kendo-treelist-column>
-                      </kendo-treelist>
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="warn">
-                      <p>
-                        Cash you haven’t deposited in the bank. Add your bank
-                        and credit card accounts to accurately categorize
-                        transactions that aren’t cash.
-                      </p>
-                    </div>
-                  </div>
-                  <div class="col-lg-1">
-                    <div class="edit">
-                      <i class="fas fa-edit"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-          </ng-template>
-        </kendo-tabstrip-tab>
-
-        <kendo-tabstrip-tab [title]="'Income'">
-          <ng-template kendoTabContent> </ng-template>
-        </kendo-tabstrip-tab>
-
-        <kendo-tabstrip-tab [title]="'Expenses'">
-          <ng-template kendoTabContent> </ng-template>
-        </kendo-tabstrip-tab>
-
-        <kendo-tabstrip-tab [title]="'Equity'">
-          <ng-template kendoTabContent> </ng-template>
-        </kendo-tabstrip-tab>
+                </fieldset>
+              </ng-container>
+            </ng-template>
+          </kendo-tabstrip-tab>
+        </ng-container>
       </kendo-tabstrip>
     </div>
   </div>
