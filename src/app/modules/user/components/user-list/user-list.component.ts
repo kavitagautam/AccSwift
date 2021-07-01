@@ -189,6 +189,7 @@ export class UserListComponent implements OnInit {
   // Modal part is started from Here
   openAddModal(template: TemplateRef<any>): void {
     this.editableForm = true;
+    this.editMode = false;
     this.buildUserForm();
     this.submitButton = "Save ";
     this.modalTitle = "New User";
@@ -230,7 +231,7 @@ export class UserListComponent implements OnInit {
   }
 
   editUser(): void {
-    this.userService.updateUser(this.userForm.value).subscribe(
+    this.userService.updateUserProfile(this.userForm.value).subscribe(
       (response) => {
         this.getUsers();
       },

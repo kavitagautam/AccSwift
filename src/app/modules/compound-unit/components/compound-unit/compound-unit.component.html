@@ -21,7 +21,7 @@
             />
           </div>
         </div>
-        <div class="col-md-7 pr-0 ">
+        <div class="col-md-7 pr-0">
           <label for="first-unit">Name of First Unit</label>
           <select class="form-control" formControlName="FirstUnitID">
             <option [ngValue]="null">Select option...</option>
@@ -101,11 +101,7 @@
           >
           <kendo-grid-column title="Equals" width="2">
             <ng-template kendoGridCellTemplate>
-              <span
-                style="display: table;
-              margin: auto;"
-                >=</span
-              >
+              <span style="display: table; margin: auto">=</span>
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column
@@ -178,7 +174,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-7 pr-0 ">
+            <div class="col-md-7 pr-0">
               <label for="first-unit">Name of First Unit</label>
               <select
                 class="form-control"
@@ -227,6 +223,17 @@
                   {{ secondUnit.UnitName }}
                 </option>
               </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+              <label>Remarks</label>
+              <textarea
+                class="form-control"
+                formControlName="Remarks"
+              ></textarea>
             </div>
           </div>
         </div>

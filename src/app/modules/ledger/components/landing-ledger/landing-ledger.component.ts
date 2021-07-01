@@ -171,7 +171,6 @@ export class LandingLedgerComponent implements OnInit {
           {
             for(const val1 of val["Child"])
             {
-              console.log(val1);
               console.log(val1.Title); //Current Assets, Fixed Assets
               if (val1["TypeOf"] === 1)
               {
@@ -182,7 +181,6 @@ export class LandingLedgerComponent implements OnInit {
               {
                 for(const val2 of val1["Child"])
                 {
-                  console.log(val2);
                   if (val2["TypeOf"]=== 1)
                   {
                     if(val1["Title"] === "Current Assets")
@@ -200,7 +198,6 @@ export class LandingLedgerComponent implements OnInit {
                   {
                     for (const val3 of val2["Child"])
                     {
-                      console.log(val3);
                       if (val3["TypeOf"] === 1)
                       {
                         if(val1["Title"] === "Current Assets")
@@ -359,13 +356,13 @@ export class LandingLedgerComponent implements OnInit {
         }
       }
     }
-    console.log(this.currentAssets);
-    console.log(this.fixedAssets);
-    console.log(this.currentLiability);
-    console.log(this.ownerFund);
-    console.log(this.loanFund);
-    console.log(this.indirectIncome);
-    console.log(this.directIncome);
+    // console.log(this.currentAssets);
+    // console.log(this.fixedAssets);
+    // console.log(this.currentLiability);
+    // console.log(this.ownerFund);
+    // console.log(this.loanFund);
+    // console.log(this.indirectIncome);
+    // console.log(this.directIncome);
   }
 
   // assetsFilter(sortedArray) {

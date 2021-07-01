@@ -76,7 +76,6 @@
     "ngx-print": "^1.2.0-beta.4",
     "ngx-select-dropdown": "^1.4.3",
     "ngx-toastr": "^10.0.2",
-    "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
   },

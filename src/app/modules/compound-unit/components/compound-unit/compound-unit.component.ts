@@ -216,6 +216,7 @@ export class CompoundUnitComponent implements OnInit {
       .patchValue(dataItem.RelationValue);
     this.compoundUnitForm.get("FirstUnitID").patchValue(dataItem.FirstUnitID);
     this.compoundUnitForm.get("SecondUnitID").patchValue(dataItem.SecondUnitID);
+    this.compoundUnitForm.get("Remarks").patchValue(dataItem.Remarks);
     this.modalRef = this.modalService.show(template, this.config);
   }
 
