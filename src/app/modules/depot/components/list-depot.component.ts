@@ -76,10 +76,10 @@ export class ListDepotComponent implements OnInit {
     this.depotForm = this._fb.group({
       DepotName: this.editableMode ? ["", [Validators.required]] : [""],
       City: [""],
-      Telephone: [""],
+      Telephone: ["", Validators.required],
       ContactPerson: [""],
       LicenceNo: [""],
-      DepotAddress: [""],
+      DepotAddress: ["", Validators.required],
       PostalCode: [""],
       Mobile: [""],
       RegNo: [""],

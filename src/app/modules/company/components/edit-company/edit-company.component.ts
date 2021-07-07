@@ -59,10 +59,10 @@ export class EditCompanyComponent implements OnInit {
         this.companyDetails ? this.companyDetails.Name : "",
         Validators.required,
       ],
-      Code: ["", Validators.required],
+      Code: [this.companyDetails ? this.companyDetails.Code:"", Validators.required],
       Telephone: [this.companyDetails ? this.companyDetails.Telephone : ""],
       Email: [this.companyDetails ? this.companyDetails.Email : ""],
-      Phone: ["", [Validators.required]],
+      Phone: [this.companyDetails? this.companyDetails.Telephone:"",[Validators.required]],
       Website: [this.companyDetails ? this.companyDetails.Website : ""],
       POBox: [this.companyDetails ? this.companyDetails.POBox : ""],
       PAN: [this.companyDetails ? this.companyDetails.PAN : ""],
@@ -77,10 +77,7 @@ export class EditCompanyComponent implements OnInit {
         this.companyDetails ? this.companyDetails.StateOrProvinceID : null,
       ],
       Zone: [this.companyDetails ? this.companyDetails.Zone : ""],
-      UserName: [
-        this.companyDetails ? this.companyDetails.UserName : "",
-        Validators.required,
-      ],
+      UserName:[this.companyDetails ? this.companyDetails.UserName:"", Validators.required],
       Password: [
         this.companyDetails ? this.companyDetails.Password : "",
         Validators.required,
@@ -124,7 +121,7 @@ export class EditCompanyComponent implements OnInit {
   }
 
   suggestCode():void{
-    this.getSuggestionData()
+    this.getSuggestionData();
   }
 
   togglePwFieldType():void {

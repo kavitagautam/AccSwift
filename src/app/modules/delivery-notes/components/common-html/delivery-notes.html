@@ -24,6 +24,7 @@
                 class="form-control"
                 formControlName="OrderDate"
                 bsDatepicker
+                [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                 accSwiftFormValidator
               />
               <span class="glyphicon glyphicon-calendar calendar-icon"></span>
@@ -37,6 +38,7 @@
                 class="form-control"
                 formControlName="DeliveryDate"
                 bsDatepicker
+                [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                 accSwiftFormValidator
               />
               <span class="glyphicon glyphicon-calendar calendar-icon"></span>
@@ -57,9 +59,17 @@
             <div class="form-group">
               <label>Deliver Contact</label> <sup>*</sup>
               <input
+                id="tel"
                 type="text"
                 class="form-control"
                 formControlName="DeliverContact"
+                onkeyup="
+                  var v = this.value;
+                  if (!v.match(/^[0-9]+$/)) {                     
+                      alert('Please enter digits only'); 
+                  } 
+                  "
+                maxlength="10"
                 accSwiftFormValidator
               />
             </div>
@@ -113,6 +123,13 @@
                 type="text"
                 class="form-control"
                 formControlName="ClientContact"
+                onkeyup="
+                  var v = this.value;
+                  if (!v.match(/^[0-9]+$/)) {                     
+                      alert('Please enter digits only'); 
+                  } 
+                  "
+                maxlength="10"
                 accSwiftFormValidator
               />
             </div>

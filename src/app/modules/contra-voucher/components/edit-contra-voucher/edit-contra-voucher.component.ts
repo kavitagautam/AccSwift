@@ -7,6 +7,7 @@ import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/servic
 import { ContraVoucherMaster } from "../../models/contraVoucher.model";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
+import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
 
 @Component({
   selector: "accSwift-edit-contra-voucher",
@@ -164,6 +165,16 @@ export class EditContraVoucherComponent implements OnInit {
       this.addContraVoucherEntryList()
     );
     this.submitted = false;
+  }
+
+  dateConverterPopup(): void
+  {
+    this.modalRef = this.modalService.show(DateConverterComponent, {
+      initialState: { VoucherForm: this.contraVoucherForm },
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm",
+    })
   }
 
   public save(): void {

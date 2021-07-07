@@ -181,15 +181,24 @@
                   (click)="togglePwFieldType()"
                 ></i>
               </div>
-              <div class="form-group">
+              <div class="form-group" style="position: relative">
                 <label>Retype Password</label>
                 <input
                   class="form-control"
                   formControlName="VerifyPassword"
-                  type="password"
+                  [type]="fieldTextType ? 'text' : 'password'"
                   name="verifypassword"
                   accSwiftFormValidator
                 />
+                <i
+                  style="position: absolute; top: 36px; right: 21px"
+                  class="fa fa-eye-slash"
+                  [ngClass]="{
+                    'fa-eye-slash': !fieldTextType,
+                    'fa-eye': fieldTextType
+                  }"
+                  (click)="togglePwFieldType()"
+                ></i>
               </div>
             </fieldset>
           </div>

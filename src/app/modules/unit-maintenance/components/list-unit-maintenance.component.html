@@ -16,22 +16,23 @@
       <div class="row">
         <div class="col-md-12">
           <form [formGroup]="unitForm" novalidate>
-            <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="col-md-4 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="voucher#">Unit Name</label>
                 <input class="form-control" formControlName="UnitName" />
               </div>
             </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="col-md-4 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label for="series">Symbol</label>
                 <input class="form-control" formControlName="Symbol" />
               </div>
             </div>
-            <div class="col-md-3 col-sm-6 col-xs-6">
+            <div class="col-md-4 col-sm-6 col-xs-6">
               <div class="form-group">
                 <label>Remarks</label>
                 <textarea
+                  style="height: 34px"
                   row="2"
                   class="form-control"
                   formControlName="Remarks"

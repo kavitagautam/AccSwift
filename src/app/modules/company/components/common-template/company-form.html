@@ -152,13 +152,12 @@
                 <label>User Name<sup>*</sup></label>
                 <kendo-autocomplete
                   [data]="suggestion"
-                  [valueField]="'SuggestedUserName'"
                   class="form-control"
                   formControlName="UserName"
+                  [valueField]="'SuggestedUserName'"
                   [suggest]="true"
                   accSwiftFormValidator
-                >
-                </kendo-autocomplete>
+                ></kendo-autocomplete>
               </div>
             </div>
             <div class="col-md-3">

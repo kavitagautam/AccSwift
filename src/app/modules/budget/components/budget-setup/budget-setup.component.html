@@ -22,8 +22,8 @@
                     accSwiftFormValidator
                   />
                 </div>
-                <div class="form-group">
-                  <label>End Date </label>
+                <div class="form-group" style="position: relative">
+                  <label>End Date <sup>*</sup></label>
                   <input
                     class="form-control"
                     formControlName="EndDate"
@@ -31,12 +31,15 @@
                     [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                     accSwiftFormValidator
                   />
+                  <span
+                    class="glyphicon glyphicon-calendar calendar-icon"
+                  ></span>
                 </div>
               </div>
 
               <div class="col-md-6">
-                <div class="form-group">
-                  <label> Start Date</label>
+                <div class="form-group" style="position: relative">
+                  <label> Start Date <sup>*</sup> </label>
                   <input
                     class="form-control"
                     formControlName="StartDate"
@@ -44,6 +47,9 @@
                     [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
                     accSwiftFormValidator
                   />
+                  <span
+                    class="glyphicon glyphicon-calendar calendar-icon"
+                  ></span>
                 </div>
 
                 <div class="form-group">
@@ -53,6 +59,7 @@
                     type="text"
                     class="form-control"
                     formControlName="Remarks"
+                    style="height: 35px"
                   ></textarea>
                 </div>
               </div>

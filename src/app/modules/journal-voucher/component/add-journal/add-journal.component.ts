@@ -184,7 +184,7 @@ export class AddJournalComponent implements OnInit {
   dateConverterPopup(): void
   {
     this.modalRef = this.modalService.show(DateConverterComponent, {
-      initialState: { journalVouchForm: this.journalVoucherForms },
+      initialState: { VoucherForm: this.journalVoucherForms },
       backdrop: true,
       ignoreBackdropClick: true,
       class: "modal-sm",

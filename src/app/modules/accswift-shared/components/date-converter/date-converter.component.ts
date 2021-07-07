@@ -15,7 +15,7 @@ var adbs = require("ad-bs-converter");
 })
 export class DateConverterComponent implements OnInit {
    
-  @Input() journalVouchForm: FormGroup;
+  @Input() VoucherForm: FormGroup;
   public selectedDate:string ='';
 
   constructor(
@@ -65,7 +65,7 @@ export class DateConverterComponent implements OnInit {
     var dayPadded = dayPad.toString().padStart(2,0);
     let nepaliDate =  `${dateObject.en.year}-${monthPadded}-${dayPadded}`;
     console.log(nepaliDate);
-    // this.journalVouchForm.get("Date").patchValue(nepaliDate);
+    // this.VoucherForm.get("Date").patchValue(nepaliDate);
     // document.getElementById("bsToAd").replaceWith(nepaliDate);
     (document.getElementById('bsToAd') as HTMLInputElement).value = nepaliDate;
     return nepaliDate;
@@ -85,7 +85,7 @@ export class DateConverterComponent implements OnInit {
     var dayPadded = dayPad.toString().padStart(2,0);
     let engDate =  `${dateObject.year}-${monthPadded}-${dayPadded}`;
     console.log(engDate);
-    // this.journalVouchForm.get("Date").patchValue(engDate);
+    // this.VoucherForm.get("Date").patchValue(engDate);
     // document.getElementById("adToBs").replaceWith(engDate);
     // document.getElementById('adToBs').value = engDate;
     (document.getElementById('adToBs') as HTMLInputElement).value = engDate;
@@ -95,11 +95,11 @@ export class DateConverterComponent implements OnInit {
   public onOkay() {
     if (this.selectedDate == 'Nepali')
     {
-      this.journalVouchForm.get("Date").patchValue((document.getElementById('bsToAd')as HTMLInputElement).value);
+      this.VoucherForm.get("Date").patchValue((document.getElementById('bsToAd')as HTMLInputElement).value);
     }
     else if (this.selectedDate == 'English')
     {
-      this.journalVouchForm.get("Date").patchValue((document.getElementById('adToBs')as HTMLInputElement).value);
+      this.VoucherForm.get("Date").patchValue((document.getElementById('adToBs')as HTMLInputElement).value);
     }
     this.modalRef.hide();
     this.modalRef = null;

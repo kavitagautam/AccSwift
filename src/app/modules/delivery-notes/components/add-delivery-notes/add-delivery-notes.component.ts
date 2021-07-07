@@ -90,7 +90,7 @@ export class AddDeliveryNotesComponent implements OnInit, OnDestroy {
       ClientPAN: [""],
       ClientEmail: [""],
       DeliveredBy: ["", Validators.required],
-      DeliverContact: ["", Validators.required],
+      DeliverContact: ["", Validators.pattern],
       TotalQty: [0, Validators.required],
       DeliveryProductsList: this._fb.array([this.addDeliveryProductList()]),
       Remarks: [""],

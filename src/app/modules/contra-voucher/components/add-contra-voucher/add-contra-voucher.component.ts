@@ -5,6 +5,7 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { ContraVoucherService } from "../../services/contra-voucher.service";
 import { ContraVoucherMaster } from "../../models/contraVoucher.model";
+import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
 
 @Component({
   selector: "accSwift-add-contra-voucher",
@@ -76,6 +77,16 @@ export class AddContraVoucherComponent implements OnInit {
       this.addContraVoucherEntryList()
     );
     this.submitted = false;
+  }
+
+  dateConverterPopup(): void
+  {
+    this.modalRef = this.modalService.show(DateConverterComponent, {
+      initialState: { VoucherForm: this.contraVoucherForm },
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm",
+    })
   }
 
   public save(): void {

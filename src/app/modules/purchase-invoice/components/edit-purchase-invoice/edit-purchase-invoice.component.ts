@@ -5,11 +5,12 @@ import { FormBuilder, FormArray, Validators } from "@angular/forms";
 import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { Subject } from "rxjs";
-import { BsModalService } from "ngx-bootstrap";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { ProductCodeValidatorsService } from "@accSwift-modules/accswift-shared/validators/async-validators/product-code-validators/product-code-validators.service";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { RelatedUnits } from "@accSwift-modules/accswift-shared/models/related-unit.model";
+import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
 
 @Component({
   selector: "accSwift-edit-purchase-invoice",
@@ -40,6 +41,8 @@ export class EditPurchaseInvoiceComponent implements OnInit {
   grandTotalAmount: number = 0;
   rowSubmitted: boolean;
   editedRowIndex: any;
+  public modalRef: BsModalRef
+
   constructor(
     private _fb: FormBuilder,
     private router: Router,
@@ -237,6 +240,16 @@ export class EditPurchaseInvoiceComponent implements OnInit {
           this.toastr.success("Invoice edited successfully");
         }
       );
+  }
+
+  dateConverterPopup(): void
+  {
+    this.modalRef = this.modalService.show(DateConverterComponent, {
+      initialState: { VoucherForm: this.purchaseInvoiceForm },
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm",
+    })
   }
 
   public cancel(): void {

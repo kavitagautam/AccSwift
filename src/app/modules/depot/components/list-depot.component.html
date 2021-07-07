@@ -203,11 +203,19 @@
           </div>
           <div class="col-md-4 col-sm-6 col-xs-6">
             <div class="form-group">
-              <label>Telephone </label>
+              <label>Telephone<sup>*</sup></label>
               <input
                 class="form-control"
                 id="telephone"
                 formControlName="Telephone"
+                onkeyup="
+                  var v = this.value;
+                  if (!v.match(/[0-9]/)) {                     
+                      alert('Please enter digits only'); 
+                  } 
+                  "
+                maxlength="10"
+                accSwiftFormValidator
               />
             </div>
           </div>
@@ -238,11 +246,12 @@
           </div>
           <div class="col-md-4 col-sm-6 col-xs-6">
             <div class="form-group">
-              <label>Depot Address</label>
+              <label>Depot Address<sup>*</sup></label>
               <input
                 class="form-control"
                 type="text"
                 formControlName="DepotAddress"
+                accSwiftFormValidator
               />
             </div>
           </div>
@@ -299,7 +308,7 @@
         </div>
       </div>
     </div>
-    <div class="modal-footer ">
+    <div class="modal-footer">
       <button
         class="btn btn-primary"
         type="submit"

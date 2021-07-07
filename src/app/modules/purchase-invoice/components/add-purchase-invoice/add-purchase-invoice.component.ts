@@ -5,9 +5,10 @@ import { FormGroup } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
-import { BsModalService } from "ngx-bootstrap";
+import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
+import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
 
 @Component({
   selector: "accSwift-add-purchase-invoice",
@@ -34,6 +35,8 @@ export class AddPurchaseInvoiceComponent implements OnInit {
   vatTotalAmount: number = 0;
   grandTotalAmount: number = 0;
   private editedRowIndex: number;
+  public modalRef: BsModalRef
+
   constructor(
     private _fb: FormBuilder,
     public purchaseService: PurchaseInvoiceService,
@@ -196,6 +199,16 @@ export class AddPurchaseInvoiceComponent implements OnInit {
           this.toastr.success("Invoice added successfully");
         }
       );
+  }
+
+  dateConverterPopup(): void
+  {
+    this.modalRef = this.modalService.show(DateConverterComponent, {
+      initialState: { VoucherForm: this.purchaseInvoiceForm },
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm",
+    })
   }
 
   public cancel(): void {
