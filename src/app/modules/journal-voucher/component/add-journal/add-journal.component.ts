@@ -161,6 +161,11 @@ export class AddJournalComponent implements OnInit {
       this.journalVoucherForms.get("Date").patchValue(resultDate);
       console.log(this.journalVoucherForms.value.Date);
     }
+    else if (this.selectedDate == 'English')
+    {
+      console.log(this.journalVoucherForms.value.Date);
+      this.journalVoucherForms.get("Date").patchValue(this.journalVoucherForms.value.Date);
+    }
     this.journalService
       .addJournalVoucher(this.journalVoucherForms.value)
       .subscribe(

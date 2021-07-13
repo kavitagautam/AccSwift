@@ -1,4 +1,4 @@
-  import {
+import {
     Component,
     OnInit,
     ViewChild,
@@ -16,7 +16,7 @@
   import { BsModalRef, BsModalService } from "ngx-bootstrap";
   import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
   import { ToastrService } from "ngx-toastr";
-
+  
   @Component({
     selector: "accSwift-landing-ledger",
     templateUrl: "./landing-ledger.component.html",
@@ -38,30 +38,28 @@
     listViewLoading: boolean;
     ledgerGroupList: any; 
     userType: string = localStorage.getItem("user_type");
-
+  
     modalRef: BsModalRef;
-
+  
     ledgerData: any;
-
-    assetsHtml: string;
-    assetsTest: any;
+  
     assetsData: any;
     currentAssets:any;
     fixedAssets:any;
-
+  
     liabilityData: any;
     currentLiability: any;
     ownerFund: any;
     loanFund: any;
-
+  
     incomeData: any;
     directIncome: any;
     indirectIncome: any;
-
+  
     expenditureData: any;
     directExpense: any;
     indirectExpense: any;
-
+  
     config = {
       backdrop: true,
       ignoreBackdropClick: true,
@@ -75,26 +73,27 @@
       private ledgerService: LedgerService,
       private router: Router,
       private componentFactoryResolver: ComponentFactoryResolver,
+      // private modalRef: BsModalRef,
       private modalService: BsModalService,
       private toastr: ToastrService,
     ) {}
-
+  
     ngOnInit() {
       this.selectedGroupTab = true;
       this.loadLedgerTreeView();
       this.loadLedgerGroupList();
       this.groupLedgerTreeItems();
-      this.parseTree();
-      // this.hierarchialLedger();
+      this.hierarchialLedger();
       console.log(this.selectedItem);
     }
-
+  
     loadLedgerTreeView(): void {
       this.treeViewLoading = true;
       this.ledgerService.getLedgerTreeView().subscribe(
         (response) => {
           this.ledgerTreeNode = response.Entity.Node;
           this.ledgerTreeList = response.Entity.Tree;
+          // console.log(this.ledgerTreeList)
           this.treeViewLoading = false;
           localStorage.setItem("LedgerTreeList", JSON.stringify(response.Entity.Tree));
         },
@@ -105,17 +104,20 @@
           this.treeViewLoading = false;
         }
       );
-
+  
     }
-
-
+  
+  
     groupLedgerTreeItems(){
       const ledgerTree = JSON.parse(localStorage.getItem("LedgerTreeList"));
       this.ledgerData = ledgerTree;
+      // console.log(ledgerTree);
       let assets,liabilities,income,expenditure;
       ledgerTree.map(function(item){
+        // console.log(item);
         if (item.Title==="Assets"){
           assets=item;
+          // console.log(item.Child)
         }
         else if (item.Title==="Liabilities"){
           liabilities=item;
@@ -131,8 +133,13 @@
       this.liabilityData = liabilities;
       this.incomeData = income;
       this.expenditureData = expenditure;
+  
+      // localStorage.setItem("assetsData", JSON.stringify(assets));
+      // localStorage.setItem("liabilitiesData", JSON.stringify(liabilities));
+      // localStorage.setItem("incomeData", JSON.stringify(income));
+      // localStorage.setItem("expenditureData", JSON.stringify(expenditure));
     }
-
+  
     hierarchialLedger()
     {
       const ledgersData = this.ledgerData;
@@ -357,84 +364,48 @@
       // console.log(this.indirectIncome);
       // console.log(this.directIncome);
     }
-
-    
-    parseTree(){
-      let html = ["<ul>"];
-      const assets = [this.assetsData];
-      console.log(assets);
-      this.setupLedger(assets, html);
-    }
-    
-    setupLedger(assets, html){
-      console.log(assets);
-      console.log(html);
-      this.assetsHtml = "";
-      console.log(Array.isArray(assets) && assets.length);
-      if (Array.isArray(assets) && assets.length) {
-      for (const val of assets){
-        const child = val.Child;
-        console.log(child);
-        console.log(val.Title);
-        html.push ( `<div class="group-tabs">
-        <h2 class="group-name">${val.Title}</h2>
-        <button
-          class="btn btn-primary pull-left"
-          (click)="addNewerLedger()"
-        >
-          <i class="fa fa-plus" aria-hidden="true"></i> Add New
-          Ledger
-        </button>
-      </div>`)
-      html.push(`<div class="ledger-tabs">
-      <div class="row">
-        <div class="col-lg-5">
-          <div class="ledger">
-            <ng-container>`)
-      html.push(`<li
-        
-      >
-        <span [ngClass]="colorGroupOrLedger(ledger)">
-          <span *ngIf="val.Code"
-            >(${val.Code})</span
-          >
-          &nbsp; ${ val.Title }
-        </span>
-        <span class="icon">
-        <i
-          class="fas fa-edit"
-          (click)="editNewLedger(ledger)"
-        ></i>
-        <i
-          class="fas fa-trash-alt"
-          (click)="deleteAccountLedger(ledger)"
-        ></i>
-      </span>
-      
-      </li>`)
-      html.push(`</div>
-      </div>
-        </div">
-          </div">
-            </ng-container>`)
-            html.push("</ul>");
-          this.setupLedger(child, html);
-          
-          
-     }
-     this.assetsHtml = html.join("");
-          console.log(this.assetsHtml);
-    } return;
-    }
-
-
+  
+    // assetsFilter(sortedArray) {
+    //   var ledgerTree = JSON.parse(localStorage.getItem("LedgerTreeList"));
+    //   console.log(ledgerTree);
+    //   sortedArray = ledgerTree.filter(function(val)
+    //   {
+    //     console.log(val.Code);
+    //     console.log(val.GroupOrLedgerNo);
+    //     console.log(val['Child'][0]['Title'])
+    //     console.log(val.Child[0].Child[0]);
+    //     localStorage.setItem("SubGroups",JSON.stringify(val.Child[0].Child[0]));
+    //     if (val.Code=="fgfg" &&
+    //     val.GroupOrLedgerNo == 1)
+    //     return sortedArray;
+    //   });
+    //   localStorage.setItem("LedgerAssets", JSON.stringify(sortedArray));
+    //   return sortedArray;
+    // }
+  
+    // liabFilter(sortedArray) {
+    //   var ledgerTree = JSON.parse(localStorage.getItem("LedgerTreeList"));
+    //   console.log(ledgerTree);
+    //   sortedArray = ledgerTree.filter(function(val)
+    //   {
+    //     console.log(val.Code);
+    //     console.log(val.GroupOrLedgerNo);
+    //     if (val.Code==null &&
+    //     val.GroupOrLedgerNo == 2)
+    //     return sortedArray;
+    //   });
+    //   localStorage.setItem("LedgerLiab", JSON.stringify(sortedArray));
+    //   return sortedArray;
+    // }
+  
+  
     loadLedgerGroupList(): void 
     {
       this.ledgerService.getLedgerGroupList().subscribe((response)=> {
           this.ledgerGroupList = response.Entity;
       })
     }
-
+  
     loadLedgerlistView(): void {
       this.listViewLoading = true;
       this.ledgerService.getLedgerListView().subscribe(
@@ -449,14 +420,14 @@
         }
       );
     }
-
+  
     public colorGroupOrLedger({ Title, TypeOf }: any): any {
       return {
         "tree-node": TypeOf == 1,
         "tree-child": TypeOf == 0,
       };
     }
-
+  
     selectedNode(dataItem): void {
       console.log(dataItem);
       if (dataItem.TypeOf === 0) {
@@ -483,7 +454,7 @@
         componentRef.instance.selectedItem = dataItem;
       }
     }
-
+  
     editNewLedger(ledger): void {
       console.log(ledger);
       console.log(this.selectedItem);
@@ -495,7 +466,7 @@
       console.log(this.modalRef);
       console.log(this.modalRef.content);
     }
-
+  
     editNewGroup(group):void {
       console.log(group);
       console.log(this.selectedItem);
@@ -507,7 +478,7 @@
       console.log(this.modalRef);
       console.log(this.modalRef.content);
     }
-
+  
     addNewLedger(): void {
       this.dynamicContentDiv.clear();
       const factory = this.componentFactoryResolver.resolveComponentFactory(
@@ -516,15 +487,21 @@
       const componentRef = this.dynamicContentDiv.createComponent(factory);
       componentRef.instance.selectedItem = null;
       console.log(componentRef.instance.selectedItem);
+  
+      // componentRef.instance.onCancel.subscribe((data) => {
+      //   if (data) {
+      //     this.viewProductGroup();
+      //   }
+      // });
     }
-
+  
     addNewerLedger():void 
     {
       this.modalRef = this.modalService.show(AccountLedgerComponent, this.config);
       this.modalRef.content.selectedItem = null;
       console.log(this.modalRef.content.selectedItem = null);
     }
-
+  
     addLedgerGroup(): void {
       this.dynamicContentDiv.clear();
       const factory = this.componentFactoryResolver.resolveComponentFactory(
@@ -533,13 +510,13 @@
       const componentRef = this.dynamicContentDiv.createComponent(factory);
       componentRef.instance.selectedItem = null;
     }
-
+  
     addNewLedgerGroup():void 
     {
       this.modalRef = this.modalService.show(AccountGroupComponent, this.config);
       this.modalRef.content.selectedItem = null;
     }
-
+  
     deleteAccountLedger(ledger): void {
       this.selectedItem = ledger;
       const initialState = { selectedItem: this.selectedItem};
@@ -572,8 +549,8 @@
         }
       );
     }
-
-
+  
+  
     deleteLedgerGroup(group): void {
       this.selectedItem = group;
       const initialState = { selectedItem: this.selectedItem};
@@ -589,7 +566,7 @@
         }
       });
     }
-
+  
     public deleteLedgerGroupByID(id): void {
       this.ledgerService.deleteLedgerGroupByID(id).subscribe(
         (response) => {
@@ -605,36 +582,20 @@
         }
       );
     }
-
+  
     public onTabSelect(e) {
       if (e.index == 1) {
         this.loadLedgerlistView();
       }
     }
-
+  
     expandAllNode(): void {
       this.expandedKeys = this.ledgerTreeNode;
     }
-
+  
     collapseAllNode(): void {
       this.expandedKeys = [];
     }
-
+  
   }
-
-//   function parseTree(assetsData){
-//   let html = []
-//   const assets = assetsData
-//   setupLedger(assets, html)
-// }
-
-// function setupLedger(assets, html){
-//   const child = assets.Child
-//   if(!child){console.log(assets.Title + " " + assets.GroupOrLedgerNo); return;}
-//   console.log(assets.Title + " " + assets.GroupOrLedgerNo);
-//   for(const val of child){
-//       setupLedger(val, html);
-//  }
-// }
-
   
