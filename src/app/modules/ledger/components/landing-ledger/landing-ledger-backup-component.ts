@@ -42,7 +42,8 @@ import {
     modalRef: BsModalRef;
   
     ledgerData: any;
-  
+
+    assetsHtml: string;
     assetsData: any;
     currentAssets:any;
     fixedAssets:any;
@@ -84,6 +85,7 @@ import {
       this.loadLedgerGroupList();
       this.groupLedgerTreeItems();
       this.hierarchialLedger();
+      // this.parseTree();
       console.log(this.selectedItem);
     }
   
@@ -364,7 +366,62 @@ import {
       // console.log(this.indirectIncome);
       // console.log(this.directIncome);
     }
-  
+
+    //Recursive Fuction
+
+    parseTree() {
+      let html = [""];
+      const assets = [this.assetsData];
+      console.log(assets);
+      this.setupData(assets, html);
+    }
+    
+    setupData(assets, html) { 
+      console.log(assets);
+      // console.log(html);
+      this.assetsHtml = "";
+      // console.log(Array.isArray(assets) && assets.length);
+      if (Array.isArray(assets) && assets.length) {
+        for (const val of assets){
+          // console.log(val); //Display Main Branch Object Details
+          console.log(val.Title);
+          const child = val.Child;
+          console.log(child); //Display all n objects(Main Groups Details) inside main branch
+          html.push (`<div class="group-tabs">
+          <h2 class="group-name">${val.Title}</h2>
+          <button
+            class="btn btn-primary pull-left"
+            (click)="addNewerLedger()"
+          >
+            <i class="fa fa-plus" aria-hidden="true"></i> Add New
+            Ledger
+          </button>
+          </div>`);
+          this.setupGroup(child, html);
+          this.setupData(child, html);  //Iterate over all Groups and Ledgers hierarchy inside assets in a linear form
+        }
+        this.assetsHtml = html.join(""); //Returns array as a string
+        console.log(this.assetsHtml);
+      } return;
+    }
+
+    
+    setupGroup(child,html)
+    {
+      // console.log(child);
+      if (Array.isArray(child) && child.length) {
+          for (const item of child)
+          {
+            const ledgerDetails = item.Child; //Display all groups and ledgers details inside main groups(Siblings)
+            console.log("*******Main Groups********")
+            console.log(item.Title); //Should Display only Main Groups Title but not due to recursion
+            console.log("#######ledgers#######")
+            console.log(ledgerDetails);
+            this.setupGroup(ledgerDetails,html); // Iterate over all groups and ledgers hierarchy inside main groups(Childs) 
+          }
+        }return;
+    }
+
     // assetsFilter(sortedArray) {
     //   var ledgerTree = JSON.parse(localStorage.getItem("LedgerTreeList"));
     //   console.log(ledgerTree);

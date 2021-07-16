@@ -130,9 +130,84 @@
       <kendo-tabstrip>
         <ng-container *ngFor="let item of ledgerData; index as i">
           <kendo-tabstrip-tab title="{{ item.Title }}" [selected]="i === 0">
+            <!--Main Branches-->
             <ng-template kendoTabContent>
-              <ng-container>
-                <fieldset [innerHTML]="assetsHtml"></fieldset>
+              <ng-container *ngFor="let groups of groupArrays">
+                <fieldset>
+                  <div class="group-tabs">
+                    <h2 class="group-name">{{ groups.Title }}</h2>
+                    <!--Main Groups-->
+                    <button
+                      class="btn btn-primary pull-left"
+                      (click)="addNewerLedger()"
+                    >
+                      <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                      Ledger
+                    </button>
+                  </div>
+                  <div class="ledger-tabs">
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <div class="ledger">
+                          <ul
+                            style="
+                              color: black;
+                              font-weight: 600;
+                              cursor: pointer;
+                            "
+                            (click)="getLedgersByID(groups.ID)"
+                          >
+                            View Ledgers
+                          </ul>
+                          <ul
+                            *ngFor="let ledger of ledgersOfGroups; index as i"
+                          >
+                            <span [ngClass]="colorGroupOrLedger(ledger)">
+                              <!--Ledgers-->
+                              <span *ngIf="ledger.LedgerCode"
+                                >({{ ledger.LedgerCode }})</span
+                              >
+                              &nbsp; {{ ledger.Name }}
+                            </span>
+                            <span class="icon">
+                              <i
+                                class="fas fa-edit"
+                                (click)="editNewLedger(ledger)"
+                              ></i>
+                              <i
+                                class="fas fa-trash-alt"
+                                (click)="deleteAccountLedger(ledger)"
+                              ></i>
+                            </span>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <div class="warn">
+                          <p>
+                            Cash you haven’t deposited in the bank. Add your
+                            bank and credit card accounts to accurately
+                            categorize transactions that aren’t cash.
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 btns">
+                        <button class="modify-btn">
+                          <i
+                            class="fas fa-edit"
+                            (click)="editNewGroup(groups)"
+                          ></i>
+                        </button>
+                        <button class="modify-btn">
+                          <i
+                            class="fas fa-trash-alt"
+                            (click)="deleteLedgerGroup(groups)"
+                          ></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
               </ng-container>
             </ng-template>
           </kendo-tabstrip-tab>
