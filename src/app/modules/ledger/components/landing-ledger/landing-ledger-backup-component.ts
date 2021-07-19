@@ -23,6 +23,7 @@ import {
     styleUrls: ["./landing-ledger.component.scss"],
     providers: [BsModalRef]
   })
+  
   export class LandingLedgerComponent implements OnInit {
     @ViewChild("dynamicContentDiv", { read: ViewContainerRef })
     dynamicContentDiv: ViewContainerRef;

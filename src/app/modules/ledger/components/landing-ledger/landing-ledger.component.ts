@@ -43,13 +43,13 @@ export class LandingLedgerComponent implements OnInit {
 
   mainGroups:LedgerGroup[]=[];
   ledgersOfGroups:Ledgers[]=[];
+  ledgers = [];
 
   modalRef: BsModalRef;
 
   ledgerData: any;
 
   groupArrays: any;
-  groupId: any;
 
   assetsHtml: string;
   assetsData: any;
@@ -92,7 +92,7 @@ export class LandingLedgerComponent implements OnInit {
     this.loadLedgerGroupList();
     this.groupLedgerTreeItems();
     this.getMajorGroups();
-    // this.getLedgersByID();
+    this.getLedgerByID();
     // this.parseTree();
     // this.hierarchialLedger();
     console.log(this.selectedItem);
@@ -168,16 +168,24 @@ export class LandingLedgerComponent implements OnInit {
   }
 
 
-  getLedgersByID(id): void {
-    console.log(id);
-    this.selectedItem = id;
-    console.log(this.selectedItem);
-    this.ledgerService
-      .getLedgersById(this.selectedItem)
+  getLedgerByID(): void {
+    console.log(this.groupArrays);
+    var groupArray = this.groupArrays;
+    for (const item of groupArray) { 
+      console.log(item)
+      const param = item.ID
+      this.ledgerService
+      .getLedgersById(param)
       .subscribe((res) => {
         this.ledgersOfGroups = res.Entity;
         console.log(this.ledgersOfGroups);
+        // if (item.Title && res.Entity)
+        // {
+        //   this.ledgers.push( {"Title": item.Title, "values": res.Entity});
+        // }
+        // console.log(this.ledgers);
       });
+    }
   }
   
 
