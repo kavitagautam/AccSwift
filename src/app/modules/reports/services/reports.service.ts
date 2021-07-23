@@ -9,6 +9,7 @@ import {
   SalesReportModel,
   CashPartyGroupModel,
   PurchaseReportModel,
+  CashPartyGroup,
 } from "../models/sales.report.model";
 import {
   LedgerReportsRootModel,
@@ -28,7 +29,7 @@ import {
   Project,
   ProjectRootModel,
 } from "@accSwift-modules/accswift-shared/models/project.model";
-import { CashPartyModel } from "@accSwift-modules/accswift-shared/models/cash-party.model";
+import { CashParty, CashPartyModel } from "@accSwift-modules/accswift-shared/models/cash-party.model";
 import { Depot, DepotModel } from "@accSwift-modules/depot/models/depot.model";
 import {
   SalesAccountModel,
@@ -93,6 +94,8 @@ export class ReportsService {
   _api_URL = environment.baseAPI;
   productList: ProductMin[] = [];
   productGroupList: ProductGroup[] = [];
+  cashPartyList: CashParty[] = [];
+  cashPartyGroupList: CashPartyGroup[] = [];
   projectList: Project[] = [];
   accountLists: AccountClass[];
   transVoucherType: VoucherType[] = [];
@@ -167,6 +170,8 @@ export class ReportsService {
   ) {
     this.getProductMin();
     this.getProductGroup();
+    this.getParty();
+    this.getPartyGroup();
     this.getAccountClass();
     this.getProjectLists();
     this.getVoucherType();
@@ -228,6 +233,7 @@ export class ReportsService {
   getProductGroupDD(): Observable<ProductGroupModel> {
     return this.httpService.get(`${this._api_URL}ProductGroup`);
   }
+
   getProjectLists(): void {
     this.httpService
       .get(`${this._api_URL}project`)
@@ -339,8 +345,22 @@ export class ReportsService {
     );
   }
 
-  getCashParty(): Observable<CashPartyModel> {
+  getParty(): void {
+    this.httpService
+      .get(`${this._api_URL}Ledger/cashparty`)
+      .subscribe((response: CashPartyModel) => {
+        this.cashPartyList = response.Entity;
+      });
+  }
+
+  getCashParty():Observable<CashPartyModel> {
     return this.httpService.get(`${this._api_URL}Ledger/cashparty`);
+  }
+
+  getPartyGroup(): void {
+    this.httpService.get(`${this._api_URL}LedgerGroup/CashPartyGroups`).subscribe((response: CashPartyGroupModel) => {
+      this.cashPartyGroupList = response.Entity;
+    });
   }
 
   getCashPartyGroup(): Observable<CashPartyGroupModel> {

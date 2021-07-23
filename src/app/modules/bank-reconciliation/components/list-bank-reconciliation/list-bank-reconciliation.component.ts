@@ -12,6 +12,7 @@ import { Component, OnInit } from "@angular/core";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { BankReconciliation } from "../../models/bank-reconciliation.model";
+import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
 
 @Component({
   selector: "accSwift-list-bank-reconciliation",
@@ -147,5 +148,15 @@ export class ListBankReconciliationComponent implements OnInit {
   public deleteBankReconciliationByID(id): void {
     this.toastr.success("Bank deleted successfully");
     //call Delete Api
+  }
+
+  dateConverterPopup(): void
+  {
+    this.modalRef = this.modalService.show(DateConverterComponent, {
+      initialState: { VoucherForm: this.bankReconciliationForm },
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm",
+    })
   }
 }

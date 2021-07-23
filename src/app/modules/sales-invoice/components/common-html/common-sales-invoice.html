@@ -258,6 +258,16 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-md-12">
+        <accSwift-cash-account
+          formControlName="LedgerID"
+        ></accSwift-cash-account>
+      </div>
+      <div class="col-md-12">
+        <accSwift-bank-account
+          formControlName="LedgerID"
+        ></accSwift-bank-account>
+      </div>
+      <div class="col-md-12">
         <form [formGroup]="tenderForm" novalidate>
           <div class="form-group">
             <label>Tender Amount</label>

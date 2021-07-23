@@ -173,7 +173,7 @@ export class LandingLedgerComponent implements OnInit {
     var groupArray = this.groupArrays;
     for (const item of groupArray) { 
       console.log(item)
-      const param = item.ID
+      const param = item.ID;
       this.ledgerService
       .getLedgersById(param)
       .subscribe((res) => {
@@ -181,7 +181,7 @@ export class LandingLedgerComponent implements OnInit {
         console.log(this.ledgersOfGroups);
         // if (item.Title && res.Entity)
         // {
-        //   this.ledgers.push( {"Title": item.Title, "values": res.Entity});
+        //   this.ledgers.push( {"Title": item.Title, "values": res.Entity}); // Use loop in values as well
         // }
         // console.log(this.ledgers);
       });

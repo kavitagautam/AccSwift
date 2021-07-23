@@ -15,8 +15,8 @@
     </div>
     <div id="collapseOne" class="box-body collapse" data-parent="#accordion">
       <div class="row">
-        <div class="col-md-12">
-          <form [formGroup]="cashReceiptForm" novalidate>
+        <form [formGroup]="cashReceiptForm" novalidate>
+          <div class="col-md-12">
             <div class="col-md-3 col-sm-6 col-xs-6">
               <accSwift-series-forms
                 formControlName="SeriesID"
@@ -46,7 +46,8 @@
                 [series]="null"
               ></accSwift-voucher-forms>
             </div>
-
+          </div>
+          <div class="col-md-12">
             <div class="col-md-3 col-sm-6 col-xs-6">
               <accSwift-project-forms
                 formControlName="ProjectID"
@@ -63,8 +64,8 @@
                 />
               </div>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
       <div class="box-footer">
         <div class="mb-2">
