@@ -244,7 +244,11 @@
           </tfoot>
         </table>
 
-        <table *ngIf="reportType == 'KHARID_KHATA'" id="header-fixed" class="table table-hover table-fixed">
+        <table
+          *ngIf="reportType == 'KHARID_KHATA'"
+          id="header-fixed"
+          class="table table-hover table-fixed"
+        >
           <thead>
             <tr>
               <th colspan="1">SalesDate</th>
@@ -269,9 +273,7 @@
               <td>{{ kharidKhata.SellerPAN }}</td>
               <td class="balance">
                 <span
-                  [innerHTML]="
-                    kharidKhata.TotalPurchaseAmt | currencyFormat
-                  "
+                  [innerHTML]="kharidKhata.TotalPurchaseAmt | currencyFormat"
                 ></span>
               </td>
               <td class="balance">
@@ -281,9 +283,7 @@
               </td>
               <td class="balance">
                 <span
-                  [innerHTML]="
-                    kharidKhata.TaxablePurchaseAmt | currencyFormat
-                  "
+                  [innerHTML]="kharidKhata.TaxablePurchaseAmt | currencyFormat"
                 ></span>
               </td>
               <td class="balance">
@@ -316,14 +316,10 @@
               <td colspan="1"></td>
               <td colspan="1"></td>
               <td class="balance" colspan="1">
-                <span
-                  [innerHTML]="sumTotalPurchaseAmt | currencyFormat"
-                ></span>
+                <span [innerHTML]="sumTotalPurchaseAmt | currencyFormat"></span>
               </td>
               <td class="balance" colspan="1">
-                <span
-                  [innerHTML]="sumNonTaxableAmt | currencyFormat"
-                ></span>
+                <span [innerHTML]="sumNonTaxableAmt | currencyFormat"></span>
               </td>
               <td class="balance" colspan="1">
                 <span
@@ -331,14 +327,10 @@
                 ></span>
               </td>
               <td class="balance" colspan="1">
-                <span
-                  [innerHTML]="sumTaxPurchaseAmt | currencyFormat"
-                ></span>
+                <span [innerHTML]="sumTaxPurchaseAmt | currencyFormat"></span>
               </td>
               <td class="balance" colspan="1">
-                <span
-                  [innerHTML]="sumTaxableSalesAmt | currencyFormat"
-                ></span>
+                <span [innerHTML]="sumTaxableSalesAmt | currencyFormat"></span>
               </td>
               <td class="balance" colspan="1">
                 <span [innerHTML]="sumTaxSalesAmt | currencyFormat"></span>
@@ -346,7 +338,179 @@
             </tr>
           </tfoot>
         </table>
-        
+
+        <table
+          *ngIf="reportType == 'SALES_PARTY_TRANSACT'"
+          id="header-fixed"
+          class="table table-hover table-fixed"
+        >
+          <thead>
+            <tr>
+              <th colspan="1">S.N.</th>
+              <th
+                *ngIf="form.get('ProductID').value || form.get('PartyID').value"
+                colspan="1"
+              >
+                Date
+              </th>
+              <th
+                *ngIf="form.get('ProductID').value || form.get('PartyID').value"
+                colspan="1"
+              >
+                Voucher No.
+              </th>
+              <th
+                *ngIf="form.get('ProductID').value || form.get('PartyID').value"
+                colspan="1"
+              >
+                VoucherType
+              </th>
+              <th colspan="1">Particulars</th>
+              <th
+                *ngIf="
+                  selectType === 'product' &&
+                  form.get('ProductID').value === null
+                "
+                colspan="1"
+              >
+                Unit
+              </th>
+              <th colspan="1">Rate</th>
+              <th colspan="1">Sales Qty</th>
+              <th colspan="1">Return Qty</th>
+              <th colspan="1">Net Sales Qty</th>
+              <th colspan="1">Amount</th>
+            </tr>
+          </thead>
+          <!-- <ng-container
+        *ngIf="
+          form.get('ProductID').value == null ||
+            form.get('PartyID').value == null;
+          else next
+        "
+      > -->
+          <tbody *ngFor="let l of salesReportList; index as i">
+            <tr>
+              <!-- <tr (click)="openProductPartyDetails(salesDetails, l)"> -->
+              <td>{{ i + 1 }}</td>
+              <td
+                *ngIf="form.get('ProductID').value || form.get('PartyID').value"
+              >
+                {{ l.Date | date: "MM-dd-yyyy" }}
+              </td>
+              <td
+                *ngIf="form.get('ProductID').value || form.get('PartyID').value"
+              >
+                {{ l.VoucherNumber }}
+              </td>
+              <td
+                *ngIf="form.get('ProductID').value || form.get('PartyID').value"
+              >
+                {{ l.VocherType }}
+              </td>
+              <td style="color: blue">{{ l.Name }}</td>
+              <td
+                *ngIf="
+                  selectType === 'product' &&
+                  form.get('ProductID').value === null
+                "
+              >
+                {{ l.Unit }}
+              </td>
+              <td class="balance">
+                <span [innerHTML]="l.Rate | currencyFormat"></span>
+              </td>
+              <td align="right">{{ l.SalesQty }}</td>
+              <td align="right">{{ l.ReturnQty }}</td>
+              <td align="right">{{ l.NetSalesQty }}</td>
+              <td class="balance">
+                <span [innerHTML]="l.Amount | currencyFormat"></span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="salesReportList.length == 0">
+            <tr>
+              <td colspan="10" align="center">No Data Available</td>
+            </tr>
+          </tbody>
+          <!-- </ng-container> -->
+
+          <!-- <ng-template #next>
+        <tbody *ngFor="let l of salesReportList; index as i">
+          <tr (click)="openSalesDetailsDetails($event, lopenSalesDetailsDetails($event, l)">
+            <td>{{ i + 1 }}</td>
+            <td
+              *ngIf="
+                form.get('ProductID').value ||
+                form.get('PartyID').value
+              "
+            >
+              {{ l.Date | date: "MM-dd-yyyy" }}
+            </td>
+            <td
+              *ngIf="
+                form.get('ProductID').value ||
+                form.get('PartyID').value
+              "
+            >
+              {{ l.VoucherNumber }}
+            </td>
+            <td>
+              {{ l.VocherType }}
+            </td>
+            <td style="color: blue">{{ l.Name }}</td>
+            <td
+              *ngIf="
+                selectType === 'product' &&
+                form.get('ProductID').value === null
+              "
+            >
+              {{ l.Unit }}
+            </td>
+            <td class="balance">
+              <span [innerHTML]="l.Rate | currencyFormat"></span>
+            </td>
+            <td align="right">{{ l.SalesQty }}</td>
+            <td align="right">{{ l.ReturnQty }}</td>
+            <td align="right">{{ l.NetSalesQty }}</td>
+            <td class="balance">
+              <span [innerHTML]="l.Amount | currencyFormat"></span>
+            </td>
+          </tr>
+          <tr *ngIf="salesReportList.length == 0">
+            <td colspan="10" align="center">No Data Available</td>
+          </tr>
+        </tbody>
+      </ng-template> -->
+
+          <tfoot>
+            <tr>
+              <td colspan="1"></td>
+              <td colspan="1"></td>
+              <td colspan="1"></td>
+
+              <td class="balance">Total Sales Quantity:</td>
+              <td class="balance">
+                <span [innerHTML]="totalSalesQty"></span>
+              </td>
+
+              <!-- <td class="balance">Total Return Quantity:</td>
+          <td class="balance">
+            <span [innerHTML]="totalReturnQty"></span>
+          </td>
+
+          <td class="balance">Total Net Sales Quantity:</td>
+          <td class="balance">
+            <span [innerHTML]="totalNetSalesQty"></span>
+          </td> -->
+
+              <td class="balance">Total Amount:</td>
+              <td class="balance">
+                <span [innerHTML]="totalAmount | currencyFormat"></span>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
     </kendo-pdf-export>
   </div>

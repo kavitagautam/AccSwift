@@ -73,7 +73,6 @@ export class SettingsReportsComponent implements OnInit {
           : null
       );
     this.formsField = Object.keys(this.settingsForms.controls);
-
   }
 
   getProductGroupDD(): void {
@@ -369,6 +368,9 @@ export class SettingsReportsComponent implements OnInit {
   showReport(): void {
     this.onSubmit.next(this.settingsForms.value);
     this.modalRef.hide();
+    console.log(this.settingsForms.value);
+    console.log(this.settingsForms.get("PartyID").value);
+    localStorage.setItem("PartyID", this.settingsForms.get("PartyID").value);
   }
 
   public onCancel(): void {

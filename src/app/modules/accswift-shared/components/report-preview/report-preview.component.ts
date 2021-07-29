@@ -7,6 +7,7 @@ import { Store } from "@ngxs/store";
 import { SalesInvoiceService } from '@accSwift-modules/sales-invoice/services/sales-invoice.service';
 import { Company } from '@accSwift-modules/company/models/company.model';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -17,7 +18,10 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 export class ReportPreviewComponent implements OnInit {
 
   iconConst = IconConst;
-  reportType: string;companyLogo: any = "";
+  reportType: string;
+  form: FormGroup;
+  selectType: string;
+  companyLogo: any = "";
   companyDetails: Company;
   
   cashFlowPreview: any = [];
@@ -38,6 +42,11 @@ export class ReportPreviewComponent implements OnInit {
   sumTaxPurchaseAmt: number;
   sumTaxableSalesAmt: number;
   sumTaxSalesAmt: number;
+
+  salesReportList: any = [];
+  totalSalesQty: number;
+  totalAmount: number;
+  totalDiscountAmount: number;
 
   constructor(private exportService: ExportToCsvService,
     private localStorageService: LocalStorageService,
@@ -93,6 +102,18 @@ export class ReportPreviewComponent implements OnInit {
       this.sumTaxPurchaseAmt = JSON.parse(localStorage.getItem("sumTaxPurchaseAmt"));
       this.sumTaxableSalesAmt = JSON.parse(localStorage.getItem("sumTaxableSalesAmt"));
       this.sumTaxSalesAmt = JSON.parse(localStorage.getItem("sumTaxSalesAmt"));
+    }
+
+    if (this.router.url.indexOf("/sales-report") > -1) {
+      this.reportType = "SALES_PARTY_TRANSACT";
+      let data;
+      if (data) {
+        this.salesReportList = JSON.parse(localStorage.getItem("salesReportList")); 
+      }
+      console.log(this.salesReportList);
+      this.totalSalesQty = JSON.parse(localStorage.getItem("totalSalesQty"));
+      this.totalAmount = JSON.parse(localStorage.getItem("totalAmount"));
+      this.totalDiscountAmount = JSON.parse(localStorage.getItem("totalDiscountAmount"));
     }
 
    }
