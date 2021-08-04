@@ -4,16 +4,19 @@
     userType == 'Advanced' || (userType == 'Basic' && voucherType !== 'SALES')
   "
 >
-  <form [formGroup]="salesInvoiceForm" novalidate>
-    <div class="col-md-6">
-      <accSwift-cash-party-account
-        formControlName="CashPartyLedgerID"
-      ></accSwift-cash-party-account>
-    </div>
-  </form>
+  <div class="row">
+    <form [formGroup]="salesInvoiceForm" novalidate>
+      <div class="col-md-4">
+        <accSwift-cash-party-account
+          formControlName="CashPartyLedgerID"
+          (ngModelChange)="viewPartyInvoices()"
+        ></accSwift-cash-party-account>
+      </div>
+    </form>
+  </div>
 
-  <h5>{{ entryArray.getRawValue() | json }}</h5>
-  <h5>{{ salesInvoiceForm.getRawValue() | json }}</h5>
+  <!-- <h5>{{ entryArray.getRawValue() | json }}</h5>
+  <h5>{{ salesInvoiceForm.getRawValue() | json }}</h5> -->
   <kendo-grid
     [data]="entryArray.value"
     (add)="addHandler($event)"
@@ -159,6 +162,7 @@
               [formControl]="entryArray.controls[rowIndex].get('LedgerID')"
               (filterChange)="ledgerDDFilter($event, rowIndex)"
               (valueChange)="handleLedgerChange($event, rowIndex)"
+              (ngModelChange)="viewPartyInvoices()"
             >
               <ng-template kendoDropDownListItemTemplate let-dataItem>
                 <span class="template">{{ dataItem.CodeName }} </span>
@@ -178,13 +182,6 @@
             <a (click)="openLedgerModal(rowIndex)"
               ><i
                 class="fa fa-eye pull-right ledgerSelectIcon"
-                style="margin: 0px; font-size: 16px; position: relative"
-                aria-hidden="true"
-              ></i>
-            </a>
-            <a (click)="viewPartyInvoices()"
-              ><i
-                class="fas fa-file-invoice pull-right partyInvoiceIcon"
                 style="margin: 0px; font-size: 16px; position: relative"
                 aria-hidden="true"
               ></i>

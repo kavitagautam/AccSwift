@@ -13,8 +13,8 @@
   <div class="container-fluid">
     <div class="row mt-2">
       <div class="grid-wrapper">
-        <h5>{{ entryArray.getRawValue() | json }}</h5>
-        <h5>{{ salesInvoiceForm.getRawValue() | json }}</h5>
+        <!-- <h5>{{ entryArray.getRawValue() | json }}</h5>
+        <h5>{{ salesInvoiceForm.getRawValue() | json }}</h5> -->
 
         <kendo-grid
           [data]="gridView"
@@ -92,6 +92,16 @@
               >
             </ng-template>
           </kendo-grid-column>
+
+          <kendo-grid-column field="IsPay" title="Checkbox" width="50">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <input
+                type="checkbox"
+                [checked]="dataItem.IsPay"
+                (click)="payInvoice()"
+              />
+            </ng-template>
+          </kendo-grid-column>
         </kendo-grid>
         <div *ngIf="listLoading" class="k-i-loading"></div>
       </div>
@@ -102,8 +112,5 @@
   <button class="btn btn-primary" type="button" (click)="onCancel()">Ok</button>
   <button class="btn btn-secondary ml-2" type="button" (click)="onCancel()">
     Cancel
-  </button>
-  <button class="btn btn-primary btn-flat" (click)="searchForm()">
-    Search
   </button>
 </div>
