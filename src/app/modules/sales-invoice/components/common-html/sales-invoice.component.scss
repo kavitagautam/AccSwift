@@ -48,3 +48,34 @@
   border-top: 2px solid #000 !important;
   border-bottom: 2px solid #000 !important;
 }
+
+//Styles of New Tender Amount Popup
+
+.card-details label {
+  display: inherit;
+  padding-top: 20px;
+}
+
+.input-fields {
+  padding-top: 20px;
+}
+
+.hr-line {
+  height: 2px;
+  background-color: #dad3d3;
+  margin-top: 20px;
+}
+
+.vr-line {
+  background-color: #dad3d3;
+  height: 345px;
+  width: 2px;
+  position: absolute;
+  right: 50%;
+}
+
+.payment-btn {
+  width: 100%;
+  padding: 6px;
+  margin: 20px;
+}

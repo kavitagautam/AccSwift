@@ -15,6 +15,9 @@ import { SharedModule } from "@app/shared/shared.module";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
 import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
+import { LayoutModule } from "@progress/kendo-angular-layout";
+import { DropDownListModule, DropDownsModule } from "@progress/kendo-angular-dropdowns";
+import { InputsModule } from "@progress/kendo-angular-inputs";
 
 @NgModule({
   declarations: [
@@ -33,6 +36,10 @@ import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
     PopupModule,
     DragDropModule,
     PDFExportModule,
+    LayoutModule,
+    DropDownListModule,
+    DropDownsModule,
+    InputsModule,
     UploadsModule,
     AccswiftFormsModule,
   ],

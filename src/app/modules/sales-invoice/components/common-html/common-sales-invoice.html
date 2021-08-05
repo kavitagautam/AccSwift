@@ -242,7 +242,8 @@
     </button>
   </div>
 </ng-template>
-<ng-template #tenderModal>
+
+<!-- <ng-template #tenderModal>
   <div class="modal-header">
     <h3 class="modal-title pull-left">Tender Amount</h3>
     <button
@@ -322,6 +323,201 @@
 
   <div class="modal-footer">
     <button class="btn btn-primary" (click)="payInvoice()">Pay</button>
+    <button
+      class="btn btn-secondary ml-2"
+      type="button"
+      (click)="modalRef.hide()"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template> -->
+
+<ng-template #tenderModal>
+  <div class="modal-header">
+    <h3 class="modal-title pull-left">Tender Amount</h3>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <kendo-tabstrip>
+      <kendo-tabstrip-tab title="Cash">
+        <ng-template kendoTabContent>
+          <p></p>
+        </ng-template>
+      </kendo-tabstrip-tab>
+      <kendo-tabstrip-tab title="Card" [selected]="true">
+        <ng-template kendoTabContent>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="card-details">
+                <h2>Card Details</h2>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <label>Bank:</label>
+                    <label>Cheque No:</label>
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="input-fields">
+                      <kendo-dropdownlist [data]=""> </kendo-dropdownlist>
+                    </div>
+                    <div class="input-fields">
+                      <kendo-autocomplete
+                        [data]=""
+                        [placeholder]="'****-****-****-****'"
+                      >
+                      </kendo-autocomplete>
+                    </div>
+                  </div>
+                </div>
+                <div class="hr-line"></div>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <label>Payment(Rs.)</label>
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="input-fields">
+                      <kendo-autocomplete [data]=""> </kendo-autocomplete>
+                      <span style="display: block">Ten thousand only</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="vr-line"></div>
+            <div class="col-lg-6">
+              <div class="card-details">
+                <h2>Payment</h2>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <label>Total</label>
+                    <label>Total Paid:</label>
+                    <label>Return:</label>
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="input-fields">Rs 10,000.00</div>
+                    <div class="input-fields">Rs 10,000.00</div>
+                    <div class="input-fields">Rs 0.00</div>
+                  </div>
+                </div>
+                <div class="hr-line"></div>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <label>Note:</label>
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="input-fields">
+                      <kendo-autocomplete [data]="" placeholder="Write here">
+                      </kendo-autocomplete>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <button class="payment-btn btn-primary">
+                    <span>Complete Payment</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </kendo-tabstrip-tab>
+      <kendo-tabstrip-tab title="Cheque">
+        <ng-template kendoTabContent>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="card-details">
+                <h2>Card Details</h2>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <label>Bank:</label>
+                    <label>Cheque No:</label>
+                    <label>Cheque Date:</label>
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="input-fields">
+                      <kendo-dropdownlist [data]=""> </kendo-dropdownlist>
+                    </div>
+                    <div class="input-fields">
+                      <kendo-autocomplete
+                        [data]=""
+                        [placeholder]="'****-****-****-****'"
+                      >
+                      </kendo-autocomplete>
+                    </div>
+                    <div class="input-fields">
+                      <kendo-autocomplete [data]=""> </kendo-autocomplete>
+                    </div>
+                  </div>
+                </div>
+                <div class="hr-line"></div>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <label>Payment(Rs.)</label>
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="input-fields">
+                      <kendo-autocomplete [data]=""> </kendo-autocomplete>
+                      <span style="display: block">Ten thousand only</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="vr-line"></div>
+            <div class="col-lg-6">
+              <div class="card-details">
+                <h2>Payment</h2>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <label>Total</label>
+                    <label>Total Paid:</label>
+                    <label>Return:</label>
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="input-fields">Rs 10,000.00</div>
+                    <div class="input-fields">Rs 10,000.00</div>
+                    <div class="input-fields">Rs 0.00</div>
+                  </div>
+                </div>
+                <div class="hr-line"></div>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <label>Note:</label>
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="input-fields">
+                      <kendo-autocomplete [data]="" placeholder="Write here">
+                      </kendo-autocomplete>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <button class="payment-btn btn-primary">
+                    <span>Complete Payment</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </kendo-tabstrip-tab>
+    </kendo-tabstrip>
+  </div>
+  <div class="modal-footer">
+    <button
+      class="btn btn-secondary ml-2"
+      type="button"
+      (click)="modalRef.hide()"
+    >
+      Ok
+    </button>
     <button
       class="btn btn-secondary ml-2"
       type="button"
