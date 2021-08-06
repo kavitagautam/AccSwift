@@ -349,21 +349,110 @@
     <kendo-tabstrip>
       <kendo-tabstrip-tab title="Cash">
         <ng-template kendoTabContent>
-          <p></p>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="card-details input-wrap">
+                <h2 class="title">Quick Cash</h2>
+                <div class="row">
+                  <div class="amount-box">
+                    <div class="col-lg-4">
+                      <div class="box-content">
+                        <span>1000</span>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="box-content">
+                        <span>500</span>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="box-content">
+                        <span>100</span>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="box-content">
+                        <span>50</span>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="box-content">
+                        <span>10</span>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="box-content">
+                        <span>5</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="hr-line"></div>
+                <div class="row">
+                  <div class="col-lg-5">
+                    <label>Payment(Rs.)</label>
+                  </div>
+                  <div class="col-lg-7">
+                    <div class="input-fields">
+                      <kendo-autocomplete [data]=""> </kendo-autocomplete>
+                    </div>
+                    <span class="amount">Ten thousand only</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="vr-line"></div>
+            <div class="col-lg-6">
+              <div class="card-details">
+                <h2 class="title">Payment</h2>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <label class="total">Total:</label>
+                    <label>Total Paid:</label>
+                    <label>Return:</label>
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="input-fields total">Rs 10,000.00</div>
+                    <div class="input-fields amount">Rs 10,000.00</div>
+                    <div class="input-fields amount">Rs 0.00</div>
+                  </div>
+                </div>
+                <div class="hr-line"></div>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <label>Note:</label>
+                  </div>
+                  <div class="col-lg-9">
+                    <div class="input-fields">
+                      <kendo-autocomplete [data]="" placeholder="Write here">
+                      </kendo-autocomplete>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <button class="payment-btn btn-primary">
+                    <i class="fas fa-check-circle"></i
+                    ><span>Complete Payment</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </ng-template>
       </kendo-tabstrip-tab>
       <kendo-tabstrip-tab title="Card" [selected]="true">
         <ng-template kendoTabContent>
           <div class="row">
             <div class="col-lg-6">
-              <div class="card-details">
-                <h2>Card Details</h2>
+              <div class="card-details input-wrap">
+                <h2 class="title">Card Details</h2>
                 <div class="row">
-                  <div class="col-lg-4">
+                  <div class="col-lg-5">
                     <label>Bank:</label>
                     <label>Cheque No:</label>
+                    <!-- <label>Cheque Date</label> -->
                   </div>
-                  <div class="col-lg-8">
+                  <div class="col-lg-7">
                     <div class="input-fields">
                       <kendo-dropdownlist [data]=""> </kendo-dropdownlist>
                     </div>
@@ -374,18 +463,25 @@
                       >
                       </kendo-autocomplete>
                     </div>
+                    <!-- <div class="input-fields" style="position: relative">
+                      <kendo-autocomplete [data]=""> </kendo-autocomplete>
+                      <span
+                        _ngcontent-rie-c20=""
+                        class="glyphicon glyphicon-calendar cal-icon"
+                      ></span>
+                    </div> -->
                   </div>
                 </div>
                 <div class="hr-line"></div>
                 <div class="row">
-                  <div class="col-lg-4">
+                  <div class="col-lg-5">
                     <label>Payment(Rs.)</label>
                   </div>
-                  <div class="col-lg-8">
+                  <div class="col-lg-7">
                     <div class="input-fields">
                       <kendo-autocomplete [data]=""> </kendo-autocomplete>
-                      <span style="display: block">Ten thousand only</span>
                     </div>
+                    <span class="amount">Ten thousand only</span>
                   </div>
                 </div>
               </div>
@@ -393,25 +489,25 @@
             <div class="vr-line"></div>
             <div class="col-lg-6">
               <div class="card-details">
-                <h2>Payment</h2>
+                <h2 class="title">Payment</h2>
                 <div class="row">
                   <div class="col-lg-4">
-                    <label>Total</label>
+                    <label class="total">Total:</label>
                     <label>Total Paid:</label>
                     <label>Return:</label>
                   </div>
                   <div class="col-lg-8">
-                    <div class="input-fields">Rs 10,000.00</div>
-                    <div class="input-fields">Rs 10,000.00</div>
-                    <div class="input-fields">Rs 0.00</div>
+                    <div class="input-fields total">Rs 10,000.00</div>
+                    <div class="input-fields amount">Rs 10,000.00</div>
+                    <div class="input-fields amount">Rs 0.00</div>
                   </div>
                 </div>
                 <div class="hr-line"></div>
                 <div class="row">
-                  <div class="col-lg-4">
+                  <div class="col-lg-3">
                     <label>Note:</label>
                   </div>
-                  <div class="col-lg-8">
+                  <div class="col-lg-9">
                     <div class="input-fields">
                       <kendo-autocomplete [data]="" placeholder="Write here">
                       </kendo-autocomplete>
@@ -420,6 +516,7 @@
                 </div>
                 <div class="row">
                   <button class="payment-btn btn-primary">
+                    <i class="fas fa-check-circle"></i>
                     <span>Complete Payment</span>
                   </button>
                 </div>
@@ -432,15 +529,15 @@
         <ng-template kendoTabContent>
           <div class="row">
             <div class="col-lg-6">
-              <div class="card-details">
-                <h2>Card Details</h2>
+              <div class="card-details input-wrap">
+                <h2 class="title">Cheque Details</h2>
                 <div class="row">
-                  <div class="col-lg-4">
+                  <div class="col-lg-5">
                     <label>Bank:</label>
-                    <label>Cheque No:</label>
+                    <label>Account No:</label>
                     <label>Cheque Date:</label>
                   </div>
-                  <div class="col-lg-8">
+                  <div class="col-lg-7">
                     <div class="input-fields">
                       <kendo-dropdownlist [data]=""> </kendo-dropdownlist>
                     </div>
@@ -451,21 +548,25 @@
                       >
                       </kendo-autocomplete>
                     </div>
-                    <div class="input-fields">
+                    <div class="input-fields" style="position: relative">
                       <kendo-autocomplete [data]=""> </kendo-autocomplete>
+                      <span
+                        _ngcontent-rie-c20=""
+                        class="glyphicon glyphicon-calendar cal-icon"
+                      ></span>
                     </div>
                   </div>
                 </div>
                 <div class="hr-line"></div>
                 <div class="row">
-                  <div class="col-lg-4">
+                  <div class="col-lg-5">
                     <label>Payment(Rs.)</label>
                   </div>
-                  <div class="col-lg-8">
+                  <div class="col-lg-7">
                     <div class="input-fields">
                       <kendo-autocomplete [data]=""> </kendo-autocomplete>
-                      <span style="display: block">Ten thousand only</span>
                     </div>
+                    <span class="amount">Ten thousand only</span>
                   </div>
                 </div>
               </div>
@@ -473,25 +574,25 @@
             <div class="vr-line"></div>
             <div class="col-lg-6">
               <div class="card-details">
-                <h2>Payment</h2>
+                <h2 class="title">Payment</h2>
                 <div class="row">
                   <div class="col-lg-4">
-                    <label>Total</label>
+                    <label class="total">Total:</label>
                     <label>Total Paid:</label>
                     <label>Return:</label>
                   </div>
                   <div class="col-lg-8">
-                    <div class="input-fields">Rs 10,000.00</div>
-                    <div class="input-fields">Rs 10,000.00</div>
-                    <div class="input-fields">Rs 0.00</div>
+                    <div class="input-fields total">Rs 10,000.00</div>
+                    <div class="input-fields amount">Rs 10,000.00</div>
+                    <div class="input-fields amount">Rs 0.00</div>
                   </div>
                 </div>
                 <div class="hr-line"></div>
                 <div class="row">
-                  <div class="col-lg-4">
+                  <div class="col-lg-3">
                     <label>Note:</label>
                   </div>
-                  <div class="col-lg-8">
+                  <div class="col-lg-9">
                     <div class="input-fields">
                       <kendo-autocomplete [data]="" placeholder="Write here">
                       </kendo-autocomplete>
@@ -500,6 +601,7 @@
                 </div>
                 <div class="row">
                   <button class="payment-btn btn-primary">
+                    <i class="fas fa-check-circle"></i>
                     <span>Complete Payment</span>
                   </button>
                 </div>
