@@ -16,6 +16,8 @@ import { AccountGroupComponent } from "../account-group/account-group.component"
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
+import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
+import { Ledgers } from "@accSwift-modules/ledger/models/ledger.models";
 
 @Component({
   selector: "accSwift-landing-ledger",
@@ -39,10 +41,17 @@ export class LandingLedgerComponent implements OnInit {
   ledgerGroupList: any; 
   userType: string = localStorage.getItem("user_type");
 
+  mainGroups:LedgerGroup[]=[];
+  ledgersOfGroups:Ledgers[]=[];
+  ledgers = [];
+
   modalRef: BsModalRef;
 
   ledgerData: any;
 
+  groupArrays: any;
+
+  assetsHtml: string;
   assetsData: any;
   currentAssets:any;
   fixedAssets:any;
@@ -73,7 +82,6 @@ export class LandingLedgerComponent implements OnInit {
     private ledgerService: LedgerService,
     private router: Router,
     private componentFactoryResolver: ComponentFactoryResolver,
-    // private modalRef: BsModalRef,
     private modalService: BsModalService,
     private toastr: ToastrService,
   ) {}
@@ -83,7 +91,10 @@ export class LandingLedgerComponent implements OnInit {
     this.loadLedgerTreeView();
     this.loadLedgerGroupList();
     this.groupLedgerTreeItems();
-    this.recursiveLedger();
+    this.getMajorGroups();
+    this.getLedgerByID();
+    // this.parseTree();
+    // this.hierarchialLedger();
     console.log(this.selectedItem);
   }
 
@@ -93,7 +104,6 @@ export class LandingLedgerComponent implements OnInit {
       (response) => {
         this.ledgerTreeNode = response.Entity.Node;
         this.ledgerTreeList = response.Entity.Tree;
-        // console.log(this.ledgerTreeList)
         this.treeViewLoading = false;
         localStorage.setItem("LedgerTreeList", JSON.stringify(response.Entity.Tree));
       },
@@ -111,13 +121,10 @@ export class LandingLedgerComponent implements OnInit {
   groupLedgerTreeItems(){
     const ledgerTree = JSON.parse(localStorage.getItem("LedgerTreeList"));
     this.ledgerData = ledgerTree;
-    // console.log(ledgerTree);
     let assets,liabilities,income,expenditure;
     ledgerTree.map(function(item){
-      // console.log(item);
       if (item.Title==="Assets"){
         assets=item;
-        // console.log(item.Child)
       }
       else if (item.Title==="Liabilities"){
         liabilities=item;
@@ -133,14 +140,56 @@ export class LandingLedgerComponent implements OnInit {
     this.liabilityData = liabilities;
     this.incomeData = income;
     this.expenditureData = expenditure;
-
-    // localStorage.setItem("assetsData", JSON.stringify(assets));
-    // localStorage.setItem("liabilitiesData", JSON.stringify(liabilities));
-    // localStorage.setItem("incomeData", JSON.stringify(income));
-    // localStorage.setItem("expenditureData", JSON.stringify(expenditure));
   }
 
-  recursiveLedger()
+
+  loadLedgerGroupList(): void //To access only Main Groups Details by using ParentGroupID among all groups
+  {
+    this.ledgerService.getLedgerGroupList().subscribe((response)=> {
+        this.ledgerGroupList = response.Entity;
+        console.log(this.ledgerGroupList);
+    })
+  }
+
+  
+  getMajorGroups()
+  {
+    const ledgerTree = this.ledgerData;
+    console.log(ledgerTree);
+    const groupArray = [];
+    for (const item of ledgerTree) //Display main branch details
+    {
+      for (const item1 of item["Child"]) //Display main group details
+      {
+        groupArray.push(item1);        
+      }
+    }
+    this.groupArrays = groupArray;
+  }
+
+
+  getLedgerByID(): void {
+    console.log(this.groupArrays);
+    var groupArray = this.groupArrays;
+    for (const item of groupArray) { 
+      console.log(item)
+      const param = item.ID;
+      this.ledgerService
+      .getLedgersById(param)
+      .subscribe((res) => {
+        this.ledgersOfGroups = res.Entity;
+        console.log(this.ledgersOfGroups);
+        // if (item.Title && res.Entity)
+        // {
+        //   this.ledgers.push( {"Title": item.Title, "values": res.Entity}); // Use loop in values as well
+        // }
+        // console.log(this.ledgers);
+      });
+    }
+  }
+  
+
+  hierarchialLedger()
   {
     const ledgersData = this.ledgerData;
 
@@ -365,46 +414,61 @@ export class LandingLedgerComponent implements OnInit {
     // console.log(this.directIncome);
   }
 
-  // assetsFilter(sortedArray) {
-  //   var ledgerTree = JSON.parse(localStorage.getItem("LedgerTreeList"));
-  //   console.log(ledgerTree);
-  //   sortedArray = ledgerTree.filter(function(val)
-  //   {
-  //     console.log(val.Code);
-  //     console.log(val.GroupOrLedgerNo);
-  //     console.log(val['Child'][0]['Title'])
-  //     console.log(val.Child[0].Child[0]);
-  //     localStorage.setItem("SubGroups",JSON.stringify(val.Child[0].Child[0]));
-  //     if (val.Code=="fgfg" &&
-  //     val.GroupOrLedgerNo == 1)
-  //     return sortedArray;
-  //   });
-  //   localStorage.setItem("LedgerAssets", JSON.stringify(sortedArray));
-  //   return sortedArray;
-  // }
+  //Recursive Fuction
 
-  // liabFilter(sortedArray) {
-  //   var ledgerTree = JSON.parse(localStorage.getItem("LedgerTreeList"));
-  //   console.log(ledgerTree);
-  //   sortedArray = ledgerTree.filter(function(val)
-  //   {
-  //     console.log(val.Code);
-  //     console.log(val.GroupOrLedgerNo);
-  //     if (val.Code==null &&
-  //     val.GroupOrLedgerNo == 2)
-  //     return sortedArray;
-  //   });
-  //   localStorage.setItem("LedgerLiab", JSON.stringify(sortedArray));
-  //   return sortedArray;
-  // }
-
-
-  loadLedgerGroupList(): void 
-  {
-    this.ledgerService.getLedgerGroupList().subscribe((response)=> {
-        this.ledgerGroupList = response.Entity;
-    })
+  parseTree() {
+    let html = [""];
+    const assets = [this.assetsData];
+    console.log(assets);
+    this.setupData(assets, html);
   }
+  
+  setupData(assets, html) { 
+    console.log(assets);
+    // console.log(html);
+    this.assetsHtml = "";
+    // console.log(Array.isArray(assets) && assets.length);
+    if (Array.isArray(assets) && assets.length) {
+      for (const val of assets){
+        // console.log(val); //Display Main Branch Object Details
+        console.log(val.Title);
+        const child = val.Child;
+        console.log(child); //Display all n objects(Main Groups Details) inside main branch
+        html.push (`<div class="group-tabs">
+        <h2 class="group-name">${val.Title}</h2>
+        <button
+          class="btn btn-primary pull-left"
+          (click)="addNewerLedger()"
+        >
+          <i class="fa fa-plus" aria-hidden="true"></i> Add New
+          Ledger
+        </button>
+        </div>`);
+        this.setupGroup(child, html);
+        this.setupData(child, html);  //Iterate over all Groups and Ledgers hierarchy inside assets in a linear form
+      }
+      this.assetsHtml = html.join(""); //Returns array as a string
+      console.log(this.assetsHtml);
+    } return;
+  }
+
+  
+  setupGroup(child,html)
+  {
+    // console.log(child);
+    if (Array.isArray(child) && child.length) {
+        for (const item of child)
+        {
+          const ledgerDetails = item.Child; //Display all groups and ledgers details inside main groups(Siblings)
+          console.log("*******Main Groups********")
+          console.log(item.Title); //Should Display only Main Groups Title but not due to recursion
+          console.log("#######ledgers#######")
+          console.log(ledgerDetails);
+          this.setupGroup(ledgerDetails,html); // Iterate over all groups and ledgers hierarchy inside main groups(Childs) 
+        }
+      }return;
+  }
+
 
   loadLedgerlistView(): void {
     this.listViewLoading = true;
@@ -487,12 +551,6 @@ export class LandingLedgerComponent implements OnInit {
     const componentRef = this.dynamicContentDiv.createComponent(factory);
     componentRef.instance.selectedItem = null;
     console.log(componentRef.instance.selectedItem);
-
-    // componentRef.instance.onCancel.subscribe((data) => {
-    //   if (data) {
-    //     this.viewProductGroup();
-    //   }
-    // });
   }
 
   addNewerLedger():void 
@@ -598,3 +656,5 @@ export class LandingLedgerComponent implements OnInit {
   }
 
 }
+
+

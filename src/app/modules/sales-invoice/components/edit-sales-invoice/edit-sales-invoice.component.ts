@@ -520,7 +520,7 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
       backdrop: true,
       ignoreBackdropClick: true,
       centered: true,
-      class: "modal-sm",
+      class: "modal-lg",
     };
     this.modalRef = this.modalService.show(template, config);
   }

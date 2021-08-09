@@ -86,8 +86,26 @@
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">
             <label>Date</label>
-            <input class="form-control" formControlName="Date" bsDatepicker />
+            <input
+              class="form-control"
+              formControlName="Date"
+              bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+            />
             <span class="glyphicon glyphicon-calendar calendar-icon"></span>
+            <button
+              (click)="dateConverterPopup()"
+              style="
+                font-size: 12px;
+                font-weight: 900;
+                font-style: italic;
+                background: none;
+                border: none;
+                color: #3c8dbc;
+              "
+            >
+              Click to convert date(AD/BS)
+            </button>
           </div>
         </div>
 

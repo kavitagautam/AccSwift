@@ -39,8 +39,8 @@ export class SettingsReportsComponent implements OnInit {
   ledgerGroupList: LedgerGroup[] = [];
   productGroups: ProductGroup[] = [];
   productMin: ProductMin[] = [];
-  cashPartyList: CashParty[] = [];
-  cashPartyGroupList: CashPartyGroup[] = [];
+  cashParty: CashParty[] = [];
+  cashPartyGroups: CashPartyGroup[] = [];
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -73,7 +73,6 @@ export class SettingsReportsComponent implements OnInit {
           : null
       );
     this.formsField = Object.keys(this.settingsForms.controls);
-
   }
 
   getProductGroupDD(): void {
@@ -193,13 +192,13 @@ export class SettingsReportsComponent implements OnInit {
 
   getCashParty(): void {
     this.reportService.getCashParty().subscribe((response) => {
-      this.cashPartyList = response.Entity;
+      this.cashParty= response.Entity;
     });
   }
 
   getCashPartyGroup(): void {
     this.reportService.getCashPartyGroup().subscribe((response) => {
-      this.cashPartyGroupList = response.Entity;
+      this.cashPartyGroups = response.Entity;
     });
   }
 
@@ -313,16 +312,30 @@ export class SettingsReportsComponent implements OnInit {
     );
   }
 
-  // Filterable Cash Party Drop-down
+  // Filterable Product Group Drop-down
   productGroupDDFilter(value): void {
     this.productGroups = this.reportService.productGroupList.filter(
       (s) => s.Name.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
   }
-  // Filterable Cash Party Drop-down
+
+  // Filterable Product Drop-down
   productDDFilter(value): void {
     this.productMin = this.reportService.productList.filter(
       (s) => s.CodeName.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
+  }
+  
+  //Filterable CashParty Group Drop-down
+  partyGroupDDFilter(value): void {
+    this.cashPartyGroups = this.reportService.cashPartyGroupList.filter(
+      (s) => s.Name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+  }
+
+  //Filterable CashParty Drop-down
+  partyDDFilter(value): void {
+    this.cashParty= this.reportService.cashPartyList.filter(
+      (s) => s.LedgerName.toLowerCase().indexOf(value.toLowerCase()) !== -1
     );
   }
 
@@ -355,6 +368,9 @@ export class SettingsReportsComponent implements OnInit {
   showReport(): void {
     this.onSubmit.next(this.settingsForms.value);
     this.modalRef.hide();
+    console.log(this.settingsForms.value);
+    console.log(this.settingsForms.get("PartyID").value);
+    localStorage.setItem("PartyID", this.settingsForms.get("PartyID").value);
   }
 
   public onCancel(): void {

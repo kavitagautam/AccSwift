@@ -623,9 +623,19 @@
               </div>
             </div>
             <div class="col-md-6 mt-5">
-              <div class="form-group"></div>
               <div class="form-group" *ngIf="formsField.includes('PartyID')">
-                <select class="form-control" formControlName="PartyID">
+                <kendo-dropdownlist
+                  class="form-control"
+                  [data]="cashParty"
+                  [filterable]="true"
+                  [textField]="'LedgerName'"
+                  [valueField]="'LedgerID'"
+                  [valuePrimitive]="true"
+                  formControlName="PartyID"
+                  (filterChange)="partyDDFilter($event)"
+                >
+                </kendo-dropdownlist>
+                <!-- <select class="form-control" formControlName="PartyID">
                   <option [ngValue]="null">Choose Option..</option>
                   <option
                     *ngFor="let party of cashPartyList"
@@ -633,13 +643,24 @@
                   >
                     {{ party.LedgerName }}
                   </option>
-                </select>
+                </select> -->
               </div>
               <div
                 class="form-group"
                 *ngIf="formsField.includes('PartyGroupID')"
               >
-                <select class="form-control" formControlName="PartyGroupID">
+                <kendo-dropdownlist
+                  class="form-control"
+                  [data]="cashPartyGroups"
+                  [filterable]="true"
+                  [textField]="'Name'"
+                  [valueField]="'ID'"
+                  [valuePrimitive]="true"
+                  formControlName="PartyGroupID"
+                  (filterChange)="partyGroupDDFilter($event)"
+                >
+                </kendo-dropdownlist>
+                <!-- <select class="form-control" formControlName="PartyGroupID">
                   <option [ngValue]="null">Choose Option..</option>
                   <option
                     *ngFor="let partyGroup of cashPartyGroupList"
@@ -647,7 +668,7 @@
                   >
                     {{ partyGroup.Name }}
                   </option>
-                </select>
+                </select> -->
               </div>
             </div>
           </div>

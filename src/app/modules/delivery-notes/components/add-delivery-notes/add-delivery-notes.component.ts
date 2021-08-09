@@ -90,7 +90,7 @@ export class AddDeliveryNotesComponent implements OnInit, OnDestroy {
       ClientPAN: [""],
       ClientEmail: [""],
       DeliveredBy: ["", Validators.required],
-      DeliverContact: ["", Validators.required],
+      DeliverContact: ["", Validators.pattern],
       TotalQty: [0, Validators.required],
       DeliveryProductsList: this._fb.array([this.addDeliveryProductList()]),
       Remarks: [""],
@@ -116,47 +116,7 @@ export class AddDeliveryNotesComponent implements OnInit, OnDestroy {
       IsService: true
     })
   }
-
-  setDeliveryDetailsFormArray(deliveryDetails): FormArray {
-    const deliveryFormArray = new FormArray([]);
-    console.log(deliveryDetails)
-    if (deliveryDetails && deliveryDetails.length > 0) {
-      deliveryDetails.forEach((element) => {
-        deliveryFormArray.push(
-          this._fb.group({
-            ID: [element.ID ? element.ID: 0],
-            DeliveryNoteID: [element.DeliveryNoteID ? element.DeliveryNoteID: null],
-            ProductID: [element.ProductID ? element.ProductID: ""],
-            ProductCode: [element.ProductCode ? element.ProductCode: ""],
-            ProductName: [element.ProductName ? element.ProductName: ""],
-            GeneralName: [element.GeneralName ? element.GeneralName: ""],
-            Description: [element.Description ? element.Description: ""],
-            Quantity: [element.Quantity ? element.Quantity:"", Validators.required],
-            IsService: [element.IsService]
-          })
-        );
-      });
-    } else {
-      deliveryFormArray.push(
-        this._fb.group({
-          ID: [0],
-          DeliveryNoteID: [null],
-          ProductID: [""],
-          ProductCode: [""],
-          ProductName: [""],
-          GeneralName: [""],
-          Description: [""],
-          Quantity: ["", Validators.required],
-          IsService: true
-        })
-      );
-    }
-    console.log(deliveryFormArray.controls[0].value.ProductID);
-    localStorage.setItem("ProductID", deliveryFormArray.controls[0].value.ProductID);
-    console.log(localStorage.getItem("ProductID"));
-    return deliveryFormArray;
-  }
-
+  
 
   public save(): void {
     const productArray = <FormArray>(

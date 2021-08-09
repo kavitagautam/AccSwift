@@ -16,6 +16,9 @@ import { Depot } from "@accSwift-modules/depot/models/depot.model";
 import { SalesAccounts } from "@accSwift-modules/accswift-shared/models/sales-account.model";
 import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
 import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
+import { IconConst } from "@app/shared/constants/icon.constant";
+import { Company } from "@accSwift-modules/company/models/company.model";
+import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
 
 @Component({
   selector: "accSwift-sales-report",
@@ -27,6 +30,7 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   salesReportList: SalesReportList[] = [];
 
   selectType: string;
+  partyID;
 
   isActive;
   isActiveParty;
@@ -47,6 +51,10 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   
   modalRefDetails: BsModalRef;
 
+  iconConst = IconConst;
+  companyLogo: any = "";
+  companyDetails: Company;
+
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -60,7 +68,8 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
     private _fb: FormBuilder,
     public reportService: ReportsService,
     private modalService: BsModalService,
-    private preferenceService: PreferenceService
+    private preferenceService: PreferenceService,
+    private salesInvoiceService: SalesInvoiceService
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +77,12 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
     this.baseURL =
       this.location["_platformStrategy"]._platformLocation["location"].origin +
       "/#/";
+      this.salesInvoiceService.getCompanyDetails().subscribe((response) => {
+        this.companyDetails = response.Entity;
+        if (this.companyDetails) {
+          this.companyLogo = this.companyDetails.Logo;
+        }
+      });
   }
 
   ngAfterViewInit(): void {
@@ -114,6 +129,9 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
       class: "modal-lg",
     });
 
+    this.partyID = localStorage.getItem("PartyID")
+    console.log(this.partyID);
+
     this.reportService.projectName$.subscribe((value) => {
       this.projectName = value;
     });
@@ -129,10 +147,16 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
        
           this.reportService.getSalesReports(JSON.stringify(data)).subscribe(
           (response) => {
+            console.log(data);
             this.salesReportList = response.Entity.Entity;
+            console.log("salesReportList", this.salesReportList);
             this.totalSalesQty = response.Entity.TotalSalesQty;
             this.totalAmount = response.Entity.TotalAmount;
             this.totalDiscountAmount = response.Entity.TotalDiscountAmount;
+            localStorage.setItem("salesReportList", JSON.stringify(response.Entity.Entity));
+            localStorage.setItem("totalSalesQty", JSON.stringify(response.Entity.TotalSalesQty));
+            localStorage.setItem("totalAmount", JSON.stringify(response.Entity.TotalAmount));
+            localStorage.setItem("totalDiscountAmount", JSON.stringify(response.Entity.TotalDiscountAmount));
           },
           (error) => {
             this.listLoading = false;
@@ -150,11 +174,10 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   }
 
 
-  productDetails: SalesReportList[]=[]
+  productDetails: SalesReportList[]=[];
   
   openProductPartyDetails(template: TemplateRef<any>, data): void { 
-    
-  if (this.salesReportForms.get('ProductID').value === null && this.salesReportForms.get('PartyID').value === null){
+  // if (this.salesReportForms.get('ProductID').value === null && this.salesReportForms.get('PartyID').value === null){
   let obj;
   if(this.selectType === 'product')
   {
@@ -187,6 +210,7 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
   this.reportService.getSalesReports(obj).subscribe(
     (response) => {
       this.productDetails = response.Entity.Entity;
+      console.log("productDetails", this.productDetails);
       this.totalSalesQty = response.Entity.TotalSalesQty;
       this.totalAmount = response.Entity.TotalAmount;
       this.totalDiscountAmount = response.Entity.TotalDiscountAmount;
@@ -199,10 +223,11 @@ export class SalesReportComponent implements OnInit, AfterViewInit {
     class: "modal-lg",
   }
   this.modalRefDetails = this.modalService.show(template, config);
- }
+//  }
 }
 
   openSalesDetailsDetails(event, data): void {
+    console.log("Edit", data);
     if (data.VocherType === "SALES") {
       window.open(this.baseURL + "sales-invoice/edit/" + data.RowID, "_blank");
     }

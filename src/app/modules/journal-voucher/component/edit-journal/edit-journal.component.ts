@@ -14,6 +14,8 @@ import { TimeZoneService } from "@accSwift-modules/accswift-shared/services/time
 import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 import { DetailsEntryGridService } from '@accSwift-modules/accswift-shared/services/details-entry-grid/details-entry-grid.service';
 import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
+import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
+import { Settings } from '@accSwift-modules/settings/models/settings.model';
 var adbs = require("ad-bs-converter");
 
 @Component({
@@ -24,10 +26,12 @@ var adbs = require("ad-bs-converter");
 })
 export class EditJournalComponent implements OnInit {
   private editedRowIndex: number;
+  settings: Settings;
   iconConst = IconConst;
   public selectedDate:string =''
 
   journalVoucherForms: FormGroup;
+  settingsForm: FormGroup;
   journalDetail: Journal;
   submitted: boolean;
   rowSubmitted: boolean;
@@ -59,9 +63,8 @@ export class EditJournalComponent implements OnInit {
     private toastr: ToastrService,
     public timeZone: TimeZoneService,
     public datePipe: DatePipe,
+    private settingsService: SettingsService,
     private localStorageService: LocalStorageService
-
-    
   ) {}
 
   ngOnInit() {
@@ -81,12 +84,31 @@ export class EditJournalComponent implements OnInit {
           });
       }
     });
-
-    this.selectedDate= this.localStorageService.getLocalStorageItem(
-      "SelectedDate");
+    this.buildSettingsForm();
+    this.getSettings();
+    // this.selectedDate= this.localStorageService.getLocalStorageItem(
+    //   "SelectedDate");
+    localStorage.removeItem("SelectedDate");
   }
 
   bsValue = new Date();
+
+  buildSettingsForm(): void {
+    this.settingsForm = this._fb.group({
+      DEFAULT_DATE: [this.settings ? this.settings.DEFAULT_DATE.Value : ""]
+    });
+  }
+
+  getSettings(): void {
+    this.settingsService.getSettingsData().subscribe((response) => {
+      this.settings = response.Entity;
+      console.log(this.settings);
+      let pickedDate = this.settings.DEFAULT_DATE.Value;
+      console.log(pickedDate);
+      this.selectedDate = pickedDate;
+      this.buildSettingsForm();
+    });
+  }
 
   buildJournalForm(): void {
     this.journalVoucherForms = this._fb.group({
@@ -286,7 +308,7 @@ export class EditJournalComponent implements OnInit {
   dateConverterPopup(): void
   {
     this.modalRef = this.modalService.show(DateConverterComponent, {
-      initialState: { journalVouchForm: this.journalVoucherForms },
+      initialState: { VoucherForm: this.journalVoucherForms },
       backdrop: true,
       ignoreBackdropClick: true,
       class: "modal-sm",

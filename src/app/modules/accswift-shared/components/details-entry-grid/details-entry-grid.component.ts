@@ -30,6 +30,8 @@ import { SettingsService } from "@accSwift-modules/settings/services/settings.se
 import { IntlService, CldrIntlService } from "@progress/kendo-angular-intl";
 import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
 import { EntrySubLedgerComponent } from "../entry-sub-ledger/entry-sub-ledger.component";
+import { PartyInvoicesComponent } from "../party-invoices/party-invoices.component";
+import { initialState } from "ngx-bootstrap/timepicker/reducer/timepicker.reducer";
 
 @Component({
   selector: "accSwift-details-entry-grid",
@@ -39,6 +41,8 @@ import { EntrySubLedgerComponent } from "../entry-sub-ledger/entry-sub-ledger.co
   providers: [SettingsService],
 })
 export class DetailsEntryGridComponent implements OnInit {
+
+  salesInvoiceForm: FormGroup;
   userType: string = localStorage.getItem("user_type");
   relatedUnits: RelatedUnits[] = [];
   cashPartyList: CashParty[] = [];
@@ -91,10 +95,12 @@ export class DetailsEntryGridComponent implements OnInit {
     private modalService: BsModalService,
     private _fb: FormBuilder,
     @Inject(LOCALE_ID) public localeId: string,
-    public intlService: IntlService
+    public intlService: IntlService,
+    public fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.buildSalesInvoiceSearchForm();
     this.localeId = localStorage.getItem("currencyLocaleID");
     (<CldrIntlService>this.intlService).localeId = this.localeId;
     this.gridServices.getProductDD().subscribe((response) => {
@@ -106,7 +112,21 @@ export class DetailsEntryGridComponent implements OnInit {
     for (const key in this.entryArray.value[0]) {
       this.columns.push(key);
     }
+    console.log(this.entryArray);
   }
+
+  buildSalesInvoiceSearchForm() {
+    this.salesInvoiceForm = this.fb.group({
+      SeriesID: [null],
+      CashPartyLedgerID: [null],
+      SalesLedgerID: [null],
+      DepotID: [null],
+      ProjectID: [null],
+      Date: [],
+      OrderNo: [""],
+    });
+  }
+
 
   // @HostListener("keydown", ["$event"])
   // public keydown(event: any): void {
@@ -819,6 +839,17 @@ export class DetailsEntryGridComponent implements OnInit {
     });
   }
 
+  viewPartyInvoices()
+  {
+    this.modalRef = this.modalService.show(PartyInvoicesComponent, {
+      initialState: { entryArray: this.entryArray, salesInvoiceForm: this.salesInvoiceForm},
+        ignoreBackdropClick: true,
+        animated: true,
+        keyboard: true,
+        class: "modal-lg",
+    })
+  }
+
   getRelatedUnitList(productCode): void {
     this.gridServices.getRelatedUnits(productCode).subscribe((response) => {
       this.relatedUnits = response.Entity;
@@ -947,6 +978,7 @@ export class DetailsEntryGridComponent implements OnInit {
         Remarks: [""],
       });
     }
+
     if (this.voucherType == "BRECON") {
       return this._fb.group({
         ID: [0],

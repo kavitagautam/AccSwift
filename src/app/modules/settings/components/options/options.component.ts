@@ -36,7 +36,8 @@ export class OptionsComponent implements OnInit {
   getSettings(): void {
     this.settingsService.getSettingsData().subscribe((response) => {
       this.settings = response.Entity;
-      localStorage.setItem("SelectedDate", JSON.stringify(this.settings.DEFAULT_DATE.Value));
+      // localStorage.setItem("SelectedDate", JSON.stringify(this.settings.DEFAULT_DATE.Value));
+      localStorage.removeItem("SelectedDate");
       this.buildSettingsForm();
     });
   }

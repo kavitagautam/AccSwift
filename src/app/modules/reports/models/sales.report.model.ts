@@ -1,3 +1,5 @@
+import { Company } from "@accSwift-modules/company/models/company.model";
+
 export interface SalesReportList {
   Date: Date;
   VoucherNumber: string;
@@ -25,6 +27,8 @@ export interface SasleReports {
   TotalVATAmount: number;
   TotalNetAmount: number;
   TotalDiscountAmount: number;
+  Company: Company;
+  ReportType: string;
 }
 
 export interface SalesReportModel {

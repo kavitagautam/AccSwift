@@ -9,6 +9,7 @@ import {
   LedgerListViewModel,
   LedgerMin,
   LedgerMinModel,
+  LedgersOfGroupRootModel,
 } from "../models/ledger.models";
 import { Observable } from "rxjs";
 import {
@@ -81,6 +82,10 @@ export class LedgerService {
 
   getLedgerDetails(ledgerId): Observable<LedgerDetailsModel> {
     return this.httpService.get(`${this._api_URL}Ledger/${ledgerId}`);
+  }
+
+  getLedgersById(groupId): Observable<LedgersOfGroupRootModel> {
+    return this.httpService.get(`${this._api_URL}Ledger/Group/${groupId}`);
   }
 
   getCurrency(): Observable<CurrencyModel> {

@@ -188,3 +188,81 @@ export interface CurrencyModel {
 }
 
 
+
+
+
+//To access particular ledgers of particular main group
+
+export interface OpeningBalance {
+  ID: number;
+  LedgerID: number;
+  AccClassID: number;
+  OpenBal: number;
+  OpenBalDate: Date;
+  OpenBalDrCr: string;
+  OpenBalCCYID: number;
+}
+
+export interface OpenBalanceSubLedger {
+  SubLedgerID: number;
+  ID: number;
+  AccClassID: number;
+  OpenBal: number;
+  OpenBalDate: Date;
+  OpenBalDrCr: string;
+  OpenBalCCYID: number;
+}
+
+export interface SubLedgerList {
+  ID: number;
+  Name: string;
+  Code?: any;
+  LedgerID: number;
+  LedgerName: string;
+  IsActive: boolean;
+  IsBuiltIn: boolean;
+  OpenBalanceSubLedgers: OpenBalanceSubLedger[];
+  CreatedBy: string;
+  CreatedDate: Date;
+  ModifiedBy: string;
+  ModifiedDate: Date;
+  Remarks: string;
+  CompanyID: number;
+}
+
+export interface Ledgers {
+  ID: number;
+  LedgerCode: string;
+  Name: string;
+  PreviousYearBalance: number;
+  PreviousYearBalanceDebitCredit: string;
+  OpCCYID: number;
+  Currency: string;
+  OpCCR: number;
+  OpCCRDate?: any;
+  DrCr: string;
+  GroupID: number;
+  GroupName: string;
+  PersonName: string;
+  Address1: string;
+  Address2: string;
+  City: string;
+  Phone: string;
+  Email: string;
+  Company: string;
+  Website: string;
+  VatPanNo: string;
+  CreditLimit: number;
+  IsActive: boolean;
+  OpeningBalance: OpeningBalance[];
+  SubLedgerList: SubLedgerList[];
+  Remarks: string;
+}
+
+export interface LedgersOfGroupRootModel {
+  StatusCode: number;
+  Message: string;
+  Entity: Ledgers[];
+}
+
+

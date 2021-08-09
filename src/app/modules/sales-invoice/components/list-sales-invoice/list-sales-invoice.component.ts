@@ -95,6 +95,7 @@ export class ListSalesInvoiceComponent implements OnInit {
       Direction: this.dirKey,
       FilterList: this.searchFilterList,
     };
+    console.log(obj.FilterList)
     this.salesInvoiceService.getSalesInvoiceMaster(obj).subscribe(
       (response) => {
         this.salesInvoiceList = response.Entity.Entity;
@@ -114,10 +115,14 @@ export class ListSalesInvoiceComponent implements OnInit {
 
   public searchForm(): void {
     this.searchFilterList = [];
+    console.log(this.searchFilterList);
     this.currentPage = 1;
     this.skip = 0;
     if (this.salesInvoiceForm.invalid) return;
+    console.log(this.salesInvoiceForm.value)
     for (const key in this.salesInvoiceForm.value) {
+      console.log(key);
+      console.log(this.salesInvoiceForm.value[key]);
       if (this.salesInvoiceForm.value[key]) {
         this.searchFilterList.push({
           Field: key,
@@ -126,16 +131,15 @@ export class ListSalesInvoiceComponent implements OnInit {
         });
       }
     }
+    console.log(this.searchFilterList);
     this.getSalesInvoiceList();
   }
 
   public pageChange(event: PageChangeEvent): void {
     this.skip = event.skip;
     if (event.skip == 0) {
-      this.skip = event.skip;
       this.currentPage = 1;
     } else {
-      this.skip = event.skip;
       const pageNo = event.skip / event.take + 1;
       this.currentPage = pageNo;
     }

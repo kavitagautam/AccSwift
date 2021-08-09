@@ -40,6 +40,9 @@ import { ForgetPasswordComponent } from './components/forget-password/forget-pas
 import { DateSelectionSettingsComponent } from './components/date-selection-settings/date-selection-settings.component';
 import { ReportPreviewComponent } from './components/report-preview/report-preview.component';
 import { DateConverterComponent } from './components/date-converter/date-converter.component';
+import { PartyInvoicesComponent } from './components/party-invoices/party-invoices.component';
+import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
+
 
 @NgModule({
   declarations: [
@@ -67,7 +70,8 @@ import { DateConverterComponent } from './components/date-converter/date-convert
     BasicAddEditUserComponent,
     DateSelectionSettingsComponent,
     ReportPreviewComponent,
-    DateConverterComponent
+    DateConverterComponent,
+    PartyInvoicesComponent
   ],
   imports: [
     FormsModule,
@@ -84,6 +88,7 @@ import { DateConverterComponent } from './components/date-converter/date-convert
     DropDownListModule,
     DateInputsModule,
     DropDownsModule,
+    AccswiftFormsModule
   ],
   exports: [
     LedgerModalPopupComponent,
@@ -104,7 +109,8 @@ import { DateConverterComponent } from './components/date-converter/date-convert
     GroupBalanceReportComponent,
     LedgerDetailReportsComponent,
     OpeningBalanceComponent,
-    ForgetPasswordComponent
+    ForgetPasswordComponent,
+    PartyInvoicesComponent
   ],
   providers: [ValidationMsgService],
   entryComponents: [
@@ -114,7 +120,8 @@ import { DateConverterComponent } from './components/date-converter/date-convert
     EntrySubLedgerComponent,
     BasicAddEditUserComponent,
     ReportPreviewComponent,
-    DateConverterComponent
+    DateConverterComponent,
+    PartyInvoicesComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

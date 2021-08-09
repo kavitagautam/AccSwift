@@ -34,6 +34,7 @@ export class AddJournalComponent implements OnInit {
   numericFormat: string = "n3";
   preferenceData: Preferences;
   journalVoucherForms: FormGroup;
+  settingsForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
   date: Date = new Date();
@@ -67,8 +68,29 @@ export class AddJournalComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildJournalVoucherForms();
-   this.selectedDate= this.localStorageService.getLocalStorageItem(
-      "SelectedDate");
+    this.buildSettingsForm();
+    this.getSettings();
+    // this.selectedDate= this.localStorageService.getLocalStorageItem(
+    //   "SelectedDate");
+    localStorage.removeItem("SelectedDate");
+
+  }
+
+  buildSettingsForm(): void {
+    this.settingsForm = this._fb.group({
+      DEFAULT_DATE: [this.settings ? this.settings.DEFAULT_DATE.Value : ""]
+    });
+  }
+
+  getSettings(): void {
+    this.settingsService.getSettingsData().subscribe((response) => {
+      this.settings = response.Entity;
+      console.log(this.settings);
+      let pickedDate = this.settings.DEFAULT_DATE.Value;
+      console.log(pickedDate);
+      this.selectedDate = pickedDate;
+      this.buildSettingsForm();
+    });
   }
 
   buildJournalVoucherForms(): void {
@@ -161,6 +183,11 @@ export class AddJournalComponent implements OnInit {
       this.journalVoucherForms.get("Date").patchValue(resultDate);
       console.log(this.journalVoucherForms.value.Date);
     }
+    else if (this.selectedDate == 'English')
+    {
+      console.log(this.journalVoucherForms.value.Date);
+      this.journalVoucherForms.get("Date").patchValue(this.journalVoucherForms.value.Date);
+    }
     this.journalService
       .addJournalVoucher(this.journalVoucherForms.value)
       .subscribe(
@@ -184,7 +211,7 @@ export class AddJournalComponent implements OnInit {
   dateConverterPopup(): void
   {
     this.modalRef = this.modalService.show(DateConverterComponent, {
-      initialState: { journalVouchForm: this.journalVoucherForms },
+      initialState: { VoucherForm: this.journalVoucherForms },
       backdrop: true,
       ignoreBackdropClick: true,
       class: "modal-sm",

@@ -23,6 +23,7 @@ export class CreateReportsComponent implements OnInit {
   defaultImageUrl = environment.defaultImageUrl;
   @Input("formGroup")
   public form: FormGroup;
+  @Input("selectType") public selectType: string;
   @Input("voucherType") public voucherType: string;
   @Input("reportType") public reportType: string;
   iconConst = IconConst;
@@ -189,6 +190,17 @@ export class CreateReportsComponent implements OnInit {
       this.modalRef = this.modalService.show(ReportPreviewComponent, {
         initialState: { kharidKhataList: this.localStorageService.getLocalStorageItem(
           "kharidKhataList") },
+          ignoreBackdropClick: true,
+          animated: true,
+          keyboard: true,
+          class: "modal-lg",
+      });
+    }
+
+    if (this.reportType == "SALES_PARTY_TRANSACT") {
+      this.modalRef = this.modalService.show(ReportPreviewComponent, {
+        initialState: { salesReportList: this.localStorageService.getLocalStorageItem(
+          "salesReportList"), form: this.form, selectType: this.selectType},
           ignoreBackdropClick: true,
           animated: true,
           keyboard: true,

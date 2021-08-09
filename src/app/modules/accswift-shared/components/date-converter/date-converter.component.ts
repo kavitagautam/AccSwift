@@ -15,7 +15,7 @@ var adbs = require("ad-bs-converter");
 })
 export class DateConverterComponent implements OnInit {
    
-  @Input() journalVouchForm: FormGroup;
+  @Input() VoucherForm: FormGroup;
   public selectedDate:string ='';
 
   constructor(
@@ -34,9 +34,9 @@ export class DateConverterComponent implements OnInit {
     var testdate=(document.getElementById('adToBs')as HTMLInputElement).value;
     console.log(testdate);
     var date_regex = /^((0?[1-9]|1[012])[/](0?[1-9]|[12][0-9]|3[01])[/](19|20)?[0-9]{2})*$/ ;
-    if(date_regex.test(testdate)) return 
+    if(date_regex.test(testdate))
     {
-      this.getAdToBs(testdate);
+      return this.getAdToBs(testdate);
     }
   }
 
@@ -45,9 +45,9 @@ export class DateConverterComponent implements OnInit {
     var testdate=(document.getElementById('bsToAd')as HTMLInputElement).value;
     console.log(testdate);
     var date_regex = /^((0?[1-9]|1[012])[/](0?[1-9]|[12][0-9]|3[01])[/](19|20)?[0-9]{2})*$/ ;
-    if(date_regex.test(testdate)) return 
+    if(date_regex.test(testdate)) 
     {
-      this.getBsToAd(testdate);
+      return this.getBsToAd(testdate);
     }
   }
 
@@ -65,7 +65,7 @@ export class DateConverterComponent implements OnInit {
     var dayPadded = dayPad.toString().padStart(2,0);
     let nepaliDate =  `${dateObject.en.year}-${monthPadded}-${dayPadded}`;
     console.log(nepaliDate);
-    // this.journalVouchForm.get("Date").patchValue(nepaliDate);
+    // this.VoucherForm.get("Date").patchValue(nepaliDate);
     // document.getElementById("bsToAd").replaceWith(nepaliDate);
     (document.getElementById('bsToAd') as HTMLInputElement).value = nepaliDate;
     return nepaliDate;
@@ -85,7 +85,7 @@ export class DateConverterComponent implements OnInit {
     var dayPadded = dayPad.toString().padStart(2,0);
     let engDate =  `${dateObject.year}-${monthPadded}-${dayPadded}`;
     console.log(engDate);
-    // this.journalVouchForm.get("Date").patchValue(engDate);
+    // this.VoucherForm.get("Date").patchValue(engDate);
     // document.getElementById("adToBs").replaceWith(engDate);
     // document.getElementById('adToBs').value = engDate;
     (document.getElementById('adToBs') as HTMLInputElement).value = engDate;
@@ -93,13 +93,13 @@ export class DateConverterComponent implements OnInit {
   }
   
   public onOkay() {
-    if (this.selectedDate == 'Nepali')
+    if (this.selectedDate == 'Nepali') //Select Nepali Date
     {
-      this.journalVouchForm.get("Date").patchValue((document.getElementById('bsToAd')as HTMLInputElement).value);
+      this.VoucherForm.get("Date").patchValue((document.getElementById('bsToAd')as HTMLInputElement).value);
     }
-    else if (this.selectedDate == 'English')
+    else if (this.selectedDate == 'English') //Select English Date
     {
-      this.journalVouchForm.get("Date").patchValue((document.getElementById('adToBs')as HTMLInputElement).value);
+      this.VoucherForm.get("Date").patchValue((document.getElementById('adToBs')as HTMLInputElement).value);
     }
     this.modalRef.hide();
     this.modalRef = null;
