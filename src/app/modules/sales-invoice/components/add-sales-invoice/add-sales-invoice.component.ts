@@ -73,6 +73,15 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   companyForm: FormGroup;
 
+  amount = {
+    thousand: 1000,
+    fivehundred: 500,
+    hundred: 100,
+    fifty: 50,
+    ten: 10,
+    five: 5,
+  }
+
   constructor(
     private _fb: FormBuilder,
     private router: Router,
@@ -91,6 +100,13 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.myFormValueChanges$.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
+  }
+
+  addAmount():void {
+    const click = (document.getElementById('1000')as HTMLInputElement).value;
+    var sum = 0;
+    sum = sum + parseInt(click);
+    console.log(sum);
   }
 
   toggle() {

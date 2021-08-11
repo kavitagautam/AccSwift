@@ -72,7 +72,7 @@
 
 .vr-line {
   background-color: #dad3d3;
-  height: 378px;
+  height: 408px;
   width: 2px;
   position: absolute;
   right: 50%;
@@ -98,6 +98,10 @@
   font-size: 28px;
   font-weight: 600;
   color: #000;
+}
+
+.payment-title {
+  margin-top: 36px;
 }
 
 .input-wrap label,
