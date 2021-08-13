@@ -49,7 +49,8 @@ import { PreferenceService } from "@accSwift-modules/preference/services/prefere
 export class DetailsEntryGridComponent implements OnInit {
 
   salesDetails: SalesInvoiceDetails;
-  payInvoiceForm: FormGroup;
+  @Input("formGroup")
+  public payInvoiceForm: FormGroup;
   salesInvoiceList: SalseInvoice[];
   public gridView: GridDataResult;
   listLoading:boolean;
@@ -70,10 +71,10 @@ export class DetailsEntryGridComponent implements OnInit {
   ];
   public state: State = 
   {
-    filter: {
-      logic: "and",
-      filters: [{ field: "Status", operator: "Is equal to", value: "UNPAID" }],
-    }
+    // filter: {
+    //   logic: "and",
+    //   filters: [{ field: "Status", operator: "Is equal to", value: "UNPAID" }],
+    // }
   }
   searchFilterList = [];
 
@@ -157,7 +158,6 @@ export class DetailsEntryGridComponent implements OnInit {
     // this.getSalesInvoiceList();
     // this.filterInvoiceForm();
     this.partyInvoiceForm();
-    this.buildAddSalesInvoiceForm()
     console.log(this.entryArray.value);
     console.log(this.salesInvoiceForm.value);
   }
@@ -175,7 +175,7 @@ export class DetailsEntryGridComponent implements OnInit {
     console.log(obj.FilterList)
     this.salesInvoiceService.getSalesInvoiceMaster(obj).subscribe(
       (response) => {
-        this.salesInvoiceList = response.Entity.Entity;
+        this.salesInvoiceList = response.Entity.Entity.filter(x => x.Status === "UNPAID");
         console.log(this.salesInvoiceList);
         this.gridView = {
           data: this.salesInvoiceList,
@@ -253,74 +253,7 @@ export class DetailsEntryGridComponent implements OnInit {
     this.getSalesInvoiceList();
   }
 
-  buildAddSalesInvoiceForm(): void {
-    this.payInvoiceForm = this._fb.group({
-      ID: [this.salesDetails ? this.salesDetails.ID : 0],
-      SeriesID: [
-        this.preferenceService.preferences
-          ? this.preferenceService.preferences.DEFAULT_SERIES_SALES.Value
-          : null,
-        Validators.required,
-      ],
-      CashPartyLedgerID: [
-        this.preferenceService.preferences
-          ? this.preferenceService.preferences.DEFAULT_CASH_ACCOUNT.Value
-          : null,
-      ],
-      VoucherNo: [""],
-      SalesLedgerID: [
-        this.preferenceService.preferences
-          ? this.preferenceService.preferences.DEFAULT_SALES_ACCOUNT.Value
-          : null,
-      ],
-      DepotID: [
-        this.preferenceService.preferences
-          ? this.preferenceService.preferences.DEFAULT_DEPOT.Value
-          : null,
-      ],
-      ProjectID: [
-        this.preferenceService.preferences
-          ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
-          : null,
-        Validators.required,
-      ],
-      Date: [new Date()],
-      IsPay: [false],
-      OrderNo: [""],
-      TotalAmount: [0, Validators.required],
-      TotalQty: [0, Validators.required],
-      Status: ["DRAFT"], // When Sales invoice Added it will be draft
-      GrossAmount: [0, Validators.required],
-      NetAmount: [0, Validators.required],
-      SpecialDiscount: [0, Validators.required],
-      VAT: [0],
-      TotalTCAmount: [0],
-      Remarks: [""],
-      InvoiceDetails: this._fb.array([this.addInvoiceEntryList()]),
-      });
-  }
-
-  addInvoiceEntryList(): FormGroup {
-    return this._fb.group({
-      ID: [this.salesDetails ? this.salesDetails.ID : 0],
-      ProductCode: [""],
-      ProductID: [""],
-      ProductName: [""],
-      CodeName: [""],
-      Quantity: [0, Validators.required],
-      QtyUnitID: [null, Validators.required],
-      QtyUnitName: [""],
-      SalesRate: ["", Validators.required],
-      Amount: ["", Validators.required],
-      DiscPercentage: [0, Validators.required],
-      DiscountAmount: [0, Validators.required],
-      NetAmount: [0, Validators.required],
-      TaxID: [null],
-      TaxAmount: [""],
-      Remarks: [""],
-    });
-  }
-
+  
 
   payInvoice(): void {
     console.log(this.payInvoiceForm.value);

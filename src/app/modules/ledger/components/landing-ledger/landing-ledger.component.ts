@@ -167,7 +167,8 @@ export class LandingLedgerComponent implements OnInit {
     this.groupArrays = groupArray;
   }
 
-
+  
+ ledgerList:any = {};
   getLedgerByID(): void {
     console.log(this.groupArrays);
     var groupArray = this.groupArrays;
@@ -177,14 +178,11 @@ export class LandingLedgerComponent implements OnInit {
       this.ledgerService
       .getLedgersById(param)
       .subscribe((res) => {
+        this.ledgerList[param] = res.Entity;
         this.ledgersOfGroups = res.Entity;
         console.log(this.ledgersOfGroups);
-        // if (item.Title && res.Entity)
-        // {
-        //   this.ledgers.push( {"Title": item.Title, "values": res.Entity}); // Use loop in values as well
-        // }
-        // console.log(this.ledgers);
       });
+      console.log(this.ledgerList);
     }
   }
   

@@ -102,11 +102,12 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
-  addAmount():void {
-    const click = (document.getElementById('1000')as HTMLInputElement).value;
-    var sum = 0;
-    sum = sum + parseInt(click);
-    console.log(sum);
+
+  totalAmount = 0;
+  addAmount(amount):void {
+    // var  click1 = (document.getElementById('1000')as HTMLInputElement).value;
+    this.totalAmount += amount;
+    this.tenderForm.get("paidAmount").setValue(this.totalAmount);
   }
 
   toggle() {
@@ -215,7 +216,8 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           disabled: true,
         },
       ],
-      paidAmount: [this.grandTotalAmount],
+      // paidAmount: [this.grandTotalAmount],
+      paidAmount: [0.00],
       returnAmount: [
         {
           value: 0,

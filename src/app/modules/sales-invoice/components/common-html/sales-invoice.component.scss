@@ -72,7 +72,7 @@
 
 .vr-line {
   background-color: #dad3d3;
-  height: 408px;
+  height: 442px;
   width: 2px;
   position: absolute;
   right: 50%;
@@ -109,17 +109,36 @@
   padding-top: 24px;
 }
 
-kendo-dropdownlist,
-kendo-autocomplete {
+textarea {
   width: 100%;
 }
 
-.total {
-  font-size: 30px !important;
-  color: #446e88 !important;
+textarea {
+  border-color: #d2d6de;
+  background-color: #f7f9fc !important;
+  color: #1a2138;
 }
 
-.amount {
+textarea:focus {
+  border: none;
+}
+
+.total input {
+  font-size: 30px !important;
+  color: #446e88 !important;
+  border: none !important;
+  background-color: transparent !important;
+}
+
+.amount input {
+  font-size: 16px;
+  color: #000;
+  font-weight: 600;
+  border: none !important;
+  background-color: transparent !important;
+}
+
+.only-amount {
   display: flex;
   justify-content: flex-end;
   font-size: 16px;
@@ -129,7 +148,7 @@ kendo-autocomplete {
 
 .cal-icon {
   position: absolute;
-  top: 32px;
+  top: 10px;
   right: 9px;
 }
 
@@ -137,9 +156,23 @@ kendo-autocomplete {
   border: 1px solid #e5eff5;
   border-radius: 8px;
   background: #e5eff5;
-  padding: 12px 23px;
+  padding: 10px 18px;
   color: #000;
   font-size: 15px;
   text-align: center;
-  margin-top: 34px;
+  margin-top: 37px;
+}
+
+.input {
+  margin-top: 14px;
+}
+
+.text {
+  padding-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.payment {
+  margin-bottom: 64px;
 }

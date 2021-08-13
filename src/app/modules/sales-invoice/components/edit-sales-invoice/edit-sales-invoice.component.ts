@@ -63,6 +63,14 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
   companyLogo: any = "";
 
   companyForm: FormGroup;
+  amount = {
+    thousand: 1000,
+    fivehundred: 500,
+    hundred: 100,
+    fifty: 50,
+    ten: 10,
+    five: 5,
+  }
 
   constructor(
     private _fb: FormBuilder,
@@ -80,6 +88,13 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm.valueChanges.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
+  }
+
+  totalAmount = 0;
+  addAmount(amount):void {
+    // var  click1 = (document.getElementById('1000')as HTMLInputElement).value;
+    this.totalAmount += amount;
+    this.tenderForm.get("paidAmount").setValue(this.totalAmount);
   }
 
   toggle() {
@@ -233,7 +248,8 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
           disabled: true,
         },
       ],
-      paidAmount: [this.grandTotalAmount],
+      // paidAmount: [this.grandTotalAmount],
+      paidAmount: [0.00],
       returnAmount: [
         {
           value: 0,

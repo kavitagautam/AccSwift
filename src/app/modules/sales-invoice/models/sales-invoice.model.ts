@@ -67,6 +67,7 @@ export interface SalseInvoice {
   CreatedDate: Date;
   ModifiedBy: string;
   ModifiedDate?: Date;
+  Status: string;
 }
 
 export interface SalseInvoiceNavigate {

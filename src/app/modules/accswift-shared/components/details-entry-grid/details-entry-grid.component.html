@@ -15,7 +15,7 @@
     </form>
   </div>
 
-  <kendo-tabstrip style="margin: 50px 0;">
+  <kendo-tabstrip style="margin: 50px 0">
     <kendo-tabstrip-tab title="By Account" [selected]="true">
       <ng-template kendoTabContent>
         <kendo-grid
@@ -884,6 +884,16 @@
           (pageChange)="pageChange($event)"
           (dataStateChange)="dataStateChange($event)"
         >
+          <kendo-grid-column field="IsPay" title="Checkbox" width="50">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <input
+                type="checkbox"
+                [checked]="dataItem.IsPay"
+                (click)="payInvoice()"
+              />
+            </ng-template>
+          </kendo-grid-column>
+
           <kendo-grid-column field="VoucherNo" title="Voucher No" width="80">
           </kendo-grid-column>
 
@@ -941,16 +951,6 @@
                   >Draft</span
                 ></span
               >
-            </ng-template>
-          </kendo-grid-column>
-
-          <kendo-grid-column field="IsPay" title="Checkbox" width="50">
-            <ng-template kendoGridCellTemplate let-dataItem>
-              <input
-                type="checkbox"
-                [checked]="dataItem.IsPay"
-                (click)="payInvoice()"
-              />
             </ng-template>
           </kendo-grid-column>
         </kendo-grid>
