@@ -94,6 +94,7 @@
           <accSwift-details-entry-grid
             [entryArray]="salesInvoiceForm.controls.InvoiceDetails"
             [voucherType]="'SALES'"
+            [formGroup]="salesInvoiceForm"
           ></accSwift-details-entry-grid>
         </div>
 
@@ -346,289 +347,298 @@
     </button>
   </div>
   <div class="modal-body">
-    <kendo-tabstrip>
-      <kendo-tabstrip-tab title="Cash">
-        <ng-template kendoTabContent>
-          <div class="row">
-            <form [formGroup]="tenderForm" novalidate>
-              <div class="col-lg-6">
-                <div class="card-details input-wrap">
-                  <h2 class="title">Quick Cash</h2>
-                  <div class="row">
-                    <div class="amount-box">
-                      <div class="col-lg-4">
-                        <div class="box-content">
-                          <span>1000</span>
+    <form [formGroup]="tenderForm" novalidate>
+      <div class="col-lg-6">
+        <kendo-tabstrip>
+          <kendo-tabstrip-tab title="Cash" [selected]="true">
+            <ng-template kendoTabContent>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="card-details input-wrap">
+                    <h2 class="title">Quick Cash</h2>
+                    <div class="row">
+                      <div class="amount-box">
+                        <div class="col-lg-4">
+                          <button class="box-content" (click)="addAmount(1000)">
+                            <span
+                              [innerHTML]="amount.thousand |currencyFormat"
+                            ></span>
+                          </button>
                         </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="box-content">
-                          <span>500</span>
+                        <div class="col-lg-4">
+                          <button class="box-content" (click)="addAmount(500)">
+                            <span
+                              [innerHTML]="amount.fivehundred | currencyFormat"
+                            ></span>
+                          </button>
                         </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="box-content">
-                          <span>100</span>
+                        <div class="col-lg-4">
+                          <button class="box-content" (click)="addAmount(100)">
+                            <span
+                              [innerHTML]="amount.hundred | currencyFormat"
+                            ></span>
+                          </button>
                         </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="box-content">
-                          <span>50</span>
+                        <div class="col-lg-4">
+                          <button class="box-content" (click)="addAmount(50)">
+                            <span
+                              [innerHTML]="amount.fifty | currencyFormat"
+                            ></span>
+                          </button>
                         </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="box-content">
-                          <span>10</span>
+                        <div class="col-lg-4">
+                          <button class="box-content" (click)="addAmount(10)">
+                            <span
+                              [innerHTML]="
+                            amount.ten | currencyFormat
+                      "
+                            ></span>
+                          </button>
                         </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="box-content">
-                          <span>5</span>
+                        <div class="col-lg-4">
+                          <button class="box-content" (click)="addAmount(5)">
+                            <span
+                              [innerHTML]="amount.five | currencyFormat"
+                            ></span>
+                          </button>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="hr-line"></div>
-                  <div class="row">
-                    <div class="col-lg-5">
-                      <label>Payment(Rs.)</label>
-                    </div>
-                    <div class="col-lg-7">
-                      <div class="form-group input-fields">
-                        <input
-                          style="text-align: right"
-                          type="number"
-                          class="form-control"
-                          formControlName="paidAmount"
-                          step="0.01"
-                        />
+                    <div class="hr-line"></div>
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <label>Payable Amount(Rs.)</label>
+                        <label>Paid Amount(Rs.)</label>
                       </div>
-                      <span class="amount">Ten thousand only</span>
+                      <div class="col-lg-7">
+                        <div class="form-group input-fields">
+                          <input
+                            style="text-align: right"
+                            type="number"
+                            class="form-control"
+                            formControlName="payableAmount"
+                            step="0.01"
+                          />
+                        </div>
+                        <div class="form-group input-fields">
+                          <input
+                            id="cash"
+                            [innerHTML]="
+                          tenderForm.get('paidAmount').value | currencyFormat
+                    "
+                            style="text-align: right"
+                            type="number"
+                            class="form-control"
+                            formControlName="paidAmount"
+                            step="0.01"
+                            (change)="calculate($event.target.value)"
+                          />
+                        </div>
+                        <span class="only-amount">Ten thousand only</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="vr-line"></div>
-              <div class="col-lg-6">
-                <div class="card-details">
-                  <h2 class="title">Payment</h2>
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label class="total">Total:</label>
-                      <label>Total Paid:</label>
-                      <label>Return:</label>
+            </ng-template>
+          </kendo-tabstrip-tab>
+          <kendo-tabstrip-tab title="Card">
+            <ng-template kendoTabContent>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="card-details input-wrap">
+                    <h2 class="title">Card Details</h2>
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <label>Bank:</label>
+                        <label>Cheque No:</label>
+                      </div>
+                      <div class="col-lg-7">
+                        <div class="form-group input">
+                          <input class="form-control" />
+                        </div>
+                        <div class="form-group input">
+                          <input
+                            onkeyup="
+                          var v = this.value;
+                          if (!v.match(/^[0-9]+$/)) {                     
+                              alert('Please enter digits only'); 
+                          } 
+                          "
+                            maxlength="20"
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-lg-8">
-                      <div class="input-fields total">Rs 10,000.00</div>
-                      <div class="input-fields amount">Rs 10,000.00</div>
-                      <div class="form-group input-fields amount">
-                        <input
-                          style="text-align: right"
-                          type="number"
-                          class="form-control"
-                          formControlName="returnAmount"
-                        />
+                    <div class="hr-line"></div>
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <label>Payable Amount(Rs.)</label>
+                        <label>Paid Amount(Rs.)</label>
+                      </div>
+                      <div class="col-lg-7">
+                        <div class="form-group input-fields">
+                          <input
+                            style="text-align: right"
+                            type="number"
+                            class="form-control"
+                            formControlName="payableAmount"
+                            step="0.01"
+                          />
+                        </div>
+                        <div class="form-group input-fields">
+                          <input
+                            id="card"
+                            style="text-align: right"
+                            type="number"
+                            class="form-control"
+                            formControlName="paidAmount"
+                            step="0.01"
+                            (change)="calculate($event.target.value)"
+                          />
+                        </div>
+                        <span class="only-amount">Ten thousand only</span>
                       </div>
                     </div>
                   </div>
-                  <div class="hr-line"></div>
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <label>Note:</label>
+                </div>
+              </div>
+            </ng-template>
+          </kendo-tabstrip-tab>
+          <kendo-tabstrip-tab title="Cheque">
+            <ng-template kendoTabContent>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="card-details input-wrap">
+                    <h2 class="title">Cheque Details</h2>
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <label>Bank:</label>
+                        <label>Account No:</label>
+                        <label>Cheque Date:</label>
+                      </div>
+                      <div class="col-lg-7">
+                        <div class="form-group input">
+                          <input class="form-control" />
+                        </div>
+                        <div class="form-group input">
+                          <input
+                            onkeyup="
+                          var v = this.value;
+                          if (!v.match(/^[0-9]+$/)) {                     
+                              alert('Please enter digits only'); 
+                          } 
+                          "
+                            maxlength="20"
+                            class="form-control"
+                          />
+                        </div>
+                        <div
+                          class="form-group input"
+                          style="position: relative"
+                        >
+                          <input class="form-control" bsDatepicker />
+                          <span
+                            _ngcontent-rie-c20=""
+                            class="glyphicon glyphicon-calendar cal-icon"
+                          ></span>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-lg-9">
-                      <div class="input-fields">
-                        <kendo-autocomplete [data]="" placeholder="Write here">
-                        </kendo-autocomplete>
+                    <div class="hr-line"></div>
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <label>Payable Amount(Rs.)</label>
+                        <label>Paid Amount(Rs.)</label>
+                      </div>
+                      <div class="col-lg-7">
+                        <div class="form-group input-fields">
+                          <input
+                            style="text-align: right"
+                            type="number"
+                            class="form-control"
+                            formControlName="payableAmount"
+                            step="0.01"
+                          />
+                        </div>
+                        <div class="form-group input-fields">
+                          <input
+                            id="cheque"
+                            style="text-align: right"
+                            type="number"
+                            class="form-control"
+                            formControlName="paidAmount"
+                            step="0.01"
+                            (change)="calculate($event.target.value)"
+                          />
+                        </div>
+                        <span class="only-amount">Ten thousand only</span>
                       </div>
                     </div>
                   </div>
-                  <div class="row">
-                    <button
-                      class="payment-btn btn-primary"
-                      (click)="payInvoice()"
-                    >
-                      <i class="fas fa-check-circle"></i
-                      ><span>Complete Payment</span>
-                    </button>
-                  </div>
                 </div>
               </div>
-            </form>
-          </div>
-        </ng-template>
-      </kendo-tabstrip-tab>
-      <kendo-tabstrip-tab title="Card" [selected]="true">
-        <ng-template kendoTabContent>
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="card-details input-wrap">
-                <h2 class="title">Card Details</h2>
-                <div class="row">
-                  <div class="col-lg-5">
-                    <label>Bank:</label>
-                    <label>Cheque No:</label>
-                    <!-- <label>Cheque Date</label> -->
-                  </div>
-                  <div class="col-lg-7">
-                    <div class="input-fields">
-                      <kendo-dropdownlist [data]=""> </kendo-dropdownlist>
-                    </div>
-                    <div class="input-fields">
-                      <kendo-autocomplete
-                        [data]=""
-                        [placeholder]="'****-****-****-****'"
-                      >
-                      </kendo-autocomplete>
-                    </div>
-                    <!-- <div class="input-fields" style="position: relative">
-                      <kendo-autocomplete [data]=""> </kendo-autocomplete>
-                      <span
-                        _ngcontent-rie-c20=""
-                        class="glyphicon glyphicon-calendar cal-icon"
-                      ></span>
-                    </div> -->
-                  </div>
-                </div>
-                <div class="hr-line"></div>
-                <div class="row">
-                  <div class="col-lg-5">
-                    <label>Payment(Rs.)</label>
-                  </div>
-                  <div class="col-lg-7">
-                    <div class="input-fields">
-                      <kendo-autocomplete [data]=""> </kendo-autocomplete>
-                    </div>
-                    <span class="amount">Ten thousand only</span>
-                  </div>
-                </div>
-              </div>
+            </ng-template>
+          </kendo-tabstrip-tab>
+        </kendo-tabstrip>
+      </div>
+      <div class="vr-line"></div>
+      <div class="col-lg-6">
+        <div class="card-details">
+          <h2 class="title payment-title">Payment</h2>
+          <div class="row payment">
+            <div class="col-lg-4">
+              <label class="total">Total:</label>
+              <label>Total Paid:</label>
+              <label>Return:</label>
             </div>
-            <div class="vr-line"></div>
-            <div class="col-lg-6">
-              <div class="card-details">
-                <h2 class="title">Payment</h2>
-                <div class="row">
-                  <div class="col-lg-4">
-                    <label class="total">Total:</label>
-                    <label>Total Paid:</label>
-                    <label>Return:</label>
-                  </div>
-                  <div class="col-lg-8">
-                    <div class="input-fields total">Rs 10,000.00</div>
-                    <div class="input-fields amount">Rs 10,000.00</div>
-                    <div class="input-fields amount">Rs 0.00</div>
-                  </div>
-                </div>
-                <div class="hr-line"></div>
-                <div class="row">
-                  <div class="col-lg-3">
-                    <label>Note:</label>
-                  </div>
-                  <div class="col-lg-9">
-                    <div class="input-fields">
-                      <kendo-autocomplete [data]="" placeholder="Write here">
-                      </kendo-autocomplete>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <button class="payment-btn btn-primary">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Complete Payment</span>
-                  </button>
-                </div>
+            <div class="col-lg-8">
+              <div class="text total">
+                <input
+                  style="text-align: right"
+                  class="form-control"
+                  formControlName="payableAmount"
+                  step="0.01"
+                />
               </div>
-            </div>
-          </div>
-        </ng-template>
-      </kendo-tabstrip-tab>
-      <kendo-tabstrip-tab title="Cheque">
-        <ng-template kendoTabContent>
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="card-details input-wrap">
-                <h2 class="title">Cheque Details</h2>
-                <div class="row">
-                  <div class="col-lg-5">
-                    <label>Bank:</label>
-                    <label>Account No:</label>
-                    <label>Cheque Date:</label>
-                  </div>
-                  <div class="col-lg-7">
-                    <div class="input-fields">
-                      <kendo-dropdownlist [data]=""> </kendo-dropdownlist>
-                    </div>
-                    <div class="input-fields">
-                      <kendo-autocomplete
-                        [data]=""
-                        [placeholder]="'****-****-****-****'"
-                      >
-                      </kendo-autocomplete>
-                    </div>
-                    <div class="input-fields" style="position: relative">
-                      <kendo-autocomplete [data]=""> </kendo-autocomplete>
-                      <span
-                        _ngcontent-rie-c20=""
-                        class="glyphicon glyphicon-calendar cal-icon"
-                      ></span>
-                    </div>
-                  </div>
-                </div>
-                <div class="hr-line"></div>
-                <div class="row">
-                  <div class="col-lg-5">
-                    <label>Payment(Rs.)</label>
-                  </div>
-                  <div class="col-lg-7">
-                    <div class="input-fields">
-                      <kendo-autocomplete [data]=""> </kendo-autocomplete>
-                    </div>
-                    <span class="amount">Ten thousand only</span>
-                  </div>
-                </div>
+              <div class="text amount">
+                <input
+                  style="text-align: right"
+                  class="form-control"
+                  formControlName="paidAmount"
+                  step="0.01"
+                />
               </div>
-            </div>
-            <div class="vr-line"></div>
-            <div class="col-lg-6">
-              <div class="card-details">
-                <h2 class="title">Payment</h2>
-                <div class="row">
-                  <div class="col-lg-4">
-                    <label class="total">Total:</label>
-                    <label>Total Paid:</label>
-                    <label>Return:</label>
-                  </div>
-                  <div class="col-lg-8">
-                    <div class="input-fields total">Rs 10,000.00</div>
-                    <div class="input-fields amount">Rs 10,000.00</div>
-                    <div class="input-fields amount">Rs 0.00</div>
-                  </div>
-                </div>
-                <div class="hr-line"></div>
-                <div class="row">
-                  <div class="col-lg-3">
-                    <label>Note:</label>
-                  </div>
-                  <div class="col-lg-9">
-                    <div class="input-fields">
-                      <kendo-autocomplete [data]="" placeholder="Write here">
-                      </kendo-autocomplete>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <button class="payment-btn btn-primary">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Complete Payment</span>
-                  </button>
-                </div>
+              <div class="text amount">
+                <input
+                  style="text-align: right"
+                  type="number"
+                  class="form-control"
+                  formControlName="returnAmount"
+                />
               </div>
             </div>
           </div>
-        </ng-template>
-      </kendo-tabstrip-tab>
-    </kendo-tabstrip>
+          <div class="hr-line"></div>
+          <div class="row">
+            <div class="col-lg-4">
+              <label>Note:</label>
+            </div>
+            <div class="col-lg-8">
+              <div class="input-fields">
+                <textarea placeholder="Write here"> </textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <button class="payment-btn btn-primary" (click)="payInvoice()">
+              <i class="fas fa-check-circle"></i><span>Complete Payment</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
   <div class="modal-footer">
     <button

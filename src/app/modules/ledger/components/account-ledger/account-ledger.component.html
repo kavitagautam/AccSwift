@@ -47,9 +47,9 @@
                   <label>Account Head <sup>*</sup></label>
                   <kendo-dropdownlist
                     class="form-control"
-                    [data]="ledgerGroup"
+                    [data]="groupArrays"
                     [filterable]="true"
-                    [textField]="'CodeName'"
+                    [textField]="'Title'"
                     [valueField]="'ID'"
                     [valuePrimitive]="true"
                     [formControl]="accountLedgerForm.get('GroupID')"
@@ -72,7 +72,8 @@
                     [textField]="'Name'"
                     [valueField]="'ID'"
                     [valuePrimitive]="true"
-                    formControlName="Currency"
+                    [formControl]="accountLedgerForm.get('Currency')"
+                    (filterChange)="currencyFilter($event)"
                   >
                   </kendo-dropdownlist>
                 </div>

@@ -73,6 +73,15 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
 
   companyForm: FormGroup;
 
+  amount = {
+    thousand: 1000,
+    fivehundred: 500,
+    hundred: 100,
+    fifty: 50,
+    ten: 10,
+    five: 5,
+  }
+
   constructor(
     private _fb: FormBuilder,
     private router: Router,
@@ -91,6 +100,19 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.myFormValueChanges$.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
+  }
+
+
+  totalAmount = 0;
+  addAmount(amount):void {
+    // var  click1 = (document.getElementById('1000')as HTMLInputElement).value;
+    this.totalAmount += amount;
+    this.tenderForm.get("paidAmount").setValue(this.totalAmount);
+  }
+
+  calculate(paidAmount) {
+    console.log(paidAmount);
+    this.tenderForm.get("paidAmount").setValue(paidAmount);
   }
 
   toggle() {
@@ -199,7 +221,8 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
           disabled: true,
         },
       ],
-      paidAmount: [this.grandTotalAmount],
+      // paidAmount: [this.grandTotalAmount],
+      paidAmount: [0.00],
       returnAmount: [
         {
           value: 0,

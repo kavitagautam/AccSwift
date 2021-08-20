@@ -32,6 +32,12 @@ import { LedgerMin } from "@accSwift-modules/ledger/models/ledger.models";
 import { EntrySubLedgerComponent } from "../entry-sub-ledger/entry-sub-ledger.component";
 import { PartyInvoicesComponent } from "../party-invoices/party-invoices.component";
 import { initialState } from "ngx-bootstrap/timepicker/reducer/timepicker.reducer";
+import { SalesInvoiceDetails, SalseInvoice } from "@accSwift-modules/sales-invoice/models/sales-invoice.model";
+import { SortDescriptor, State, process } from "@progress/kendo-data-query";
+import { DataStateChangeEvent, GridDataResult, PageChangeEvent } from "@progress/kendo-angular-grid";
+import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
+import { Router } from "@angular/router";
+import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
 
 @Component({
   selector: "accSwift-details-entry-grid",
@@ -41,6 +47,37 @@ import { initialState } from "ngx-bootstrap/timepicker/reducer/timepicker.reduce
   providers: [SettingsService],
 })
 export class DetailsEntryGridComponent implements OnInit {
+
+  salesDetails: SalesInvoiceDetails;
+  @Input("formGroup")
+  public payInvoiceForm: FormGroup;
+  salesInvoiceList: SalseInvoice[];
+  public gridView: GridDataResult;
+  listLoading:boolean;
+  // public filter: CompositeFilterDescriptor;
+  public pageSize = 10; //No of records in a page
+  public skip = 0; //No of skipped records
+  public currentPage = 1;
+  //sorting Kendo Data
+  orderByKey = "";
+  dirKey = "asc";
+  //sorting kendo data
+  public allowUnsort = true;
+  public sort: SortDescriptor[] = [
+    {
+      field: "",
+      dir: "asc",
+    },
+  ];
+  public state: State = 
+  {
+    // filter: {
+    //   logic: "and",
+    //   filters: [{ field: "Status", operator: "Is equal to", value: "UNPAID" }],
+    // }
+  }
+  searchFilterList = [];
+
 
   salesInvoiceForm: FormGroup;
   userType: string = localStorage.getItem("user_type");
@@ -91,12 +128,15 @@ export class DetailsEntryGridComponent implements OnInit {
   };
   constructor(
     public gridServices: DetailsEntryGridService,
+    private router: Router,
     private toastr: ToastrService,
     private modalService: BsModalService,
     private _fb: FormBuilder,
     @Inject(LOCALE_ID) public localeId: string,
     public intlService: IntlService,
-    public fb: FormBuilder
+    public fb: FormBuilder,
+    public salesInvoiceService: SalesInvoiceService,
+    private preferenceService: PreferenceService
   ) {}
 
   ngOnInit(): void {
@@ -113,7 +153,158 @@ export class DetailsEntryGridComponent implements OnInit {
       this.columns.push(key);
     }
     console.log(this.entryArray);
+
+
+    // this.getSalesInvoiceList();
+    // this.filterInvoiceForm();
+    this.partyInvoiceForm();
+    console.log(this.entryArray.value);
+    console.log(this.salesInvoiceForm.value);
   }
+
+
+  getSalesInvoiceList(): void {
+    this.listLoading = true;
+    const obj = {
+      PageNo: this.currentPage,
+      DisplayRow: this.pageSize,
+      OrderBy: this.orderByKey,
+      Direction: this.dirKey,
+      FilterList: this.searchFilterList,
+    };
+    console.log(obj.FilterList)
+    this.salesInvoiceService.getSalesInvoiceMaster(obj).subscribe(
+      (response) => {
+        this.salesInvoiceList = response.Entity.Entity.filter(x => x.Status === "UNPAID");
+        console.log(this.salesInvoiceList);
+        this.gridView = {
+          data: this.salesInvoiceList,
+          total: response.Entity.TotalItemsAvailable,
+        };
+        console.log(this.gridView);
+      },
+      (error) => {
+        this.listLoading = false;
+      },
+      () => {
+        this.listLoading = false;
+      }
+    );
+  }
+  
+
+  public filterInvoiceForm(): void { //entryArray
+    this.searchFilterList = [];
+    console.log(this.searchFilterList);
+    this.currentPage = 1;
+    this.skip = 0;
+
+    for (const object of this.entryArray.value) { 
+      console.log(object);
+      for (const key in object){ // iterate over properties of object
+        console.log(key);
+        console.log(object[key]);
+        if (object[key]) {
+          this.searchFilterList.push({
+            Field: key,
+            Operator: "contains",
+            value: object[key],
+          });
+        }
+      }
+    }
+
+    // for (const prop in this.entryArray.value) { // iterate over properties of an array
+    //   console.log(prop);
+    //   console.log(this.entryArray.value[prop])
+    //   if (this.entryArray.value[prop])
+    //   {
+    //     this.searchFilterList.push({
+    //               Field: prop,
+    //               Operator: "contains",
+    //               value: this.entryArray.value[prop],
+    //             });
+    //   }
+    // }
+    console.log(this.searchFilterList);
+    this.getSalesInvoiceList();
+  }
+  
+  
+  public partyInvoiceForm(): void { //salesInvoiceForm
+    this.searchFilterList = [];
+    console.log(this.searchFilterList);
+    this.currentPage = 1;
+    this.skip = 0;
+    if (this.salesInvoiceForm.invalid) return;
+    console.log(this.salesInvoiceForm.value)
+    for (const key in this.salesInvoiceForm.value) {
+      console.log(key);
+      console.log(this.salesInvoiceForm.value[key]);
+      if (this.salesInvoiceForm.value[key]) {
+        this.searchFilterList.push({
+          Field: key,
+          Operator: "contains",
+          value: this.salesInvoiceForm.value[key],
+        });
+      }
+    }
+    console.log(this.searchFilterList);
+    this.getSalesInvoiceList();
+  }
+
+  
+
+  payInvoice(): void {
+    console.log(this.payInvoiceForm.value);
+    this.payInvoiceForm.get("IsPay").setValue(true);
+    this.payInvoiceForm.get("Status").setValue("PAID"); // Paid status
+    this.salesInvoiceService
+      .addSalesInvoice(this.payInvoiceForm.value)
+      .subscribe(
+        (response) => {
+          this.router.navigate(["/bank-receipt"]);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Invoice paid successfully");
+        }
+      );
+  }
+
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.orderByKey = "";
+    this.dirKey = "";
+    this.sort = sort;
+    this.dirKey = this.sort[0].dir;
+    this.orderByKey = this.sort[0].field;
+    this.getSalesInvoiceList();
+  }
+
+
+  public pageChange(event: PageChangeEvent): void {
+    console.log(event);
+    this.skip = event.skip;
+    if (event.skip == 0) {
+      this.currentPage = 1;
+    } else {
+      const pageNo = event.skip / event.take + 1;
+      this.currentPage = pageNo;
+    }
+    this.getSalesInvoiceList();
+  }
+
+
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.state = state;
+    console.log(this.state);
+    this.gridView = process(this.salesInvoiceList, this.state);
+    console.log(this.gridView);
+  }
+  
 
   buildSalesInvoiceSearchForm() {
     this.salesInvoiceForm = this.fb.group({
@@ -839,16 +1030,16 @@ export class DetailsEntryGridComponent implements OnInit {
     });
   }
 
-  viewPartyInvoices()
-  {
-    this.modalRef = this.modalService.show(PartyInvoicesComponent, {
-      initialState: { entryArray: this.entryArray, salesInvoiceForm: this.salesInvoiceForm},
-        ignoreBackdropClick: true,
-        animated: true,
-        keyboard: true,
-        class: "modal-lg",
-    })
-  }
+  // viewPartyInvoices()
+  // {
+  //   this.modalRef = this.modalService.show(PartyInvoicesComponent, {
+  //     initialState: { entryArray: this.entryArray, salesInvoiceForm: this.salesInvoiceForm},
+  //       ignoreBackdropClick: true,
+  //       animated: true,
+  //       keyboard: true,
+  //       class: "modal-lg",
+  //   })
+  // }
 
   getRelatedUnitList(productCode): void {
     this.gridServices.getRelatedUnits(productCode).subscribe((response) => {

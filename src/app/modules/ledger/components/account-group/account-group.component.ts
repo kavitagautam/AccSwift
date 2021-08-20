@@ -20,6 +20,7 @@ import { LedgerGroup } from "../../models/ledger-group.model";
 })
 export class AccountGroupComponent implements OnInit, OnChanges {
   @Input("selectedItem") selectedItem;
+  @Input("branchArray") branchArray;
   selectedLedgerGroupId: number;
   ledgerGroupDetails: LedgerGroup;
   accountGroupForm: FormGroup;

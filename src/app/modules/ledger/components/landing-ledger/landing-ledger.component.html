@@ -133,6 +133,7 @@
             <!--Main Branches-->
             <ng-template kendoTabContent>
               <ng-container *ngFor="let groups of item.Child">
+                <!-- <h1>{{ groups.ID }}</h1> -->
                 <fieldset>
                   <div class="group-tabs">
                     <h2 class="group-name">{{ groups.Title }}</h2>
@@ -160,7 +161,10 @@
                             View Ledgers
                           </ul> -->
                           <ul
-                            *ngFor="let ledger of ledgersOfGroups; index as i"
+                            *ngFor="
+                              let ledger of ledgerList[groups.ID];
+                              index as i
+                            "
                           >
                             <ng-container>
                               <span [ngClass]="colorGroupOrLedger(ledger)">
