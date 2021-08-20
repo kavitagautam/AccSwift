@@ -25,11 +25,12 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   @ViewChild("openingBalanceModal") openingBalanceModal: ElementRef;
   @ViewChild("previousYearBalanceModal") previousYearBalanceModal: ElementRef;
   @Input("selectedItem") selectedItem;
+  @Input("groupArrays") groupArrays;
   date: Date = new Date();
   selectedLedgerId: number;
   accountLedgerForm: FormGroup;
   ledgerDetails: LedgerDetails;
-  currency: Currency[];
+  currency: Currency[] = [];
   editMode: boolean;
   addMode: boolean;
   title: string;
@@ -116,6 +117,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         this.setOpeningBalanceList();
         this.setSubLedgerList();
         this.accountLedgerForm.patchValue(this.ledgerDetails);
+        console.log(this.accountLedgerForm.value);
         this.selectedLedgerId = this.ledgerDetails.ID;
         this.balanceDrCr = this.ledgerDetails.DrCr == "DR" ? "DEBIT" : "CREDIT";
       });
@@ -386,6 +388,12 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   suggestCurrency(): void {
     this.ledgerService.getCurrency().subscribe((response) => {
       this.currency = response.Entity;
+    });
+  }
+
+  currencyFilter(value):void {
+    this.ledgerService.getCurrency().subscribe((response) => {
+      this.currency = response.Entity.filter((s) => s.Name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
     });
   }
 

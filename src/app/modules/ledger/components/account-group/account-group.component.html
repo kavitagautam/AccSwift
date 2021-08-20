@@ -53,9 +53,9 @@
             <label>Parent Group <sup>*</sup></label>
             <kendo-dropdownlist
               class="form-control"
-              [data]="ledgerGroup"
+              [data]="branchArray"
               [filterable]="true"
-              [textField]="'CodeName'"
+              [textField]="'Title'"
               [valueField]="'ID'"
               [valuePrimitive]="true"
               [formControl]="accountGroupForm.get('ParentGroupID')"

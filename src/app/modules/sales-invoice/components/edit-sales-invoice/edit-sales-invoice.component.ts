@@ -97,6 +97,11 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.tenderForm.get("paidAmount").setValue(this.totalAmount);
   }
 
+  calculate(paidAmount) {
+    console.log(paidAmount);
+    this.tenderForm.get("paidAmount").setValue(paidAmount);
+  }
+
   toggle() {
     this.show = !this.show;
   }

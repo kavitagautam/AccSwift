@@ -18,6 +18,7 @@ import { ConfirmationDialogComponent } from "@app/shared/components/confirmation
 import { ToastrService } from "ngx-toastr";
 import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
 import { Ledgers } from "@accSwift-modules/ledger/models/ledger.models";
+import { AnyTxtRecord } from "dns";
 
 @Component({
   selector: "accSwift-landing-ledger",
@@ -49,7 +50,10 @@ export class LandingLedgerComponent implements OnInit {
 
   ledgerData: any;
 
+  branchArray: any;
+
   groupArrays: any;
+  groupArray: any;
 
   assetsHtml: string;
   assetsData: any;
@@ -89,7 +93,7 @@ export class LandingLedgerComponent implements OnInit {
   ngOnInit() {
     this.selectedGroupTab = true;
     this.loadLedgerTreeView();
-    this.loadLedgerGroupList();
+    // this.loadLedgerGroupList();
     this.groupLedgerTreeItems();
     this.getMajorGroups();
     this.getLedgerByID();
@@ -143,13 +147,13 @@ export class LandingLedgerComponent implements OnInit {
   }
 
 
-  loadLedgerGroupList(): void //To access only Main Groups Details by using ParentGroupID among all groups
-  {
-    this.ledgerService.getLedgerGroupList().subscribe((response)=> {
-        this.ledgerGroupList = response.Entity;
-        console.log(this.ledgerGroupList);
-    })
-  }
+  // loadLedgerGroupList(): void //To access only Main Groups Details by using ParentGroupID among all groups
+  // {
+  //   this.ledgerService.getLedgerGroupList().subscribe((response)=> {
+  //       this.ledgerGroupList = response.Entity;
+  //       console.log(this.ledgerGroupList);
+  //   })
+  // }
 
   
   getMajorGroups()
@@ -157,14 +161,20 @@ export class LandingLedgerComponent implements OnInit {
     const ledgerTree = this.ledgerData;
     console.log(ledgerTree);
     const groupArray = [];
+    const branchArray = [];
     for (const item of ledgerTree) //Display main branch details
     {
+      console.log(item);
+      branchArray.push(item);
       for (const item1 of item["Child"]) //Display main group details
       {
-        groupArray.push(item1);        
+        groupArray.push(item1); 
+        this.groupArray = groupArray;
+        // this.groupArray = groupArray.filter(s=>s.Title === item1.Title);       
       }
     }
     this.groupArrays = groupArray;
+    this.branchArray = branchArray;
   }
 
   
@@ -522,7 +532,7 @@ export class LandingLedgerComponent implements OnInit {
     console.log(this.selectedItem);
     this.selectedItem = ledger;
     console.log(this.selectedItem);
-    const initialState = {selectedItem: this.selectedItem};
+    const initialState = {selectedItem: this.selectedItem, groupArrays: this.groupArray};
     this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
     this.modalRef.content.selectedItem = ledger;
     console.log(this.modalRef);
@@ -534,7 +544,7 @@ export class LandingLedgerComponent implements OnInit {
     console.log(this.selectedItem);
     this.selectedItem = group;
     console.log(this.selectedItem);
-    const initialState = {selectedItem: this.selectedItem};
+    const initialState = {selectedItem: this.selectedItem, branchArray: this.branchArray};
     this.modalRef = this.modalService.show(AccountGroupComponent, {initialState});
     this.modalRef.content.selectedItem = group;
     console.log(this.modalRef);
@@ -553,7 +563,8 @@ export class LandingLedgerComponent implements OnInit {
 
   addNewerLedger():void 
   {
-    this.modalRef = this.modalService.show(AccountLedgerComponent, this.config);
+    const initialState = { groupArrays: this.groupArray };
+    this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
     this.modalRef.content.selectedItem = null;
     console.log(this.modalRef.content.selectedItem = null);
   }
@@ -569,7 +580,8 @@ export class LandingLedgerComponent implements OnInit {
 
   addNewLedgerGroup():void 
   {
-    this.modalRef = this.modalService.show(AccountGroupComponent, this.config);
+    const initialState = {branchArray: this.branchArray};
+    this.modalRef = this.modalService.show(AccountGroupComponent, {initialState});
     this.modalRef.content.selectedItem = null;
   }
 
