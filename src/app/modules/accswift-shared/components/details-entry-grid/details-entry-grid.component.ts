@@ -160,6 +160,7 @@ export class DetailsEntryGridComponent implements OnInit {
     this.partyInvoiceForm();
     console.log(this.entryArray.value);
     console.log(this.salesInvoiceForm.value);
+    console.log(this.payInvoiceForm.value);
   }
 
 
