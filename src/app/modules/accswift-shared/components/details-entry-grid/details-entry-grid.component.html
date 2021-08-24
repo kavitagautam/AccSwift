@@ -6,7 +6,6 @@
 >
   <div class="row">
     <form [formGroup]="salesInvoiceForm" novalidate>
-      <!-- <h1>{{ payInvoiceForm.getRawValue() | json }}</h1> -->
       <div class="col-md-4">
         <accSwift-cash-party-account
           formControlName="CashPartyLedgerID"
@@ -890,7 +889,7 @@
               <input
                 type="checkbox"
                 [checked]="dataItem.IsPay"
-                (click)="payInvoice()"
+                (click)="invoicePaidAmount(dataItem.TotalAmount)"
               />
             </ng-template>
           </kendo-grid-column>
@@ -959,15 +958,33 @@
     </kendo-tabstrip-tab>
   </kendo-tabstrip>
 
-  <div>
-    <div class="form-group">
-      <label>Total Paid Amount</label>
-      <input
-        type="text"
-        class="form-control"
-        accSwiftFormValidator
-      />
-    </div>
+  <div class="col-md-12">
+    <table
+      class="table"
+      width="50%"
+      style="float: right; width: 50%; text-align: right"
+    >
+      <tfoot>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="total_amount">Total Paid Amount</td>
+          <td class="total_amount">
+            <div class="form-group">
+              <input id="totalPaidAmount" type="text" class="form-control" />
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="col-md-12">
+    <button (click)="payInvoice()" class="btn-primary pull-right">
+      Pay Invoice
+    </button>
   </div>
 
   <!-- <h5>{{ entryArray.getRawValue() | json }}</h5>
