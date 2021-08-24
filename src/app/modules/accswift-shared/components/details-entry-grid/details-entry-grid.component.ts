@@ -49,8 +49,6 @@ import { PreferenceService } from "@accSwift-modules/preference/services/prefere
 export class DetailsEntryGridComponent implements OnInit {
 
   salesDetails: SalesInvoiceDetails;
-  @Input("formGroup")
-  public payInvoiceForm: FormGroup;
   salesInvoiceList: SalseInvoice[];
   public gridView: GridDataResult;
   listLoading:boolean;
@@ -154,13 +152,11 @@ export class DetailsEntryGridComponent implements OnInit {
     }
     console.log(this.entryArray);
 
-
     // this.getSalesInvoiceList();
     // this.filterInvoiceForm();
     this.partyInvoiceForm();
     console.log(this.entryArray.value);
     console.log(this.salesInvoiceForm.value);
-    console.log(this.payInvoiceForm.value);
   }
 
 
@@ -254,25 +250,34 @@ export class DetailsEntryGridComponent implements OnInit {
     this.getSalesInvoiceList();
   }
 
-  
+  sumAmount = 0;
+  invoicePaidAmount(totalAmount): void
+  {
+    console.log(totalAmount);
+    this.sumAmount += totalAmount;
+    let totalPaid;
+    totalPaid= this.sumAmount;
+    (document.getElementById('totalPaidAmount') as HTMLInputElement).value = totalPaid;
+  }
+
 
   payInvoice(): void {
-    console.log(this.payInvoiceForm.value);
-    this.payInvoiceForm.get("IsPay").setValue(true);
-    this.payInvoiceForm.get("Status").setValue("PAID"); // Paid status
-    this.salesInvoiceService
-      .addSalesInvoice(this.payInvoiceForm.value)
-      .subscribe(
-        (response) => {
-          this.router.navigate(["/bank-receipt"]);
-        },
-        (error) => {
-          this.toastr.error(JSON.stringify(error.error.Message));
-        },
-        () => {
-          this.toastr.success("Invoice paid successfully");
-        }
-      );
+    // console.log(this.payInvoiceForm.value);
+    // this.payInvoiceForm.get("IsPay").setValue(true);
+    // this.payInvoiceForm.get("Status").setValue("PAID"); // Paid status
+    // this.salesInvoiceService
+    //   .addSalesInvoice(this.payInvoiceForm.value)
+    //   .subscribe(
+    //     (response) => {
+    //       this.router.navigate(["/bank-receipt"]);
+    //     },
+    //     (error) => {
+    //       this.toastr.error(JSON.stringify(error.error.Message));
+    //     },
+    //     () => {
+    //       this.toastr.success("Invoice paid successfully");
+    //     }
+    //   );
   }
 
 
