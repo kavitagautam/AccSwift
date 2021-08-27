@@ -55,6 +55,8 @@ export class ReportPreviewComponent implements OnInit {
   sumTotalAmount: number;
   sumNetAmount: number;
 
+  trialBalanceViewList: any = [];
+
   constructor(private exportService: ExportToCsvService,
     private localStorageService: LocalStorageService,
     private salesInvoiceService: SalesInvoiceService,
@@ -134,6 +136,14 @@ export class ReportPreviewComponent implements OnInit {
       this.sumDiscount = JSON.parse(localStorage.getItem("sumDiscount"));
       this.sumTaxAmount = JSON.parse(localStorage.getItem("sumTaxAmount"));
       this.sumNetAmount = JSON.parse(localStorage.getItem("sumNetAmount"));
+    }
+
+    if (this.router.url.indexOf("/trail-balance") > -1) {
+      this.reportType = "TRIAL";
+      let data;
+      if (data) {
+        this.trialBalanceViewList = JSON.parse(localStorage.getItem("trialBalanceViewList"));
+      }
     }
 
    }

@@ -21,6 +21,7 @@ export interface TrailBalance {
 export interface Entity {
   Entity: TrailBalance[];
   Company: Company;
+  ReportType: string;
 }
 
 export interface TrailBalanceModel {

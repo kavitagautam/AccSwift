@@ -217,6 +217,16 @@ export class CreateReportsComponent implements OnInit {
         class: "modal-lg"
       });
     }
+
+    if (this.reportType == 'TRIAL') {
+      this.modalRef = this.modalService.show(ReportPreviewComponent, {
+        initialState: {trialBalanceViewList: this.localStorageService.getLocalStorageItem("trialBalanceViewList"), form: this.form},
+        ignoreBackdropClick: true,
+        animated: true,
+        keyboard: true,
+        class: "modal-lg"
+      });
+    }
     
   }
 

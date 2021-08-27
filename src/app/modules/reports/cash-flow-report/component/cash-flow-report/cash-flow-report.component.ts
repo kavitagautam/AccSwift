@@ -10,6 +10,8 @@ import { CashFlowList } from '@accSwift-modules/reports/models/cash-flow.model';
 import { GroupBalanceReportComponent } from '@accSwift-modules/accswift-shared/components/group-balance-report/group-balance-report.component';
 import { LedgerDetailReportsComponent } from '@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component';
 import { IconConst } from '@app/shared/constants/icon.constant';
+import { Company } from '@accSwift-modules/company/models/company.model';
+import { SalesInvoiceService } from '@accSwift-modules/sales-invoice/services/sales-invoice.service';
 
 
 @Component({
@@ -29,14 +31,17 @@ export class CashFlowReportComponent implements OnInit {
   baseURL: string;
   listLoading: boolean;
   iconConst = IconConst;
-
+  companyLogo: any = "";
+  companyDetails: Company;
+  
   constructor(
     private modalService: BsModalService,
     private reportService: ReportsService,
     private router: Router,
     private location: Location,
     private _fb: FormBuilder,
-    private preferenceService: PreferenceService
+    private preferenceService: PreferenceService,
+    private salesInvoiceService: SalesInvoiceService
   ) { }
 
   ngOnInit() {
@@ -44,6 +49,13 @@ export class CashFlowReportComponent implements OnInit {
     this.baseURL =
       this.location["_platformStrategy"]._platformLocation["location"].origin +
       "/#/";
+
+      this.salesInvoiceService.getCompanyDetails().subscribe((response) => {
+        this.companyDetails = response.Entity;
+        if (this.companyDetails) {
+          this.companyLogo = this.companyDetails.Logo;
+        }
+      });  
   }
 
   ngAfterViewInit(): void {

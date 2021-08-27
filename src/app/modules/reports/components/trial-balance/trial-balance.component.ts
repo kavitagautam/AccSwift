@@ -15,6 +15,9 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 import { GroupBalanceReportComponent } from "@accSwift-modules/accswift-shared/components/group-balance-report/group-balance-report.component";
 import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component";
+import { IconConst } from "@app/shared/constants/icon.constant";
+import { Company } from "@accSwift-modules/company/models/company.model";
+import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
 @Component({
   selector: "accSwift-trial-balance",
   templateUrl: "./trial-balance.component.html",
@@ -39,14 +42,26 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
     class: "modal-lg",
   };
 
+  iconConst = IconConst;
+  companyLogo: any = "";
+  companyDetails: Company;
+
   constructor(
     private _fb: FormBuilder,
     public reportService: ReportsService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private salesInvoiceService: SalesInvoiceService
   ) {}
 
   ngOnInit(): void {
     this.buildTrailBalanceForms();
+
+    this.salesInvoiceService.getCompanyDetails().subscribe((response) => {
+      this.companyDetails = response.Entity;
+      if (this.companyDetails) {
+        this.companyLogo = this.companyDetails.Logo;
+      }
+    });  
   }
 
   ngAfterViewInit(): void {
@@ -95,6 +110,7 @@ export class TrialBalanceComponent implements OnInit, AfterViewInit {
         this.reportService.getTrailBalance(JSON.stringify(data)).subscribe(
           (response) => {
             this.trailBalnceList = response.Entity.Entity;
+            localStorage.setItem("trialBalanceViewList", JSON.stringify(response.Entity.Entity));
           },
           (error) => {
             this.listLoading = false;

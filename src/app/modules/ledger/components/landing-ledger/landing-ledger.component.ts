@@ -173,6 +173,7 @@ export class LandingLedgerComponent implements OnInit {
         // this.groupArray = groupArray.filter(s=>s.Title === item1.Title);       
       }
     }
+    this.groupArray = groupArray;
     this.groupArrays = groupArray;
     this.branchArray = branchArray;
   }
@@ -513,7 +514,7 @@ export class LandingLedgerComponent implements OnInit {
       const componentRef = this.dynamicContentDiv.createComponent(factory);
       console.log(componentRef);
       componentRef.instance.selectedItem = dataItem;
-      console.log(componentRef.instance.selectedItem);
+      componentRef.instance.branchArray = this.branchArray;
     } else {
       this.selectedItem = dataItem;
       console.log(this.selectedItem)
@@ -524,6 +525,7 @@ export class LandingLedgerComponent implements OnInit {
       const componentRef = this.dynamicContentDiv.createComponent(factory);
       console.log(componentRef);
       componentRef.instance.selectedItem = dataItem;
+      componentRef.instance.groupArrays = this.groupArray;
     }
   }
 
@@ -557,8 +559,9 @@ export class LandingLedgerComponent implements OnInit {
       AccountLedgerComponent
     );
     const componentRef = this.dynamicContentDiv.createComponent(factory);
+    console.log(componentRef);
     componentRef.instance.selectedItem = null;
-    console.log(componentRef.instance.selectedItem);
+    componentRef.instance.groupArrays = this.groupArray;
   }
 
   addNewerLedger():void 
@@ -576,6 +579,7 @@ export class LandingLedgerComponent implements OnInit {
     );
     const componentRef = this.dynamicContentDiv.createComponent(factory);
     componentRef.instance.selectedItem = null;
+    componentRef.instance.branchArray = this.branchArray;
   }
 
   addNewLedgerGroup():void 
