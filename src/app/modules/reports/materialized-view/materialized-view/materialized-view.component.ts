@@ -7,6 +7,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from "@angular/common";
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { Company } from '@accSwift-modules/company/models/company.model';
+import { IconConst } from '@app/shared/constants/icon.constant';
+import { SalesInvoiceService } from '@accSwift-modules/sales-invoice/services/sales-invoice.service';
 
 @Component({
   selector: 'accSwift-materialized-view',
@@ -23,6 +26,11 @@ export class MaterializedViewComponent implements OnInit {
   sumTaxAmount: number;
   sumTotalAmount: number;
   sumNetAmount: number;
+
+  iconConst = IconConst;
+  companyLogo: any = "";
+  companyDetails: Company;
+  
   listLoading: boolean;
   baseURL: string;
 
@@ -31,6 +39,7 @@ export class MaterializedViewComponent implements OnInit {
     private location: Location,
     private reportService: ReportsService,
     private preferenceService: PreferenceService,
+    private salesInvoiceService: SalesInvoiceService,
     private modalService: BsModalService,
     private _fb: FormBuilder
   ) { }
@@ -40,6 +49,13 @@ export class MaterializedViewComponent implements OnInit {
     this.baseURL =
     this.location["_platformStrategy"]._platformLocation["location"].origin +
     "/#/";
+
+    this.salesInvoiceService.getCompanyDetails().subscribe((response) => {
+      this.companyDetails = response.Entity;
+      if (this.companyDetails) {
+        this.companyLogo = this.companyDetails.Logo;
+      }
+    }); 
   }
 
   ngAfterViewInit(): void {
@@ -72,6 +88,12 @@ export class MaterializedViewComponent implements OnInit {
           this.sumTaxAmount = response.Entity.SumTaxAmount;
           this.sumTotalAmount = response.Entity.SumTotalAmount;
           this.sumNetAmount = response.Entity.SumNetAmount;
+          localStorage.setItem("materializedViewList", JSON.stringify(response.Entity.Entity));
+          localStorage.setItem("sumGrossAmount", JSON.stringify(response.Entity.SumGrossAmount));
+          localStorage.setItem("sumDiscount", JSON.stringify(response.Entity.SumDiscount));
+          localStorage.setItem("sumTaxAmount", JSON.stringify(response.Entity.SumTaxAmount));
+          localStorage.setItem("sumTotalAmount", JSON.stringify(response.Entity.SumTotalAmount));
+          localStorage.setItem("sumNetAmount", JSON.stringify(response.Entity.SumNetAmount));
         },
         (error) => {
           this.listLoading = false;
@@ -110,3 +132,4 @@ export class MaterializedViewComponent implements OnInit {
   }
 
 }
+

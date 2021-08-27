@@ -5,6 +5,7 @@ import { MaterializedViewRoutingModule } from './materialized-view-routing.modul
 import { MaterializedViewComponent } from './materialized-view/materialized-view.component';
 import { AccswiftSharedModule } from '@accSwift-modules/accswift-shared/accswift-shared.module';
 import { DateSelectionSettingsComponent } from '@accSwift-modules/accswift-shared/components/date-selection-settings/date-selection-settings.component';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [MaterializedViewComponent],
@@ -12,6 +13,7 @@ import { DateSelectionSettingsComponent } from '@accSwift-modules/accswift-share
     CommonModule,
     MaterializedViewRoutingModule,
     AccswiftSharedModule,
+    NgxPrintModule
   ],
   entryComponents: [DateSelectionSettingsComponent]
 })
