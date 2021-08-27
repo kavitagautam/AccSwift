@@ -14,6 +14,7 @@ import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module"
 import { SettingsReportsComponent } from "@accSwift-modules/accswift-shared/components/settings-reports/settings-reports.component";
 import { GroupBalanceReportComponent } from "@accSwift-modules/accswift-shared/components/group-balance-report/group-balance-report.component";
 import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/components/ledger-detail-reports/ledger-detail-reports.component";
+import { NgxPrintModule } from "ngx-print";
 
 @NgModule({
   declarations: [ReportPdfComponent, TrialBalanceComponent],
@@ -28,6 +29,7 @@ import { LedgerDetailReportsComponent } from "@accSwift-modules/accswift-shared/
     PDFExportModule,
     SharedModule,
     AccswiftSharedModule,
+    NgxPrintModule
   ],
   entryComponents: [
     SettingsReportsComponent,
