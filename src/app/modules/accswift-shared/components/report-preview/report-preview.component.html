@@ -597,6 +597,91 @@
             </tr>
           </tfoot>
         </table>
+
+        <table
+          *ngIf="reportType == 'TRIAL'"
+          id="header-fixed"
+          class="table table-hover table-fixed"
+        >
+          <thead>
+            <tr>
+              <th colspan="1" style="text-align: left">Account Code</th>
+              <th colspan="1" style="text-align: center">Account Name</th>
+              <th colspan="1">Debit Amount</th>
+              <th colspan="1">Credit Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let trial of trialBalanceViewList; let i = index">
+              <td>
+                <span *ngIf="trial.Type === 'GROUP'">
+                  {{ trial.AccountCode }}
+                </span>
+                <span *ngIf="trial.Type === 'LEDGER'" style="color: blue">
+                  {{ trial.AccountCode }}
+                </span>
+              </td>
+              <td>
+                <span
+                  *ngIf="trial.Level === 0 && trial.Type === 'GROUP'"
+                  class="group_name"
+                >
+                  {{ trial.AccountName }}
+                </span>
+                <span
+                  *ngIf="trial.Level === 1 && trial.Type === 'GROUP'"
+                  class="group_name"
+                  style="margin-left: 20px"
+                >
+                  {{ trial.AccountName }}
+                </span>
+                <span
+                  *ngIf="trial.Level === 2 && trial.Type === 'GROUP'"
+                  class="group_name"
+                  style="margin-left: 30px"
+                >
+                  {{ trial.AccountName }}
+                </span>
+                <span
+                  *ngIf="trial.Level === 3 && trial.Type === 'GROUP'"
+                  style="margin-left: 40px"
+                >
+                  {{ trial.AccountName }}
+                </span>
+                <span
+                  *ngIf="trial.Level === 4 && trial.Type === 'GROUP'"
+                  style="margin-left: 50px"
+                >
+                  {{ trial.AccountName }}
+                </span>
+                <span
+                  *ngIf="trial.Type === 'LEDGER'"
+                  style="margin-left: 50px; color: blue"
+                >
+                  {{ trial.AccountName }}
+                </span>
+                <span
+                  *ngIf="trial.Type === null && trial.Level === 0"
+                  style="float: right"
+                >
+                  {{ trial.AccountName }}
+                </span>
+              </td>
+
+              <td class="balance">
+                <span [innerHTML]="trial.DebitAmount | currencyFormat"></span>
+              </td>
+              <td class="balance">
+                <span [innerHTML]="trial.CreditAmount | currencyFormat"></span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="trialBalanceViewList.length == 0">
+            <tr>
+              <td colspan="7" align="center">No Data Available</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </kendo-pdf-export>
   </div>

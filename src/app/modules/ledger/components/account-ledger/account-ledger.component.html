@@ -47,9 +47,9 @@
                   <label>Account Head <sup>*</sup></label>
                   <kendo-dropdownlist
                     class="form-control"
-                    [data]="groupArrays"
+                    [data]="ledgerGroup"
                     [filterable]="true"
-                    [textField]="'Title'"
+                    [textField]="'CodeName'"
                     [valueField]="'ID'"
                     [valuePrimitive]="true"
                     [formControl]="accountLedgerForm.get('GroupID')"
