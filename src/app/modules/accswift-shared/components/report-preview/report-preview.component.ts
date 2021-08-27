@@ -48,6 +48,13 @@ export class ReportPreviewComponent implements OnInit {
   totalAmount: number;
   totalDiscountAmount: number;
 
+  materializedViewList: any = [];
+  sumGrossAmount: number;
+  sumDiscount: number;
+  // sumTaxAmount: number;
+  sumTotalAmount: number;
+  sumNetAmount: number;
+
   constructor(private exportService: ExportToCsvService,
     private localStorageService: LocalStorageService,
     private salesInvoiceService: SalesInvoiceService,
@@ -114,6 +121,19 @@ export class ReportPreviewComponent implements OnInit {
       this.totalSalesQty = JSON.parse(localStorage.getItem("totalSalesQty"));
       this.totalAmount = JSON.parse(localStorage.getItem("totalAmount"));
       this.totalDiscountAmount = JSON.parse(localStorage.getItem("totalDiscountAmount"));
+    }
+
+    if (this.router.url.indexOf("/materialized-view") > -1) {
+      this.reportType = "MATERIALIZED";
+      let data;
+      if (data) {
+        this.materializedViewList = JSON.parse(localStorage.getItem("materializedViewList")); 
+      }
+      console.log(this.materializedViewList);
+      this.sumGrossAmount = JSON.parse(localStorage.getItem("sumGrossAmount"));
+      this.sumDiscount = JSON.parse(localStorage.getItem("sumDiscount"));
+      this.sumTaxAmount = JSON.parse(localStorage.getItem("sumTaxAmount"));
+      this.sumNetAmount = JSON.parse(localStorage.getItem("sumNetAmount"));
     }
 
    }

@@ -207,6 +207,16 @@ export class CreateReportsComponent implements OnInit {
           class: "modal-lg",
       });
     }
+
+    if (this.reportType == "MATERIALIZED") {
+      this.modalRef = this.modalService.show(ReportPreviewComponent, {
+        initialState: { materializedViewList: this.localStorageService.getLocalStorageItem("materializedViewList"), form: this.form},
+        ignoreBackdropClick: true,
+        animated: true,
+        keyboard: true,
+        class: "modal-lg"
+      });
+    }
     
   }
 

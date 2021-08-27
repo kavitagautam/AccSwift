@@ -27,6 +27,7 @@ export interface MaterializedViewModel {
     SumNetAmount: number;
     SumTotalAmount: number;
     Company: Company;
+    ReportType: string;
 }
 
 export interface MaterializedViewRootModel {
