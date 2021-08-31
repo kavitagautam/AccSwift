@@ -81,15 +81,17 @@ export class ListBankReconciliationComponent implements OnInit {
       OrderBy: "",
       Direction: "asc", // "asc" or "desc"
     };
-    this.reconciliationService.getBankReconciliationMaster().subscribe(
+    this.reconciliationService.getBankReconciliationMaster(params).subscribe(
       (response) => {
         this.listLoading = true;
-        this.bankReconciliationList = response;
+        this.bankReconciliationList = response.Entity.Entity;
+        console.log(response.Entity.Entity);
         this.gridView = {
           data: this.bankReconciliationList,
-          total: this.bankReconciliationList
-            ? this.bankReconciliationList.length
-            : 0,
+          // total: this.bankReconciliationList
+          //   ? this.bankReconciliationList.length
+          //   : 0,
+          total: response.Entity.TotalItemsAvailable
         };
       },
       (error) => {

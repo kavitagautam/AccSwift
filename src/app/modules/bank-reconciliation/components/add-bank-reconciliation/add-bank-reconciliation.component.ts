@@ -8,6 +8,8 @@ import { Component, OnInit } from "@angular/core";
 import { LedgerCodeAsyncValidators } from "@accSwift-modules/accswift-shared/validators/async-validators/ledger-code-match/ledger-code-validators.service";
 import { LedgerModalPopupComponent } from "@accSwift-modules/accswift-shared/components/ledger-modal-popup/ledger-modal-popup.component";
 import { LedgerCodeMatchService } from "@accSwift-modules/accswift-shared/services/ledger-code-match/ledger-code-match.service";
+import { ToastrService } from "ngx-toastr";
+import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
 
 @Component({
   selector: "accSwift-add-bank-reconciliation",
@@ -30,10 +32,12 @@ export class AddBankReconciliationComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     public reconciliationService: BankReconciliationService,
+    public toastr: ToastrService,
     private router: Router,
     private modalService: BsModalService,
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
-    public ledgerCodeService: LedgerCodeMatchService
+    public ledgerCodeService: LedgerCodeMatchService,
+    public preferenceService: PreferenceService
   ) {}
 
   ngOnInit() {
@@ -43,10 +47,22 @@ export class AddBankReconciliationComponent implements OnInit {
   buildbankReconciliationForm() {
     this.bankReconciliationForm = this._fb.group({
       ID: [0],
-      SeriesID: [null],
-      ProjectID: [null],
+      SeriesID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_SERIES_BRECON.Value
+          : null,
+      ],
+      ProjectID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_PROJECT.Value
+          : null,
+      ],
       VoucherNo: ["", [Validators.required]],
-      LedgerID: [null, [Validators.required]],
+      LedgerID: [
+        this.preferenceService.preferences
+          ? this.preferenceService.preferences.DEFAULT_BANK_ACCOUNT.Value
+          : null,
+          [Validators.required],],
       Date: [new Date()],
       BankReconciliationDetailsList: this._fb.array([
         this.addReconciliationEntryList(),
@@ -57,8 +73,8 @@ export class AddBankReconciliationComponent implements OnInit {
   addReconciliationEntryList(): FormGroup {
     return this._fb.group({
       ID: [0],
-      MasterID: [null],
-      LedgerID: [null, Validators.required],
+      MasterID: [0],
+      LedgerID: [0, Validators.required],
       LedgerCode: ["", null, this.ledgerCodeMatchValidators.ledgerCodeMatch()],
       LedgerName: ["", Validators.required],
       DrCr: [""],
@@ -87,11 +103,22 @@ export class AddBankReconciliationComponent implements OnInit {
     this.submitted = false;
   }
 
-  public save(): void {
-    if (this.bankReconciliationForm.valid) {
-      this.router.navigate(["/bank-reconciliation"]);
-    } else {
-    }
+  public save(): void {   
+    if (this.bankReconciliationForm.invalid) return;
+    this.reconciliationService
+      .addBankRec(this.bankReconciliationForm.value)
+      .subscribe(
+        (response) => {
+          this.router.navigate(["/bank-reconciliation"]);
+        },
+        (error) => {
+          this.toastr.error(JSON.stringify(error.error.Message));
+        },
+        () => {
+          this.toastr.success("Bank Reconciliation added successfully");
+        }
+      );
+      console.log(this.bankReconciliationForm.value);
   }
 
   public cancel(): void {

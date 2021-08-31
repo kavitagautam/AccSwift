@@ -73,7 +73,6 @@ export class AddJournalComponent implements OnInit {
     // this.selectedDate= this.localStorageService.getLocalStorageItem(
     //   "SelectedDate");
     localStorage.removeItem("SelectedDate");
-
   }
 
   buildSettingsForm(): void {

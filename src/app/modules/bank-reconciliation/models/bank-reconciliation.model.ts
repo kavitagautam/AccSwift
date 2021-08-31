@@ -51,7 +51,7 @@ export class BankReconciliationRootModel {
 }
 
 export class BankReconciliationModel {
-  Entity: [];
+  Entity: BankReconciliation[];
   ItemsPerPage: number;
   ItemsReturned: number;
   TotalItemsAvailable: number;

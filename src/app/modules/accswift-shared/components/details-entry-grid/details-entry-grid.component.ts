@@ -150,13 +150,13 @@ export class DetailsEntryGridComponent implements OnInit {
     for (const key in this.entryArray.value[0]) {
       this.columns.push(key);
     }
-    console.log(this.entryArray);
+    // console.log(this.entryArray);
 
     // this.getSalesInvoiceList();
     // this.filterInvoiceForm();
     this.partyInvoiceForm();
-    console.log(this.entryArray.value);
-    console.log(this.salesInvoiceForm.value);
+    // console.log(this.entryArray.value);
+    // console.log(this.salesInvoiceForm.value);
   }
 
 
@@ -169,16 +169,16 @@ export class DetailsEntryGridComponent implements OnInit {
       Direction: this.dirKey,
       FilterList: this.searchFilterList,
     };
-    console.log(obj.FilterList)
+    // console.log(obj.FilterList)
     this.salesInvoiceService.getSalesInvoiceMaster(obj).subscribe(
       (response) => {
         this.salesInvoiceList = response.Entity.Entity.filter(x => x.Status === "UNPAID");
-        console.log(this.salesInvoiceList);
+        // console.log(this.salesInvoiceList);
         this.gridView = {
           data: this.salesInvoiceList,
           total: response.Entity.TotalItemsAvailable,
         };
-        console.log(this.gridView);
+        // console.log(this.gridView);
       },
       (error) => {
         this.listLoading = false;
@@ -192,15 +192,15 @@ export class DetailsEntryGridComponent implements OnInit {
 
   public filterInvoiceForm(): void { //entryArray
     this.searchFilterList = [];
-    console.log(this.searchFilterList);
+    // console.log(this.searchFilterList);
     this.currentPage = 1;
     this.skip = 0;
 
     for (const object of this.entryArray.value) { 
-      console.log(object);
+      // console.log(object);
       for (const key in object){ // iterate over properties of object
-        console.log(key);
-        console.log(object[key]);
+        // console.log(key);
+        // console.log(object[key]);
         if (object[key]) {
           this.searchFilterList.push({
             Field: key,
@@ -223,21 +223,20 @@ export class DetailsEntryGridComponent implements OnInit {
     //             });
     //   }
     // }
-    console.log(this.searchFilterList);
+    // console.log(this.searchFilterList);
     this.getSalesInvoiceList();
   }
   
   
   public partyInvoiceForm(): void { //salesInvoiceForm
     this.searchFilterList = [];
-    console.log(this.searchFilterList);
+    // console.log(this.searchFilterList);
     this.currentPage = 1;
     this.skip = 0;
     if (this.salesInvoiceForm.invalid) return;
-    console.log(this.salesInvoiceForm.value)
     for (const key in this.salesInvoiceForm.value) {
-      console.log(key);
-      console.log(this.salesInvoiceForm.value[key]);
+      // console.log(key);
+      // console.log(this.salesInvoiceForm.value[key]);
       if (this.salesInvoiceForm.value[key]) {
         this.searchFilterList.push({
           Field: key,
@@ -246,14 +245,14 @@ export class DetailsEntryGridComponent implements OnInit {
         });
       }
     }
-    console.log(this.searchFilterList);
+    // console.log(this.searchFilterList);
     this.getSalesInvoiceList();
   }
 
   sumAmount = 0;
   invoicePaidAmount(totalAmount): void
   {
-    console.log(totalAmount);
+    // console.log(totalAmount);
     this.sumAmount += totalAmount;
     let totalPaid;
     totalPaid= this.sumAmount;
@@ -292,7 +291,7 @@ export class DetailsEntryGridComponent implements OnInit {
 
 
   public pageChange(event: PageChangeEvent): void {
-    console.log(event);
+    // console.log(event);
     this.skip = event.skip;
     if (event.skip == 0) {
       this.currentPage = 1;
@@ -306,9 +305,9 @@ export class DetailsEntryGridComponent implements OnInit {
 
   public dataStateChange(state: DataStateChangeEvent): void {
     this.state = state;
-    console.log(this.state);
+    // console.log(this.state);
     this.gridView = process(this.salesInvoiceList, this.state);
-    console.log(this.gridView);
+    // console.log(this.gridView);
   }
   
 
@@ -621,8 +620,8 @@ export class DetailsEntryGridComponent implements OnInit {
     const selectedProductValue = this.gridServices.productList.filter(
       (s) => s.ProductID === value
     );
-    console.log(selectedProductValue);
-    console.log(value);
+    // console.log(selectedProductValue);
+    // console.log(value);
     const entryListArray = <FormArray>this.entryArray;
     if (selectedProductValue && selectedProductValue.length > 0) {
       entryListArray.controls[index]

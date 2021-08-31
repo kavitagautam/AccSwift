@@ -1,3 +1,5 @@
+import { Settings } from '@accSwift-modules/settings/models/settings.model';
+import { SettingsService } from '@accSwift-modules/settings/services/settings.service';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -15,19 +17,43 @@ var adbs = require("ad-bs-converter");
 })
 export class DateConverterComponent implements OnInit {
    
+  public settingsForm: FormGroup;
   @Input() VoucherForm: FormGroup;
   public selectedDate:string ='';
-
+  settings: Settings;
+  
   constructor(
     private _fb: FormBuilder,
     private modalRef: BsModalRef,
     public datePipe: DatePipe,
     public dateConverterService: DateConverterService,
-    public localStorageService: LocalStorageService
+    public localStorageService: LocalStorageService,
+    public settingsService: SettingsService
   ) { }
 
-  ngOnInit() {this.selectedDate= this.localStorageService.getLocalStorageItem(
-    "SelectedDate");}
+  ngOnInit() {
+    this.buildSettingsForm();
+    this.getSettings();
+    // this.selectedDate= this.localStorageService.getLocalStorageItem(
+    // "SelectedDate");
+  }
+
+    buildSettingsForm(): void {
+      this.settingsForm = this._fb.group({
+        DEFAULT_DATE: [this.settings ? this.settings.DEFAULT_DATE.Value : ""]
+      });
+    }
+  
+    getSettings(): void {
+      this.settingsService.getSettingsData().subscribe((response) => {
+        this.settings = response.Entity;
+        console.log(this.settings);
+        let pickedDate = this.settings.DEFAULT_DATE.Value;
+        console.log(pickedDate);
+        this.selectedDate = pickedDate;
+        this.buildSettingsForm();
+      });
+    }
 
   checkValidityADBS()
   {
