@@ -80,6 +80,7 @@ export class ListBankPaymentComponent implements OnInit {
     this.bankPaymentService.getBankPaymentMaster(obj).subscribe(
       (response) => {
         this.bankPaymentList = response.Entity.Entity;
+        console.log(response.Entity.Entity);
         this.gridView = {
           data: this.bankPaymentList,
           total: response.Entity.TotalItemsAvailable,

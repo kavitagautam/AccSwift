@@ -3,7 +3,7 @@
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label>Series </label>
             <select class="form-control" formControlName="SeriesID">
               <option [ngValue]="null">Choose Option....</option>
@@ -14,11 +14,15 @@
                 {{ series.Name }}
               </option>
             </select>
-          </div>
+          </div> -->
+          <accSwift-series-forms
+            formControlName="SeriesID"
+            [voucherType]="'BRECON'"
+          ></accSwift-series-forms>
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label>Bank Account </label>
             <select
               class="form-control"
@@ -33,22 +37,29 @@
                 {{ account.LedgerName }}
               </option>
             </select>
-          </div>
+          </div> -->
+          <accSwift-bank-account
+            formControlName="LedgerID"
+          ></accSwift-bank-account>
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label>Voucher</label>
             <input
               class="form-control"
               formControlName="VoucherNo"
               accSwiftFormValidator
             />
-          </div>
+          </div> -->
+          <accSwift-voucher-forms
+            formControlName="VoucherNo"
+            [series]="bankReconciliationForm.get('SeriesID').value"
+          ></accSwift-voucher-forms>
         </div>
 
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label>Project</label>
             <select class="form-control" formControlName="ProjectID">
               <option [ngValue]="null">Choose Option....</option>
@@ -59,7 +70,10 @@
                 {{ project.EngName }}
               </option>
             </select>
-          </div>
+          </div> -->
+          <accSwift-project-forms
+            formControlName="ProjectID"
+          ></accSwift-project-forms>
         </div>
       </div>
     </div>

@@ -93,6 +93,7 @@ export class AddBankPaymentComponent implements OnInit {
       .subscribe(
         (response) => {
           this.router.navigate(["/bank-payment"]);
+          console.log(response);
         },
         (error) => {
           this.toastr.error(JSON.stringify(error.error.Message));
@@ -101,6 +102,7 @@ export class AddBankPaymentComponent implements OnInit {
           this.toastr.success("Bank Payment added successfully");
         }
       );
+      console.log(this.bankPaymentForm.value);
   }
 
   public cancel(): void {

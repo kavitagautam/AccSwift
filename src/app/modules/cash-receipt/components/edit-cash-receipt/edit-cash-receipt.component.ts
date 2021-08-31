@@ -9,6 +9,11 @@ import { CashReceipt } from "../../models/cash-receipt.model";
 import { ToastrService } from "ngx-toastr";
 import { IconConst } from "@app/shared/constants/icon.constant";
 import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
+import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
+import { DatePipe } from "@angular/common";
+import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
+import { Settings } from "@accSwift-modules/settings/models/settings.model";
+var adbs = require("ad-bs-converter");
 
 @Component({
   selector: "accSwift-edit-cash-receipt",
@@ -16,11 +21,13 @@ import { LocalStorageService } from '@app/shared/services/local-storage/local-st
   styleUrls: ["./edit-cash-receipt.component.scss"],
 })
 export class EditCashReceiptComponent implements OnInit {
+
+  public settingsForm: FormGroup;
   cashReceiptDetails: CashReceipt;
   cashReceiptForm: FormGroup;
   submitted: boolean;
   rowSubmitted: boolean;
-
+  settings: Settings;
   //Open the Ledger List Modal on PopUp
   modalRef: BsModalRef;
   //  modal config to unhide modal when clicked outside
@@ -41,14 +48,35 @@ export class EditCashReceiptComponent implements OnInit {
     public ledgerCodeMatchValidators: LedgerCodeAsyncValidators,
     public ledgerCodeService: LedgerCodeMatchService,
     private toastr: ToastrService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private settingsService: SettingsService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
     this.getIdFromRoute(); // Get Id From the Route URL and get the Details
     this.buildCashReceiptForm(); // Initialize the form
-    this.selectedDate = this.localStorageService.getLocalStorageItem(
-      "SelectedDate");
+    this.buildSettingsForm();
+    this.getSettings();
+    // this.selectedDate = this.localStorageService.getLocalStorageItem(
+    //   "SelectedDate");
+  }
+
+  buildSettingsForm(): void {
+    this.settingsForm = this._fb.group({
+      DEFAULT_DATE: [this.settings ? this.settings.DEFAULT_DATE.Value : ""]
+    });
+  }
+
+  getSettings(): void {
+    this.settingsService.getSettingsData().subscribe((response) => {
+      this.settings = response.Entity;
+      console.log(this.settings);
+      let pickedDate = this.settings.DEFAULT_DATE.Value;
+      console.log(pickedDate);
+      this.selectedDate = pickedDate;
+      this.buildSettingsForm();
+    });
   }
 
   buildCashReceiptForm(): void {
@@ -234,6 +262,20 @@ export class EditCashReceiptComponent implements OnInit {
 
   public save(): void {
     if (this.cashReceiptForm.invalid) return;
+    if (this.selectedDate == 'Nepali')
+    {
+      let dateFormat = this.datePipe.transform(this.cashReceiptForm.value.Date,"yyyy/MM/dd");
+      console.log(this.cashReceiptForm.value.Date);
+      let var1 = adbs.bs2ad(dateFormat);
+      let resultDate = `${var1.year}-${var1.month}-${var1.day}`;
+      this.cashReceiptForm.get("Date").patchValue(resultDate);
+      console.log(this.cashReceiptForm.value.Date);
+    }
+    else if (this.selectedDate == 'English')
+    {
+      console.log(this.cashReceiptForm.value.Date);
+      this.cashReceiptForm.get("Date").patchValue(this.cashReceiptForm.value.Date);
+    }
     this.cashReceiptService
       .updateCashReceipt(this.cashReceiptForm.value)
       .subscribe(
@@ -247,6 +289,16 @@ export class EditCashReceiptComponent implements OnInit {
           this.toastr.success("Cash Receipt edited successfully");
         }
       );
+  }
+
+  dateConverterPopup(): void
+  {
+    this.modalRef = this.modalService.show(DateConverterComponent, {
+      initialState: { VoucherForm: this.cashReceiptForm },
+      backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-sm",
+    })
   }
 
   public cancel(): void {
