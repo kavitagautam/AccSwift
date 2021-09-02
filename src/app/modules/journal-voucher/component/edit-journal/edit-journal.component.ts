@@ -16,6 +16,7 @@ import { DetailsEntryGridService } from '@accSwift-modules/accswift-shared/servi
 import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
 import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 import { Settings } from '@accSwift-modules/settings/models/settings.model';
+import { RecurringInvoiceComponent } from "@accSwift-modules/accswift-shared/components/recurring-invoice/recurring-invoice.component";
 var adbs = require("ad-bs-converter");
 
 @Component({
@@ -313,6 +314,13 @@ export class EditJournalComponent implements OnInit {
       ignoreBackdropClick: true,
       class: "modal-sm",
     })
+  }
+
+  openRecurringInvoice():void
+  {
+    this.modalRef = this.modalService.show(RecurringInvoiceComponent, {backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-md",});
   }
 
   public cancel(): void {

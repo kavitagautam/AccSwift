@@ -431,3 +431,10 @@ tfoot > tr > td {
   border-radius: 20px;
   color: #000;
 }
+
+.transaction {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+}

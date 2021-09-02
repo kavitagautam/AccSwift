@@ -21,6 +21,7 @@ import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sa
 @Component({
   selector: "accSwift-trial-balance",
   templateUrl: "./trial-balance.component.html",
+  styleUrls: ["./trial-balance.component.scss"]
 })
 export class TrialBalanceComponent implements OnInit, AfterViewInit {
   trailBalnceList: TrailBalance[] = [];
