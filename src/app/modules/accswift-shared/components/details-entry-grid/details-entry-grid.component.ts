@@ -147,6 +147,7 @@ export class DetailsEntryGridComponent implements OnInit {
     this.gridServices.getLedgerDD().subscribe((response) => {
       this.ledgerList = response.Entity;
     });
+    console.log(this.entryArray.value[0]);
     for (const key in this.entryArray.value[0]) {
       this.columns.push(key);
     }
@@ -1151,7 +1152,7 @@ export class DetailsEntryGridComponent implements OnInit {
         LedgerCode: [""],
         LedgerName: ["", Validators.required],
         ChequeNumber: [""],
-        ChequeDate: [""],
+        ChequeDate: [new Date()],
         LedgerBalance: [""],
         Amount: [""],
         Remarks: [""],
@@ -1167,7 +1168,7 @@ export class DetailsEntryGridComponent implements OnInit {
         VoucherNumber: [""],
         ChequeNumber: [""],
         ChequeBank: [""],
-        ChequeDate: [""],
+        ChequeDate: [new Date()],
         Amount: [""],
         LedgerBalance: [""],
         VoucherType: [""],

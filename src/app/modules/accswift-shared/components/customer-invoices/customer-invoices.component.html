@@ -24,8 +24,9 @@
       <button
         class="btn btn-default mr-2 mt-2"
         tooltip="Generate Pdf"
-        (click)="pdf.saveAs('customer-invoice.pdf')"
+        (click)="generatePDF()"
       >
+        <!-- (click)="pdf.saveAs('customer-invoice.pdf')" -->
         <i class="{{ iconConst.EXPORT_TO_PDF }}"></i>
       </button>
       <button
@@ -38,7 +39,7 @@
       <button
         class="btn btn-default mr-2 mt-2"
         tooltip="Print"
-        printSectionId="print-section"
+        printSectionId="htmlData"
         ngxPrint
         [useExistingCss]="true"
       >
@@ -51,14 +52,14 @@
   </div>
 </div>
 
-<kendo-pdf-export
+<!-- <kendo-pdf-export
   #pdf
   paperSize="A6"
   margin="1cm"
   [scale]="0.8"
   [repeatHeaders]="true"
->
-  <div id="print-section">
+> -->
+  <div id="htmlData">
     <table
       width="100%"
       border="0"
@@ -354,14 +355,10 @@
           <td *ngIf="journal.LedgerName">{{ i + 1 }}</td>
           <td *ngIf="journal.LedgerName">{{ journal.LedgerName }}</td>
           <td *ngIf="journal.LedgerName">
-            <span *ngIf="journal.DebitCredit == 'Debit'">{{
-              journal.Amount
-            }}</span>
+            <span>{{ journal.DrAmount }}</span>
           </td>
           <td *ngIf="journal.LedgerName">
-            <span *ngIf="journal.DebitCredit == 'Credit'">{{
-              journal.Amount
-            }}</span>
+            <span>{{ journal.CrAmount }}</span>
           </td>
           <td *ngIf="journal.LedgerName">{{ journal.LedgerBalance }}</td>
         </tr>
@@ -417,10 +414,10 @@
             {{ cash.Amount }}
           </td>
           <td *ngIf="cash.LedgerName">{{ cash.LedgerBalance }}</td>
-          <td *ngIf="cash.LedgerName">{{ cash.VoucherType }}</td>
+          <td *ngIf="cash.LedgerName">{{ voucherType }}</td>
         </tr>
         <tr *ngIf="cashDetails.length - 1 == 0" align="center">
-          <span>No Data Avaiable</span>
+          <span>No Data Available</span>
         </tr>
       </tbody>
     </table>
@@ -460,7 +457,7 @@
             {{ bank.Amount }}
           </td>
           <td *ngIf="bank.LedgerName">{{ bank.LedgerBalance }}</td>
-          <td *ngIf="bank.LedgerName">{{ bank.VoucherType }}</td>
+          <td *ngIf="bank.LedgerName">{{ voucherType }}</td>
         </tr>
         <tr *ngIf="bankDetails.length - 1 == 0" align="center">
           <span>No Data Avaiable</span>
@@ -468,4 +465,4 @@
       </tbody>
     </table>
   </div>
-</kendo-pdf-export>
+<!-- </kendo-pdf-export> -->

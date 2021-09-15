@@ -11,6 +11,7 @@ import { LocalStorageService } from '@app/shared/services/local-storage/local-st
 import { state } from '@angular/animations';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { ReportPreviewComponent } from '../report-preview/report-preview.component';
+import { JournalService } from "@accSwift-modules/journal-voucher/services/journal.service";
 
 @Component({
   selector: "accSwift-create-reports",
@@ -33,6 +34,7 @@ export class CreateReportsComponent implements OnInit {
   constructor(
     private router: Router,
     private salesInvoiceService: SalesInvoiceService,
+    private journalService: JournalService,
     private localStorageService: LocalStorageService,
     private modalService: BsModalService,
     @Inject(DOCUMENT) private document: Document
@@ -235,8 +237,10 @@ export class CreateReportsComponent implements OnInit {
       this.salesInvoiceService
         .getPDF(this.form.get("ID").value)
         .subscribe((response) => {
-          var newBlob = new Blob([response], { type: "application/pdf" });
+          var newBlob = new Blob([response], { type: "application/pdf" }); //Returns a newly created Blob object which contains a concatenation of all of the data in the array passed into the constructor.
           console.log("response " + JSON.stringify(response));
+          console.log(newBlob); //display size of response
+          //Blob converts typed array into blob object and convert it into an object URL which can be used in many ways
           // IE doesn't allow using a blob object directly as link href
           // instead it is necessary to use msSaveOrOpenBlob
           if (window.navigator && window.navigator.msSaveOrOpenBlob) {
@@ -247,10 +251,10 @@ export class CreateReportsComponent implements OnInit {
           // For other browsers:
           // Create a link pointing to the ObjectURL containing the blob.
           const data = window.URL.createObjectURL(newBlob);
-
-          var link = document.createElement("a");
+          console.log(data); //displays URL
+          var link = document.createElement("a"); //anchor tag
           link.href = data;
-          link.download = "Je kar.pdf";
+          link.download = "invoice.pdf";
           // this is necessary as link.click() does not work on the latest firefox
           link.dispatchEvent(
             new MouseEvent("click", {
@@ -260,12 +264,48 @@ export class CreateReportsComponent implements OnInit {
             })
           );
 
-          setTimeout(function () {
-            // For Firefox it is necessary to delay revoking the ObjectURL
-            window.URL.revokeObjectURL(data);
-            link.remove();
-          }, 100);
+          // setTimeout(function () {
+          //   // For Firefox it is necessary to delay revoking the ObjectURL
+          //   window.URL.revokeObjectURL(data);
+          //   link.remove();
+          // }, 100);
         });
+    }
+
+    if (this.voucherType == "JRNL") {
+      this.journalService.pdfPreview(this.form.get("ID").value).subscribe((response)=> {
+        console.log(response);
+        var newBlob = new Blob([response], { type: "application/pdf" });
+        console.log("response " + JSON.stringify(response));
+        // IE doesn't allow using a blob object directly as link href
+        // instead it is necessary to use msSaveOrOpenBlob
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          window.navigator.msSaveOrOpenBlob(newBlob);
+          return;
+        }
+
+        // For other browsers:
+        // Create a link pointing to the ObjectURL containing the blob.
+        const data = window.URL.createObjectURL(newBlob);
+
+        var link = document.createElement("a");
+        link.href = data;
+        link.download = "voucher.pdf";
+        // this is necessary as link.click() does not work on the latest firefox
+        link.dispatchEvent(
+          new MouseEvent("click", {
+            bubbles: true,
+            cancelable: true,
+            view: window,
+          })
+        );
+
+        // setTimeout(function () {
+        //   // For Firefox it is necessary to delay revoking the ObjectURL
+        //   window.URL.revokeObjectURL(data);
+        //   link.remove();
+        // }, 100);
+      });
     }
   }
 

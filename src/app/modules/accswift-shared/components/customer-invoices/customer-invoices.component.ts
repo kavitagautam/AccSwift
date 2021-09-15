@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, ElementRef } from "@angular/core";
 import { environment } from "@env/environment.prod";
 import { IExport } from "@app/shared/models/iexport";
 import { ExportToCsvService } from "@app/shared/services/export-to-csv/export-to-csv.service";
@@ -12,6 +12,10 @@ import { Store } from "@ngxs/store";
 import { AddInvoiceDetails } from "@accSwift-modules/accswift-shared/state/sales-invoice.state";
 import { LocalStorageService } from '@app/shared/services/local-storage/local-storage.service';
 import { FormGroup } from '@angular/forms';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas'; //Render the viewport from current page
+
+
 @Component({
   selector: "simpliflysaas-customer-invoices",
   templateUrl: "./customer-invoices.component.html",
@@ -19,6 +23,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class CustomerInvoicesComponent implements OnInit {
 
+  @ViewChild('htmlData') htmlData:ElementRef;
   @Input("settingsForms") public settingsForms:FormGroup;
   defaultImageUrl = environment.defaultImageUrl;
   iconConst = IconConst;
@@ -66,6 +71,7 @@ export class CustomerInvoicesComponent implements OnInit {
       if (data) {
         this.journalDetails = data;
       }
+      // console.log(this.journalDetails);
     }
     if (this.router.url.indexOf("/sales-invoice") > -1) {
       this.voucherType = "SALES";
@@ -82,6 +88,7 @@ export class CustomerInvoicesComponent implements OnInit {
         this.invoiceDetails = data1;
         this.calculateTotal(this.invoiceDetails);
       }
+      // console.log(this.invoiceDetails);
     }
     if (this.router.url.indexOf("/purchase-invoice") > -1) {
       this.voucherType = "PURCH";
@@ -92,7 +99,7 @@ export class CustomerInvoicesComponent implements OnInit {
       };
 
       // this.store.dispatch([new AddInvoiceDetails(data)]);
-      console.log("this the " + JSON.stringify(data));
+      // console.log("this the " + JSON.stringify(data));
       const data1 = JSON.parse(localStorage.getItem("purchInvoices"));
       if (data1) {
         this.invoiceDetails = data1;
@@ -105,6 +112,7 @@ export class CustomerInvoicesComponent implements OnInit {
       if (data) {
         this.cashDetails = data;
       }
+      // console.log(this.cashDetails);
     }
     if (this.router.url.indexOf("/cash-payment") > -1) {
       this.voucherType = "CASH_PMNT";
@@ -112,6 +120,7 @@ export class CustomerInvoicesComponent implements OnInit {
       if (data) {
         this.cashDetails = data;
       }
+      // console.log(this.cashDetails);
     }
     if (this.router.url.indexOf("/bank-receipt") > -1) {
       this.voucherType = "BANK_RCPT";
@@ -126,12 +135,30 @@ export class CustomerInvoicesComponent implements OnInit {
       if (data) {
         this.bankDetails = data;
       }
+      // console.log(this.bankDetails);
     }
 
   }
 
   ngOnInit() {
     this.getIdFromRoute();
+  }
+
+  generatePDF(): void {
+    let DATA = document.getElementById('htmlData');
+      
+    html2canvas(DATA).then(canvas => {
+        
+        let fileWidth = 208;
+        let fileHeight = canvas.height * fileWidth / canvas.width;
+        
+        const FILEURI = canvas.toDataURL('image/png') //Returns the content of the current canvas as an image that you can use as a source for another canvas or an HTML element.
+        let PDF = new jsPDF('p', 'mm', 'a4'); //Orientation, unit and format
+        let position = 0;
+        PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight)
+        
+        PDF.save('customer-billing-preview.pdf'); //Specify Filename
+    });     
   }
 
   getIdFromRoute(): void {
@@ -157,28 +184,29 @@ export class CustomerInvoicesComponent implements OnInit {
     // this.exportService.ExportToCSV(exportData);
   }
 
-  public calculateDebitTotal(journalDetails): number {
+  public calculateDebitTotal(journalDetails) {
     let debitTotalAmount = 0;
     for (let i = 0; i < journalDetails.length; i++) {
       if (
-        journalDetails[i].Amount &&
-        journalDetails[i].DebitCredit === "Debit"
+        journalDetails[i].DrAmount 
+        // journalDetails[i].DebitCredit === "Debit"
       ) {
-        debitTotalAmount = debitTotalAmount + journalDetails[i].Amount;
+        debitTotalAmount = debitTotalAmount + journalDetails[i].DrAmount;
+        // console.log(debitTotalAmount);
       }
     }
     return debitTotalAmount;
   }
 
-  public calculateCreditTotal(journalDetails): number {
+  public calculateCreditTotal(journalDetails) {
     let creditTotalAmount = 0;
-
     for (let i = 0; i < journalDetails.length; i++) {
       if (
-        journalDetails[i].Amount &&
-        journalDetails[i].DebitCredit == "Credit"
+        journalDetails[i].CrAmount
+        // journalDetails[i].DebitCredit == "Credit"
       ) {
-        creditTotalAmount = creditTotalAmount + journalDetails[i].Amount;
+        creditTotalAmount = creditTotalAmount + journalDetails[i].CrAmount;
+        // console.log(creditTotalAmount);
       }
     }
 
