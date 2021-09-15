@@ -7,15 +7,17 @@
         [voucherType]="'JRNL'"
       ></accSwift-create-reports>
     </div>
-    <div class="col-md-12">
-      <div
-        class="alert alert-warning"
-        style="display: inline-block"
-        role="alert"
-      >
+    <div class="col-md-12 transaction">
+      <div class="alert alert-warning" role="alert">
         NOTE : Transaction amount on debit side and credit side must be equal
       </div>
+      <div>
+        <button class="btn btn-primary" (click)="openRecurringInvoice()">
+          <span>Make Recurring Invoice</span>
+        </button>
+      </div>
     </div>
+
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">

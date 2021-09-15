@@ -15,6 +15,7 @@ import { LocalStorageService } from '@app/shared/services/local-storage/local-st
 import { DateConverterService } from "@app/shared/services/dateConverter/date-converter.service";
 import { DatePipe } from "@angular/common";
 import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
+import { RecurringInvoiceComponent } from "@accSwift-modules/accswift-shared/components/recurring-invoice/recurring-invoice.component";
 var adbs = require("ad-bs-converter");
 
 @Component({
@@ -216,6 +217,14 @@ export class AddJournalComponent implements OnInit {
       class: "modal-sm",
     })
   }
+
+  openRecurringInvoice():void
+  {
+    this.modalRef = this.modalService.show(RecurringInvoiceComponent, {backdrop: true,
+      ignoreBackdropClick: true,
+      class: "modal-md",});
+  }
+
 
   public cancel(): void {
     this.journalVoucherForms.reset();

@@ -1,0 +1,50 @@
+.title {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.date {
+  margin-top: 25px;
+}
+
+.date input {
+  font-size: 12px;
+}
+
+.reoccur_type label {
+  font-weight: 600;
+}
+
+.vr-line {
+  background-color: #dad3d3;
+  height: 71%;
+  width: 2px;
+  position: absolute;
+  right: 73%;
+}
+
+.week_days {
+  display: flex;
+}
+
+.box-wrap {
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 3px -1px;
+  padding: 20px 20px;
+}
+
+.day_box {
+  margin-right: 4px;
+}
+
+.day_box h2 {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.specific_details select {
+  border: 1px solid #ccc;
+  background-color: #f7f9fc;
+  padding: 1px 24px;
+  margin-left: 10px;
+}

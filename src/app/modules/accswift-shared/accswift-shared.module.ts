@@ -42,6 +42,7 @@ import { ReportPreviewComponent } from './components/report-preview/report-previ
 import { DateConverterComponent } from './components/date-converter/date-converter.component';
 import { PartyInvoicesComponent } from './components/party-invoices/party-invoices.component';
 import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
+import { RecurringInvoiceComponent } from './components/recurring-invoice/recurring-invoice.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
     DateSelectionSettingsComponent,
     ReportPreviewComponent,
     DateConverterComponent,
-    PartyInvoicesComponent
+    PartyInvoicesComponent,
+    RecurringInvoiceComponent
   ],
   imports: [
     FormsModule,
@@ -121,7 +123,8 @@ import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
     BasicAddEditUserComponent,
     ReportPreviewComponent,
     DateConverterComponent,
-    PartyInvoicesComponent
+    PartyInvoicesComponent,
+    RecurringInvoiceComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

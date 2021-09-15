@@ -23,6 +23,7 @@
           (add)="addHandler($event)"
           (remove)="removeHandler($event)"
         >
+          <h1>{{ entryArray.getRawValue() | json }}</h1>
           <ng-template kendoGridToolbarTemplate>
             <button kendoGridAddCommand>Add New</button>
           </ng-template>
@@ -366,13 +367,24 @@
               let-isNew="isNew"
               let-rowIndex="rowIndex"
             >
-              <kendo-datepicker
+              <!-- <kendo-datepicker
                 [valuePrimitive]="true"
+                [value]="ChequeDate"
                 [formControl]="entryArray.controls[rowIndex].get('ChequeDate')"
-                [min]="min"
-                [max]="max"
                 class="form-control"
-              ></kendo-datepicker>
+              ></kendo-datepicker> -->
+              <div class="date" style="position: relative">
+                <input
+                  type="text"
+                  class="form-control"
+                  [formControl]="
+                    entryArray.controls[rowIndex].get('ChequeDate')
+                  "
+                  bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                />
+                <span class="glyphicon glyphicon-calendar calendar-icon"></span>
+              </div>
             </ng-template>
           </kendo-grid-column>
           <kendo-grid-column
