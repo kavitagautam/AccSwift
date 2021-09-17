@@ -446,6 +446,18 @@ tfoot > tr > td {
 .k-textbox.form-control {
   width: 100%;
 }
+
 .k-widget.form-control {
   padding: 0;
+}
+
+.k-tabstrip-items .k-item {
+  color: #ff6358;
+}
+
+.k-tabstrip-items .k-item.k-state-active,
+.k-tabstrip-items .k-item.k-state-selected {
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #656565;
+  background-color: #ffffff;
 }

@@ -22,6 +22,10 @@ export class AddressService {
     this.getCountry();
   }
 
+  getCountryLists(): Observable<CountryRootModel> {
+    return this.httpService.get(`${this._api_URL}Utility/Country`);
+  }
+
   getCountry(): void {
     this.httpService
       .get(`${this._api_URL}Utility/Country`)

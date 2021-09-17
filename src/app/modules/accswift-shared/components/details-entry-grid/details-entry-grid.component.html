@@ -350,6 +350,13 @@
                 [formControl]="
                   entryArray.controls[rowIndex].get('ChequeNumber')
                 "
+                onkeyup="
+                  var v = this.value;
+                  if (!v.match(/^[0-9]+$/)) {                     
+                      alert('Please enter digits only'); 
+                  } 
+                  "
+                maxlength="10"
               />
             </ng-template>
           </kendo-grid-column>
@@ -431,6 +438,7 @@
                 [format]="'n0'"
                 [min]="1"
                 [formControl]="entryArray.controls[rowIndex].get(column.field)"
+                (valueChange)="changeInvoiceValues(dataItem, rowIndex)"
               >
               </kendo-numerictextbox>
             </ng-template>
@@ -606,7 +614,7 @@
             field="Amount"
             title="Amount"
             width="120"
-            [hidden]="!columns.includes('Amount') || voucherType == 'JRNL'"
+            [hidden]="!columns.includes('Amount')"
           >
             <ng-template
               kendoGridCellTemplate
@@ -618,6 +626,7 @@
             >
               <kendo-numerictextbox
                 *ngIf="
+                  voucherType == 'JRNL' ||
                   voucherType == 'CASH_RCPT' ||
                   voucherType == 'CASH_PMNT' ||
                   voucherType == 'BANK_RCPT' ||

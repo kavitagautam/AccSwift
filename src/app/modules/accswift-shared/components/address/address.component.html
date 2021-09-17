@@ -3,10 +3,22 @@
     <div class="col-md-6">
       <div class="form-group">
         <label>Country</label>
-        <select
+        <kendo-dropdownlist
+          class="form-control"
+          [data]="country"
+          [filterable]="true"
+          [textField]="'Name'"
+          [valueField]="'ID'"
+          [valuePrimitive]="true"
+          formControlName="CountryID"
+          (filterChange)="filterCountry($event)"
+        >
+        </kendo-dropdownlist>
+        <!-- <select
           class="form-control"
           formControlName="CountryID"
           (change)="changeCountry()"
+          (change)="filterCountry($event)"
           accSwiftFormValidator
         >
           <option [ngValue]="null">Choose Option...</option>
@@ -16,7 +28,7 @@
           >
             {{ country.Name }}
           </option>
-        </select>
+        </select> -->
       </div>
       <div class="form-group">
         <label>State/Province</label>
