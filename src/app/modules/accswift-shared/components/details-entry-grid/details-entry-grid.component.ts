@@ -393,6 +393,7 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   calculateQtyTotal(): number {
+    console.log(this.entryArray.value);
     const entryListArray = this.entryArray.value;
     let sumQty = 0;
     for (let i = 0; i < entryListArray.length; i++) {
@@ -484,6 +485,7 @@ export class DetailsEntryGridComponent implements OnInit {
 
   //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
+    console.log(dataItem);
     const entryListArray = this.entryArray as FormArray;
     let qunatityValue = entryListArray.controls[index].get("Quantity").value;
     let salesPurchaseRate = 0;
