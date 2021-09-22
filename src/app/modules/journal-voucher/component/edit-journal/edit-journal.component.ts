@@ -17,6 +17,7 @@ import { DateConverterComponent } from "@accSwift-modules/accswift-shared/compon
 import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 import { Settings } from '@accSwift-modules/settings/models/settings.model';
 import { RecurringInvoiceComponent } from "@accSwift-modules/accswift-shared/components/recurring-invoice/recurring-invoice.component";
+import { NepaliDatePickerSettings } from "@accSwift-modules/accswift-shared/models/nepali-date-settings";
 var adbs = require("ad-bs-converter");
 
 @Component({
@@ -27,7 +28,13 @@ var adbs = require("ad-bs-converter");
 })
 export class EditJournalComponent implements OnInit {
   private editedRowIndex: number;
+  listLoading:boolean;
   settings: Settings;
+  nepaliDatePickSettings:NepaliDatePickerSettings = {language: "english",
+  dateFormat: "YYYY/MM/DD",
+  ndpMonth: true,
+  ndpYear: true}; 
+
   iconConst = IconConst;
   public selectedDate:string =''
 
@@ -73,6 +80,7 @@ export class EditJournalComponent implements OnInit {
     // Get Id From the Route URL and get the Details
     this.route.paramMap.subscribe((params) => {
       if (params.get("id")) {
+        this.listLoading = true;
         this.journalService
           .getJournalDetails(params.get("id"))
           .subscribe((response) => {
@@ -82,6 +90,12 @@ export class EditJournalComponent implements OnInit {
               this.setJournalList();
               this.journalVoucherForms.patchValue(this.journalDetail);
             }
+          },
+          (error)=> {
+            this.listLoading = false;
+          },
+          ()=> {
+            this.listLoading = false;
           });
       }
     });

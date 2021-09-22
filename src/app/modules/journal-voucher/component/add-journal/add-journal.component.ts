@@ -16,6 +16,7 @@ import { DateConverterService } from "@app/shared/services/dateConverter/date-co
 import { DatePipe } from "@angular/common";
 import { DateConverterComponent } from "@accSwift-modules/accswift-shared/components/date-converter/date-converter.component";
 import { RecurringInvoiceComponent } from "@accSwift-modules/accswift-shared/components/recurring-invoice/recurring-invoice.component";
+import { NepaliDatePickerSettings } from "@accSwift-modules/accswift-shared/models/nepali-date-settings";
 var adbs = require("ad-bs-converter");
 
 @Component({
@@ -26,7 +27,12 @@ var adbs = require("ad-bs-converter");
 })
 export class AddJournalComponent implements OnInit {
   private editedRowIndex: number;
+  listLoading:boolean;
   settings: Settings;
+  nepaliDatePickSettings:NepaliDatePickerSettings = {language: "english",
+  dateFormat: "YYYY-MM-DD",
+  ndpMonth: true,
+  ndpYear: true}; 
   public selectedDate:string =''
   // datePick = this.settingsService.settings ? this.settingsService.settings.DEFAULT_DATE.Value:'';
   iconConst = IconConst;
@@ -85,7 +91,7 @@ export class AddJournalComponent implements OnInit {
   getSettings(): void {
     this.settingsService.getSettingsData().subscribe((response) => {
       this.settings = response.Entity;
-      console.log(this.settings);
+      // console.log(this.settings);
       let pickedDate = this.settings.DEFAULT_DATE.Value;
       console.log(pickedDate);
       this.selectedDate = pickedDate;

@@ -65,20 +65,15 @@
 
           <div *ngIf="selectedDate == 'Nepali'" class="form-group">
             <label>Date</label>
-            <!-- <np-datepicker
+            <nepali-date-picker
+              name="nepalidate"
+              [id]="'nepaliDate'"
+              [label]="'date'"
               formControlName="Date"
-              inputClass="form-control"
-              language="en"
-              [dateFormatter]="dateFormatter"
-              appFormControlValidationMsg
-            ></np-datepicker> -->
-            <input
-              class="form-control"
-              formControlName="Date"
-              bsDatepicker
-              [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
-            />
-            <span class="glyphicon glyphicon-calendar calendar-icon"></span>
+              [nepaliDatePickerSettings]="nepaliDatePickSettings"
+            >
+            </nepali-date-picker>
+
             <button
               (click)="dateConverterPopup()"
               style="
@@ -95,6 +90,7 @@
           </div>
         </div>
       </div>
+
       <div class="col-md-12">
         <accSwift-details-entry-grid
           [entryArray]="journalVoucherForms.controls.Journaldetails"
@@ -130,6 +126,7 @@
           </button>
         </div>
       </div>
+      <div *ngIf="listLoading" class="k-i-loading"></div>
     </div>
   </form>
   <div class="box-footer">

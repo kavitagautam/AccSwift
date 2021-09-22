@@ -43,6 +43,7 @@ import { DateConverterComponent } from './components/date-converter/date-convert
 import { PartyInvoicesComponent } from './components/party-invoices/party-invoices.component';
 import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
 import { RecurringInvoiceComponent } from './components/recurring-invoice/recurring-invoice.component';
+import { NepaliDatePickerComponent } from "./components/nepali-date-picker/nepali-date-picker.component";
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import { RecurringInvoiceComponent } from './components/recurring-invoice/recurr
     ReportPreviewComponent,
     DateConverterComponent,
     PartyInvoicesComponent,
-    RecurringInvoiceComponent
+    RecurringInvoiceComponent,
+    NepaliDatePickerComponent
   ],
   imports: [
     FormsModule,
@@ -112,7 +114,8 @@ import { RecurringInvoiceComponent } from './components/recurring-invoice/recurr
     LedgerDetailReportsComponent,
     OpeningBalanceComponent,
     ForgetPasswordComponent,
-    PartyInvoicesComponent
+    PartyInvoicesComponent,
+    NepaliDatePickerComponent
   ],
   providers: [ValidationMsgService],
   entryComponents: [
