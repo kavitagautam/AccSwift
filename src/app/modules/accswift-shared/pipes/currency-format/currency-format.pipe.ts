@@ -18,7 +18,7 @@ export class CurrencyFormatPipe implements PipeTransform {
     this.currencySign = localStorage.getItem("currencySymbol");
     // console.log(this.currencySign);
     // console.log(this.transform(123678997788));
-
+    console.log(this.inWords(12345));
   }
 
   transform(value: any, event?: number): SafeHtml {
@@ -87,5 +87,30 @@ export class CurrencyFormatPipe implements PipeTransform {
     // console.log(doublenumber);
     return doublenumber ? doublenumber : null;
   }
+
+  a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
+  b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+
+  inWords(num)
+  {
+    console.log(num); //12345
+    if ((num = num.toString()).length > 9) return 'overflow';
+    let n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/); //substr(start, length) If negative, index starts counting from last and match method returns array
+    // 0: "000012345"
+    // 1: "00"
+    // 2: "00"
+    // 3: "12"
+    // 4: "3"
+    // 5: "45"
+    console.log(n);
+    if (!n) return; var str = '';
+    str += (Number(n[1]) != 0) ?(this.a[Number(n[1])] || this.b[n[1][0]] + ' ' + this.a[n[1][1]]) + 'crore ' :'';
+    str += (Number(n[2]) != 0) ?(this.a[Number(n[2])] || this.b[n[2][0]] + ' ' + this.a[n[2][1]]) + 'lakh ' :'';
+    str += (Number(n[3]) != 0) ?(this.a[Number(n[3])] || this.b[n[3][0]] + ' ' + this.a[n[3][1]]) + 'thousand ' :'';
+    str += (Number(n[4]) != 0) ?(this.a[Number(n[4])] || this.b[n[4][0]] + ' ' + this.a[n[4][1]]) + 'hundred ' :'';
+    str += (Number(n[5]) != 0) ?((str != '') ? 'and ' : '') + (this.a[Number(n[5])] || this.b[n[5][0]] + ' ' + this.a[n[5][1]]) + 'only ' :'';
+    return str;
+  }
+
   
 }

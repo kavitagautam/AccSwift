@@ -105,6 +105,7 @@
           </div>
         </div>
       </div>
+
       <div class="col-md-12">
         <div class="col-sm-2">
           <div class="form-group">
@@ -129,6 +130,24 @@
       <div *ngIf="listLoading" class="k-i-loading"></div>
     </div>
   </form>
+
+  <div class="col-md-12 Currency" style="margin: 40px 0">
+    <form>
+      <div class="form-group">
+        <label>Enter Currency in Number:</label>
+        <input id="number" class="form-control" (change)="transformToWords()" />
+      </div>
+    </form>
+    <div class="col" style="margin: 10px 0">
+      <label style="display: block">Currency Format: </label>
+      <span [innerHTML]="currency | currencyFormat"></span>
+    </div>
+    <div class="col" style="margin: 10px 0">
+      <label style="display: block">Currency in Words: </label>
+      <span id="words"></span>
+    </div>
+  </div>
+
   <div class="box-footer">
     <div class="mb-2">
       <button class="btn btn-primary" (click)="save()">
