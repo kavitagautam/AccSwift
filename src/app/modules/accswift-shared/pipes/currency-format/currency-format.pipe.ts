@@ -91,6 +91,7 @@ export class CurrencyFormatPipe implements PipeTransform {
   a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
   b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
 
+  //Currency in Number to Words Transformation
   inWords(num)
   {
     console.log(num); //12345
