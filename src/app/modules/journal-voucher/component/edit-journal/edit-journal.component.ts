@@ -19,6 +19,7 @@ import { Settings } from '@accSwift-modules/settings/models/settings.model';
 import { RecurringInvoiceComponent } from "@accSwift-modules/accswift-shared/components/recurring-invoice/recurring-invoice.component";
 import { NepaliDatePickerSettings } from "@accSwift-modules/accswift-shared/models/nepali-date-settings";
 var adbs = require("ad-bs-converter");
+var moment = require ("moment")
 
 @Component({
   selector: "accSwift-edit-journal",
@@ -31,7 +32,7 @@ export class EditJournalComponent implements OnInit {
   listLoading:boolean;
   settings: Settings;
   nepaliDatePickSettings:NepaliDatePickerSettings = {language: "english",
-  dateFormat: "YYYY/MM/DD",
+  dateFormat: "YYYY-MM-DD",
   ndpMonth: true,
   ndpYear: true}; 
 
@@ -132,7 +133,7 @@ export class EditJournalComponent implements OnInit {
       VoucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
       Date: [
         this.journalDetail
-          ? this.pipe.transform(this.journalDetail.Date, "YYYY-MM-DD")
+          ? this.pipe.transform(moment().format(this.journalDetail.Date), "YYYY-MM-DD")
           : "",
       ],
       ProjectID: [this.journalDetail ? this.journalDetail.ProjectID : null],

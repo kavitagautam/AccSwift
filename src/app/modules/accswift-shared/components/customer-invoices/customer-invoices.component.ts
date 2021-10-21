@@ -5,7 +5,7 @@ import { ExportToCsvService } from "@app/shared/services/export-to-csv/export-to
 import { IconConst } from "@shared/constants/icon.constant";
 import { MapCustomerInvoiceExportData } from "@app/shared/data/map-customer-invoice-export-data";
 import { CustomerInvoiceExportColumnHeaders } from "@app/shared/models/customer-invoice-export-column-headers.model";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
 import { Company } from "@accSwift-modules/company/models/company.model";
 import { Store } from "@ngxs/store";
@@ -46,6 +46,7 @@ export class CustomerInvoicesComponent implements OnInit {
   cashDetails: any = [];
   bankDetails: any = [];
   customerDescription: any[];
+  voucherName: string;
 
   constructor(
     private exportService: ExportToCsvService,
@@ -55,7 +56,16 @@ export class CustomerInvoicesComponent implements OnInit {
     private salesInvoiceServices: SalesInvoiceService,
     private store: Store
   ) {
-
+    this.router.events.subscribe((event) => {
+      console.log(event)
+      if (event instanceof NavigationEnd) {
+        let routeParent = this.route.parent;
+        console.log(this.route.parent)
+        console.log(this.route.firstChild)
+        this.voucherName = routeParent.snapshot.data["breadcrumb"];
+      }
+    });
+    console.log(this.voucherName)
   
     this.currencySign = localStorage.getItem("currencySymbol");
 

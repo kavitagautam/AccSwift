@@ -62,7 +62,7 @@ export class NepaliDatePickerComponent implements OnInit, ControlValueAccessor,O
                         _this.propagateChange(_this.dateControl.value);
                     },
                     // dateFormat: "DD/MM/YYYY",
-                    dateFormat:_this.nepaliDatePickerSettings&& _this.nepaliDatePickerSettings.dateFormat ? _this.nepaliDatePickerSettings.dateFormat:"MM/DD/YYYY",
+                    dateFormat:_this.nepaliDatePickerSettings&& _this.nepaliDatePickerSettings.dateFormat ? _this.nepaliDatePickerSettings.dateFormat:"YYYY-MM-DD",
                     ndpMonth:_this.nepaliDatePickerSettings&& _this.nepaliDatePickerSettings.ndpMonth ? _this.nepaliDatePickerSettings.ndpMonth:false,
                     ndpYear:_this.nepaliDatePickerSettings&& _this.nepaliDatePickerSettings.ndpYear ? _this.nepaliDatePickerSettings.ndpYear:false,
                     disableBefore:_this.nepaliDatePickerSettings&& _this.nepaliDatePickerSettings.disableBefore ? _this.nepaliDatePickerSettings.disableBefore:null,

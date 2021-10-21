@@ -28,11 +28,14 @@ export class AdminPanelComponent implements OnInit {
     this.preferenceService.getPerference();
     this.formService.getAllDropDownList();
     this.router.events.subscribe((event) => {
+      console.log(event)
       if (event instanceof NavigationEnd) {
         let child = this.activatedRoute.firstChild;
+        console.log(this.activatedRoute.firstChild)
         this.pageTitle = child.snapshot.data["breadcrumb"];
       }
     });
+    console.log(this.pageTitle)
   }
 
   ngOnInit() {}

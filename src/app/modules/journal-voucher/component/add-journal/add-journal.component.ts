@@ -18,6 +18,7 @@ import { DateConverterComponent } from "@accSwift-modules/accswift-shared/compon
 import { RecurringInvoiceComponent } from "@accSwift-modules/accswift-shared/components/recurring-invoice/recurring-invoice.component";
 import { NepaliDatePickerSettings } from "@accSwift-modules/accswift-shared/models/nepali-date-settings";
 var adbs = require("ad-bs-converter");
+var moment = require("moment");
 
 @Component({
   selector: "accSwift-add-journal",
@@ -113,7 +114,7 @@ export class AddJournalComponent implements OnInit {
         Validators.required,
       ],
       VoucherNo: ["", [Validators.required]],
-      Date: [new Date()],
+      Date: [moment().format('L')],
       Remarks: [""],
       Journaldetails: this._fb.array([this.addJournalEntryFormGroup()]),
     });
@@ -236,5 +237,97 @@ export class AddJournalComponent implements OnInit {
     this.journalVoucherForms.reset();
     this.router.navigate(["/journal"]);
   }
+
+
+  // saveReoccurance() {
+  //   console.log(this.taskForm.value.reg_number, "regNumber");
+  //   if (!this.taskForm.valid) {
+  //     this.isSubmitted = true;
+  //     return;
+  //   }
+  //   if (this.reoccuranceForm.value.Sunday == true) {
+  //     this.week_day.push("Sunday");
+  //   }
+  //   if (this.reoccuranceForm.value.Monday == true) {
+  //     this.week_day.push("Monday");
+  //   }
+  //   if (this.reoccuranceForm.value.Tuesday == true) {
+  //     this.week_day.push("Tuesday");
+  //   }
+  //   if (this.reoccuranceForm.value.Wednesday == true) {
+  //     this.week_day.push("Wednesday");
+  //   }
+  //   if (this.reoccuranceForm.value.Thursday == true) {
+  //     this.week_day.push("Thursday");
+  //   }
+  //   if (this.reoccuranceForm.value.Friday == true) {
+  //     this.week_day.push("Friday");
+  //   }
+  //   if (this.reoccuranceForm.value.Saturday == true) {
+  //     this.week_day.push("Saturday");
+  //   }
+
+  //   var unique = this.week_day.filter(function (elem, index, self) {
+  //     return index === self.indexOf(elem);
+  //   });
+
+  //   let body = {
+  //     category: this.taskForm.value.category,
+  //     client_id: this.taskForm.value.client_id,
+  //     staff_id: this.taskForm.value.staff_id,
+  //     appointment_time: this.taskForm.value.appointment_time + ":00",
+  //     estimated_time: this.taskForm.value.estimated_time + ":00",
+  //     date: this.taskForm.value.date,
+  //     actual_in: this.taskForm.value.actual_in,
+  //     actual_out: this.taskForm.value.actual_out,
+  //     task: this.taskForm.value.task,
+  //     vehicle_id: this.taskForm.value.reg_number,
+  //     description: this.taskForm.value.description,
+  //     reoccurance: this.reoccurance,
+  //     opening_mileage: this.taskForm.value.opening_mileage,
+  //     closing_mileage: this.taskForm.value.closing_mileage,
+  //     start_date: this.reoccuranceForm.value.start_date,
+  //     end_date: this.reoccuranceForm.value.end_date,
+  //     week_day: unique.toString(),
+  //     monthly_type: this.monthly_type,
+  //     monthly_date: this.reoccuranceForm.value.monthly_date,
+  //     monthly_count: this.reoccuranceForm.value.monthly_count,
+  //     monthly_week: this.reoccuranceForm.value.monthly_week,
+  //     monthly_day: this.reoccuranceForm.value.monthly_day,
+  //     yearly_type: this.reoccuranceForm.value.yearly_type,
+  //     yearly_date: this.reoccuranceForm.value.yearly_date,
+  //     yearly_month: this.reoccuranceForm.value.yearly_month,
+  //     yearly_week: this.reoccuranceForm.value.yearly_week,
+  //     yearly_day: this.reoccuranceForm.value.yearly_day,
+  //   };
+  //   if (this.mode == "create" || this.mode == "target-task") {
+  //     this.taskService.createTask(body).subscribe((res) => {
+  //       if (res.success == "true") {
+  //         this.toastrMessageService.showSuccess("Task Created Successfully.");
+  //         this.taskForm.reset();
+  //         this.router.navigate(["/dashboard"]);
+  //         this.modalRef.hide();
+  //       } else {
+  //         this.toastrMessageService.showError(res.message);
+  //       }
+  //     });
+  //   } else {
+  //     body["task_id"] = this.task.task.task_id;
+  //     body["appointment_time"] = this.taskForm.value.appointment_time;
+  //     body["estimated_time"] = this.taskForm.value.estimated_time;
+  //     body["vehicle_id"] = this.taskForm.value.reg_number;
+
+  //     this.taskService.updateTask(body).subscribe((res) => {
+  //       if (res.success == "true") {
+  //         this.toastrMessageService.showSuccess("Task Updated Successfully.");
+  //         this.router.navigate(["/dashboard"]);
+  //         this.modalRef.hide();
+  //         this.taskForm.reset();
+  //       } else {
+  //         this.toastrMessageService.showError(res.message);
+  //       }
+  //     });
+  //   }
+  // }
 
 }

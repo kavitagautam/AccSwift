@@ -208,13 +208,13 @@ div#ndp-nepali-box a {
 
 #currentMonth #ndp-year-select:hover {
   border-radius: 20px;
-  background-color: rgba(0, 0, 0, 0.2);
+  /* background-color: rgba(0, 0, 0, 0.2); */
   padding: 0 8px;
 }
 
 #currentMonth #ndp-month-select:hover {
   border-radius: 20px;
-  background-color: rgba(0, 0, 0, 0.2);
+  /* background-color: rgba(0, 0, 0, 0.2); */
   padding: 0 8px;
 }
 
