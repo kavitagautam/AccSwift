@@ -117,7 +117,8 @@ export class CreateReportsComponent implements OnInit {
       this.router.navigate(
         [`/bank-receipt/edit/${this.form.get("ID").value}/invoice-billing`],
         {
-          state: this.form.get("BankReceiptDetailsList").value,
+          // state: this.form.get("BankReceiptDetailsList").value,
+          state: this.form.value
         }
       );
     }
@@ -137,7 +138,8 @@ export class CreateReportsComponent implements OnInit {
       this.router.navigate(
         [`/bank-payment/edit/${this.form.get("ID").value}/invoice-billing`],
         {
-          state: this.form.get("BankPaymentDetailsList").value,
+          // state: this.form.get("BankPaymentDetailsList").value,
+          state: this.form.value
         }
       );
     }
@@ -145,7 +147,8 @@ export class CreateReportsComponent implements OnInit {
       this.router.navigate(
         [`/cash-payment/edit/${this.form.get("ID").value}/invoice-billing`],
         {
-          state: this.form.get("CashPaymentDetailsList").value,
+          // state: this.form.get("CashPaymentDetailsList").value,
+          state: this.form.value
         }
       );
     }
@@ -153,7 +156,8 @@ export class CreateReportsComponent implements OnInit {
       this.router.navigate(
         [`/cash-receipt/edit/${this.form.get("ID").value}/invoice-billing`],
         {
-          state: this.form.get("CashReceiptDetails").value,
+          // state: this.form.get("CashReceiptDetails").value,
+          state: this.form.value
         }
       );
     }
@@ -161,7 +165,8 @@ export class CreateReportsComponent implements OnInit {
       this.router.navigate(
         [`/journal/edit/${this.form.get("ID").value}/invoice-billing`],
         {
-          state: this.form.get("Journaldetails").value,
+          // state: this.form.get("Journaldetails").value,
+          state: this.form.value
         }
       );
     }

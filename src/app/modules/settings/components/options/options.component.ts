@@ -70,11 +70,16 @@ export class OptionsComponent implements OnInit {
       ],
     });
     this.dateFormatChange(this.settingsForm.get("DATE_FORMAT").value);
+    console.log(this.settingsForm.get("DATE_FORMAT").value);
     // console.log(this.settingsForm.value.DEFAULT_DATE);
     // console.log(this.settingsService.settings ? this.settingsService.settings.DEFAULT_DATE.Value:'')
   }
 
   dateFormatChange(value): void {
+    console.log(value);
+    // localStorage.setItem("selectedDateFormat", JSON.stringify(this.settingsForm.get("DATE_FORMAT").value));
+    localStorage.setItem("SelectedDateFormat", JSON.stringify(value));
+    console.log(this.dateFormats);
     if (this.dateFormats && this.dateFormats.length > 0) {
       const dateFormat = this.dateFormats.filter((date) => date.ID === value);
       this.dateSampleValue = formatDate(

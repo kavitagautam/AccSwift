@@ -23,6 +23,7 @@ sup {
   position: absolute;
   top: 35px;
   right: 25px;
+  cursor: pointer;
 }
 
 .box-footer {
@@ -196,13 +197,17 @@ fieldset[disabled] .form-control {
 }
 
 .k-i-loading {
-  position: absolute;
+  position: absolute !important;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  font-size: 64px;
-  background-color: rgba(255, 255, 255, 0.3);
+  font-size: 100px;
+  // background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  z-index: 9999;
+  height: 100%;
+  width: 100%;
   color: #ff6757 !important;
 }
 
@@ -352,7 +357,7 @@ tfoot > tr > td {
 
 .table-box {
   width: 100%;
-  max-height: 600px;
+  // max-height: 600px;
   overflow-y: scroll;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }

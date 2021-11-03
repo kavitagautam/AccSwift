@@ -5,7 +5,7 @@ import { ExportToCsvService } from "@app/shared/services/export-to-csv/export-to
 import { IconConst } from "@shared/constants/icon.constant";
 import { MapCustomerInvoiceExportData } from "@app/shared/data/map-customer-invoice-export-data";
 import { CustomerInvoiceExportColumnHeaders } from "@app/shared/models/customer-invoice-export-column-headers.model";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
 import { Company } from "@accSwift-modules/company/models/company.model";
 import { Store } from "@ngxs/store";
@@ -39,12 +39,14 @@ export class CustomerInvoicesComponent implements OnInit {
   // select dropdown
   currencySign: string;
   voucherType: string;
+  voucherDetails: any;
   companyDetails: Company;
   invoiceDetails: any = [];
   journalDetails: any = [];
   cashDetails: any = [];
   bankDetails: any = [];
   customerDescription: any[];
+  voucherName: string;
 
   constructor(
     private exportService: ExportToCsvService,
@@ -54,7 +56,16 @@ export class CustomerInvoicesComponent implements OnInit {
     private salesInvoiceServices: SalesInvoiceService,
     private store: Store
   ) {
-
+    this.router.events.subscribe((event) => {
+      console.log(event)
+      if (event instanceof NavigationEnd) {
+        let routeParent = this.route.parent;
+        console.log(this.route.parent)
+        console.log(this.route.firstChild)
+        this.voucherName = routeParent.snapshot.data["breadcrumb"];
+      }
+    });
+    console.log(this.voucherName)
   
     this.currencySign = localStorage.getItem("currencySymbol");
 
@@ -69,9 +80,11 @@ export class CustomerInvoicesComponent implements OnInit {
       this.voucherType = "JRNL";
       const data = this.router.getCurrentNavigation().extras.state;
       if (data) {
-        this.journalDetails = data;
+        this.journalDetails = data.Journaldetails;
+        this.voucherDetails = data;
       }
-      // console.log(this.journalDetails);
+      console.log(this.journalDetails);
+      console.log(this.voucherDetails);
     }
     if (this.router.url.indexOf("/sales-invoice") > -1) {
       this.voucherType = "SALES";
@@ -88,7 +101,7 @@ export class CustomerInvoicesComponent implements OnInit {
         this.invoiceDetails = data1;
         this.calculateTotal(this.invoiceDetails);
       }
-      // console.log(this.invoiceDetails);
+      console.log(this.invoiceDetails);
     }
     if (this.router.url.indexOf("/purchase-invoice") > -1) {
       this.voucherType = "PURCH";
@@ -110,32 +123,36 @@ export class CustomerInvoicesComponent implements OnInit {
       this.voucherType = "CASH_RCPT";
       const data = this.router.getCurrentNavigation().extras.state;
       if (data) {
-        this.cashDetails = data;
+        this.cashDetails = data.CashReceiptDetails;
+        this.voucherDetails = data;
       }
-      // console.log(this.cashDetails);
+      console.log(this.cashDetails);
     }
     if (this.router.url.indexOf("/cash-payment") > -1) {
       this.voucherType = "CASH_PMNT";
       const data = this.router.getCurrentNavigation().extras.state;
       if (data) {
-        this.cashDetails = data;
+        this.cashDetails = data.CashPaymentDetailsList;
+        this.voucherDetails = data;
       }
-      // console.log(this.cashDetails);
+      console.log(this.cashDetails);
     }
     if (this.router.url.indexOf("/bank-receipt") > -1) {
       this.voucherType = "BANK_RCPT";
       const data = this.router.getCurrentNavigation().extras.state;
       if (data) {
-        this.bankDetails = data;
+        this.bankDetails = data.BankReceiptDetailsList;
+        this.voucherDetails = data;
       }
     }
     if (this.router.url.indexOf("/bank-payment") > -1) {
       this.voucherType = "BANK_PMNT";
       const data = this.router.getCurrentNavigation().extras.state;
       if (data) {
-        this.bankDetails = data;
+        this.bankDetails = data.BankPaymentDetailsList;
+        this.voucherDetails = data;
       }
-      // console.log(this.bankDetails);
+      console.log(this.bankDetails);
     }
 
   }

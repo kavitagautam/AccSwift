@@ -12,200 +12,371 @@
 
 <div class="modal-body">
   <div class="container-fluid">
-    <div class="row">
-      <h2 class="title">Reoccur Type</h2>
+    <form [formGroup]="reoccuranceForm">
+      <div class="row">
+        <h2 class="title">Reoccur Type</h2>
 
-      <div class="col-lg-4">
-        <div class="reoccur_type">
-          <div class="form-group">
-            <div class="radio">
-              <label for="">
-                <input
-                  type="radio"
-                  name="reoccur"
-                  id="daily"
-                  (click)="dailyReoccur()"
-                />
-                Daily
-              </label>
+        <div class="col-lg-4">
+          <div class="reoccur_type">
+            <div class="form-group">
+              <div class="radio">
+                <label for="">
+                  <input
+                    type="radio"
+                    name="reoccur"
+                    id="daily"
+                    (click)="dailyReoccur()"
+                  />
+                  Daily
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="radio">
+                <label for="">
+                  <input
+                    type="radio"
+                    name="reoccur"
+                    id="weekly"
+                    (click)="weeklyReoccur()"
+                  />
+                  Weekly
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="radio">
+                <label for="">
+                  <input
+                    type="radio"
+                    name="reoccur"
+                    id="monthly"
+                    (click)="monthlyReoccur()"
+                  />
+                  Monthly
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="radio">
+                <label for="">
+                  <input
+                    type="radio"
+                    name="reoccur"
+                    id="yearly"
+                    (click)="yearlyReoccur()"
+                  />
+                  Yearly
+                </label>
+              </div>
             </div>
           </div>
-          <div class="form-group">
-            <div class="radio">
-              <label for="">
-                <input
-                  type="radio"
-                  name="reoccur"
-                  id="weekly"
-                  (click)="weeklyReoccur()"
-                />
-                Weekly
-              </label>
+        </div>
+        <div class="vr-line"></div>
+
+        <div class="col-lg-8">
+          <div class="row" *ngIf="weekly">
+            <div class="col-lg-12">
+              <div class="week_days">
+                <div class="day_box">
+                  <input type="checkbox" />
+                  <h2>Monday</h2>
+                </div>
+                <div class="day_box">
+                  <input type="checkbox" />
+                  <h2>Tuesday</h2>
+                </div>
+                <div class="day_box">
+                  <input type="checkbox" />
+                  <h2>Wednesday</h2>
+                </div>
+                <div class="day_box">
+                  <input type="checkbox" />
+                  <h2>Thursday</h2>
+                </div>
+                <div class="day_box">
+                  <input type="checkbox" />
+                  <h2>Friday</h2>
+                </div>
+                <div class="day_box">
+                  <input type="checkbox" />
+                  <h2>Saturday</h2>
+                </div>
+                <div class="day_box">
+                  <input type="checkbox" />
+                  <h2>Sunday</h2>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="form-group">
-            <div class="radio">
-              <label for="">
-                <input
-                  type="radio"
-                  name="reoccur"
-                  id="monthly"
-                  (click)="monthlyReoccur()"
-                />
-                Monthly
-              </label>
+
+          <div class="row" *ngIf="monthly">
+            <div class="col-lg-12">
+              <div class="specific_details">
+                <div class="form-group">
+                  <div class="radio">
+                    <input type="radio" name="specific_date" id="type1" />
+                    <label for="">Day</label>
+                    <select name="day" id="day">
+                      <option value="01">1</option>
+                      <option value="02">2</option>
+                      <option value="03">3</option>
+                      <option value="04">4</option>
+                      <option value="05">5</option>
+                      <option value="06">6</option>
+                      <option value="07">7</option>
+                      <option value="08">8</option>
+                      <option value="09">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                      <option value="17">17</option>
+                      <option value="18">18</option>
+                      <option value="19">19</option>
+                      <option value="20">20</option>
+                      <option value="21">21</option>
+                      <option value="22">22</option>
+                      <option value="23">23</option>
+                      <option value="24">24</option>
+                      <option value="25">25</option>
+                      <option value="26">26</option>
+                      <option value="27">27</option>
+                      <option value="28">28</option>
+                      <option value="29">29</option>
+                      <option value="30">30</option>
+                      <option value="31">31</option>
+                      <option value="32">32</option>
+                    </select>
+                    <label for="">of every</label>
+                    <select name="months" id="months">
+                      <option value="01">1</option>
+                      <option value="02">2</option>
+                      <option value="03">3</option>
+                      <option value="04">4</option>
+                      <option value="05">5</option>
+                      <option value="06">6</option>
+                      <option value="07">7</option>
+                      <option value="08">8</option>
+                      <option value="09">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                    </select>
+                    <label for="">month(s)</label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="radio">
+                    <input type="radio" name="specific_date" id="type2" />
+                    <label for="">The</label>
+                    <select name="nth" id="nth">
+                      <option value="01">First</option>
+                      <option value="02">Second</option>
+                      <option value="03">Third</option>
+                      <option value="04">Fourth</option>
+                      <option value="05">Last</option>
+                    </select>
+                    <select name="day" id="day">
+                      <option value="01">Sunday</option>
+                      <option value="02">Monday</option>
+                      <option value="03">Tuesday</option>
+                      <option value="04">Wednesday</option>
+                      <option value="05">Thursday</option>
+                      <option value="06">Friday</option>
+                      <option value="07">Saturday</option>
+                    </select>
+                    <label for="">of every</label>
+                    <select name="months" id="months">
+                      <option value="01">January</option>
+                      <option value="02">February</option>
+                      <option value="03">March</option>
+                      <option value="04">April</option>
+                      <option value="05">May</option>
+                      <option value="06">June</option>
+                      <option value="07">July</option>
+                      <option value="08">August</option>
+                      <option value="09">September</option>
+                      <option value="10">October</option>
+                      <option value="11">November</option>
+                      <option value="12">December</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="form-group">
-            <div class="radio">
-              <label for="">
-                <input
-                  type="radio"
-                  name="reoccur"
-                  id="yearly"
-                  (click)="yearlyReoccur()"
-                />
-                Yearly
-              </label>
+
+          <div class="row" *ngIf="yearly">
+            <div class="col-lg-12">
+              <div class="specific_details">
+                <div class="form-group">
+                  <div class="radio">
+                    <input type="radio" name="specific_date" id="type1" />
+                    <label for="">Day</label>
+                    <select name="day" id="day">
+                      <option value="01">1</option>
+                      <option value="02">2</option>
+                      <option value="03">3</option>
+                      <option value="04">4</option>
+                      <option value="05">5</option>
+                      <option value="06">6</option>
+                      <option value="07">7</option>
+                      <option value="08">8</option>
+                      <option value="09">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                      <option value="17">17</option>
+                      <option value="18">18</option>
+                      <option value="19">19</option>
+                      <option value="20">20</option>
+                      <option value="21">21</option>
+                      <option value="22">22</option>
+                      <option value="23">23</option>
+                      <option value="24">24</option>
+                      <option value="25">25</option>
+                      <option value="26">26</option>
+                      <option value="27">27</option>
+                      <option value="28">28</option>
+                      <option value="29">29</option>
+                      <option value="30">30</option>
+                      <option value="31">31</option>
+                      <option value="32">32</option>
+                    </select>
+                    <label for="">of every</label>
+                    <select name="year" id="year">
+                      <option value="01">0.5 Year</option>
+                      <option value="02">1 Year</option>
+                      <option value="03">2 Year</option>
+                      <option value="04">3 Year</option>
+                      <option value="05">4 Year</option>
+                      <option value="06">5 Year</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="radio">
+                    <input type="radio" name="specific_date" id="type2" />
+                    <label for="">The</label>
+                    <select name="day" id="day">
+                      <option value="01">1</option>
+                      <option value="02">2</option>
+                      <option value="03">3</option>
+                      <option value="04">4</option>
+                      <option value="05">5</option>
+                      <option value="06">6</option>
+                      <option value="07">7</option>
+                      <option value="08">8</option>
+                      <option value="09">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                      <option value="17">17</option>
+                      <option value="18">18</option>
+                      <option value="19">19</option>
+                      <option value="20">20</option>
+                      <option value="21">21</option>
+                      <option value="22">22</option>
+                      <option value="23">23</option>
+                      <option value="24">24</option>
+                      <option value="25">25</option>
+                      <option value="26">26</option>
+                      <option value="27">27</option>
+                      <option value="28">28</option>
+                      <option value="29">29</option>
+                      <option value="30">30</option>
+                      <option value="31">31</option>
+                      <option value="32">32</option>
+                    </select>
+                    <select name="month" id="month">
+                      <option value="01">January</option>
+                      <option value="02">February</option>
+                      <option value="03">March</option>
+                      <option value="04">April</option>
+                      <option value="05">May</option>
+                      <option value="06">June</option>
+                      <option value="07">July</option>
+                      <option value="08">August</option>
+                      <option value="09">September</option>
+                      <option value="10">October</option>
+                      <option value="11">November</option>
+                      <option value="12">December</option>
+                    </select>
+                    <label for="">of every</label>
+                    <select name="year" id="year">
+                      <option value="02">1 Year</option>
+                      <option value="03">2 Year</option>
+                      <option value="04">3 Year</option>
+                      <option value="05">4 Year</option>
+                      <option value="06">5 Year</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="date" *ngIf="daily">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">Start Date</label><sup>*</sup>
+                  <input
+                    class="form-control"
+                    formControlName="StartDate"
+                    bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                  />
+                  <span
+                    class="glyphicon glyphicon-calendar calendar-icon"
+                  ></span>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">End Date</label><sup>*</sup>
+                  <input
+                    class="form-control"
+                    formControlName="EndDate"
+                    bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                  />
+                  <span
+                    class="glyphicon glyphicon-calendar calendar-icon"
+                  ></span>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">Never End</label>
+                  <div class="day_box">
+                    <input
+                      type="checkbox"
+                      formControlName="NeverEnd"
+                      (click)="neverEnd()"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="vr-line"></div>
-
-      <div class="col-lg-8">
-        <div class="row" *ngIf="weekly">
-          <div class="col-lg-12">
-            <div class="week_days">
-              <div class="day_box">
-                <div class="box-wrap"></div>
-                <div><h2>Monday</h2></div>
-              </div>
-              <div class="day_box">
-                <div class="box-wrap"></div>
-                <div><h2>Tuesday</h2></div>
-              </div>
-              <div class="day_box">
-                <div class="box-wrap"></div>
-                <div><h2>Wednesday</h2></div>
-              </div>
-              <div class="day_box">
-                <div class="box-wrap"></div>
-                <div><h2>Thursday</h2></div>
-              </div>
-              <div class="day_box">
-                <div class="box-wrap"></div>
-                <div><h2>Friday</h2></div>
-              </div>
-              <div class="day_box">
-                <div class="box-wrap"></div>
-                <div><h2>Saturday</h2></div>
-              </div>
-              <div class="day_box">
-                <div class="box-wrap"></div>
-                <div><h2>Sunday</h2></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row" *ngIf="monthly">
-          <div class="col-lg-12">
-            <div class="specific_details">
-              <div class="form-group">
-                <div class="radio">
-                  <input type="radio" name="specific_date" id="type1" />
-                  <label for="">Day</label>
-                  <select name="day" id="day">
-                    <option value=""></option>
-                  </select>
-                  <label for="">of every</label>
-                  <select name="months" id="months"></select>
-                  <label for="">month(s)</label>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <div class="radio">
-                  <input type="radio" name="specific_date" id="type2" />
-                  <label for="">The</label>
-                  <select name="the" id="the">
-                    <option value=""></option>
-                  </select>
-                  <select name="day" id="day">
-                    <option value=""></option>
-                  </select>
-                  <label for="">of every</label>
-                  <select name="months" id="months"></select>
-                  <label for="">month(s)</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row" *ngIf="yearly">
-          <div class="col-lg-12">
-            <div class="specific_details">
-              <div class="form-group">
-                <div class="radio">
-                  <input type="radio" name="specific_date" id="type1" />
-                  <label for="">Day</label>
-                  <select name="day" id="day">
-                    <option value=""></option>
-                  </select>
-                  <label for="">of every</label>
-                  <select name="months" id="months"></select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <div class="radio">
-                  <input type="radio" name="specific_date" id="type2" />
-                  <label for="">The</label>
-                  <select name="the" id="the">
-                    <option value=""></option>
-                  </select>
-                  <select name="day" id="day">
-                    <option value=""></option>
-                  </select>
-                  <label for="">of every</label>
-                  <select name="months" id="months"></select>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="everyday" *ngIf="everyday">
-          <div class="form-group">
-            <div class="radio">
-              <label style="font-weight: 600" for="">
-                <input type="radio" name="daily_reoccur" id="everyday" />
-                Everyday
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="date" *ngIf="daily">
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="form-group">
-                <label for="">Start Date</label><sup>*</sup>
-                <input class="form-control" type="date" />
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="form-group">
-                <label for="">End Date</label><sup>*</sup>
-                <input class="form-control" type="date" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </form>
   </div>
 </div>
 

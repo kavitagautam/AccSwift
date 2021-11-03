@@ -59,11 +59,7 @@ export class EditBankPaymentComponent implements OnInit {
         this.bankPaymentDetails ? this.bankPaymentDetails.LedgerID : null,
         [Validators.required],
       ],
-      Date: [
-        this.bankPaymentDetails
-          ? new Date(this.bankPaymentDetails.CreatedDate)
-          : "",
-      ],
+      Date: [this.bankPaymentDetails ? new Date(this.bankPaymentDetails.Date) : ""],
       Remarks: [this.bankPaymentDetails ? this.bankPaymentDetails.Remarks : ""],
       BankPaymentDetailsList: this._fb.array([this.addBankPaymentEntryList()]),
     });
@@ -91,6 +87,7 @@ export class EditBankPaymentComponent implements OnInit {
           .getBankPaymentDetails(params.get("id"))
           .subscribe((response) => {
             this.bankPaymentDetails = response.Entity;
+            console.log(this.bankPaymentDetails);
             this.setBankPaymentList();
             this.bankPaymentForm.patchValue(this.bankPaymentDetails);
           });

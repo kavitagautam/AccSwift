@@ -17,7 +17,9 @@ import { DateConverterComponent } from "@accSwift-modules/accswift-shared/compon
 import { SettingsService } from "@accSwift-modules/settings/services/settings.service";
 import { Settings } from '@accSwift-modules/settings/models/settings.model';
 import { RecurringInvoiceComponent } from "@accSwift-modules/accswift-shared/components/recurring-invoice/recurring-invoice.component";
+import { NepaliDatePickerSettings } from "@accSwift-modules/accswift-shared/models/nepali-date-settings";
 var adbs = require("ad-bs-converter");
+var moment = require ("moment")
 
 @Component({
   selector: "accSwift-edit-journal",
@@ -26,8 +28,16 @@ var adbs = require("ad-bs-converter");
   providers: [DatePipe, TimeZoneService],
 })
 export class EditJournalComponent implements OnInit {
+
+  dateToday: Date = new Date();
   private editedRowIndex: number;
+  listLoading:boolean;
   settings: Settings;
+  nepaliDatePickSettings:NepaliDatePickerSettings = {language: "english",
+  dateFormat: "YYYY-MM-DD",
+  ndpMonth: true,
+  ndpYear: true}; 
+
   iconConst = IconConst;
   public selectedDate:string =''
 
@@ -73,6 +83,7 @@ export class EditJournalComponent implements OnInit {
     // Get Id From the Route URL and get the Details
     this.route.paramMap.subscribe((params) => {
       if (params.get("id")) {
+        this.listLoading = true;
         this.journalService
           .getJournalDetails(params.get("id"))
           .subscribe((response) => {
@@ -82,6 +93,12 @@ export class EditJournalComponent implements OnInit {
               this.setJournalList();
               this.journalVoucherForms.patchValue(this.journalDetail);
             }
+          },
+          (error)=> {
+            this.listLoading = false;
+          },
+          ()=> {
+            this.listLoading = false;
           });
       }
     });
@@ -116,11 +133,12 @@ export class EditJournalComponent implements OnInit {
       ID: [this.journalDetail ? this.journalDetail.ID : null],
       SeriesID: [this.journalDetail ? this.journalDetail.SeriesID : null],
       VoucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
-      Date: [
-        this.journalDetail
-          ? this.pipe.transform(this.journalDetail.Date, "YYYY-MM-DD")
-          : "",
-      ],
+      // Date: [
+      //   this.journalDetail
+      //     ? this.pipe.transform((this.journalDetail.Date), "YYYY-MM-DD")
+      //     : "",
+      // ],
+      Date: [this.journalDetail? new Date(this.journalDetail.Date): ""],
       ProjectID: [this.journalDetail ? this.journalDetail.ProjectID : null],
       Remarks: [this.journalDetail ? this.journalDetail.Remarks : ""],
       Journaldetails: this._fb.array([this.addJournalEntryFormGroup()]),
