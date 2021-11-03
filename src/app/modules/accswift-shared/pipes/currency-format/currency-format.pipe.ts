@@ -16,12 +16,14 @@ export class CurrencyFormatPipe implements PipeTransform {
 
   constructor(protected sanitizer: DomSanitizer) {
     this.currencySign = localStorage.getItem("currencySymbol");
-    // console.log(this.currencySign);
+    console.log(this.currencySign);
     // console.log(this.transform(123678997788));
     console.log(this.inWords(12345));
   }
 
   transform(value: any, event?: number): SafeHtml {
+    this.currencySign = localStorage.getItem("currencySymbol");
+    console.log(this.currencySign);
     if (value > 0) {
       let parseNumber = parseFloat(value);
       // console.log(parseNumber);//2500

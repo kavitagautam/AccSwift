@@ -28,6 +28,8 @@ var moment = require ("moment")
   providers: [DatePipe, TimeZoneService],
 })
 export class EditJournalComponent implements OnInit {
+
+  dateToday: Date = new Date();
   private editedRowIndex: number;
   listLoading:boolean;
   settings: Settings;
@@ -131,11 +133,12 @@ export class EditJournalComponent implements OnInit {
       ID: [this.journalDetail ? this.journalDetail.ID : null],
       SeriesID: [this.journalDetail ? this.journalDetail.SeriesID : null],
       VoucherNo: [this.journalDetail ? this.journalDetail.VoucherNo : ""],
-      Date: [
-        this.journalDetail
-          ? this.pipe.transform(moment().format(this.journalDetail.Date), "YYYY-MM-DD")
-          : "",
-      ],
+      // Date: [
+      //   this.journalDetail
+      //     ? this.pipe.transform((this.journalDetail.Date), "YYYY-MM-DD")
+      //     : "",
+      // ],
+      Date: [this.journalDetail? new Date(this.journalDetail.Date): ""],
       ProjectID: [this.journalDetail ? this.journalDetail.ProjectID : null],
       Remarks: [this.journalDetail ? this.journalDetail.Remarks : ""],
       Journaldetails: this._fb.array([this.addJournalEntryFormGroup()]),

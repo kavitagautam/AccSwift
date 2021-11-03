@@ -27,6 +27,8 @@ var moment = require("moment");
   providers: [DatePipe]
 })
 export class AddJournalComponent implements OnInit {
+
+  dateToday: Date = new Date();
   private editedRowIndex: number;
   listLoading:boolean;
   settings: Settings;
@@ -114,7 +116,7 @@ export class AddJournalComponent implements OnInit {
         Validators.required,
       ],
       VoucherNo: ["", [Validators.required]],
-      Date: [moment().format('L')],
+      Date: [new Date()],
       Remarks: [""],
       Journaldetails: this._fb.array([this.addJournalEntryFormGroup()]),
     });
