@@ -8,9 +8,9 @@ import {
   SimpleChange,
 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
-import { LedgerService } from "../../services/ledger.service";
+import { LedgerService } from "../../../ledger/services/ledger.service";
 import { Router } from "@angular/router";
-import { Currency, LedgerDetails } from "../../models/ledger.models";
+import { Currency, LedgerDetails } from "../../../ledger/models/ledger.models";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
@@ -160,6 +160,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       SubLedgerList: this.setMultipleSubLedger(),
       Remarks: [this.ledgerDetails ? this.ledgerDetails.Remarks : ""],
     });
+    console.log(this.accountLedgerForm.get('Name').value);
   }
 
   get getOpeningBalanceList(): FormArray {
@@ -434,6 +435,9 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
             setTimeout(() => {
               window.location.reload();
             }, 1000);
+            console.log(response);
+            console.log(response.Entity.Name);
+            localStorage.setItem("addedCashPartyName", response.Entity.Name);
           },
           (error) => {
             this.toastr.error(JSON.stringify(error.error.Message));

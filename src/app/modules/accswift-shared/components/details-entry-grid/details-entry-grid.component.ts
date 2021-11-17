@@ -38,6 +38,7 @@ import { DataStateChangeEvent, GridDataResult, PageChangeEvent } from "@progress
 import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
 import { Router } from "@angular/router";
 import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
+import { AccountLedgerComponent } from "../account-ledger/account-ledger.component";
 
 @Component({
   selector: "accSwift-details-entry-grid",
@@ -119,6 +120,7 @@ export class DetailsEntryGridComponent implements OnInit {
   currencyFormat: string =
     "c" + JSON.parse(localStorage.getItem("decimalPlaces"));
 
+  groupArray: any;
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -158,6 +160,15 @@ export class DetailsEntryGridComponent implements OnInit {
     this.partyInvoiceForm();
     // console.log(this.entryArray.value);
     // console.log(this.salesInvoiceForm.value);
+    this.groupArray = localStorage.getItem("groupArray");
+  }
+
+  addNewerLedger():void 
+  {
+    const initialState = { groupArrays: this.groupArray };
+    this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
+    this.modalRef.content.selectedItem = null;
+    console.log(this.modalRef.content.selectedItem = null);
   }
 
   getProductList():void {

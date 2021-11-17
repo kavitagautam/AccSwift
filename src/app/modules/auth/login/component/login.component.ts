@@ -121,14 +121,16 @@ export class LoginComponent implements OnInit, OnDestroy {
               localStorage.setItem("user_type", data.UserType);
             }
           }
-
           this.router.navigate([""]);
         },
         (error) => {
           this.toastr.error("Invalid Username and/(or) Password");
         },
         () => {
-          this.toastr.success("Login Successful!");
+          this.toastr.success("Login Successful!"),
+          setTimeout(() => {
+            window.location.reload();
+          }, 4000);
         }
       );
   }

@@ -17,13 +17,14 @@ import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/
     <div class="col-md-12 p-0">
       <div class="col-md-11 pl-0">
         <label>Cash/ Party /A/C <sup>*</sup></label>
+        <!-- {{addedLedgerName}} -->
         <kendo-dropdownlist
           class="form-control"
           [data]="cashPartyList"
           [filterable]="true"
           [textField]="'LedgerName'"
           [valueField]="'LedgerID'"
-          [valuePrimitive]="true"
+          [(ngModel)]="ledgerName"
           [formControl]="CashPartyLedgerID"
           (filterChange)="cashPartyDDFilter($event)"
           (valueChange)="cashPartyChange(CashPartyLedgerID.value)"
@@ -56,7 +57,10 @@ import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/
   ],
 })
 export class CashPartyAccountComponent
-  implements ControlValueAccessor, OnDestroy {
+  implements ControlValueAccessor, OnDestroy, OnInit {
+  addedLedgerName:any;
+  ledger:any;
+  ledgerName:any;
   cashPartyList: CashParty[] = [];
   currentAmount: string = "0.00";
   subscriptions: Subscription[] = [];
@@ -84,6 +88,33 @@ export class CashPartyAccountComponent
         this.onTouched();
       })
     );
+
+    console.log(localStorage.getItem('addedCashPartyName'));
+    this.addedLedgerName = localStorage.getItem('addedCashPartyName');
+  }
+
+  ngOnInit() {
+    this.addedLedger();
+    console.log(this.ledger);
+  }
+
+  addedLedger():void 
+  {
+    console.log(this.addedLedgerName)
+    if (localStorage.getItem('addedCashPartyName') !== null)
+    {
+      this.ledger = this.formService.cashPartyList.filter((s)=> {
+       return  s.LedgerName == this.addedLedgerName;
+        // console.log(s.LedgerName);
+        // console.log( s.LedgerName == this.addedLedgerName);
+      }
+      );
+      if (this.ledger && this.ledger[0])
+      {
+        console.log(this.ledger[0]); //Returns object of newly added ledger
+        this.ledgerName = this.ledger[0];
+      }
+    }
   }
 
   ngOnDestroy() {

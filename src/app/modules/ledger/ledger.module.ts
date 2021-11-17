@@ -11,11 +11,8 @@ import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
 import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import { SharedModule } from "@app/shared/shared.module";
 import { AccountGroupComponent } from "./components/account-group/account-group.component";
-import { AccountLedgerComponent } from "./components/account-ledger/account-ledger.component";
 import { LandingLedgerComponent } from "./components/landing-ledger/landing-ledger.component";
-import { AccountLedgerMoreDetailsComponent } from "./components/account-ledger-more-details/account-ledger-more-details.component";
 import { AccswiftSharedModule } from "../accswift-shared/accswift-shared.module";
-import { SubLedgerComponent } from "./components/sub-ledger/sub-ledger.component";
 import { OpeningBalanceComponent } from "@accSwift-modules/accswift-shared/components/opening-balance/opening-balance.component";
 import { LabelModule } from "@progress/kendo-angular-label";
 import { TreeListModule } from "@progress/kendo-angular-treelist";
@@ -23,10 +20,7 @@ import { TreeListModule } from "@progress/kendo-angular-treelist";
 @NgModule({
   declarations: [
     LandingLedgerComponent,
-    AccountGroupComponent,
-    AccountLedgerComponent,
-    AccountLedgerMoreDetailsComponent,
-    SubLedgerComponent,
+    AccountGroupComponent
   ],
   imports: [
     FormsModule,
@@ -47,8 +41,7 @@ import { TreeListModule } from "@progress/kendo-angular-treelist";
   ],
   entryComponents: [
     OpeningBalanceComponent,
-    AccountGroupComponent,
-    AccountLedgerComponent,
+    AccountGroupComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
