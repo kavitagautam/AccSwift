@@ -130,7 +130,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.toastr.success("Login Successful!"),
           setTimeout(() => {
             window.location.reload();
-          }, 4000);
+          }, 8000);
         }
       );
   }

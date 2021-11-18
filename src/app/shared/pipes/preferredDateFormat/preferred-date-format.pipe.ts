@@ -31,12 +31,15 @@ export class PreferredDateFormatPipe implements PipeTransform {
     const dateFormat = this.dateFormats.filter((date) => {return date.ID == formatId});
     console.log(dateFormat);
     var datePipe = new DatePipe("en-US");
-    value = datePipe.transform(value, dateFormat[0].Format);
-    // value = formatDate(
-    //     value,
-    //     dateFormat[0].Format,
-    //     "en_US"
-    // );
+    // if (dateFormat[0] && dateFormat[0].Format)
+    // {
+      value = datePipe.transform(value, dateFormat[0].Format);
+      // value = formatDate(
+      //     value,
+      //     dateFormat[0].Format,
+      //     "en_US"
+      // );
+    // }
     console.log(value);
     return value;
   }

@@ -182,7 +182,7 @@ export class CustomerInvoicesComponent implements OnInit {
         let position = 0;
         PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
         PDF.addPage(); //To add a new page
-        PDF.text('Welcome to new page', 0, 0);
+        PDF.text('Welcome to new page', 10, 10);
         PDF.save('customer-billing-preview.pdf'); //Specify Filename
     });     
   }
