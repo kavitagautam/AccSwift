@@ -10,6 +10,7 @@ import {
 import { Subscription } from "rxjs";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { CashPartyModalPopupComponent } from "@accSwift-modules/accswift-shared/components/cash-party-modal-popup/cash-party-modal-popup.component";
+import { ReloadComponentService } from "@accSwift-modules/accswift-shared/services/reload-component/reload-component.service";
 
 @Component({
   selector: "accSwift-cash-party-account",
@@ -76,8 +77,13 @@ export class CashPartyAccountComponent
   };
   constructor(
     public formService: FormsService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private reloadComponentService: ReloadComponentService
   ) {
+    this.reloadComponentService.listen().subscribe((m:any)=> {
+      return this.addedLedger();
+    })
+
     this.formService.getCashPartyAccountDD().subscribe((response) => {
       this.cashPartyList = response.Entity;
     });
@@ -88,12 +94,11 @@ export class CashPartyAccountComponent
         this.onTouched();
       })
     );
-
-    console.log(localStorage.getItem('addedCashPartyName'));
-    this.addedLedgerName = localStorage.getItem('addedCashPartyName');
   }
 
   ngOnInit() {
+    console.log(localStorage.getItem('addedCashPartyName'));
+    this.addedLedgerName = localStorage.getItem('addedCashPartyName');
     this.addedLedger();
     console.log(this.ledger);
   }

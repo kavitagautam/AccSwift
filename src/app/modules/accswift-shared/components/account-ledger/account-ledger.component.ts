@@ -15,6 +15,8 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
+import { ReloadComponentService } from "@accSwift-modules/accswift-shared/services/reload-component/reload-component.service";
+import { AddDeliveryNotesComponent } from "@accSwift-modules/delivery-notes/components/add-delivery-notes/add-delivery-notes.component";
 
 @Component({
   selector: "accSwift-account-ledger",
@@ -54,7 +56,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     private router: Router,
     private toastr: ToastrService,
     private modalRef: BsModalRef,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private reloadComponentService: ReloadComponentService
   ) {}
 
   ngOnInit() {
@@ -74,6 +77,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       this.title = "Edit ";
       this.getLedgerDetails();
     }
+
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
@@ -95,6 +99,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       }
     }
   }
+
+  
 
   public balanceType: Array<{ type: string; Name: string; id: number }> = [
     { type: "DEBIT", Name: "DEBIT", id: 1 },
@@ -549,5 +555,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   {
     this.modalRef.hide();
     this.modalRef = null;
+    this.reloadComponentService.filter('Register Click!');
   }
 }
+
+// Issue: tutorial works only if once ledger added, closed, refreshed and open/close modal

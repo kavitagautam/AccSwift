@@ -148,9 +148,9 @@ export class DetailsEntryGridComponent implements OnInit {
     this.localeId = localStorage.getItem("currencyLocaleID");
     (<CldrIntlService>this.intlService).localeId = this.localeId;
     
-    console.log(this.entryArray.value[0]);
+    // console.log(this.entryArray.value[0]);
     for (const key in this.entryArray.value[0]) {
-      console.log(key);
+      // console.log(key);
       this.columns.push(key);
     }
     // console.log(this.entryArray);
@@ -168,7 +168,7 @@ export class DetailsEntryGridComponent implements OnInit {
     const initialState = { groupArrays: this.groupArray };
     this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
     this.modalRef.content.selectedItem = null;
-    console.log(this.modalRef.content.selectedItem = null);
+    // console.log(this.modalRef.content.selectedItem = null);
   }
 
   getProductList():void {
@@ -430,7 +430,7 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   calculateQtyTotal(): number {
-    console.log(this.entryArray.value);
+    // console.log(this.entryArray.value);
     const entryListArray = this.entryArray.value;
     let sumQty = 0;
     for (let i = 0; i < entryListArray.length; i++) {
@@ -522,7 +522,7 @@ export class DetailsEntryGridComponent implements OnInit {
 
   //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
-    console.log(dataItem);
+    // console.log(dataItem);
     const entryListArray = this.entryArray as FormArray;
     let qunatityValue = entryListArray.controls[index].get("Quantity").value;
     let salesPurchaseRate = 0;
@@ -657,11 +657,11 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   handleProductChange(value, index): void {
-    console.log(value);
+    // console.log(value);
     const selectedProductValue = this.gridServices.productList.filter(
       (s) => s.ProductID === value
     );
-    console.log(selectedProductValue);
+    // console.log(selectedProductValue);
     // console.log(value);
     const entryListArray = <FormArray>this.entryArray;
     if (selectedProductValue && selectedProductValue.length > 0) {
@@ -800,15 +800,15 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   handleLedgerChange(value, index): void {
-    console.log(value);
-    console.log(index);
+    // console.log(value);
+    // console.log(index);
     const selectedLedgerValue = this.gridServices.ledgerList.filter(
       (s) => s.LedgerID === value
     );
-    console.log(selectedLedgerValue);
-    console.log(selectedLedgerValue.length);
+    // console.log(selectedLedgerValue);
+    // console.log(selectedLedgerValue.length);
     const entryListArray = <FormArray>this.entryArray;
-    console.log(entryListArray);
+    // console.log(entryListArray);
     if (selectedLedgerValue && selectedLedgerValue.length > 0) {
       entryListArray.controls[index]
         .get("LedgerBalance")
@@ -841,9 +841,9 @@ export class DetailsEntryGridComponent implements OnInit {
       }
 
       const length = this.entryArray.value.length;
-      console.log(length);
+      // console.log(length);
       if (entryListArray.controls[length - 1].invalid) return;
-      console.log(this.addEntryList());
+      // console.log(this.addEntryList());
       this.entryArray.push(this.addEntryList());
     }
   }
