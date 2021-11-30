@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,14 +8,28 @@ export class ReloadComponentService {
 
   constructor() { }
 
-  private _listners = new Subject<any>();
-  listen(): Observable<any> {
-    return this._listners.asObservable();
+  //Using Subject Observable
+  // private _listners = new Subject<any>();
+  // listen(): Observable<any> {
+  //   return this._listners.asObservable();
+  // }
+
+  // filter(filterBy:string) {
+  //   return this._listners.next(filterBy);
+  // } 
+
+  //Using Behaviour Subject
+  public _listenEvent:BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
+  onDataListen = () => {
+    // alert("subscribe");
+    return this._listenEvent.asObservable();
   }
 
-  filter(filterBy:string) {
-    console.log(filterBy);
-    this._listners.next(filterBy);
-    console.log(this._listners.next(filterBy));
+  onDatafilter = (data)=> {
+    // alert("data");
+    return this._listenEvent.next(data);
   }
+  
+
 }

@@ -438,12 +438,14 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         .addLedgerAccount(this.accountLedgerForm.value)
         .subscribe(
           (response) => {
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+            // setTimeout(() => {
+            //   window.location.reload();
+            // }, 1000);
             console.log(response);
             console.log(response.Entity.Name);
+            // alert("New Ledger Added!-POST")
             localStorage.setItem("addedCashPartyName", response.Entity.Name);
+            localStorage.setItem("addedCashPartyID", response.Entity.ID);
           },
           (error) => {
             this.toastr.error(JSON.stringify(error.error.Message));
@@ -553,9 +555,9 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   
   close():void 
   {
+    this.reloadComponentService.onDatafilter('Fetched new ledger in dropdown!');
     this.modalRef.hide();
     this.modalRef = null;
-    this.reloadComponentService.filter('Register Click!');
   }
 }
 

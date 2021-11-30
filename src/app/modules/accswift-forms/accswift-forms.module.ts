@@ -17,6 +17,8 @@ import { PopupModule } from "@progress/kendo-angular-popup";
 import { SalesAccountComponent } from "./forms-components/sales-account/sales-account.component";
 import { DepotComponent } from "./forms-components/depot/depot.component";
 import { PurchaseAccountComponent } from "./forms-components/purchase-account/purchase-account.component";
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { PurchaseAccountComponent } from "./forms-components/purchase-account/pu
     InputsModule,
     DropDownListModule,
     DropDownsModule,
+    NgSelectModule
   ],
   exports: [
     SeriesFormsComponent,
