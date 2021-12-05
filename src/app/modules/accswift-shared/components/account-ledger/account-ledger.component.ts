@@ -6,6 +6,8 @@ import {
   Input,
   OnChanges,
   SimpleChange,
+  Output,
+  EventEmitter,
 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../../ledger/services/ledger.service";
@@ -36,14 +38,15 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   editMode: boolean;
   addMode: boolean;
   title: string;
+  @Output() getList = new EventEmitter<string>();
   rowSubmitted: boolean;
   submitted: boolean;
   ledgerGroup: LedgerGroup[] = [];
   suggestCodeList = [];
   private editedRowIndex: number;
   balanceDrCr: string;
-  // modalRef: BsModalRef;
   modelRefSubLedger: BsModalRef;
+   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -55,7 +58,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     public ledgerService: LedgerService,
     private router: Router,
     private toastr: ToastrService,
-    private modalRef: BsModalRef,
+    
     private modalService: BsModalService,
     private reloadComponentService: ReloadComponentService
   ) {}
@@ -443,9 +446,10 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
             // }, 1000);
             console.log(response);
             console.log(response.Entity.Name);
-            // alert("New Ledger Added!-POST")
             localStorage.setItem("addedCashPartyName", response.Entity.Name);
             localStorage.setItem("addedCashPartyID", response.Entity.ID);
+            this.getList.emit(response.entity);
+
           },
           (error) => {
             this.toastr.error(JSON.stringify(error.error.Message));
@@ -555,10 +559,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   
   close():void 
   {
-    this.reloadComponentService.onDatafilter('Fetched new ledger in dropdown!');
     this.modalRef.hide();
     this.modalRef = null;
+
   }
 }
-
-// Issue: tutorial works only if once ledger added, closed, refreshed and open/close modal

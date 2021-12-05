@@ -8,17 +8,32 @@
     <form [formGroup]="salesInvoiceForm" novalidate>
       <div class="col-md-4">
         <accSwift-cash-party-account
+          #cashParty
           formControlName="CashPartyLedgerID"
           (ngModelChange)="partyInvoiceForm()"
         ></accSwift-cash-party-account>
       </div>
 
       <div class="col-md-4">
-        <button class="btn btn-primary pull-left" (click)="addNewerLedger()">
-          <i class="fa fa-plus" aria-hidden="true"></i> Add New Cash Party
-          Account
+        <button
+          class="btn btn-primary pull-left"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Add New Ledger"
+          (click)="addNewerLedger()"
+          style="margin-top: 22px"
+        >
+          <i class="fa fa-plus" aria-hidden="true"></i>
         </button>
       </div>
+
+      <!-- <ng-template *ngIf="ok"> -->
+      <div *ngIf="ok">
+        <accSwift-account-ledger
+          (getList)="getData($event)"
+        ></accSwift-account-ledger>
+      </div>
+      <!-- </ng-template> -->
     </form>
   </div>
 

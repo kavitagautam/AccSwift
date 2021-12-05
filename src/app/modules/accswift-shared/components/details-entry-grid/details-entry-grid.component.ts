@@ -39,6 +39,8 @@ import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sa
 import { Router } from "@angular/router";
 import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
 import { AccountLedgerComponent } from "../account-ledger/account-ledger.component";
+import { ReloadComponentService } from "@accSwift-modules/accswift-shared/services/reload-component/reload-component.service";
+import { CashPartyAccountComponent } from "@accSwift-modules/accswift-forms/forms-components/cash-party-account/cash-party-account.component";
 
 @Component({
   selector: "accSwift-details-entry-grid",
@@ -49,6 +51,7 @@ import { AccountLedgerComponent } from "../account-ledger/account-ledger.compone
 })
 export class DetailsEntryGridComponent implements OnInit {
 
+  @ViewChild('cashParty') cashPartyModalComponent: CashPartyAccountComponent;
   salesDetails: SalesInvoiceDetails;
   salesInvoiceList: SalseInvoice[];
   public gridView: GridDataResult;
@@ -128,6 +131,8 @@ export class DetailsEntryGridComponent implements OnInit {
     centered: true,
     class: "modal-lg",
   };
+  ok: boolean = false;
+
   constructor(
     public gridServices: DetailsEntryGridService,
     private router: Router,
@@ -138,7 +143,8 @@ export class DetailsEntryGridComponent implements OnInit {
     public intlService: IntlService,
     public fb: FormBuilder,
     public salesInvoiceService: SalesInvoiceService,
-    private preferenceService: PreferenceService
+    private preferenceService: PreferenceService,
+    private reloadService: ReloadComponentService
   ) {}
 
   ngOnInit(): void {
@@ -163,11 +169,28 @@ export class DetailsEntryGridComponent implements OnInit {
     this.groupArray = localStorage.getItem("groupArray");
   }
 
+  getData(event)
+  {
+    this.reloadService.onDatafilter(event);
+    const addedLedgerObject = {
+      CodeName:'',
+      GroupID:event.GroupID,
+      LedgerBalance:'',
+      LedgerCode:event.LedgerCode,
+      LedgerID:event.ID,
+      LedgerName:event.Name
+    };
+    this.cashPartyModalComponent.cashPartyList.push(addedLedgerObject);
+    this.cashPartyModalComponent.addedLedger(addedLedgerObject);
+    // this.reloadService.onDatafilter(addedLedgerObject);
+  }
+
   addNewerLedger():void 
   {
-    const initialState = { groupArrays: this.groupArray };
-    this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
-    this.modalRef.content.selectedItem = null;
+    this.ok = true;
+    // const initialState = { groupArrays: this.groupArray };
+    // this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
+    // this.modalRef.content.selectedItem = null;
     // console.log(this.modalRef.content.selectedItem = null);
   }
 

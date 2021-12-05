@@ -21,7 +21,6 @@ import { ReloadComponentService } from "@accSwift-modules/accswift-shared/servic
         <label>Cash/ Party /A/C <sup>*</sup></label>
         <!-- <h1>{{this.ledgerName | json}}</h1> -->
         <!-- {{addedLedgerName}} -->
-        <!-- {{addedLedgerID}} -->
         <!-- <h3>{{this.CashPartyLedgerID.value | json}}</h3> -->
         <kendo-dropdownlist
           class="form-control"
@@ -70,10 +69,9 @@ import { ReloadComponentService } from "@accSwift-modules/accswift-shared/servic
 export class CashPartyAccountComponent
   implements ControlValueAccessor, OnDestroy, OnInit {
   addedLedgerName:any;
-  addedLedgerID:any;
   ledger:any;
   ledgerName:any;
-  cashPartyList: CashParty[] = [];
+  public cashPartyList: CashParty[] = [];
   currentAmount: string = "0.00";
   subscriptions: Subscription[] = [];
   CashPartyLedgerID = new FormControl();
@@ -93,10 +91,6 @@ export class CashPartyAccountComponent
   ) {
 
   
-    this.reloadComponentService.onDataListen().subscribe((x:any)=> {
-      return this.addedLedger();
-    });
-
     this.subscriptions.push(
       this.CashPartyLedgerID.valueChanges.subscribe((value: number) => {
         this.onChange(value);
@@ -109,40 +103,43 @@ export class CashPartyAccountComponent
     this.getCashPartyLedgerList();
     console.log(localStorage.getItem('addedCashPartyName'));
     this.addedLedgerName = localStorage.getItem('addedCashPartyName');
-    this.addedLedgerID = localStorage.getItem('addedCashPartyID');
     this.addedLedger();
-    // console.log(this.ledger);
+    this.reloadComponentService.onDataListen().subscribe((ledger:any)=> {
+      this.addedLedger(ledger);
+      this.getCashPartyLedgerList();
+    });
   }
+
 
   getCashPartyLedgerList():void {
     this.formService.getCashPartyAccountDD().subscribe((response) => {
       this.cashPartyList = response.Entity; //Get response after a refresh
-      // alert("get cashPartyList!-GET")
     });
   }
 
-  addedLedger():void 
+  public addedLedger(ledger?):void 
   {
-    console.log(this.addedLedgerName)
-    // alert("get newly added ledger from LocalStorage")
-    // alert(localStorage.getItem('addedCashPartyName'));
-    // alert(this.addedLedgerName);
-    if (localStorage.getItem('addedCashPartyName'))
-    {
-      // this.CashPartyLedgerID.setValue(this.addedLedgerName);
-      this.ledger = this.cashPartyList.filter((s)=> {
-       console.log("get newly added ledger object to show in dropdown!")
-       return  s.LedgerName == this.addedLedgerName;
-        // console.log(s.LedgerName);
-        // console.log( s.LedgerName == this.addedLedgerName);
-      }
-      );
-      if (this.ledger && this.ledger[0])
-      {
-        console.log(this.ledger[0]); //Returns object of newly added ledger
-        this.ledgerName = this.ledger[0];
-      }
-    }
+    // this.reloadComponentService.onDataListen().subscribe((ledgerNew:any)=> {
+    // })
+    // console.log(ledger);
+    // this.ledgerName = ledger;
+    // console.log(this.ledgerName);
+    this.formService.cashPartyList = this.cashPartyList;
+    //if (localStorage.getItem('addedCashPartyName'))
+    // {
+    
+    //   this.ledger = this.cashPartyList.filter((s)=> {
+    //    console.log("get newly added ledger object to show in dropdown!")
+    //    return  s.LedgerName == this.addedLedgerName;
+       
+    //   }
+    //   );
+    //   if (this.ledger && this.ledger[0])
+    //   {
+    //     console.log(this.ledger[0]); 
+    //     this.ledgerName = this.ledger[0];
+    //   }
+    // }
   }
 
   ngOnDestroy() {

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { EventEmitter, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,14 +22,13 @@ export class ReloadComponentService {
   public _listenEvent:BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   onDataListen = () => {
-    // alert("subscribe");
     return this._listenEvent.asObservable();
   }
 
   onDatafilter = (data)=> {
-    // alert("data");
     return this._listenEvent.next(data);
   }
+
   
 
 }
