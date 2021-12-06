@@ -19,25 +19,22 @@ import { ReloadComponentService } from "@accSwift-modules/accswift-shared/servic
     <div class="col-md-12 p-0">
       <div class="col-md-11 pl-0">
         <label>Cash/ Party /A/C <sup>*</sup></label>
-        <!-- <h1>{{this.ledgerName | json}}</h1> -->
-        <!-- {{addedLedgerName}} -->
-        <!-- <h3>{{this.CashPartyLedgerID.value | json}}</h3> -->
         <kendo-dropdownlist
           class="form-control"
           [data]="cashPartyList"
           [filterable]="true"
           [textField]="'LedgerName'"
           [valueField]="'LedgerID'"
-          [(ngModel)]="ledgerName"
+          [(ngModel)]="selectedLedgerObject"
           [formControl]="CashPartyLedgerID"
           (filterChange)="cashPartyDDFilter($event)"
           (valueChange)="cashPartyChange(CashPartyLedgerID.value)"
         >
         </kendo-dropdownlist>
 
-        <!-- <ng-select [items]="cashPartyList" 
-           bindLabel="LedgerName" 
-           bindValue="LedgerID" 
+        <!-- <ng-select [items]="cashPartyList"
+           bindLabel="LedgerName"
+           bindValue="LedgerID"
            [(ngModel)]="ledgerName">
         </ng-select> -->
       </div>
@@ -70,7 +67,7 @@ export class CashPartyAccountComponent
   implements ControlValueAccessor, OnDestroy, OnInit {
   addedLedgerName:any;
   ledger:any;
-  ledgerName:any;
+  selectedLedgerObject:any;
   public cashPartyList: CashParty[] = [];
   currentAmount: string = "0.00";
   subscriptions: Subscription[] = [];
@@ -90,7 +87,9 @@ export class CashPartyAccountComponent
     private reloadComponentService: ReloadComponentService
   ) {
 
-  
+
+
+
     this.subscriptions.push(
       this.CashPartyLedgerID.valueChanges.subscribe((value: number) => {
         this.onChange(value);
@@ -103,13 +102,14 @@ export class CashPartyAccountComponent
     this.getCashPartyLedgerList();
     console.log(localStorage.getItem('addedCashPartyName'));
     this.addedLedgerName = localStorage.getItem('addedCashPartyName');
-    this.addedLedger();
-    this.reloadComponentService.onDataListen().subscribe((ledger:any)=> {
-      this.addedLedger(ledger);
-      this.getCashPartyLedgerList();
+    this.reloadComponentService.onDataListen().subscribe((responseEntity:any)=> {
+    this.getCashPartyLedgerList();
     });
   }
-
+  
+  public filterCashpartyList(addedLedgerObject){
+    this.formService.cashPartyList = this.cashPartyList;
+  }
 
   getCashPartyLedgerList():void {
     this.formService.getCashPartyAccountDD().subscribe((response) => {
@@ -117,26 +117,22 @@ export class CashPartyAccountComponent
     });
   }
 
-  public addedLedger(ledger?):void 
+  selectedAddedLedger(addedLedgerObject?):void
   {
-    // this.reloadComponentService.onDataListen().subscribe((ledgerNew:any)=> {
-    // })
-    // console.log(ledger);
-    // this.ledgerName = ledger;
-    // console.log(this.ledgerName);
-    this.formService.cashPartyList = this.cashPartyList;
+    this.selectedLedgerObject = addedLedgerObject;
+    
     //if (localStorage.getItem('addedCashPartyName'))
     // {
-    
+
     //   this.ledger = this.cashPartyList.filter((s)=> {
     //    console.log("get newly added ledger object to show in dropdown!")
     //    return  s.LedgerName == this.addedLedgerName;
-       
+
     //   }
     //   );
     //   if (this.ledger && this.ledger[0])
     //   {
-    //     console.log(this.ledger[0]); 
+    //     console.log(this.ledger[0]);
     //     this.ledgerName = this.ledger[0];
     //   }
     // }

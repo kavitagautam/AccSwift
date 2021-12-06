@@ -38,7 +38,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   editMode: boolean;
   addMode: boolean;
   title: string;
-  @Output() getList = new EventEmitter<string>();
+  @Output() responseObject = new EventEmitter<any>();
+  @Output() cashPartyResponse = new EventEmitter<any>();
   rowSubmitted: boolean;
   submitted: boolean;
   ledgerGroup: LedgerGroup[] = [];
@@ -58,7 +59,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     public ledgerService: LedgerService,
     private router: Router,
     private toastr: ToastrService,
-    
+
     private modalService: BsModalService,
     private reloadComponentService: ReloadComponentService
   ) {}
@@ -103,7 +104,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     }
   }
 
-  
+
 
   public balanceType: Array<{ type: string; Name: string; id: number }> = [
     { type: "DEBIT", Name: "DEBIT", id: 1 },
@@ -447,8 +448,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
             console.log(response);
             console.log(response.Entity.Name);
             localStorage.setItem("addedCashPartyName", response.Entity.Name);
-            localStorage.setItem("addedCashPartyID", response.Entity.ID);
-            this.getList.emit(response.entity);
+            this.responseObject.emit(response.Entity);
+            this.cashPartyResponse.emit(response.Entity);
 
           },
           (error) => {
@@ -556,11 +557,10 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
   }
-  
-  close():void 
+
+  close():void
   {
     this.modalRef.hide();
     this.modalRef = null;
-
   }
 }

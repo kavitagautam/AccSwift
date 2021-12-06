@@ -20,20 +20,19 @@
           data-toggle="tooltip"
           data-placement="top"
           title="Add New Ledger"
-          (click)="addNewerLedger()"
+          (click)="openAddAccountLedgerModal(viewModal)"
           style="margin-top: 22px"
         >
           <i class="fa fa-plus" aria-hidden="true"></i>
         </button>
       </div>
 
-      <!-- <ng-template *ngIf="ok"> -->
-      <div *ngIf="ok">
+      <ng-template #viewModal>
         <accSwift-account-ledger
-          (getList)="getData($event)"
+          (responseObject)="getResponseObject($event)"
+          (cashPartyResponse)="getCashPartyResponse($event)"
         ></accSwift-account-ledger>
-      </div>
-      <!-- </ng-template> -->
+      </ng-template>
     </form>
   </div>
 
@@ -291,8 +290,8 @@
                 "
                 popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
               >
-                <span class="k-icon k-i-warning"></span>
-                Debit Amount is required
+                <span class="k-icon k-i-warning"></span> Debit Amount is
+                required
               </kendo-popup>
             </ng-template>
             <ng-template
@@ -345,8 +344,8 @@
                 "
                 popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
               >
-                <span class="k-icon k-i-warning"></span>
-                Credit Amount is required
+                <span class="k-icon k-i-warning"></span> Credit Amount is
+                required
               </kendo-popup>
             </ng-template>
             <ng-template
@@ -386,9 +385,9 @@
                 "
                 onkeyup="
                   var v = this.value;
-                  if (!v.match(/^[0-9]+$/)) {                     
-                      alert('Please enter digits only'); 
-                  } 
+                  if (!v.match(/^[0-9]+$/)) {
+                      alert('Please enter digits only');
+                  }
                   "
                 maxlength="10"
               />
