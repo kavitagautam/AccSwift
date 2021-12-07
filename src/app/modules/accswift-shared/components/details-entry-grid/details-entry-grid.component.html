@@ -28,10 +28,11 @@
       </div>
 
       <ng-template #viewModal>
-        <accSwift-account-ledger
-          (responseObject)="getResponseObject($event)"
-          (cashPartyResponse)="getCashPartyResponse($event)"
-        ></accSwift-account-ledger>
+          <accSwift-account-ledger
+            (responseObject)="getResponseObject($event)"
+            (cashPartyResponse)="getCashPartyResponse($event)"
+            (closeBool)="closeModal($event)"
+          ></accSwift-account-ledger>
       </ng-template>
     </form>
   </div>

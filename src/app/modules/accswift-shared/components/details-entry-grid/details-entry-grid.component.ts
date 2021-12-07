@@ -194,6 +194,12 @@ export class DetailsEntryGridComponent implements OnInit {
     // console.log(this.modalRef.content.selectedItem = null);
   }
 
+  closeModal(event){
+    if(event == true){
+      this.modalRef ? this.modalRef.hide():"";
+    }
+  }
+
   getProductList(): void {
     this.productLoading = true;
     this.gridServices.getProductDD().subscribe((response) => {

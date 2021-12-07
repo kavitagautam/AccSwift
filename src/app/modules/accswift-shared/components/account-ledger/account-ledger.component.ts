@@ -30,6 +30,9 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   @ViewChild("previousYearBalanceModal") previousYearBalanceModal: ElementRef;
   @Input("selectedItem") selectedItem;
   @Input("groupArrays") groupArrays;
+  @Output() responseObject = new EventEmitter<any>();
+  @Output() cashPartyResponse = new EventEmitter<any>();
+  @Output() closeBool = new EventEmitter<any>();
   date: Date = new Date();
   selectedLedgerId: number;
   accountLedgerForm: FormGroup;
@@ -38,8 +41,6 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   editMode: boolean;
   addMode: boolean;
   title: string;
-  @Output() responseObject = new EventEmitter<any>();
-  @Output() cashPartyResponse = new EventEmitter<any>();
   rowSubmitted: boolean;
   submitted: boolean;
   ledgerGroup: LedgerGroup[] = [];
@@ -560,7 +561,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   close():void
   {
-    this.modalRef.hide();
-    this.modalRef = null;
+    this.closeBool.emit(true);
+    // this.modalRef.hide();
+    // this.modalRef = null;
   }
 }
