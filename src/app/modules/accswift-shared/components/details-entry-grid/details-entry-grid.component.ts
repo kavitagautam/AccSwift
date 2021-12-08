@@ -38,6 +38,9 @@ import { DataStateChangeEvent, GridDataResult, PageChangeEvent } from "@progress
 import { SalesInvoiceService } from "@accSwift-modules/sales-invoice/services/sales-invoice.service";
 import { Router } from "@angular/router";
 import { PreferenceService } from "@accSwift-modules/preference/services/preference.service";
+import { AccountLedgerComponent } from "../account-ledger/account-ledger.component";
+import { ReloadComponentService } from "@accSwift-modules/accswift-shared/services/reload-component/reload-component.service";
+import { CashPartyAccountComponent } from "@accSwift-modules/accswift-forms/forms-components/cash-party-account/cash-party-account.component";
 
 @Component({
   selector: "accSwift-details-entry-grid",
@@ -48,10 +51,12 @@ import { PreferenceService } from "@accSwift-modules/preference/services/prefere
 })
 export class DetailsEntryGridComponent implements OnInit {
 
+  @ViewChild('cashParty') cashPartyComp: CashPartyAccountComponent;
+
   salesDetails: SalesInvoiceDetails;
   salesInvoiceList: SalseInvoice[];
   public gridView: GridDataResult;
-  listLoading:boolean;
+  listLoading: boolean;
   ledgerLoading: boolean;
   productLoading: boolean;
   // public filter: CompositeFilterDescriptor;
@@ -69,13 +74,13 @@ export class DetailsEntryGridComponent implements OnInit {
       dir: "asc",
     },
   ];
-  public state: State = 
-  {
-    // filter: {
-    //   logic: "and",
-    //   filters: [{ field: "Status", operator: "Is equal to", value: "UNPAID" }],
-    // }
-  }
+  public state: State =
+    {
+      // filter: {
+      //   logic: "and",
+      //   filters: [{ field: "Status", operator: "Is equal to", value: "UNPAID" }],
+      // }
+    }
   searchFilterList = [];
 
 
@@ -119,6 +124,7 @@ export class DetailsEntryGridComponent implements OnInit {
   currencyFormat: string =
     "c" + JSON.parse(localStorage.getItem("decimalPlaces"));
 
+  groupArray: any;
   //  modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -136,8 +142,9 @@ export class DetailsEntryGridComponent implements OnInit {
     public intlService: IntlService,
     public fb: FormBuilder,
     public salesInvoiceService: SalesInvoiceService,
-    private preferenceService: PreferenceService
-  ) {}
+    private preferenceService: PreferenceService,
+    private reloadService: ReloadComponentService
+  ) { }
 
   ngOnInit(): void {
     this.buildSalesInvoiceSearchForm();
@@ -145,10 +152,10 @@ export class DetailsEntryGridComponent implements OnInit {
     this.getLedgerList();
     this.localeId = localStorage.getItem("currencyLocaleID");
     (<CldrIntlService>this.intlService).localeId = this.localeId;
-    
-    console.log(this.entryArray.value[0]);
+
+    // console.log(this.entryArray.value[0]);
     for (const key in this.entryArray.value[0]) {
-      console.log(key);
+      // console.log(key);
       this.columns.push(key);
     }
     // console.log(this.entryArray);
@@ -158,32 +165,65 @@ export class DetailsEntryGridComponent implements OnInit {
     this.partyInvoiceForm();
     // console.log(this.entryArray.value);
     // console.log(this.salesInvoiceForm.value);
+    this.groupArray = localStorage.getItem("groupArray");
   }
 
-  getProductList():void {
+  getResponseObject(responseEntity):void {
+    this.reloadService.onDatafilter(responseEntity);
+  }
+
+  getCashPartyResponse(responseEntity):void {
+    let addedObject = {
+      CodeName: "",
+      GroupID: responseEntity.GroupID,
+      LedgerBalance: "",
+      LedgerCode: responseEntity.LedgerCode,
+      LedgerID: responseEntity.ID,
+      LedgerName: responseEntity.Name
+    };
+    this.cashPartyComp.cashPartyList.push(addedObject);
+    this.cashPartyComp.filterCashpartyList(addedObject);
+    this.cashPartyComp.selectedAddedLedger(addedObject);
+  }
+
+  openAddAccountLedgerModal(template: TemplateRef<any>): void {
+    this.modalRef = this.modalService.show(template);
+    // const initialState = { groupArrays: this.groupArray };
+    // this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
+    // this.modalRef.content.selectedItem = null;
+    // console.log(this.modalRef.content.selectedItem = null);
+  }
+
+  closeModal(event){
+    if(event == true){
+      this.modalRef ? this.modalRef.hide():"";
+    }
+  }
+
+  getProductList(): void {
     this.productLoading = true;
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
     },
-    (error)=> {
-      this.productLoading = false;
-    }, 
-    ()=> {
-      this.productLoading = false;
-    });
+      (error) => {
+        this.productLoading = false;
+      },
+      () => {
+        this.productLoading = false;
+      });
   }
 
-  getLedgerList():void {
+  getLedgerList(): void {
     this.ledgerLoading = true;
     this.gridServices.getLedgerDD().subscribe((response) => {
       this.ledgerList = response.Entity;
     },
-    (error)=> {
-      this.ledgerLoading = false;
-    },
-    ()=> {
-      this.ledgerLoading = false;
-    });
+      (error) => {
+        this.ledgerLoading = false;
+      },
+      () => {
+        this.ledgerLoading = false;
+      });
   }
 
 
@@ -215,7 +255,7 @@ export class DetailsEntryGridComponent implements OnInit {
       }
     );
   }
-  
+
 
   public filterInvoiceForm(): void { //entryArray
     this.searchFilterList = [];
@@ -223,9 +263,9 @@ export class DetailsEntryGridComponent implements OnInit {
     this.currentPage = 1;
     this.skip = 0;
 
-    for (const object of this.entryArray.value) { 
+    for (const object of this.entryArray.value) {
       // console.log(object);
-      for (const key in object){ // iterate over properties of object
+      for (const key in object) { // iterate over properties of object
         // console.log(key);
         // console.log(object[key]);
         if (object[key]) {
@@ -253,8 +293,8 @@ export class DetailsEntryGridComponent implements OnInit {
     // console.log(this.searchFilterList);
     this.getSalesInvoiceList();
   }
-  
-  
+
+
   public partyInvoiceForm(): void { //salesInvoiceForm
     this.searchFilterList = [];
     // console.log(this.searchFilterList);
@@ -277,12 +317,11 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   sumAmount = 0;
-  invoicePaidAmount(totalAmount): void
-  {
+  invoicePaidAmount(totalAmount): void {
     // console.log(totalAmount);
     this.sumAmount += totalAmount;
     let totalPaid;
-    totalPaid= this.sumAmount;
+    totalPaid = this.sumAmount;
     (document.getElementById('totalPaidAmount') as HTMLInputElement).value = totalPaid;
   }
 
@@ -336,7 +375,7 @@ export class DetailsEntryGridComponent implements OnInit {
     this.gridView = process(this.salesInvoiceList, this.state);
     // console.log(this.gridView);
   }
-  
+
 
   buildSalesInvoiceSearchForm() {
     this.salesInvoiceForm = this.fb.group({
@@ -419,7 +458,7 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   calculateQtyTotal(): number {
-    console.log(this.entryArray.value);
+    // console.log(this.entryArray.value);
     const entryListArray = this.entryArray.value;
     let sumQty = 0;
     for (let i = 0; i < entryListArray.length; i++) {
@@ -511,7 +550,7 @@ export class DetailsEntryGridComponent implements OnInit {
 
   //Invoice Column value changes
   changeInvoiceValues(dataItem, index): void {
-    console.log(dataItem);
+    // console.log(dataItem);
     const entryListArray = this.entryArray as FormArray;
     let qunatityValue = entryListArray.controls[index].get("Quantity").value;
     let salesPurchaseRate = 0;
@@ -527,7 +566,7 @@ export class DetailsEntryGridComponent implements OnInit {
         salesPurchaseRate = entryListArray.controls[index].get("SalesRate")
           .value;
       }
-    
+
 
       let discountAmountC = entryListArray.controls[index].get("DiscountAmount")
         .value;
@@ -550,21 +589,21 @@ export class DetailsEntryGridComponent implements OnInit {
           .get("TaxAmount")
           .setValue(
             entryListArray.controls[index].get("Quantity").value *
-              entryListArray.controls[index].get("SalesRate").value *
-              (selectedTaxValue[0].Rate / 100)
+            entryListArray.controls[index].get("SalesRate").value *
+            (selectedTaxValue[0].Rate / 100)
           );
       }
-  }
-  if (this.voucherType == "SLS_ORDER") {
-    salesPurchaseRate = entryListArray.controls[index].get("SalesRate")
-      .value;
+    }
+    if (this.voucherType == "SLS_ORDER") {
+      salesPurchaseRate = entryListArray.controls[index].get("SalesRate")
+        .value;
       entryListArray.controls[index]
-      .get("Amount")
-      .setValue(
-        entryListArray.controls[index].get("SalesRate").value *
+        .get("Amount")
+        .setValue(
+          entryListArray.controls[index].get("SalesRate").value *
           entryListArray.controls[index].get("Quantity").value
-      );
-  }
+        );
+    }
   }
   //Change Discount Per
   discountPerCalc(dataItem, index): void {
@@ -646,11 +685,11 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   handleProductChange(value, index): void {
-    console.log(value);
+    // console.log(value);
     const selectedProductValue = this.gridServices.productList.filter(
       (s) => s.ProductID === value
     );
-    console.log(selectedProductValue);
+    // console.log(selectedProductValue);
     // console.log(value);
     const entryListArray = <FormArray>this.entryArray;
     if (selectedProductValue && selectedProductValue.length > 0) {
@@ -675,7 +714,7 @@ export class DetailsEntryGridComponent implements OnInit {
           .get("Amount")
           .setValue(
             entryListArray.controls[index].get("SalesRate").value *
-              entryListArray.controls[index].get("Quantity").value
+            entryListArray.controls[index].get("Quantity").value
           );
         entryListArray.controls[index]
           .get("CodeName")
@@ -691,13 +730,13 @@ export class DetailsEntryGridComponent implements OnInit {
           .get("DiscountAmount")
           .setValue(
             entryListArray.controls[index].get("DiscPercentage").value *
-              entryListArray.controls[index].get("Amount").value
+            entryListArray.controls[index].get("Amount").value
           );
         entryListArray.controls[index]
           .get("NetAmount")
           .setValue(
             entryListArray.controls[index].get("Amount").value -
-              entryListArray.controls[index].get("DiscountAmount").value
+            entryListArray.controls[index].get("DiscountAmount").value
           );
 
         entryListArray.controls[index]
@@ -712,8 +751,8 @@ export class DetailsEntryGridComponent implements OnInit {
             .get("TaxAmount")
             .setValue(
               entryListArray.controls[index].get("Quantity").value *
-                entryListArray.controls[index].get("SalesRate").value *
-                (selectedTaxValue[0].Rate / 100)
+              entryListArray.controls[index].get("SalesRate").value *
+              (selectedTaxValue[0].Rate / 100)
             );
         }
         entryListArray.controls[index].get("Remarks").setValue("");
@@ -723,12 +762,12 @@ export class DetailsEntryGridComponent implements OnInit {
         entryListArray.controls[index]
           .get("SalesRate")
           .setValue(selectedProductValue[0].SalesRate);
-           entryListArray.controls[index]
-        .get("Amount")
-        .setValue(
-          entryListArray.controls[index].get("SalesRate").value *
+        entryListArray.controls[index]
+          .get("Amount")
+          .setValue(
+            entryListArray.controls[index].get("SalesRate").value *
             entryListArray.controls[index].get("Quantity").value
-        );
+          );
       }
 
       if (this.voucherType == "PURCH") {
@@ -740,7 +779,7 @@ export class DetailsEntryGridComponent implements OnInit {
           .get("Amount")
           .setValue(
             entryListArray.controls[index].get("PurchaseRate").value *
-              entryListArray.controls[index].get("Quantity").value
+            entryListArray.controls[index].get("Quantity").value
           );
         entryListArray.controls[index]
           .get("CodeName")
@@ -756,13 +795,13 @@ export class DetailsEntryGridComponent implements OnInit {
           .get("DiscountAmount")
           .setValue(
             entryListArray.controls[index].get("DiscPercentage").value *
-              entryListArray.controls[index].get("Amount").value
+            entryListArray.controls[index].get("Amount").value
           );
         entryListArray.controls[index]
           .get("NetAmount")
           .setValue(
             entryListArray.controls[index].get("Amount").value -
-              entryListArray.controls[index].get("DiscountAmount").value
+            entryListArray.controls[index].get("DiscountAmount").value
           );
         entryListArray.controls[index]
           .get("TaxID")
@@ -776,8 +815,8 @@ export class DetailsEntryGridComponent implements OnInit {
             .get("TaxAmount")
             .setValue(
               entryListArray.controls[index].get("Quantity").value *
-                entryListArray.controls[index].get("PurchaseRate").value *
-                (selectedTaxValue[0].Rate / 100)
+              entryListArray.controls[index].get("PurchaseRate").value *
+              (selectedTaxValue[0].Rate / 100)
             );
         }
         entryListArray.controls[index].get("Remarks").setValue("");
@@ -789,15 +828,15 @@ export class DetailsEntryGridComponent implements OnInit {
   }
 
   handleLedgerChange(value, index): void {
-    console.log(value);
-    console.log(index);
+    // console.log(value);
+    // console.log(index);
     const selectedLedgerValue = this.gridServices.ledgerList.filter(
       (s) => s.LedgerID === value
     );
-    console.log(selectedLedgerValue);
-    console.log(selectedLedgerValue.length);
+    // console.log(selectedLedgerValue);
+    // console.log(selectedLedgerValue.length);
     const entryListArray = <FormArray>this.entryArray;
-    console.log(entryListArray);
+    // console.log(entryListArray);
     if (selectedLedgerValue && selectedLedgerValue.length > 0) {
       entryListArray.controls[index]
         .get("LedgerBalance")
@@ -830,9 +869,9 @@ export class DetailsEntryGridComponent implements OnInit {
       }
 
       const length = this.entryArray.value.length;
-      console.log(length);
+      // console.log(length);
       if (entryListArray.controls[length - 1].invalid) return;
-      console.log(this.addEntryList());
+      // console.log(this.addEntryList());
       this.entryArray.push(this.addEntryList());
     }
   }
@@ -874,20 +913,20 @@ export class DetailsEntryGridComponent implements OnInit {
             .get("Amount")
             .setValue(
               entryListArray.controls[index].get("SalesRate").value *
-                entryListArray.controls[index].get("Quantity").value
+              entryListArray.controls[index].get("Quantity").value
             );
           entryListArray.controls[index].get("DiscPercentage").setValue(0);
           entryListArray.controls[index]
             .get("DiscountAmount")
             .setValue(
               entryListArray.controls[index].get("DiscPercentage").value *
-                entryListArray.controls[index].get("Amount").value
+              entryListArray.controls[index].get("Amount").value
             );
           entryListArray.controls[index]
             .get("NetAmount")
             .setValue(
               entryListArray.controls[index].get("Amount").value -
-                entryListArray.controls[index].get("DiscountAmount").value
+              entryListArray.controls[index].get("DiscountAmount").value
             );
 
           entryListArray.controls[index].get("TaxID").setValue(data.TaxID);
@@ -899,8 +938,8 @@ export class DetailsEntryGridComponent implements OnInit {
               .get("TaxAmount")
               .setValue(
                 entryListArray.controls[index].get("Quantity").value *
-                  entryListArray.controls[index].get("SalesRate").value *
-                  (selectedTaxValue[0].Rate / 100)
+                entryListArray.controls[index].get("SalesRate").value *
+                (selectedTaxValue[0].Rate / 100)
               );
           }
 
@@ -922,20 +961,20 @@ export class DetailsEntryGridComponent implements OnInit {
             .get("Amount")
             .setValue(
               entryListArray.controls[index].get("PurchaseRate").value *
-                entryListArray.controls[index].get("Quantity").value
+              entryListArray.controls[index].get("Quantity").value
             );
           entryListArray.controls[index].get("DiscPercentage").setValue(0);
           entryListArray.controls[index]
             .get("DiscountAmount")
             .setValue(
               entryListArray.controls[index].get("DiscPercentage").value *
-                entryListArray.controls[index].get("Amount").value
+              entryListArray.controls[index].get("Amount").value
             );
           entryListArray.controls[index]
             .get("NetAmount")
             .setValue(
               entryListArray.controls[index].get("Amount").value -
-                entryListArray.controls[index].get("DiscountAmount").value
+              entryListArray.controls[index].get("DiscountAmount").value
             );
 
           entryListArray.controls[index].get("TaxID").setValue(data.TaxID);
@@ -948,8 +987,8 @@ export class DetailsEntryGridComponent implements OnInit {
               .get("TaxAmount")
               .setValue(
                 entryListArray.controls[index].get("Quantity").value *
-                  entryListArray.controls[index].get("PurchaseRate").value *
-                  (selectedTaxValue[0].Rate / 100)
+                entryListArray.controls[index].get("PurchaseRate").value *
+                (selectedTaxValue[0].Rate / 100)
               );
           }
 

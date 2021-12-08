@@ -83,7 +83,7 @@ export class EditJournalComponent implements OnInit {
     // Get Id From the Route URL and get the Details
     this.route.paramMap.subscribe((params) => {
       if (params.get("id")) {
-        this.listLoading = true;
+        // this.listLoading = true;
         this.journalService
           .getJournalDetails(params.get("id"))
           .subscribe((response) => {
@@ -95,10 +95,10 @@ export class EditJournalComponent implements OnInit {
             }
           },
           (error)=> {
-            this.listLoading = false;
+            // this.listLoading = false;
           },
           ()=> {
-            this.listLoading = false;
+            // this.listLoading = false;
           });
       }
     });

@@ -13,7 +13,7 @@ import {
   Validators,
   NG_VALUE_ACCESSOR,
 } from "@angular/forms";
-import { LedgerDetails } from "../../models/ledger.models";
+import { LedgerDetails } from "../../../ledger/models/ledger.models";
 
 @Component({
   selector: "accSwift-account-ledger-more-details",

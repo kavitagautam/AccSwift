@@ -147,4 +147,5 @@ export class DashboardComponent implements OnInit {
         this.checkingAccounts = response.Entity;
       });
   }
+
 }

@@ -6,15 +6,19 @@ import {
   Input,
   OnChanges,
   SimpleChange,
+  Output,
+  EventEmitter,
 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
-import { LedgerService } from "../../services/ledger.service";
+import { LedgerService } from "../../../ledger/services/ledger.service";
 import { Router } from "@angular/router";
-import { Currency, LedgerDetails } from "../../models/ledger.models";
+import { Currency, LedgerDetails } from "../../../ledger/models/ledger.models";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { ToastrService } from "ngx-toastr";
 import { LedgerGroup } from "@accSwift-modules/ledger/models/ledger-group.model";
+import { ReloadComponentService } from "@accSwift-modules/accswift-shared/services/reload-component/reload-component.service";
+import { AddDeliveryNotesComponent } from "@accSwift-modules/delivery-notes/components/add-delivery-notes/add-delivery-notes.component";
 
 @Component({
   selector: "accSwift-account-ledger",
@@ -26,6 +30,9 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   @ViewChild("previousYearBalanceModal") previousYearBalanceModal: ElementRef;
   @Input("selectedItem") selectedItem;
   @Input("groupArrays") groupArrays;
+  @Output() responseObject = new EventEmitter<any>();
+  @Output() cashPartyResponse = new EventEmitter<any>();
+  @Output() closeBool = new EventEmitter<any>();
   date: Date = new Date();
   selectedLedgerId: number;
   accountLedgerForm: FormGroup;
@@ -40,8 +47,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   suggestCodeList = [];
   private editedRowIndex: number;
   balanceDrCr: string;
-  // modalRef: BsModalRef;
   modelRefSubLedger: BsModalRef;
+   modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -53,8 +60,9 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     public ledgerService: LedgerService,
     private router: Router,
     private toastr: ToastrService,
-    private modalRef: BsModalRef,
-    private modalService: BsModalService
+
+    private modalService: BsModalService,
+    private reloadComponentService: ReloadComponentService
   ) {}
 
   ngOnInit() {
@@ -74,6 +82,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       this.title = "Edit ";
       this.getLedgerDetails();
     }
+
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
@@ -95,6 +104,8 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       }
     }
   }
+
+
 
   public balanceType: Array<{ type: string; Name: string; id: number }> = [
     { type: "DEBIT", Name: "DEBIT", id: 1 },
@@ -160,6 +171,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       SubLedgerList: this.setMultipleSubLedger(),
       Remarks: [this.ledgerDetails ? this.ledgerDetails.Remarks : ""],
     });
+    console.log(this.accountLedgerForm.get('Name').value);
   }
 
   get getOpeningBalanceList(): FormArray {
@@ -431,9 +443,15 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
         .addLedgerAccount(this.accountLedgerForm.value)
         .subscribe(
           (response) => {
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+            // setTimeout(() => {
+            //   window.location.reload();
+            // }, 1000);
+            console.log(response);
+            console.log(response.Entity.Name);
+            localStorage.setItem("addedCashPartyName", response.Entity.Name);
+            this.responseObject.emit(response.Entity);
+            this.cashPartyResponse.emit(response.Entity);
+
           },
           (error) => {
             this.toastr.error(JSON.stringify(error.error.Message));
@@ -540,10 +558,11 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     grid.closeRow(rowIndex);
     this.editedRowIndex = undefined;
   }
-  
-  close():void 
+
+  close():void
   {
-    this.modalRef.hide();
-    this.modalRef = null;
+    this.closeBool.emit(true);
+    // this.modalRef.hide();
+    // this.modalRef = null;
   }
 }

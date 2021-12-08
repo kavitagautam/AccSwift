@@ -11,7 +11,7 @@ import {
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
 import { Router } from "@angular/router";
-import { AccountLedgerComponent } from "../account-ledger/account-ledger.component";
+import { AccountLedgerComponent } from "../../../accswift-shared/components/account-ledger/account-ledger.component";
 import { AccountGroupComponent } from "../account-group/account-group.component";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { ConfirmationDialogComponent } from "@app/shared/components/confirmation-dialog/confirmation-dialog.component";
@@ -176,6 +176,7 @@ export class LandingLedgerComponent implements OnInit {
     this.groupArray = groupArray;
     this.groupArrays = groupArray;
     this.branchArray = branchArray;
+    localStorage.setItem("groupArray", JSON.stringify(this.groupArray));
   }
 
   
@@ -566,6 +567,7 @@ export class LandingLedgerComponent implements OnInit {
 
   addNewerLedger():void 
   {
+    console.log(this.groupArray);
     const initialState = { groupArrays: this.groupArray };
     this.modalRef = this.modalService.show(AccountLedgerComponent, {initialState});
     this.modalRef.content.selectedItem = null;

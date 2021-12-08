@@ -168,12 +168,21 @@ export class CustomerInvoicesComponent implements OnInit {
         
         let fileWidth = 208;
         let fileHeight = canvas.height * fileWidth / canvas.width;
-        
+        console.log(canvas.height);
+        console.log(canvas.width);
+        console.log(fileHeight);
         const FILEURI = canvas.toDataURL('image/png') //Returns the content of the current canvas as an image that you can use as a source for another canvas or an HTML element.
         let PDF = new jsPDF('p', 'mm', 'a4'); //Orientation, unit and format
+        // Landscape export, 2×4 inches
+        // const doc = new jsPDF({
+        // orientation: "landscape",
+        // unit: "in",
+        // format: [4, 2]
+        // });
         let position = 0;
-        PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight)
-        
+        PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+        PDF.addPage(); //To add a new page
+        PDF.text('Welcome to new page', 10, 10);
         PDF.save('customer-billing-preview.pdf'); //Specify Filename
     });     
   }

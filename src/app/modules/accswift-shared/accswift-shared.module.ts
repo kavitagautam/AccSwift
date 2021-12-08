@@ -44,6 +44,9 @@ import { PartyInvoicesComponent } from './components/party-invoices/party-invoic
 import { AccswiftFormsModule } from "../accswift-forms/accswift-forms.module";
 import { RecurringInvoiceComponent } from './components/recurring-invoice/recurring-invoice.component';
 import { NepaliDatePickerComponent } from "./components/nepali-date-picker/nepali-date-picker.component";
+import { AccountLedgerComponent } from "./components/account-ledger/account-ledger.component";
+import { AccountLedgerMoreDetailsComponent } from "./components/account-ledger-more-details/account-ledger-more-details.component";
+import { SubLedgerComponent } from "./components/sub-ledger/sub-ledger.component";
 
 
 @NgModule({
@@ -75,7 +78,10 @@ import { NepaliDatePickerComponent } from "./components/nepali-date-picker/nepal
     DateConverterComponent,
     PartyInvoicesComponent,
     RecurringInvoiceComponent,
-    NepaliDatePickerComponent
+    NepaliDatePickerComponent,
+    AccountLedgerComponent,
+    AccountLedgerMoreDetailsComponent,
+    SubLedgerComponent,
   ],
   imports: [
     FormsModule,
@@ -115,7 +121,8 @@ import { NepaliDatePickerComponent } from "./components/nepali-date-picker/nepal
     OpeningBalanceComponent,
     ForgetPasswordComponent,
     PartyInvoicesComponent,
-    NepaliDatePickerComponent
+    NepaliDatePickerComponent,
+    AccswiftFormsModule
   ],
   providers: [ValidationMsgService],
   entryComponents: [
@@ -127,7 +134,10 @@ import { NepaliDatePickerComponent } from "./components/nepali-date-picker/nepal
     ReportPreviewComponent,
     DateConverterComponent,
     PartyInvoicesComponent,
-    RecurringInvoiceComponent
+    RecurringInvoiceComponent,
+    AccountLedgerComponent,
+    AccountLedgerMoreDetailsComponent,
+    SubLedgerComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

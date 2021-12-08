@@ -8,10 +8,32 @@
     <form [formGroup]="salesInvoiceForm" novalidate>
       <div class="col-md-4">
         <accSwift-cash-party-account
+          #cashParty
           formControlName="CashPartyLedgerID"
           (ngModelChange)="partyInvoiceForm()"
         ></accSwift-cash-party-account>
       </div>
+
+      <div class="col-md-4">
+        <button
+          class="btn btn-primary pull-left"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Add New Ledger"
+          (click)="openAddAccountLedgerModal(viewModal)"
+          style="margin-top: 22px"
+        >
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <ng-template #viewModal>
+          <accSwift-account-ledger
+            (responseObject)="getResponseObject($event)"
+            (cashPartyResponse)="getCashPartyResponse($event)"
+            (closeBool)="closeModal($event)"
+          ></accSwift-account-ledger>
+      </ng-template>
     </form>
   </div>
 
@@ -269,8 +291,8 @@
                 "
                 popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
               >
-                <span class="k-icon k-i-warning"></span>
-                Debit Amount is required
+                <span class="k-icon k-i-warning"></span> Debit Amount is
+                required
               </kendo-popup>
             </ng-template>
             <ng-template
@@ -323,8 +345,8 @@
                 "
                 popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
               >
-                <span class="k-icon k-i-warning"></span>
-                Credit Amount is required
+                <span class="k-icon k-i-warning"></span> Credit Amount is
+                required
               </kendo-popup>
             </ng-template>
             <ng-template
@@ -364,9 +386,9 @@
                 "
                 onkeyup="
                   var v = this.value;
-                  if (!v.match(/^[0-9]+$/)) {                     
-                      alert('Please enter digits only'); 
-                  } 
+                  if (!v.match(/^[0-9]+$/)) {
+                      alert('Please enter digits only');
+                  }
                   "
                 maxlength="10"
               />
