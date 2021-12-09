@@ -28,11 +28,11 @@
       </div>
 
       <ng-template #viewModal>
-          <accSwift-account-ledger
-            (responseObject)="getResponseObject($event)"
-            (cashPartyResponse)="getCashPartyResponse($event)"
-            (closeBool)="closeModal($event)"
-          ></accSwift-account-ledger>
+        <accSwift-account-ledger
+          (responseObject)="getResponseObject($event)"
+          (cashPartyResponse)="getCashPartyResponse($event)"
+          (closeBool)="closeModal($event)"
+        ></accSwift-account-ledger>
       </ng-template>
     </form>
   </div>
@@ -43,11 +43,11 @@
     class="k-i-loading"
   ></div>
 
-  <div
+  <!-- <div
     *ngIf="ledgerLoading"
     [hidden]="!columns.includes('LedgerName')"
     class="k-i-loading"
-  ></div>
+  ></div> -->
 
   <kendo-tabstrip style="margin: 50px 0">
     <kendo-tabstrip-tab title="By Account" [selected]="true">

@@ -28,6 +28,7 @@ var moment = require("moment");
 })
 export class AddJournalComponent implements OnInit {
 
+  columns = [];
   dateToday: Date = new Date();
   private editedRowIndex: number;
   listLoading:boolean;
@@ -83,6 +84,27 @@ export class AddJournalComponent implements OnInit {
     // this.selectedDate= this.localStorageService.getLocalStorageItem(
     //   "SelectedDate");
     localStorage.removeItem("SelectedDate");
+
+    for (const key in this.journalVoucherForms.controls.Journaldetails.value[0])
+    {
+      this.columns.push(key);
+    }
+  }
+
+  ledgerLoadEvent(event):void {
+    console.log('event');
+    console.log(event);
+    if(event == true) 
+    {
+      alert(true);
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+    else if (event == false)
+    {
+      alert(false);
+      document.getElementById('overlay').style.display = 'none';
+    }
   }
 
   buildSettingsForm(): void {
