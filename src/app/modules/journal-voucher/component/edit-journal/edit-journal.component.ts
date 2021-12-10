@@ -120,14 +120,12 @@ export class EditJournalComponent implements OnInit {
     console.log(event);
     if(event == true) 
     {
-      alert(true);
-      document.getElementById('overlay').style.display == 'block';
+      document.getElementById('ledgerOverlay').style.display == 'block';
     }
 
     else if (event == false)
     {
-      alert(false);
-      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('ledgerOverlay').style.display = 'none';
     }
   }
 

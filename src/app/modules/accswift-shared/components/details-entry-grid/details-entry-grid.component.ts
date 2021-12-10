@@ -55,6 +55,7 @@ export class DetailsEntryGridComponent implements OnInit {
 
   @ViewChild('cashParty') cashPartyComp: CashPartyAccountComponent;
   @Output() ledLoading = new EventEmitter<any>();
+  @Output() prodLoading = new EventEmitter<any>();
 
   salesDetails: SalesInvoiceDetails;
   salesInvoiceList: SalseInvoice[];
@@ -205,14 +206,17 @@ export class DetailsEntryGridComponent implements OnInit {
 
   getProductList(): void {
     this.productLoading = true;
+    this.prodLoading.emit(this.productLoading);
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
     },
       (error) => {
         this.productLoading = false;
+        this.prodLoading.emit(this.productLoading);
       },
       () => {
         this.productLoading = false;
+        this.prodLoading.emit(this.productLoading);
       });
   }
 

@@ -3,16 +3,6 @@
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
-          <accSwift-series-forms
-            formControlName="SeriesID"
-            [voucherType]="'SLS_RTN'"
-          ></accSwift-series-forms>
-          <accSwift-cash-party-account
-            formControlName="CashPartyLedgerID"
-          ></accSwift-cash-party-account>
-        </div>
-
-        <div class="col-md-3 col-sm-6 col-xs-6">
           <accSwift-voucher-forms
             formControlName="VoucherNo"
             [series]="salesReturnForm.get('SeriesID').value"
@@ -50,67 +40,77 @@
           </div>
           <accSwift-depot formControlName="DepotID"></accSwift-depot>
         </div>
+        <div class="col-md-3 col-sm-6 col-xs-6">
+          <accSwift-series-forms
+            formControlName="SeriesID"
+            [voucherType]="'SLS_RTN'"
+          ></accSwift-series-forms>
+          <!-- <accSwift-cash-party-account
+            formControlName="CashPartyLedgerID"
+          ></accSwift-cash-party-account> -->
+        </div>
+      </div>
+      <div class="col-md-12">
+        <accSwift-details-entry-grid
+          [entryArray]="salesReturnForm.controls.ReturnDetails"
+          [voucherType]="'SLS_RTN'"
+        ></accSwift-details-entry-grid>
+      </div>
+
+      <div class="col-md-12">
+        <table
+          class="table"
+          width="60%"
+          style="float: right; width: 65%; text-align: right"
+        >
+          <tbody>
+            <tr>
+              <td>Adjustment (Rs):</td>
+              <td>
+                <span [innerHTML]="adjustmentAmount | currencyFormat "></span>
+              </td>
+              <td>Gov Tax 1</td>
+              <td>0.00</td>
+              <td>Gross(Rs)</td>
+              <td>{{ totalGrossAmount | number: "1.1-2" }}</td>
+            </tr>
+            <tr>
+              <td>Tender:</td>
+              <td>
+                <span [innerHTML]="tenderAmount | currencyFormat "></span>
+              </td>
+              <td>Gov Tax 2</td>
+              <td>0.00</td>
+              <td>Total Discount Amount (Rs)</td>
+              <td>{{ totalDiscountAmount | number: "1.1-2" }}</td>
+            </tr>
+            <tr>
+              <td>Change:</td>
+              <td>
+                <span [innerHTML]="changeAmount | currencyFormat "></span>
+              </td>
+              <td>Gov Tax 3</td>
+              <td>0.00</td>
+              <td>Gov VAT(13%)</td>
+              <td>{{ vatTotalAmount | number: "1.1-2" }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="total_amount">Grand Total</td>
+              <td class="total_amount">
+                {{ grandTotalAmount | number: "1.1-2" }}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
       </div>
     </div>
-    <div class="row">
-      <accSwift-details-entry-grid
-        [entryArray]="salesReturnForm.controls.ReturnDetails"
-        [voucherType]="'SLS_RTN'"
-      ></accSwift-details-entry-grid>
-    </div>
 
-    <div class="col-md-12">
-      <table
-        class="table"
-        width="60%"
-        style="float: right; width: 65%; text-align: right"
-      >
-        <tbody>
-          <tr>
-            <td>Adjustment (Rs):</td>
-            <td>
-              <span [innerHTML]="adjustmentAmount | currencyFormat "></span>
-            </td>
-            <td>Gov Tax 1</td>
-            <td>0.00</td>
-            <td>Gross(Rs)</td>
-            <td>{{ totalGrossAmount | number: "1.1-2" }}</td>
-          </tr>
-          <tr>
-            <td>Tender:</td>
-            <td>
-              <span [innerHTML]="tenderAmount | currencyFormat "></span>
-            </td>
-            <td>Gov Tax 2</td>
-            <td>0.00</td>
-            <td>Total Discount Amount (Rs)</td>
-            <td>{{ totalDiscountAmount | number: "1.1-2" }}</td>
-          </tr>
-          <tr>
-            <td>Change:</td>
-            <td>
-              <span [innerHTML]="changeAmount | currencyFormat "></span>
-            </td>
-            <td>Gov Tax 3</td>
-            <td>0.00</td>
-            <td>Gov VAT(13%)</td>
-            <td>{{ vatTotalAmount | number: "1.1-2" }}</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="total_amount">Grand Total</td>
-            <td class="total_amount">
-              {{ grandTotalAmount | number: "1.1-2" }}
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
     <div class="row">
       <div class="col-md-4">
         <div class="form-group">

@@ -23,6 +23,8 @@ import { FileRestrictions } from "@progress/kendo-angular-upload";
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
+
+  columns = [];
   public show: boolean = true;
   public myRestrictions: FileRestrictions = {
     maxFileSize: 5242880,
@@ -88,6 +90,23 @@ export class EditSalesInvoiceComponent implements OnInit, OnDestroy {
     this.salesInvoiceForm.valueChanges.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
+
+
+    for (const key in this.salesInvoiceForm.controls.InvoiceDetails.value[0])
+    {
+      this.columns.push(key);
+    }
+  }
+
+  productLoadEvent(event):void {
+    if (event == true)
+    {
+      document.getElementById('productOverlay').style.display = 'block';
+    }
+    else if (event == false)
+    {
+      document.getElementById('productOverlay').style.display = 'none';
+    }
   }
 
   totalAmount = 0;

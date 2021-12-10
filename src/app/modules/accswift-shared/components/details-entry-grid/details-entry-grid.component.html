@@ -37,18 +37,6 @@
     </form>
   </div>
 
-  <div
-    *ngIf="productLoading"
-    [hidden]="!columns.includes('ProductID')"
-    class="k-i-loading"
-  ></div>
-
-  <!-- <div
-    *ngIf="ledgerLoading"
-    [hidden]="!columns.includes('LedgerName')"
-    class="k-i-loading"
-  ></div> -->
-
   <kendo-tabstrip style="margin: 50px 0">
     <kendo-tabstrip-tab title="By Account" [selected]="true">
       <ng-template kendoTabContent>
