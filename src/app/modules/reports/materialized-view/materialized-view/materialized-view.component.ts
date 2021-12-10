@@ -78,7 +78,7 @@ export class MaterializedViewComponent implements OnInit {
       class: "modal-md",
     });
 
-    this.modalRef.content.onSubmit.subscribe((data => {
+    this.modalRef.content.onSubmit.subscribe((data => {  //Can be printPreview only in show
       if (data)
       {
         this.reportService.getMaterializedViewReports(JSON.stringify(data)).subscribe((response) => {
@@ -105,7 +105,7 @@ export class MaterializedViewComponent implements OnInit {
       }
     }));
 
-    this.modalRef.content.onClose.subscribe((data) => {
+    this.modalRef.content.onClose.subscribe((data) => {  //can't be printPreview in cancel and close because localStorage sets only in show
       this.showMaterializedViewReport();
     });
 

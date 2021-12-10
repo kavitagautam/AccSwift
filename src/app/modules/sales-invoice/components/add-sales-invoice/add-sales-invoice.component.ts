@@ -31,6 +31,8 @@ import { SalesInvoiceDetails } from '@accSwift-modules/sales-invoice/models/sale
   styleUrls: ["../common-html/sales-invoice.component.scss"],
 })
 export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
+
+  columns = [];
   public show: boolean = true;
   public myRestrictions: FileRestrictions = {
     maxFileSize: 5242880,
@@ -100,6 +102,22 @@ export class AddSalesInvoiceComponent implements OnInit, OnDestroy {
     this.myFormValueChanges$.subscribe((changes) => {
       this.invoiceValueChange(changes);
     });
+
+    for (const key in this.salesInvoiceForm.controls.InvoiceDetails.value[0])
+    {
+      this.columns.push(key);
+    }
+  }
+
+  productLoadEvent(event):void {
+    if (event == true)
+    {
+      document.getElementById('productOverlay').style.display = 'block';
+    }
+    else if (event == false)
+    {
+      document.getElementById('productOverlay').style.display = 'none';
+    }
   }
 
 

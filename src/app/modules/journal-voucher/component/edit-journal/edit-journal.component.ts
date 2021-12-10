@@ -29,6 +29,7 @@ var moment = require ("moment")
 })
 export class EditJournalComponent implements OnInit {
 
+  columns = [];
   dateToday: Date = new Date();
   private editedRowIndex: number;
   listLoading:boolean;
@@ -107,9 +108,35 @@ export class EditJournalComponent implements OnInit {
     // this.selectedDate= this.localStorageService.getLocalStorageItem(
     //   "SelectedDate");
     localStorage.removeItem("SelectedDate");
+
+    for (const key in this.journalVoucherForms.controls.Journaldetails.value[0])
+    {
+      this.columns.push(key);
+    }
   }
 
-  bsValue = new Date();
+  ledgerLoadEvent(event):void {
+    console.log('event');
+    console.log(event);
+    if(event == true) 
+    {
+      document.getElementById('ledgerOverlay').style.display == 'block';
+    }
+
+    else if (event == false)
+    {
+      document.getElementById('ledgerOverlay').style.display = 'none';
+    }
+  }
+
+
+  closeModal(event):void {
+    if(event == true){
+      this.modalRef ? this.modalRef.hide():"";
+    }
+  }
+
+  bsValue = new Date(); 
 
   buildSettingsForm(): void {
     this.settingsForm = this._fb.group({

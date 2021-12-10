@@ -1,5 +1,11 @@
 <div *ngIf="userType=='Advanced'">
   <div class="box box-default">
+    <div
+      id="productOverlay"
+      [hidden]="!columns.includes('ProductID')"
+      class="k-i-loading"
+    ></div>
+
     <form [formGroup]="salesInvoiceForm" novalidate>
       <div class="row mt-2">
         <div class="col-md-12">
@@ -57,7 +63,7 @@
               <input type="text" class="form-control" />
             </div>
           </div>
-          <div class="col-md-3 col-sm-6 col-xs-6">
+          <!-- <div class="col-md-3 col-sm-6 col-xs-6">
             <accSwift-voucher-forms
               formControlName="VoucherNo"
               [series]="salesInvoiceForm.get('SeriesID').value"
@@ -66,7 +72,7 @@
             <accSwift-cash-party-account
               formControlName="CashPartyLedgerID"
             ></accSwift-cash-party-account>
-          </div>
+          </div> -->
           <div class="col-md-3 col-sm-6 col-xs-6">
             <accSwift-project-forms
               formControlName="ProjectID"
@@ -89,10 +95,21 @@
               />
             </div>
           </div>
+          <div class="col-md-3 col-sm-6 col-xs-6">
+            <accSwift-voucher-forms
+              formControlName="VoucherNo"
+              [series]="salesInvoiceForm.get('SeriesID').value"
+            ></accSwift-voucher-forms>
+
+            <!-- <accSwift-cash-party-account
+              formControlName="CashPartyLedgerID"
+            ></accSwift-cash-party-account> -->
+          </div>
         </div>
         <div class="col-md-12">
           <!-- <h1>{{salesInvoiceForm.getRawValue() | json}}</h1> -->
           <accSwift-details-entry-grid
+            (prodLoading)="productLoadEvent($event)"
             [entryArray]="salesInvoiceForm.controls.InvoiceDetails"
             [voucherType]="'SALES'"
           ></accSwift-details-entry-grid>

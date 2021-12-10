@@ -1,5 +1,11 @@
 <div class="box box-default">
   <!-- <h5>{{journalVoucherForms.getRawValue() | json}}</h5> -->
+  <div
+    id="ledgerOverlay"
+    [hidden]="!columns.includes('LedgerName')"
+    class="k-i-loading"
+  ></div>
+
   <form [formGroup]="journalVoucherForms" novalidate>
     <div class="row">
       <accSwift-create-reports
@@ -97,10 +103,12 @@
 
       <div class="col-md-12">
         <accSwift-details-entry-grid
+          (ledLoading)="ledgerLoadEvent($event)"
           [entryArray]="journalVoucherForms.controls.Journaldetails"
           [voucherType]="'JRNL'"
         ></accSwift-details-entry-grid>
       </div>
+
       <div class="col-md-12">
         <div class="col-md-3 col-sm-6 col-xs-6">
           <div class="form-group">

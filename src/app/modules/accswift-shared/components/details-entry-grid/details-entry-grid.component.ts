@@ -8,6 +8,8 @@ import {
   HostListener,
   LOCALE_ID,
   Inject,
+  EventEmitter,
+  Output,
 } from "@angular/core";
 import {
   FormArray,
@@ -52,6 +54,8 @@ import { CashPartyAccountComponent } from "@accSwift-modules/accswift-forms/form
 export class DetailsEntryGridComponent implements OnInit {
 
   @ViewChild('cashParty') cashPartyComp: CashPartyAccountComponent;
+  @Output() ledLoading = new EventEmitter<any>();
+  @Output() prodLoading = new EventEmitter<any>();
 
   salesDetails: SalesInvoiceDetails;
   salesInvoiceList: SalseInvoice[];
@@ -202,27 +206,33 @@ export class DetailsEntryGridComponent implements OnInit {
 
   getProductList(): void {
     this.productLoading = true;
+    this.prodLoading.emit(this.productLoading);
     this.gridServices.getProductDD().subscribe((response) => {
       this.productList = response.Entity;
     },
       (error) => {
         this.productLoading = false;
+        this.prodLoading.emit(this.productLoading);
       },
       () => {
         this.productLoading = false;
+        this.prodLoading.emit(this.productLoading);
       });
   }
 
   getLedgerList(): void {
     this.ledgerLoading = true;
+    this.ledLoading.emit(this.ledgerLoading);
     this.gridServices.getLedgerDD().subscribe((response) => {
       this.ledgerList = response.Entity;
     },
       (error) => {
         this.ledgerLoading = false;
+        this.ledLoading.emit(this.ledgerLoading);
       },
       () => {
         this.ledgerLoading = false;
+        this.ledLoading.emit(this.ledgerLoading);
       });
   }
 
