@@ -523,9 +523,10 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   public deleteAccountLedgertByID(id): void {
     this.ledgerService.deleteLedgerById(id).subscribe(
       (response) => {
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        console.log(response);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 1000);
       },
       (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));

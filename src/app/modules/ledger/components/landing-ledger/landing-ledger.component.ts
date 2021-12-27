@@ -7,6 +7,7 @@ import {
   EventEmitter,
   ViewContainerRef,
   ComponentFactoryResolver,
+  TemplateRef,
 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { LedgerService } from "../../services/ledger.service";
@@ -102,17 +103,44 @@ export class LandingLedgerComponent implements OnInit {
     console.log(this.selectedItem);
   }
 
+  
+  openAddAccountLedgerModal(template: TemplateRef<any>): void {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  closeModal(event):void {
+    if (event == true) {
+      this.modalRef? this.modalRef.hide(): "";
+    }
+  }
+
+  getCashPartyResponse(responseEntity):void {
+    let addedObject = {
+      Child: "",
+      Code: responseEntity.LedgerCode,
+      GroupOrLedgerNo: responseEntity.GroupID,
+      ID: responseEntity.ID,
+      Title: responseEntity.Name,
+      TypeOf: ""
+    };
+    this.ledgerTreeList.push(addedObject);
+    console.log(addedObject);
+    console.log(this.ledgerTreeList);
+  }
+
   loadLedgerTreeView(): void {
     this.treeViewLoading = true;
     this.ledgerService.getLedgerTreeView().subscribe(
       (response) => {
         this.ledgerTreeNode = response.Entity.Node;
         this.ledgerTreeList = response.Entity.Tree;
+        console.log(this.ledgerTreeNode);
+        console.log(this.ledgerTreeList);
         this.treeViewLoading = false;
         localStorage.setItem("LedgerTreeList", JSON.stringify(response.Entity.Tree));
       },
       (error) => {
-        this.treeViewLoading = false;
+        this.treeViewLoading = false; 
       },
       () => {
         this.treeViewLoading = false;
@@ -159,12 +187,12 @@ export class LandingLedgerComponent implements OnInit {
   getMajorGroups()
   {
     const ledgerTree = this.ledgerData;
-    console.log(ledgerTree);
+    // console.log(ledgerTree);
     const groupArray = [];
     const branchArray = [];
     for (const item of ledgerTree) //Display main branch details
     {
-      console.log(item);
+      // console.log(item);
       branchArray.push(item);
       for (const item1 of item["Child"]) //Display main group details
       {
@@ -182,17 +210,19 @@ export class LandingLedgerComponent implements OnInit {
   
  ledgerList:any = {};
   getLedgerByID(): void {
-    console.log(this.groupArrays);
+    // console.log(this.groupArrays);
     var groupArray = this.groupArrays;
     for (const item of groupArray) { 
-      console.log(item)
+      // console.log(item)
       const param = item.ID;
       this.ledgerService
       .getLedgersById(param)
       .subscribe((res) => {
+        console.log(this.ledgerList);
         this.ledgerList[param] = res.Entity;
         this.ledgersOfGroups = res.Entity;
         console.log(this.ledgersOfGroups);
+        console.log(this.ledgerList[param]);
       });
       console.log(this.ledgerList);
     }
@@ -554,16 +584,16 @@ export class LandingLedgerComponent implements OnInit {
     console.log(this.modalRef.content);
   }
 
-  addNewLedger(): void {
-    this.dynamicContentDiv.clear();
-    const factory = this.componentFactoryResolver.resolveComponentFactory(
-      AccountLedgerComponent
-    );
-    const componentRef = this.dynamicContentDiv.createComponent(factory);
-    console.log(componentRef);
-    componentRef.instance.selectedItem = null;
-    componentRef.instance.groupArrays = this.groupArray;
-  }
+  // addNewLedger(): void {
+  //   this.dynamicContentDiv.clear();
+  //   const factory = this.componentFactoryResolver.resolveComponentFactory(
+  //     AccountLedgerComponent
+  //   );
+  //   const componentRef = this.dynamicContentDiv.createComponent(factory);
+  //   console.log(componentRef);
+  //   componentRef.instance.selectedItem = null;
+  //   componentRef.instance.groupArrays = this.groupArray;
+  // }
 
   addNewerLedger():void 
   {

@@ -122,7 +122,8 @@ import { SubLedgerComponent } from "./components/sub-ledger/sub-ledger.component
     ForgetPasswordComponent,
     PartyInvoicesComponent,
     NepaliDatePickerComponent,
-    AccswiftFormsModule
+    AccswiftFormsModule,
+    AccountLedgerComponent
   ],
   providers: [ValidationMsgService],
   entryComponents: [

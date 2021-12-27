@@ -82,15 +82,32 @@
             >
               <i class="fa fa-plus" aria-hidden="true"></i> Create Ledger Group
             </button>
-            <button class="btn btn-primary m-2" (click)="addNewLedger()">
-              <i class="fa fa-plus" aria-hidden="true"></i> Create Ledger
-            </button>
-          </div>
-          <div class="col-md-12 mt-5">
-            <div #dynamicContentDiv></div>
-          </div>
 
-          <!-- <kendo-tabstrip>
+            <button
+              class="btn btn-primary pull-left m-2"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Add New Ledger"
+              (click)="openAddAccountLedgerModal(viewModalLedger)"
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i>Create Ledger
+            </button>
+
+            <ng-template #viewModalLedger>
+              <accSwift-account-ledger
+                (cashPartyResponse)="getCashPartyResponse($event)"
+                (closeBool)="closeModal($event)"
+              ></accSwift-account-ledger>
+            </ng-template>
+            <!-- <button class="btn btn-primary m-2" (click)="addNewLedger()">
+              <i class="fa fa-plus" aria-hidden="true"></i> Create Ledger
+            </button>-->
+
+            <div class="col-md-12 mt-5">
+              <div #dynamicContentDiv></div>
+            </div>
+
+            <!-- <kendo-tabstrip>
             <kendo-tabstrip-tab
               [title]="'Account Group'"
               [selected]="selectedGroupTab ? true : false"
@@ -112,6 +129,7 @@
               </ng-template>
             </kendo-tabstrip-tab>
           </kendo-tabstrip> -->
+          </div>
         </div>
       </div>
     </div>
@@ -151,15 +169,15 @@
                       <div class="col-lg-5">
                         <div class="ledger">
                           <!-- <ul
-                            style="
-                              color: black;
-                              font-weight: 600;
-                              cursor: pointer;
-                            "
-                            (click)="getLedgerByID(groups.ID)"
-                          >
-                            View Ledgers
-                          </ul> -->
+                          style="
+                            color: black;
+                            font-weight: 600;
+                            cursor: pointer;
+                          "
+                          (click)="getLedgerByID(groups.ID)"
+                        >
+                          View Ledgers
+                        </ul> -->
                           <ul
                             *ngFor="
                               let ledger of ledgerList[groups.ID];
@@ -171,10 +189,10 @@
                                 <!--Ledgers-->
                                 <!-- *ngIf = "groups.Title === ledger.Title" -->
                                 <!-- <span *ngIf="ledger.values.LedgerCode"
-                                  >({{ ledger.values.LedgerCode }})</span
-                                >
-                                &nbsp; {{ ledger.values.Name }}
-                              </span> -->
+                                >({{ ledger.values.LedgerCode }})</span
+                              >
+                              &nbsp; {{ ledger.values.Name }}
+                            </span> -->
                                 <span *ngIf="ledger.LedgerCode"
                                   >({{ ledger.LedgerCode }})</span
                                 >
