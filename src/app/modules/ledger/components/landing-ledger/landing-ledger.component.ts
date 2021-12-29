@@ -46,6 +46,8 @@ export class LandingLedgerComponent implements OnInit {
   mainGroups:LedgerGroup[]=[];
   ledgersOfGroups:Ledgers[]=[];
   ledgers = [];
+  ledgerList:any = {};
+
 
   modalRef: BsModalRef;
 
@@ -208,7 +210,6 @@ export class LandingLedgerComponent implements OnInit {
   }
 
   
- ledgerList:any = {};
   getLedgerByID(): void {
     // console.log(this.groupArrays);
     var groupArray = this.groupArrays;
@@ -224,7 +225,22 @@ export class LandingLedgerComponent implements OnInit {
         console.log(this.ledgersOfGroups);
         console.log(this.ledgerList[param]);
       });
-      console.log(this.ledgerList);
+    }
+  }
+
+  sliceLedger():void {
+    var groupArray = this.groupArrays;
+    for (const item of groupArray) { 
+      const param = item.ID;
+      this.ledgerService
+      .getLedgersById(param)
+      .subscribe((res) => {
+        this.ledgerList[param] = res.Entity;
+        this.ledgersOfGroups = res.Entity;
+        this.ledgersOfGroups.splice(this.ledgersOfGroups.findIndex(ledger => ledger.ID == this.modalRef.content.selectedItem.ID) , 1);
+        console.log(this.ledgersOfGroups);
+        console.log(this.ledgerList[param]);
+      });
     }
   }
   
@@ -641,9 +657,12 @@ export class LandingLedgerComponent implements OnInit {
   public deleteAccountLedgertByID(id): void {
     this.ledgerService.deleteLedgerById(id).subscribe(
       (response) => {
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        // It deletes ledger without reload if there exists loop of all array in this.ledgerOfGroups whose ID matches with this.modalRef.content.selectedItem.ID
+        // after clicking delete icon
+        this.sliceLedger();
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 1000);
       },
       (error) => {
         this.toastr.error(JSON.stringify(error.error.Message));
