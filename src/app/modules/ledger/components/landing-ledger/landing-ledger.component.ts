@@ -47,6 +47,7 @@ export class LandingLedgerComponent implements OnInit {
   ledgersOfGroups:Ledgers[]=[];
   ledgers = [];
   ledgerList:any = {};
+  addedLedgerObject:any;
 
 
   modalRef: BsModalRef;
@@ -117,6 +118,7 @@ export class LandingLedgerComponent implements OnInit {
   }
 
   getCashPartyResponse(responseEntity):void {
+    // To push Ledger without reload in advanced COA
     let addedObject = {
       Child: "",
       Code: responseEntity.LedgerCode,
@@ -128,6 +130,24 @@ export class LandingLedgerComponent implements OnInit {
     this.ledgerTreeList.push(addedObject);
     console.log(addedObject);
     console.log(this.ledgerTreeList);
+    this.addedLedgerObject = addedObject;
+    console.log(this.addedLedgerObject);
+
+
+    // To push Ledger without reload in basic COA
+    var groupArray = this.groupArrays;
+    for (const item of groupArray) { 
+      const param = item.ID;
+      this.ledgerService
+      .getLedgersById(param)
+      .subscribe((res) => {
+        this.ledgerList[param] = res.Entity;
+        this.ledgersOfGroups = res.Entity;
+        this.ledgersOfGroups.push(this.addedLedgerObject)
+        console.log(this.ledgersOfGroups);
+        console.log(this.ledgerList[param]);
+      });
+    }
   }
 
   loadLedgerTreeView(): void {

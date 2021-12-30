@@ -156,13 +156,30 @@
                   <div class="group-tabs">
                     <h2 class="group-name">{{ groups.Title }}</h2>
                     <!--Main Groups-->
-                    <button
+                    <!-- <button
                       class="btn btn-primary pull-left"
                       (click)="addNewerLedger()"
                     >
                       <i class="fa fa-plus" aria-hidden="true"></i> Add New
                       Ledger
+                    </button> -->
+                    <button
+                      class="btn btn-primary pull-left m-2"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Add New Ledger"
+                      (click)="openAddAccountLedgerModal(viewModalLedger)"
+                    >
+                      <i class="fa fa-plus" aria-hidden="true"></i>Add New
+                      Ledger
                     </button>
+
+                    <ng-template #viewModalLedger>
+                      <accSwift-account-ledger
+                        (cashPartyResponse)="getCashPartyResponse($event)"
+                        (closeBool)="closeModal($event)"
+                      ></accSwift-account-ledger>
+                    </ng-template>
                   </div>
                   <div class="ledger-tabs">
                     <div class="row">
