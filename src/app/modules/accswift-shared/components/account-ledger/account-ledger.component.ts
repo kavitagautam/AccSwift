@@ -48,7 +48,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
   private editedRowIndex: number;
   balanceDrCr: string;
   modelRefSubLedger: BsModalRef;
-   modalRef: BsModalRef;
+  modalRef: BsModalRef;
   // modal config to unhide modal when clicked outside
   config = {
     backdrop: true,
@@ -82,7 +82,6 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       this.title = "Edit ";
       this.getLedgerDetails();
     }
-
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
@@ -104,8 +103,6 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       }
     }
   }
-
-
 
   public balanceType: Array<{ type: string; Name: string; id: number }> = [
     { type: "DEBIT", Name: "DEBIT", id: 1 },
@@ -171,7 +168,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
       SubLedgerList: this.setMultipleSubLedger(),
       Remarks: [this.ledgerDetails ? this.ledgerDetails.Remarks : ""],
     });
-    console.log(this.accountLedgerForm.get('Name').value);
+    console.log(this.accountLedgerForm.get("Name").value);
   }
 
   get getOpeningBalanceList(): FormArray {
@@ -184,20 +181,22 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
 
   addOpeningBalanceFormGroup(): FormArray {
     const subOpeningBlc = new FormArray([]);
-    for (let i = 0;  i < this.ledgerService.accountClass.length; i++) {
-      subOpeningBlc.push(this._fb.group({
-      ID: [null],
-      AccClassID: [
-        this.ledgerService.accountClass.length > 0
-          ? this.ledgerService.accountClass[i].ID
-          : null,
-        Validators.required,
-      ],
-      OpenBal: [0],
-      OpenBalDrCr: [this.balanceDrCr ? this.balanceDrCr : ""],
-    }));
-  }
-  return subOpeningBlc;
+    for (let i = 0; i < this.ledgerService.accountClass.length; i++) {
+      subOpeningBlc.push(
+        this._fb.group({
+          ID: [null],
+          AccClassID: [
+            this.ledgerService.accountClass.length > 0
+              ? this.ledgerService.accountClass[i].ID
+              : null,
+            Validators.required,
+          ],
+          OpenBal: [0],
+          OpenBalDrCr: [this.balanceDrCr ? this.balanceDrCr : ""],
+        })
+      );
+    }
+    return subOpeningBlc;
   }
 
   setMultipleSubLedger(): FormArray {
@@ -403,9 +402,11 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     });
   }
 
-  currencyFilter(value):void {
+  currencyFilter(value): void {
     this.ledgerService.getCurrency().subscribe((response) => {
-      this.currency = response.Entity.filter((s) => s.Name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+      this.currency = response.Entity.filter(
+        (s) => s.Name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+      );
     });
   }
 
@@ -451,7 +452,6 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
             localStorage.setItem("addedCashPartyName", response.Entity.Name);
             this.responseObject.emit(response.Entity);
             this.cashPartyResponse.emit(response.Entity);
-
           },
           (error) => {
             this.toastr.error(JSON.stringify(error.error.Message));
@@ -560,8 +560,7 @@ export class AccountLedgerComponent implements OnInit, OnChanges {
     this.editedRowIndex = undefined;
   }
 
-  close():void
-  {
+  close(): void {
     this.closeBool.emit(true);
     // this.modalRef.hide();
     // this.modalRef = null;

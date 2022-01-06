@@ -18,7 +18,7 @@
                   </button>
                   <kendo-treeview
                     #kendoTreeView
-                    [nodes]="ledgerTreeList"
+                    [nodes]="ledgerDetails"
                     textField="Title"
                     kendoTreeViewExpandable
                     kendoTreeViewSelectable
@@ -170,8 +170,12 @@
                       title="Add New Ledger"
                       (click)="openAddAccountLedgerModal(viewModalLedger)"
                     >
-                      <i class="fa fa-plus" aria-hidden="true"></i>Add New
-                      Ledger
+                      <i
+                        style="padding-right: 4px"
+                        class="fa fa-plus"
+                        aria-hidden="true"
+                      ></i
+                      >Add New Ledger
                     </button>
 
                     <ng-template #viewModalLedger>
@@ -234,7 +238,7 @@
                           <p>
                             Cash you haven’t deposited in the bank. Add your
                             bank and credit card accounts to accurately
-                            categorize transactions that aren’t cash.
+                            categorize transactions.
                           </p>
                         </div>
                       </div>
